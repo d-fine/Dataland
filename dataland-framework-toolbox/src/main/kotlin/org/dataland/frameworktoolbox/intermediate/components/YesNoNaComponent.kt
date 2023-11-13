@@ -29,13 +29,13 @@ class YesNoNaComponent(
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
-            FrameworkDisplayValueLambda(
-                "formatYesNoValueForDatatable(${getTypescriptFieldAccessor()})",
+            documentSupport.getFrameworkDisplayValueLambda(FrameworkDisplayValueLambda(
+                "formatYesNoValueForDatatable(${getTypescriptFieldAccessor(true)})",
                 setOf(
                     "import { formatYesNoValueForDatatable } from " +
                         "\"@/components/resources/dataTable/conversion/YesNoValueGetterFactory\";",
                 ),
-            ),
+            ), label, getTypescriptFieldAccessor()),
         )
     }
 }

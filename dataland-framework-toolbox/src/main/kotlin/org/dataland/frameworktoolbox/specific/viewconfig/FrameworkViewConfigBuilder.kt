@@ -9,6 +9,7 @@ import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import java.io.FileWriter
 import java.nio.file.Path
+import java.util.concurrent.TimeUnit
 import kotlin.io.path.div
 
 /**
@@ -84,8 +85,19 @@ class FrameworkViewConfigBuilder(
             mkdirs()
         }
 
-        buildViewConfig(frameworkConfigDir / "ViewConfig.ts")
+        val viewConfigTsPath = frameworkConfigDir / "ViewConfig.ts"
+
+        buildViewConfig(viewConfigTsPath)
         buildApiClient(frameworkConfigDir / "ApiClient.ts")
         buildIndexTs(frameworkConfigDir / "index.ts")
+
+        into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_checkfrontendcompilation"))
+
+        ProcessBuilder("npx", "eslint", "--fix", viewConfigTsPath.toAbsolutePath().toString())
+            .directory((into.path /  "dataland-frontend").toFile())
+            .redirectOutput(ProcessBuilder.Redirect.INHERIT)
+            .redirectError(ProcessBuilder.Redirect.INHERIT)
+            .start()
+            .waitFor(60, TimeUnit.SECONDS)
     }
 }

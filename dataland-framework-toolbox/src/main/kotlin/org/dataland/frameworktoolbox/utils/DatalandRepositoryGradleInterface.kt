@@ -32,6 +32,8 @@ class DatalandRepositoryGradleInterface(val repository: DatalandRepository) {
                 .addProgressListener { update: ProgressEvent ->
                     logger.trace("GRADLE UPDATE: ${update.displayName}")
                 }
+                .setStandardOutput(System.out)
+                .setStandardError(System.err)
 
             if (force) buildBuilder.addArguments("--rerun-tasks")
 

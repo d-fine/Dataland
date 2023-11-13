@@ -28,13 +28,13 @@ class DateComponent(
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
-            FrameworkDisplayValueLambda(
-                "formatStringForDatatable(${getTypescriptFieldAccessor()})",
+            documentSupport.getFrameworkDisplayValueLambda(FrameworkDisplayValueLambda(
+                "formatStringForDatatable(${getTypescriptFieldAccessor(true)})",
                 setOf(
                     "import { formatStringForDatatable } from " +
                         "\"@/components/resources/dataTable/conversion/PlainStringValueGetterFactory\";",
                 ),
-            ),
+            ), label, getTypescriptFieldAccessor())
         )
     }
 }

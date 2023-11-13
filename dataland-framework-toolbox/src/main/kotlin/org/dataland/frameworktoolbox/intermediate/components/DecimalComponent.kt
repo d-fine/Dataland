@@ -33,14 +33,14 @@ open class DecimalComponent(
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
-            FrameworkDisplayValueLambda(
-                "formatNumberForDatatable(${getTypescriptFieldAccessor()}," +
+            documentSupport.getFrameworkDisplayValueLambda(FrameworkDisplayValueLambda(
+                "formatNumberForDatatable(${getTypescriptFieldAccessor(true)}," +
                     " \"${StringEscapeUtils.escapeEcmaScript(constantUnitSuffix ?: "")}\")",
                 setOf(
                     "import { formatNumberForDatatable } from " +
                         "\"@/components/resources/dataTable/conversion/NumberValueGetterFactory\";",
                 ),
-            ),
+            ), label, getTypescriptFieldAccessor())
         )
     }
 }

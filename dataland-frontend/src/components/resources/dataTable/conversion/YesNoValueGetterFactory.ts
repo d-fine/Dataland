@@ -12,11 +12,11 @@ import { HumanizedYesNoNa } from "@/utils/YesNoNa";
  * @returns the value formatted for display
  */
 export function formatYesNoValueForDatatable(value: YesNoNa | undefined | null): AvailableMLDTDisplayObjectTypes {
-    const displayValue = value ? HumanizedYesNoNa[value] : "";
-    return {
-        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-        displayValue: displayValue,
-    };
+  const displayValue = value ? HumanizedYesNoNa[value] : "";
+  return {
+    displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+    displayValue: displayValue,
+  };
 }
 
 /**
@@ -27,6 +27,6 @@ export function formatYesNoValueForDatatable(value: YesNoNa | undefined | null):
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function yesNoValueGetterFactory(path: string): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-      return formatYesNoValueForDatatable(getFieldValueFromFrameworkDataset(path, dataset) as YesNoNa | undefined);
+    return formatYesNoValueForDatatable(getFieldValueFromFrameworkDataset(path, dataset) as YesNoNa | undefined);
   };
 }

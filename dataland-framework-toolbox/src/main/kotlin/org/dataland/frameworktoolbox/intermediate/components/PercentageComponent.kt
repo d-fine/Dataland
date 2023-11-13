@@ -27,13 +27,13 @@ class PercentageComponent(
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
-            FrameworkDisplayValueLambda(
-                "formatPercentageForDatatable(${getTypescriptFieldAccessor()})",
+            documentSupport.getFrameworkDisplayValueLambda(FrameworkDisplayValueLambda(
+                "formatPercentageForDatatable(${getTypescriptFieldAccessor(true)})",
                 setOf(
                     "import { formatPercentageForDatatable } from" +
                         " \"@/components/resources/dataTable/conversion/PercentageValueGetterFactory\";",
                 ),
-            ),
+            ), label, getTypescriptFieldAccessor())
         )
     }
 }

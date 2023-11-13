@@ -7,7 +7,7 @@ import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
  * Assuming standard kotlin-dataclass generation, this function generates a null-safe accessor
  * from the root dataset object to the field in TypeScript
  */
-fun ComponentBase.getTypescriptFieldAccessor(): String {
+fun ComponentBase.getTypescriptFieldAccessor(valueAccessor: Boolean = false): String {
     val parentsSequence = parents()
         .toList()
         .reversed()
@@ -18,9 +18,14 @@ fun ComponentBase.getTypescriptFieldAccessor(): String {
             }
         }
 
-    return if (parentsSequence.isNotEmpty()) {
+    val dataPointAccessor =  if (parentsSequence.isNotEmpty()) {
         "dataset.${parentsSequence.joinToString(".")}.$identifier"
     } else {
         "dataset.$identifier"
     }
+
+    return if (valueAccessor)
+        documentSupport.getDataAccessor(dataPointAccessor, isNullable)
+    else
+        dataPointAccessor
 }
