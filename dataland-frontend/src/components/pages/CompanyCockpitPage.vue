@@ -20,23 +20,10 @@
 </template>
 
 <script lang="ts">
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { defineComponent, inject } from "vue";
-import PrimeButton from "primevue/button";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
-import BackButton from "@/components/general/BackButton.vue";
-import ApiKeyCard from "@/components/resources/apiKey/ApiKeyCard.vue";
-import CreateApiKeyCard from "@/components/resources/apiKey/CreateApiKeyCard.vue";
-import MessageComponent from "@/components/messages/MessageComponent.vue";
-import PrimeDialog from "primevue/dialog";
-import PrimeTextarea from "primevue/textarea";
 import TheFooter from "@/components/generics/TheFooter.vue";
-import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
-import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
-import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
-import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
 import { type AggregatedFrameworkDataSummary, type CompanyIdAndName, DataTypeEnum } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -63,22 +50,9 @@ export default defineComponent({
   components: {
     CompanyInfoSheet,
     FrameworkSummaryPanel,
-    MarginWrapper,
-    FrameworkDataSearchBar,
-    CompanyInformationBanner,
-    AuthenticationWrapper,
     TheContent,
     TheHeader,
-    MiddleCenterDiv,
-    BackButton,
-    PrimeButton,
-    PrimeDialog,
-    ApiKeyCard,
-    CreateApiKeyCard,
-    MessageComponent,
-    PrimeTextarea,
     TheFooter,
-    CompaniesOnlySearchBar,
   },
   setup() {
     return {
