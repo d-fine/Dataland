@@ -508,7 +508,7 @@ export const configForEutaxonomyFinancialsMLDT = [
           dataset: EuTaxonomyDataForFinancials,
         ): {
           displayComponentName: MLDTDisplayComponentName;
-          displayValue: ExtendedDataPointBigDecimal | null | undefined;
+          displayValue: EligibilityKpis | null | undefined;
         } => ({
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
           displayValue: dataset.eligibilityKpis?.greenAssetRatioInPercent,
