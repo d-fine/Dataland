@@ -1,9 +1,27 @@
+import {
+  MLDTDisplayComponentName,
+  type MLDTDisplayObject,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { euTaxonomyKpiNameMappings } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
-import { type EuTaxonomyDataForFinancials, type YesNo } from "@clients/backend";
-import { MLDTDisplayComponentName } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+import { type EuTaxonomyDataForFinancials } from "@clients/backend";
 
-export const configForEutaxonomyFinancialsMLDT: MLDTConfig<EuTaxonomyDataForFinancials> = [
+/**
+export const configForEutaxonomyFinancialsMLDT= [
+  {
+    type:"cell",
+    label:"GENERAL",
+    labelBadgeColor: "yellow",
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean=> true,
+    valueGetter: () : MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
+      displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+      displayValue: "5"
+    })
+  }
+];
+ */
+
+export const configForEutaxonomyFinancialsMLDT = [
   {
     type: "section",
     label: "General",
@@ -14,7 +32,10 @@ export const configForEutaxonomyFinancialsMLDT: MLDTConfig<EuTaxonomyDataForFina
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.fiscalYearDeviation,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
           displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
           displayValue: dataset.fiscalYearDeviation,
         }),
@@ -22,7 +43,10 @@ export const configForEutaxonomyFinancialsMLDT: MLDTConfig<EuTaxonomyDataForFina
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.fiscalYearEnd,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
           displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
           displayValue: dataset.fiscalYearEnd,
         }),
@@ -30,47 +54,65 @@ export const configForEutaxonomyFinancialsMLDT: MLDTConfig<EuTaxonomyDataForFina
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.scopeOfEntities,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
-          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
+          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
           displayValue: dataset.scopeOfEntities,
         }),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.nfrdMandatory,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
-          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
+          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
           displayValue: dataset.nfrdMandatory,
         }),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting,
+        shouldDisplay: (): boolean => true,
         valueGetter: (
           dataset: EuTaxonomyDataForFinancials,
-        ): { displayComponentName: MLDTDisplayComponentName; displayValue: YesNo | null | undefined } => ({
-          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
+          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
           displayValue: dataset.euTaxonomyActivityLevelReporting,
         }),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.assurance,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-          displayValue: dataset.assurance,
+          displayValue: {
+            fieldLabel: euTaxonomyKpiNameMappings.assurance,
+            value: dataset.assurance?.value ? dataset.assurance.value : "",
+            dataSource: dataset.assurance?.dataSource ? dataset.assurance.dataSource : undefined,
+          },
         }),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.numberOfEmployees,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
           displayComponentName: MLDTDisplayComponentName.StringDisplayComponent, //TODO check if coorect display component
-          displayValue: dataset.numberOfEmployees,
+          displayValue: dataset.numberOfEmployees?.toString(),
         }),
       },
     ],
   },
+  /**
   {
     type: "section",
     label: "Eligibility KPIs",
@@ -78,14 +120,20 @@ export const configForEutaxonomyFinancialsMLDT: MLDTConfig<EuTaxonomyDataForFina
     expandOnPageLoad: false,
     shouldDisplay: (): boolean => true,
     children: [
+   
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
+        shouldDisplay: () : boolean => true,
+        valueGetter: (dataset: EuTaxonomyDataForFinancials) :
+            MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-          displayValue: dataset.eligibilityKpis?.taxonomyEligibleActivityInPercent,
-        }),
-      },
+          displayValue: {
+            fieldLabel: euTaxonomyKpiNameMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent, //TODO
+            value: dataset.eligibilityKpis?['taxonomyEligibleActivityInPercent']  ?
+                dataset.eligibilityKpis?["taxonomyEligibleActivityInPercent"] ?
+                    dataset.eligibilityKpis?["taxonomyEligibleActivityInPercent"].value : undefined,
+            dataSource: dataset.eligibilityKpis?.taxonomyEligibleActivityInPercent?.dataSource ? dataset.eligibilityKpis.taxonomyEligibleActivityInPercent.dataSource : undefined,
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent,
@@ -120,6 +168,8 @@ export const configForEutaxonomyFinancialsMLDT: MLDTConfig<EuTaxonomyDataForFina
       },
     ],
   },
+   */
+
   {
     type: "section",
     label: "Credit Institution KPIs",
@@ -130,37 +180,83 @@ export const configForEutaxonomyFinancialsMLDT: MLDTConfig<EuTaxonomyDataForFina
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.tradingPortfolioInPercent,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-          displayValue: dataset.creditInstitutionKpis?.tradingPortfolioInPercent,
+          displayValue: {
+            fieldLabel: euTaxonomyKpiNameMappings.tradingPortfolioInPercent,
+            value: dataset.creditInstitutionKpis?.tradingPortfolioInPercent?.value
+              ? dataset.creditInstitutionKpis?.tradingPortfolioInPercent?.value.toString()
+              : "",
+            dataSource: dataset.creditInstitutionKpis?.tradingPortfolioInPercent?.dataSource
+              ? dataset.creditInstitutionKpis?.tradingPortfolioInPercent?.dataSource
+              : undefined,
+          },
         }),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.interbankLoansInPercent,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-          displayValue: dataset.creditInstitutionKpis?.interbankLoansInPercent,
+          displayValue: {
+            fieldLabel: euTaxonomyKpiNameMappings.interbankLoansInPercent,
+            value: dataset.creditInstitutionKpis?.interbankLoansInPercent?.value
+              ? dataset.creditInstitutionKpis?.interbankLoansInPercent?.value.toString()
+              : "",
+            dataSource: dataset.creditInstitutionKpis?.interbankLoansInPercent?.dataSource
+              ? dataset.creditInstitutionKpis?.interbankLoansInPercent?.dataSource
+              : undefined,
+          },
         }),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.tradingPortfolioAndInterbankLoansInPercent,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-          displayValue: dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent,
+          displayValue: {
+            fieldLabel: euTaxonomyKpiNameMappings.tradingPortfolioAndInterbankLoansInPercent,
+            value: dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.value
+              ? dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.value.toString()
+              : "",
+            dataSource: dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.dataSource
+              ? dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.dataSource
+              : undefined,
+          },
         }),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-          displayValue: dataset.eligibilityKpis?.greenAssetRatioInPercent,
+          displayValue: {
+            fieldLabel: euTaxonomyKpiNameMappings.tradingPortfolioAndInterbankLoansInPercent,
+            value: dataset.creditInstitutionKpis?.greenAssetRatioInPercent?.value
+              ? dataset.creditInstitutionKpis?.greenAssetRatioInPercent?.value.toString()
+              : "",
+            dataSource: dataset.creditInstitutionKpis?.greenAssetRatioInPercent?.dataSource
+              ? dataset.creditInstitutionKpis?.greenAssetRatioInPercent?.dataSource
+              : undefined,
+          },
         }),
       },
     ],
   },
+];
+/**
   {
     type: "section",
     label: "Investment-Firm KPIs",
@@ -195,4 +291,4 @@ export const configForEutaxonomyFinancialsMLDT: MLDTConfig<EuTaxonomyDataForFina
       },
     ],
   },
-];
+ */
