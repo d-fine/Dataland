@@ -17,7 +17,7 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
             "You must specify a label for ${component.identifier} to generate a view configuration",
         ),
         explanation = component.explanation,
-        shouldDisplay = FrameworkBooleanLambda.TRUE,
+        shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
         valueGetter = valueGetter,
     )
 }

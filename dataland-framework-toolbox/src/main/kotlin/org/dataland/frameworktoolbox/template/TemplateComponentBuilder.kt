@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.template
 
+import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.create
@@ -54,15 +55,34 @@ class TemplateComponentBuilder(
             )
     }
 
+
+    private fun initialBuildPassForCreatingComponents(into: ComponentGroupApi): Map<String, ComponentBase> {
+        val componentMapForDependencies = mutableMapOf<String, ComponentBase>()
+        for (row in template.rows) {
+            val group = getSubsectionForRow(into, row)
+            val factory = getFactoryForRow(row)
+            require(!componentMapForDependencies.containsKey(row.fieldIdentifier)) {
+                "Duplicate component identifier ${row.fieldIdentifier}"
+            }
+            val generatedComponent = factory.generateComponent(row, generationUtils, group)
+            generatedComponent?.let {  componentMapForDependencies[row.fieldIdentifier] = it}
+        }
+        return componentMapForDependencies
+    }
+
+    private fun secondBuildPassForDefiningDependencies(into: ComponentGroupApi, componentIdentifierMap: Map<String, ComponentBase>) {
+        for (row in template.rows) {
+            val factory = getFactoryForRow(row)
+            factory.updateDependency(row, componentIdentifierMap)
+        }
+    }
+
     /**
      * Use the Excel template to build a high-level intermediate representation of a framework
      * into the provided ComponentGroup
      */
     fun build(into: ComponentGroupApi) {
-        for (row in template.rows) {
-            val group = getSubsectionForRow(into, row)
-            val factory = getFactoryForRow(row)
-            factory.generateComponent(row, generationUtils, group)
-        }
+       val componentIdentifierMap = initialBuildPassForCreatingComponents(into)
+        secondBuildPassForDefiningDependencies(into, componentIdentifierMap)
     }
 }

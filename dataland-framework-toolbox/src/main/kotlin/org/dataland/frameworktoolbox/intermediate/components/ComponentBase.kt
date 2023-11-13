@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 import org.dataland.frameworktoolbox.intermediate.ComponentMarker
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.TreeNode
+import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 
@@ -36,12 +37,17 @@ open class ComponentBase(
     /**
      * The viewConfigGenerator allows users to overwrite the ViewConfig generation of this specific component instance
      */
-    val viewConfigGenerator: ((sectionConfigBuilder: SectionConfigBuilder) -> Unit)? = null
+    var viewConfigGenerator: ((sectionConfigBuilder: SectionConfigBuilder) -> Unit)? = null
 
     /**
      * True iff this component is optional / accepts null values
      */
     var isNullable: Boolean = true
+
+    /**
+     * A logical condition that decides whether this component is available / shown to users
+     */
+    var availableIf: FrameworkConditional = FrameworkConditional.AlwaysTrue
 
     /**
      * Obtain a list of all parents of this node until the root node

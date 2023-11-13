@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.template.components
 
+import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.DateComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.create
@@ -19,12 +20,12 @@ class DateComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic
         row: TemplateRow,
         utils: ComponentGenerationUtils,
         componentGroup: ComponentGroupApi,
-    ) {
+    ): ComponentBase {
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
         templateDiagnostic.documentSupportNotUsed(row)
 
-        componentGroup.create<DateComponent>(
+        return componentGroup.create<DateComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)
