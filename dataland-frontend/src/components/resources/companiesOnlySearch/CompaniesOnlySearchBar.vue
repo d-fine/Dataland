@@ -106,7 +106,12 @@ export default defineComponent({
         console.error(error);
       }
     },
-
+    /**
+     * Sorts the search results
+     * @param companyIdsAndNames a list of the company ids and their corresponding names
+     * @returns the list containing of company names with active data and company without active data
+     */
+    //TODO i presume this method will be deleted as the odering should be done in the backend
     sortCompaniesResponseByPriority(companyIdsAndNames: CompanyIdAndName[]): CompanyIdAndName[] {
       // todo actually filter data for being active in the backend lol
       const companyIdsAndNamesWithActiveData = companyIdsAndNames.filter((companyIdAndName) =>

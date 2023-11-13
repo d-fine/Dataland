@@ -79,7 +79,7 @@ export default defineComponent({
     /**
      * Retrieves the aggregated framework data summary
      */
-    async getAggregatedFrameworkDataSummary() {
+    async getAggregatedFrameworkDataSummary(): void {
       const companyDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
       ).getCompanyDataControllerApi();
