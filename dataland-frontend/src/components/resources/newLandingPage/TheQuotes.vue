@@ -7,21 +7,33 @@
       left-arrow-classes="quotes__arrow quotes__arrow--left"
       right-arrow-classes="quotes__arrow quotes__arrow--right"
       :slide-count="cards.length"
-      :initial-center-slide="1"
+      :initial-center-slide="initialCenterSlide"
       @update:currentSlide="(newSlide) => (currentSlide = newSlide)"
       :scroll-screen-width-limit="1800"
       :slide-width="slideWidth"
     >
-      <div role="listitem" class="quotes__slide">
-        <div class="quotes__slide-videoContainer"></div>
-      </div>
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div class="quotes__slide-videoContainer">
           <iframe
-            :src="'https://www.youtube.com/embed/' + card.icon + '?rel=0'"
+            class="cookieconsent-optout-marketing"
+            :src="'https://www.youtube-nocookie.com/embed/' + card.icon + '?rel=0'"
             title="Youtube video player"
             allowfullscreen
-            :class="{ 'quotes__slide-video--zoom-out': currentSlide !== index - 1, 'quotes__slide-video': true }"
+            :class="{
+              'quotes__slide-video--zoom-out': currentSlide !== index - initialCenterSlide,
+              'quotes__slide-video': true,
+            }"
+          ></iframe>
+          <iframe
+            class="cookieconsent-optin-marketing"
+            :data-src="'https://www.youtube.com/embed/' + card.icon + '?rel=0'"
+            data-cookieconsent="marketing"
+            title="Youtube video player"
+            allowfullscreen
+            :class="{
+              'quotes__slide-video--zoom-out': currentSlide !== index - initialCenterSlide,
+              'quotes__slide-video': true,
+            }"
           ></iframe>
         </div>
       </div>
@@ -33,14 +45,22 @@
         {{ titleSegment }}
       </span>
     </h3>
-    <RegisterButton :buttonText="quotesSection.text[0]" />
+    <ButtonComponent
+      :label="quotesSection.text[0]"
+      buttonType="quotes__button"
+      ariaLabel="Start your Dataland Journey"
+      @click="register"
+    />
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted } from "vue";
+import { computed, ref, onMounted, onUnmounted, inject } from "vue";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { registerAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
+import type Keycloak from "keycloak-js";
 import type { Section } from "@/types/ContentTypes";
-import RegisterButton from "@/components/resources/newLandingPage/RegisterButton.vue";
+import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
 import SlideShow from "@/components/general/SlideShow.vue";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
@@ -48,7 +68,7 @@ const quotesSection = computed(() => sections?.find((s) => s.title === "Quotes")
 const cards = computed(() => quotesSection.value?.cards ?? []);
 const currentSlide = ref(0);
 const currentCardInfo = computed(() => {
-  const card = cards.value[currentSlide.value + 1];
+  const card = cards.value[currentSlide.value + initialCenterSlide.value];
   return {
     date: card?.date,
     title: card?.title,
@@ -57,6 +77,7 @@ const currentCardInfo = computed(() => {
 });
 
 const slideWidth = ref(760);
+const initialCenterSlide = ref(2);
 
 const updateSlideWidth = (): void => {
   slideWidth.value = window.innerWidth > 768 ? 760 : 323;
@@ -71,6 +92,20 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener("resize", updateSlideWidth);
 });
+
+const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
+/**
+ * Sends the user to the keycloak register page (if not authenticated already)
+ */
+const register = (): void => {
+  assertDefined(getKeycloakPromise)()
+    .then((keycloak) => {
+      if (!keycloak.authenticated) {
+        registerAndRedirectToSearchPage(keycloak);
+      }
+    })
+    .catch((error) => console.log(error));
+};
 </script>
 
 <style lang="scss">
@@ -186,25 +221,6 @@ onUnmounted(() => {
         -o-transform: scaleX(-1);
         transform: scaleX(-1);
       }
-    }
-  }
-
-  &__button {
-    padding: 14px 32px;
-    border-radius: 32px;
-    background-color: var(--primary-orange);
-    color: var(--default-neutral-white);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 20px;
-    letter-spacing: 0.75px;
-    text-transform: uppercase;
-    border: 2px solid var(--primary-orange);
-    cursor: pointer;
-    &:hover {
-      background-color: var(--default-neutral-white);
-      color: var(--basic-dark);
     }
   }
 }

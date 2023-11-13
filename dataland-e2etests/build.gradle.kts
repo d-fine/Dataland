@@ -115,11 +115,34 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
     )
 }
 
+tasks.register("generateCommunityManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val communityManagerClientDestinationPackage = "org.dataland.communitymanager.openApiClient"
+    input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path
+    outputDir.set("$buildDir/clients/community-manager")
+    packageName.set(communityManagerClientDestinationPackage)
+    modelPackage.set("$communityManagerClientDestinationPackage.model")
+    apiPackage.set("$communityManagerClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "java17",
+            "useTags" to "true",
+        ),
+    )
+}
+
 tasks.register("generateClients") {
     dependsOn("generateBackendClient")
     dependsOn("generateQaServiceClient")
     dependsOn("generateApiKeyManagerClient")
     dependsOn("generateDocumentManagerClient")
+    dependsOn("generateCommunityManagerClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -136,6 +159,7 @@ sourceSets {
     main.kotlin.srcDir("$buildDir/clients/api-key-manager/src/main/kotlin")
     main.kotlin.srcDir("$buildDir/clients/document-manager/src/main/kotlin")
     main.kotlin.srcDir("$buildDir/clients/qa-service/src/main/kotlin")
+    main.kotlin.srcDir("$buildDir/clients/community-manager/src/main/kotlin")
 }
 
 ktlint {

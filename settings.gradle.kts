@@ -16,6 +16,7 @@ include(
     "dataland-document-manager",
     "dataland-batch-manager",
     "dataland-framework-toolbox",
+    "dataland-community-manager",
 )
 
 plugins {

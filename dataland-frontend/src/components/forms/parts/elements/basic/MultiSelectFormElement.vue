@@ -6,7 +6,7 @@
     option-label="label"
     option-value="value"
     :show-toggle-all="false"
-    :class="innerClass"
+    :class="inputClass"
     :emptyMessage="emptyMessage"
   />
   <!--

@@ -216,74 +216,6 @@
         ]
       }
     },
-    "/invite": {
-      "post": {
-        "tags": [
-          "invite-controller"
-        ],
-        "summary": "Create a Dataland invite.",
-        "description": "Create a Dataland invite by uploading an Excel file containing the invite info.",
-        "operationId": "submitInvite",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "required": [
-                  "excelFile"
-                ],
-                "type": "object",
-                "properties": {
-                  "excelFile": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully created an invite.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InviteMetaInfoEntity"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/sme": {
       "post": {
         "tags": [
@@ -2442,12 +2374,12 @@
           "countryCode": {
             "type": "string"
           },
-          "isTeaserCompany": {
-            "type": "boolean",
-            "nullable": true
-          },
           "website": {
             "type": "string",
+            "nullable": true
+          },
+          "isTeaserCompany": {
+            "type": "boolean",
             "nullable": true
           }
         }
@@ -2519,38 +2451,6 @@
             "items": {
               "$ref": "#/components/schemas/DataMetaInformation"
             }
-          }
-        }
-      },
-      "InviteMetaInfoEntity": {
-        "required": [
-          "fileId",
-          "inviteId",
-          "inviteResultMessage",
-          "timeStamp",
-          "userId",
-          "wasInviteSuccessful"
-        ],
-        "type": "object",
-        "properties": {
-          "inviteId": {
-            "type": "string"
-          },
-          "userId": {
-            "type": "string"
-          },
-          "fileId": {
-            "type": "string"
-          },
-          "timeStamp": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "wasInviteSuccessful": {
-            "type": "boolean"
-          },
-          "inviteResultMessage": {
-            "type": "string"
           }
         }
       },
@@ -2896,9 +2796,6 @@
         }
       },
       "SmeProductionSite": {
-        "required": [
-          "addressOfProductionSite"
-        ],
         "type": "object",
         "properties": {
           "nameOfProductionSite": {
@@ -2906,7 +2803,12 @@
             "nullable": true
           },
           "addressOfProductionSite": {
-            "$ref": "#/components/schemas/Address"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              }
+            ]
           },
           "shareOfTotalRevenueInPercent": {
             "type": "number",
@@ -3066,6 +2968,34 @@
         "properties": {
           "value": {
             "type": "number",
+            "nullable": true
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointLong": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer",
+            "format": "int64",
             "nullable": true
           },
           "quality": {
@@ -3787,7 +3717,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointLong"
               }
             ]
           },
@@ -3795,7 +3725,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointLong"
               }
             ]
           },
@@ -3869,7 +3799,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointLong"
               }
             ]
           }
@@ -4034,7 +3964,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointLong"
               }
             ]
           },
@@ -4042,7 +3972,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointLong"
               }
             ]
           },
@@ -4114,7 +4044,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/ExtendedDataPointLong"
               }
             ]
           },
@@ -7222,13 +7152,15 @@
         }
       },
       "EuTaxonomyActivity": {
-        "required": [
-          "activityName"
-        ],
         "type": "object",
         "properties": {
           "activityName": {
-            "$ref": "#/components/schemas/Activity"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Activity"
+              }
+            ]
           },
           "naceCodes": {
             "type": "array",
@@ -7248,13 +7180,15 @@
         }
       },
       "EuTaxonomyAlignedActivity": {
-        "required": [
-          "activityName"
-        ],
         "type": "object",
         "properties": {
           "activityName": {
-            "$ref": "#/components/schemas/Activity"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Activity"
+              }
+            ]
           },
           "naceCodes": {
             "type": "array",
@@ -7972,12 +7906,16 @@
             "type": "string",
             "nullable": true
           },
-          "isTeaserCompany": {
+          "website": {
+            "type": "string",
+            "nullable": true
+          },
+          "teaserCompany": {
             "type": "boolean",
             "nullable": true
           },
-          "website": {
-            "type": "string",
+          "isTeaserCompany": {
+            "type": "boolean",
             "nullable": true
           }
         }
@@ -8147,14 +8085,14 @@
         ]
       },
       "ErrorDetails": {
-        "required": [
-          "errorType",
-          "httpStatus",
-          "message",
-          "summary"
-        ],
         "type": "object",
         "properties": {
+          "httpStatus": {
+            "type": "number"
+          },
+          "metaInformation": {
+            "type": "object"
+          },
           "errorType": {
             "type": "string"
           },
@@ -8163,19 +8101,10 @@
           },
           "message": {
             "type": "string"
-          },
-          "httpStatus": {
-            "type": "number"
-          },
-          "metaInformation": {
-            "type": "object"
           }
         }
       },
       "ErrorResponse": {
-        "required": [
-          "errors"
-        ],
         "type": "object",
         "properties": {
           "errors": {

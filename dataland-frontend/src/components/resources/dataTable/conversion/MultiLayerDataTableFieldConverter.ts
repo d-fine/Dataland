@@ -3,8 +3,10 @@ import { type MLDTCellConfig } from "@/components/resources/dataTable/MultiLayer
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
+import { yesNoDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoDataPointValueGetterFactory";
+import { currencyDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
+import { numberDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberDataPointValueGetterFactory";
 import { singleSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
-import { dataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/DataPointValueGetterFactory";
 import { naceCodeValueGetterFactory } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 import { numberValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { percentageValueGetterFactory } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
@@ -24,11 +26,8 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   AddressFormField: plainStringValueGetterFactory,
   DateFormField: plainStringValueGetterFactory,
   InputTextFormField: plainStringValueGetterFactory,
-  YesNoFormField: yesNoValueGetterFactory,
-  YesNoNaFormField: yesNoValueGetterFactory,
   RadioButtonsFormField: singleSelectValueGetterFactory,
   SingleSelectFormField: singleSelectValueGetterFactory,
-  DataPointFormField: dataPointValueGetterFactory,
   NaceCodeFormField: naceCodeValueGetterFactory,
   NumberFormField: numberValueGetterFactory,
   PercentageFormField: percentageValueGetterFactory,
@@ -38,6 +37,14 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
   ProcurementCategoriesFormField: lksgProcurementCategoriesValueGetterFactory,
   DriveMixFormField: p2pDriveMixValueGetterFactory,
   HighImpactClimateSectorsFormField: highImpactClimateGetterFactory,
+  YesNoFormField: yesNoValueGetterFactory,
+  YesNoBaseDataPointFormField: yesNoDataPointValueGetterFactory,
+  YesNoExtendedDataPointFormField: yesNoDataPointValueGetterFactory,
+  YesNoNaFormField: yesNoValueGetterFactory,
+  YesNoNaBaseDataPointFormField: yesNoDataPointValueGetterFactory,
+  IntegerExtendedDataPointFormField: numberDataPointValueGetterFactory,
+  BigDecimalExtendedDataPointFormField: numberDataPointValueGetterFactory,
+  CurrencyDataPointFormField: currencyDataPointValueGetterFactory,
 };
 
 /**

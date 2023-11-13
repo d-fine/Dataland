@@ -19,7 +19,7 @@ class DatalandJwtAuthentication(private val jwt: Jwt) : DatalandAuthentication()
         return realmRoles?.map { SimpleGrantedAuthority(it as String) } ?: listOf()
     }
 
-    override fun getCredentials(): Jwt {
-        return jwt
+    override fun getCredentials(): String {
+        return jwt.tokenValue
     }
 }

@@ -15,7 +15,6 @@ describe("Unit test for the HighImpactClimateGetterFactory", () => {
     description: "Total energy consumption per high impact climate sector",
     unit: "",
     component: "HighImpactClimateSectorsFormField",
-    evidenceDesired: false,
     required: false,
     showIf: (): boolean => true,
   };

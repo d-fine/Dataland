@@ -25,6 +25,7 @@
             :is-required="false"
             v-model:percentageFieldValueBind="shareOfTotalProcurementInPercent"
             name="shareOfTotalProcurementInPercent"
+            validation="between:0,100"
           />
         </div>
         <div class="form-field border-none">
@@ -36,7 +37,7 @@
             :options="allCountries"
             optionLabel="label"
             v-model:selectedItemsBindInternal="selectedCountries"
-            innerClass="long"
+            inputClass="long"
           />
         </div>
         <div class="form-field border-none">
