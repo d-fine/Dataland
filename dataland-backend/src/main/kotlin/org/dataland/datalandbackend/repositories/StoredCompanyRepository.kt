@@ -63,8 +63,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         "WITH num_active_datasets_per_company as " +
             "(SELECT company_id, COUNT(data_id) as num_active_datasets" +
             " FROM data_meta_information" +
-            " where currently_active = true" +
-            " group by company_id)" +
+            " WHERE currently_active = true" +
+            " GROUP BY company_id)" +
 
             " WITH filtered_text_results as (" +
             // Fuzzy-Search Company Name
@@ -125,7 +125,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " MIN(filtered_text_results.company_name) AS companyName" +
             " FROM filtered_text_results " +
             " GROUP BY filtered_text_results.company_id" +
-            " ORDER BY MAX(filtered_text_results.match_quality) DESC, companyId" +
+            " ORDER BY MAX(filtered_text_results.num_active_datasets) DESC, MAX(filtered_text_results.match_quality) DESC, companyId" +
             " LIMIT 100 ",
     )
     fun searchCompaniesByNameOrIdentifier(
