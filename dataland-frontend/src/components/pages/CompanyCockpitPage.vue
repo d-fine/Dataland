@@ -6,6 +6,7 @@
       <div class="card-grid">
         <FrameworkSummaryPanel
           v-for="framework of Object.values(DataTypeEnum)"
+          :key="framework"
           :company-id="companyId"
           :framework="framework"
           :number-of-provided-reporting-periods="
@@ -20,23 +21,10 @@
 </template>
 
 <script lang="ts">
-import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { defineComponent, inject } from "vue";
-import PrimeButton from "primevue/button";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
-import BackButton from "@/components/general/BackButton.vue";
-import ApiKeyCard from "@/components/resources/apiKey/ApiKeyCard.vue";
-import CreateApiKeyCard from "@/components/resources/apiKey/CreateApiKeyCard.vue";
-import MessageComponent from "@/components/messages/MessageComponent.vue";
-import PrimeDialog from "primevue/dialog";
-import PrimeTextarea from "primevue/textarea";
 import TheFooter from "@/components/generics/TheFooter.vue";
-import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
-import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
-import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
-import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
 import { type AggregatedFrameworkDataSummary, type CompanyIdAndName, DataTypeEnum } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -63,22 +51,9 @@ export default defineComponent({
   components: {
     CompanyInfoSheet,
     FrameworkSummaryPanel,
-    MarginWrapper,
-    FrameworkDataSearchBar,
-    CompanyInformationBanner,
-    AuthenticationWrapper,
     TheContent,
     TheHeader,
-    MiddleCenterDiv,
-    BackButton,
-    PrimeButton,
-    PrimeDialog,
-    ApiKeyCard,
-    CreateApiKeyCard,
-    MessageComponent,
-    PrimeTextarea,
     TheFooter,
-    CompaniesOnlySearchBar,
   },
   setup() {
     return {
@@ -102,22 +77,10 @@ export default defineComponent({
     this.getAggregatedFrameworkDataSummary();
   },
   methods: {
-    assertDefined,
-    /**
-     * Handles the "search-confirmed" event of the search bar by visiting the search page with the query param set to
-     * the search term provided by the event.
-     * @param searchTerm The search term provided by the "search-confirmed" event of the search bar
-     */
-    async handleSearchConfirm(searchTerm: string) {
-      await this.$router.push({
-        name: "Search Companies for Framework Data",
-        query: { input: searchTerm },
-      });
-    },
     /**
      * Retrieves the aggregated framework data summary
      */
-    async getAggregatedFrameworkDataSummary() {
+    async getAggregatedFrameworkDataSummary(): void {
       const companyDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
       ).getCompanyDataControllerApi();
@@ -133,8 +96,6 @@ export default defineComponent({
     async pushToCompanyCockpit(selectedCompany: CompanyIdAndName) {
       await this.$router.push(`/companies/${selectedCompany.companyId}`);
     },
-
-    handleFetchedCompanyInformation() {},
   },
 });
 </script>

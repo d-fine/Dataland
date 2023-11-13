@@ -43,7 +43,6 @@ const mobileHeader = ref<HTMLDivElement>();
 
 const props = defineProps<{
   companyId: string;
-  isReviewableByCurrentUser?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -51,6 +50,10 @@ const emit = defineEmits<{
   (e: "fetchedCompanyInformation", companyInformation: CompanyInformation): void;
 }>();
 
+/**
+ * On fetched company information defines the companyName and emits an event of type "fetchedCompanyInformation"
+ * @param companyInfo company information from which the company name can be retrieved
+ */
 function onFetchedCompanyInformation(companyInfo: CompanyInformation): void {
   companyName.value = companyInfo.companyName;
   emit("fetchedCompanyInformation", companyInfo);
@@ -68,7 +71,11 @@ const mobileTitle = computed<string>(() => {
 
 const sheetRect = ref<DOMRect>();
 const mobileHeaderHeight = ref<number>();
-function onScroll() {
+
+/**
+ * Sets the value of sheetRect and mobilHeaderHeight
+ */
+function onScroll(): void {
   sheetRect.value = sheet.value!.getBoundingClientRect(); // TODO Emanuel: this throws lots of console errors for me
   mobileHeaderHeight.value = mobileHeader.value!.getBoundingClientRect().height;
 }
