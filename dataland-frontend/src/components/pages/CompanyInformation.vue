@@ -5,9 +5,7 @@
       <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
     </div>
     <div v-else-if="companyInformation && !waitingForData" class="text-left company-details">
-      <div class="col-12">
-        <h1 class="mb-0" data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
-      </div>
+      <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
 
       <div class="company-details__separator" />
 
