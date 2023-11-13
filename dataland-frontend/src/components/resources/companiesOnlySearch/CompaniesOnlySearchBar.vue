@@ -50,7 +50,7 @@ export default defineComponent({
       .then((companyDataControllerApi) => {
         return companyDataControllerApi.getCompanyIdsWithActiveData();
       })
-      .then((companyIdsResponse) => {
+      .then((companyIdsResponse): void => {
         this.companyIdsWithActiveData = companyIdsResponse.data;
       });
   },
