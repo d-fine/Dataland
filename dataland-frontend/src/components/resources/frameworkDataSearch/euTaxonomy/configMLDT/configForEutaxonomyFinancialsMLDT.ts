@@ -1,16 +1,28 @@
+import { euTaxonomyKpiNameMappings } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
+/*
+import {formatPercentageNumberAsString} from "@/utils/Formatter";
+import {getDataPointGetterFactory} from "@/components/resources/dataTable/conversion/Utils";
 import {
-  euTaxonomyKpiInfoMappings,
-  euTaxonomyKpiNameMappings,
-} from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
-import { formatPercentageNumberAsString } from "@/utils/Formatter";
-import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
-import { singleSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
-import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
-import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import { numberValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
-import { Field } from "@/utils/GenericFrameworkTypes";
-import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
+  singleSelectValueGetterFactory
+} from "@/components/resources/dataTable/conversion/SingleSelectValueGetterFactory";
+import {plainStringValueGetterFactory} from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
+import {yesNoValueGetterFactory} from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
+import {numberValueGetterFactory} from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
+import {type Field} from "@/utils/GenericFrameworkTypes";
+import {multiSelectValueGetterFactory} from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
+*/
+import {
+  type AssuranceDataPoint,
+  type EligibilityKpis,
+  type EuTaxonomyDataForFinancials,
+  type ExtendedDataPointBigDecimal,
+  type FiscalYearDeviation,
+  type YesNo,
+  type YesNoNa,
+} from "@clients/backend";
+import { MLDTDisplayComponentName } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 
+/**
 const sampleField: Field = {
   showIf: () => true,
   name: "",
@@ -19,19 +31,20 @@ const sampleField: Field = {
   unit: "",
   component: "",
 };
-
-const sampleFormatter = function (dataPoint: any) {
-  return formatPercentageNumberAsString(dataPoint?.value);
+ 
+const sampleFormatter = function (dataPoint){
+  if (dataPoint) {
+    return formatPercentageNumberAsString(dataPoint.value);
+  }
 };
-
-const generateEligibilityKpis = function (name, color = "yellow") {
-  function sampleCell(field) {
-    const label = euTaxonomyKpiNameMappings[field];
+ 
+const generateEligibilityKpis = function(name: Field, color = "yellow") {
+  function sampleCell(fieldName:string) {
+    const label = euTaxonomyKpiNameMappings[fieldName];
     return {
       type: "cell",
       explanation: euTaxonomyKpiInfoMappings[field],
       class: "indentation",
-      name: `${field}`,
       label,
       shouldDisplay: () => true,
       valueGetter: getDataPointGetterFactory(
@@ -41,12 +54,12 @@ const generateEligibilityKpis = function (name, color = "yellow") {
       ),
     };
   }
-
+ 
   return {
     type: "section",
     label: "Eligibility Kpis",
     expandOnPageLoad: true,
-    shouldDisplay: () => true,
+    shouldDisplay: (): boolean => true,
     children: [
       sampleCell("taxonomyEligibleActivityInPercent"),
       sampleCell("taxonomyNonEligibleActivityInPercent"),
@@ -56,14 +69,14 @@ const generateEligibilityKpis = function (name, color = "yellow") {
     ],
   };
 };
-
-export const configForEutaxonomyFinancialsMLDT = [
+ 
+export const oldconfigForEutaxonomyFinancialsMLDT = [
   {
     type: "section",
-    label: "GENERAL",
+    label: "General",
     labelBadgeColor: "orange",
     expandOnPageLoad: true,
-    shouldDisplay: () => true,
+    shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
@@ -152,7 +165,7 @@ export const configForEutaxonomyFinancialsMLDT = [
       },
     ],
   },
-
+ 
   {
     type: "section",
     label: euTaxonomyKpiNameMappings.assurance,
@@ -185,7 +198,7 @@ export const configForEutaxonomyFinancialsMLDT = [
     shouldDisplay: (dataset) => dataset.financialServicesTypes.includes("CreditInstitution"),
     children: [
       generateEligibilityKpis("CreditInstitution", "green"),
-
+ 
       {
         label: euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
         explanation: euTaxonomyKpiInfoMappings.greenAssetRatioInPercent,
@@ -236,17 +249,18 @@ export const configForEutaxonomyFinancialsMLDT = [
       },
     ],
   },
-
+ 
   {
     type: "section",
     label: euTaxonomyKpiNameMappings.InsuranceOrReinsurance,
     name: "InsuranceOrReinsurance",
     labelBadgeColor: "red",
     expandOnPageLoad: false,
-    shouldDisplay: (dataset) => dataset.financialServicesTypes.includes("InsuranceOrReinsurance"),
+    shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean | undefined =>
+      dataset.financialServicesTypes?.includes("InsuranceOrReinsurance"),
     children: [
       generateEligibilityKpis("InsuranceOrReinsurance", "red"),
-
+ 
       {
         label: euTaxonomyKpiNameMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
         explanation: euTaxonomyKpiInfoMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
@@ -261,7 +275,7 @@ export const configForEutaxonomyFinancialsMLDT = [
       },
     ],
   },
-
+ 
   {
     type: "section",
     label: euTaxonomyKpiNameMappings.InvestmentFirm,
@@ -271,7 +285,7 @@ export const configForEutaxonomyFinancialsMLDT = [
     shouldDisplay: (dataset) => dataset.financialServicesTypes.includes("InvestmentFirm"),
     children: [
       generateEligibilityKpis("InvestmentFirm", "purple"),
-
+ 
       {
         label: euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
         explanation: euTaxonomyKpiInfoMappings.greenAssetRatioInPercent,
@@ -285,15 +299,265 @@ export const configForEutaxonomyFinancialsMLDT = [
         ),
       },
     ],
-  },
-
+},
+ 
   {
     type: "section",
     label: euTaxonomyKpiNameMappings.AssetManagement,
     name: "AssetManagement",
     labelBadgeColor: "blue",
     expandOnPageLoad: false,
-    shouldDisplay: (dataset) => dataset.financialServicesTypes.includes("AssetManagement"),
+    shouldDisplay: (dataset: EuTaxonomyDataForFinancials) => dataset.financialServicesTypes.includes("AssetManagement"),
     children: [generateEligibilityKpis("AssetManagement", "blue")],
+  },
+];
+ */
+
+export const configForEutaxonomyFinancialsMLDT = [
+  {
+    type: "section",
+    label: "General",
+    labelBadgeColor: "yellow",
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.fiscalYearDeviation,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): {
+          displayComponentName: MLDTDisplayComponentName;
+          displayValue: FiscalYearDeviation | null | undefined;
+        } => ({
+          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+          displayValue: dataset.fiscalYearDeviation,
+        }),
+      },
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.fiscalYearEnd,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): { displayComponentName: MLDTDisplayComponentName; displayValue: string | null | undefined } => ({
+          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+          displayValue: dataset.fiscalYearEnd,
+        }),
+      },
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.scopeOfEntities,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): { displayComponentName: MLDTDisplayComponentName; displayValue: YesNoNa | null | undefined } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.scopeOfEntities,
+        }),
+      },
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.nfrdMandatory,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): { displayComponentName: MLDTDisplayComponentName; displayValue: YesNo | null | undefined } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.nfrdMandatory,
+        }),
+      },
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): { displayComponentName: MLDTDisplayComponentName; displayValue: YesNo | null | undefined } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.euTaxonomyActivityLevelReporting,
+        }),
+      },
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.assurance,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): { displayComponentName: MLDTDisplayComponentName; displayValue: AssuranceDataPoint | null | undefined } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.assurance,
+        }),
+      },
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.numberOfEmployees,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): { displayComponentName: MLDTDisplayComponentName; displayValue: number | null | undefined } => ({
+          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent, //TODO check if coorect display component
+          displayValue: dataset.numberOfEmployees,
+        }),
+      },
+    ],
+  },
+  {
+    type: "section",
+    label: "Eligibility KPIs",
+    labelBadgeColor: "blue",
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): { displayComponentName: MLDTDisplayComponentName; displayValue: EligibilityKpis | null | undefined } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.eligibilityKpis?.taxonomyEligibleActivityInPercent,
+        }),
+      },
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): { displayComponentName: MLDTDisplayComponentName; displayValue: EligibilityKpis | undefined } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.eligibilityKpis?.taxonomyNonEligibleActivityInPercent,
+        }),
+      },
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.derivativesInPercent,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): { displayComponentName: MLDTDisplayComponentName; displayValue: EligibilityKpis | undefined } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.eligibilityKpis?.derivativesInPercent,
+        }),
+      },
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.banksAndIssuersInPercent,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): { displayComponentName: MLDTDisplayComponentName; displayValue: EligibilityKpis | undefined } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.eligibilityKpis?.banksAndIssuersInPercent,
+        }),
+      },
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.investmentNonNfrdInPercent,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): { displayComponentName: MLDTDisplayComponentName; displayValue: EligibilityKpis | undefined } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.eligibilityKpis?.investmentNonNfrdInPercent,
+        }),
+      },
+    ],
+  },
+  {
+    type: "section",
+    label: "Credit Institution KPIs",
+    labelBadgeColor: "blue",
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.tradingPortfolioInPercent,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): {
+          displayComponentName: MLDTDisplayComponentName;
+          displayValue: ExtendedDataPointBigDecimal | null | undefined;
+        } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.creditInstitutionKpis?.tradingPortfolioInPercent,
+        }),
+      },
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.interbankLoansInPercent,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): {
+          displayComponentName: MLDTDisplayComponentName;
+          displayValue: ExtendedDataPointBigDecimal | null | undefined;
+        } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.creditInstitutionKpis?.interbankLoansInPercent,
+        }),
+      },
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.tradingPortfolioAndInterbankLoansInPercent,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): {
+          displayComponentName: MLDTDisplayComponentName;
+          displayValue: ExtendedDataPointBigDecimal | null | undefined;
+        } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent,
+        }),
+      },
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): {
+          displayComponentName: MLDTDisplayComponentName;
+          displayValue: ExtendedDataPointBigDecimal | null | undefined;
+        } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.eligibilityKpis?.greenAssetRatioInPercent,
+        }),
+      },
+    ],
+  },
+  {
+    type: "section",
+    label: "Investment-Firm KPIs",
+    labelBadgeColor: "blue",
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): {
+          displayComponentName: MLDTDisplayComponentName;
+          displayValue: ExtendedDataPointBigDecimal | null | undefined;
+        } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.investmentFirmKpis?.greenAssetRatioInPercent,
+        }),
+      },
+    ],
+  },
+  {
+    type: "section",
+    label: "Insurance KPIs",
+    labelBadgeColor: "blue",
+    expandOnPageLoad: true,
+    shouldDisplay: (): boolean => true,
+    children: [
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): {
+          displayComponentName: MLDTDisplayComponentName;
+          displayValue: ExtendedDataPointBigDecimal | null | undefined;
+        } => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: dataset.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
+        }),
+      },
+    ],
   },
 ];
