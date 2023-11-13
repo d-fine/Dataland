@@ -3,6 +3,8 @@ package org.dataland.frameworktoolbox.intermediate.components
 import org.dataland.frameworktoolbox.intermediate.ComponentMarker
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.TreeNode
+import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -48,6 +50,11 @@ open class ComponentBase(
      * A logical condition that decides whether this component is available / shown to users
      */
     var availableIf: FrameworkConditional = FrameworkConditional.AlwaysTrue
+
+    /**
+     * Specifies which kind of document-support (Datapoint-type) is desired for this component
+     */
+    var documentSupport: DocumentSupport = NoDocumentSupport
 
     /**
      * Obtain a list of all parents of this node until the root node

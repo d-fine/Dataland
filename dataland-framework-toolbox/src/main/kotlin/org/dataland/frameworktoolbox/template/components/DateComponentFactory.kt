@@ -23,7 +23,6 @@ class DateComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic
     ): ComponentBase {
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
-        templateDiagnostic.documentSupportNotUsed(row)
 
         return componentGroup.create<DateComponent>(
             utils.generateFieldIdentifierFromRow(row),

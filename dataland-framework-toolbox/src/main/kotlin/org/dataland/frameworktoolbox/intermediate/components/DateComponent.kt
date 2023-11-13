@@ -18,7 +18,10 @@ class DateComponent(
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addProperty(
             this.identifier,
-            TypeReference("java.time.LocalDate", isNullable),
+            documentSupport.getJvmTypeReference(
+                TypeReference("java.time.LocalDate", isNullable),
+                isNullable,
+            ),
         )
     }
 

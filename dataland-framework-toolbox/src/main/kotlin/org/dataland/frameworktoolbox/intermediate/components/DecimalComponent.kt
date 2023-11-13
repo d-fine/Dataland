@@ -23,7 +23,10 @@ open class DecimalComponent(
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addProperty(
             this.identifier,
-            TypeReference("java.math.BigDecimal", true),
+            documentSupport.getJvmTypeReference(
+                TypeReference("java.math.BigDecimal", true),
+                isNullable,
+            ),
         )
     }
 

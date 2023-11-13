@@ -18,7 +18,10 @@ class YesNoComponent(
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addProperty(
             this.identifier,
-            TypeReference("org.dataland.datalandbackend.model.enums.commons.YesNo", isNullable),
+            documentSupport.getJvmTypeReference(
+                TypeReference("org.dataland.datalandbackend.model.enums.commons.YesNo", isNullable),
+                isNullable,
+            ),
         )
     }
 

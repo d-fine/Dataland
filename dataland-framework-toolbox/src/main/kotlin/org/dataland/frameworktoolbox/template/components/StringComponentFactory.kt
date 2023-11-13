@@ -23,7 +23,6 @@ class StringComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnost
     ): ComponentBase {
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
-        templateDiagnostic.documentSupportNotUsed(row)
 
         return componentGroup.create<StringComponent>(
             utils.generateFieldIdentifierFromRow(row),

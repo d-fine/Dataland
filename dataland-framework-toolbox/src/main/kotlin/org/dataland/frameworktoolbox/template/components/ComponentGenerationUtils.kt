@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.template.components
 
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.template.TemplateDiagnostic
 import org.dataland.frameworktoolbox.template.model.TemplateRow
@@ -43,6 +44,7 @@ open class ComponentGenerationUtils {
         component.label = row.fieldName
         component.explanation = if (row.tooltip.isNotBlank()) row.tooltip else null
         component.isNullable = row.mandatoryField == TemplateYesNo.No
+        component.documentSupport = DocumentSupport.fromTemplate(row.documentSupport)
     }
 
     open fun defaultDependencyConfiguration(

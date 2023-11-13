@@ -23,7 +23,6 @@ class PercentageComponentFactory(@Autowired val templateDiagnostic: TemplateDiag
     ): ComponentBase {
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
-        templateDiagnostic.documentSupportNotUsed(row)
 
         return componentGroup.create<PercentageComponent>(
             utils.generateFieldIdentifierFromRow(row),

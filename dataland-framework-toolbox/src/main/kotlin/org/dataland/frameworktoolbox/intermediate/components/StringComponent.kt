@@ -18,7 +18,10 @@ class StringComponent(
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addProperty(
             this.identifier,
-            TypeReference("String", isNullable),
+            documentSupport.getJvmTypeReference(
+                TypeReference("String", isNullable),
+                isNullable,
+            ),
         )
     }
 

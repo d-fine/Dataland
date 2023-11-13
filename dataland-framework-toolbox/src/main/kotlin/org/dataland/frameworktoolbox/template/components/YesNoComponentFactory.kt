@@ -23,7 +23,6 @@ class YesNoComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnosti
     ): ComponentBase {
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
-        templateDiagnostic.documentSupportNotUsed(row)
 
         return componentGroup.create<YesNoComponent>(
             utils.generateFieldIdentifierFromRow(row),
