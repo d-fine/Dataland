@@ -22,7 +22,7 @@
     <a
       v-if="showProvideDataButton && !useMobileView"
       class="summary-panel__provide-button"
-      :href="`/companies/${props.companyId}/frameworks/${props.framework}/upload`"
+      @click="this.$router.push(`/companies/${props.companyId}/frameworks/${props.framework}/upload`)"
       @pointerenter="onCursorEnterProvideButton"
       @pointerleave="onCursorLeaveProvideButton"
       :data-test="`${framework}-provide-data-button`"
@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onBeforeMount, onMounted, ref } from "vue";
+import { computed, inject, onBeforeMount, ref } from "vue";
 import { DataTypeEnum } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
@@ -151,9 +151,6 @@ function onCursorLeaveProvideButton() {
 
       &:hover {
         box-shadow: 0 0 32px 8px #1e1e1e14;
-      }
-
-      &:hover {
         .summary-panel__separator {
           border-bottom-color: var(--primary-color);
         }
@@ -199,6 +196,7 @@ function onCursorLeaveProvideButton() {
 
   &__provide-button {
     display: block;
+    cursor: pointer;
     width: 100%;
     color: var(--primary-color);
     border: var(--primary-color) solid 2px;
