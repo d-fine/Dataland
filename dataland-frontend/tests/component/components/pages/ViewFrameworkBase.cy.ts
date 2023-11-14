@@ -9,7 +9,7 @@ import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtil
 
 describe("Component test for ViewFrameworkBase", () => {
   it("Should proper set the component based on data", () => {
-    cy.fixture("MetaInfoDataForCompany.json").then((newData) => {
+    cy.fixture("MetaInfoDataMocksForOneCompany.json").then((newData) => {
       cy.intercept("**/api/metadata*", {
         statusCode: 200,
         body: newData as Array<DataMetaInformation>,
@@ -60,7 +60,7 @@ describe("Component test for ViewFrameworkBase", () => {
         ]);
       });
 
-      cy.fixture("MapsForReportingsPeriodForDifferentDatasetAsArrays.json").then(
+      cy.fixture("MetaInfoAssociatedWithReportingPeriodByDataTypeMock.json").then(
         async (data: { "eutaxonomy-financials": []; lksg: [] }) => {
           expect(Array.from(wrapper.vm.mapOfReportingPeriodToActiveDataset)).to.deep.equal(
             data[DataTypeEnum.EutaxonomyFinancials] as [],

@@ -1,19 +1,17 @@
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { generateMetaInfoDataForOneCompany } from "@e2e/fixtures/custom_mocks/DataMetaInformationFaker";
 
 type MetaInfoAssociatedWithReportingPeriodByDataType = { [key in DataTypeEnum]?: (string | DataMetaInformation)[][] };
 
 /**
- * Extracts data meta information with data type "EU taxonomy for financials" and "LkSG" and stores them in a custom format
- * @param listOfMetaInformationForOneCompany the list of data meta information to parse
+ * Creates an object TODO
  * @returns the generated structure
  */
-export function extractMetaInfoForEuFinancialsAndLksg(
-  listOfMetaInformationForOneCompany: DataMetaInformation[],
-): MetaInfoAssociatedWithReportingPeriodByDataType {
+export function generateMetaInfoAssociatedWithReportingPeriodByDataType(): MetaInfoAssociatedWithReportingPeriodByDataType {
   const holdingObject: MetaInfoAssociatedWithReportingPeriodByDataType = {};
   [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.Lksg].forEach((dataType) => {
-    holdingObject[dataType] = listOfMetaInformationForOneCompany
-      .filter((metaInfo) => metaInfo.dataType == dataType)
+    holdingObject[dataType] = generateMetaInfoDataForOneCompany()
+      .filter((metaInfo) => metaInfo.dataType == dataType) // TODO: Think about this
       .map((metaInfo) => [metaInfo.reportingPeriod, metaInfo]);
   });
   return holdingObject;

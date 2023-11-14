@@ -14,7 +14,7 @@ describe("Component tests for the Quality Assurance page", () => {
     cy.fixture("CompanyInformationWithP2pPreparedFixtures").then(function (jsonContent) {
       const preparedP2pFixtures = jsonContent as Array<FixtureData<PathwaysToParisData>>;
       p2pFixtureForTest = getPreparedFixture("P2p-date-2023-04-18", preparedP2pFixtures);
-      cy.fixture("MetaInfoDataForCompany.json").then((metaInfos: Array<DataMetaInformation>) => {
+      cy.fixture("MetaInfoDataMocksForOneCompany.json").then((metaInfos: Array<DataMetaInformation>) => {
         mockDataMetaInfoForActiveDataset = metaInfos[0];
       });
     });

@@ -1,17 +1,23 @@
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { prepareSimpleDataSearchStoredCompanyArray } from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
+import { type DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+
+let mockDataSearchResponse: Array<DataSearchStoredCompany>;
+before(function () {
+  cy.fixture("DataSearchStoredCompanyMocks").then(function (jsonContent) {
+    mockDataSearchResponse = jsonContent as Array<DataSearchStoredCompany>;
+  });
+});
 
 describe("Component tests for 'Request Data' button on the level of company search results", () => {
   const keycloakMock = minimalKeycloakMock({});
 
   it("Check that 'Request Data' button is not appearing in case of a successful company search", () => {
-    const mockDataSearchStoredCompanyArray = prepareSimpleDataSearchStoredCompanyArray();
     cy.mountWithPlugins<typeof FrameworkDataSearchResults>(FrameworkDataSearchResults, {
       keycloak: keycloakMock,
     }).then((mounted) => {
       void mounted.wrapper.setProps({
-        data: mockDataSearchStoredCompanyArray,
+        data: mockDataSearchResponse,
         rowsPerPage: 100,
       });
       cy.get("a[data-test=requestDataButton]").should("not.exist");

@@ -18,7 +18,8 @@ export const useSharedSessionStateStore = defineStore("sharedSessionStateStore",
     },
   },
 
+  /*
   share: {
     enable: true,
-  },
+  },TODO compiler says this is not needed.  Are we sure? Lets investigate*/
 });
