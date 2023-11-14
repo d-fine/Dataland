@@ -12,10 +12,7 @@
         </div>
       </div>
     </template>
-    <CompanyInformationBanner
-      :companyId="companyId"
-      @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
-    />
+    <CompanyInformationBanner :companyId="companyId" @fetchedCompanyInformation="onFetchedCompanyInformation($event)" />
   </div>
   <div ref="attachedSheet" :class="`sheet--attached ${isCollapsed ? '' : 'visuals-hidden'}`">
     <div class="mobile-header" data-test="company-info-sheet-mobile-header">

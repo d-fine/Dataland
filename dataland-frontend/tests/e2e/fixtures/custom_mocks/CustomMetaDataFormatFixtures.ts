@@ -1,12 +1,11 @@
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
-import { generateMetaInfoDataForOneCompany } from "@e2e/fixtures/custom_mocks/DataMetaInformationFaker";
 
 type MetaInfoAssociatedWithReportingPeriodByDataType = { [key in DataTypeEnum]?: (string | DataMetaInformation)[][] };
 
 /**
- * Creates an object TODO
- * @param metaInfoDataForOneCompany
- * @returns the generated structure
+ * Creates an object that is used on the framework view page to hold data meta info
+ * @param metaInfoDataForOneCompany the underlying data meta info to build the object
+ * @returns the object
  */
 export function extractMetaInfoAssociatedWithReportingPeriodByDataType(
   metaInfoDataForOneCompany: DataMetaInformation[],
