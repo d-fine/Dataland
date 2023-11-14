@@ -21,7 +21,6 @@ class IsinDeltaBuilder {
      * @param oldMappingFile previously stored version of the LEI-ISIN mapping file, if one exists
      */
     fun createDeltaOfMappingFile(newMappingFile: File, oldMappingFile: File): Map<String, String> {
-        // Parse the old and new mapping csv files to get two maps of Lei -> ISIN
         val newMapping = parseCsvToGroupedMap(newMappingFile)
         val oldMapping = parseCsvToGroupedMap(oldMappingFile)
         val deltaMapping = findLeisWithUpdatedIsin(newMapping, oldMapping)
@@ -36,12 +35,6 @@ class IsinDeltaBuilder {
      * @return map of changed LEI-ISINs
      */
     fun findLeisWithUpdatedIsin(newMap: Map<String, String>, oldMap: Map<String, String>): Map<String, String> {
-        // We group based on LEIs and turn ISINs into a comma-seperated string.
-        // If a LEI exists in the new map but not in the old one, we add the LEI and its ISINs to delta.
-        // If matching LEIs with different ISIN are found, we add the LEI with the new ISINs to delta.
-        // Is it possible that only the order of LEIs change in the new file? The file is probably alphabetically
-        // ordered anyway so its unlikely
-
         val deltaMap = mutableMapOf<String, String>()
 
         for ((lei, newIsins) in newMap) {

@@ -30,13 +30,13 @@ class GleifGoldenCopyIngestor(
     @Autowired private val gleifParser: GleifCsvParser,
     @Autowired private val companyUploader: CompanyUploader,
     @Autowired private val actuatorApi: ActuatorApi,
-//    @Autowired private val isinDeltaBuilder: IsinDeltaBuilder,
+    @Autowired private val isinDeltaBuilder: IsinDeltaBuilder,
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.force:false}")
     private val allCompaniesForceIngest: Boolean,
 
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
     private val allCompaniesIngestFlagFilePath: String?,
-//    @Value("\${dataland.dataland-batch-manager.mapping-file}") private val isinMappingFile: File,
+    @Value("\${dataland.dataland-batch-manager.mapping-file}") private val savedMappingFile: File,
 ) {
     companion object {
         const val MS_PER_S = 1000L
@@ -67,7 +67,7 @@ class GleifGoldenCopyIngestor(
 
             logger.info("Retrieving all company data available via GLEIF.")
             val tempFile = File.createTempFile("gleif_golden_copy", ".csv")
-            processLeiFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
+            processDeltaFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
         } else {
             logger.info("Flag file not present & no force update variable set => Not performing any download")
         }
@@ -75,40 +75,19 @@ class GleifGoldenCopyIngestor(
 
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
     @Scheduled(cron = "0 0 3 * * SUN")
-    private fun processLeiAndIsinFiles() {
-        prepareLeiDeltaFile()
-        prepareIsinFile()
+    private fun processUpdates() {
+        prepareDeltaFile()
+        prepareMappingFile()
     }
 
-    private fun prepareLeiDeltaFile() {
-        logger.info("Starting LEI update cycle for latest delta file.")
-        val tempFileLei = File.createTempFile("gleif_LEI_update_delta", ".csv")
-        processLeiFile(tempFileLei, gleifApiAccessor::getLastMonthGoldenCopyDelta)
-    }
-
-    private fun prepareIsinFile() {
-        logger.info("Starting ISIN update cycle for latest file.")
-        val tempFileIsin = File.createTempFile("gleif_ISIN_update_delta", ".csv")
-        processIsinFile(tempFileIsin, gleifApiAccessor::getIsinFileZip)
-        // upload file via API, see also hint from Andreas
+    private fun prepareDeltaFile() {
+        logger.info("Starting Gleif company update cycle for latest delta file.")
+        val tempDeltaFile = File.createTempFile("gleif_update_delta", ".csv")
+        processDeltaFile(tempDeltaFile, gleifApiAccessor::getLastMonthGoldenCopyDelta)
     }
 
     @Synchronized
-    private fun processIsinFile(csvFile: File, downloadFile: (file: File) -> Unit) {
-        waitForBackend()
-        //  download ZIP file
-        downloadFile(csvFile)
-        // do: unpack ZIP file into CSV
-//        val newFileIsinCsv = File.createTempFile("gleif_ISIN_update", ".csv")
-        // do: do the unpacking
-//        val oldFileIsinCsv
-        // do: get the old file as oldFileIsinCsv
-//      produce delta of that file
-//     val isinDeltas: Map<String, String> = isinDeltaBuilder.createDeltaOfMappingFile(newFileIsinCsv, oldFileIsinCsv)
-    }
-
-    @Synchronized
-    private fun processLeiFile(csvFile: File, downloadFile: (file: File) -> Unit) {
+    private fun processDeltaFile(csvFile: File, downloadFile: (file: File) -> Unit) {
         waitForBackend()
         val start = System.nanoTime()
         try {
@@ -121,6 +100,41 @@ class GleifGoldenCopyIngestor(
         }
         logger.info("Finished processing of file $csvFile in ${getExecutionTime(start)}.")
     }
+
+    private fun prepareMappingFile() {
+        logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
+        val tempMappingFile = File.createTempFile("gleif_mapping_update", ".csv")
+        processMappingFile(tempMappingFile, isinDeltaBuilder::createDeltaOfMappingFile)
+        // upload file via API, see also hint from Andreas
+    }
+
+    @Synchronized
+    private fun processMappingFile(
+        newMappingFile: File,
+        getDeltaMapping: (newFile: File, oldFile: File) -> Map<String, String>,
+    ) {
+        waitForBackend()
+        val start = System.nanoTime()
+        try {
+            val deltaMap = getDeltaMapping(newMappingFile, savedMappingFile)
+            // do: replace old mapping with new mapping
+            // do: integrate delta map into code
+        } finally {
+            // if replacing didn't work or other issues to catch
+        }
+        logger.info("Finished processing of file $newMappingFile in ${getExecutionTime(start)}.")
+    }
+    // waitForBackend()
+    //  download ZIP file
+    //  downloadFile(csvFile)
+    // do: unpack ZIP file into CSV
+//        val newFileIsinCsv = File.createTempFile("gleif_ISIN_update", ".csv")
+    // do: do the unpacking
+//        val oldFileIsinCsv
+    // do: get the old file as oldFileIsinCsv
+//      produce delta of that file
+//     val isinDeltas: Map<String, String> = isinDeltaBuilder.createDeltaOfMappingFile(newFileIsinCsv, oldFileIsinCsv)
+    //   }
 
     private fun waitForBackend() {
         val timeoutTime = Instant.now().toEpochMilli() + MAX_WAITING_TIME_IN_MS
