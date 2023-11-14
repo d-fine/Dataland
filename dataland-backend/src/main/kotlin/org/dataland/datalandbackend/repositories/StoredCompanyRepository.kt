@@ -76,7 +76,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " END match_quality," +
             " CASE " +
             " WHEN num_active_datasets IS NULL THEN 0" +
-            " ELSE num_active_datasets" +
+            " ELSE 1" +
             " END num_active_datasets" +
             " FROM stored_companies" +
             " LEFT JOIN num_active_datasets_per_company" +
@@ -95,7 +95,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " END match_quality," +
             " CASE " +
             " WHEN num_active_datasets IS NULL THEN 0" +
-            " ELSE num_active_datasets" +
+            " ELSE 1" +
             " END num_active_datasets" +
             " FROM stored_company_entity_company_alternative_names" +
             " JOIN stored_companies ON stored_companies.company_id = " +
@@ -115,7 +115,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " END match_quality," +
             " CASE " +
             " WHEN num_active_datasets IS NULL THEN 0" +
-            " ELSE num_active_datasets" +
+            " ELSE 1" +
             " END num_active_datasets" +
             " FROM company_identifiers" +
             " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id " +
