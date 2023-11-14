@@ -1,5 +1,5 @@
 <template>
-  <div class="p-3">
+  <div>
     <div v-if="waitingForData" class="inline-loading text-center">
       <p class="font-medium text-xl">Loading company information...</p>
       <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
@@ -130,6 +130,7 @@ export default defineComponent({
     @media only screen and (max-width: $small) {
       width: 100%;
       border-bottom: #e0dfde 1px solid;
+      margin-bottom: 0.5rem;
     }
   }
 
