@@ -4,6 +4,8 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { euTaxonomyKpiNameMappings } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 import { type EuTaxonomyDataForFinancials } from "@clients/backend";
+import { formatNumberToReadableFormat } from "@/utils/Formatter";
+import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 
 /**
 export const configForEutaxonomyFinancialsMLDT= [
@@ -55,34 +57,19 @@ export const configForEutaxonomyFinancialsMLDT = [
         type: "cell",
         label: euTaxonomyKpiNameMappings.scopeOfEntities,
         shouldDisplay: (): boolean => true,
-        valueGetter: (
-          dataset: EuTaxonomyDataForFinancials,
-        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
-          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-          displayValue: dataset.scopeOfEntities,
-        }),
+        valueGetter: yesNoValueGetterFactory(euTaxonomyKpiNameMappings.scopeOfEntities),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.nfrdMandatory,
         shouldDisplay: (): boolean => true,
-        valueGetter: (
-          dataset: EuTaxonomyDataForFinancials,
-        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
-          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-          displayValue: dataset.nfrdMandatory,
-        }),
+        valueGetter: yesNoValueGetterFactory(euTaxonomyKpiNameMappings.nfrdMandatory),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting,
         shouldDisplay: (): boolean => true,
-        valueGetter: (
-          dataset: EuTaxonomyDataForFinancials,
-        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
-          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-          displayValue: dataset.euTaxonomyActivityLevelReporting,
-        }),
+        valueGetter: yesNoValueGetterFactory(euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting),
       },
       {
         type: "cell",
@@ -94,8 +81,8 @@ export const configForEutaxonomyFinancialsMLDT = [
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
           displayValue: {
             fieldLabel: euTaxonomyKpiNameMappings.assurance,
-            value: dataset.assurance?.value ? dataset.assurance.value : "",
-            dataSource: dataset.assurance?.dataSource ? dataset.assurance.dataSource : undefined,
+            value: dataset.assurance?.value ?? "",
+            dataSource: dataset.assurance?.dataSource ?? undefined,
           },
         }),
       },
@@ -112,7 +99,6 @@ export const configForEutaxonomyFinancialsMLDT = [
       },
     ],
   },
-  /**
   {
     type: "section",
     label: "Eligibility KPIs",
@@ -120,56 +106,104 @@ export const configForEutaxonomyFinancialsMLDT = [
     expandOnPageLoad: false,
     shouldDisplay: (): boolean => true,
     children: [
-   
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent,
-        shouldDisplay: () : boolean => true,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) :
-            MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
           displayValue: {
-            fieldLabel: euTaxonomyKpiNameMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent, //TODO
-            value: dataset.eligibilityKpis?['taxonomyEligibleActivityInPercent']  ?
-                dataset.eligibilityKpis?["taxonomyEligibleActivityInPercent"] ?
-                    dataset.eligibilityKpis?["taxonomyEligibleActivityInPercent"].value : undefined,
-            dataSource: dataset.eligibilityKpis?.taxonomyEligibleActivityInPercent?.dataSource ? dataset.eligibilityKpis.taxonomyEligibleActivityInPercent.dataSource : undefined,
+            fieldLabel: euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent, //TODO
+            value:
+              formatNumberToReadableFormat(
+                dataset.eligibilityKpis?.["creditInstitution"]?.taxonomyEligibleActivityInPercent?.value,
+              ) ?? "",
+            dataSource:
+              dataset.eligibilityKpis?.["creditInstitution"]?.taxonomyEligibleActivityInPercent?.dataSource ??
+              undefined,
+          },
+        }),
+      },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-          displayValue: dataset.eligibilityKpis?.taxonomyNonEligibleActivityInPercent,
+          displayValue: {
+            fieldLabel: euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent, //TODO
+            value:
+              formatNumberToReadableFormat(
+                dataset.eligibilityKpis?.["creditInstitution"]?.taxonomyNonEligibleActivityInPercent?.value,
+              ) ?? "",
+            dataSource:
+              dataset.eligibilityKpis?.["creditInstitution"]?.taxonomyNonEligibleActivityInPercent?.dataSource ??
+              undefined,
+          },
         }),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.derivativesInPercent,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-          displayValue: dataset.eligibilityKpis?.derivativesInPercent,
+          displayValue: {
+            fieldLabel: euTaxonomyKpiNameMappings.derivativesInPercent, //TODO
+            value:
+              formatNumberToReadableFormat(
+                dataset.eligibilityKpis?.["creditInstitution"]?.derivativesInPercent?.value,
+              ) ?? "",
+            dataSource: dataset.eligibilityKpis?.["creditInstitution"]?.derivativesInPercent?.dataSource ?? undefined,
+          },
         }),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.banksAndIssuersInPercent,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-          displayValue: dataset.eligibilityKpis?.banksAndIssuersInPercent,
+          displayValue: {
+            fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent, //TODO
+            value:
+              formatNumberToReadableFormat(
+                dataset.eligibilityKpis?.["creditInstitution"]?.banksAndIssuersInPercent?.value,
+              ) ?? "",
+            dataSource:
+              dataset.eligibilityKpis?.["creditInstitution"]?.banksAndIssuersInPercent?.dataSource ?? undefined,
+          },
         }),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.investmentNonNfrdInPercent,
-        valueGetter: (dataset: EuTaxonomyDataForFinancials) => ({
+        shouldDisplay: (): boolean => true,
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-          displayValue: dataset.eligibilityKpis?.investmentNonNfrdInPercent,
+          displayValue: {
+            fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent, //TODO
+            value:
+              formatNumberToReadableFormat(
+                dataset.eligibilityKpis?.["creditInstitution"]?.banksAndIssuersInPercent?.value,
+              ) ?? "",
+            dataSource:
+              dataset.eligibilityKpis?.["creditInstitution"]?.banksAndIssuersInPercent?.dataSource ?? undefined,
+          },
         }),
       },
     ],
   },
-   */
-
   {
     type: "section",
     label: "Credit Institution KPIs",
@@ -187,12 +221,8 @@ export const configForEutaxonomyFinancialsMLDT = [
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
           displayValue: {
             fieldLabel: euTaxonomyKpiNameMappings.tradingPortfolioInPercent,
-            value: dataset.creditInstitutionKpis?.tradingPortfolioInPercent?.value
-              ? dataset.creditInstitutionKpis?.tradingPortfolioInPercent?.value.toString()
-              : "",
-            dataSource: dataset.creditInstitutionKpis?.tradingPortfolioInPercent?.dataSource
-              ? dataset.creditInstitutionKpis?.tradingPortfolioInPercent?.dataSource
-              : undefined,
+            value: formatNumberToReadableFormat(dataset.creditInstitutionKpis?.tradingPortfolioInPercent?.value) ?? "",
+            dataSource: dataset.creditInstitutionKpis?.tradingPortfolioInPercent?.dataSource ?? undefined,
           },
         }),
       },
@@ -206,12 +236,8 @@ export const configForEutaxonomyFinancialsMLDT = [
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
           displayValue: {
             fieldLabel: euTaxonomyKpiNameMappings.interbankLoansInPercent,
-            value: dataset.creditInstitutionKpis?.interbankLoansInPercent?.value
-              ? dataset.creditInstitutionKpis?.interbankLoansInPercent?.value.toString()
-              : "",
-            dataSource: dataset.creditInstitutionKpis?.interbankLoansInPercent?.dataSource
-              ? dataset.creditInstitutionKpis?.interbankLoansInPercent?.dataSource
-              : undefined,
+            value: formatNumberToReadableFormat(dataset.creditInstitutionKpis?.interbankLoansInPercent?.value) ?? "",
+            dataSource: dataset.creditInstitutionKpis?.interbankLoansInPercent?.dataSource ?? undefined,
           },
         }),
       },
@@ -225,12 +251,12 @@ export const configForEutaxonomyFinancialsMLDT = [
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
           displayValue: {
             fieldLabel: euTaxonomyKpiNameMappings.tradingPortfolioAndInterbankLoansInPercent,
-            value: dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.value
-              ? dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.value.toString()
-              : "",
-            dataSource: dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.dataSource
-              ? dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.dataSource
-              : undefined,
+            value:
+              formatNumberToReadableFormat(
+                dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.value,
+              ) ?? "",
+            dataSource:
+              dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.dataSource ?? undefined,
           },
         }),
       },
@@ -244,12 +270,8 @@ export const configForEutaxonomyFinancialsMLDT = [
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
           displayValue: {
             fieldLabel: euTaxonomyKpiNameMappings.tradingPortfolioAndInterbankLoansInPercent,
-            value: dataset.creditInstitutionKpis?.greenAssetRatioInPercent?.value
-              ? dataset.creditInstitutionKpis?.greenAssetRatioInPercent?.value.toString()
-              : "",
-            dataSource: dataset.creditInstitutionKpis?.greenAssetRatioInPercent?.dataSource
-              ? dataset.creditInstitutionKpis?.greenAssetRatioInPercent?.dataSource
-              : undefined,
+            value: formatNumberToReadableFormat(dataset.creditInstitutionKpis?.greenAssetRatioInPercent?.value) ?? "",
+            dataSource: dataset.creditInstitutionKpis?.greenAssetRatioInPercent?.dataSource ?? undefined,
           },
         }),
       },
