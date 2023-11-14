@@ -1,35 +1,33 @@
 <template>
-  <div ref="sheet">
-    <MarginWrapper v-if="!useMobileView" class="text-left surface-0" style="margin-right: 0">
+  <div ref="sheet" :class="`sheet ${isCollapsed ? 'visuals-hidden' : ''}`">
+    <template v-if="!useMobileView">
       <BackButton />
       <CompaniesOnlySearchBar @select-company="$emit('selectCompany', $event)" classes="w-8 mt-2" />
-    </MarginWrapper>
+    </template>
     <template v-else>
-      <div
-        :class="`mobile-header${isCollapsed ? '--attached' : ''} surface-0`"
-        ref="mobileHeader"
-        data-test="company-info-sheet-mobile-header"
-      >
+      <div class="mobile-header" data-test="company-info-sheet-mobile-header">
         <BackButton label="" />
         <div class="mobile-header__title">
           {{ mobileTitle }}
         </div>
       </div>
-      <div v-if="isCollapsed" :style="`height: ${mobileHeaderHeight ?? 0}px`" />
     </template>
-    <MarginWrapper class="surface-0" style="margin-right: 0">
-      <div class="grid align-items-end">
-        <CompanyInformationBanner
-          :companyId="props.companyId"
-          @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
-        />
+    <CompanyInformationBanner
+      :companyId="props.companyId"
+      @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
+    />
+  </div>
+  <div ref="attachedSheet" :class="`sheet--attached ${isCollapsed ? '' : 'visuals-hidden'}`">
+    <div class="mobile-header" data-test="company-info-sheet-mobile-header">
+      <BackButton label="" />
+      <div class="mobile-header__title">
+        {{ mobileTitle }}
       </div>
-    </MarginWrapper>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import BackButton from "@/components/general/BackButton.vue";
 import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
@@ -39,7 +37,7 @@ import { computed, inject, onMounted, onUnmounted, ref } from "vue";
 const useMobileView = inject<boolean>("useMobileView");
 
 const sheet = ref<HTMLDivElement>();
-const mobileHeader = ref<HTMLDivElement>();
+const attachedSheet = ref<HTMLDivElement>();
 
 const props = defineProps<{
   companyId: string;
@@ -70,14 +68,16 @@ const mobileTitle = computed<string>(() => {
 });
 
 const sheetRect = ref<DOMRect>();
-const mobileHeaderHeight = ref<number>();
+const attachedSheetHeight = ref<number>();
 
 /**
  * Sets the value of sheetRect and mobilHeaderHeight
  */
 function onScroll(): void {
   sheetRect.value = sheet.value!.getBoundingClientRect(); // TODO Emanuel: this throws lots of console errors for me
-  mobileHeaderHeight.value = mobileHeader.value!.getBoundingClientRect().height;
+  attachedSheetHeight.value = attachedSheet.value!.getBoundingClientRect().height;
+  console.log("rect", sheetRect.value);
+  console.log("height", attachedSheetHeight.value);
 }
 onMounted(() => {
   window.addEventListener("scroll", onScroll);
@@ -87,9 +87,10 @@ onUnmounted(() => {
 });
 const isCollapsed = computed<boolean>(() => {
   console.log("enter");
-  if (useMobileView && sheetRect.value && mobileHeaderHeight.value) {
+  if (useMobileView && sheetRect.value != undefined && attachedSheetHeight.value != undefined) {
     console.log("if");
-    if (sheetRect.value.bottom <= mobileHeaderHeight.value) {
+    if (sheetRect.value.bottom <= attachedSheetHeight.value) {
+      console.log("true");
       return true;
     }
   }
@@ -98,27 +99,36 @@ const isCollapsed = computed<boolean>(() => {
 </script>
 
 <style scoped lang="scss">
+.sheet {
+  width: 100%;
+  background-color: var(--surface-0);
+  box-shadow: 0 4px 4px 0 #00000005;
+  padding: 0.5rem 1rem 1rem;
+
+  &--attached {
+    width: 100%;
+    background-color: var(--surface-0);
+    box-shadow: 0 4px 4px 0 #00000005;
+    padding: 0.5rem 1rem 1rem;
+    position: fixed;
+    top: 0;
+  }
+}
+
+.visuals-hidden {
+  visibility: hidden;
+}
+
 .mobile-header {
   display: flex;
   flex-direction: row;
   width: 100%;
   text-align: center;
-  padding: 20px;
 
   &__title {
     width: 100%;
     text-align: center;
     font-weight: bold;
-  }
-
-  &--attached {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    text-align: center;
-    padding: 20px;
-    position: fixed;
-    top: 0; // Emanuel: TODO this is shadowed in the DOM. Remove?
   }
 }
 </style>
