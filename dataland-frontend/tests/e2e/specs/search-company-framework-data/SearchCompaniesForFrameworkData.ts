@@ -1,7 +1,7 @@
 import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
 import { DataTypeEnum, type EuTaxonomyDataForFinancials, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
+import { validateCompanyCockpitPage, verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
 import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { describeIf } from "@e2e/support/TestUtility";
@@ -53,11 +53,11 @@ describe("As a user, I expect the search functionality on the /companies page to
         () => {
           /**
            * Verifies that the tooltip of the Perm ID in the search table header contains the expected text
-           * @param permIdTextInt the text expected in the tooltip
            */
-          function checkPermIdToolTip(permIdTextInt: string): void {
+          function checkPermIdToolTip(): void {
+            const expectedTextInToolTip = "Permanent Identifier (PermID)";
             cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
-            cy.get(".p-tooltip").should("be.visible").contains(permIdTextInt);
+            cy.get(".p-tooltip").should("be.visible").contains(expectedTextInToolTip);
             cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
             cy.get(".p-tooltip").should("not.exist");
           }
@@ -65,33 +65,35 @@ describe("As a user, I expect the search functionality on the /companies page to
           /**
            * Verifies that the view button redirects to the view framework data page
            */
-          function checkViewButtonWorks(): void {
-            cy.get("table.p-datatable-table").contains("td", "VIEW").click().url().should("include", "/frameworks");
+          function clickFirstSearchResult(): void {
+            cy.get("table.p-datatable-table").contains("td", "VIEW").click();
           }
 
           cy.visitAndCheckAppMount("/companies");
           verifySearchResultTableExists();
-          const inputValue = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName;
-          const permIdText = "Permanent Identifier (PermID)";
-          checkPermIdToolTip(permIdText);
-          executeCompanySearchWithStandardSearchBar(inputValue);
+          const testCompanyName = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName;
+          checkPermIdToolTip();
+          executeCompanySearchWithStandardSearchBar(testCompanyName);
           verifySearchResultTableExists();
-          checkViewButtonWorks();
-          cy.get("h1").contains(inputValue);
+          clickFirstSearchResult();
+          cy.get('h1[data-test="companyNameTitle"]').should("have.text", testCompanyName);
           cy.get("[title=back_button").should("be.visible").click({ force: true });
-          cy.get("input[id=search_bar_top]").should("contain.value", inputValue);
-          checkViewButtonWorks();
-          cy.get("h1").contains(inputValue);
+          cy.get("input[id=search_bar_top]").should("contain.value", testCompanyName);
+          clickFirstSearchResult();
+          cy.get('h1[data-test="companyNameTitle"]').should("have.text", testCompanyName);
         },
       );
 
       it("Execute a company Search by identifier and assure that the company is found", () => {
         cy.visitAndCheckAppMount("/companies");
-        const allIdentifiers = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.identifiers;
-        const anyIdentifierKey = assertDefined(Object.keys(allIdentifiers).find((it) => allIdentifiers[it].length > 0));
-        const anyIdentifier = allIdentifiers[anyIdentifierKey][0];
-        const expectedCompanyName = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName;
-        executeCompanySearchWithStandardSearchBar(anyIdentifier);
+        const testCompanyInformation = companiesWithEuTaxonomyDataForFinancials[0].companyInformation;
+        const testCompanyIdentifiersObject = testCompanyInformation.identifiers;
+        const testCompanyIdentifierTypeWithExistingValues = assertDefined(
+          Object.keys(testCompanyIdentifiersObject).find((it) => testCompanyIdentifiersObject[it].length > 0),
+        );
+        const singleCompanyIdentifier = testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues][0];
+        const expectedCompanyName = testCompanyInformation.companyName;
+        executeCompanySearchWithStandardSearchBar(singleCompanyIdentifier);
         cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
       });
 
@@ -109,20 +111,13 @@ describe("As a user, I expect the search functionality on the /companies page to
           }),
         );
       }
-      describeIf(
-        "As a user, I expect substrings of the autocomplete suggestions to be highlighted if they match my search string",
-        {
-          executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-        },
-        () => {
-          it("Search for company by its alternative name", () => {
-            const testCompany = getCompanyWithAlternativeName();
-            const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames)[0];
-            cy.visitAndCheckAppMount("/companies");
-            executeCompanySearchWithStandardSearchBar(searchValue);
-          });
-        },
-      );
+
+      it("Search for company by its alternative name", () => {
+        const testCompany = getCompanyWithAlternativeName();
+        const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames)[0];
+        cy.visitAndCheckAppMount("/companies");
+        executeCompanySearchWithStandardSearchBar(searchValue);
+      });
 
       it("Visit framework data view page and assure that title is present and a Framework Data Search Bar exists", () => {
         const placeholder = "Search company by name or PermID";
@@ -146,61 +141,51 @@ describe("As a user, I expect the search functionality on the /companies page to
       });
 
       it("Search with autocompletion for companies with b in it, click and use arrow keys, find searched company in recommendation", () => {
+        const primevueHighlightedSuggestionClass = "p-focus";
+        const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
         getKeycloakToken(uploader_name, uploader_pw).then((token) => {
           cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
             (storedCompanies: Array<StoredCompany>) => {
-              const primevueHighlightedSuggestionClass = "p-focus";
-              const searchString = storedCompanies[0].companyInformation.companyName;
-              const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
+              const testCompany = storedCompanies[0];
               cy.visitAndCheckAppMount("/companies");
-              cy.intercept("**/api/companies*").as("searchCompany");
+
+              verifySearchResultTableExists();
               cy.get("input[id=search_bar_top]").type("b");
               cy.get(".p-autocomplete-item").contains("View all results").click();
-              cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-                verifySearchResultTableExists();
-                cy.url().should("include", "/companies?input=b");
-              });
+
+              verifySearchResultTableExists();
+              cy.url().should("include", "/companies?input=b");
               cy.get("input[id=search_bar_top]")
                 .click({ force: true })
                 .type("{backspace}")
                 .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
-              cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-                cy.get("ul[class=p-autocomplete-items]").should("exist");
-                cy.get("input[id=search_bar_top]").type("{downArrow}");
-                cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
-                cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
-                cy.get("input[id=search_bar_top]").type("{downArrow}");
-                cy.get(".p-autocomplete-item").eq(0).should("not.have.class", primevueHighlightedSuggestionClass);
-                cy.get(".p-autocomplete-item").eq(1).should("have.class", primevueHighlightedSuggestionClass);
-                cy.get("input[id=search_bar_top]").type("{upArrow}");
-                cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
-                cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
-              });
-              cy.get("input[id=search_bar_top]").click({ force: true }).type("{backspace}").type(searchString);
-              cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-                cy.get(".p-autocomplete-item")
-                  .eq(0)
-                  .should("contain.text", searchString)
-                  .click({ force: true })
-                  .url()
-                  .should("include", "/companies/")
-                  .url()
-                  .should("include", "/frameworks/eutaxonomy");
-              });
+              cy.get("ul[class=p-autocomplete-items]").should("exist"); // TODO navigation test stuff can be moved to component test
+              cy.get("input[id=search_bar_top]").type("{downArrow}");
+              cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
+              cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
+              cy.get("input[id=search_bar_top]").type("{downArrow}");
+              cy.get(".p-autocomplete-item").eq(0).should("not.have.class", primevueHighlightedSuggestionClass);
+              cy.get(".p-autocomplete-item").eq(1).should("have.class", primevueHighlightedSuggestionClass);
+              cy.get("input[id=search_bar_top]").type("{upArrow}");
+              cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
+              cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
+              cy.get("input[id=search_bar_top]")
+                .click({ force: true })
+                .type("{backspace}")
+                .type(testCompany.companyInformation.companyName);
+              cy.get(".p-autocomplete-item")
+                .eq(0)
+                .should("contain.text", testCompany.companyInformation.companyName)
+                .click({ force: true });
+
+              validateCompanyCockpitPage(testCompany.companyInformation.companyName, testCompany.companyId);
             },
           );
         });
       });
-    },
-  );
 
-  describeIf(
-    "As a user, I expect substrings of the autocomplete suggestions to be highlighted if they match my search string",
-    {
-      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    },
-    () => {
       it("Check if substrings of autocomplete entries are highlighted", { scrollBehavior: false }, () => {
+        // TODO Emanuel: component test, exclusively for the search bar (rather than the whole page?)
         cy.ensureLoggedIn();
         const highlightedSubString = "this_is_highlighted";
         const companyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";

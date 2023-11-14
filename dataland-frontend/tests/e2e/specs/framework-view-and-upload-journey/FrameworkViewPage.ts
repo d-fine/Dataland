@@ -1,7 +1,8 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { admin_name, admin_pw, getBaseUrl, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { validateCompanyCockpitPage, verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
 import {
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
@@ -22,7 +23,8 @@ describe("The shared header of the framework pages should act as expected", { sc
       executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     },
     function (): void {
-      const nameOfCompanyAlpha = "company-alpha-with-four-different-framework-types";
+      const uniqueCompanyMarker = Date.now().toString();
+      const nameOfCompanyAlpha = "company-alpha-with-four-different-framework-types-" + uniqueCompanyMarker;
       const expectedFrameworkDropdownItemsForAlpha = new Set<string>([
         humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
         humanizeStringOrNumber(DataTypeEnum.Sme),
@@ -35,11 +37,7 @@ describe("The shared header of the framework pages should act as expected", { sc
       let dataIdOfSupersededLksg2023ForAlpha: string;
       let dataIdOfSupersededFinancial2019ForAlpha: string;
 
-      const nameOfCompanyBeta = "company-beta-with-eutaxo-and-lksg-data";
-      const expectedFrameworkDropdownItemsForBeta = new Set<string>([
-        humanizeStringOrNumber(DataTypeEnum.Sme),
-        humanizeStringOrNumber(DataTypeEnum.Lksg),
-      ]);
+      const nameOfCompanyBeta = "company-beta-with-eutaxo-and-lksg-data-" + uniqueCompanyMarker;
       let companyIdOfBeta: string;
 
       const frameworkDropdownSelector = "div#chooseFrameworkDropdown";
@@ -53,6 +51,28 @@ describe("The shared header of the framework pages should act as expected", { sc
       const nonExistingCompanyId = "ABC-non-existing";
 
       /**
+       * Checks if the framework summary panel for the given framework is visible with the correct number of reporting
+       * periods and optionally clicks on it.
+       * @param frameworkName to find the summary panel for
+       * @param expectedNumberOfReportingPeriods displayed on the panel
+       * @param clickIt determines if it shall be clicked on the panel at the end of the checks
+       */
+      function validateFrameworkSummaryPanel(
+        frameworkName: DataTypeEnum,
+        expectedNumberOfReportingPeriods: number,
+        clickIt: boolean,
+      ): void {
+        const selector = `span[data-test="${frameworkName}-panel-value"]`;
+        cy.get(selector)
+          .should("have.text", expectedNumberOfReportingPeriods.toString())
+          .then(($element) => {
+            if (clickIt) {
+              cy.wrap($element).click({ force: true });
+            }
+          });
+      }
+
+      /**
        * Visits the search page with framework and company name query params set, and clicks on the first VIEW selector
        * in the search results table.
        * @param frameworkQueryParam The query param set as framework filter
@@ -62,12 +82,9 @@ describe("The shared header of the framework pages should act as expected", { sc
         frameworkQueryParam: string,
         searchStringQueryParam: string,
       ): void {
-        cy.intercept("/api/companies?searchString=**false").as("getSearchResults");
         cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
-        cy.wait("@getSearchResults", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        verifySearchResultTableExists();
         const companySelector = "span:contains(VIEW)";
-        cy.get(companySelector).first().scrollIntoView();
-        cy.wait(1000);
         cy.get(companySelector).first().click({ force: true });
       }
 
@@ -80,13 +97,12 @@ describe("The shared header of the framework pages should act as expected", { sc
         searchString: string,
         searchBarSelector = "input#search_bar_top",
       ): void {
-        cy.intercept("/api/companies?searchString=**true").as("autocompleteSuggestions");
+        cy.intercept({ url: "/api/companies?searchString=**true", times: 1 }).as("autocompleteSuggestions");
         cy.get(searchBarSelector).click();
         cy.get(searchBarSelector).type(searchString, { force: true });
         cy.wait("@autocompleteSuggestions", { timeout: Cypress.env("long_timeout_in_ms") as number });
-        cy.intercept("**/api/companies/**").as("searchCompany");
+        cy.intercept({ url: "**/api/companies/**", times: 1 }).as("searchCompany");
         const companySelector = ".p-autocomplete-item";
-        cy.get(companySelector).first().scrollIntoView();
         cy.get(companySelector).first().click({ force: true });
         cy.wait("@searchCompany", { timeout: Cypress.env("long_timeout_in_ms") as number });
       }
@@ -106,13 +122,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.get(frameworkDropdownSelector)
           .find(".p-dropdown-label")
           .should("have.text", humanizeStringOrNumber(expectedChosenFramework));
-        if (
-          ([DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.EutaxonomyFinancials] as string[]).indexOf(
-            expectedChosenFramework,
-          ) >= 0
-        ) {
-          cy.get("[data-test='taxocard']").should("exist");
-        } else {
+        if (expectedChosenFramework !== DataTypeEnum.EutaxonomyFinancials) {
           cy.get("table").should("exist");
         }
       }
@@ -385,35 +395,6 @@ describe("The shared header of the framework pages should act as expected", { sc
         });
       }
 
-      /**
-       * Intercepts a given function for a request pattern
-       * @param requestPattern the pattern to intercept
-       * @param requestingExpression the function to intercept
-       * @param hint a description of the intercept for recognizability of the request
-       */
-      function waitForRequest(requestPattern: string, requestingExpression: () => void, hint = ""): void {
-        const requestAlias = hint + new Date().getTime().toString();
-        cy.intercept(requestPattern).as(requestAlias);
-        requestingExpression();
-        cy.wait(`@${requestAlias}`, { timeout: Cypress.env("long_timeout_in_ms") as number });
-      }
-
-      /**
-       * Intercepts a given function for a data request
-       * @param requestingExpression the function to intercept
-       */
-      function waitForDataRequest(requestingExpression: () => void): void {
-        waitForRequest("**/api/data/**", requestingExpression, "waitForDataRequest");
-      }
-
-      /**
-       * Intercepts a given function for a company request
-       * @param requestingExpression the function to intercept
-       */
-      function waitForCompanyRequest(requestingExpression: () => void): void {
-        waitForRequest("**/api/companies/**", requestingExpression, "waitForCompanyRequest");
-      }
-
       let euTaxoFinancialPreparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
       let smePreparedFixtures: Array<FixtureData<SmeData>>;
       let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
@@ -437,64 +418,34 @@ describe("The shared header of the framework pages should act as expected", { sc
         uploadCompanyBetaAndData();
       });
 
-      it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
+      it("Check that clicking an autocomplete suggestion on the search page redirects the user to the company cockpit", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
-        cy.intercept("/api/companies?searchString=&dataTypes=*").as("firstLoadOfSearchPage");
-        cy.visit(`/companies?framework=${DataTypeEnum.Sme}`);
-        cy.wait("@firstLoadOfSearchPage", { timeout: Cypress.env("long_timeout_in_ms") as number });
+        cy.visit(`/companies?framework=${DataTypeEnum.Lksg}`);
+        verifySearchResultTableExists();
         typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha);
-        validateChosenFramework(DataTypeEnum.Sme);
 
-        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Sme, nameOfCompanyAlpha);
-        validateChosenFramework(DataTypeEnum.Sme);
+        validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
+        validateFrameworkSummaryPanel(DataTypeEnum.Lksg, 2, true);
 
-        selectFrameworkInDropdown(DataTypeEnum.Lksg);
         validateChosenFramework(DataTypeEnum.Lksg);
-
-        selectFrameworkInDropdown(DataTypeEnum.EutaxonomyFinancials);
-        validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
+        validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
       });
 
-      it(
-        "Check that from the view-page, even in error mode, you can search a company, even if it" +
-          "does not have a dataset for the framework chosen on the search page",
-        () => {
-          cy.ensureLoggedIn();
-          cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Sfdr}`);
+      it("Check that clicking a search result on the search page or an autocomplete suggestion on the view page redirects the user to the company cockpit", () => {
+        cy.ensureLoggedIn(uploader_name, uploader_pw);
+        visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.Sme, nameOfCompanyAlpha);
 
-          validateChosenFramework(DataTypeEnum.Sfdr);
+        validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
+        validateFrameworkSummaryPanel(DataTypeEnum.Sme, 1, true);
 
-          waitForDataRequest(() => {
-            typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelectorForViewPage);
-          });
+        validateChosenFramework(DataTypeEnum.Sme);
+        selectFrameworkInDropdown(DataTypeEnum.Sfdr);
 
-          cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
-          validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForBeta);
+        validateChosenFramework(DataTypeEnum.Sfdr);
+        typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelectorForViewPage);
 
-          waitForCompanyRequest(() => {
-            cy.visit(
-              `/companies/${companyIdOfBeta}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`,
-            );
-          });
-          waitForDataRequest(() => {
-            typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, searchBarSelectorForViewPage);
-          });
-
-          cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyAlpha);
-          validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-
-          waitForCompanyRequest(() => {
-            cy.visit(
-              `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/${nonExistingReportingPeriod}`,
-            );
-          });
-          waitForDataRequest(() => {
-            typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelectorForViewPage);
-          });
-
-          cy.get('[data-test="companyNameTitle"]').should("contain", nameOfCompanyBeta);
-        },
-      );
+        validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
+      });
 
       it("Check that using back-button and dropdowns on the view-page work as expected", () => {
         cy.ensureLoggedIn();
@@ -620,8 +571,8 @@ describe("The shared header of the framework pages should act as expected", { sc
 
         typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelectorForViewPage);
 
-        validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForBeta);
-        validateNoErrorMessagesAreShown();
+        validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
+        validateFrameworkSummaryPanel(DataTypeEnum.Sme, 1, false);
 
         clickBackButton();
 
@@ -631,7 +582,6 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       it("Check if the version change bar works as expected on several framework view pages", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
-        cy.intercept("/api/metadata/**").as("getMetaDataForSpecificDataId");
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`,
         );
@@ -642,8 +592,8 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
 
         cy.url().should(
-          "eq",
-          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`,
+          "contain",
+          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`,
         );
         cy.contains("2023-06-22").should("exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
@@ -653,7 +603,7 @@ describe("The shared header of the framework pages should act as expected", { sc
           "View All",
         ).click();
 
-        cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
+        cy.url().should("contain", `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
         cy.contains("2022-07-30").should("exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023", "2022"]);
         validateDataDatesOfDisplayedLksgDatasets(["2023-06-22", "2022-07-30"]);
@@ -662,8 +612,8 @@ describe("The shared header of the framework pages should act as expected", { sc
         clickBackButton();
 
         cy.url().should(
-          "eq",
-          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`,
+          "contain",
+          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/reportingPeriods/2023`,
         );
         cy.contains("2022-07-30").should("not.exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
@@ -672,10 +622,8 @@ describe("The shared header of the framework pages should act as expected", { sc
         clickBackButton();
 
         cy.url().should(
-          "eq",
-          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
-            DataTypeEnum.Lksg
-          }/${dataIdOfSupersededLksg2023ForAlpha}`,
+          "contain",
+          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`,
         );
         cy.contains("2023-04-18").should("exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
@@ -689,20 +637,16 @@ describe("The shared header of the framework pages should act as expected", { sc
         validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
 
         cy.url().should(
-          "eq",
-          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
-            DataTypeEnum.EutaxonomyFinancials
-          }/reportingPeriods/2019`,
+          "contain",
+          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/2019`,
         );
         validateEUTaxonomyFinancialsTable("29.2 %");
         getElementAndAssertExistence("datasetDisplayStatusContainer", "not.exist");
         clickBackButton();
 
         cy.url().should(
-          "eq",
-          `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${
-            DataTypeEnum.EutaxonomyFinancials
-          }/${dataIdOfSupersededFinancial2019ForAlpha}`,
+          "contain",
+          `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSupersededFinancial2019ForAlpha}`,
         );
         validateEUTaxonomyFinancialsTable("29 %");
       });
