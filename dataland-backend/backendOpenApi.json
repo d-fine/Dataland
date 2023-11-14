@@ -2049,59 +2049,6 @@
         ]
       }
     },
-    "/companies/with-active-datasets": {
-      "get": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "summary": "Retrieve IDs of companies with active framework data",
-        "description": "Retrieve IDs of companies with active framework data",
-        "operationId": "getCompanyIdsWithActiveData",
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved company IDs.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/companies/teaser": {
       "get": {
         "tags": [

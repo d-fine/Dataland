@@ -302,25 +302,4 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getCompanyInfo(@PathVariable("companyId") companyId: String): ResponseEntity<CompanyInformation>
-
-
-    /**
-     * A method to retrieve IDs of companies with active framework data
-     * @return IDs of all companies with framework data
-     */
-    @Operation(
-        summary = "Retrieve IDs of companies with active framework data",
-        description = "Retrieve IDs of companies with active framework data",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved company IDs."),
-        ],
-    )
-    @GetMapping(
-        value = ["/with-active-datasets"],
-        produces = ["application/json"],
-    )
-    fun getCompanyIdsWithActiveData():
-        ResponseEntity<List<String>>
 }

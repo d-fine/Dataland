@@ -43,7 +43,6 @@ const mobileHeader = ref<HTMLDivElement>();
 
 const props = defineProps<{
   companyId: string;
-  isReviewableByCurrentUser?: boolean;
 }>();
 
 const emit = defineEmits<{

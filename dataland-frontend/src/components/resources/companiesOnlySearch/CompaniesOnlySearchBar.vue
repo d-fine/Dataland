@@ -44,16 +44,6 @@ export default defineComponent({
   },
   name: "CompaniesOnlySearchBar",
   components: { AutoComplete, SearchResultHighlighter },
-  created() {
-    new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-      .getCompanyDataControllerApi()
-      .then((companyDataControllerApi) => {
-        return companyDataControllerApi.getCompanyIdsWithActiveData();
-      })
-      .then((companyIdsResponse): void => {
-        this.companyIdsWithActiveData = companyIdsResponse.data;
-      });
-  },
   mounted() {
     const autocompleteRefsObject = this.autocomplete?.$refs as Record<string, unknown>;
     const inputOfAutocompleteComponent = autocompleteRefsObject.focusInput as HTMLInputElement;
@@ -65,7 +55,6 @@ export default defineComponent({
       searchBarInput: "",
       latestValidSearchString: "",
       autocompleteArray: [] as Array<CompanyIdAndName>,
-      companyIdsWithActiveData: [] as string[],
     };
   },
   props: {
@@ -101,26 +90,10 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)(),
         ).getCompanyDataControllerApi();
         const response = await companyDataControllerApi.getCompaniesBySearchString(autoCompleteCompleteEvent.query);
-        this.autocompleteArray = this.sortCompaniesResponseByPriority(response.data);
+        this.autocompleteArray = response.data;
       } catch (error) {
         console.error(error);
       }
-    },
-    /**
-     * Sorts the search results
-     * @param companyIdsAndNames a list of the company ids and their corresponding names
-     * @returns the list containing of company names with active data and company without active data
-     */
-    //TODO i presume this method will be deleted as the odering should be done in the backend
-    sortCompaniesResponseByPriority(companyIdsAndNames: CompanyIdAndName[]): CompanyIdAndName[] {
-      // todo actually filter data for being active in the backend lol
-      const companyIdsAndNamesWithActiveData = companyIdsAndNames.filter((companyIdAndName) =>
-        this.companyIdsWithActiveData.includes(companyIdAndName.companyId),
-      );
-      const companyIdsAndNamesWithoutActiveData = companyIdsAndNames.filter(
-        (companyIdAndName) => !this.companyIdsWithActiveData.includes(companyIdAndName.companyId),
-      );
-      return [...companyIdsAndNamesWithActiveData, ...companyIdsAndNamesWithoutActiveData];
     },
   },
 });

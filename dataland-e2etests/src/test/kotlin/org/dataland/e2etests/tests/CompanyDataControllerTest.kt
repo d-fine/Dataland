@@ -2,6 +2,7 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -10,7 +11,6 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -21,12 +21,6 @@ class CompanyDataControllerTest {
     private val apiAccessor = ApiAccessor()
     private val baseCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithRandomIdentifiers(1).first()
-    private val company2 = "Company 2"
-    private val company3 = "Company 3"
-    private val company5 = "Company 5"
-    private val company6 = "Company 6"
-    private val company8 = "Company 8"
-    private val company9 = "Company 9"
 
     @Test
     fun `post a dummy company and check if post was successful`() {
@@ -323,41 +317,48 @@ class CompanyDataControllerTest {
             searchString = testString,
         ).map { it.companyName }
         assertEquals(
-            listOf(testString, company2, "${testString}2", company5, company6, "3$testString", company9),
-            sortedCompanyNames.filter { it != company8 && it != company3 },
+            listOf("Other Company") + (1..4).map { "$testString $it" },
+            sortedCompanyNames,
         )
-        assertEquals(
-            listOf(company3, company2, "${testString}2", company5, company6, company8, company9),
-            sortedCompanyNames.filter { it != "3$testString" && it != testString },
-        )
-
-        val otherCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
-            searchString = "other_name",
-        ).map { it.companyName }
-        assertTrue(otherCompanyNames.contains(company8))
-        assertFalse(otherCompanyNames.contains("Company 7"))
     }
 
     private fun uploadCompaniesInReverseToExpectedOrder(expectedSearchString: String) {
-        uploadModifiedBaseCompany(company9, null, "3$expectedSearchString")
-        uploadModifiedBaseCompany(company8, listOf("3$expectedSearchString", "other_name"), null)
-        uploadModifiedBaseCompany("3$expectedSearchString", null, null)
-        uploadModifiedBaseCompany(company6, null, "${expectedSearchString}2")
-        uploadModifiedBaseCompany(company5, listOf("${expectedSearchString}2"), null)
-        uploadModifiedBaseCompany("${expectedSearchString}2", null, null)
-        uploadModifiedBaseCompany(company3, null, expectedSearchString)
-        uploadModifiedBaseCompany(company2, listOf(expectedSearchString), null)
-        uploadModifiedBaseCompany(expectedSearchString, null, null)
+        uploadModifiedBaseCompany("$expectedSearchString 4", null)
+        var companyId = uploadModifiedBaseCompany("$expectedSearchString 3", null)
+        uploadDummyDataset(companyId = companyId, bypassQa = false)
+        companyId = uploadModifiedBaseCompany("$expectedSearchString 2", null)
+        uploadDummyDataset(companyId = companyId, bypassQa = true)
+        uploadDummyDataset(companyId = companyId, bypassQa = true)
+        uploadDummyDataset(companyId = companyId, bypassQa = true)
+        companyId = uploadModifiedBaseCompany("$expectedSearchString 1", null)
+        uploadDummyDataset(companyId = companyId, reportingPeriod = "a", bypassQa = true)
+        uploadDummyDataset(companyId = companyId, reportingPeriod = "b", bypassQa = true)
+        companyId = uploadModifiedBaseCompany("Other Company", listOf("1${expectedSearchString}2"))
+        uploadDummyDataset(companyId = companyId, reportingPeriod = "a", bypassQa = true)
+        uploadDummyDataset(companyId = companyId, reportingPeriod = "b", bypassQa = true)
+        uploadDummyDataset(companyId = companyId, reportingPeriod = "c", bypassQa = true)
     }
 
-    private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?, identifier: String?) {
+    private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?): String {
         val companyInformation = baseCompanyInformation.copy(
             companyName = name,
             companyAlternativeNames = alternativeNames,
             identifiers = mapOf(
-                IdentifierType.isin.value to listOf(identifier ?: UUID.randomUUID().toString()),
+                IdentifierType.isin.value to listOf(UUID.randomUUID().toString()),
             ),
         )
-        apiAccessor.companyDataControllerApi.postCompany(companyInformation)
+        return apiAccessor.companyDataControllerApi.postCompany(companyInformation).companyId
+    }
+
+    val dummyCompanyAssociatedDataWithoutCompanyId = CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+        companyId = "placeholder",
+        reportingPeriod = "placeholder",
+        data = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first(),
+    )
+    private fun uploadDummyDataset(companyId: String, reportingPeriod: String = "default", bypassQa: Boolean = false) {
+        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+            dummyCompanyAssociatedDataWithoutCompanyId.copy(companyId = companyId, reportingPeriod = reportingPeriod),
+            bypassQa,
+        )
     }
 }

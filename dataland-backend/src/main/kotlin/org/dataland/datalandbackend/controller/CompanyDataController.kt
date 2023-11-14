@@ -83,22 +83,6 @@ class CompanyDataController(
         )
     }
 
-    override fun getCompanyIdsWithActiveData(): ResponseEntity<List<String>> {
-        return ResponseEntity.ok(
-            companyQueryManager.searchCompaniesAndGetApiModel(
-                StoredCompanySearchFilter(
-                    searchString = "",
-                    nameOnlyFilter = false,
-                    dataTypeFilter = listOf(),
-                    countryCodeFilter = listOf(),
-                    sectorFilter = listOf(),
-                    uploaderId = "",
-                ),
-                null,
-            ).map { it.companyId }
-        )
-    }
-
     override fun existsIdentifier(identifierType: IdentifierType, identifier: String) {
         try {
             companyIdentifierRepositoryInterface.getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
