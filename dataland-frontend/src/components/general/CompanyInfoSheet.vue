@@ -20,7 +20,7 @@
     <MarginWrapper class="surface-0" style="margin-right: 0">
       <div class="grid align-items-end">
         <CompanyInformationBanner
-          :companyId="props.companyId"
+          :companyId="companyId"
           @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
         />
       </div>
@@ -41,7 +41,7 @@ const useMobileView = inject<boolean>("useMobileView");
 const sheet = ref<HTMLDivElement>();
 const mobileHeader = ref<HTMLDivElement>();
 
-const props = defineProps<{
+const { companyId } = defineProps<{
   companyId: string;
 }>();
 
