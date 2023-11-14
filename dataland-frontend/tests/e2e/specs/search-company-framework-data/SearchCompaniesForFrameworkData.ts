@@ -1,7 +1,7 @@
 import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
 import { DataTypeEnum, type EuTaxonomyDataForFinancials, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { validateCompanyCockpitPage, verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
+import { verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
 import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { describeIf } from "@e2e/support/TestUtility";
@@ -29,11 +29,11 @@ describe("As a user, I expect the search functionality on the /companies page to
       executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     },
     () => {
-    /**
-     * Enters the given text in the search bar and hits enter verifying that the search result table matches the expected
-     * format and the url includes the search term
-     * @param inputValue the text to enter into the search bar
-     */
+      /**
+       * Enters the given text in the search bar and hits enter verifying that the search result table matches the expected
+       * format and the url includes the search term
+       * @param inputValue the text to enter into the search bar
+       */
       function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
         const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
         cy.get("input[id=search_bar_top]")
@@ -44,7 +44,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           .type("{enter}")
           .should("have.value", inputValue);
         cy.url({ decode: true }).should("include", "/companies?input=" + inputValueUntilFirstSpace);
-        verifySearchResultTable();
+        verifySearchResultTableExists();
       }
 
       it(
@@ -70,12 +70,12 @@ describe("As a user, I expect the search functionality on the /companies page to
           }
 
           cy.visitAndCheckAppMount("/companies");
-          verifySearchResultTable();
+          verifySearchResultTableExists();
           const inputValue = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName;
           const permIdText = "Permanent Identifier (PermID)";
           checkPermIdToolTip(permIdText);
           executeCompanySearchWithStandardSearchBar(inputValue);
-          verifySearchResultTable();
+          verifySearchResultTableExists();
           checkViewButtonWorks();
           cy.get("h1").contains(inputValue);
           cy.get("[title=back_button").should("be.visible").click({ force: true });
@@ -157,7 +157,7 @@ describe("As a user, I expect the search functionality on the /companies page to
               cy.get("input[id=search_bar_top]").type("b");
               cy.get(".p-autocomplete-item").contains("View all results").click();
               cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-                verifySearchResultTable();
+                verifySearchResultTableExists();
                 cy.url().should("include", "/companies?input=b");
               });
               cy.get("input[id=search_bar_top]")
