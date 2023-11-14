@@ -41,14 +41,10 @@ class GleifApiAccessor(
      * Downloads the latest complete Lei-ISIN mapping file
      * @param targetFile the local target file to be written
      */
-    fun getIsinFileZip(targetFile: File) {
-        // Fetch the JSON response from the API URL
+
+    fun getIsinMappingFile(targetFile: File) {
         val apiText = URL(gleifMappingBaseUrl).readText()
-
-        // Parse the JSON to extract the latest download link
         val downloadLink = apiText.split("\"downloadLink\":\"")[1].split("\"")[0]
-
-        // Download the file from the latest download link
         downloadFile(URL(downloadLink), targetFile)
     }
 

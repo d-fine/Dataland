@@ -36,6 +36,7 @@ class GleifGoldenCopyIngestor(
 
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
     private val allCompaniesIngestFlagFilePath: String?,
+//    @Value("\${dataland.dataland-batch-manager.mapping-file}") private val isinMappingFile: File,
 ) {
     companion object {
         const val MS_PER_S = 1000L
