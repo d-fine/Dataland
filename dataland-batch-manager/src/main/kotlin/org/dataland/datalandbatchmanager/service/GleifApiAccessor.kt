@@ -17,7 +17,7 @@ import java.net.URL
 class GleifApiAccessor(
     @Value("\${gleif.download.baseurl}") private val gleifBaseUrl: String,
     @Value("\${gleif.mapping.download.baseurl}") private val gleifMappingBaseUrl: String,
-    @Value("\${dataland.dataland-batch-manager.mapping-file}") private val mappingFileLocation: File,
+//    @Value("\${dataland.dataland-batch-manager.mapping-file}") private val mappingFileLocation: File,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -41,17 +41,15 @@ class GleifApiAccessor(
      * Downloads the latest complete Lei-ISIN mapping file
      * @param targetFile the local target file to be written
      */
-    fun getMappingFile(targetFile: File) {
+    fun getIsinFileZip(targetFile: File) {
+        // Fetch the JSON response from the API URL
+        val apiText = URL(gleifMappingBaseUrl).readText()
 
-            // Fetch the JSON response from the API URL
-            val apiText = URL(gleifMappingBaseUrl).readText()
+        // Parse the JSON to extract the latest download link
+        val downloadLink = apiText.split("\"downloadLink\":\"")[1].split("\"")[0]
 
-            // Parse the JSON to extract the latest download link
-            val downloadLink = apiText.split("\"downloadLink\":\"")[1].split("\"")[0]
-
-            // Download the file from the latest download link
-            downloadFile(URL(downloadLink), targetFile)
-
+        // Download the file from the latest download link
+        downloadFile(URL(downloadLink), targetFile)
     }
 
     private fun downloadFileFromGleif(urlSuffx: String, targetFile: File, fileDescription: String) {
