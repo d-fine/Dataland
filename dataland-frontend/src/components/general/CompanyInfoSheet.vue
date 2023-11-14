@@ -13,7 +13,7 @@
       </div>
     </template>
     <CompanyInformationBanner
-      :companyId="props.companyId"
+      :companyId="companyId"
       @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
     />
   </div>
@@ -39,7 +39,7 @@ const useMobileView = inject<boolean>("useMobileView");
 const sheet = ref<HTMLDivElement>();
 const attachedSheet = ref<HTMLDivElement>();
 
-const props = defineProps<{
+const { companyId } = defineProps<{
   companyId: string;
 }>();
 

@@ -33,13 +33,21 @@ export function prepareSimpleDataSearchStoredCompanyArray(): DataSearchStoredCom
     qaStatus: QaStatus.Accepted,
   } as DataMetaInformation;
 
-  return [
-    {
-      companyName: mockCompanyInformation.companyName,
-      companyInformation: mockCompanyInformation,
-      companyId: mockDataMetaInformation.companyId,
-      permId: mockCompanyInformation.identifiers[IdentifierType.PermId][0],
-      dataRegisteredByDataland: [mockDataMetaInformation],
-    },
-  ];
+  const singleMockSearchResult = {
+    companyName: mockCompanyInformation.companyName,
+    companyInformation: mockCompanyInformation,
+    companyId: mockDataMetaInformation.companyId,
+    permId: mockCompanyInformation.identifiers[IdentifierType.PermId][0],
+    dataRegisteredByDataland: [mockDataMetaInformation],
+  };
+
+  const multipleMockSearchResults = [];
+
+  for (let i = 0; i < 200; i++) {
+    multipleMockSearchResults.push(Object.assign({}, singleMockSearchResult));
+  }
+
+  return multipleMockSearchResults;
 }
+
+// TODO Emanuel: Rather create a json file with mocks just like for the other mocks
