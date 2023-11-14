@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate
 
 import org.dataland.frameworktoolbox.intermediate.group.TopLevelComponentGroup
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
+import org.dataland.frameworktoolbox.specific.fixturegenerator.FrameworkFixtureGeneratorBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuilder
 
 /**
@@ -37,5 +38,16 @@ class Framework(
             it.generateViewConfig(frameworkViewConfigBuilder.rootSectionConfigBuilder)
         }
         return frameworkViewConfigBuilder
+    }
+
+    /**
+     * Generate a FixtureGenerator for this framework In-Memory
+     */
+    fun generateFixtureGenerator(): FrameworkFixtureGeneratorBuilder {
+        val frameworkFixtureGenerator = FrameworkFixtureGeneratorBuilder(this)
+        root.children.forEach {
+            it.generateFixtureGenerator(frameworkFixtureGenerator.rootSectionBuilder)
+        }
+        return frameworkFixtureGenerator
     }
 }

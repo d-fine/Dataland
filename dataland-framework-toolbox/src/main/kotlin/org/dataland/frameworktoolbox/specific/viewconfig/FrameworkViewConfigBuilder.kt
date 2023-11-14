@@ -94,7 +94,7 @@ class FrameworkViewConfigBuilder(
         into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_checkfrontendcompilation"))
 
         ProcessBuilder("npx", "eslint", "--fix", viewConfigTsPath.toAbsolutePath().toString())
-            .directory((into.path /  "dataland-frontend").toFile())
+            .directory((into.path / "dataland-frontend").toFile())
             .redirectOutput(ProcessBuilder.Redirect.INHERIT)
             .redirectError(ProcessBuilder.Redirect.INHERIT)
             .start()

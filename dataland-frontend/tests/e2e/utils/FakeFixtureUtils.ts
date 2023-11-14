@@ -15,6 +15,8 @@ import {
 import { generateReferencedDocuments } from "@e2e/utils/DocumentReference";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { type BaseDataPoint, type ExtendedDataPoint } from "@/utils/DataPoint";
+import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
+import { faker } from "@faker-js/faker";
 
 export const DEFAULT_PROBABILITY = 0.2;
 
@@ -44,44 +46,100 @@ export class Generator {
   }
 
   randomYesNo(): YesNo | null {
-    return this.valueOrNull(generateYesNo());
+    return this.valueOrNull(this.guaranteedYesNo());
+  }
+
+  guaranteedYesNo(): YesNo {
+    return generateYesNo();
   }
 
   randomYesNoNa(): YesNoNa | null {
-    return this.valueOrNull(generateYesNoNa());
+    return this.valueOrNull(this.guaranteedYesNoNa());
+  }
+
+  guaranteedYesNoNa(): YesNoNa {
+    return generateYesNoNa();
   }
 
   randomPercentageValue(): number | null {
-    return this.valueOrNull(generatePercentageValue());
+    return this.valueOrNull(this.guaranteedPercentageValue());
+  }
+
+  guaranteedPercentageValue(): number {
+    return generatePercentageValue();
   }
 
   randomInt(max = 10000): number | null {
-    return this.valueOrNull(generateInt(max));
+    return this.valueOrNull(this.guaranteedInt(max));
+  }
+
+  guaranteedInt(max: number = 10000): number {
+    return generateInt(max);
   }
 
   randomFloat(min: number = 0, max: number = 1e5): number | null {
-    return this.valueOrNull(generateFloat(min, max));
+    return this.valueOrNull(this.guaranteedFloat(min, max));
+  }
+
+  guaranteedFloat(min: number = 0, max: number = 1e5): number {
+    return generateFloat(min, max);
   }
 
   randomCurrencyValue(): number | null {
-    return this.valueOrNull(generateCurrencyValue());
+    return this.valueOrNull(this.guaranteedCurrencyValue());
+  }
+
+  guaranteedCurrencyValue(): number {
+    return generateCurrencyValue();
   }
 
   randomBaseDataPoint<T>(input: T): BaseDataPoint<T> | null {
-    const document = this.valueOrNull(pickOneElement(Object.values(this.documents)));
-    return this.valueOrNull({ value: input, dataSource: document } as BaseDataPoint<T>);
+    return this.valueOrNull(this.guaranteedBaseDataPoint(input));
   }
 
-  randomExtendedDataPoint<T>(input: T): ExtendedDataPoint<T> | null {
-    return this.valueOrNull(generateExtendedDataPoint(this.valueOrNull(input), this.reports));
+  guaranteedBaseDataPoint<T>(input: T): BaseDataPoint<T> {
+    const document = this.valueOrNull(pickOneElement(Object.values(this.documents)));
+    return { value: input, dataSource: document };
+  }
+
+  randomExtendedDataPoint<T>(input: T | null): ExtendedDataPoint<T> | null {
+    return this.valueOrNull(this.guaranteedExtendedDataPoint(input));
+  }
+
+  guaranteedExtendedDataPoint<T>(input: T | null): ExtendedDataPoint<T> {
+    return generateExtendedDataPoint(this.valueOrNull(input), this.reports);
   }
 
   randomCurrencyDataPoint(input = generateCurrencyValue()): CurrencyDataPoint | null {
+    return this.valueOrNull(this.guaranteedCurrencyDataPoint(input));
+  }
+
+  guaranteedCurrencyDataPoint(input = generateCurrencyValue()): CurrencyDataPoint {
     const localCurrency = generateCurrencyCode();
-    return this.valueOrNull(generateCurrencyExtendedDataPoint(this.valueOrNull(input), this.reports, localCurrency));
+    return generateCurrencyExtendedDataPoint(this.valueOrNull(input), this.reports, localCurrency);
   }
 
   randomArray<T>(generator: () => T, min = 0, max = 5): T[] | null {
-    return this.valueOrNull(generateArray(generator, min, max));
+    return this.valueOrNull(this.guaranteedArray(generator, min, max));
+  }
+
+  guaranteedArray<T>(generator: () => T, min = 0, max = 5): T[] {
+    return generateArray(generator, min, max);
+  }
+
+  randomFutureDate(): string | null {
+    return this.valueOrNull(this.guaranteedFutureDate());
+  }
+
+  guaranteedFutureDate(): string {
+    return generateFutureDate();
+  }
+
+  randomShortString(): string | null {
+    return this.valueOrNull(this.guaranteedShortString());
+  }
+
+  guaranteedShortString(): string {
+    return faker.company.buzzNoun();
   }
 }

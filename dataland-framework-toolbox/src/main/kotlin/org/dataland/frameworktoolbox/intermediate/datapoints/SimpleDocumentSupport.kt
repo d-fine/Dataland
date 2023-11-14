@@ -9,22 +9,22 @@ data object SimpleDocumentSupport : DocumentSupport {
         return TypeReference(
             "org.dataland.datalandbackend.model.datapoints.BaseDataPoint",
             nullable,
-            listOf(innerType),
+            listOf(innerType.copy(nullable = false)),
         )
     }
 
     override fun getFrameworkDisplayValueLambda(
         innerLambda: FrameworkDisplayValueLambda,
         fieldLabel: String?,
-        dataPointAccessor: String
+        dataPointAccessor: String,
     ): FrameworkDisplayValueLambda {
         requireNotNull(fieldLabel)
-        return  FrameworkDisplayValueLambda(
+        return FrameworkDisplayValueLambda(
             "wrapDisplayValueWithDatapointInformation(${innerLambda.lambdaBody}," +
-                    " \"${StringEscapeUtils.escapeEcmaScript(fieldLabel)}\"," +
-                    " $dataPointAccessor)",
+                " \"${StringEscapeUtils.escapeEcmaScript(fieldLabel)}\"," +
+                " $dataPointAccessor)",
             imports = innerLambda.imports +
-                    "import { wrapDisplayValueWithDatapointInformation } from \"@/components/resources/dataTable/conversion/DataPoints\";"
+                "import { wrapDisplayValueWithDatapointInformation } from \"@/components/resources/dataTable/conversion/DataPoints\";",
         )
     }
 
@@ -33,6 +33,18 @@ data object SimpleDocumentSupport : DocumentSupport {
             "$dataPointAccessor?.value"
         } else {
             "$dataPointAccessor.value"
+        }
+    }
+
+    override fun getFixtureExpression(
+        nullableFixtureExpression: String,
+        fixtureExpression: String,
+        nullable: Boolean,
+    ): String {
+        return if (nullable) {
+            "dataGenerator.randomBaseDataPoint($fixtureExpression)"
+        } else {
+            "dataGenerator.guaranteedBaseDataPoint($fixtureExpression)"
         }
     }
 }

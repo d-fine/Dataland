@@ -17,9 +17,13 @@ sealed interface DocumentSupport {
 
     fun getJvmTypeReference(innerType: TypeReference, nullable: Boolean): TypeReference
 
-    fun getFrameworkDisplayValueLambda(innerLambda: FrameworkDisplayValueLambda,
-                                       fieldLabel: String?,
-                                       dataPointAccessor: String): FrameworkDisplayValueLambda
+    fun getFrameworkDisplayValueLambda(
+        innerLambda: FrameworkDisplayValueLambda,
+        fieldLabel: String?,
+        dataPointAccessor: String,
+    ): FrameworkDisplayValueLambda
 
     fun getDataAccessor(dataPointAccessor: String, nullable: Boolean): String
+
+    fun getFixtureExpression(nullableFixtureExpression: String, fixtureExpression: String, nullable: Boolean): String
 }

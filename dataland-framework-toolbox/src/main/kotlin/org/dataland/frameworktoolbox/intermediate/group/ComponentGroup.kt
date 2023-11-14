@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.intermediate.group
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
+import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
@@ -66,6 +67,13 @@ class ComponentGroup(
 
         children.forEach {
             it.generateViewConfig(containerSection)
+        }
+    }
+
+    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+        val groupSection = sectionBuilder.addSection(identifier)
+        children.forEach {
+            it.generateFixtureGenerator(groupSection)
         }
     }
 

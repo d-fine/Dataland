@@ -18,14 +18,15 @@ fun ComponentBase.getTypescriptFieldAccessor(valueAccessor: Boolean = false): St
             }
         }
 
-    val dataPointAccessor =  if (parentsSequence.isNotEmpty()) {
+    val dataPointAccessor = if (parentsSequence.isNotEmpty()) {
         "dataset.${parentsSequence.joinToString(".")}.$identifier"
     } else {
         "dataset.$identifier"
     }
 
-    return if (valueAccessor)
+    return if (valueAccessor) {
         documentSupport.getDataAccessor(dataPointAccessor, isNullable)
-    else
+    } else {
         dataPointAccessor
+    }
 }

@@ -15,12 +15,24 @@ data object ExtendedDocumentSupport : DocumentSupport {
     override fun getFrameworkDisplayValueLambda(
         innerLambda: FrameworkDisplayValueLambda,
         fieldLabel: String?,
-        dataPointAccessor: String
+        dataPointAccessor: String,
     ): FrameworkDisplayValueLambda {
         return SimpleDocumentSupport.getFrameworkDisplayValueLambda(innerLambda, fieldLabel, dataPointAccessor)
     }
 
     override fun getDataAccessor(dataPointAccessor: String, nullable: Boolean): String {
         return SimpleDocumentSupport.getDataAccessor(dataPointAccessor, nullable)
+    }
+
+    override fun getFixtureExpression(
+        nullableFixtureExpression: String,
+        fixtureExpression: String,
+        nullable: Boolean,
+    ): String {
+        return if (nullable) {
+            "dataGenerator.randomExtendedDataPoint($nullableFixtureExpression)"
+        } else {
+            "dataGenerator.guaranteedExtendedDataPoint($fixtureExpression)"
+        }
     }
 }

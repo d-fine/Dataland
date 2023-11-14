@@ -18,7 +18,6 @@
 </#macro>
 
 <#macro mldtconfig items>
-
 <@indent>
 <#list items as element><#if element.isCell()><@mldtcell element/></#if><#if element.isSection()><@mldtsection element/></#if>,
 </#list>

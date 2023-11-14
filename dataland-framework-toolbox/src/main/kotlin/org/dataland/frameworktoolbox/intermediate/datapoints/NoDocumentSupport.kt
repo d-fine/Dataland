@@ -11,12 +11,24 @@ data object NoDocumentSupport : DocumentSupport {
     override fun getFrameworkDisplayValueLambda(
         innerLambda: FrameworkDisplayValueLambda,
         fieldLabel: String?,
-        dataPointAccessor: String
+        dataPointAccessor: String,
     ): FrameworkDisplayValueLambda {
         return innerLambda
     }
 
     override fun getDataAccessor(dataPointAccessor: String, nullable: Boolean): String {
         return dataPointAccessor
+    }
+
+    override fun getFixtureExpression(
+        nullableFixtureExpression: String,
+        fixtureExpression: String,
+        nullable: Boolean,
+    ): String {
+        return if (nullable) {
+            nullableFixtureExpression
+        } else {
+            fixtureExpression
+        }
     }
 }

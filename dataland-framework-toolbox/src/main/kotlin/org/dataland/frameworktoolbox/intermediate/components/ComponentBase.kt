@@ -7,6 +7,7 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
+import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 
 /**
@@ -40,6 +41,12 @@ open class ComponentBase(
      * The viewConfigGenerator allows users to overwrite the ViewConfig generation of this specific component instance
      */
     var viewConfigGenerator: ((sectionConfigBuilder: SectionConfigBuilder) -> Unit)? = null
+
+    /**
+     * The fixtureGeneratorGenerator allows users to overwrite the FixtureGeneration generation
+     * of this specific component isntance
+     */
+    var fixtureGeneratorGenerator: ((sectionBuilder: FixtureSectionBuilder) -> Unit)? = null
 
     /**
      * True iff this component is optional / accepts null values
@@ -100,5 +107,19 @@ open class ComponentBase(
      */
     fun generateViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         return viewConfigGenerator?.let { it(sectionConfigBuilder) } ?: generateDefaultViewConfig(sectionConfigBuilder)
+    }
+
+    /**
+     * Build the fixture code generation for this component using the default generator
+     */
+    open fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+        throw NotImplementedError("This component did not implement fixture code-generation.")
+    }
+
+    /**
+     * Build the fixture code generation for this component
+     */
+    fun generateFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+        return fixtureGeneratorGenerator?.let { it(sectionBuilder) } ?: generateDefaultFixtureGenerator(sectionBuilder)
     }
 }
