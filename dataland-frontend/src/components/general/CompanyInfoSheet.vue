@@ -1,21 +1,21 @@
 <template>
-  <div ref="sheet" :class="`sheet ${isCollapsed ? 'visuals-hidden' : ''}`">
+  <div ref="sheet" :class="`sheet ${isCollapsed ? 'visuals-hidden' : ''}`" data-test="sheet">
     <template v-if="!useMobileView">
       <BackButton />
       <CompaniesOnlySearchBar @select-company="$emit('selectCompany', $event)" classes="w-8 mt-2" />
     </template>
     <template v-else>
-      <div class="mobile-header" data-test="company-info-sheet-mobile-header">
+      <div class="mobile-header">
         <BackButton label="" />
-        <div class="mobile-header__title">
+        <div class="mobile-header__title" data-test="mobile-header-title">
           {{ mobileTitle }}
         </div>
       </div>
     </template>
     <CompanyInformationBanner :companyId="companyId" @fetchedCompanyInformation="onFetchedCompanyInformation($event)" />
   </div>
-  <div ref="attachedSheet" :class="`sheet--attached ${isCollapsed ? '' : 'visuals-hidden'}`">
-    <div class="mobile-header" data-test="company-info-sheet-mobile-header">
+  <div ref="attachedSheet" :class="`sheet--attached ${isCollapsed ? '' : 'visuals-hidden'}`" data-test="sheet-attached">
+    <div class="mobile-header">
       <BackButton label="" />
       <div class="mobile-header__title">
         {{ mobileTitle }}

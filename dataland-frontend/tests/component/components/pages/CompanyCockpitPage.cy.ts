@@ -135,14 +135,18 @@ describe("Component test for the company cockpit", () => {
 
   /**
    * Validates if the mobile header of the company info sheet is currently fixed or not
-   * @param isPositionExpectedToBeFixed determines if the header is expected to be fixed or not
+   * @param isScrolled determines if the mobile page is currently scrolled or not
    */
-  function validateMobileHeader(isPositionExpectedToBeFixed: boolean): void {
-    // TODO naming
-    const companyInfoSheetMobileHeaderSelector = "[data-test=company-info-sheet-mobile-header]";
-    cy.get(companyInfoSheetMobileHeaderSelector)
-      .should("be.visible")
-      .should(isPositionExpectedToBeFixed ? "have.css" : "not.have.css", "position", "fixed");
+  function validateMobileHeader(isScrolled: boolean): void {
+    const sheetSelector = "[data-test=sheet]";
+    const attachedSheetSelector = "[data-test=sheet-attached]";
+    const mobileHeaderTitleSelector = "[data-test=mobile-header-title]";
+    cy.get(mobileHeaderTitleSelector).should(
+      "have.text",
+      isScrolled ? companyInformationForTest.companyName : "Company Overview",
+    );
+    cy.get(sheetSelector).should(isScrolled ? "have.css" : "not.have.css", "visibility", "hidden");
+    cy.get(attachedSheetSelector).should(isScrolled ? "have.not.css" : "have.css", "visibility", "hidden");
   }
 
   it("Check for all expected elements from a non-logged-in users perspective", () => {
