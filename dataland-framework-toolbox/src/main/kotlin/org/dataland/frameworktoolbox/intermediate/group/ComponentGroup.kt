@@ -19,6 +19,7 @@ class ComponentGroup(
 ) : ComponentBase(identifier, parent), FieldNodeParent, ComponentGroupApi by componentGroupApi {
 
     var viewPageLabelBadgeColor: LabelBadgeColor? = null
+    var viewPageExpandOnPageLoad: Boolean = false
 
     override val children: Sequence<ComponentBase> by componentGroupApi::children
 
@@ -61,7 +62,7 @@ class ComponentGroup(
         val containerSection = sectionConfigBuilder.addSection(
             label = localLabel,
             labelBadgeColor = viewPageLabelBadgeColor,
-            expandOnPageLoad = false,
+            expandOnPageLoad = viewPageExpandOnPageLoad,
             shouldDisplay = FrameworkBooleanLambda.TRUE,
         )
 

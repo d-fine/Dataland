@@ -8,6 +8,7 @@ import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import java.io.FileWriter
 import java.nio.file.Path
+import java.util.concurrent.TimeUnit
 import kotlin.io.path.div
 import kotlin.io.path.notExists
 
@@ -81,5 +82,10 @@ class FrameworkFixtureGeneratorBuilder(
         buildPreparedFixturesTs(frameworkConfigDir /
                 "${framework.identifier.capitalizeEn()}PreparedFixtures.ts"
         )
+
+        into.gradleInterface.executeGradleTasks(listOf(
+            "dataland-frontend:npm_run_checkfakefixturecompilation",
+            "dataland-frontend:npm_run_fakefixtures"
+        ))
     }
 }
