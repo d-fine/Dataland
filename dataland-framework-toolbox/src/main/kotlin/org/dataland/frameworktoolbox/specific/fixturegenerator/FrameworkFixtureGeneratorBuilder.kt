@@ -9,6 +9,7 @@ import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import java.io.FileWriter
 import java.nio.file.Path
 import kotlin.io.path.div
+import kotlin.io.path.notExists
 
 class FrameworkFixtureGeneratorBuilder(
     private val framework: Framework,
@@ -32,6 +33,21 @@ class FrameworkFixtureGeneratorBuilder(
         val writer = FileWriter(indexTsPath.toFile())
         freemarkerTemplate.process(freeMarkerContext, writer)
         writer.close()
+    }
+
+    private fun buildPreparedFixturesTs(preparedFixturesTsPath: Path) {
+        val freeMarkerContext = mapOf(
+            "frameworkIdentifier" to framework.identifier,
+        )
+
+        val freemarkerTemplate = FreeMarker.configuration
+            .getTemplate("/specific/fixturegenerator/PreparedFixtures.ts.ftl")
+
+        if (preparedFixturesTsPath.notExists()) {
+            val writer = FileWriter(preparedFixturesTsPath.toFile())
+            freemarkerTemplate.process(freeMarkerContext, writer)
+            writer.close()
+        }
     }
 
     private fun buildDataFixtures(dataFixturesTsPath: Path) {
@@ -62,5 +78,8 @@ class FrameworkFixtureGeneratorBuilder(
 
         buildIndexTs(frameworkConfigDir / "index.ts")
         buildDataFixtures(frameworkConfigDir / "${framework.identifier.capitalizeEn()}DataFixtures.ts")
+        buildPreparedFixturesTs(frameworkConfigDir /
+                "${framework.identifier.capitalizeEn()}PreparedFixtures.ts"
+        )
     }
 }
