@@ -12,8 +12,8 @@ import java.io.File
  * The class to create csv file containing updated LEI-ISIN mapping
  */
 @Component
-class IsinDeltaBuilder (
-    @Value("\${dataland.dataland-batch-manager.mapping-file}") private val savedMappingFile: File
+class IsinDeltaBuilder(
+    @Value("\${dataland.dataland-batch-manager.mapping-file}") private val savedMappingFile: File,
 ) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -109,7 +109,7 @@ class IsinDeltaBuilder (
             if (!newMappingFile.renameTo(savedMappingFile)) {
                 logger.error("Unable to replace the old mapping file with the new mapping file")
             }
-        } catch (e: Exception) {
+        } catch (e: FileSystemException) {
             logger.error("Error while replacing the old mapping file: ${e.message}")
         }
     }
