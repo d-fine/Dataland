@@ -36,7 +36,7 @@ export default defineComponent({
   },
   setup() {
     return {
-      authenticated: inject<boolean>("authenticated"), // TODO is this broken (its type is actually computed<boolean>)
+      authenticated: inject<boolean>("authenticated"),
     };
   },
 });
