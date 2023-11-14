@@ -55,13 +55,17 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
     /**
      * Counts the dataset meta information
      * filtered by company ID, data type and if it is currently active
-     * @param company_companyId the ID of the company to filter for
+     * @param companyId the ID of the company to filter for
      * @param dataType the data type to filter for
      * @param currentlyActive the currently active filter
      * @returns the number of data meta informations that fulfill these criteria
      */
-    fun countByCompany_CompanyIdAndDataTypeAndCurrentlyActive(
-        company_companyId: String,
+    @Query(
+        "SELECT COUNT(d) FROM DataMetaInformationEntity d " +
+            "WHERE d.company.companyId = ?1 AND d.dataType = ?2 AND d.currentlyActive = ?3",
+    )
+    fun countByCompanyIdAndDataTypeAndCurrentlyActive(
+        companyId: String,
         dataType: String,
         currentlyActive: Boolean,
     ): Long

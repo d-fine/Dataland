@@ -11,7 +11,6 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -22,12 +21,6 @@ class CompanyDataControllerTest {
     private val apiAccessor = ApiAccessor()
     private val baseCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithRandomIdentifiers(1).first()
-    private val company2 = "Company 2"
-    private val company3 = "Company 3"
-    private val company5 = "Company 5"
-    private val company6 = "Company 6"
-    private val company8 = "Company 8"
-    private val company9 = "Company 9"
 
     @Test
     fun `post a dummy company and check if post was successful`() {
@@ -324,34 +317,34 @@ class CompanyDataControllerTest {
             searchString = testString,
         ).map { it.companyName }
         assertEquals(
-            listOf(company9) + (1..4).map { "$testString $it" },
+            listOf("Other Company") + (1..4).map { "$testString $it" },
             sortedCompanyNames,
         )
     }
 
     private fun uploadCompaniesInReverseToExpectedOrder(expectedSearchString: String) {
-        uploadModifiedBaseCompany("$expectedSearchString 4", null, null)
-        var companyId = uploadModifiedBaseCompany("$expectedSearchString 3", null, null)
+        uploadModifiedBaseCompany("$expectedSearchString 4", null)
+        var companyId = uploadModifiedBaseCompany("$expectedSearchString 3", null)
         uploadDummyDataset(companyId = companyId, bypassQa = false)
-        companyId = uploadModifiedBaseCompany("$expectedSearchString 2", null, null)
+        companyId = uploadModifiedBaseCompany("$expectedSearchString 2", null)
         uploadDummyDataset(companyId = companyId, bypassQa = true)
         uploadDummyDataset(companyId = companyId, bypassQa = true)
         uploadDummyDataset(companyId = companyId, bypassQa = true)
-        companyId = uploadModifiedBaseCompany("$expectedSearchString 1", null, null)
+        companyId = uploadModifiedBaseCompany("$expectedSearchString 1", null)
         uploadDummyDataset(companyId = companyId, reportingPeriod = "a", bypassQa = true)
         uploadDummyDataset(companyId = companyId, reportingPeriod = "b", bypassQa = true)
-        companyId = uploadModifiedBaseCompany(company9, listOf("1${expectedSearchString}2"), null)
+        companyId = uploadModifiedBaseCompany("Other Company", listOf("1${expectedSearchString}2"))
         uploadDummyDataset(companyId = companyId, reportingPeriod = "a", bypassQa = true)
         uploadDummyDataset(companyId = companyId, reportingPeriod = "b", bypassQa = true)
         uploadDummyDataset(companyId = companyId, reportingPeriod = "c", bypassQa = true)
     }
 
-    private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?, identifier: String?): String {
+    private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?): String {
         val companyInformation = baseCompanyInformation.copy(
             companyName = name,
             companyAlternativeNames = alternativeNames,
             identifiers = mapOf(
-                IdentifierType.isin.value to listOf(identifier ?: UUID.randomUUID().toString()),
+                IdentifierType.isin.value to listOf(UUID.randomUUID().toString()),
             ),
         )
         return apiAccessor.companyDataControllerApi.postCompany(companyInformation).companyId
@@ -360,7 +353,7 @@ class CompanyDataControllerTest {
     val dummyCompanyAssociatedDataWithoutCompanyId = CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
         companyId = "placeholder",
         reportingPeriod = "placeholder",
-        data = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first()
+        data = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first(),
     )
     private fun uploadDummyDataset(companyId: String, reportingPeriod: String = "default", bypassQa: Boolean = false) {
         apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(

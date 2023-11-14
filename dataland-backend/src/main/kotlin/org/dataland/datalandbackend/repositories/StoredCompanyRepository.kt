@@ -79,7 +79,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " ELSE num_active_datasets" +
             " END num_active_datasets" +
             " FROM stored_companies" +
-            " LEFT JOIN num_active_datasets_per_company ON num_active_datasets_per_company.company_id = stored_companies.company_id" +
+            " LEFT JOIN num_active_datasets_per_company" +
+            " ON num_active_datasets_per_company.company_id = stored_companies.company_id" +
             " WHERE company_name ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}" +
             " ORDER BY num_active_datasets DESC, match_quality DESC, company_id LIMIT 100)" +
             " UNION " +
@@ -99,7 +100,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " FROM stored_company_entity_company_alternative_names" +
             " JOIN stored_companies ON stored_companies.company_id = " +
             " stored_company_entity_company_alternative_names.stored_company_entity_company_id  " +
-            " LEFT JOIN num_active_datasets_per_company ON num_active_datasets_per_company.company_id = stored_company_entity_company_id" +
+            " LEFT JOIN num_active_datasets_per_company" +
+            " ON num_active_datasets_per_company.company_id = stored_company_entity_company_id" +
             " WHERE company_alternative_names ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}" +
             " ORDER BY num_active_datasets DESC, match_quality DESC, company_id LIMIT 100)" +
 
@@ -117,7 +119,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " END num_active_datasets" +
             " FROM company_identifiers" +
             " JOIN stored_companies ON stored_companies.company_id = company_identifiers.company_id " +
-            " LEFT JOIN num_active_datasets_per_company ON num_active_datasets_per_company.company_id = company_identifiers.company_id" +
+            " LEFT JOIN num_active_datasets_per_company" +
+            " ON num_active_datasets_per_company.company_id = company_identifiers.company_id" +
             " WHERE identifier_value ILIKE %:#{escape(#searchString)}% ESCAPE :#{escapeCharacter()}" +
             " ORDER BY num_active_datasets DESC, match_quality DESC, company_id LIMIT 100)) " +
             // Combine Results
@@ -125,7 +128,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " MIN(filtered_text_results.company_name) AS companyName" +
             " FROM filtered_text_results " +
             " GROUP BY filtered_text_results.company_id" +
-            " ORDER BY MAX(filtered_text_results.num_active_datasets) DESC, MAX(filtered_text_results.match_quality) DESC, companyId" +
+            " ORDER BY MAX(filtered_text_results.num_active_datasets) DESC," +
+            " MAX(filtered_text_results.match_quality) DESC, companyId" +
             " LIMIT 100 ",
     )
     fun searchCompaniesByNameOrIdentifier(
