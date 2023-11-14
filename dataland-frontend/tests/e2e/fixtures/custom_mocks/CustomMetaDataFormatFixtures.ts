@@ -13,7 +13,7 @@ export function extractMetaInfoAssociatedWithReportingPeriodByDataType(
   const holdingObject: MetaInfoAssociatedWithReportingPeriodByDataType = {};
   [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.Lksg].forEach((dataType) => {
     holdingObject[dataType] = metaInfoDataForOneCompany
-      .filter((metaInfo) => metaInfo.dataType == dataType) // TODO: Think about this
+      .filter((metaInfo) => metaInfo.dataType == dataType)
       .map((metaInfo) => [metaInfo.reportingPeriod, metaInfo]);
   });
   return holdingObject;

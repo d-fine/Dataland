@@ -2,13 +2,10 @@ import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
 import { DataTypeEnum, type EuTaxonomyDataForFinancials, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
-import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { describeIf } from "@e2e/support/TestUtility";
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
-import { getFirstEuTaxonomyFinancialsFixtureDataFromFixtures } from "@e2e/utils/EuTaxonomyFinancialsUpload";
 
 let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 
@@ -159,7 +156,7 @@ describe("As a user, I expect the search functionality on the /companies page to
                 .click({ force: true })
                 .type("{backspace}")
                 .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
-              cy.get("ul[class=p-autocomplete-items]").should("exist"); // TODO navigation test stuff can be moved to component test
+              cy.get("ul[class=p-autocomplete-items]").should("exist");
               cy.get("input[id=search_bar_top]").type("{downArrow}");
               cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
               cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
@@ -181,36 +178,6 @@ describe("As a user, I expect the search functionality on the /companies page to
               validateCompanyCockpitPage(testCompany.companyInformation.companyName, testCompany.companyId);
             },
           );
-        });
-      });
-
-      it("Check if substrings of autocomplete entries are highlighted", { scrollBehavior: false }, () => {
-        // TODO Emanuel: component test, exclusively for the search bar (rather than the whole page?)
-        cy.ensureLoggedIn();
-        const highlightedSubString = "this_is_highlighted";
-        const companyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
-        getKeycloakToken(admin_name, admin_pw).then((token) => {
-          getFirstEuTaxonomyFinancialsFixtureDataFromFixtures().then((fixtureData) => {
-            return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyName)).then((storedCompany) => {
-              return uploadFrameworkData(
-                DataTypeEnum.EutaxonomyFinancials,
-                token,
-                storedCompany.companyId,
-                fixtureData.reportingPeriod,
-                fixtureData.t,
-              );
-            });
-          });
-        });
-        cy.visitAndCheckAppMount("/companies");
-        cy.intercept("**/api/companies*").as("searchCompany");
-        cy.get("input[id=search_bar_top]").click({ force: true }).type(highlightedSubString);
-        cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-          cy.get(".p-autocomplete-item")
-            .eq(0)
-            .get("span[class='font-semibold']")
-            .contains(highlightedSubString)
-            .should("exist");
         });
       });
     },
