@@ -5,12 +5,15 @@ type MetaInfoAssociatedWithReportingPeriodByDataType = { [key in DataTypeEnum]?:
 
 /**
  * Creates an object TODO
+ * @param metaInfoDataForOneCompany
  * @returns the generated structure
  */
-export function generateMetaInfoAssociatedWithReportingPeriodByDataType(): MetaInfoAssociatedWithReportingPeriodByDataType {
+export function extractMetaInfoAssociatedWithReportingPeriodByDataType(
+  metaInfoDataForOneCompany: DataMetaInformation[],
+): MetaInfoAssociatedWithReportingPeriodByDataType {
   const holdingObject: MetaInfoAssociatedWithReportingPeriodByDataType = {};
   [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.Lksg].forEach((dataType) => {
-    holdingObject[dataType] = generateMetaInfoDataForOneCompany()
+    holdingObject[dataType] = metaInfoDataForOneCompany
       .filter((metaInfo) => metaInfo.dataType == dataType) // TODO: Think about this
       .map((metaInfo) => [metaInfo.reportingPeriod, metaInfo]);
   });
