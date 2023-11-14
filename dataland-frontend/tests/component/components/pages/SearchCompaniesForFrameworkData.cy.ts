@@ -1,17 +1,22 @@
 import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { prepareSimpleDataSearchStoredCompanyArray } from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
 import type Keycloak from "keycloak-js";
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 import { verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
+import { type DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+
+let mockDataSearchResponse: Array<DataSearchStoredCompany>;
+
+before(function () {
+  cy.fixture("DataSearchStoredCompanyMocks").then(function (jsonContent) {
+    mockDataSearchResponse = jsonContent as Array<DataSearchStoredCompany>;
+  });
+});
 
 describe("Component tests for the Dataland companies search page", function (): void {
-  const mockDataSearchStoredCompanyArray = prepareSimpleDataSearchStoredCompanyArray();
-  // TODO Emanuel: Rather generate a json in the fakefixtures npm script than building objects on the fly
-
   beforeEach(() => {
-    cy.intercept("**/api/companies?**", mockDataSearchStoredCompanyArray);
-    cy.intercept("**/api/companies/meta-information", mockDataSearchStoredCompanyArray[0].dataRegisteredByDataland[0]);
+    cy.intercept("**/api/companies?**", mockDataSearchResponse);
+    cy.intercept("**/api/companies/meta-information", {}); // TODO Fill with correct mocks
   });
 
   /**
@@ -32,6 +37,7 @@ describe("Component tests for the Dataland companies search page", function (): 
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
+      // TODO check filters
       const placeholder = "Search company by name or PermID";
       const inputValue = "A company name";
       cy.get("input[id=search_bar_top]")
@@ -43,7 +49,7 @@ describe("Component tests for the Dataland companies search page", function (): 
     });
   });
 
-  it("Check static layout of the search page", { scrollBehavior: false }, function () {
+  it("Check correct behaviour of search bar when scrolling", { scrollBehavior: false }, function () {
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {

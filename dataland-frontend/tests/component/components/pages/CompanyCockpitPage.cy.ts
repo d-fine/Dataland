@@ -20,7 +20,7 @@ describe("Component test for the company cockpit", () => {
       const smeFixtures = jsonContent as Array<FixtureData<SmeData>>;
       companyInformationForTest = smeFixtures[0].companyInformation;
     });
-    cy.fixture("MapOfDataTypeToAggregatedFrameworkDataSummary").then(function (jsonContent) {
+    cy.fixture("MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock").then(function (jsonContent) {
       mockMapOfDataTypeToAggregatedFrameworkDataSummary = jsonContent as Map<
         AggregatedDataRequestDataTypeEnum,
         AggregatedFrameworkDataSummary

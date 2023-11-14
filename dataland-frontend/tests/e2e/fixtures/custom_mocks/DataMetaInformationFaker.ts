@@ -7,7 +7,7 @@ import { range } from "@/utils/ArrayUtils";
  * Generates a list of data meta information for some data types
  * @returns a lost of data meta information
  */
-export function generateListOfMetaInformationForOneCompany(): DataMetaInformation[] {
+export function generateMetaInfoDataForOneCompany(): DataMetaInformation[] {
   const listOfMetaInfo: DataMetaInformation[] = [];
   const metaInfoGenerator = new DataMetaInformationGenerator();
   const companyId = faker.string.uuid();
@@ -27,7 +27,7 @@ export function generateListOfMetaInformationForOneCompany(): DataMetaInformatio
     listOfMetaInfo.push(metaInfo);
   }
 
-  range(2).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.EutaxonomyFinancials));
+  range(2).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.EutaxonomyFinancials)); // TODO
   range(4).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.EutaxonomyNonFinancials));
   range(2).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.Lksg));
   range(1).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.Sfdr));
