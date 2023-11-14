@@ -8,7 +8,7 @@ import { EuNonFinancialsGenerator } from "@e2e/fixtures/frameworks/eutaxonomy-no
 import { generateCurrencyValue, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
-import { generateDataPoint, generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
+import { generateCurrencyExtendedDataPoint, generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy-shared/EuTaxonomySharedValuesFixtures";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { generateArray } from "@e2e/fixtures/FixtureUtils";
@@ -30,7 +30,11 @@ class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
 
   generateMinimumAcceptedDetailsPerCashFlowType(): EuTaxonomyDetailsPerCashFlowType {
     return {
-      totalAmount: generateDataPoint(this.valueOrNull(generateCurrencyValue()), this.reports, generateCurrencyCode()),
+      totalAmount: generateCurrencyExtendedDataPoint(
+        this.valueOrNull(generateCurrencyValue()),
+        this.reports,
+        generateCurrencyCode(),
+      ),
       nonEligibleShare: this.generateFinancialShare(),
       eligibleShare: this.generateFinancialShare(),
       nonAlignedShare: this.generateFinancialShare(),

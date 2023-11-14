@@ -1,4 +1,8 @@
-import { generateDataPoint, generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
+import {
+  generateCurrencyExtendedDataPoint,
+  generateExtendedDataPoint,
+  generateReferencedReports,
+} from "@e2e/fixtures/common/DataPointFixtures";
 import { type ReferencedDocuments, generateArray, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { type CurrencyDataPoint, type YesNo, type YesNoNa } from "@clients/backend";
@@ -69,12 +73,12 @@ export class Generator {
   }
 
   randomExtendedDataPoint<T>(input: T): ExtendedDataPoint<T> | null {
-    return this.valueOrNull(generateDataPoint(this.valueOrNull(input), this.reports) as ExtendedDataPoint<T>);
+    return this.valueOrNull(generateExtendedDataPoint(this.valueOrNull(input), this.reports));
   }
 
   randomCurrencyDataPoint(input = generateCurrencyValue()): CurrencyDataPoint | null {
     const localCurrency = generateCurrencyCode();
-    return this.valueOrNull(generateDataPoint(this.valueOrNull(input), this.reports, localCurrency));
+    return this.valueOrNull(generateCurrencyExtendedDataPoint(this.valueOrNull(input), this.reports, localCurrency));
   }
 
   randomArray<T>(generator: () => T, min = 0, max = 5): T[] | null {

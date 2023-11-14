@@ -44,18 +44,9 @@ export function generateReferencedReports(
  * Generates a datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
  * @param value the value of the datapoint to generate
  * @param reports the reports that can be referenced as data sources
- * @param currency the currency of the datapoint to generate
  * @returns the generated datapoint
  */
-export function generateDataPoint<T>(
-  value: T | null,
-  reports: ReferencedDocuments,
-  currency?: string | null,
-): ExtendedDataPoint<T> | CurrencyDataPoint {
-  if (currency != undefined && value != null && typeof value != "number") {
-    throw TypeError("Parameter `currency` is defined but parameter `value` is not of type number");
-  }
-
+export function generateExtendedDataPoint<T>(value: T | null, reports: ReferencedDocuments): ExtendedDataPoint<T> {
   const qualityBucket =
     value === null
       ? QualityOptions.Na
@@ -66,8 +57,26 @@ export function generateDataPoint<T>(
   return {
     value: value,
     dataSource: dataSource,
-    quality: qualityBucket,
     comment: comment,
+    quality: qualityBucket,
+  };
+}
+
+/**
+ * Generates a currency Datapoint with the given value, choosing a random quality bucket and report (might be empty/NA)
+ * @param value the value of the datapoint to generate
+ * @param reports the reports that can be referenced as data sources
+ * @param currency the currency of the datapoint
+ * @returns the generated datapoint
+ */
+export function generateCurrencyExtendedDataPoint(
+  value: number | null,
+  reports: ReferencedDocuments,
+  currency: string | null,
+): CurrencyDataPoint {
+  const datapoint = generateExtendedDataPoint(value, reports);
+  return {
+    ...datapoint,
     currency: currency,
   };
 }

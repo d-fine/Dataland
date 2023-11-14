@@ -1,5 +1,8 @@
 import { type FrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 
+// Ignored as TSC does not know of this vite-specific import possibility
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 const frameworkModules: Record<string, FrameworkDefinition<unknown>> = import.meta.glob("./*/index.ts", {
   import: "default",
   eager: true,
