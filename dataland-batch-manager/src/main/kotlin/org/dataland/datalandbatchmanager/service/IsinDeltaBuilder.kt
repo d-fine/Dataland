@@ -4,6 +4,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.kotlinModule
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -11,7 +12,9 @@ import java.io.File
  * The class to create csv file containing updated LEI-ISIN mapping
  */
 @Component
-class IsinDeltaBuilder {
+class IsinDeltaBuilder (
+    @Value("\${dataland.dataland-batch-manager.mapping-file}") private val savedMappingFile: File
+) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -95,7 +98,19 @@ class IsinDeltaBuilder {
      * @param newMappingFile latest version of the LEI-ISIN mapping file
      */
     fun replaceOldMappingFile(newMappingFile: File) {
-        // DO: Delete old mapping file and replace it with the new mapping file to be used next week
-        newMappingFile.isFile
+        try {
+            if (savedMappingFile.exists()) {
+                if (!savedMappingFile.delete()) {
+                    logger.error("Unable to delete the old mapping file $savedMappingFile")
+                    return
+                }
+            }
+
+            if (!newMappingFile.renameTo(savedMappingFile)) {
+                logger.error("Unable to replace the old mapping file with the new mapping file")
+            }
+        } catch (e: Exception) {
+            logger.error("Error while replacing the old mapping file: ${e.message}")
+        }
     }
 }

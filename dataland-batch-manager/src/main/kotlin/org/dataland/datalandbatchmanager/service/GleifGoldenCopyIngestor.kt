@@ -82,8 +82,8 @@ class GleifGoldenCopyIngestor(
 
     private fun prepareDeltaFile() {
         logger.info("Starting Gleif company update cycle for latest delta file.")
-        val tempDeltaFile = File.createTempFile("gleif_update_delta", ".csv")
-        processDeltaFile(tempDeltaFile, gleifApiAccessor::getLastMonthGoldenCopyDelta)
+        val tempFile = File.createTempFile("gleif_update_delta", ".csv")
+        processDeltaFile(tempFile, gleifApiAccessor::getLastMonthGoldenCopyDelta)
     }
 
     @Synchronized
@@ -103,38 +103,24 @@ class GleifGoldenCopyIngestor(
 
     private fun prepareMappingFile() {
         logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
-        val tempMappingFile = File.createTempFile("gleif_mapping_update", ".csv")
-        processMappingFile(tempMappingFile, isinDeltaBuilder::createDeltaOfMappingFile)
+        val tempFile = File.createTempFile("gleif_mapping_update", ".csv")
+        processMappingFile(tempFile, gleifApiAccessor::getIsinMappingFile)
         // upload file via API, see also hint from Andreas
     }
 
     @Synchronized
-    private fun processMappingFile(
-        newMappingFile: File,
-        getDeltaMapping: (newFile: File, oldFile: File) -> Map<String, String>,
-    ) {
+    private fun processMappingFile(newMappingFile: File, downloadFile: (file: File) -> Unit) {
         waitForBackend()
         val start = System.nanoTime()
         try {
-            val deltaMap = getDeltaMapping(newMappingFile, savedMappingFile)
-            // do: replace old mapping with new mapping
+            downloadFile(newMappingFile)
+            val deltaMap = isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedMappingFile)
             // do: integrate delta map into code
         } finally {
             // if replacing didn't work or other issues to catch
         }
         logger.info("Finished processing of file $newMappingFile in ${getExecutionTime(start)}.")
     }
-    // waitForBackend()
-    //  download ZIP file
-    //  downloadFile(csvFile)
-    // do: unpack ZIP file into CSV
-//        val newFileIsinCsv = File.createTempFile("gleif_ISIN_update", ".csv")
-    // do: do the unpacking
-//        val oldFileIsinCsv
-    // do: get the old file as oldFileIsinCsv
-//      produce delta of that file
-//     val isinDeltas: Map<String, String> = isinDeltaBuilder.createDeltaOfMappingFile(newFileIsinCsv, oldFileIsinCsv)
-    //   }
 
     private fun waitForBackend() {
         val timeoutTime = Instant.now().toEpochMilli() + MAX_WAITING_TIME_IN_MS
@@ -153,7 +139,7 @@ class GleifGoldenCopyIngestor(
     }
 
     private fun uploadCompanies(csvFile: File) {
-        val gleifDataStream = gleifParser.getCsvStreamFromZip(csvFile) // do: zip or csv coming in?
+        val gleifDataStream = gleifParser.getCsvStreamFromZip(csvFile)
         val gleifIterator = gleifParser.readGleifDataFromBufferedReader(gleifDataStream)
         val gleifIterable = Iterable<GleifCompanyInformation> { gleifIterator }
 
