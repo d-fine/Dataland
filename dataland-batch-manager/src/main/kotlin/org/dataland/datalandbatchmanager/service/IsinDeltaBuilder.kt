@@ -84,14 +84,11 @@ class IsinDeltaBuilder {
                 val isin = entry["ISIN"]
 
                 if (lei != null && isin != null && mappings.containsKey(lei)) {
-                    // Check if LEI already exists in mappings
-//                    if (mappings.containsKey(lei)) {
                     mappings[lei]?.append(",")
                     mappings[lei]?.append(isin)
                 } else if (lei != null && isin != null && !mappings.containsKey(lei)) {
                     mappings[lei] = StringBuilder(isin)
                 }
-//                }
             }
         } catch (e: FileSystemException) {
             logger.error("Error while parsing CSV: ${e.message}")
