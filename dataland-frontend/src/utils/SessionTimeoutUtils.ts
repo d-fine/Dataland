@@ -56,6 +56,8 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
       onSurpassingExpiredSessionTimestampCallback();
     }
   }, TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS);
+  // TODO for now we ignore the next line. NodeJS thinks that this is not a number. However in a browser-env it is!
+  // @ts-ignore
   return functionIdOfSetInterval;
 }
 
