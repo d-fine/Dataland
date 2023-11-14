@@ -17,6 +17,7 @@ import java.net.URL
 class GleifApiAccessor(
     @Value("\${gleif.download.baseurl}") private val gleifBaseUrl: String,
     @Value("\${gleif.mapping.download.baseurl}") private val gleifMappingBaseUrl: String,
+    @Value("\${dataland.dataland-batch-manager.mapping-file}") private val mappingFileLocation: File,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
