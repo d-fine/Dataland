@@ -1,7 +1,7 @@
 import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
 import { DataTypeEnum, type EuTaxonomyDataForFinancials, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
-import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
+import { verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
 import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { describeIf } from "@e2e/support/TestUtility";
@@ -23,70 +23,12 @@ describe("As a user, I expect the search functionality on the /companies page to
     cy.ensureLoggedIn();
   });
 
-  it("Check static layout of the search page", function () {
-    cy.visitAndCheckAppMount("/companies");
-    const placeholder = "Search company by name or PermID";
-    const inputValue = "A company name";
-    cy.get("input[id=search_bar_top]")
-      .should("not.be.disabled")
-      .type(inputValue)
-      .should("have.value", inputValue)
-      .invoke("attr", "placeholder")
-      .should("contain", placeholder);
-  });
-
   describeIf(
     "",
     {
       executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
     },
     () => {
-      it(
-        "Scroll the page and check if search icon and search bar behave as expected",
-        { scrollBehavior: false },
-        () => {
-          cy.visitAndCheckAppMount("/companies");
-          verifySearchResultTable();
-          cy.get("button[name=search_bar_collapse]").should("not.be.visible");
-
-          cy.scrollTo(0, 500, { duration: 300 });
-          cy.get("input[id=search_bar_top]").should("exist");
-          cy.get("button[name=search_bar_collapse]").should("be.visible");
-
-          cy.scrollTo(0, 0, { duration: 300 });
-          cy.get("input[id=search_bar_top]").should("exist");
-          cy.get("button[name=search_bar_collapse]").should("not.be.visible");
-
-          cy.scrollTo(0, 500, { duration: 300 });
-          cy.get("button[name=search_bar_collapse]").should("exist").click();
-          cy.get("input[id=search_bar_top]").should("not.exist");
-          cy.get("input[id=search_bar_scrolled]").should("exist");
-          cy.get("button[name=search_bar_collapse]").should("not.be.visible");
-
-          cy.scrollTo(0, 480, { duration: 300 });
-          cy.get("button[name=search_bar_collapse]").should("be.visible");
-          cy.get("input[id=search_bar_top]").should("exist");
-          cy.get("input[id=search_bar_scrolled]").should("not.exist");
-        },
-      );
-
-      it(
-        "Scroll the page to type into the search bar in different states and check if the input is always saved",
-        { scrollBehavior: false },
-        () => {
-          const inputValue1 = "ABCDEFG";
-          const inputValue2 = "XYZ";
-          cy.visitAndCheckAppMount("/companies");
-          verifySearchResultTable();
-          cy.get("input[id=search_bar_top]").type(inputValue1);
-          cy.scrollTo(0, 500);
-          cy.get("button[name=search_bar_collapse]").click();
-          cy.get("input[id=search_bar_scrolled]").should("have.value", inputValue1).type(inputValue2);
-          cy.scrollTo(0, 0);
-          cy.get("input[id=search_bar_top]").should("have.value", inputValue1 + inputValue2);
-        },
-      );
-
       /**
        * Enters the given text in the search bar and hits enter verifying that the search result table matches the expected
        * format and the url includes the search term
@@ -102,7 +44,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           .type("{enter}")
           .should("have.value", inputValue);
         cy.url({ decode: true }).should("include", "/companies?input=" + inputValueUntilFirstSpace);
-        verifySearchResultTable();
+        verifySearchResultTableExists();
       }
 
       it(
@@ -128,12 +70,12 @@ describe("As a user, I expect the search functionality on the /companies page to
           }
 
           cy.visitAndCheckAppMount("/companies");
-          verifySearchResultTable();
+          verifySearchResultTableExists();
           const inputValue = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName;
           const permIdText = "Permanent Identifier (PermID)";
           checkPermIdToolTip(permIdText);
           executeCompanySearchWithStandardSearchBar(inputValue);
-          verifySearchResultTable();
+          verifySearchResultTableExists();
           checkViewButtonWorks();
           cy.get("h1").contains(inputValue);
           cy.get("[title=back_button").should("be.visible").click({ force: true });
@@ -215,7 +157,7 @@ describe("As a user, I expect the search functionality on the /companies page to
               cy.get("input[id=search_bar_top]").type("b");
               cy.get(".p-autocomplete-item").contains("View all results").click();
               cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number }).then(() => {
-                verifySearchResultTable();
+                verifySearchResultTableExists();
                 cy.url().should("include", "/companies?input=b");
               });
               cy.get("input[id=search_bar_top]")
