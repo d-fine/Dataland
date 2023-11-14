@@ -141,10 +141,11 @@ class CompanyQueryManager(
      * @returns the number of active data sets of the specified company and data type
      */
     fun countActiveDatasets(companyId: String, dataType: DataType): Long {
-        return dataMetaInfoRepository.countByCompanyIdAndDataTypeAndCurrentlyActive(
-            companyId,
-            dataType.name,
-            true,
-        )
+        return 0
+//        return dataMetaInfoRepository.countByCompanyIdAndDataTypeAndCurrentlyActive(
+//            companyId,
+//            dataType.name,
+//            true,
+//        )
     }
 }
