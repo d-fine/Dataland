@@ -1,8 +1,5 @@
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
-import type Keycloak from "keycloak-js";
-import { shallowMount } from "@vue/test-utils";
-import { nextTick } from "vue";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
