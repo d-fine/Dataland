@@ -120,6 +120,7 @@ describeIf(
           testSfdrCompany.t,
           "2021",
         ).then((uploadIds) => {
+          cy.intercept(`**/api/data/${DataTypeEnum.Sfdr}/${uploadIds.dataId}`).as("fetchDataForPrefill");
           cy.visitAndCheckAppMount(
             "/companies/" +
               uploadIds.companyId +
@@ -129,6 +130,7 @@ describeIf(
               "?templateDataId=" +
               uploadIds.dataId,
           );
+          cy.wait("@fetchDataForPrefill", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           cy.get("h1").should("contain", companyName);
           selectsReportsForUploadInSfdrForm();
           setQualityInSfdrUploadForm();
@@ -139,6 +141,7 @@ describeIf(
           submitButton.clickButton();
           cy.get("div.p-message-success:not(.p-message-error)").should("not.contain", "An unexpected error occurred.");
           cy.url().should("eq", getBaseUrl() + "/datasets");
+          cy.get('[data-test="datasets-table"]').should("be.visible");
           validateFormUploadedData(uploadIds.companyId);
         });
       });
