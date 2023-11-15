@@ -69,7 +69,7 @@ describe("Component test for the company cockpit", () => {
       }),
       global: {
         provide: {
-          useMobileView: isMobile,
+          useMobileView: { value: isMobile },
         },
       },
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

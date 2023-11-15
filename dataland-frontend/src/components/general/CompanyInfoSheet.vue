@@ -31,7 +31,8 @@ import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/C
 import { type CompanyIdAndName, type CompanyInformation } from "@clients/backend";
 import { computed, inject, onMounted, onUnmounted, ref } from "vue";
 
-const useMobileView = inject<{ value: boolean }>("useMobileView");
+const injectedMobileView = inject<{ value: boolean }>("useMobileView");
+const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.value);
 
 const sheet = ref<HTMLDivElement>();
 const attachedSheet = ref<HTMLDivElement>();
@@ -83,7 +84,7 @@ onUnmounted(() => {
   window.removeEventListener("scroll", onScroll);
 });
 const isCollapsed = computed<boolean>(() => {
-  if (useMobileView?.value && sheetRect.value != undefined && attachedSheetHeight.value != undefined) {
+  if (useMobileView.value && sheetRect.value != undefined && attachedSheetHeight.value != undefined) {
     if (sheetRect.value.bottom <= attachedSheetHeight.value) {
       return true;
     }

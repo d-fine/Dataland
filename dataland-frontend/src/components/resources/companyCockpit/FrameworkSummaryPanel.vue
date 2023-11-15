@@ -70,7 +70,8 @@ const subtitle = computed(() => {
   }
 });
 
-const useMobileView = inject<boolean>("useMobileView");
+const injectedUseMobileView = inject<{ value: boolean }>("useMobileView");
+const useMobileView = computed<boolean | undefined>(() => injectedUseMobileView?.value);
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
 const isUserUploader = ref<boolean>();
