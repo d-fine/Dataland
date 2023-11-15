@@ -375,7 +375,7 @@ class CompanyDataControllerTest {
         val companyId = uploadModifiedBaseCompany("AggregatedInformation", null)
         uploadDummyDataset(companyId = companyId, reportingPeriod = "2022", bypassQa = true)
         uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
-        sleep(100)
+        sleep(500)
         val aggregatedFrameworkDataSummary = apiAccessor.companyDataControllerApi.getAggregatedFrameworkDataSummary(
             companyId = companyId,
         )
