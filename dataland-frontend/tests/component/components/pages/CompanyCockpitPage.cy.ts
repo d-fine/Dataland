@@ -82,7 +82,7 @@ describe("Component test for the company cockpit", () => {
 
   /**
    * Validates the existence of the back-button
-   * @param isMobile
+   * @param isMobile determines if the validation shall be exexcuted from a moble users perspective
    */
   function validateBackButtonExistence(isMobile: boolean): void {
     const backButtonSelector = `span[data-test="${isMobile ? "back-button-mobile" : "back-button"}"]`;
