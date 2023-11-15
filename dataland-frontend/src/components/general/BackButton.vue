@@ -37,6 +37,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .back-button {
+  width: fit-content;
   @media only screen and (min-width: $small) {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;

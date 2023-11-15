@@ -391,11 +391,7 @@ class CompanyDataControllerTest {
     fun `post a dummy company and check if it can be retrieved by the companiesInfo endpoint`() {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val expectedCompanyInformation = StoredCompany(
-            uploadInfo.actualStoredCompany.companyId,
-            uploadInfo.inputCompanyInformation,
-            emptyList(),
-        ).companyInformation
+        val expectedCompanyInformation = uploadInfo.inputCompanyInformation
         assertEquals(
             expectedCompanyInformation,
             apiAccessor.companyDataControllerApi.getCompanyInfo(uploadInfo.actualStoredCompany.companyId),
