@@ -141,7 +141,9 @@ class CompanyDataController(
         companyId: String,
     ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> {
         return ResponseEntity.ok(
-            mapOf(DataType.valueOf("lksg") to AggregatedFrameworkDataSummary(0)),
+            DataType.values.associateWith {
+                AggregatedFrameworkDataSummary(0)
+            },
         )
     }
 
