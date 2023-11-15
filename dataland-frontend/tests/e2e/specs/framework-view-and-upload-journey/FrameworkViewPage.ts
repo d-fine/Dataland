@@ -81,9 +81,12 @@ describeIf(
       frameworkQueryParam: string,
       searchStringQueryParam: string,
     ): void {
+      cy.intercept({ url: "/api/companies*" }).as("searchCompanies");
+      cy.intercept({ url: "/api/companies/meta-information" }).as("fetchFilters");
       cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
+      cy.wait("@searchCompanies");
+      cy.wait("@fetchFilters");
       verifySearchResultTableExists();
-      cy.wait(5000); // TODO debugging!
       const companySelector = "span:contains(VIEW)";
       cy.get(companySelector).first().click({ force: true });
     }
