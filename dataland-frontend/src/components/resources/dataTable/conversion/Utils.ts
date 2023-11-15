@@ -99,67 +99,6 @@ export function getDataPointGetterFactory<
 }
 
 /**
- * Returns the document references globally available in a dataset
- * @param path the path to the field value
- * @param fieldName name the field passed on as label
- * @param formatter a function to transform the datapoint value ot a display value
- * @returns the data point getter factory
- */
-export function getNewDataPointGetterFactory<
-  V,
-  D extends BaseDataPoint<V | null | undefined> | ExtendedDataPoint<V> = ExtendedDataPoint<V>,
->(
-  path: string,
-  fieldName: string,
-  formatter: (dataPoint?: D) => string | undefined,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): (dataset: any) => AvailableMLDTDisplayObjectTypes {
-  return (dataset) => {
-    const dataPoint = getFieldValueFromFrameworkDataset(path, dataset) as D | undefined;
-    if (!dataPoint) {
-      return MLDTDisplayObjectForEmptyString;
-    }
-    const formattedValue = formatter(dataPoint);
-    let displayValue: string;
-    if (formattedValue == undefined || formattedValue == "") {
-      displayValue = "No data provided";
-    } else {
-      displayValue = formattedValue;
-    }
-    const dataPointAsExtendedDataPoint = dataPoint as unknown as ExtendedDataPoint<V>;
-    if (
-      dataPointAsExtendedDataPoint.quality ||
-      dataPointAsExtendedDataPoint.comment?.length ||
-      dataPointAsExtendedDataPoint.dataSource?.page != null
-    ) {
-      return {
-        displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
-        displayValue: {
-          fieldLabel: fieldName,
-          value: displayValue,
-          dataSource: dataPointAsExtendedDataPoint.dataSource,
-          quality: dataPointAsExtendedDataPoint.quality,
-          comment: dataPointAsExtendedDataPoint.comment,
-        },
-      } as AvailableMLDTDisplayObjectTypes;
-    } else if (hasDataPointValidReference(dataPoint)) {
-      return {
-        displayComponentName: MLDTDisplayComponentName.DocumentLinkDisplayComponent,
-        displayValue: {
-          label: displayValue,
-          dataSource: dataPoint.dataSource,
-        },
-      } as AvailableMLDTDisplayObjectTypes;
-    } else {
-      return {
-        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-        displayValue: displayValue,
-      } as AvailableMLDTDisplayObjectTypes;
-    }
-  };
-}
-
-/**
  * Retrieves a deeply nested value from an object by an identifier.
  * @param identifier the path to the value to retrieve (dot-seperated)
  * @param dataModel the data object to retrieve the value from
