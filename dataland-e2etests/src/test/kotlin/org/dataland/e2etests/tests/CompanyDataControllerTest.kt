@@ -374,7 +374,12 @@ class CompanyDataControllerTest {
             companyId = companyId,
         )
         assertEquals(
-            "{eutaxonomy-financials=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), eutaxonomy-non-financials=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=2), lksg=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), p2p=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), sfdr=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), sme=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0)}",
+            "{eutaxonomy-financials=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
+                "eutaxonomy-non-financials=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=2), " +
+                "lksg=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
+                "p2p=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
+                "sfdr=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
+                "sme=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0)}",
             sortedCompanyNames.toString(),
         )
     }
