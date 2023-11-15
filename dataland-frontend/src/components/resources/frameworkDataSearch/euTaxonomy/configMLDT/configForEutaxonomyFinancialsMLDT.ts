@@ -10,15 +10,16 @@ import {
   type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
 } from "@clients/backend";
-import { formatNumberToReadableFormat, formatPercentageNumberAsString } from "@/utils/Formatter";
+import { formatNumberToReadableFormat } from "@/utils/Formatter";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import { getNewDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
 import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
-import { type ExtendedDataPoint } from "@/utils/DataPoint";
+//import { type ExtendedDataPoint } from "@/utils/DataPoint";
 
+/**
 const sampleFormatter = function (dataPoint: ExtendedDataPoint<EuTaxonomyDataForFinancials>): string {
   return formatPercentageNumberAsString(dataPoint?.value);
 };
+ */
 
 export const configForEutaxonomyFinancialsMLDT = [
   {
@@ -81,7 +82,7 @@ export const configForEutaxonomyFinancialsMLDT = [
         valueGetter: (
           dataset: EuTaxonomyDataForFinancials,
         ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
-          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent, //TODO check if coorect display component
+          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
           displayValue: dataset.numberOfEmployees?.toString(),
         }),
       },
@@ -116,7 +117,9 @@ export const configForEutaxonomyFinancialsMLDT = [
     labelBadgeColor: "red",
     expandOnPageLoad: false,
     shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
-      dataset.financialServicesTypes.includes(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution),
+      dataset.financialServicesTypes?.includes(
+        EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution,
+      ) ?? false,
     children: [
       {
         type: "section",
@@ -134,7 +137,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution]
@@ -156,7 +159,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution]
@@ -178,7 +181,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.derivativesInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.derivativesInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution]
@@ -200,7 +203,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution]
@@ -222,15 +225,15 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.investmentNonNfrdInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution]
-                      ?.banksAndIssuersInPercent?.value,
+                      ?.investmentNonNfrdInPercent?.value,
                   ) ?? "",
                 dataSource:
                   dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution]
-                    ?.banksAndIssuersInPercent?.dataSource ?? undefined,
+                    ?.investmentNonNfrdInPercent?.dataSource ?? undefined,
               },
             }),
           },
@@ -271,7 +274,7 @@ export const configForEutaxonomyFinancialsMLDT = [
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.tradingPortfolioAndInterbankLoansInPercent,
-        explanation: euTaxonomyKpiInfoMappings.tradingPortfolioInPercent,
+        explanation: euTaxonomyKpiInfoMappings.tradingPortfolioAndInterbankLoansInPercent,
         shouldDisplay: (): boolean => true,
         valueGetter: (
           dataset: EuTaxonomyDataForFinancials,
@@ -299,12 +302,8 @@ export const configForEutaxonomyFinancialsMLDT = [
           displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
           displayValue: {
             fieldLabel: euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
-            value:
-              formatNumberToReadableFormat(
-                dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.value,
-              ) ?? "",
-            dataSource:
-              dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.dataSource ?? undefined,
+            value: formatNumberToReadableFormat(dataset.creditInstitutionKpis?.greenAssetRatioInPercent?.value) ?? "",
+            dataSource: dataset.creditInstitutionKpis?.greenAssetRatioInPercent?.dataSource ?? undefined,
           },
         }),
       },
@@ -316,9 +315,9 @@ export const configForEutaxonomyFinancialsMLDT = [
     labelBadgeColor: "blue",
     expandOnPageLoad: false,
     shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
-      dataset.financialServicesTypes.includes(
+      dataset.financialServicesTypes?.includes(
         EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance,
-      ),
+      ) ?? false,
     children: [
       {
         type: "section",
@@ -336,7 +335,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[
@@ -360,7 +359,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[
@@ -384,7 +383,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.derivativesInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.derivativesInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[
@@ -408,7 +407,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[
@@ -432,17 +431,17 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.investmentNonNfrdInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[
                       EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance
-                    ]?.banksAndIssuersInPercent?.value,
+                    ]?.investmentNonNfrdInPercent?.value,
                   ) ?? "",
                 dataSource:
                   dataset.eligibilityKpis?.[
                     EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance
-                  ]?.banksAndIssuersInPercent?.dataSource ?? undefined,
+                  ]?.investmentNonNfrdInPercent?.dataSource ?? undefined,
               },
             }),
           },
@@ -453,11 +452,20 @@ export const configForEutaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
         explanation: euTaxonomyKpiInfoMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
         shouldDisplay: (): boolean => true,
-        valueGetter: getNewDataPointGetterFactory(
-          "InsuranceKpis.taxonomyEligibleNonLifeInsuranceActivitiesInPercent",
-          euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
-          sampleFormatter,
-        ),
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: {
+            fieldLabel: euTaxonomyKpiNameMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
+            value:
+              formatNumberToReadableFormat(
+                dataset.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivitiesInPercent?.value,
+              ) ?? "",
+            dataSource:
+              dataset.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivitiesInPercent?.dataSource ?? undefined,
+          },
+        }),
       },
     ],
   },
@@ -467,7 +475,8 @@ export const configForEutaxonomyFinancialsMLDT = [
     labelBadgeColor: "blue",
     expandOnPageLoad: false,
     shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
-      dataset.financialServicesTypes.includes(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement),
+      dataset.financialServicesTypes?.includes(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement) ??
+      false,
     children: [
       {
         type: "section",
@@ -485,7 +494,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement]
@@ -507,7 +516,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement]
@@ -529,7 +538,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.derivativesInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.derivativesInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement]
@@ -551,7 +560,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement]
@@ -573,15 +582,15 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.investmentNonNfrdInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement]
-                      ?.banksAndIssuersInPercent?.value,
+                      ?.investmentNonNfrdInPercent?.value,
                   ) ?? "",
                 dataSource:
                   dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement]
-                    ?.banksAndIssuersInPercent?.dataSource ?? undefined,
+                    ?.investmentNonNfrdInPercent?.dataSource ?? undefined,
               },
             }),
           },
@@ -595,7 +604,8 @@ export const configForEutaxonomyFinancialsMLDT = [
     labelBadgeColor: "blue",
     expandOnPageLoad: false,
     shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
-      dataset.financialServicesTypes.includes(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm),
+      dataset.financialServicesTypes?.includes(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm) ??
+      false,
     children: [
       {
         type: "section",
@@ -613,7 +623,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm]
@@ -635,7 +645,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm]
@@ -657,7 +667,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.derivativesInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.derivativesInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm]
@@ -679,7 +689,7 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm]
@@ -701,15 +711,15 @@ export const configForEutaxonomyFinancialsMLDT = [
             ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
               displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
               displayValue: {
-                fieldLabel: euTaxonomyKpiNameMappings.banksAndIssuersInPercent, //TODO
+                fieldLabel: euTaxonomyKpiNameMappings.investmentNonNfrdInPercent,
                 value:
                   formatNumberToReadableFormat(
                     dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm]
-                      ?.banksAndIssuersInPercent?.value,
+                      ?.investmentNonNfrdInPercent?.value,
                   ) ?? "",
                 dataSource:
                   dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm]
-                    ?.banksAndIssuersInPercent?.dataSource ?? undefined,
+                    ?.investmentNonNfrdInPercent?.dataSource ?? undefined,
               },
             }),
           },
@@ -720,11 +730,16 @@ export const configForEutaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
         explanation: euTaxonomyKpiInfoMappings.greenAssetRatioInPercent,
         shouldDisplay: (): boolean => true,
-        valueGetter: getNewDataPointGetterFactory(
-          "investmentFirmKpis.greenAssetRatioInPercent",
-          euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
-          sampleFormatter,
-        ),
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: {
+            fieldLabel: euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
+            value: formatNumberToReadableFormat(dataset.investmentFirmKpis?.greenAssetRatioInPercent?.value) ?? "",
+            dataSource: dataset.investmentFirmKpis?.greenAssetRatioInPercent?.dataSource ?? undefined,
+          },
+        }),
       },
     ],
   },
