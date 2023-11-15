@@ -122,7 +122,7 @@ describeIf(
             cy.visitAndCheckAppMount(
               `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
             );
-            cy.get("input[id=framework_data_search_bar_standard]")
+            cy.get("input[id=company_search_bar_standard]")
               .should("not.be.disabled")
               .type(inputValue)
               .should("have.value", inputValue)
