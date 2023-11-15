@@ -104,9 +104,12 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "SELECT filtered_text_results.company_id AS companyId," +
             " MIN(filtered_text_results.company_name) AS companyName" +
             " FROM filtered_text_results " +
+            " LEFT JOIN data_meta_information " +
+            " ON filtered_text_results.company_id = data_meta_information.company_id AND currently_active = true" +
             " GROUP BY filtered_text_results.company_id" +
-            " ORDER BY MAX(filtered_text_results.match_quality) DESC, companyId" +
-            " LIMIT 100 ",
+            " ORDER BY " +
+            " CASE WHEN MAX(data_id) IS NOT null THEN 2 else 1 END DESC," +
+            " MAX(filtered_text_results.match_quality) DESC, companyId",
     )
     fun searchCompaniesByNameOrIdentifier(
         @Param("searchString") searchString: String,
