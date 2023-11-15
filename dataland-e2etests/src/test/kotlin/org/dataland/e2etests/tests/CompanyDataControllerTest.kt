@@ -359,9 +359,9 @@ class CompanyDataControllerTest {
         reportingPeriod = "placeholder",
         data = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first(),
     )
-    private fun uploadDummyDataset(companyId: String, bypassQa: Boolean = false) {
+    private fun uploadDummyDataset(companyId: String, reportingPeriod: String = "default", bypassQa: Boolean = false) {
         apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            dummyCompanyAssociatedDataWithoutCompanyId.copy(companyId = companyId),
+            dummyCompanyAssociatedDataWithoutCompanyId.copy(companyId = companyId, reportingPeriod = reportingPeriod),
             bypassQa,
         )
     }
