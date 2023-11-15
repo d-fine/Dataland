@@ -16,7 +16,7 @@ before(function () {
 describe("Component tests for the Dataland companies search page", function (): void {
   beforeEach(() => {
     cy.intercept("**/api/companies?**", mockDataSearchResponse);
-    cy.intercept("**/api/companies/meta-information", {}); // TODO Fill with correct mocks
+    cy.intercept("**/api/companies/meta-information", {});
   });
 
   /**
@@ -37,7 +37,6 @@ describe("Component tests for the Dataland companies search page", function (): 
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
-      // TODO check filters
       const placeholder = "Search company by name or PermID";
       const inputValue = "A company name";
       cy.get("input[id=search_bar_top]")
