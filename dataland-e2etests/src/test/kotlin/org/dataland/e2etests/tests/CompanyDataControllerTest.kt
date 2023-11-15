@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.lang.Thread.sleep
 import java.util.UUID
 
 class CompanyDataControllerTest {
@@ -311,7 +312,7 @@ class CompanyDataControllerTest {
     @Test
     fun `check if the new companies search via name and ids endpoint works as expected`() {
         val testString = "unique-test-string-${UUID.randomUUID()}"
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         uploadCompaniesInReverseToExpectedOrder(testString)
         val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
             searchString = testString,
@@ -362,6 +363,43 @@ class CompanyDataControllerTest {
         apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
             dummyCompanyAssociatedDataWithoutCompanyId.copy(companyId = companyId),
             bypassQa,
+        )
+    }
+
+    @Test
+    fun `counts the number of datasets for a company`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val companyId = uploadModifiedBaseCompany("AggregatedInformation", null)
+        uploadDummyDataset(companyId = companyId, reportingPeriod = "2022", bypassQa = true)
+        uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
+        sleep(100)
+        val aggregatedFrameworkDataSummary = apiAccessor.companyDataControllerApi.getAggregatedFrameworkDataSummary(
+            companyId = companyId,
+        )
+        assertEquals(
+            "{eutaxonomy-financials=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
+                "eutaxonomy-non-financials=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=2), " +
+                "lksg=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
+                "p2p=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
+                "sfdr=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
+                "sme=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0)}",
+            aggregatedFrameworkDataSummary.toString(),
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if it can be retrieved by the companiesInfo endpoint`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val expectedCompanyInformation = StoredCompany(
+            uploadInfo.actualStoredCompany.companyId,
+            uploadInfo.inputCompanyInformation,
+            emptyList(),
+        ).companyInformation
+        assertEquals(
+            expectedCompanyInformation,
+            apiAccessor.companyDataControllerApi.getCompanyInfo(uploadInfo.actualStoredCompany.companyId),
+            "Dataland does not contain the posted company.",
         )
     }
 }
