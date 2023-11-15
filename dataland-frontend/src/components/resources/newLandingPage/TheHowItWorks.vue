@@ -1,5 +1,11 @@
 <template>
-  <section v-if="howItWorksSection" class="howitworks" role="region" aria-labelledby="howitworks-heading">
+  <section
+    v-if="howItWorksSection"
+    class="howitworks"
+    role="region"
+    aria-labelledby="howitworks-heading"
+    data-test="howitworks"
+  >
     <div class="howitworks__wrapper">
       <h2 id="howitworks-heading" class="howitworks__title">
         {{ sectionText }}
