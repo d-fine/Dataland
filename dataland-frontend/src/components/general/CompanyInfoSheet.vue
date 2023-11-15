@@ -6,7 +6,7 @@
     </template>
     <template v-else>
       <div class="mobile-header">
-        <BackButton label="" />
+        <BackButton label="" data-test-marker="back-button-mobile" />
         <div class="mobile-header__title" data-test="mobile-header-title">
           {{ mobileTitle }}
         </div>
@@ -16,7 +16,7 @@
   </div>
   <div ref="attachedSheet" :class="`sheet--attached ${isCollapsed ? '' : 'visuals-hidden'}`" data-test="sheet-attached">
     <div class="mobile-header">
-      <BackButton label="" />
+      <BackButton label="" data-test-marker="back-button-mobile-attached-sheet" />
       <div class="mobile-header__title">
         {{ mobileTitle }}
       </div>

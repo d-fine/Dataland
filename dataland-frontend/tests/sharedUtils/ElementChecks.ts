@@ -21,6 +21,9 @@ export function verifySearchResultTableExists(): void {
  * @param expectedCompanyId of the company
  */
 export function validateCompanyCockpitPage(expectedCompanyName: string, expectedCompanyId: string): void {
-  cy.get('h1[data-test="companyNameTitle"]').should("have.text", expectedCompanyName);
+  cy.get('h1[data-test="companyNameTitle"]', { timeout: Cypress.env("medium_timeout_in_ms") as number }).should(
+    "have.text",
+    expectedCompanyName,
+  );
   cy.url().should("contain", `/companies/${expectedCompanyId}`);
 }

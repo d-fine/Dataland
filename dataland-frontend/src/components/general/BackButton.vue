@@ -1,8 +1,10 @@
 <template>
   <div class="back-button">
-    <div @click="goBack" class="cursor-pointer flex align-items-center" data-test="backButton">
+    <div @click="goBack" class="cursor-pointer flex align-items-center">
       <span class="material-icons text-primary">arrow_back_ios</span>
-      <span class="text-primary font-semibold d-letters" title="back_button">{{ label }}</span>
+      <span class="text-primary font-semibold d-letters" title="back_button" :data-test="dataTestMarker">{{
+        label
+      }}</span>
     </div>
   </div>
 </template>
@@ -16,6 +18,10 @@ export default defineComponent({
     label: {
       type: String,
       default: "BACK",
+    },
+    dataTestMarker: {
+      type: String,
+      default: "back-button",
     },
   },
   methods: {
