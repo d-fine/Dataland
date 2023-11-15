@@ -317,26 +317,29 @@ class CompanyDataControllerTest {
             searchString = testString,
         ).map { it.companyName }
         assertEquals(
-            listOf("Other Company") + (1..4).map { "$testString $it" },
-            sortedCompanyNames,
+            listOf("$testString true", "Other Company true", "$testString none"),
+            sortedCompanyNames.filter { it.contains("none") || it.contains("true") },
+        )
+        assertEquals(
+            listOf("$testString true", "Other Company true", "$testString false"),
+            sortedCompanyNames.filter { it.contains("$testString false") || it.contains("true") },
+        )
+        assertEquals(
+            listOf("$testString true", "Other Company true", "Other Company false"),
+            sortedCompanyNames.filter { it.contains("Other Company false") || it.contains("true") },
         )
     }
 
     private fun uploadCompaniesInReverseToExpectedOrder(expectedSearchString: String) {
-        uploadModifiedBaseCompany("$expectedSearchString 4", null)
-        var companyId = uploadModifiedBaseCompany("$expectedSearchString 3", null)
+        uploadModifiedBaseCompany("$expectedSearchString none", null)
+        var companyId = uploadModifiedBaseCompany("$expectedSearchString false", null)
         uploadDummyDataset(companyId = companyId, bypassQa = false)
-        companyId = uploadModifiedBaseCompany("$expectedSearchString 2", null)
+        companyId = uploadModifiedBaseCompany("$expectedSearchString true", null)
         uploadDummyDataset(companyId = companyId, bypassQa = true)
+        companyId = uploadModifiedBaseCompany("Other Company false", listOf("1${expectedSearchString}2"))
+        uploadDummyDataset(companyId = companyId, bypassQa = false)
+        companyId = uploadModifiedBaseCompany("Other Company true", listOf("1${expectedSearchString}2"))
         uploadDummyDataset(companyId = companyId, bypassQa = true)
-        uploadDummyDataset(companyId = companyId, bypassQa = true)
-        companyId = uploadModifiedBaseCompany("$expectedSearchString 1", null)
-        uploadDummyDataset(companyId = companyId, reportingPeriod = "a", bypassQa = true)
-        uploadDummyDataset(companyId = companyId, reportingPeriod = "b", bypassQa = true)
-        companyId = uploadModifiedBaseCompany("Other Company", listOf("1${expectedSearchString}2"))
-        uploadDummyDataset(companyId = companyId, reportingPeriod = "a", bypassQa = true)
-        uploadDummyDataset(companyId = companyId, reportingPeriod = "b", bypassQa = true)
-        uploadDummyDataset(companyId = companyId, reportingPeriod = "c", bypassQa = true)
     }
 
     private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?): String {
@@ -355,9 +358,9 @@ class CompanyDataControllerTest {
         reportingPeriod = "placeholder",
         data = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first(),
     )
-    private fun uploadDummyDataset(companyId: String, reportingPeriod: String = "default", bypassQa: Boolean = false) {
+    private fun uploadDummyDataset(companyId: String, bypassQa: Boolean = false) {
         apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            dummyCompanyAssociatedDataWithoutCompanyId.copy(companyId = companyId, reportingPeriod = reportingPeriod),
+            dummyCompanyAssociatedDataWithoutCompanyId.copy(companyId = companyId),
             bypassQa,
         )
     }
