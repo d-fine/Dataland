@@ -69,8 +69,8 @@ class GleifApiAccessor(
         require(zipEntry?.name?.endsWith(".csv") ?: false) {
             "The downloaded ZIP file does not contain the CSV file position"
         }
-
         FileUtils.copyInputStreamToFile(zipInputStream, csvFile)
+        // similar to getCsvStreamFromZip in gleifCsvParser but tricky to reuse
     }
 
     private fun downloadFileFromGleif(urlSuffx: String, targetFile: File, fileDescription: String) {

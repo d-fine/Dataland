@@ -22,7 +22,6 @@ import kotlin.time.toDuration
  * Class to execute scheduled tasks, like the import of the GLEIF golden copy files
  * @param gleifApiAccessor downloads the golden copy files from GLEIF
  * @param gleifParser reads in the csv file from GLEIF and creates GleifCompanyInformation objects
- * @param keycloakTokenManager manages the access tokens for authenticating against the backend API
  */
 @Component
 class GleifGoldenCopyIngestor(
@@ -121,7 +120,7 @@ class GleifGoldenCopyIngestor(
             isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedMappingFile)
         }
 
-        // updateCompanyIdentifiers(deltaMap) to be written in CompanyUploader
+        companyUploader.updateIsinMapping(deltaMap)
 
         logger.info("Finished processing of file $newMappingFile in ${getExecutionTime(start)}.")
     }

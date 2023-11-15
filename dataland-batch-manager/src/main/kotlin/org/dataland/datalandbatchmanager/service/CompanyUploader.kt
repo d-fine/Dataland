@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.slf4j.LoggerFactory
@@ -124,6 +125,32 @@ class CompanyUploader(
                 companyId,
                 companyInformation.toCompanyPatch(),
             )
+        }
+    }
+
+    /**
+     * Updates the ISINs of all companies.
+     * @param leiIsinMap the delta-map with the format "LEI"->"ISIN1,ISIN2,..."
+     */
+    fun updateIsinMapping(
+        leiIsinMap: Map<String, String>,
+    ) {
+        retryOnCommonApiErrors {
+            for ((lei, isins) in leiIsinMap) {
+                val isinList = isins.split(",").map { it.trim() }
+                val company = companyDataControllerApi.getCompaniesBySearchString(lei)
+                if (company.isNotEmpty()) {
+                    val companyId = company.first().companyId
+                    // make sure existing identifiers are not overwritten
+                    val companyPatch = CompanyInformationPatch(identifiers = mapOf("Isin" to isinList))
+                    companyDataControllerApi.patchCompanyById(
+                        companyId,
+                        companyPatch,
+                    )
+                } else {
+                    logger.info("No company found for LEI: $lei")
+                }
+            }
         }
     }
 }
