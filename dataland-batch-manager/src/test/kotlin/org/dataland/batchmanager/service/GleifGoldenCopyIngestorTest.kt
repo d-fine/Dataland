@@ -6,6 +6,7 @@ import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
 import org.dataland.datalandbatchmanager.service.GleifCsvParser
 import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor
+import org.dataland.datalandbatchmanager.service.IsinDeltaBuilder
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -28,6 +29,7 @@ class GleifGoldenCopyIngestorTest {
     private val mockGleifCsvParser = mock(GleifCsvParser::class.java)
     private val mockCompanyUploader = mock(CompanyUploader::class.java)
     private val mockActuatorApi = mock(ActuatorApi::class.java)
+    private val mockIsinDeltaBuilder = mock(IsinDeltaBuilder::class.java)
     private lateinit var companyIngestor: GleifGoldenCopyIngestor
 
     private lateinit var oldFile: File
@@ -83,14 +85,15 @@ class GleifGoldenCopyIngestorTest {
         reset(mockGleifCsvParser)
         reset(mockCompanyUploader)
         reset(mockActuatorApi)
+        reset(mockIsinDeltaBuilder)
     }
 
     @Test
     fun `test ingestion is not executed if no flag file is provided`() {
         val mockStaticFile = mockStatic(File::class.java)
         companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi,
-            false, null,
+            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
+            false, null, oldFile
         )
         companyIngestor.processFullGoldenCopyFileIfEnabled()
         mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(0))
@@ -109,32 +112,14 @@ class GleifGoldenCopyIngestorTest {
         )
             .thenReturn(MappingIterator.emptyIterator())
         companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi,
-            false, flagFile.absolutePath,
+            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
+            false, flagFile.absolutePath, oldFile
         )
         val mockStaticFile = mockStatic(File::class.java)
         `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
         companyIngestor.processFullGoldenCopyFileIfEnabled()
-        mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(1))
+        mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(2))
         verify(mockGleifCsvParser, times(1)).readGleifDataFromBufferedReader(any() ?: emptyBufferedReader)
         mockStaticFile.close()
-    }
-
-    @Test
-    fun `test handling of delta and mapping files`() {
-        val flagFile = File.createTempFile("test", ".csv", File("./"))
-        val emptyBufferedReader = BufferedReader(BufferedReader.nullReader())
-        `when`(
-            mockGleifCsvParser.readGleifDataFromBufferedReader(
-                any()
-                    ?: emptyBufferedReader,
-            ),
-        )
-            .thenReturn(MappingIterator.emptyIterator())
-        companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi,
-            false, flagFile.absolutePath,
-        )
-//        companyIngestor.prepareDeltaFile()
     }
 }

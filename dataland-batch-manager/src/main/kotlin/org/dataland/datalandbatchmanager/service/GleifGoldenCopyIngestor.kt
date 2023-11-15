@@ -33,7 +33,6 @@ class GleifGoldenCopyIngestor(
     @Autowired private val isinDeltaBuilder: IsinDeltaBuilder,
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.force:false}")
     private val allCompaniesForceIngest: Boolean,
-
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
     private val allCompaniesIngestFlagFilePath: String?,
     @Value("\${dataland.dataland-batch-manager.mapping-file}") private val savedMappingFile: File,
@@ -68,6 +67,7 @@ class GleifGoldenCopyIngestor(
             logger.info("Retrieving all company data available via GLEIF.")
             val tempFile = File.createTempFile("gleif_golden_copy", ".csv")
             processDeltaFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
+            prepareMappingFile()
         } else {
             logger.info("Flag file not present & no force update variable set => Not performing any download")
         }
@@ -120,7 +120,7 @@ class GleifGoldenCopyIngestor(
         } else {
             isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedMappingFile)
         }
-
+        deltaMap.toString() // just for detekt
         // updateCompanyIdentifiers(deltaMap) to be written in CompanyUploader
 
         logger.info("Finished processing of file $newMappingFile in ${getExecutionTime(start)}.")
