@@ -58,7 +58,7 @@
 <script lang="ts">
 import { defineComponent, inject, ref } from "vue";
 import type Keycloak from "keycloak-js";
-import { ApiClientProvider } from "@/services/ApiClients";
+import { type ApiClientProvider } from "@/services/ApiClients";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
 import { type DataTypeEnum } from "@clients/backend";
@@ -70,7 +70,6 @@ import {
   type FrameworkSelectableItem,
   type SelectableItem,
 } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
-
 export default defineComponent({
   name: "FrameworkDataSearchFilters",
   components: { FrameworkDataSearchDropdownFilter },
@@ -81,6 +80,7 @@ export default defineComponent({
       countryFilter: ref(),
       frameworkFilter: ref(),
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      apiClientProvider: inject<ApiClientProvider>("apiClientProvider"),
     };
   },
   props: {
@@ -176,9 +176,11 @@ export default defineComponent({
      * availableCountries and availableSectors elements in the format expected by the dropdown filters
      */
     async retrieveCountryAndSectorFilterOptions() {
-      const companyDataControllerApi = await new ApiClientProvider(
+      /*const companyDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
-      ).getCompanyDataControllerApi();
+      ).getCompanyDataControllerApi();*/ // TODO Emanuel: Remove if the new way works => Also use in other api calls
+
+      const companyDataControllerApi = assertDefined(this.apiClientProvider).backendClients.companyDataController;
 
       const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();
       this.availableCountries = [...(availableSearchFilters.data.countryCodes ?? [])].map((countryCode) => {
