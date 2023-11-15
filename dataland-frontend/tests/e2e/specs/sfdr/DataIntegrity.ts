@@ -120,7 +120,6 @@ describeIf(
           testSfdrCompany.t,
           "2021",
         ).then((uploadIds) => {
-          cy.intercept("**/api/companies/" + uploadIds.companyId + "/info").as("getCompanyInformation");
           cy.visitAndCheckAppMount(
             "/companies/" +
               uploadIds.companyId +
@@ -130,7 +129,6 @@ describeIf(
               "?templateDataId=" +
               uploadIds.dataId,
           );
-          cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           cy.get("h1").should("contain", companyName);
           selectsReportsForUploadInSfdrForm();
           setQualityInSfdrUploadForm();
