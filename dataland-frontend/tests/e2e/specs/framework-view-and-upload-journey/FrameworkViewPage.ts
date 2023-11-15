@@ -43,7 +43,7 @@ describeIf(
     const reportingPeriodDropdownSelector = "div#chooseReportingPeriodDropdown";
     const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
     const dropdownPanelSelector = "div.p-dropdown-panel";
-    const searchBarSelectorForViewPage = "input#framework_data_search_bar_standard";
+    const searchBarSelectorForViewPage = "input#company_search_bar_standard";
 
     const nonExistingDataId = "abcd123123123123123-non-existing";
     const nonExistingReportingPeriod = "999999-non-existing";
