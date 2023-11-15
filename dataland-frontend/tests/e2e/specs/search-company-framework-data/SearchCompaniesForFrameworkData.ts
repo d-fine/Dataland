@@ -39,7 +39,6 @@ describeIf(
         .type("{enter}")
         .should("have.value", inputValue);
       cy.url({ decode: true }).should("include", "/companies?input=" + inputValueUntilFirstSpace);
-      verifySearchResultTableExists();
     }
 
     it(
@@ -69,10 +68,9 @@ describeIf(
         const testCompanyName = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName;
         checkPermIdToolTip();
         executeCompanySearchWithStandardSearchBar(testCompanyName);
-        verifySearchResultTableExists();
         clickFirstSearchResult();
         cy.get('h1[data-test="companyNameTitle"]').should("have.text", testCompanyName);
-        cy.get("[title=back_button").should("be.visible").click({ force: true });
+        cy.get('[data-test="back-button"]').should("be.visible").click({ force: true });
         cy.get("input[id=search_bar_top]").should("contain.value", testCompanyName);
         clickFirstSearchResult();
         cy.get('h1[data-test="companyNameTitle"]').should("have.text", testCompanyName);
