@@ -37,12 +37,6 @@ data class DataType @JsonCreator constructor(
         fun of(clazz: Class<*>): DataType {
             return DataType(clazz.getAnnotation(DataTypeAnnotation::class.java).name)
         }
-
-        /**
-         * Returns all possible values
-         */
-        val values: List<DataType>
-            get() = allowedDataTypes.map { valueOf(it) }
     }
 
     init {
