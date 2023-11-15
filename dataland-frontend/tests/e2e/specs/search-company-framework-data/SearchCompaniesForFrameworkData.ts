@@ -15,171 +15,168 @@ before(function () {
   });
 });
 
-describe("As a user, I expect the search functionality on the /companies page to show me the desired results", function () {
-  beforeEach(function () {
-    cy.ensureLoggedIn();
-  });
-
-  describeIf(
-    "",
-    {
-      executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-    },
-    () => {
-      /**
-       * Enters the given text in the search bar and hits enter verifying that the search result table matches the expected
-       * format and the url includes the search term
-       * @param inputValue the text to enter into the search bar
-       */
-      function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
-        const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
-        cy.get("input[id=search_bar_top]")
-          .should("not.be.disabled")
-          .click({ force: true })
-          .type(inputValue)
-          .should("have.value", inputValue)
-          .type("{enter}")
-          .should("have.value", inputValue);
-        cy.url({ decode: true }).should("include", "/companies?input=" + inputValueUntilFirstSpace);
-        verifySearchResultTableExists();
-      }
-
-      it(
-        "Check PermId tooltip, execute company search by name, check result table and assure VIEW button works",
-        { scrollBehavior: false },
-        () => {
-          /**
-           * Verifies that the tooltip of the Perm ID in the search table header contains the expected text
-           */
-          function checkPermIdToolTip(): void {
-            const expectedTextInToolTip = "Permanent Identifier (PermID)";
-            cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
-            cy.get(".p-tooltip").should("be.visible").contains(expectedTextInToolTip);
-            cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
-            cy.get(".p-tooltip").should("not.exist");
-          }
-
-          /**
-           * Verifies that the view button redirects to the view framework data page
-           */
-          function clickFirstSearchResult(): void {
-            cy.get("table.p-datatable-table").contains("td", "VIEW").click();
-          }
-
-          cy.visitAndCheckAppMount("/companies");
-          verifySearchResultTableExists();
-          const testCompanyName = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName;
-          checkPermIdToolTip();
-          executeCompanySearchWithStandardSearchBar(testCompanyName);
-          verifySearchResultTableExists();
-          clickFirstSearchResult();
-          cy.get('h1[data-test="companyNameTitle"]').should("have.text", testCompanyName);
-          cy.get("[title=back_button").should("be.visible").click({ force: true });
-          cy.get("input[id=search_bar_top]").should("contain.value", testCompanyName);
-          clickFirstSearchResult();
-          cy.get('h1[data-test="companyNameTitle"]').should("have.text", testCompanyName);
-        },
-      );
-
-      it("Execute a company Search by identifier and assure that the company is found", () => {
-        cy.visitAndCheckAppMount("/companies");
-        const testCompanyInformation = companiesWithEuTaxonomyDataForFinancials[0].companyInformation;
-        const testCompanyIdentifiersObject = testCompanyInformation.identifiers;
-        const testCompanyIdentifierTypeWithExistingValues = assertDefined(
-          Object.keys(testCompanyIdentifiersObject).find((it) => testCompanyIdentifiersObject[it].length > 0),
-        );
-        const singleCompanyIdentifier = testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues][0];
-        const expectedCompanyName = testCompanyInformation.companyName;
-        executeCompanySearchWithStandardSearchBar(singleCompanyIdentifier);
-        cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
-      });
-
-      /**
-       * Returns the first company from the fake fixture that has at least one alternative name
-       * @returns the matching company from the fake fixtures
-       */
-      function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyDataForFinancials> {
-        return assertDefined(
-          companiesWithEuTaxonomyDataForFinancials.find((it) => {
-            return (
-              it.companyInformation.companyAlternativeNames != undefined &&
-              it.companyInformation.companyAlternativeNames.length > 0
-            );
-          }),
-        );
-      }
-
-      it("Search for company by its alternative name", () => {
-        const testCompany = getCompanyWithAlternativeName();
-        const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames)[0];
-        cy.visitAndCheckAppMount("/companies");
-        executeCompanySearchWithStandardSearchBar(searchValue);
-      });
-
-      it("Visit framework data view page and assure that title is present and a Framework Data Search Bar exists", () => {
-        const placeholder = "Search company by name or PermID";
-        const inputValue = "A company name";
-
-        getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-          cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-            (storedCompanies: Array<StoredCompany>) => {
-              cy.visitAndCheckAppMount(
-                `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
-              );
-              cy.get("input[id=framework_data_search_bar_standard]")
-                .should("not.be.disabled")
-                .type(inputValue)
-                .should("have.value", inputValue)
-                .invoke("attr", "placeholder")
-                .should("contain", placeholder);
-            },
-          );
-        });
-      });
-
-      it("Search with autocompletion for companies with b in it, click and use arrow keys, find searched company in recommendation", () => {
-        const primevueHighlightedSuggestionClass = "p-focus";
-        const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
-        getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-          cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-            (storedCompanies: Array<StoredCompany>) => {
-              const testCompany = storedCompanies[0];
-              cy.visitAndCheckAppMount("/companies");
-
-              verifySearchResultTableExists();
-              cy.get("input[id=search_bar_top]").type("b");
-              cy.get(".p-autocomplete-item").contains("View all results").click();
-
-              verifySearchResultTableExists();
-              cy.url().should("include", "/companies?input=b");
-              cy.get("input[id=search_bar_top]")
-                .click({ force: true })
-                .type("{backspace}")
-                .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
-              cy.get("ul[class=p-autocomplete-items]").should("exist");
-              cy.get("input[id=search_bar_top]").type("{downArrow}");
-              cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
-              cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
-              cy.get("input[id=search_bar_top]").type("{downArrow}");
-              cy.get(".p-autocomplete-item").eq(0).should("not.have.class", primevueHighlightedSuggestionClass);
-              cy.get(".p-autocomplete-item").eq(1).should("have.class", primevueHighlightedSuggestionClass);
-              cy.get("input[id=search_bar_top]").type("{upArrow}");
-              cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
-              cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
-              cy.get("input[id=search_bar_top]")
-                .click({ force: true })
-                .type("{backspace}")
-                .type(testCompany.companyInformation.companyName);
-              cy.get(".p-autocomplete-item")
-                .eq(0)
-                .should("contain.text", testCompany.companyInformation.companyName)
-                .click({ force: true });
-
-              validateCompanyCockpitPage(testCompany.companyInformation.companyName, testCompany.companyId);
-            },
-          );
-        });
-      });
-    },
-  );
+beforeEach(function () {
+  cy.ensureLoggedIn();
 });
+describeIf(
+  "As a user, I expect the search functionality on the /companies page to show me the desired results",
+  {
+    executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
+  },
+  () => {
+    /**
+     * Enters the given text in the search bar and hits enter verifying that the search result table matches the expected
+     * format and the url includes the search term
+     * @param inputValue the text to enter into the search bar
+     */
+    function executeCompanySearchWithStandardSearchBar(inputValue: string): void {
+      const inputValueUntilFirstSpace = inputValue.substring(0, inputValue.indexOf(" "));
+      cy.get("input[id=search_bar_top]")
+        .should("not.be.disabled")
+        .click({ force: true })
+        .type(inputValue)
+        .should("have.value", inputValue)
+        .type("{enter}")
+        .should("have.value", inputValue);
+      cy.url({ decode: true }).should("include", "/companies?input=" + inputValueUntilFirstSpace);
+      verifySearchResultTableExists();
+    }
+
+    it(
+      "Check PermId tooltip, execute company search by name, check result table and assure VIEW button works",
+      { scrollBehavior: false },
+      () => {
+        /**
+         * Verifies that the tooltip of the Perm ID in the search table header contains the expected text
+         */
+        function checkPermIdToolTip(): void {
+          const expectedTextInToolTip = "Permanent Identifier (PermID)";
+          cy.get('.material-icons[title="Perm ID"]').trigger("mouseenter", "center");
+          cy.get(".p-tooltip").should("be.visible").contains(expectedTextInToolTip);
+          cy.get('.material-icons[title="Perm ID"]').trigger("mouseleave");
+          cy.get(".p-tooltip").should("not.exist");
+        }
+
+        /**
+         * Verifies that the view button redirects to the view framework data page
+         */
+        function clickFirstSearchResult(): void {
+          cy.get("table.p-datatable-table").contains("td", "VIEW").click();
+        }
+
+        cy.visitAndCheckAppMount("/companies");
+        verifySearchResultTableExists();
+        const testCompanyName = companiesWithEuTaxonomyDataForFinancials[0].companyInformation.companyName;
+        checkPermIdToolTip();
+        executeCompanySearchWithStandardSearchBar(testCompanyName);
+        verifySearchResultTableExists();
+        clickFirstSearchResult();
+        cy.get('h1[data-test="companyNameTitle"]').should("have.text", testCompanyName);
+        cy.get("[title=back_button").should("be.visible").click({ force: true });
+        cy.get("input[id=search_bar_top]").should("contain.value", testCompanyName);
+        clickFirstSearchResult();
+        cy.get('h1[data-test="companyNameTitle"]').should("have.text", testCompanyName);
+      },
+    );
+
+    it("Execute a company Search by identifier and assure that the company is found", () => {
+      cy.visitAndCheckAppMount("/companies");
+      const testCompanyInformation = companiesWithEuTaxonomyDataForFinancials[0].companyInformation;
+      const testCompanyIdentifiersObject = testCompanyInformation.identifiers;
+      const testCompanyIdentifierTypeWithExistingValues = assertDefined(
+        Object.keys(testCompanyIdentifiersObject).find((it) => testCompanyIdentifiersObject[it].length > 0),
+      );
+      const singleCompanyIdentifier = testCompanyIdentifiersObject[testCompanyIdentifierTypeWithExistingValues][0];
+      const expectedCompanyName = testCompanyInformation.companyName;
+      executeCompanySearchWithStandardSearchBar(singleCompanyIdentifier);
+      cy.get("td[class='d-bg-white w-3 d-datatable-column-left']").contains(expectedCompanyName);
+    });
+
+    /**
+     * Returns the first company from the fake fixture that has at least one alternative name
+     * @returns the matching company from the fake fixtures
+     */
+    function getCompanyWithAlternativeName(): FixtureData<EuTaxonomyDataForFinancials> {
+      return assertDefined(
+        companiesWithEuTaxonomyDataForFinancials.find((it) => {
+          return (
+            it.companyInformation.companyAlternativeNames != undefined &&
+            it.companyInformation.companyAlternativeNames.length > 0
+          );
+        }),
+      );
+    }
+
+    it("Search for company by its alternative name", () => {
+      const testCompany = getCompanyWithAlternativeName();
+      const searchValue = assertDefined(testCompany.companyInformation.companyAlternativeNames)[0];
+      cy.visitAndCheckAppMount("/companies");
+      executeCompanySearchWithStandardSearchBar(searchValue);
+    });
+
+    it("Visit framework data view page and assure that title is present and a Framework Data Search Bar exists", () => {
+      const placeholder = "Search company by name or PermID";
+      const inputValue = "A company name";
+
+      getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+        cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
+          (storedCompanies: Array<StoredCompany>) => {
+            cy.visitAndCheckAppMount(
+              `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
+            );
+            cy.get("input[id=framework_data_search_bar_standard]")
+              .should("not.be.disabled")
+              .type(inputValue)
+              .should("have.value", inputValue)
+              .invoke("attr", "placeholder")
+              .should("contain", placeholder);
+          },
+        );
+      });
+    });
+
+    it("Search with autocompletion for companies with b in it, click and use arrow keys, find searched company in recommendation", () => {
+      const primevueHighlightedSuggestionClass = "p-focus";
+      const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
+      getKeycloakToken(uploader_name, uploader_pw).then((token) => {
+        cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
+          (storedCompanies: Array<StoredCompany>) => {
+            const testCompany = storedCompanies[0];
+            cy.visitAndCheckAppMount("/companies");
+
+            verifySearchResultTableExists();
+            cy.get("input[id=search_bar_top]").type("b");
+            cy.get(".p-autocomplete-item").contains("View all results").click();
+
+            verifySearchResultTableExists();
+            cy.url().should("include", "/companies?input=b");
+            cy.get("input[id=search_bar_top]")
+              .click({ force: true })
+              .type("{backspace}")
+              .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
+            cy.get("ul[class=p-autocomplete-items]").should("exist");
+            cy.get("input[id=search_bar_top]").type("{downArrow}");
+            cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
+            cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
+            cy.get("input[id=search_bar_top]").type("{downArrow}");
+            cy.get(".p-autocomplete-item").eq(0).should("not.have.class", primevueHighlightedSuggestionClass);
+            cy.get(".p-autocomplete-item").eq(1).should("have.class", primevueHighlightedSuggestionClass);
+            cy.get("input[id=search_bar_top]").type("{upArrow}");
+            cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
+            cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
+            cy.get("input[id=search_bar_top]")
+              .click({ force: true })
+              .type("{backspace}")
+              .type(testCompany.companyInformation.companyName);
+            cy.get(".p-autocomplete-item")
+              .eq(0)
+              .should("contain.text", testCompany.companyInformation.companyName)
+              .click({ force: true });
+
+            validateCompanyCockpitPage(testCompany.companyInformation.companyName, testCompany.companyId);
+          },
+        );
+      });
+    });
+  },
+);
