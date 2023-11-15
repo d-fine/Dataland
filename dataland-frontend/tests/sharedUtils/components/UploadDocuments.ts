@@ -103,6 +103,12 @@ export const uploadDocuments = {
     cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).trigger("click"));
     cy.get('button[data-test="files-to-upload-remove"]').should("not.exist");
   },
+  removeAllReportsFromAlreadyUploadedReports(): void {
+    cy.get('div[data-test="report-uploaded-form"] button[data-test^="remove-"]').each((element) =>
+      Cypress.$(element).trigger("click"),
+    );
+    cy.get('div[data-test="report-uploaded-form"]').should("not.exist");
+  },
   removeAlreadyUploadedReport(reportName: string): Cypress.Chainable {
     return cy.get(`[data-test="${reportName}AlreadyUploadedContainer"] button`).click();
   },

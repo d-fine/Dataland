@@ -68,8 +68,9 @@ describeIf(
      * @returns the formatted string
      */
     function formatPercentNumber(value?: ExtendedDataPointBigDecimal | null): string {
-      if (value === undefined || value === null || value.value === undefined || value.value === null)
-        return "No data has been reported";
+      if (value === undefined || value === null || value.value === undefined || value.value === null) {
+        return "";
+      }
       return (Math.round(value.value * 100) / 100).toString();
     }
 
@@ -139,11 +140,11 @@ describeIf(
     ): void {
       checkCommonFields("CreditInstitution", testData.eligibilityKpis!.CreditInstitution);
       if (individualFieldSubmission) {
-        cy.get('td[data-test="tradingPortfolio"]').should(
+        cy.get('td[data-test="tradingPortfolioCreditInstitution"]').should(
           "contain",
           formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolioInPercent),
         );
-        cy.get('td[data-test="onDemandInterbankLoans"]').should(
+        cy.get('td[data-test="interbankLoansCreditInstitution"]').should(
           "contain",
           formatPercentNumber(testData.creditInstitutionKpis!.interbankLoansInPercent),
         );

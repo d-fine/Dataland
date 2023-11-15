@@ -331,7 +331,6 @@ import {
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-  type EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import { type AxiosResponse } from "axios";
 import { type ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
@@ -429,7 +428,7 @@ export default defineComponent({
       confirmedSelectedFinancialServiceTypes: [] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum[],
       message: "",
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
-      templateDataset: undefined as undefined | EuTaxonomyDataForNonFinancials,
+      templateDataset: undefined as undefined | EuTaxonomyDataForFinancials,
     };
   },
   computed: {
