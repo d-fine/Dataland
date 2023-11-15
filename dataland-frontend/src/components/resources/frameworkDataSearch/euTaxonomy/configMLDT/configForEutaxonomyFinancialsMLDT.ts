@@ -115,7 +115,8 @@ export const configForEutaxonomyFinancialsMLDT = [
     label: "Credit Institution",
     labelBadgeColor: "red",
     expandOnPageLoad: false,
-    shouldDisplay: (): boolean => true,
+    shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+      dataset.financialServicesTypes.includes(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution),
     children: [
       {
         type: "section",
@@ -292,11 +293,20 @@ export const configForEutaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
         explanation: euTaxonomyKpiInfoMappings.greenAssetRatioInPercent,
         shouldDisplay: (): boolean => true,
-        valueGetter: getNewDataPointGetterFactory(
-          "creditInstitutionKpis.greenAssetRatioInPercent",
-          euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
-          sampleFormatter,
-        ),
+        valueGetter: (
+          dataset: EuTaxonomyDataForFinancials,
+        ): MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent> => ({
+          displayComponentName: MLDTDisplayComponentName.DataPointDisplayComponent,
+          displayValue: {
+            fieldLabel: euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
+            value:
+              formatNumberToReadableFormat(
+                dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.value,
+              ) ?? "",
+            dataSource:
+              dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.dataSource ?? undefined,
+          },
+        }),
       },
     ],
   },
@@ -305,7 +315,10 @@ export const configForEutaxonomyFinancialsMLDT = [
     label: "Insurance or Reinsurance",
     labelBadgeColor: "blue",
     expandOnPageLoad: false,
-    shouldDisplay: (): boolean => true,
+    shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+      dataset.financialServicesTypes.includes(
+        EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance,
+      ),
     children: [
       {
         type: "section",
@@ -453,7 +466,8 @@ export const configForEutaxonomyFinancialsMLDT = [
     label: "Asset Management",
     labelBadgeColor: "blue",
     expandOnPageLoad: false,
-    shouldDisplay: (): boolean => true,
+    shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+      dataset.financialServicesTypes.includes(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement),
     children: [
       {
         type: "section",
@@ -580,7 +594,8 @@ export const configForEutaxonomyFinancialsMLDT = [
     label: "Investment Firm",
     labelBadgeColor: "blue",
     expandOnPageLoad: false,
-    shouldDisplay: (): boolean => true,
+    shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+      dataset.financialServicesTypes.includes(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm),
     children: [
       {
         type: "section",
