@@ -89,22 +89,22 @@ describe("The shared header of the framework pages should act as expected", { sc
       }
 
       /**
-       * Types a search string into the searchbar and clicks on the first autocomplete suggestion.
-       * @param searchString The search string to type into the search bar
-       * @param searchBarSelector The selector to select the correct search bar from the DOM
+       * Types a company name into the searchbar and clicks on the first autocomplete suggestion.
+       * @param companyName to type into the search bar
+       * @param expectedCompanyId of the company that is expected to be the first autocomplete suggestion
+       * @param searchBarSelector for the correct search bar from the DOM
        */
-      function typeSearchStringIntoSearchBarAndSelectFirstSuggestion(
-        searchString: string,
+      function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(
+        companyName: string,
+        expectedCompanyId: string,
         searchBarSelector = "input#search_bar_top",
       ): void {
         cy.intercept({ url: "/api/companies?searchString=**true", times: 1 }).as("autocompleteSuggestions");
         cy.get(searchBarSelector).click();
-        cy.get(searchBarSelector).type(searchString, { force: true });
+        cy.get(searchBarSelector).type(companyName, { force: true });
         cy.wait("@autocompleteSuggestions", { timeout: Cypress.env("long_timeout_in_ms") as number });
-        cy.intercept({ url: "**/api/companies/**", times: 1 }).as("searchCompany");
         const companySelector = ".p-autocomplete-item";
         cy.get(companySelector).first().click({ force: true });
-        cy.wait("@searchCompany", { timeout: Cypress.env("long_timeout_in_ms") as number });
       }
 
       /**
@@ -422,7 +422,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         cy.visit(`/companies?framework=${DataTypeEnum.Lksg}`);
         verifySearchResultTableExists();
-        typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha);
+        typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, companyIdOfAlpha);
 
         validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
         validateFrameworkSummaryPanel(DataTypeEnum.Lksg, 2, true);
@@ -442,7 +442,11 @@ describe("The shared header of the framework pages should act as expected", { sc
         selectFrameworkInDropdown(DataTypeEnum.Sfdr);
 
         validateChosenFramework(DataTypeEnum.Sfdr);
-        typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelectorForViewPage);
+        typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(
+          nameOfCompanyBeta,
+          companyIdOfBeta,
+          searchBarSelectorForViewPage,
+        );
 
         validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
       });
@@ -569,7 +573,11 @@ describe("The shared header of the framework pages should act as expected", { sc
         getElementAndAssertExistence("noCompanyWithThisIdErrorIndicator", "not.exist");
         getElementAndAssertExistence("noDataCouldBeLoadedErrorIndicator", "not.exist");
 
-        typeSearchStringIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, searchBarSelectorForViewPage);
+        typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(
+          nameOfCompanyBeta,
+          companyIdOfBeta,
+          searchBarSelectorForViewPage,
+        );
 
         validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
         validateFrameworkSummaryPanel(DataTypeEnum.Sme, 1, false);
