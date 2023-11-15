@@ -13,13 +13,7 @@ import {
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
-//import { type ExtendedDataPoint } from "@/utils/DataPoint";
-
-/**
-const sampleFormatter = function (dataPoint: ExtendedDataPoint<EuTaxonomyDataForFinancials>): string {
-  return formatPercentageNumberAsString(dataPoint?.value);
-};
- */
+import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelectModal.vue";
 
 export const configForEutaxonomyFinancialsMLDT = [
   {
@@ -29,6 +23,44 @@ export const configForEutaxonomyFinancialsMLDT = [
     expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
+      {
+        type: "cell",
+        label: euTaxonomyKpiNameMappings.financialServicesTypes,
+        explanation: euTaxonomyKpiInfoMappings.financialServicesTypes,
+        shouldDisplay: (): boolean => true,
+        valueGetter: (): MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent> => ({
+          displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+          displayValue: {
+            label: "Financial Service Types",
+            modalComponent: MultiSelectModal,
+            modalOptions: {
+              props: {
+                header: "Financial Service Types",
+                modal: true,
+                dismissableMask: true,
+              },
+              data: [
+                {
+                  value: "CreditInstitution",
+                  label: "CreditInstitution",
+                },
+                {
+                  value: "InsuranceOrReinsurance",
+                  label: "InsuranceOrReinsurance",
+                },
+                {
+                  value: "AssetManagement",
+                  label: "AssetManagement",
+                },
+                {
+                  value: "InvestmentFirm",
+                  label: "InvestmentFirm",
+                },
+              ],
+            },
+          },
+        }),
+      },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.fiscalYearDeviation,
