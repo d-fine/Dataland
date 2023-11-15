@@ -30,12 +30,13 @@ class GleifGoldenCopyIngestor(
     @Autowired private val gleifParser: GleifCsvParser,
     @Autowired private val companyUploader: CompanyUploader,
     @Autowired private val actuatorApi: ActuatorApi,
-//    @Autowired private val isinDeltaBuilder: IsinDeltaBuilder,
+    @Autowired private val isinDeltaBuilder: IsinDeltaBuilder,
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.force:false}")
     private val allCompaniesForceIngest: Boolean,
+
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
     private val allCompaniesIngestFlagFilePath: String?,
-//    @Value("\${dataland.dataland-batch-manager.mapping-file}") private val savedMappingFile: File,
+    @Value("\${dataland.dataland-batch-manager.mapping-file}") private val savedMappingFile: File,
 ) {
     companion object {
         const val MS_PER_S = 1000L
@@ -111,13 +112,17 @@ class GleifGoldenCopyIngestor(
     private fun processMappingFile(newMappingFile: File, downloadFile: (file: File) -> Unit) {
         waitForBackend()
         val start = System.nanoTime()
-        try {
-            downloadFile(newMappingFile)
-//            val deltaMap = isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedMappingFile)
-            // do: integrate delta map into code
-        } finally {
-            // if replacing didn't work or other issues to catch
+
+        downloadFile(newMappingFile)
+
+        val deltaMap: Map<String, String> = if (!savedMappingFile.exists() || savedMappingFile.length() == 0L) {
+            isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
+        } else {
+            isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedMappingFile)
         }
+
+        // updateCompanyIdentifiers(deltaMap) to be written in CompanyUploader
+
         logger.info("Finished processing of file $newMappingFile in ${getExecutionTime(start)}.")
     }
 

@@ -23,8 +23,12 @@ class IsinDeltaBuilder(
      * @param newMappingFile latest version of the LEI-ISIN mapping file
      * @param oldMappingFile previously stored version of the LEI-ISIN mapping file, if one exists
      */
-    fun createDeltaOfMappingFile(newMappingFile: File, oldMappingFile: File): Map<String, String> {
+    fun createDeltaOfMappingFile(newMappingFile: File, oldMappingFile: File?): Map<String, String> {
         val newMapping = parseCsvToGroupedMap(newMappingFile)
+        if (oldMappingFile == null) {
+            replaceOldMappingFile(newMappingFile)
+            return newMapping
+        }
         val oldMapping = parseCsvToGroupedMap(oldMappingFile)
         val deltaMapping = findLeisWithUpdatedIsin(newMapping, oldMapping)
         replaceOldMappingFile(newMappingFile)
@@ -99,17 +103,13 @@ class IsinDeltaBuilder(
      */
     fun replaceOldMappingFile(newMappingFile: File) {
         try {
-            if (savedMappingFile.exists()) {
-                if (!savedMappingFile.delete()) {
-                    logger.error("Unable to delete the old mapping file $savedMappingFile")
-                    return
-                }
+            if (savedMappingFile.exists() && !savedMappingFile.delete()) {
+                logger.error("Unable to delete the old mapping file $savedMappingFile")
+                return
             }
-
-            if (!newMappingFile.renameTo(savedMappingFile)) {
-                logger.error("Unable to replace the old mapping file with the new mapping file")
-            }
-        } catch (e: FileSystemException) {
+            val renamedFile = File(savedMappingFile.parent, "isinMapping.csv")
+            newMappingFile.copyTo(renamedFile, true)
+        } catch (e: Exception) {
             logger.error("Error while replacing the old mapping file: ${e.message}")
         }
     }
