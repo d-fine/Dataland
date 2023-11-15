@@ -82,9 +82,10 @@ describe("Component test for the company cockpit", () => {
 
   /**
    * Validates the existence of the back-button
+   * @param isMobile determines if the validation shall be exexcuted from a moble users perspective
    */
-  function validateBackButtonExistence(): void {
-    const backButtonSelector = `div[data-test="backButton"]`;
+  function validateBackButtonExistence(isMobile: boolean): void {
+    const backButtonSelector = `span[data-test="${isMobile ? "back-button-mobile" : "back-button"}"]`;
     cy.get(backButtonSelector).should("exist");
   }
 
@@ -153,7 +154,7 @@ describe("Component test for the company cockpit", () => {
     mockRequestsOnMounted();
     mountCompanyCockpitWithAuthentication(false, false).then(() => {
       waitForRequestsOnMounted();
-      validateBackButtonExistence();
+      validateBackButtonExistence(false);
       validateSearchBarExistence(true);
       validateCompanyInformationBanner();
       validateFrameworkSummaryPanels(false);
@@ -164,7 +165,7 @@ describe("Component test for the company cockpit", () => {
     mockRequestsOnMounted();
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_USER]).then(() => {
       waitForRequestsOnMounted();
-      validateBackButtonExistence();
+      validateBackButtonExistence(false);
       validateSearchBarExistence(true);
       validateCompanyInformationBanner();
       validateFrameworkSummaryPanels(false);
@@ -175,7 +176,7 @@ describe("Component test for the company cockpit", () => {
     mockRequestsOnMounted();
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER]).then(() => {
       waitForRequestsOnMounted();
-      validateBackButtonExistence();
+      validateBackButtonExistence(false);
       validateSearchBarExistence(true);
       validateCompanyInformationBanner();
       validateFrameworkSummaryPanels(true);
@@ -195,7 +196,7 @@ describe("Component test for the company cockpit", () => {
       cy.scrollTo("top", { duration: scrollDurationInMs });
       validateMobileHeader(false);
 
-      validateBackButtonExistence();
+      validateBackButtonExistence(true);
       validateSearchBarExistence(false);
       validateCompanyInformationBanner();
       validateFrameworkSummaryPanels(false);

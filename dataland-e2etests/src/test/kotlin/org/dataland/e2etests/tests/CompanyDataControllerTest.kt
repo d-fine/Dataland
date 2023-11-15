@@ -22,6 +22,8 @@ class CompanyDataControllerTest {
     private val apiAccessor = ApiAccessor()
     private val baseCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithRandomIdentifiers(1).first()
+    private val checkOtherCompanyTrue = "Other Company true"
+    private val checkOtherCompanyFalse = "Other Company false"
 
     @Test
     fun `post a dummy company and check if post was successful`() {
@@ -318,16 +320,16 @@ class CompanyDataControllerTest {
             searchString = testString,
         ).map { it.companyName }
         assertEquals(
-            listOf("$testString true", "Other Company true", "$testString none"),
+            listOf("$testString true", checkOtherCompanyTrue, "$testString none"),
             sortedCompanyNames.filter { it.contains("none") || it.contains("true") },
         )
         assertEquals(
-            listOf("$testString true", "Other Company true", "$testString false"),
+            listOf("$testString true", checkOtherCompanyTrue, "$testString false"),
             sortedCompanyNames.filter { it.contains("$testString false") || it.contains("true") },
         )
         assertEquals(
-            listOf("$testString true", "Other Company true", "Other Company false"),
-            sortedCompanyNames.filter { it.contains("Other Company false") || it.contains("true") },
+            listOf("$testString true", checkOtherCompanyTrue, checkOtherCompanyFalse),
+            sortedCompanyNames.filter { it.contains(checkOtherCompanyFalse) || it.contains("true") },
         )
     }
 
@@ -337,9 +339,9 @@ class CompanyDataControllerTest {
         uploadDummyDataset(companyId = companyId, bypassQa = false)
         companyId = uploadModifiedBaseCompany("$expectedSearchString true", null)
         uploadDummyDataset(companyId = companyId, bypassQa = true)
-        companyId = uploadModifiedBaseCompany("Other Company false", listOf("1${expectedSearchString}2"))
+        companyId = uploadModifiedBaseCompany(checkOtherCompanyFalse, listOf("1${expectedSearchString}2"))
         uploadDummyDataset(companyId = companyId, bypassQa = false)
-        companyId = uploadModifiedBaseCompany("Other Company true", listOf("1${expectedSearchString}2"))
+        companyId = uploadModifiedBaseCompany(checkOtherCompanyTrue, listOf("1${expectedSearchString}2"))
         uploadDummyDataset(companyId = companyId, bypassQa = true)
     }
 
