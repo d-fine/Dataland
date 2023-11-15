@@ -297,7 +297,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
   {
     type: "section",
     label: "Insurance or Reinsurance",
-    labelBadgeColor: "blue",
+    labelBadgeColor: "green",
     expandOnPageLoad: false,
     shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
       dataset.financialServicesTypes?.includes(
@@ -383,7 +383,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
   {
     type: "section",
     label: "Asset Management",
-    labelBadgeColor: "blue",
+    labelBadgeColor: "green",
     expandOnPageLoad: false,
     shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
       dataset.financialServicesTypes?.includes(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement) ??
