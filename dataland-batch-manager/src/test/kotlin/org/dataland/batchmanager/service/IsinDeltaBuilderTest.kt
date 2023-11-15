@@ -2,7 +2,7 @@ package org.dataland.batchmanager.service
 
 import org.dataland.datalandbatchmanager.service.IsinDeltaBuilder
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.File
@@ -15,7 +15,7 @@ class IsinDeltaBuilderTest {
     private lateinit var newFile: File
     private var deltaMap = mutableMapOf<String, String>()
 
-    @BeforeAll
+    @BeforeEach
     fun setup() {
         val oldContent = """
             LEI,ISIN
@@ -71,5 +71,17 @@ class IsinDeltaBuilderTest {
 //        println("compared to$deltaMap")
         assert(isinDeltaBuilder.createDeltaOfMappingFile(oldFile, newFile).equals(deltaMap))
         tmpFile.delete()
+    }
+
+    @Test
+    fun `test if new file moves in place of old file`() {
+        val newLines: List<String> = File(newFile.toString()).useLines { lines -> lines.take(5).toList() }
+        val isinDeltaBuilder = IsinDeltaBuilder(oldFile)
+        isinDeltaBuilder.replaceOldMappingFile(newFile)
+        assert(!File("newFile.csv").exists())
+        assert(File("oldFile.csv").exists())
+
+        val movedLines: List<String> = File(oldFile.toString()).useLines { lines -> lines.take(5).toList() }
+        assert(movedLines.hashCode().equals(newLines.hashCode()))
     }
 }
