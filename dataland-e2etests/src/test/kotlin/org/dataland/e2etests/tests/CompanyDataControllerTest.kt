@@ -316,6 +316,7 @@ class CompanyDataControllerTest {
         val testString = "unique-test-string-${UUID.randomUUID()}"
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         uploadCompaniesInReverseToExpectedOrder(testString)
+        sleep(100)
         val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
             searchString = testString,
         ).map { it.companyName }
