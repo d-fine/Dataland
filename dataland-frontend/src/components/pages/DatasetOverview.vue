@@ -1,8 +1,8 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="1">
-      <TheContent class="p-3 min-h-screen paper-section relative">
+    <TheContent class="paper-section relative">
+      <DatasetsTabMenu :initial-tab-index="1">
         <div class="col-12 flex flex-row justify-content-between align-items-end">
           <NewDatasetButton v-if="hasUserUploaderRights" />
         </div>
@@ -18,8 +18,8 @@
         <div v-else-if="datasetTableInfos.length === 0">
           <h1 class="mb-0" data-test="noDatasetUploadedText">No datasets uploaded</h1>
         </div>
-      </TheContent>
-    </DatasetsTabMenu>
+      </DatasetsTabMenu>
+    </TheContent>
     <TheFooter />
   </AuthenticationWrapper>
 </template>
@@ -29,11 +29,11 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import { defineComponent, inject } from "vue";
-import TheFooter from "@/components/general/TheFooter.vue";
+import TheFooter from "@/components/generics/TheFooter.vue";
 import DatasetOverviewTable from "@/components/resources/datasetOverview/DatasetOverviewTable.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import Keycloak from "keycloak-js";
-import { DatasetTableInfo, getMyDatasetTableInfos } from "@/components/resources/datasetOverview/DatasetTableInfo";
+import type Keycloak from "keycloak-js";
+import { type DatasetTableInfo, getMyDatasetTableInfos } from "@/components/resources/datasetOverview/DatasetTableInfo";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import NewDatasetButton from "@/components/general/NewDatasetButton.vue";

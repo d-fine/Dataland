@@ -3,11 +3,11 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.LogMessageBuilder
 import org.dataland.datalandbackend.api.DataApi
-import org.dataland.datalandbackend.model.CompanyAssociatedData
-import org.dataland.datalandbackend.model.DataAndMetaInformation
-import org.dataland.datalandbackend.model.DataMetaInformation
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.canUserBypassQa

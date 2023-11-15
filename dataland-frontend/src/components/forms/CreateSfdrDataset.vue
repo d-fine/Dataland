@@ -17,8 +17,8 @@
             @submit="postSfdrData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
-            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
+            <FormKit type="hidden" name="companyId" :model-value="companyID" />
+            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" />
 
             <FormKit type="group" name="data" label="data">
               <FormKit
@@ -48,10 +48,8 @@
                           :name="field.name"
                           :options="field.options"
                           :required="field.required"
-                          :certificateRequiredIfYes="field.certificateRequiredIfYes"
                           :validation="field.validation"
                           :validation-label="field.validationLabel"
-                          :evidenceDesired="field.evidenceDesired"
                           :data-test="field.name"
                           :unit="field.unit"
                           @reportsUpdated="updateDocumentsList"
@@ -96,7 +94,7 @@ import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import { defineComponent, inject, computed } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
 import PrimeButton from "primevue/button";
@@ -106,10 +104,9 @@ import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
-import { AxiosError } from "axios";
-import { CompanyAssociatedDataSfdrData, CompanyReport } from "@clients/backend";
+import { type CompanyAssociatedDataSfdrData, type CompanyReport, DataTypeEnum } from "@clients/backend";
 import { useRoute } from "vue-router";
-import { checkCustomInputs } from "@/utils/ValidationsUtils";
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
@@ -123,16 +120,24 @@ import SubmitButton from "@/components/forms/parts/SubmitButton.vue";
 import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
 import UploadReports from "@/components/forms/parts/UploadReports.vue";
-import DataPointFormField from "@/components/forms/parts/kpiSelection/DataPointFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
-import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
+import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
-import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
+import { type DocumentToUpload, getFileName, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
-import { Subcategory } from "@/utils/GenericFrameworkTypes";
+import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
+import HighImpactClimateSectorsFormField from "@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue";
+import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
+import { HighImpactClimateSectorsNaceCodes } from "@/types/HighImpactClimateSectors";
+import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
+import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
+import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
+import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
+import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
+import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -151,23 +156,29 @@ export default defineComponent({
     Card,
     PrimeButton,
     Calendar,
-    YesNoFormField,
     InputTextFormField,
     FreeTextFormField,
     NumberFormField,
-    DataPointFormField,
     DateFormField,
     SingleSelectFormField,
     MultiSelectFormField,
     NaceCodeFormField,
     AddressFormField,
     RadioButtonsFormField,
-    YesNoNaFormField,
     PercentageFormField,
     ProductionSitesFormField,
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
     UploadReports,
+    HighImpactClimateSectorsFormField,
+    IntegerExtendedDataPointFormField,
+    BigDecimalExtendedDataPointFormField,
+    CurrencyDataPointFormField,
+    YesNoFormField,
+    YesNoNaFormField,
+    YesNoBaseDataPointFormField,
+    YesNoNaBaseDataPointFormField,
+    YesNoExtendedDataPointFormField,
   },
   directives: {
     tooltip: Tooltip,
@@ -189,7 +200,8 @@ export default defineComponent({
       checkCustomInputs,
       documents: new Map() as Map<string, DocumentToUpload>,
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
-      namesOfAllCompanyReportsForTheDataset: [] as string[],
+      climateSectorsForPrefill: [] as Array<string>,
+      namesAndReferencesOfAllCompanyReportsForTheDataset: {},
     };
   },
   computed: {
@@ -206,6 +218,9 @@ export default defineComponent({
       set() {
         // IGNORED
       },
+    },
+    namesOfAllCompanyReportsForTheDataset(): string[] {
+      return getFileName(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(this.sfdrDataModel, this.companyAssociatedSfdrData.data);
@@ -235,11 +250,19 @@ export default defineComponent({
       this.waitingForData = true;
       const sfdrDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
-      ).getSfdrDataControllerApi();
+      ).getUnifiedFrameworkDataController(DataTypeEnum.Sfdr);
 
-      const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId);
+      const dataResponse = await sfdrDataControllerApi.getFrameworkData(dataId);
       const sfdrResponseData = dataResponse.data;
       this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};
+      this.climateSectorsForPrefill = sfdrResponseData?.data?.environmental?.energyPerformance
+        ?.applicableHighImpactClimateSectors
+        ? Object.keys(sfdrResponseData?.data?.environmental?.energyPerformance?.applicableHighImpactClimateSectors).map(
+            (it): string => {
+              return HighImpactClimateSectorsNaceCodes[it as keyof typeof HighImpactClimateSectorsNaceCodes] ?? it;
+            },
+          )
+        : [];
       this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData as ObjectType) as CompanyAssociatedDataSfdrData;
 
       this.waitingForData = false;
@@ -251,21 +274,25 @@ export default defineComponent({
       this.messageCounter++;
       try {
         if (this.documents.size > 0) {
+          checkIfAllUploadedReportsAreReferencedInDataModel(
+            this.companyAssociatedSfdrData.data as ObjectType,
+            this.namesOfAllCompanyReportsForTheDataset,
+          );
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
 
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getSfdrDataControllerApi();
-        await sfdrDataControllerApi.postCompanyAssociatedSfdrData(this.companyAssociatedSfdrData);
+        ).getUnifiedFrameworkDataController(DataTypeEnum.Sfdr);
+        await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error instanceof AxiosError) {
-          this.message = "An error occurred: " + error.message;
+        if (error.message) {
+          this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
             "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
@@ -277,22 +304,25 @@ export default defineComponent({
     },
     /**
      * updates the list of documents that were uploaded
-     * @param reportsNames repots names
+     * @param reportsNamesAndReferences repots names and references
      * @param reportsToUpload reports to upload
      */
-    updateDocumentsList(reportsNames: string[], reportsToUpload: DocumentToUpload[]) {
-      this.namesOfAllCompanyReportsForTheDataset = reportsNames;
+    updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
+      this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
       this.documents = new Map();
       reportsToUpload.forEach((document) => this.documents.set(document.file.name, document));
     },
   },
   provide() {
     return {
-      namesOfAllCompanyReportsForTheDataset: computed(() => {
-        return this.namesOfAllCompanyReportsForTheDataset;
+      namesAndReferencesOfAllCompanyReportsForTheDataset: computed(() => {
+        return this.namesAndReferencesOfAllCompanyReportsForTheDataset;
       }),
       referencedReportsForPrefill: computed(() => {
         return this.referencedReportsForPrefill;
+      }),
+      climateSectorsForPrefill: computed(() => {
+        return this.climateSectorsForPrefill;
       }),
     };
   },

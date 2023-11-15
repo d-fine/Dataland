@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euxo pipefail
 
 environment=$1
@@ -55,6 +55,7 @@ if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
   delete_docker_volume_if_existent_remotely "internal_storage_data" "$target_server_url" "$location"
   delete_docker_volume_if_existent_remotely "qa_service_data" "$target_server_url" "$location"
   delete_docker_volume_if_existent_remotely "rabbitmq_data" "$target_server_url" "$location"
+  delete_docker_volume_if_existent_remotely "community_manager_data" "$target_server_url" "$location"
 fi
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then

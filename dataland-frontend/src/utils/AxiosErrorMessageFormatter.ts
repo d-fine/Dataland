@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError, type AxiosResponse } from "axios";
 
 /**
  * Takes an AxiosError and attempts to return a formatted error message derived from the error values.

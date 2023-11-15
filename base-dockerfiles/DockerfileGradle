@@ -1,9 +1,9 @@
-FROM eclipse-temurin:17.0.7_7-jdk-jammy as builder
+FROM eclipse-temurin:17.0.8_7-jdk-jammy as builder
 
 WORKDIR /app
 
 COPY ./gradle/ ./gradle/
 COPY ./gradlew .
 RUN  ./gradlew --version
-COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts .
+COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./versions.properties ./
 RUN ./gradlew --no-daemon --stacktrace

@@ -11,7 +11,7 @@ span {
 </style>
 
 <script lang="ts">
-import { splitStringBySearchMatch, StringSplitSearchMatch } from "@/utils/StringHighlighter";
+import { splitStringBySearchMatch, type StringSplitSearchMatch } from "@/utils/StringHighlighter";
 import { defineComponent } from "vue";
 
 export default defineComponent({

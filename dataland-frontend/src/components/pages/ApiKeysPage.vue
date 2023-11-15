@@ -136,22 +136,22 @@
 
 <script lang="ts">
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import { ComponentPublicInstance, defineComponent, inject, ref } from "vue";
+import { type ComponentPublicInstance, defineComponent, inject, ref } from "vue";
 import PrimeButton from "primevue/button";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import MiddleCenterDiv from "@/components/wrapper/MiddleCenterDivWrapper.vue";
 import BackButton from "@/components/general/BackButton.vue";
-import ApiKeyCard from "@/components/general/apiKey/ApiKeyCard.vue";
-import CreateApiKeyCard from "@/components/general/apiKey/CreateApiKeyCard.vue";
+import ApiKeyCard from "@/components/resources/apiKey/ApiKeyCard.vue";
+import CreateApiKeyCard from "@/components/resources/apiKey/CreateApiKeyCard.vue";
 import MessageComponent from "@/components/messages/MessageComponent.vue";
 import PrimeDialog from "primevue/dialog";
 import PrimeTextarea from "primevue/textarea";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import Keycloak from "keycloak-js";
-import { ApiKeyControllerApiInterface } from "@clients/apikeymanager";
-import TheFooter from "@/components/general/TheFooter.vue";
+import type Keycloak from "keycloak-js";
+import { type ApiKeyControllerApiInterface } from "@clients/apikeymanager";
+import TheFooter from "@/components/generics/TheFooter.vue";
 
 export default defineComponent({
   name: "ApiKeysPage",

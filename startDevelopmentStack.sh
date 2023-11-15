@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Login to the docker repository
 set -euxo pipefail
 ./verifyEnvironmentVariables.sh
@@ -13,6 +13,7 @@ rm ./*github_env.log || true
 ./build-utils/base_rebuild_gradle_dockerfile.sh
 set -o allexport
 source ./*github_env.log
+source ./environments/.env.uncritical
 set +o allexport
 
 find ./build-utils/ -name "rebuild*.sh" ! -name "*prod*" ! -name "*test*" ! -name "*backend*" -exec bash -c 'eval "$1" && echo "SUCCESS - execution of $1 was successful" || echo "ERROR - could not execute $1"' shell {} \;
@@ -25,6 +26,7 @@ set +o allexport
 docker compose --profile development down
 docker volume rm $(docker volume ls -q | grep _pgadmin_config) || true
 docker volume rm $(docker volume ls -q | grep _qa_service_data) || true
+docker volume rm $(docker volume ls -q | grep _community_manager_data) || true
 docker compose --profile development pull --ignore-pull-failures --include-deps
 docker compose --profile development up -d --build
 

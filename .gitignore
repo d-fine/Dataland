@@ -27,6 +27,7 @@ hs_err_pid*
 **/.gradle/
 !/gradle/wrapper/gradle-wrapper.jar
 **/build/
+**/bin/
 **/node_modules/
 
 local

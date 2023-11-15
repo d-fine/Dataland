@@ -23,12 +23,12 @@ plugins {
 }
 
 dependencies {
-    implementation("org.springframework.amqp:spring-rabbit")
+    implementation(libs.spring.rabbit)
     implementation(libs.cloudevents.api)
     implementation(libs.cloudevents.json.jackson)
     implementation(libs.cloudevents.core)
     implementation(libs.spring.cloud.function.context)
-    implementation("org.springframework.amqp:spring-amqp")
+    implementation(libs.spring.amqp)
     implementation(project(":dataland-backend-utils"))
 }
 

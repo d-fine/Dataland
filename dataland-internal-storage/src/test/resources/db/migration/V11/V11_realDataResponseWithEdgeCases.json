@@ -1,0 +1,122 @@
+{
+    "financialServicesTypes": [
+      "CreditInstitution"
+    ],
+    "eligibilityKpis": {
+      "CreditInstitution": {
+        "taxonomyEligibleActivityInPercent": {
+          "quality": "Reported",
+          "dataSource": null,
+          "comment": null,
+          "value": 2
+        },
+        "taxonomyNonEligibleActivityInPercent": {
+          "quality": "Reported",
+          "dataSource": {
+            "report": "DE0005408116_SustainabilityReport",
+            "page": 42,
+            "tagName": null
+          },
+          "comment": null,
+          "value": 8.7
+        },
+        "derivativesInPercent": {
+          "quality": "Reported",
+          "dataSource": {
+            "report": "DE0005408116_SustainabilityReport",
+            "page": 42,
+            "tagName": null
+          },
+          "comment": null,
+          "value": 1.9
+        },
+        "banksAndIssuersInPercent": {
+          "quality": "Reported",
+          "dataSource": {
+            "report": "DE0005408116_SustainabilityReport",
+            "page": 42,
+            "tagName": null
+          },
+          "comment": null,
+          "value": 19.8
+        },
+        "investmentNonNfrdInPercent": {
+          "quality": "Reported",
+          "dataSource": {
+            "report": "DE0005408116_SustainabilityReport",
+            "page": 42,
+            "tagName": null
+          },
+          "comment": null,
+          "value": 62.7
+        }
+      }
+    },
+    "creditInstitutionKpis": {
+      "tradingPortfolioInPercent": {
+        "quality": "Reported",
+        "dataSource": {
+          "report": "DE0005408116_SustainabilityReport",
+          "page": 42,
+          "tagName": null
+        },
+        "comment": null,
+        "value": 0
+      },
+      "interbankLoansInPercent": {
+        "quality": "Reported",
+        "dataSource": {
+          "report": "DE0005408116_SustainabilityReport",
+          "page": 42,
+          "tagName": null
+        },
+        "comment": null,
+        "value": 2.2000000000000002
+      },
+      "tradingPortfolioAndInterbankLoansInPercent": {
+        "quality": "Reported",
+        "dataSource": {
+          "report": "",
+          "page": null,
+          "tagName": null
+        },
+        "comment": null,
+        "value": null
+      },
+      "greenAssetRatioInPercent": {
+        "quality": "NA",
+        "dataSource": {
+          "report": "",
+          "page": null,
+          "tagName": null
+        },
+        "comment": null,
+        "value": null
+      }
+    },
+    "investmentFirmKpis": null,
+    "insuranceKpis": null,
+    "fiscalYearDeviation": "NoDeviation",
+    "fiscalYearEnd": null,
+    "scopeOfEntities": null,
+    "nfrdMandatory": "Yes",
+    "euTaxonomyActivityLevelReporting": null,
+    "assurance": {
+      "assurance": "LimitedAssurance",
+      "provider": null,
+      "dataSource": {
+        "report": "",
+        "page": null,
+        "tagName": null
+      }
+    },
+    "numberOfEmployees": 2875,
+    "referencedReports": {
+      "DE0005408116_SustainabilityReport": {
+        "reference": "3e7d0d729cbb24086e3561435ec5c9d8d4b0abaa807235327739e4608b0ae3f9",
+        "isGroupLevel": null,
+        "reportDate": null,
+        "currency": null
+      }
+    }
+  }

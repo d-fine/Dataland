@@ -1,7 +1,9 @@
 package db.migration
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import db.migration.utils.DataTableEntity
+import db.migration.utils.getOrJavaNull
+import db.migration.utils.getOrJsonNull
+import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
@@ -11,60 +13,38 @@ import org.json.JSONObject
  * from a field called value for percentages only to a structure holding the absolute value of a cash flow type as well
  */
 class V2__MigrateEuTaxonomyNonFinancialsWithAbsoluteValues : BaseJavaMigration() {
-    private data class DataTableEntity(
-        val dataId: String,
-        val companyAssociatedData: JSONObject,
-    ) {
-        fun getWriteQuery(): String = "UPDATE data_items " +
-            "SET data = '${ObjectMapper().writeValueAsString(companyAssociatedData.toString())}' " +
-            "WHERE data_id = '$dataId'"
-    }
 
     private val cashFlowTypes = listOf("capex", "opex", "revenue")
     private val fieldsToMigrate = mapOf("alignedPercentage" to "alignedData", "eligiblePercentage" to "eligibleData")
 
-    override fun migrate(context: Context?) {
-        val objectMapper = ObjectMapper()
-        val getQueryResultSet = context!!.connection.createStatement().executeQuery(
-            "SELECT * from data_items " +
-                "WHERE data LIKE '%\\\\\\\"dataType\\\\\\\":\\\\\\\"eutaxonomy-non-financials\\\\\\\"%'",
-        )
-        val companyAssociatedDataSets = mutableListOf<DataTableEntity>()
-        while (getQueryResultSet.next()) {
-            companyAssociatedDataSets.add(
-                DataTableEntity(
-                    getQueryResultSet.getString("data_id"),
-                    JSONObject(
-                        objectMapper.readValue(
-                            getQueryResultSet.getString("data"), String::class.java,
-                        ),
-                    ),
-                ),
-            )
+    private fun migrateFieldForCashFlow(fieldToMigrate: String, cashFlow: JSONObject) {
+        val dataToMigrate = cashFlow.opt(fieldToMigrate) ?: return
+        if (dataToMigrate != JSONObject.NULL && dataToMigrate is JSONObject) {
+            dataToMigrate.put("valueAsPercentage", dataToMigrate.getOrJsonNull("value"))
+            dataToMigrate.remove("value")
         }
-        companyAssociatedDataSets.filter {
-            it.companyAssociatedData.getString("dataType") == DataTypeEnum.eutaxonomyMinusNonMinusFinancials.value
-        }
-        companyAssociatedDataSets.forEach {
-            it.companyAssociatedData.put("data", migrateDataset(it.companyAssociatedData.getString("data")))
-            context.connection.createStatement().execute(it.getWriteQuery())
-        }
+        cashFlow.put(fieldsToMigrate.getValue(fieldToMigrate), dataToMigrate)
+        cashFlow.remove(fieldToMigrate)
     }
 
-    private fun migrateDataset(datasetString: String): String {
-        val dataset = JSONObject(datasetString)
+    /**
+     * Migrates an old eu taxonomy non financials dataset to the new format
+     */
+    fun migrateEuTaxonomyNonFinancialsData(dataTableEntity: DataTableEntity) {
+        val dataset = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
         cashFlowTypes.forEach { cashflowType ->
-            val cashFlow = (dataset.opt(cashflowType) ?: return@forEach) as JSONObject
+            val cashFlow = (dataset.getOrJavaNull(cashflowType) ?: return@forEach) as JSONObject
             fieldsToMigrate.keys.forEach { fieldToMigrate ->
-                val dataToMigrate = cashFlow.opt(fieldToMigrate) ?: return@forEach
-                if (dataToMigrate != JSONObject.NULL && dataToMigrate is JSONObject) {
-                    dataToMigrate.put("valueAsPercentage", dataToMigrate.opt("value"))
-                    dataToMigrate.remove("value")
-                }
-                cashFlow.put(fieldsToMigrate.getValue(fieldToMigrate), dataToMigrate)
-                cashFlow.remove(fieldToMigrate)
+                migrateFieldForCashFlow(fieldToMigrate, cashFlow)
             }
         }
-        return dataset.toString()
+        dataTableEntity.companyAssociatedData.put("data", dataset.toString())
+    }
+
+    override fun migrate(context: Context?) {
+        migrateCompanyAssociatedDataOfDatatype(
+            context,
+            "eutaxonomy-non-financials", this::migrateEuTaxonomyNonFinancialsData,
+        )
     }
 }

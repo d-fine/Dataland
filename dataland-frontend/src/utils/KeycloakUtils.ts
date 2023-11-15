@@ -1,5 +1,5 @@
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 
 /**
  * Asserts that the provided getter-function to get a Keycloak-promise is defined, then executes that getter-function
@@ -25,25 +25,26 @@ export async function getKeycloakRolesForUser(keycloakPromiseGetter: () => Promi
     return resolvedKeycloakPromise.realmAccess.roles;
   } else return [];
 }
-
+export const KEYCLOAK_ROLE_USER = "ROLE_USER";
 export const KEYCLOAK_ROLE_UPLOADER = "ROLE_UPLOADER";
 export const KEYCLOAK_ROLE_REVIEWER = "ROLE_REVIEWER";
+export const KEYCLOAK_ROLE_ADMIN = "ROLE_ADMIN";
 
 /**
  * Derives the roles from the resolved Keycloak-promise of a logged in user
  * and checks if the provided role is included.
- * @param keycloakRole the keycloak user role to test for
+ * @param expectedKeycloakRole the keycloak user role to test for
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-promise
  * @returns a promise, which resolves to a boolean
  */
 export async function checkIfUserHasRole(
-  keycloakRole: string,
+  expectedKeycloakRole: string,
   keycloakPromiseGetter?: () => Promise<Keycloak>,
 ): Promise<boolean> {
   if (keycloakPromiseGetter) {
-    const roles = await getKeycloakRolesForUser(keycloakPromiseGetter);
-    if (roles) {
-      return roles.includes(keycloakRole);
+    const rolesOfUser = await getKeycloakRolesForUser(keycloakPromiseGetter);
+    if (rolesOfUser) {
+      return rolesOfUser.includes(expectedKeycloakRole);
     } else {
       return false;
     }
@@ -69,5 +70,15 @@ export function logoutAndRedirectToUri(keycloak: Keycloak, additionToBasePath: s
 export function loginAndRedirectToSearchPage(keycloak: Keycloak): void {
   const baseUrl = window.location.origin;
   const url = keycloak.createLoginUrl({ redirectUri: `${baseUrl}/companies` });
+  location.assign(url);
+}
+
+/**
+ * Registers and logs the user in and redirects her/him to the Dataland companies search page.
+ * @param keycloak is the keycloak adaptor used to do the login
+ */
+export function registerAndRedirectToSearchPage(keycloak: Keycloak): void {
+  const baseUrl = window.location.origin;
+  const url = keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/companies` });
   location.assign(url);
 }

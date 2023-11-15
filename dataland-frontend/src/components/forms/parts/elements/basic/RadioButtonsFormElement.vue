@@ -15,6 +15,9 @@
       'formkit-input': false,
       'p-radiobutton': true,
     }"
+    :id="fieldName + name"
+    :value="currentValue"
+    @input="$emit('update:currentValue', $event)"
   />
 </template>
 
@@ -42,6 +45,14 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    fieldName: {
+      type: String,
+      default: "",
+    },
+    currentValue: {
+      type: String,
+    },
   },
+  emits: ["update:currentValue"],
 });
 </script>

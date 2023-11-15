@@ -1,5 +1,11 @@
-import { DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
-import { IdentifierType, CompanyInformation, DataMetaInformation, DataTypeEnum, QaStatus } from "@clients/backend";
+import { type DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import {
+  IdentifierType,
+  type CompanyInformation,
+  type DataMetaInformation,
+  DataTypeEnum,
+  QaStatus,
+} from "@clients/backend";
 
 /**
  * Method to prepare an array consisting of one simple dataset to be displayed in the data table of the "AVAILABLE

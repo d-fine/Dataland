@@ -1,12 +1,14 @@
 <template>
   <!-- Select company reports -->
-  <div class="uploaded-files" style="padding: 0; margin-left: 0">
+  <div id="uploadReports" class="uploaded-files" style="padding: 0; margin-left: 0">
     <FileUpload
       name="fileUpload"
       ref="fileUpload"
       accept=".pdf"
       :maxFileSize="DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES"
-      invalidFileSizeMessage="{0}: Invalid file size, file size should be smaller than {1}."
+      :invalidFileSizeMessage="`{0}: Invalid file size, file size should be smaller than ${
+        DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES / BYTE_TO_MEGABYTE_FACTOR
+      } MB.`"
       :auto="false"
       :multiple="moreThanOneDocumentAllowed"
       @select="handleFilesSelected"
@@ -22,7 +24,8 @@
           />
         </div>
       </template>
-      <template #content="{ files }">
+      <template #content="{ files, messages }">
+        <FileSelectMessage v-for="msg of messages" :key="msg" severity="error">{{ msg }} </FileSelectMessage>
         <div v-show="files.length > 0" data-test="files-to-upload">
           <div
             v-for="(selectedFile, index) of files"
@@ -52,27 +55,30 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import PrimeButton from "primevue/button";
-import FileUpload, { FileUploadSelectEvent } from "primevue/fileupload";
+import FileUpload, { type FileUploadSelectEvent } from "primevue/fileupload";
 import { formatBytesUserFriendly } from "@/utils/NumberConversionUtils";
-import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES } from "@/utils/Constants";
 import {
   calculateSha256HashFromFile,
-  DocumentToUpload,
+  type DocumentToUpload,
   isThereActuallyANewFileSelected,
   removeFileTypeExtension,
 } from "@/utils/FileUploadUtils";
+import { DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES, BYTE_TO_MEGABYTE_FACTOR } from "@/DatalandSettings";
+import FileSelectMessage from "primevue/message";
 
 export default defineComponent({
   name: "UploadDocumentsForm",
   components: {
+    FileSelectMessage,
     PrimeButton,
     FileUpload,
   },
-  emits: ["reportsUpdated"],
+  emits: ["updatedDocumentsSelectedForUpload"],
   data() {
     return {
       formatBytesUserFriendly,
-      DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES: DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
+      DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_BYTES,
+      BYTE_TO_MEGABYTE_FACTOR,
       documentsToUpload: [] as DocumentToUpload[],
     };
   },
@@ -110,7 +116,7 @@ export default defineComponent({
           selectedFilesByUser.map(async (file) => {
             return {
               file: file,
-              reference: await calculateSha256HashFromFile(file),
+              fileReference: await calculateSha256HashFromFile(file),
               fileNameWithoutSuffix: removeFileTypeExtension(file.name),
             };
           }),
@@ -118,15 +124,15 @@ export default defineComponent({
 
         void documentsToUpload.then((documentsToUpload) => {
           this.documentsToUpload = documentsToUpload;
-          this.emitReportsUpdatedEvent();
+          this.emitUpdatedDocumentsSelectionEvent();
         });
       }
     },
     /**
      * Emits event that selected documents changed
      */
-    emitReportsUpdatedEvent() {
-      this.$emit("reportsUpdated", this.documentsToUpload);
+    emitUpdatedDocumentsSelectionEvent() {
+      this.$emit("updatedDocumentsSelectedForUpload", this.documentsToUpload);
     },
 
     /**
@@ -140,7 +146,7 @@ export default defineComponent({
         ((this.$refs.fileUpload as FileUpload).remove as (index: number) => void)(indexOfFileToRemove);
         this.documentsToUpload.splice(indexOfFileToRemove, 1);
       });
-      this.emitReportsUpdatedEvent();
+      this.emitUpdatedDocumentsSelectionEvent();
     },
 
     /**
@@ -151,7 +157,7 @@ export default defineComponent({
     removeAllDocuments() {
       (this.$refs.fileUpload as FileUpload).files = [];
       this.documentsToUpload = [];
-      this.emitReportsUpdatedEvent();
+      this.emitUpdatedDocumentsSelectionEvent();
     },
 
     /**

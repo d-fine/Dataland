@@ -17,8 +17,8 @@
             @submit="postP2pData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
-            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
+            <FormKit type="hidden" name="companyId" :model-value="companyID" />
+            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" />
 
             <FormKit type="group" name="data" label="data">
               <FormKit
@@ -48,8 +48,8 @@
                           :name="field.name"
                           :options="field.options"
                           :required="field.required"
-                          :certificateRequiredIfYes="field.certificateRequiredIfYes"
                           :validation="field.validation"
+                          :unit="field.unit"
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
                           :ref="field.name"
@@ -90,21 +90,22 @@
 </template>
 <script lang="ts">
 import { FormKit } from "@formkit/vue";
-import { defineComponent, inject } from "vue";
+import { computed, defineComponent, inject } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
-import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
+import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import Calendar from "primevue/calendar";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
-import { Category, Subcategory } from "@/utils/GenericFrameworkTypes";
+import { type DriveMixType } from "@/api-models/DriveMixType";
+import { type Category, type Subcategory } from "@/utils/GenericFrameworkTypes";
 import { AxiosError } from "axios";
-import { CompanyAssociatedDataPathwaysToParisData } from "@clients/backend";
+import { type CompanyAssociatedDataPathwaysToParisData, DataTypeEnum, type P2pDriveMix } from "@clients/backend";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
@@ -118,6 +119,14 @@ import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import DateFormField from "@/components/forms/parts/fields/DateFormField.vue";
 import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
+import DriveMixFormField from "@/components/forms/parts/fields/DriveMixFormField.vue";
+import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
+import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
+import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
+import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
+import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
+import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
+import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -127,12 +136,12 @@ export default defineComponent({
   },
   name: "CreateP2pDataset",
   components: {
+    DriveMixFormField,
     FormKit,
     UploadFormHeader,
     InputTextFormField,
     MultiSelectFormField,
     NumberFormField,
-    YesNoFormField,
     PercentageFormField,
     Card,
     PrimeButton,
@@ -143,6 +152,14 @@ export default defineComponent({
     SubmitSideBar,
     DateFormField,
     SingleSelectFormField,
+    IntegerExtendedDataPointFormField,
+    BigDecimalExtendedDataPointFormField,
+    CurrencyDataPointFormField,
+    YesNoFormField,
+    YesNoNaFormField,
+    YesNoBaseDataPointFormField,
+    YesNoNaBaseDataPointFormField,
+    YesNoExtendedDataPointFormField,
   },
   emits: ["datasetCreated"],
   data() {
@@ -208,9 +225,9 @@ export default defineComponent({
       this.waitingForData = true;
       const p2pDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
-      ).getP2pDataControllerApi();
+      ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
 
-      const p2pDataset = (await p2pDataControllerApi.getCompanyAssociatedP2pData(dataId)).data;
+      const p2pDataset = (await p2pDataControllerApi.getFrameworkData(dataId)).data;
       const dataDateFromDataset = p2pDataset.data?.general?.general?.dataDate;
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
@@ -228,8 +245,8 @@ export default defineComponent({
       try {
         const p2pDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getP2pDataControllerApi();
-        await p2pDataControllerApi.postCompanyAssociatedP2pData(this.companyAssociatedP2pData);
+        ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
+        await p2pDataControllerApi.postFrameworkData(this.companyAssociatedP2pData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
@@ -247,6 +264,16 @@ export default defineComponent({
         this.postP2pDataProcessed = true;
       }
     },
+  },
+  provide() {
+    return {
+      driveMixPerFleetSegment: computed(() => {
+        return this.companyAssociatedP2pData.data?.freightTransportByRoad?.technology?.driveMixPerFleetSegment as Map<
+          DriveMixType,
+          P2pDriveMix
+        > | null;
+      }),
+    };
   },
 });
 </script>

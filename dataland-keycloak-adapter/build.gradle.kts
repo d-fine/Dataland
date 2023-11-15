@@ -24,12 +24,12 @@ plugins {
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
-    implementation("org.springframework:spring-context")
-    implementation("org.springframework.boot:spring-boot")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
+    implementation(libs.spring.context)
+    implementation(libs.spring.boot)
+    implementation(Spring.boot.web)
+    implementation(Spring.boot.oauth2ResourceServer)
+    implementation(Spring.boot.security)
+    kapt(Spring.boot.configurationProcessor)
     implementation(project(":dataland-backend-utils"))
     implementation(libs.log4j)
     implementation(libs.log4j.api)
@@ -40,7 +40,7 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
     implementation(libs.okhttp)
-    implementation("org.mockito:mockito-core")
+    implementation(Testing.mockito.core)
 }
 
 java {

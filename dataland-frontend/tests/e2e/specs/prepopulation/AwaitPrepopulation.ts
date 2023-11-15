@@ -1,8 +1,8 @@
 import { countCompaniesAndDataSetsForDataType } from "@e2e/utils/GeneralApiUtils";
-import { DataTypeEnum } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { describeIf } from "@e2e/support/TestUtility";
+import { frameworkFixtureMap } from "@e2e/utils/FixtureMap";
 
 describeIf(
   "I want to ensure that the prepopulation has finished before executing any further tests",
@@ -13,14 +13,7 @@ describeIf(
     let expectedNumberOfCompanies = 0;
 
     before(function () {
-      const fixtures = [
-        "CompanyInformationWithEuTaxonomyDataForNonFinancials",
-        "CompanyInformationWithEuTaxonomyDataForFinancials",
-        "CompanyInformationWithLksgData",
-        "CompanyInformationWithSfdrData",
-        "CompanyInformationWithSmeData",
-        "CompanyInformationWithP2pData",
-      ];
+      const fixtures = Object.values(frameworkFixtureMap);
       fixtures.forEach((fixtureFile) => {
         cy.fixture(fixtureFile).then(function (companies: []) {
           expectedNumberOfCompanies += companies.length;
@@ -40,25 +33,14 @@ describeIf(
         cy.wait(5000)
           .then(() => getKeycloakToken(reader_name, reader_pw))
           .then(async (token) => {
-            const financialResponse = await countCompaniesAndDataSetsForDataType(
-              token,
-              DataTypeEnum.EutaxonomyFinancials,
+            const responsePromises = Object.keys(frameworkFixtureMap).map((key) =>
+              countCompaniesAndDataSetsForDataType(token, key as keyof typeof frameworkFixtureMap),
             );
-            const nonFinancialResponse = await countCompaniesAndDataSetsForDataType(
-              token,
-              DataTypeEnum.EutaxonomyNonFinancials,
-            );
-            let totalCompanies =
-              financialResponse.numberOfCompaniesForDataType + nonFinancialResponse.numberOfCompaniesForDataType;
-            const lksgResponse = await countCompaniesAndDataSetsForDataType(token, DataTypeEnum.Lksg);
-            const sfdrResponse = await countCompaniesAndDataSetsForDataType(token, DataTypeEnum.Sfdr);
-            const smeResponse = await countCompaniesAndDataSetsForDataType(token, DataTypeEnum.Sme);
-            const p2pResponse = await countCompaniesAndDataSetsForDataType(token, DataTypeEnum.P2p);
-            totalCompanies +=
-              lksgResponse.numberOfCompaniesForDataType +
-              sfdrResponse.numberOfCompaniesForDataType +
-              smeResponse.numberOfCompaniesForDataType +
-              p2pResponse.numberOfCompaniesForDataType;
+
+            const totalCompanies = (await Promise.all(responsePromises))
+              .map((it) => it.numberOfCompaniesForDataType)
+              .reduce((x, y) => x + y, 0);
+
             assert(
               totalCompanies >= expectedNumberOfCompanies,
               `Found ${totalCompanies} companies (Expecting at least ${expectedNumberOfCompanies})`,

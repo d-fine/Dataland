@@ -5,7 +5,7 @@
     :class="fontStyle"
     :data-test="'Report-Download-' + downloadName"
   >
-    <span class="underline">
+    <span class="underline pl-1">
       {{ label ?? downloadName }}
     </span>
     <i
@@ -15,13 +15,14 @@
       aria-hidden="true"
       style="font-size: 12px"
     />
+    <span class="underline ml-1 pl-1">{{ suffix }}</span>
   </span>
 </template>
 
 <script lang="ts">
 import { defineComponent, inject } from "vue";
-import Keycloak from "keycloak-js";
-import { AxiosRequestConfig } from "axios";
+import type Keycloak from "keycloak-js";
+import { type AxiosRequestConfig } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
@@ -34,8 +35,9 @@ export default defineComponent({
   name: "DocumentLink",
   props: {
     label: String,
+    suffix: String,
     downloadName: { type: String, required: true },
-    reference: { type: String, required: true },
+    fileReference: { type: String, required: true },
     showIcon: Boolean,
     fontStyle: String,
   },
@@ -44,14 +46,14 @@ export default defineComponent({
      * Method to download available reports
      */
     async downloadDocument() {
-      const reference: string = this.reference;
+      const fileReference: string = this.fileReference;
       try {
         const docUrl = document.createElement("a");
         const documentControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getDocumentControllerApi();
         await documentControllerApi
-          .getDocument(reference, {
+          .getDocument(fileReference, {
             headers: { accept: "application/pdf" },
             responseType: "arraybuffer",
           } as AxiosRequestConfig)

@@ -5,6 +5,7 @@
       placeholder="Search for NACE Rev 2 Codes"
       @focus="inputFocused"
       class="p-multiselect short d-nace-focus"
+      data-test="NaceCodeSelectorInput"
     ></InputText>
     <div class="pl-1 d-nace-chipview">
       <span
@@ -22,13 +23,20 @@
   <OverlayPanel ref="overlayPanel">
     <div class="d-nace-treeview-container">
       <h2 v-if="filteredTreeValues.length <= 0">No results</h2>
-      <Tree v-model:expanded-keys="expandedTreeKeys" :value="filteredTreeValues" placeholder="Select Item">
+      <Tree
+        v-model:expanded-keys="expandedTreeKeys"
+        :value="filteredTreeValues"
+        placeholder="Select Item"
+        data-test="NaceCodeSelectorTree"
+      >
         <template #default="slotProps">
           <div class="flex align-items-center">
             <Checkbox
+              v-if="!(shouldDisableCheckboxes && slotProps.node.children.length > 0)"
               :modelValue="selectedTreeNodes.has(slotProps.node.key)"
               @update:modelValue="(isChecked: boolean) => handleNodeCheckboxClick(slotProps.node.key, isChecked)"
               :binary="true"
+              data-test="NaceCodeSelectorCheckbox"
             ></Checkbox>
             <div :class="{ invisible: !selectedChildrenCounter.get(slotProps.node.key) }">
               <span class="p-badge p-badge-no-gutter">{{ selectedChildrenCounter.get(slotProps.node.key) || 0 }}</span>
@@ -42,14 +50,14 @@
 </template>
 
 <script lang="ts">
-import Tree, { TreeNode } from "primevue/tree";
+import Tree, { type TreeNode } from "primevue/tree";
 import InputText from "primevue/inputtext";
 import OverlayPanel from "primevue/overlaypanel";
 import Checkbox from "primevue/checkbox";
 
 import { filterNodes, naceCodeMap, naceCodeTree } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 import Tooltip from "primevue/tooltip";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, type PropType, ref } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
@@ -62,6 +70,10 @@ export default defineComponent({
     modelValue: {
       type: Array as PropType<Array<string>>,
       default: () => [],
+    },
+    shouldDisableCheckboxes: {
+      type: Boolean,
+      default: false,
     },
   },
   components: { Tree, OverlayPanel, InputText, Checkbox },
@@ -152,7 +164,7 @@ export default defineComponent({
     searchFilter(searchFilter: string) {
       if (searchFilter) {
         const copy = structuredClone(naceCodeTree);
-        this.filteredTreeValues = filterNodes(copy, searchFilter);
+        this.filteredTreeValues = filterNodes(copy, searchFilter) ?? [];
         const expandedKeysDict = {};
         for (const node of this.filteredTreeValues) {
           this.expandNode(node, expandedKeysDict);

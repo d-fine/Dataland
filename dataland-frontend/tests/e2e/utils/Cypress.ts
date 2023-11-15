@@ -1,4 +1,4 @@
-import Bluebird from "cypress/types/bluebird";
+import type Bluebird from "cypress/types/bluebird";
 import Chainable = Cypress.Chainable;
 
 export const reader_name = "data_reader";

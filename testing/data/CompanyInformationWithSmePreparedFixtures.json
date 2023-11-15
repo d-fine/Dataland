@@ -2,92 +2,99 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Rosettashire",
+			"headquarters": "Lake Danielle",
+			"headquartersPostalCode": "79108",
+			"sector": null,
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"uHRI9K5uIjoPrVFrmLYF"
+				],
 				"Isin": [
-					"nKbuCUMAiUrF",
-					"bgosHkXJqxVA"
+					"09CmpSlLAt0W"
 				],
 				"PermId": [
-					"NnLKR7J9Tt"
+					"KEKtBsxfiy"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"4WQvejv"
+				],
 				"Duns": [
-					"aytWeXqMg"
+					"9kk4VHmmx"
 				],
-				"VatNumber": [
-					"OQ8QQ9STc"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"3gmLlJ40RBooioK"
+					"BgRhIfSl8OU4qJJ"
 				]
 			},
-			"countryCode": "TW",
+			"countryCode": "KE",
 			"companyAlternativeNames": [
-				"Bayer - Hoppe",
-				"Gerlach - Boehm",
-				"Gerlach, Cronin and Reinger",
-				"O'Kon, Hudson and Ernser"
+				"Hackett LLC",
+				"Lueilwitz, Heathcote and O'Reilly"
 			],
+			"companyLegalForm": "Sole Trader",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"H",
-						"I",
-						"J",
-						"M"
+						"05.1",
+						"23.62",
+						"25.93",
+						"30.1",
+						"69.10"
 					],
 					"addressOfHeadquarters": {
-						"city": "South Alyson",
-						"state": "New Hampshire",
-						"country": "AD"
+						"streetAndHouseNumber": "Trantow Land 50834",
+						"postalCode": "38890-0409",
+						"city": "Beierchester",
+						"state": null,
+						"country": "LY"
 					},
-					"numberOfEmployees": 5941,
-					"fiscalYearStart": "2023-11-01"
+					"numberOfEmployees": 4803,
+					"fiscalYearStart": "2024-04-29"
 				},
 				"companyFinancials": {
-					"revenueInEur": 0,
-					"operatingCostInEur": 1000000,
-					"capitalAssetsInEur": 2000000
+					"revenueInEUR": 0,
+					"operatingCostInEUR": 1000000,
+					"capitalAssetsInEUR": 2000000
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
+					"listOfProductionSites": null
+				},
+				"products": {
+					"listOfProducts": [
 						{
-							"nameOfProductionSite": "Oberbrunner, Farrell and Collins",
-							"addressOfProductionSite": {
-								"city": "Catherinecester",
-								"state": "Utah",
-								"country": "UY"
-							}
+							"name": "Handcrafted Frozen Shirt",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Electronic Concrete Keyboard",
+							"shareOfTotalRevenueInPercent": 9.9931
 						}
 					]
-				},
-				"products": {}
+				}
 			},
 			"power": {
 				"investments": {
-					"percentageOfInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMwh": 238,
+					"powerConsumptionInMWh": 69,
 					"powerFromRenewableSources": "Yes",
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWaterInMWh": 44,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"Wind"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 39443916,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -96,41 +103,42 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Abagailstead",
-			"headquartersPostalCode": "72132",
-			"sector": "e-commerce",
+			"headquarters": "Fort Gabe",
+			"headquartersPostalCode": "55642",
+			"sector": "relationships",
 			"identifiers": {
 				"Lei": [
-					"CgnWNLKSWt2jt25t1h5e"
+					"6zWR93nY1oXOR7oO7EOc"
 				],
 				"Isin": [
-					"BR8XZ8oztm7O"
+					"7MMHvTv4WZM7",
+					"WlpXlnV57Dqh"
 				],
 				"PermId": [],
 				"Ticker": [
-					"GzkWaqi"
+					"kRKjbCo"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"Rp3CLh4rV"
+				"Duns": [
+					"EQAt5mzDZ"
 				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "NU",
+			"countryCode": "IE",
 			"companyAlternativeNames": [
-				"Considine, Simonis and Hessel"
+				"Heaney - Simonis",
+				"Hoeger and Sons",
+				"Stiedemann - Considine"
 			],
-			"website": "https://sour-affinity.org/",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://imperturbable-oyster.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"G",
-						"H",
-						"I",
-						"K"
+						"86.21"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -139,41 +147,44 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3209,
-					"fiscalYearStart": "2024-02-18"
+					"numberOfEmployees": 9313,
+					"fiscalYearStart": "2024-04-29"
 				},
-				"companyFinancials": {}
+				"companyFinancials": {
+					"revenueInEUR": 82028874,
+					"operatingCostInEUR": null,
+					"capitalAssetsInEUR": 57483359
+				}
 			},
 			"production": {
-				"sites": {},
+				"sites": {
+					"listOfProductionSites": null
+				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Practical Wooden Mouse"
-						},
-						{
-							"name": "Modern Wooden Gloves",
-							"percentageOfTotalRevenue": 0.6358
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+				},
 				"consumption": {
-					"energyConsumptionHeatingAndHotWater": 558,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil"
+					"powerConsumptionInMWh": 448,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 47,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"amountCoveredByInsuranceAgainstNaturalHazards": 37153613,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 15555391,
 					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Wind",
-						"Snow",
 						"Avalanche",
-						"Hail"
+						"Hail",
+						"EarthQuake",
+						"Snow"
 					]
 				}
 			}
@@ -183,94 +194,92 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "West Cletus",
-			"headquartersPostalCode": "88624-7914",
-			"sector": "eyeballs",
+			"headquarters": "Kamrynbury",
+			"headquartersPostalCode": "06169-7324",
+			"sector": null,
 			"identifiers": {
-				"Lei": [
-					"pwDWtJ8nBD0RhOq2FrQL"
-				],
+				"Lei": [],
 				"Isin": [
-					"kmols4wt08bI",
-					"zlocKZixx1F6"
+					"pLz6YmjRCy4U",
+					"E9iPyTzmEUdL"
 				],
 				"PermId": [
-					"olVhTJIO4f"
+					"KRoLTsv1v8"
 				],
 				"Ticker": [],
-				"Duns": [
-					"ALwly19N1"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"fRRh8DAPV"
+					"ACvFbys0U"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BA",
-			"companyAlternativeNames": [
-				"Bruen LLC",
-				"D'Amore - Considine"
-			],
+			"countryCode": "BI",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "AG",
+			"website": "https://extra-small-ray.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"E"
+						"71"
 					],
 					"addressOfHeadquarters": {
+						"streetAndHouseNumber": null,
+						"postalCode": null,
 						"city": "City 17",
+						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 6515,
-					"fiscalYearStart": "2023-12-30"
+					"numberOfEmployees": 8684,
+					"fiscalYearStart": "2024-03-21"
 				},
 				"companyFinancials": {
-					"capitalAssetsInEur": 57613818
+					"revenueInEUR": null,
+					"operatingCostInEUR": null,
+					"capitalAssetsInEUR": 51253567
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
-				},
-				"products": {
-					"listOfProducts": [
+					"listOfProductionSites": [
 						{
-							"name": "Electronic Soft Towels",
-							"percentageOfTotalRevenue": 0.7605
-						},
-						{
-							"name": "Bespoke Steel Car"
-						},
-						{
-							"name": "Incredible Wooden Bacon"
-						},
-						{
-							"name": "Generic Bronze Pizza",
-							"percentageOfTotalRevenue": 0.9656
-						},
-						{
-							"name": "Luxurious Cotton Pizza"
+							"nameOfProductionSite": "Blick - Goldner",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": null,
+								"city": "Funkville",
+								"state": null,
+								"country": "SZ"
+							},
+							"shareOfTotalRevenueInPercent": 97.4859
 						}
 					]
+				},
+				"products": {
+					"listOfProducts": null
 				}
 			},
 			"power": {
-				"investments": {},
+				"investments": {
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+				},
 				"consumption": {
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWater": 676,
-					"energyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"EarthQuake",
-						"Flooding",
-						"Hail"
+						"Wind",
+						"Flooding"
 					]
 				}
 			}

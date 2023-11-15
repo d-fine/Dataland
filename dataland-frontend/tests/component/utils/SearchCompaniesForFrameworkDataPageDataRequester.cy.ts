@@ -1,5 +1,5 @@
-import { QaStatus, DataTypeEnum, StoredCompany, IdentifierType } from "@clients/backend";
-import Keycloak from "keycloak-js";
+import { QaStatus, type DataTypeEnum, type StoredCompany, IdentifierType } from "@clients/backend";
+import type Keycloak from "keycloak-js";
 import { getCompanyDataForFrameworkDataSearchPage } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 
 describe("Component test for ViewFrameworkBase", () => {

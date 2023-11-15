@@ -14,6 +14,7 @@
             description="Define the procured product types/services per category (own operations)"
             name="procuredProductTypesAndServicesNaceCodes"
             v-model:selectedNaceCodesBind="procuredProductTypesAndServicesNaceCodesValue"
+            :shouldDisableCheckboxes="true"
           />
         </div>
 
@@ -22,8 +23,9 @@
             label="Order Volume"
             description="State your order volume per procurement category in the last fiscal year (percentage of total volume) (own operations)"
             :is-required="false"
-            v-model:percentageFieldValueBind="percentageOfTotalProcurementValue"
-            name="percentageOfTotalProcurement"
+            v-model:percentageFieldValueBind="shareOfTotalProcurementInPercent"
+            name="shareOfTotalProcurementInPercent"
+            validation="between:0,100"
           />
         </div>
         <div class="form-field border-none">
@@ -35,7 +37,7 @@
             :options="allCountries"
             optionLabel="label"
             v-model:selectedItemsBindInternal="selectedCountries"
-            innerClass="long"
+            inputClass="long"
           />
         </div>
         <div class="form-field border-none">
@@ -96,7 +98,7 @@ import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import PrimeButton from "primevue/button";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
-import { LksgProcurementCategory } from "@clients/backend";
+import { type LksgProcurementCategory } from "@clients/backend";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 
 export default defineComponent({
@@ -121,7 +123,7 @@ export default defineComponent({
     return {
       isItActive: !!this.procurementCategories[this.name],
       procuredProductTypesAndServicesNaceCodesValue: [],
-      percentageOfTotalProcurementValue: "",
+      shareOfTotalProcurementInPercent: "",
       allCountries: getDataset(DropdownDatasetIdentifier.CountryCodesIso2),
       selectedCountries: [],
       numberOfSuppliersPerCountryCodeValue: [],

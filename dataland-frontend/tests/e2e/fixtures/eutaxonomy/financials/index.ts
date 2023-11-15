@@ -1,8 +1,9 @@
-import { EuTaxonomyDataForFinancials } from "@clients/backend";
+import { type EuTaxonomyDataForFinancials } from "@clients/backend";
 import { generateEuTaxonomyDataForFinancials } from "./EuTaxonomyDataForFinancialsFixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import fs from "fs";
 import { generateEuTaxonomyForFinancialsPreparedFixtures } from "./EuTaxonomyDataForFinancialsPreparedFixtures";
+import { FAKE_FIXTURES_PER_FRAMEWORK } from "@e2e/fixtures/GenerateFakeFixtures";
 
 /**
  * Generates and exports fake fixtures for the eutaxonomy-financials framework
@@ -10,7 +11,7 @@ import { generateEuTaxonomyForFinancialsPreparedFixtures } from "./EuTaxonomyDat
 export function exportFixturesEuTaxonomyFinancial(): void {
   const companyInformationWithEuTaxonomyDataForFinancials = generateFixtureDataset<EuTaxonomyDataForFinancials>(
     generateEuTaxonomyDataForFinancials,
-    100,
+    FAKE_FIXTURES_PER_FRAMEWORK,
   );
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEuTaxonomyDataForFinancials.json",

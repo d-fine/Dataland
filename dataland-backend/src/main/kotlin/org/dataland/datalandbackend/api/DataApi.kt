@@ -5,9 +5,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.CompanyAssociatedData
-import org.dataland.datalandbackend.model.DataAndMetaInformation
-import org.dataland.datalandbackend.model.DataMetaInformation
+import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping

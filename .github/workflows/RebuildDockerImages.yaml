@@ -57,11 +57,13 @@ jobs:
           GITHUB_USER: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "Matrix Job for ./build-utils/$BUILD_SCRIPT"  
+          echo "Matrix Job for ./build-utils/$BUILD_SCRIPT"
           ./build-utils/base_rebuild_gradle_dockerfile.sh
           set -o allexport
           source ./*github_env.log
+          source ./environments/.env.uncritical
           set +o allexport
+          chmod +x "./build-utils/$BUILD_SCRIPT"
           "./build-utils/$BUILD_SCRIPT"
       - name: Store docker image versions
         uses: actions/upload-artifact@v3

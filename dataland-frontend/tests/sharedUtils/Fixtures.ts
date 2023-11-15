@@ -1,4 +1,4 @@
-import { CompanyInformation } from "@clients/backend";
+import { type CompanyInformation } from "@clients/backend";
 
 export interface FixtureData<T> {
   companyInformation: CompanyInformation;

@@ -1,0 +1,53 @@
+{
+  "general": {
+    "fiscalYearDeviation": "Deviation",
+    "fiscalYearEnd": "2022-10-05",
+    "nfrdMandatory": null,
+    "numberOfEmployees": null,
+    "referencedReports": {
+      "SustainabilityReport": {
+        "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "reportDate": null,
+        "isGroupLevel": null,
+        "currency": "THB"
+      },
+      "ESEFReport": {
+        "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "reportDate": null,
+        "isGroupLevel": null,
+        "currency": "BSD"
+      }
+    },
+    "assurance": {
+      "assurance": "LimitedAssurance",
+      "provider": null,
+      "dataSource": {
+        "page": 91,
+        "report": "SustainabilityReport",
+        "tagName": "initiatives"
+      }
+    },
+    "scopeOfEntities": "NA",
+    "euTaxonomyActivityLevelReporting": "No"
+  },
+  "capex": {
+    "totalAlignedShare": {
+      "relativeShareInPercent": 0.1965,
+      "absoluteShare": {
+        "amount": 396564.95871022346,
+        "currency": null
+      }
+    },
+    "totalAmount": {
+      "dataSource": {
+        "report": null,
+        "page": null,
+        "tagName": null
+      },
+      "value": null,
+      "quality": null,
+      "comment": "comment"
+    },
+    "totalEligibleShare": {}
+  }
+}

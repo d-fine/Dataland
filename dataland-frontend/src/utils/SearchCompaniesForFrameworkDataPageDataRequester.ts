@@ -5,14 +5,14 @@
 
 import { ApiClientProvider } from "@/services/ApiClients";
 import {
-  StoredCompany,
-  CompanyInformation,
-  DataMetaInformation,
-  DataTypeEnum,
+  type StoredCompany,
+  type CompanyInformation,
+  type DataMetaInformation,
+  type DataTypeEnum,
   QaStatus,
   IdentifierType,
 } from "@clients/backend";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { useFrameworkFiltersStore } from "@/stores/Stores";
 

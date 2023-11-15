@@ -1,5 +1,6 @@
 import UserProfileDropDown from "@/components/general/UserProfileDropDown.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
 describe("Component test for UserProfileDropDown", () => {
   it("Should display a profile picture if the keycloak authenticator provides one", () => {
@@ -28,7 +29,7 @@ describe("Component test for UserProfileDropDown", () => {
   const qaAnchorSelector = "a[id='profile-picture-dropdown-qa-services-anchor']";
   it("Checks QA menu item is visible for the reviewer role", () => {
     const reviewerKeycloakMock = minimalKeycloakMock({
-      roles: ["ROLE_REVIEWER"],
+      roles: [KEYCLOAK_ROLE_REVIEWER],
     });
     cy.mountWithPlugins(UserProfileDropDown, {
       keycloak: reviewerKeycloakMock,
@@ -41,7 +42,7 @@ describe("Component test for UserProfileDropDown", () => {
 
   it("Checks QA menu item is invisible for a regular user", () => {
     const reviewerKeycloakMock = minimalKeycloakMock({
-      roles: ["ROLE_USER"],
+      roles: [KEYCLOAK_ROLE_USER],
     });
     cy.mountWithPlugins(UserProfileDropDown, {
       keycloak: reviewerKeycloakMock,

@@ -7,12 +7,19 @@ COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.js
 COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-manager/apiKeyManagerOpenApi.json
 COPY ./dataland-document-manager/documentManagerOpenApi.json ./dataland-document-manager/documentManagerOpenApi.json
 COPY ./dataland-qa-service/qaServiceOpenApi.json ./dataland-qa-service/qaServiceOpenApi.json
+COPY ./dataland-community-manager/communityManagerOpenApi.json ./dataland-community-manager/communityManagerOpenApi.json
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 
+ARG DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES
+ENV DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES=${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES}
+ARG MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY
+ENV MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY=${MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY}
+ARG DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES
+ENV DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES=${DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES}
 RUN ./gradlew dataland-frontend:generateClients dataland-frontend:npm_run_build --no-daemon --stacktrace
 
-FROM nginx:1.25.1 as production-stage
+FROM nginx:1.25.3 as production-stage
 COPY --from=build-stage /app/dataland-frontend/dist /usr/share/nginx/html
 COPY ./dataland-frontend/default.conf /etc/nginx/conf.d/default.conf
 COPY ./dataland-inbound-proxy/config/utils/securityHeaderMap.conf /etc/nginx/utils/securityHeaderMap.conf

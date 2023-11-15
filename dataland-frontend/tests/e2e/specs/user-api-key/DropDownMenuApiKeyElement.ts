@@ -1,7 +1,10 @@
 describe("As a user I expect api key link will be visible in the menu", () => {
   it("successfully redirects to the page api-key", () => {
     cy.ensureLoggedIn();
-    cy.visitAndCheckAppMount("/companies");
+
+    cy.visitAndCheckAppMount("/requests");
+    cy.get('button[name="submit_request_button"]').should("be.visible");
+
     cy.get("div#profile-picture-dropdown-toggle").click();
     cy.get('[data-test="profileMenu"]').should("be.visible");
     cy.get("div#profile-picture-dropdown-toggle").click();

@@ -9,6 +9,8 @@ const val BASE_PATH_TO_API_KEY_MANAGER = "https://local-dev.dataland.com:443/api
 
 const val BASE_PATH_TO_DOCUMENT_MANAGER = "https://local-dev.dataland.com:443/documents"
 
+const val BASE_PATH_TO_COMMUNITY_MANAGER = "https://local-dev.dataland.com:443/community"
+
 const val PATH_TO_KEYCLOAK_TOKENENDPOINT =
     "https://local-dev.dataland.com:443/keycloak/realms/datalandsecurity/protocol/openid-connect/token"
 
@@ -43,6 +45,7 @@ val FRONTEND_DISPLAYED_FRAMEWORKS = listOf(
     DataTypeEnum.lksg,
     DataTypeEnum.sfdr,
     DataTypeEnum.p2p,
+    DataTypeEnum.sme,
 )
 
 // Set maxNumberOfDaysSelectableForApiKeyValidity

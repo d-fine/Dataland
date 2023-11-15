@@ -1,9 +1,9 @@
 import {
   CompanyDataControllerApi,
   IdentifierType,
-  CompanyInformation,
+  type CompanyInformation,
   Configuration,
-  StoredCompany,
+  type StoredCompany,
 } from "@clients/backend";
 import { faker } from "@faker-js/faker";
 

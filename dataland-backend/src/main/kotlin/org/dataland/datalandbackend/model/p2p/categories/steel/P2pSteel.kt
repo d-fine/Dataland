@@ -4,8 +4,8 @@ import org.dataland.datalandbackend.model.p2p.categories.steel.subcategories.P2p
 import org.dataland.datalandbackend.model.p2p.categories.steel.subcategories.P2pSteelTechnology
 
 /**
-* --- API model ---
-* Fields of the P2P questionnaire regarding the steel sector
+ * --- API model ---
+ * Fields of the category "Steel" of the p2p framework.
 */
 data class P2pSteel(
     val energy: P2pSteelEnergy? = null,

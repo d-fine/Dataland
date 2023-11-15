@@ -1,24 +1,24 @@
 import TwoLayerDataTable from "@/components/resources/frameworkDataSearch/TwoLayerDataTable.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { DocumentReference, YesNo } from "@clients/backend";
-import { KpiDataObject, KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
+import { type BaseDocumentReference, YesNo } from "@clients/backend";
+import { type KpiDataObject, type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 
 describe("Component test for TwoLayerDataTable", () => {
   const dataId = "dummyId";
-  const dummyDataSource = { name: "document", reference: "123" } as DocumentReference;
-  const emptyStringDataSource = { name: "", reference: "" } as DocumentReference;
+  const dummyDataSource = { fileName: "document", fileReference: "123" } as BaseDocumentReference;
+  const emptyStringDataSource = { fileName: "", fileReference: "" } as BaseDocumentReference;
   it("Check that certificate/policy download links are displayed as expected", () => {
     const kpiDataObjects = [
       generateBaseDataPointKpi(YesNo.Yes, "Certification 1", dummyDataSource),
       generateBaseDataPointKpi(YesNo.No, "2 Certificate", dummyDataSource),
-      generateBaseDataPointKpi(YesNo.Yes, "Certification 3", {} as DocumentReference),
-      generateBaseDataPointKpi(YesNo.No, "Certification 4", {} as DocumentReference),
+      generateBaseDataPointKpi(YesNo.Yes, "Certification 3", {} as BaseDocumentReference),
+      generateBaseDataPointKpi(YesNo.No, "Certification 4", {} as BaseDocumentReference),
       generateBaseDataPointKpi(YesNo.Yes, "Certification A", emptyStringDataSource),
       generateBaseDataPointKpi(YesNo.No, "Certification B", emptyStringDataSource),
       generateBaseDataPointKpi(YesNo.Yes, "Certification 5"),
       generateBaseDataPointKpi(YesNo.Yes, "Policy 1", dummyDataSource),
-      generateBaseDataPointKpi(YesNo.Yes, "Policy 2", {} as DocumentReference),
-      generateBaseDataPointKpi(YesNo.No, "Policy 3", {} as DocumentReference),
+      generateBaseDataPointKpi(YesNo.Yes, "Policy 2", {} as BaseDocumentReference),
+      generateBaseDataPointKpi(YesNo.No, "Policy 3", {} as BaseDocumentReference),
       generateBaseDataPointKpi(YesNo.Yes, "Policy A", emptyStringDataSource),
       generateBaseDataPointKpi(YesNo.No, "Policy B", emptyStringDataSource),
     ];
@@ -66,7 +66,7 @@ describe("Component test for TwoLayerDataTable", () => {
    * @param dataSource the dataSource to reference
    * @returns the constructed KpiDataObject object
    */
-  function generateBaseDataPointKpi(value: YesNo, label: string, dataSource?: DocumentReference): KpiDataObject {
+  function generateBaseDataPointKpi(value: YesNo, label: string, dataSource?: BaseDocumentReference): KpiDataObject {
     return {
       subcategoryKey: "_masterData",
       subcategoryLabel: "Master Data",

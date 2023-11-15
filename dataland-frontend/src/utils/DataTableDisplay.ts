@@ -1,3 +1,5 @@
+import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
+
 /**
  * Sorts dates to ensure that Sfdr and LkSG datasets are displayed chronologically in the table in terms of reporting
  * periods (strings starting with numbers should at least be listed before those that do not)
@@ -10,6 +12,19 @@ export function sortReportingPeriodsToDisplayAsColumns(
 ): ReportingPeriodOfDataSetWithId[] {
   return listOfDataDateToDisplayAsColumns.sort((dataSetA, dataSetB) =>
     compareReportingPeriods(dataSetA.reportingPeriod, dataSetB.reportingPeriod),
+  );
+}
+
+/**
+ * Sorts a list of datasets - associated by their respective meta info - by comparing their reporting periods.
+ * @param listOfDatasets list of datasets associated by their respective meta info
+ * @returns the sorted list
+ */
+export function sortDatasetsByReportingPeriod<T>(
+  listOfDatasets: DataAndMetaInformation<T>[],
+): DataAndMetaInformation<T>[] {
+  return listOfDatasets.sort((dataSetA, dataSetB) =>
+    compareReportingPeriods(dataSetA.metaInfo.reportingPeriod, dataSetB.metaInfo.reportingPeriod),
   );
 }
 
@@ -46,18 +61,21 @@ const buttonRowHeaderId = "row-header-id";
 
 /**
  * Adds click event listeners on DataTable row headers to expand and collapse row
+ * @param dataTableIdentifier id of parent DataTable element from where we are mounting
  * @param expandedRowsOnClick function passes the latest list of expanded row id's
  * @param newExpandedRowsCallback function that returns the updated (after click) list of expanded row id's
  * @returns the map of rows and their click handlers needed for unmounting
  */
 export function mountRowHeaderClickEventListeners(
+  dataTableIdentifier: string,
   expandedRowsOnClick: () => string[],
   newExpandedRowsCallback: (newExpandedRows: string[]) => void,
 ): Map<Element, EventListener> {
   const handlerMap: Map<Element, EventListener> = new Map();
   let expandedRowGroups: string[] = [];
-
-  const rowHeaders = Array.from(document.querySelectorAll("[data-row-header-click]"));
+  const rowHeaders = Array.from(
+    document.querySelectorAll(`[data-table-id="${dataTableIdentifier}"][data-row-header-click]`),
+  );
   const rowButtons = rowHeaders
     .map((rowHeader: Element) => {
       const button = rowHeader.parentNode?.querySelector('button[data-pc-section="rowgrouptoggler"]');

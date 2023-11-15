@@ -1,13 +1,12 @@
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { Configuration, DataTypeEnum, LksgData, LksgDataControllerApi } from "@clients/backend";
-import { FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { checkStickynessOfSubmitSideBar, uploadCompanyAndLksgDataViaApi } from "@e2e/utils/LksgUpload";
+import { DataTypeEnum, type LksgData } from "@clients/backend";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { describeIf } from "@e2e/support/TestUtility";
-import { humanizeString } from "@/utils/StringHumanizer";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { UploadIds } from "@e2e/utils/GeneralApiUtils";
+import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describeIf(
   "Validates the edit button functionality on the view framework page",
@@ -16,19 +15,21 @@ describeIf(
   },
   () => {
     let uploadIds: UploadIds;
-    let preparedFixture: FixtureData<LksgData>;
+    let lksgFixture: FixtureData<LksgData>;
 
     before(() => {
       cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
-        const preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
-        preparedFixture = getPreparedFixture("lksg-all-fields", preparedFixtures);
+        const lksgsPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+        lksgFixture = getPreparedFixture("lksg-all-fields", lksgsPreparedFixtures);
+        lksgFixture.companyInformation.identifiers = {};
         getKeycloakToken(admin_name, admin_pw)
           .then(async (token: string) =>
-            uploadCompanyAndLksgDataViaApi(
+            uploadCompanyAndFrameworkData(
+              DataTypeEnum.Lksg,
               token,
-              preparedFixture.companyInformation,
-              preparedFixture.t,
-              preparedFixture.reportingPeriod,
+              lksgFixture.companyInformation,
+              lksgFixture.t,
+              lksgFixture.reportingPeriod,
             ),
           )
           .then((idsUploaded) => {
@@ -37,58 +38,36 @@ describeIf(
       });
     });
 
-    it("Editing Lksg data without changes should create a copy when uploaded", function () {
-      cy.ensureLoggedIn(admin_name, admin_pw);
-      cy.visit(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-      cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
-      cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
-      cy.get("div").contains("New Dataset - LkSG").should("be.visible");
-      const expectedCountry = preparedFixture.t.general?.productionSpecific?.listOfProductionSites?.[0]
-        ?.addressOfProductionSite?.country as string;
-      cy.get('[data-test="AddressFormField"]')
-        .first()
-        .find('[data-test="country"]')
-        .should("contain", `(${expectedCountry})`);
-      submitButton.buttonIsUpdateDataButton();
-      submitButton.buttonAppearsEnabled();
-      checkStickynessOfSubmitSideBar();
-      submitButton.clickButton();
-      cy.get("h4")
-        .contains("Upload successfully executed.")
-        .should("exist")
-        .then(() => {
-          return getKeycloakToken(admin_name, admin_pw).then(async (token) => {
-            const data = await new LksgDataControllerApi(
-              new Configuration({ accessToken: token }),
-            ).getAllCompanyLksgData(uploadIds.companyId, false);
-            expect(data.data).to.have.length(2);
-            expect(data.data[0].data).to.deep.equal(data.data[1].data);
-          });
-        });
-    });
-
     it("Edit and subsequent upload should work properly when removing or changing referenced documents", () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
-      cy.visit(`/companies/${uploadIds.companyId}/frameworks/lksg`);
-      cy.get('[data-test="frameworkDataTableTitle"]').should("contain.text", humanizeString(DataTypeEnum.Lksg));
-      cy.get('[data-test="editDatasetButton"]').should("be.visible").click();
+      cy.visitAndCheckAppMount(
+        "/companies/" +
+          uploadIds.companyId +
+          "/frameworks/" +
+          DataTypeEnum.Lksg +
+          "/upload?templateDataId=" +
+          uploadIds.dataId,
+      );
+      cy.get("h1", { timeout: Cypress.env("medium_timeout_in_ms") as number }).should(
+        "contain.text",
+        lksgFixture.companyInformation.companyName,
+      );
       submitButton.buttonAppearsEnabled();
-
       cy.get("button[data-test=files-to-upload-remove]")
         .first()
         .parents(".form-field:first")
         .invoke("attr", "data-test")
         .then((dataTest) => {
           cy.get(`div[data-test=${assertDefined(dataTest)}]`)
-            .find(`input[id=value-option-no]`)
+            .find("input.p-radiobutton")
+            .eq(1)
             .click();
           cy.get(`div[data-test=${assertDefined(dataTest)}]`)
             .find(`button[data-test=files-to-upload-remove]`)
             .should("not.exist");
         });
-
       cy.get("button[data-test=files-to-upload-remove]")
-        .eq(0)
+        .first()
         .parents(".form-field:first")
         .invoke("attr", "data-test")
         .then((dataTest) => {

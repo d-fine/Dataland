@@ -1,259 +1,303 @@
 [
 	{
 		"companyInformation": {
-			"companyName": "only-eligible-numbers",
-			"headquarters": "Reillyshire",
-			"sector": "methodologies",
+			"companyName": "all-fields-defined-for-eu-taxo-non-financials",
+			"headquarters": "Eltonfield",
+			"headquartersPostalCode": "67382-2075",
+			"sector": "channels",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"9FqoSlN4LKUR",
-					"7FsvDwn2JNNK"
+					"5HFq4RvcVXJe",
+					"EFZypn5FjVYw"
 				],
-				"PermId": [
-					"1AxT526zjr"
-				],
-				"Ticker": [
-					"7rAHMXZ"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"A4VSkgv7Y"
-				],
-				"CompanyRegistrationNumber": [
-					"UnDfwPoPebmMU2a"
-				]
-			},
-			"countryCode": "NE",
-			"companyAlternativeNames": [],
-			"website": "https://discrete-normal.biz",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearDeviation": "Deviation",
-			"fiscalYearEnd": "2022-11-01",
-			"referencedReports": {
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "LRD"
-				}
-			},
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"dataSource": {
-					"page": 59,
-					"report": "SustainabilityReport",
-					"tagName": "experiences"
-				}
-			},
-			"scopeOfEntities": "Yes",
-			"opex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.0862,
-					"quality": "NA"
-				}
-			},
-			"capex": {
-				"eligibleData": {
-					"valueAsPercentage": 0.4292,
-					"quality": "NA"
-				}
-			},
-			"revenue": {
-				"eligibleData": {
-					"valueAsPercentage": 0.428,
-					"quality": "NA"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "only-eligible-and-total-numbers",
-			"headquarters": "New Kayla",
-			"headquartersPostalCode": "30614-3085",
-			"identifiers": {
-				"Lei": [
-					"dGjxusZ7sUuTN7GarMY1"
-				],
-				"Isin": [],
 				"PermId": [],
-				"Ticker": [
-					"Qxcf5P9"
-				],
-				"Duns": [
-					"igt1sm6NQ"
-				],
-				"VatNumber": [
-					"JVSFdrvBW"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "RO",
-			"companyAlternativeNames": [
-				"Gottlieb - Paucek",
-				"Leannon - Turner",
-				"Pagac, Feil and Romaguera"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://feisty-embossing.org",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"fiscalYearEnd": "2023-06-01",
-			"numberOfEmployees": 94834,
-			"referencedReports": {
-				"AnnualReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"reportDate": "2022-10-15",
-					"currency": "ZWL"
-				},
-				"ESEFReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"currency": "SGD"
-				},
-				"IntegratedReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "Yes",
-					"currency": "YER"
-				},
-				"SustainabilityReport": {
-					"reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-					"isGroupLevel": "NA",
-					"reportDate": "2023-05-20",
-					"currency": "COP"
-				}
-			},
-			"assurance": {
-				"assurance": "LimitedAssurance",
-				"provider": "Zemlak - Stoltenberg"
-			},
-			"scopeOfEntities": "NA",
-			"opex": {
-				"totalAmount": {
-					"value": 766970.5478008837,
-					"dataSource": {
-						"page": 65,
-						"report": "ESEFReport",
-						"tagName": "networks"
-					},
-					"quality": "Reported",
-					"comment": "bypass auxiliary microchip"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.2545,
-					"dataSource": {
-						"page": 678,
-						"report": "ESEFReport",
-						"tagName": "solutions"
-					},
-					"quality": "Incomplete",
-					"comment": "transmit cross-platform capacitor",
-					"valueAsAbsolute": 534735.8718747273
-				}
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 433376.112615224,
-					"dataSource": {
-						"page": 799,
-						"report": "SustainabilityReport",
-						"tagName": "systems"
-					},
-					"quality": "Reported",
-					"comment": "input redundant array"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.6203,
-					"dataSource": {
-						"page": 85,
-						"report": "ESEFReport",
-						"tagName": "functionalities"
-					},
-					"quality": "Audited",
-					"comment": "bypass primary matrix",
-					"valueAsAbsolute": 138971.03277267888
-				}
-			},
-			"revenue": {
-				"totalAmount": {
-					"value": 575369.2253842019,
-					"quality": "Estimated"
-				},
-				"eligibleData": {
-					"valueAsPercentage": 0.555,
-					"dataSource": {
-						"page": 824,
-						"report": "ESEFReport",
-						"tagName": "infrastructures"
-					},
-					"quality": "Reported",
-					"comment": "back up virtual capacitor",
-					"valueAsAbsolute": 352963.7443367392
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "company_without_reports",
-			"headquarters": "North Braden",
-			"sector": "action-items",
-			"identifiers": {
-				"Lei": [
-					"YyMJZ1TuFMptjBhFAOpt"
-				],
-				"Isin": [
-					"YJCoErYxUHIO"
-				],
-				"PermId": [
-					"VpJFvzgAEi"
-				],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
+				"VatNumber": [
+					"nTp9dJFWY"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "VG",
+			"countryCode": "AF",
 			"companyAlternativeNames": [
-				"Hayes - Quigley",
-				"Lind Inc"
+				"Dickinson - Mante",
+				"Hagenes - Mraz",
+				"Roob, Denesik and Crooks"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://true-infrastructure.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
-			"fiscalYearDeviation": "NoDeviation",
-			"numberOfEmployees": 81657,
-			"assurance": {
-				"assurance": "None"
+			"general": {
+				"fiscalYearDeviation": "NoDeviation",
+				"fiscalYearEnd": "2023-06-25",
+				"numberOfEmployees": 98760,
+				"referencedReports": {
+					"IntegratedReport": {
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "NA",
+						"reportDate": "2023-08-16",
+						"currency": "EGP"
+					},
+					"SustainabilityReport": {
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "Yes",
+						"reportDate": "2023-05-09",
+						"currency": "MOP"
+					},
+					"AnnualReport": {
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "Yes",
+						"reportDate": "2023-05-01",
+						"currency": "INR"
+					},
+					"ESEFReport": {
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"isGroupLevel": "Yes",
+						"reportDate": "2023-04-02",
+						"currency": "RON"
+					}
+				},
+				"assurance": {
+					"value": "ReasonableAssurance",
+					"provider": "Nicolas Group",
+					"dataSource": {
+						"page": 313,
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "lifetime value"
+					}
+				},
+				"scopeOfEntities": "NA",
+				"nfrdMandatory": "No",
+				"euTaxonomyActivityLevelReporting": "No"
 			},
-			"reportingObligation": "Yes",
-			"activityLevelReporting": "Yes",
-			"opex": {},
-			"capex": {},
+			"opex": {
+				"totalAmount": {
+					"value": 6465093842.71,
+					"dataSource": {
+						"page": 1131,
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "synergies"
+					},
+					"quality": "Audited",
+					"comment": "bypass online application",
+					"currency": "THB"
+				},
+				"nonEligibleShare": {
+					"relativeShareInPercent": 82.4264,
+					"absoluteShare": {
+						"amount": 9241047983.53,
+						"currency": "CLP"
+					}
+				},
+				"eligibleShare": {
+					"relativeShareInPercent": 59.0582,
+					"absoluteShare": {
+						"amount": 3759262568.78,
+						"currency": "BYN"
+					}
+				},
+				"nonAlignedShare": {
+					"relativeShareInPercent": 75.7581,
+					"absoluteShare": {
+						"amount": 3162134382.87,
+						"currency": "KRW"
+					}
+				},
+				"nonAlignedActivities": [],
+				"alignedShare": {
+					"relativeShareInPercent": 26.1969,
+					"absoluteShare": {
+						"amount": 1986893010.32,
+						"currency": "INR"
+					}
+				},
+				"substantialContributionToClimateChangeMitigationInPercent": 62.9635,
+				"substantialContributionToClimateChangeAdaptionInPercent": 15.4501,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 47.945,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 64.3474,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 68.6156,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 80.9906,
+				"alignedActivities": [],
+				"enablingShareInPercent": 14.0889,
+				"transitionalShareInPercent": 34.3414
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 99241938.44,
+					"dataSource": {
+						"page": 1192,
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "partnerships"
+					},
+					"quality": "Reported",
+					"comment": "bypass open-source application",
+					"currency": "BAM"
+				},
+				"nonEligibleShare": {
+					"relativeShareInPercent": 41.7858,
+					"absoluteShare": {
+						"amount": 8756945456.85,
+						"currency": "SHP"
+					}
+				},
+				"eligibleShare": {
+					"relativeShareInPercent": 36.0697,
+					"absoluteShare": {
+						"amount": 1674129553.14,
+						"currency": "SBD"
+					}
+				},
+				"nonAlignedShare": {
+					"relativeShareInPercent": 31.3599,
+					"absoluteShare": {
+						"amount": 3636375169.73,
+						"currency": "LRD"
+					}
+				},
+				"nonAlignedActivities": [
+					{
+						"activityName": "ManufactureOfRenewableEnergyTechnologies",
+						"naceCodes": [
+							"C28"
+						],
+						"share": {
+							"relativeShareInPercent": 87.9623,
+							"absoluteShare": {
+								"amount": 4718548173.55,
+								"currency": "YER"
+							}
+						}
+					}
+				],
+				"alignedShare": {
+					"relativeShareInPercent": 48.5122,
+					"absoluteShare": {
+						"amount": 4910744978.11,
+						"currency": "PHP"
+					}
+				},
+				"substantialContributionToClimateChangeMitigationInPercent": 74.4945,
+				"substantialContributionToClimateChangeAdaptionInPercent": 53.8895,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 24.7734,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 79.1666,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 49.5652,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 69.0621,
+				"alignedActivities": [
+					{
+						"activityName": "InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
+						"naceCodes": [
+							"F71.1",
+							"F71.20"
+						],
+						"share": {
+							"relativeShareInPercent": 40.6103,
+							"absoluteShare": {
+								"amount": 7210181890.99,
+								"currency": "TWD"
+							}
+						},
+						"substantialContributionToClimateChangeMitigationInPercent": 79.0851,
+						"substantialContributionToClimateChangeAdaptionInPercent": 36.0848,
+						"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 26.7596,
+						"substantialContributionToTransitionToACircularEconomyInPercent": 24.959,
+						"substantialContributionToPollutionPreventionAndControlInPercent": 38.0686,
+						"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 55.3919,
+						"dnshToClimateChangeMitigation": "No",
+						"dnshToClimateChangeAdaption": "No",
+						"dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "No",
+						"dnshToTransitionToACircularEconomy": "No",
+						"dnshToPollutionPreventionAndControl": "Yes",
+						"dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "No",
+						"minimumSafeguards": "Yes"
+					}
+				],
+				"enablingShareInPercent": 88.7548,
+				"transitionalShareInPercent": 99.4954
+			},
 			"revenue": {
 				"totalAmount": {
-					"value": 744857.2935652919,
+					"value": 4800092338.12,
 					"dataSource": {
-						"page": 663,
-						"report": "SustainabilityReport",
-						"tagName": "initiatives"
+						"page": 580,
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "mindshare"
 					},
-					"quality": "Reported",
-					"comment": "calculate optical system"
+					"quality": "Audited",
+					"comment": "generate wireless port",
+					"currency": "SDG"
 				},
-				"alignedData": {
-					"dataSource": {
-						"page": 496,
-						"report": "IntegratedReport",
-						"tagName": "ROI"
+				"nonEligibleShare": {
+					"relativeShareInPercent": 22.7928,
+					"absoluteShare": {
+						"amount": 69236159.32,
+						"currency": "TTD"
+					}
+				},
+				"eligibleShare": {
+					"relativeShareInPercent": 48.4699,
+					"absoluteShare": {
+						"amount": 364566508.21,
+						"currency": "SDG"
+					}
+				},
+				"nonAlignedShare": {
+					"relativeShareInPercent": 77.4178,
+					"absoluteShare": {
+						"amount": 8214926177.17,
+						"currency": "VUV"
+					}
+				},
+				"nonAlignedActivities": [
+					{
+						"activityName": "CogenerationOfHeatCoolAndPowerFromRenewableNonFossilGaseousAndLiquidFuels",
+						"naceCodes": [
+							"D35.11"
+						],
+						"share": {
+							"relativeShareInPercent": 46.092,
+							"absoluteShare": {
+								"amount": 9525918171.28,
+								"currency": "KGS"
+							}
+						}
 					},
-					"quality": "Reported",
-					"comment": "generate cross-platform port"
-				}
+					{
+						"activityName": "ManufactureOfNitricAcid",
+						"naceCodes": [
+							"C20.15"
+						],
+						"share": {
+							"relativeShareInPercent": 90.9121,
+							"absoluteShare": {
+								"amount": 46760118.56,
+								"currency": "SGD"
+							}
+						}
+					}
+				],
+				"alignedShare": {
+					"relativeShareInPercent": 54.0289,
+					"absoluteShare": {
+						"amount": 713987618.21,
+						"currency": "BSD"
+					}
+				},
+				"substantialContributionToClimateChangeMitigationInPercent": 32.1064,
+				"substantialContributionToClimateChangeAdaptionInPercent": 96.2423,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 30.4155,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 95.7389,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 98.0941,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 98.3615,
+				"alignedActivities": [],
+				"enablingShareInPercent": 19.9736,
+				"transitionalShareInPercent": 64.2787
 			}
 		},
 		"reportingPeriod": "2019"

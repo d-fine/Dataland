@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Remount certificate directory
 echo "Reloading Certificates to nginx"
 /scripts/configure-certificate-link.sh

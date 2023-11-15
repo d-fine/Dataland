@@ -1,7 +1,7 @@
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { SfdrData } from "@clients/backend";
-import { generateOneSfdrDatasetWithManyNulls, generateSfdrData } from "./SfdrDataFixtures";
-import { FixtureData } from "@sharedUtils/Fixtures";
+import { type SfdrData, YesNo } from "@clients/backend";
+import { generateSfdrData, generateSfdrFixtures } from "./SfdrDataFixtures";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 
 type generatorFunction = (input: FixtureData<SfdrData>) => FixtureData<SfdrData>;
 
@@ -29,15 +29,23 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
       generateFixtureDataset<SfdrData>(generateOneSfdrDatasetWithManyNulls, 1)[0],
     ),
   );
+  preparedFixtures.push(manipulateFixtureForNoNullFields(generateSfdrFixtures(1, 0)[0]));
 
   return preparedFixtures;
 }
 
 /**
- * Sets the company name in the fixture data to a specific string
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
+function manipulateFixtureForNoNullFields(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-no-null-fields";
+  input.t.environmental!.biodiversity!.protectedAreasExposure!.value = YesNo.No;
+  input.t.environmental!.biodiversity!.rareOrEndangeredEcosystemsExposure!.value = YesNo.Yes;
+  input.t.environmental!.biodiversity!.primaryForestAndWoodedLandOfNativeSpeciesExposure!.value = YesNo.Yes;
+  return input;
+}
 
 /**
  * Sets the company name and the date in the fixture data to a specific string
@@ -47,15 +55,15 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
 function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = "companyWithOneFilledSfdrSubcategory";
   input.t.general.general.fiscalYearEnd = "2020-01-03";
-  input.t.environmental!.energyPerformance = undefined;
-  input.t.environmental!.waste = undefined;
-  input.t.environmental!.water = undefined;
-  input.t.environmental!.emissions = undefined;
-  input.t.environmental!.greenhouseGasEmissions = undefined;
+  input.t.environmental!.energyPerformance = null;
+  input.t.environmental!.waste = null;
+  input.t.environmental!.water = null;
+  input.t.environmental!.emissions = null;
+  input.t.environmental!.greenhouseGasEmissions = null;
   input.t.environmental!.biodiversity!.primaryForestAndWoodedLandOfNativeSpeciesExposure = {
     quality: "Audited",
     dataSource: {
-      report: "string",
+      fileReference: "string",
       page: 0,
       tagName: "string",
     },
@@ -65,7 +73,7 @@ function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>):
   input.t.environmental!.biodiversity!.protectedAreasExposure = {
     quality: "Audited",
     dataSource: {
-      report: "string",
+      fileReference: "string",
       page: 0,
       tagName: "string",
     },
@@ -75,7 +83,7 @@ function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>):
   input.t.environmental!.biodiversity!.rareOrEndangeredEcosystemsExposure = {
     quality: "Audited",
     dataSource: {
-      report: "string",
+      fileReference: "string",
       page: 0,
       tagName: "string",
     },
@@ -83,7 +91,7 @@ function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>):
     value: "Yes",
   };
 
-  input.t.social = undefined;
+  input.t.social = null;
   return input;
 }
 /**
@@ -105,4 +113,27 @@ function manipulateFixtureForTwoSfdrDataSetsInDifferentYears(input: FixtureData<
 function manipulateFixtureForSfdrDatasetWithLotsOfNulls(fixture: FixtureData<SfdrData>): FixtureData<SfdrData> {
   fixture.companyInformation.companyName = "sfdr-a-lot-of-nulls";
   return fixture;
+}
+
+/**
+ * Generates an SFDR dataset with the value null for some categories, subcategories and field values.
+ * Datasets that were uploaded via the Dataland API can look like this in production.
+ * @returns the dataset
+ */
+function generateOneSfdrDatasetWithManyNulls(): SfdrData {
+  return {
+    general: {
+      general: {
+        dataDate: "27-08-2022",
+        fiscalYearDeviation: "Deviation",
+        fiscalYearEnd: "marker-for-test",
+        scopeOfEntities: null!,
+        referencedReports: null!,
+      },
+    },
+    social: {
+      socialAndEmployeeMatters: null!,
+    },
+    environmental: null!,
+  };
 }

@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
-import org.dataland.datalandbackend.model.DataPointWithUnit
-import java.math.BigDecimal
+import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
+import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 
 /**
  * --- API model ---
@@ -9,9 +9,9 @@ import java.math.BigDecimal
  * framework.
  */
 data class SfdrSocialAntiCorruptionAndAntiBribery(
-    val reportedCasesOfBriberyCorruption: DataPointWithUnit<BigDecimal>? = null,
+    val casesOfInsufficientActionAgainstBriberyAndCorruption: ExtendedDataPoint<Long>? = null,
 
-    val reportedConvictionsOfBriberyCorruption: DataPointWithUnit<BigDecimal>? = null,
+    val reportedConvictionsOfBriberyAndCorruption: ExtendedDataPoint<Long>? = null,
 
-    val reportedFinesOfBriberyCorruption: DataPointWithUnit<BigDecimal>? = null,
+    val totalAmountOfReportedFinesOfBriberyAndCorruption: CurrencyDataPoint? = null,
 )

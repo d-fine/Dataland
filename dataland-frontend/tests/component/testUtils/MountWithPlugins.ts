@@ -3,11 +3,11 @@ import { createPinia } from "pinia";
 import PrimeVue from "primevue/config";
 import DialogService from "primevue/dialogservice";
 import { plugin, defaultConfig } from "@formkit/vue";
-import { createMemoryHistory, createRouter, Router } from "vue-router";
+import { createMemoryHistory, createRouter, type Router } from "vue-router";
 import { mount } from "cypress/vue";
-import { VueWrapper } from "@vue/test-utils";
-import { DefineComponent, defineComponent, h } from "vue";
-import Keycloak from "keycloak-js";
+import { type VueWrapper } from "@vue/test-utils";
+import { type DefineComponent, defineComponent, h } from "vue";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import DynamicDialog from "primevue/dynamicdialog";
 

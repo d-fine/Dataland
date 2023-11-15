@@ -14,7 +14,7 @@ plugins {
 
 node {
     download.set(true)
-    version.set("20.5.0")
+    version.set("20.9.0")
 }
 
 val backendOpenApiFile = "${project.rootDir}/dataland-backend/backendOpenApi.json"
@@ -39,6 +39,7 @@ tasks.register("generateClients") {
     dependsOn("generateApiKeyManagerClient")
     dependsOn("generateDocumentManagerClient")
     dependsOn("generateQaServiceClient")
+    dependsOn("generateCommunityManagerClient")
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
@@ -125,11 +126,34 @@ tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plug
     )
 }
 
+tasks.register("generateCommunityManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val destinationPackage = "org.dataland.datalandfrontend.openApiClient.communitymanager"
+    input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path
+    outputDir.set("$buildDir/clients/communitymanager")
+    modelPackage.set("$destinationPackage.model")
+    apiPackage.set("$destinationPackage.api")
+    packageName.set(destinationPackage)
+    generatorName.set("typescript-axios")
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
+
 sourceSets {
     val main by getting
     main.java.srcDir("$buildDir/clients/backend/src/main/kotlin")
     main.java.srcDir("$buildDir/clients/documentmanager/src/main/kotlin")
     main.java.srcDir("$buildDir/clients/qaservice/src/main/kotlin")
+    main.java.srcDir("$buildDir/clients/apikeymanager/src/main/kotlin")
+    main.java.srcDir("$buildDir/clients/communitymanager/src/main/kotlin")
 }
 
 ktlint {

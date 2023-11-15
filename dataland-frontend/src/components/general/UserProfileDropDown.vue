@@ -35,7 +35,7 @@
 import PrimeMenu from "primevue/menu";
 import { defineComponent, inject, ref } from "vue";
 import type { Ref } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import defaultProfilePicture from "@/assets/images/elements/default_user_icon.svg";
 import { KEYCLOAK_ROLE_REVIEWER, logoutAndRedirectToUri } from "@/utils/KeycloakUtils";

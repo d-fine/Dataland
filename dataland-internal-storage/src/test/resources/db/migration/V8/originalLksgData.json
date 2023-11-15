@@ -1,0 +1,189 @@
+{
+  "general": {
+    "masterData": {
+      "dataDate": "2024-02-07",
+      "headOfficeInGermany": "Yes",
+      "groupOfCompanies": "Yes",
+      "industry": []
+    },
+    "productionSpecific": {
+      "capacity": "2 Fish per Friday",
+      "productionViaSubcontracting": "Yes",
+      "subcontractingCompaniesCountries": [
+        "MQ",
+        "VG"
+      ],
+      "productionSites": "No"
+    },
+    "productionSpecificOwnOperations": {
+      "productsServicesCategoriesPurchased": {
+        "Products": {
+          "procuredProductTypesAndServicesNaceCodes": [
+            "E"
+          ]
+        },
+        "RawMaterials": {
+          "procuredProductTypesAndServicesNaceCodes": [],
+          "percentageOfTotalProcurement": 0.3808
+        },
+        "Services": {
+          "procuredProductTypesAndServicesNaceCodes": [],
+          "percentageOfTotalProcurement": null
+        }
+      }
+    }
+  },
+  "governance": {
+    "riskManagementOwnOperations": {
+      "riskManagementSystem": "No",
+      "riskAnalysisInFiscalYear": "No",
+      "whichCounteractingMeasures": "e-markets",
+      "regulatedRiskManagementResponsibility": "Yes"
+    },
+    "grievanceMechanismOwnOperations": {
+      "appropriateGrievanceHandlingSupport": "Yes",
+      "accessToExpertiseForGrievanceHandling": "No",
+      "complaintsReason": "methodologies",
+      "whichActionsForComplaintsUndertaken": "content",
+      "publicAccessToGrievanceHandling": "No"
+    },
+    "certificationsPoliciesAndResponsibilities": {
+      "sa8000Certification": {
+        "value": "No"
+      },
+      "smetaSocialAuditConcept": {
+        "value": "Yes",
+        "dataSource": {
+          "name": "Certification",
+          "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "betterWorkProgramCertificate": {
+        "value": "No"
+      },
+      "riskManagementSystemCertification": {
+        "value": "Yes",
+        "dataSource": {
+          "name": "Certification",
+          "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "fairLaborAssociationCertification": {
+        "value": "Yes",
+        "dataSource": {
+          "name": "Certification",
+          "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "codeOfConductTraining": "No",
+      "supplierCodeOfConduct": {
+        "value": "No"
+      }
+    },
+    "generalViolations": {
+      "responsibilitiesForTheEnvironment": "No",
+      "responsibilitiesForOccupationalSafety": "Yes",
+      "legalProceedings": "Yes",
+      "humanRightsViolations": "architectures",
+      "humanRightsViolationActionMeasures": "platforms"
+    }
+  },
+  "social": {
+    "childLabor": {
+      "childLaborPreventionPolicy": {
+        "value": "No",
+        "dataSource": {
+          "name": "Policy",
+          "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      },
+      "employeeSUnder18": "Yes",
+      "employeeSUnder15": "Yes",
+      "worstFormsOfChildLaborProhibition": "No",
+      "worstFormsOfChildLabor": "Yes",
+      "measuresForPreventionOfEmploymentUnderLocalMinimumAge": "No",
+      "employmentUnderLocalMinimumAgePreventionJobDescription": "Yes",
+      "additionalChildLaborMeasures": "users"
+    },
+    "forcedLaborSlavery": {
+      "forcedLaborAndSlaveryPreventionPractices": "channels",
+      "forcedLaborPreventionPolicy": {
+        "value": "No"
+      },
+      "forcedLaborAndSlaveryPreventionMeasures": "No",
+      "forcedLaborAndSlaveryPreventionEmploymentContracts": "Yes",
+      "forcedLaborAndSlaveryPreventionFreeMovement": "No",
+      "forcedLaborAndSlaveryPreventionProvisionSocialRoomsAndToilets": "Yes",
+      "forcedLaborAndSlaveryPreventionMeasuresOther": "experiences"
+    },
+    "withholdingAdequateWages": {
+      "regularWagesProcessFlow": "Yes",
+      "fixedHourlyWages": "No",
+      "adequateWageMeasures": "solutions"
+    },
+    "disregardForOccupationalHealthSafety": {
+      "hazardousMachines": "No",
+      "oshPolicyPersonalProtectiveEquipment": "No",
+      "oshPolicyMachineSafety": "NA",
+      "oshPolicyAccidentsBehavioralResponse": "Yes",
+      "oshPolicyHandlingChemicalsAndOtherHazardousSubstances": "No",
+      "oshPolicyWorkingHours": "Yes",
+      "oshPolicyTrainingAddressed": "No",
+      "oshPolicyTraining": "No",
+      "under10WorkplaceAccidents": "No"
+    },
+    "disregardForFreedomOfAssociation": {
+      "discriminationForTradeUnionMembers": "No",
+      "freedomOfAssociationTraining": "Yes",
+      "worksCouncil": "No",
+      "employeeRepresentation": 0.3789
+    },
+    "unequalTreatmentOfEmployment": {
+      "unequalTreatmentOfEmployment": "Yes",
+      "fairAndEthicalRecruitmentPolicy": {
+        "value": "No",
+        "dataSource": {
+          "name": "Certification",
+          "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+        }
+      }
+    },
+    "contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption": {
+      "soilDegradation": "Yes",
+      "soilSalinization": "Yes",
+      "harmfulWaterPollution": "Yes",
+      "wasteWaterFiltration": "No",
+      "reduceNoiseEmissions": "No",
+      "waterSavingMeasures": "No",
+      "contaminationMeasures": "markets"
+    },
+    "unlawfulEvictionDeprivationOfLandForestAndWater": {
+      "unlawfulEvictionAndTakingOfLand": "No",
+      "unlawfulEvictionAndTakingOfLandStrategies": "No",
+      "unlawfulEvictionAndTakingOfLandStrategiesName": "action-items",
+      "voluntaryGuidelinesOnTheResponsibleGovernanceOfTenure": "No"
+    },
+    "useOfPrivatePublicSecurityForcesWithDisregardForHumanRights": {
+      "useOfPrivatePublicSecurityForcesAndRiskOfViolationOfHumanRights": "No",
+      "instructionOfSecurityForces": "No"
+    }
+  },
+  "environmental": {
+    "useOfMercuryMercuryWasteMinamataConvention": {
+      "mercuryAndMercuryWasteHandlingPolicy": {
+        "value": "Yes"
+      },
+      "mercuryAddedProductsHandling": "Yes",
+      "mercuryAddedProductsHandlingRiskOfDisposal": "No",
+      "mercuryAndMercuryCompoundsProductionAndUse": "Yes"
+    },
+    "productionAndUseOfPersistentOrganicPollutantsPopsConvention": {
+      "persistentOrganicPollutantsUsed": "architectures"
+    },
+    "exportImportOfHazardousWasteBaselConvention": {
+      "persistentOrganicPollutantsProductionAndUseRiskForImportingState": "No",
+      "hazardousWasteDisposalRiskOfImport": "No",
+      "hazardousWasteDisposalOtherWasteImport": "Yes"
+    }
+  }
+}

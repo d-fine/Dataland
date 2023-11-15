@@ -17,8 +17,8 @@
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit type="hidden" name="companyId" :model-value="companyID" disabled="true" />
-            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" disabled="true" />
+            <FormKit type="hidden" name="companyId" :model-value="companyID" />
+            <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" />
 
             <FormKit type="group" name="data" label="data">
               <FormKit
@@ -48,10 +48,10 @@
                           :name="field.name"
                           :options="field.options"
                           :required="field.required"
-                          :certificateRequiredIfYes="field.certificateRequiredIfYes"
                           :validation="field.validation"
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
+                          :shouldDisableCheckboxes="true"
                           @reportsUpdated="updateDocumentList"
                           :ref="field.name"
                         />
@@ -94,7 +94,7 @@ import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import { defineComponent, inject, computed } from "vue";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import PrimeButton from "primevue/button";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
@@ -104,7 +104,7 @@ import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { AxiosError } from "axios";
-import { CompanyAssociatedDataLksgData } from "@clients/backend";
+import { type CompanyAssociatedDataLksgData, DataTypeEnum } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -121,13 +121,19 @@ import SubmitSideBar from "@/components/forms/parts/SubmitSideBar.vue";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
 import PercentageFormField from "@/components/forms/parts/fields/PercentageFormField.vue";
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
-import { objectDropNull, ObjectType } from "@/utils/UpdateObjectUtils";
+import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
-import { DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
+import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
-import { Subcategory } from "@/utils/GenericFrameworkTypes";
+import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
+import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
+import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
+import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
+import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
+import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
+import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -146,7 +152,6 @@ export default defineComponent({
     Card,
     PrimeButton,
     Calendar,
-    YesNoFormField,
     InputTextFormField,
     FreeTextFormField,
     NumberFormField,
@@ -156,11 +161,18 @@ export default defineComponent({
     NaceCodeFormField,
     AddressFormField,
     RadioButtonsFormField,
-    YesNoNaFormField,
     PercentageFormField,
     ProductionSitesFormField,
     MostImportantProductsFormField,
     ProcurementCategoriesFormField,
+    IntegerExtendedDataPointFormField,
+    BigDecimalExtendedDataPointFormField,
+    CurrencyDataPointFormField,
+    YesNoFormField,
+    YesNoNaFormField,
+    YesNoBaseDataPointFormField,
+    YesNoNaBaseDataPointFormField,
+    YesNoExtendedDataPointFormField,
   },
   emits: ["datasetCreated"],
   data() {
@@ -222,9 +234,9 @@ export default defineComponent({
       this.waitingForData = true;
       const lkSGDataControllerApi = await new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
-      ).getLksgDataControllerApi();
+      ).getUnifiedFrameworkDataController(DataTypeEnum.Lksg);
 
-      const lksgDataset = (await lkSGDataControllerApi.getCompanyAssociatedLksgData(dataId)).data;
+      const lksgDataset = (await lkSGDataControllerApi.getFrameworkData(dataId)).data;
       const dataDateFromDataset = lksgDataset.data?.general?.masterData?.dataDate;
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
@@ -243,8 +255,8 @@ export default defineComponent({
         }
         const lkSGDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
-        ).getLksgDataControllerApi();
-        await lkSGDataControllerApi.postCompanyAssociatedLksgData(this.companyAssociatedLksgData);
+        ).getUnifiedFrameworkDataController(DataTypeEnum.Lksg);
+        await lkSGDataControllerApi.postFrameworkData(this.companyAssociatedLksgData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
@@ -278,8 +290,9 @@ export default defineComponent({
   },
   provide() {
     return {
-      procurementCategories: computed(() => {
-        return this.companyAssociatedLksgData.data?.general?.productionSpecificOwnOperations?.procurementCategories;
+      productsServicesCategoriesPurchased: computed(() => {
+        return this.companyAssociatedLksgData.data?.general?.productionSpecificOwnOperations
+          ?.productsServicesCategoriesPurchased;
       }),
     };
   },

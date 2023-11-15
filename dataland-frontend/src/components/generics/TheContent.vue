@@ -1,6 +1,6 @@
 <template>
   <div class="d-content col-12 p-0">
-    <slot> </slot>
+    <slot />
   </div>
 </template>
 

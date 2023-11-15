@@ -1,103 +1,144 @@
 import { faker } from "@faker-js/faker";
-import { SmeData, SmeProduct, SmeProductionSite } from "@clients/backend";
-import { randomYesNo } from "@e2e/fixtures/common/YesNoFixtures";
-import { randomNumber, randomPercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { valueOrUndefined } from "@e2e/utils/FakeFixtureUtils";
-import { generateListOfNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
-import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
-import { randomFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import {
-  getRandomHeatSource,
-  getRandomSlectionOfNaturalHazards,
-  getRandomPercentageRangeEnergyConsumption,
-  getRandomPercentageRangeInvestmentEnergyEfficiency,
-} from "@e2e/fixtures/sme/SmeEnumFixtures";
-import { generateArray, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { FixtureData } from "@sharedUtils/Fixtures";
+  EnergySourceForHeatingAndHotWater,
+  NaturalHazard,
+  PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower,
+  PercentRangeForInvestmentsInEnergyEfficiency,
+  type SmeData,
+  type SmeProduct,
+  type SmeProductionSite,
+} from "@clients/backend";
+import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
+import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
+import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
+import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
+import { generateFixtureDataset, pickOneElement, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
+import { type FixtureData } from "@sharedUtils/Fixtures";
 
 /**
  * Generates a set number of SME fixtures
  * @param numFixtures the number of SME fixtures to generate
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a set number of SME fixtures
  */
-export function generateSmeFixtures(numFixtures: number): FixtureData<SmeData>[] {
-  return generateFixtureDataset<SmeData>(() => generateSmeData(), numFixtures);
-}
-
-/**
- * Generates a random product
- * @returns a random product
- */
-function generateProduct(): SmeProduct {
-  return {
-    name: faker.commerce.productName(),
-    percentageOfTotalRevenue: valueOrUndefined(randomPercentageValue()),
-  };
-}
-
-/**
- * Generates a random production site
- * @param undefinedProbability the percentage of undefined values in the returned production site
- * @returns a random production site
- */
-export function generateProductionSite(undefinedProbability = 0.5): SmeProductionSite {
-  return {
-    nameOfProductionSite: valueOrUndefined(faker.company.name(), undefinedProbability),
-    addressOfProductionSite: generateAddress(undefinedProbability),
-    percentageOfTotalRevenue: valueOrUndefined(randomPercentageValue(), undefinedProbability),
-  };
+export function generateSmeFixtures(
+  numFixtures: number,
+  nullProbability = DEFAULT_PROBABILITY,
+): FixtureData<SmeData>[] {
+  return generateFixtureDataset<SmeData>(() => generateSmeData(nullProbability), numFixtures);
 }
 
 /**
  * Generates a random SME dataset
- * @param undefinedProbability the ratio of fields to be undefined (number between 0 and 1)
+ * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a random SME dataset
  */
-export function generateSmeData(undefinedProbability = 0.5): SmeData {
+export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData {
+  const dataGenerator = new SmeGenerator(nullProbability);
   return {
     general: {
       basicInformation: {
-        sector: generateListOfNaceCodes(),
-        addressOfHeadquarters: generateAddress(undefinedProbability),
-        numberOfEmployees: randomNumber(10000),
-        fiscalYearStart: randomFutureDate(),
+        sector: generateNaceCodes(1, 1),
+        addressOfHeadquarters: generateAddress(dataGenerator.nullProbability),
+        numberOfEmployees: generateInt(10000),
+        fiscalYearStart: generateFutureDate(),
       },
       companyFinancials: {
-        revenueInEur: valueOrUndefined(randomNumber(100000000), undefinedProbability),
-        operatingCostInEur: valueOrUndefined(randomNumber(80000000), undefinedProbability),
-        capitalAssetsInEur: valueOrUndefined(randomNumber(70000000), undefinedProbability),
+        revenueInEUR: dataGenerator.randomInt(100000000),
+        operatingCostInEUR: dataGenerator.randomInt(80000000),
+        capitalAssetsInEUR: dataGenerator.randomInt(70000000),
       },
     },
     production: {
       sites: {
-        listOfProductionSites: valueOrUndefined(generateArray(generateProductionSite), undefinedProbability),
+        listOfProductionSites: dataGenerator.randomProductionSite(),
       },
       products: {
-        listOfProducts: valueOrUndefined(generateArray(generateProduct), undefinedProbability),
+        listOfProducts: dataGenerator.randomProduct(),
       },
     },
     power: {
       investments: {
-        percentageOfInvestmentsInEnhancingEnergyEfficiency: valueOrUndefined(
-          getRandomPercentageRangeInvestmentEnergyEfficiency(),
-        ),
+        percentageRangeForInvestmentsInEnhancingEnergyEfficiency:
+          dataGenerator.randomPercentageRangeInvestmentEnergyEfficiency(),
       },
       consumption: {
-        powerConsumptionInMwh: valueOrUndefined(randomNumber(2000), undefinedProbability),
-        powerFromRenewableSources: valueOrUndefined(randomYesNo(), undefinedProbability),
-        energyConsumptionHeatingAndHotWater: valueOrUndefined(randomNumber(1000), undefinedProbability),
-        primaryEnergySourceForHeatingAndHotWater: valueOrUndefined(getRandomHeatSource()),
-        energyConsumptionCoveredByOwnRenewablePowerGeneration: valueOrUndefined(
-          getRandomPercentageRangeEnergyConsumption(),
-        ),
+        powerConsumptionInMWh: dataGenerator.randomInt(2000),
+        powerFromRenewableSources: dataGenerator.randomYesNo(),
+        energyConsumptionHeatingAndHotWaterInMWh: dataGenerator.randomInt(1000),
+        primaryEnergySourceForHeatingAndHotWater: dataGenerator.randomHeatSource(),
+        percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration:
+          dataGenerator.randomPercentageRangeEnergyConsumption(),
       },
     },
     insurances: {
       naturalHazards: {
-        insuranceAgainstNaturalHazards: valueOrUndefined(randomYesNo(), undefinedProbability),
-        amountCoveredByInsuranceAgainstNaturalHazards: valueOrUndefined(randomNumber(50000000), undefinedProbability),
-        naturalHazardsCovered: valueOrUndefined(getRandomSlectionOfNaturalHazards(), undefinedProbability),
+        insuranceAgainstNaturalHazards: dataGenerator.randomYesNo(),
+        amountCoveredByInsuranceAgainstNaturalHazards: dataGenerator.randomInt(50000000),
+        naturalHazardsCovered: dataGenerator.randomSelectionOfNaturalHazards(),
       },
     },
   };
+}
+
+class SmeGenerator extends Generator {
+  /**
+   * Generates a random product
+   * @returns a random product
+   */
+  randomProduct(): SmeProduct[] | null {
+    return this.randomArray((): SmeProduct => {
+      return {
+        name: faker.commerce.productName(),
+        shareOfTotalRevenueInPercent: this.randomPercentageValue(),
+      };
+    });
+  }
+
+  /**
+   * Generates a random production site
+   * @returns a random production site
+   */
+  randomProductionSite(): SmeProductionSite[] | null {
+    return this.randomArray((): SmeProductionSite => {
+      return {
+        nameOfProductionSite: this.valueOrNull(faker.company.name()),
+        addressOfProductionSite: generateAddress(this.nullProbability),
+        shareOfTotalRevenueInPercent: this.randomPercentageValue(),
+      };
+    });
+  }
+
+  /**
+   * Picks a random percentage range option
+   * @returns a random percentage range option
+   */
+  randomPercentageRangeEnergyConsumption(): PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower | null {
+    return this.valueOrNull(pickOneElement(Object.values(PercentRangeForEnergyConsumptionCoveredByOwnRenewablePower)));
+  }
+
+  /**
+   * Picks a random percentage range option
+   * @returns a random percentage range option
+   */
+  randomPercentageRangeInvestmentEnergyEfficiency(): PercentRangeForInvestmentsInEnergyEfficiency | null {
+    return this.valueOrNull(pickOneElement(Object.values(PercentRangeForInvestmentsInEnergyEfficiency)));
+  }
+
+  /**
+   * Picks a random heat source
+   * @returns a random heat source
+   */
+  randomHeatSource(): EnergySourceForHeatingAndHotWater | null {
+    return this.valueOrNull(pickOneElement(Object.values(EnergySourceForHeatingAndHotWater)));
+  }
+
+  /**
+   * Picks a random natural hazard
+   * @returns a random natural hazard
+   */
+  randomSelectionOfNaturalHazards(): NaturalHazard[] | null {
+    return this.valueOrNull(pickSubsetOfElements(Object.values(NaturalHazard)));
+  }
 }

@@ -5,12 +5,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.CompanyAvailableDistinctValues
-import org.dataland.datalandbackend.model.CompanyIdAndName
-import org.dataland.datalandbackend.model.CompanyInformation
-import org.dataland.datalandbackend.model.CompanyInformationPatch
+import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.companies.CompanyAvailableDistinctValues
+import org.dataland.datalandbackend.model.companies.CompanyInformation
+import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize

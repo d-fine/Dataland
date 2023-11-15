@@ -9,8 +9,8 @@ import org.dataland.datalandbackend.model.sme.categories.production.SmeProductio
 
 /**
  * --- API model ---
- * Fields of the questionnaire for the SME framework
- */
+ * Fields of the sme framework.
+*/
 @DataType("sme")
 data class SmeData(
     @field:JsonProperty(required = true)

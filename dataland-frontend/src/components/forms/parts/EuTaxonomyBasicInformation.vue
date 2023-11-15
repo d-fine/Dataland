@@ -54,9 +54,9 @@
       <!-- EU Taxonomy activity level reporting -->
       <div class="form-field">
         <YesNoFormField
-          :name="'activityLevelReporting'"
-          :description="euTaxonomyKpiInfoMappings.activityLevelReporting"
-          :label="euTaxonomyKpiNameMappings.activityLevelReporting"
+          :name="'euTaxonomyActivityLevelReporting'"
+          :description="euTaxonomyKpiInfoMappings.euTaxonomyActivityLevelReporting"
+          :label="euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting"
         />
       </div>
 
@@ -82,9 +82,9 @@
       <!-- EU Taxonomy activity level reporting -->
       <div class="form-field">
         <YesNoFormField
-          :name="'reportingObligation'"
-          :description="euTaxonomyKpiInfoMappings.reportingObligation"
-          :label="euTaxonomyKpiNameMappings.reportingObligation"
+          :name="'nfrdMandatory'"
+          :description="euTaxonomyKpiInfoMappings.nfrdMandatory"
+          :label="euTaxonomyKpiNameMappings.nfrdMandatory"
         />
       </div>
     </div>

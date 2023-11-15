@@ -1,7 +1,7 @@
 <template>
   <div class="form-field" data-test="ProcurementCategoriesFormField">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <FormKit type="group" name="procurementCategories">
+    <FormKit type="group" name="productsServicesCategoriesPurchased">
       <ProcurementCategoryFormElement :name="ProcurementCategoryType.Products" label="Products" />
       <ProcurementCategoryFormElement :name="ProcurementCategoryType.RawMaterials" label="Raw Materials" />
       <ProcurementCategoryFormElement :name="ProcurementCategoryType.Services" label="Services" />

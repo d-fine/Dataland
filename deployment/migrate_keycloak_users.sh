@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euxo pipefail
 source "$(dirname "$0")"/deployment_utils.sh
 
@@ -15,7 +15,7 @@ persistent_backup="$persistent_keycloak_backup_dir"/"$(date '+%Y%m%d_%H%M')"
 if ls "$keycloak_user_dir"/*-users-*.json &>/dev/null; then
   echo "Found users from previous export. Moving to backup location: $persistent_backup"
   mkdir -p "$persistent_backup"
-  cp "$keycloak_user_dir"/*-users-*.json "$persistent_backup"
+  mv "$keycloak_user_dir"/*-users-*.json "$persistent_backup"
 fi
 
 mkdir -p "$keycloak_backup_dir"

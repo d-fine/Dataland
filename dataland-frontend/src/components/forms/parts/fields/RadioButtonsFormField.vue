@@ -6,6 +6,7 @@
       :validation="validation"
       :validation-label="validationLabel ?? label"
       :options="options"
+      :field-name="name"
     />
   </div>
 </template>

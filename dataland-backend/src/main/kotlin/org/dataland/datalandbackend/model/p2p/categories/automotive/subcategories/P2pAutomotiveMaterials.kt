@@ -3,11 +3,11 @@ package org.dataland.datalandbackend.model.p2p.categories.automotive.subcategori
 import java.math.BigDecimal
 
 /**
-* --- API model ---
-* Fields of the P2P questionnaire regarding the materials of the automotive sector
+ * --- API model ---
+ * Fields of the subcategory "Materials" belonging to the category "Automotive" of the p2p framework.
 */
 data class P2pAutomotiveMaterials(
-    val materialUseManagement: BigDecimal? = null,
+    val materialUseManagementInPercent: BigDecimal? = null,
 
-    val useOfSecondaryMaterials: BigDecimal? = null,
+    val useOfSecondaryMaterialsInPercent: BigDecimal? = null,
 )

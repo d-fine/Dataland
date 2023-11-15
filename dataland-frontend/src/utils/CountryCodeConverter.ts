@@ -7,7 +7,7 @@ countries.registerLocale(countriesEn);
  * @param countryCode the country code of the country to lookup the name for
  * @returns the english name of the country identified by countryCode
  */
-export function getCountryNameFromCountryCode(countryCode: string): string {
+export function getCountryNameFromCountryCode(countryCode: string): string | undefined {
   return countries.getName(countryCode, "en");
 }
 

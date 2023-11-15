@@ -1,0 +1,91 @@
+{
+  "general": {
+    "fiscalYearDeviation": "Deviation",
+    "fiscalYearEnd": "2022-10-05",
+    "nfrdMandatory": null,
+    "numberOfEmployees": null,
+    "referencedReports": {
+      "SustainabilityReport": {
+        "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "reportDate": null,
+        "isGroupLevel": null,
+        "currency": "THB"
+      },
+      "ESEFReport": {
+        "reference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+        "reportDate": null,
+        "isGroupLevel": null,
+        "currency": "BSD"
+      }
+    },
+    "assurance": {
+      "assurance": "LimitedAssurance",
+      "provider": null,
+      "dataSource": {
+        "page": 91,
+        "report": "SustainabilityReport",
+        "tagName": "initiatives"
+      }
+    },
+    "scopeOfEntities": "NA",
+    "euTaxonomyActivityLevelReporting": "No"
+  },
+  "opex": {
+    "totalAmount": {
+      "comment": null,
+      "dataSource": null,
+      "value": {
+        "amount": 940716,
+        "currency": "EUR"
+      },
+      "quality": "Estimated"
+    },
+    "alignedShare": {},
+    "eligibleShare": {}
+  },
+  "capex": {
+    "alignedShare": {
+      "relativeShareInPercent": 0.1965,
+      "absoluteShare": {
+        "amount": 396564.95871022346,
+        "currency": null
+      }
+    },
+    "totalAmount": {
+      "value": null,
+      "quality": "Audited",
+      "dataSource": {
+        "report": "SustainabilityReport",
+        "page": 1017,
+        "tagName": "platforms"
+      },
+      "comment": "quantify 1080p driver"
+    },
+    "eligibleShare": {}
+  },
+  "revenue": {
+    "totalAmount": {
+      "dataSource": {},
+      "value": {
+        "amount": 470269.00,
+        "currency": null
+      },
+      "quality": "Incomplete",
+      "comment": null
+    },
+    "alignedShare": {
+      "relativeShareInPercent": 0.4347,
+      "absoluteShare": {
+        "amount": 840897.8063846007,
+        "currency": null
+      }
+    },
+    "eligibleShare": {
+      "relativeShareInPercent": null,
+      "absoluteShare": {
+        "amount": 917185.00,
+        "currency": null
+      }
+    }
+  }
+}

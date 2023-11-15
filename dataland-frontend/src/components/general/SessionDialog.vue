@@ -23,14 +23,14 @@
 
 <script lang="ts">
 import { defineComponent, inject } from "vue";
-import { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
+import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import PrimeButton from "primevue/button";
 import {
   isRefreshTokenExpiryTimestampInSharedStoreReached,
   SessionDialogMode,
   tryToRefreshSession,
 } from "@/utils/SessionTimeoutUtils";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS } from "@/utils/Constants";
 import { useSharedSessionStateStore } from "@/stores/Stores";
 import { loginAndRedirectToSearchPage } from "@/utils/KeycloakUtils";

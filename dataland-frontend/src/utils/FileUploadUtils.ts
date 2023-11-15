@@ -1,23 +1,18 @@
-import { CompanyReport } from "@clients/backend";
+import { type CompanyReport } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 import { AxiosError } from "axios";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { type ObjectType } from "@/utils/UpdateObjectUtils";
 
 export interface DocumentToUpload {
   file: File;
   fileNameWithoutSuffix: string;
 
-  reference: string;
+  fileReference: string;
 }
-
 export interface StoredReport extends CompanyReport {
-  reportName: string;
-}
-
-export interface ReportToUpload extends CompanyReport {
-  file: File;
-  fileNameWithoutSuffix: string;
+  fileName: string;
 }
 
 /**
@@ -26,14 +21,14 @@ export interface ReportToUpload extends CompanyReport {
  * @param getKeycloakPromise getter for a keycloak promise
  */
 export async function uploadFiles(
-  files: ReportToUpload[] | DocumentToUpload[],
+  files: DocumentToUpload[],
   getKeycloakPromise: () => Promise<Keycloak>,
 ): Promise<void> {
   const documentControllerApi = await new ApiClientProvider(getKeycloakPromise()).getDocumentControllerApi();
   for (const fileToUpload of files) {
     let fileIsAlreadyInStorage: boolean;
     try {
-      await documentControllerApi.checkDocument(fileToUpload.reference);
+      await documentControllerApi.checkDocument(fileToUpload.fileReference);
       fileIsAlreadyInStorage = true;
     } catch (error) {
       if (error instanceof AxiosError && assertDefined((error as AxiosError).response).status == 404) {
@@ -44,7 +39,7 @@ export async function uploadFiles(
     }
     if (!fileIsAlreadyInStorage) {
       const backendComputedHash = (await documentControllerApi.postDocument(fileToUpload.file)).data.documentId;
-      if (fileToUpload.reference !== backendComputedHash) {
+      if (fileToUpload.fileReference !== backendComputedHash) {
         throw Error("Locally computed document hash does not concede with the one received by the upload request!");
       }
     }
@@ -93,4 +88,55 @@ function toHex(buffer: ArrayBuffer): string {
  */
 export function removeFileTypeExtension(fileName: string): string {
   return fileName.split(".").slice(0, -1).join(".");
+}
+
+/**
+ * This functions returns the array of available reports
+ * @param inputArray array of files which should be made referenceable
+ * @returns the object of referenceable reports
+ */
+export function calculateReferenceableFiles(inputArray: DocumentToUpload[] | StoredReport[]): ObjectType {
+  const referenceableReport = {} as ObjectType;
+  let reportName: string;
+  for (const element of inputArray) {
+    if ((<DocumentToUpload>element).fileNameWithoutSuffix) {
+      reportName = (<DocumentToUpload>element).fileNameWithoutSuffix;
+    } else {
+      reportName = (<StoredReport>element).fileName;
+    }
+    referenceableReport[reportName] = element.fileReference;
+  }
+  return referenceableReport;
+}
+
+/**
+ * The method returns the fileReference for a given fileName
+ * @param currentReportValue name of the report for which the fileReference should be retrieved
+ * @param injectReportsNameAndReferences map containing fileNames and corresponding FileReferences
+ * @returns fileReference of the given fileName
+ */
+export function getFileReferenceByFileName(
+  currentReportValue: string,
+  injectReportsNameAndReferences: ObjectType,
+): string {
+  if (currentReportValue in injectReportsNameAndReferences) {
+    const value = injectReportsNameAndReferences[currentReportValue];
+    if (typeof value === "string") {
+      return value;
+    }
+  }
+  return "";
+}
+
+/**
+ * Retrieves the all fileNames of the map
+ * @param injectReportsNameAndReferences map from which the fileNames should be retrieved
+ * @returns fileNames of all entries in the map
+ */
+export function getFileName(injectReportsNameAndReferences: ObjectType): string[] {
+  if (injectReportsNameAndReferences) {
+    return Object.keys(injectReportsNameAndReferences);
+  } else {
+    return [];
+  }
 }

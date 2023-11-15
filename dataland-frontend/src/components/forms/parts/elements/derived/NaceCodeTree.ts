@@ -1,4 +1,4 @@
-import { TreeNode } from "primevue/tree";
+import { type TreeNode } from "primevue/tree";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 /**
@@ -11,14 +11,17 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 export function filterNodes(nodes: Array<TreeNode>, searchTerm: string): Array<TreeNode> {
   const lowerSearchTerm = searchTerm.toLowerCase().trim();
   return nodes.filter((it) => {
-    const filterMatchesNode = assertDefined(it.label).toLowerCase().indexOf(lowerSearchTerm) > -1;
-    it.children = filterNodes(it.children ?? [], searchTerm);
-    return filterMatchesNode ?? it.children.length > 0;
+    const filterMatchesNode = assertDefined(it.label).toLowerCase().includes(lowerSearchTerm);
+    const findInChildren = filterNodes(it.children ?? [], searchTerm);
+    if (findInChildren.length !== 0) {
+      it.children = findInChildren;
+    }
+    return filterMatchesNode || findInChildren.length > 0;
   });
 }
 
 /**
- * An excerpt of the Nace Rev 2. definition
+ * An excerpt of the NACE Rev 2. definition
  * (Ref https://ec.europa.eu/eurostat/ramon/nomenclatures/index.cfm?TargetUrl=LST_NOM_DTL&StrNom=NACE_REV2&StrLanguageCode=EN)
  * Transformed into TreeNode format by the DatalandNaceConverter (https://github.com/d-fine/DatalandNaceConverter)
  */

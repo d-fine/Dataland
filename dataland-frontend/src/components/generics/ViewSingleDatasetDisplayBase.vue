@@ -4,6 +4,7 @@
     :dataType="dataType"
     :single-data-meta-info-to-display="dataMetaInfoForDisplay"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"
+    :viewInPreviewMode="viewInPreviewMode"
   >
     <template v-slot:reportingPeriodDropdown>
       <Dropdown
@@ -34,13 +35,10 @@
         </div>
         <div class="grid">
           <div class="col-7">
-            <EuTaxonomyPanelNonFinancials
-              v-if="dataType === DataTypeEnum.EutaxonomyNonFinancials"
-              :dataID="dataIdForPanelWithValidType"
-            />
             <EuTaxonomyPanelFinancials
               v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
               :dataID="dataIdForPanelWithValidType"
+              :viewInPreviewMode="viewInPreviewMode"
             />
           </div>
         </div>
@@ -72,16 +70,15 @@
 
 <script lang="ts">
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
-import { DataMetaInformation, DataTypeEnum } from "@clients/backend";
+import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import { defineComponent, inject } from "vue";
-import Dropdown, { DropdownChangeEvent } from "primevue/dropdown";
-import Keycloak from "keycloak-js";
+import Dropdown, { type DropdownChangeEvent } from "primevue/dropdown";
+import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { AxiosError } from "axios";
-import EuTaxonomyPanelNonFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelNonFinancials.vue";
+import { type AxiosError } from "axios";
 import EuTaxonomyPanelFinancials from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyPanelFinancials.vue";
-import { humanizeString } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 
 export default defineComponent({
@@ -91,7 +88,6 @@ export default defineComponent({
     ViewFrameworkBase,
     Dropdown,
     EuTaxonomyPanelFinancials,
-    EuTaxonomyPanelNonFinancials,
   },
   props: {
     companyId: {
@@ -105,6 +101,10 @@ export default defineComponent({
     },
     dataType: {
       type: String,
+    },
+    viewInPreviewMode: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -139,7 +139,7 @@ export default defineComponent({
 
   computed: {
     humanizedDataDescription() {
-      return humanizeString(this.dataType);
+      return humanizeStringOrNumber(this.dataType);
     },
 
     dataIdForPanelWithValidType() {
@@ -180,10 +180,8 @@ export default defineComponent({
       if (dataMetaInfoForNewlyChosenReportingPeriod) {
         this.processDataMetaInfoForDisplay(dataMetaInfoForNewlyChosenReportingPeriod);
         this.routerPushToReportingPeriod(dataMetaInfoForNewlyChosenReportingPeriod.reportingPeriod);
-      } else {
-        if (newReportingPeriod) {
-          this.handleInvalidReportingPeriodPassedInUrl();
-        }
+      } else if (newReportingPeriod) {
+        this.handleInvalidReportingPeriodPassedInUrl();
       }
     },
 

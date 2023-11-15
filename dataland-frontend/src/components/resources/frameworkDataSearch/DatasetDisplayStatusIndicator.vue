@@ -13,8 +13,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { DataMetaInformation, QaStatus } from "@clients/backend";
+import { defineComponent, type PropType } from "vue";
+import { type DataMetaInformation, QaStatus } from "@clients/backend";
 import PrimeButton from "primevue/button";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 export default defineComponent({

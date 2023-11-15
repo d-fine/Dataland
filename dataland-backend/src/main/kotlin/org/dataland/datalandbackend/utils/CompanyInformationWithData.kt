@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.utils
 
-import org.dataland.datalandbackend.model.CompanyInformation
+import org.dataland.datalandbackend.model.companies.CompanyInformation
 
 /**
  * --- Non-API model ---

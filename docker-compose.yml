@@ -9,12 +9,8 @@ version: "3.8"
 
 
 # These are envs/settings which are required for several services and therefore maintained centrally here:
-x-max-number-of-days-selectable-for-api-key-validity: &max-number-of-days-selectable-for-api-key-validity
-  MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY: ${MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY:-3650}
-x-data-request-upload-max-file-size-in-megabytes: &data-request-upload-max-file-size-in-megabytes
-  DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES: 2
-x-document-upload-max-file-size-in-megabytes: &document-upload-max-file-size-in-megabytes
-  DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES: 100
+x-uncritical-constants-env: &uncritical-constants-env
+  env_file: ./environments/.env.uncritical
 x-rabbit-mq-user-and-pass: &rabbit-mq-user-and-pass
   RABBITMQ_USER: ${RABBITMQ_USER}
   RABBITMQ_PASS: ${RABBITMQ_PASS}
@@ -37,6 +33,7 @@ services:
     volumes:
       - letsencrypt:/etc/letsencrypt
       - ./local/certs:/certs/custom
+    <<: *uncritical-constants-env
     environment:
       # The primary server URL all other URLS get redirected to
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
@@ -61,9 +58,10 @@ services:
       - internal-storage-db
       - document-manager-db
       - qa-service-db
+      - community-manager-db
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5438:5433-5438"
+      - "127.0.0.1:5433-5439:5433-5439"
       - "127.0.0.1:5672:5672"
   api-key-manager:
     restart: always
@@ -76,8 +74,8 @@ services:
       - "8080"
     depends_on:
       - api-key-manager-db
+    <<: *uncritical-constants-env
     environment:
-      <<: *max-number-of-days-selectable-for-api-key-validity
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   api-key-manager-db:
@@ -85,7 +83,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - api-key-manager-db
-    image: postgres:15.3
+    image: postgres:15.4
     volumes:
       - api_key_manager_data:/var/lib/postgresql/data
     environment:
@@ -106,8 +104,9 @@ services:
     image: ${DOCUMENT_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_document_manager_test:${DATALAND_DOCUMENT_MANAGER_TEST_VERSION}}
     expose:
       - "8080"
+    <<: *uncritical-constants-env
     environment:
-      <<: [*rabbit-mq-user-and-pass, *document-upload-max-file-size-in-megabytes]
+      <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
     depends_on:
@@ -117,7 +116,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - document-manager-db
-    image: postgres:15.3
+    image: postgres:15.4
     volumes:
       - document_manager_data:/var/lib/postgresql/data
     environment:
@@ -140,19 +139,18 @@ services:
       - "8080"
     depends_on:
       - backend-db
+    <<: *uncritical-constants-env
     environment:
-      <<: [*rabbit-mq-user-and-pass, *mailjet-api-id-and-secret, *data-request-upload-max-file-size-in-megabytes]
+      <<: *rabbit-mq-user-and-pass
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      INVITATION_REQUEST_RECEIVERS: ${INVITATION_REQUEST_RECEIVERS}
-      INVITATION_REQUEST_CC: ${INVITATION_REQUEST_CC}
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
   backend-db:
     restart: always
     profiles: ["production", "testing", "development"]
     networks:
       - backend-db
-    image: postgres:15.3
+    image: postgres:15.4
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -179,8 +177,9 @@ services:
       - external
     volumes:
       - ./.git:/app/.git
+    <<: *uncritical-constants-env
     environment:
-      <<: [*rabbit-mq-user-and-pass, *max-number-of-days-selectable-for-api-key-validity, *data-request-upload-max-file-size-in-megabytes]
+      <<: *rabbit-mq-user-and-pass
       KEYCLOAK_DATALAND_ADMIN_PASSWORD: ${KEYCLOAK_DATALAND_ADMIN_PASSWORD}
       KEYCLOAK_REVIEWER_PASSWORD: ${KEYCLOAK_REVIEWER_PASSWORD}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
@@ -200,7 +199,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: ["development"]
-    image: node:20.5.0
+    image: node:20.9.0
     networks:
       internal:
         aliases:
@@ -209,8 +208,8 @@ services:
       - ./dataland-frontend:/app
       - frontend-dev-node-modules:/app/node_modules
     command: sh -c "cd /app && npm install && npm run dev"
+    <<: *uncritical-constants-env
     environment:
-      <<: [*max-number-of-days-selectable-for-api-key-validity, *document-upload-max-file-size-in-megabytes, *data-request-upload-max-file-size-in-megabytes]
       POLLING: "false"
   frontend:
     restart: always
@@ -218,8 +217,7 @@ services:
     image: ${FRONTEND_IMAGE:-ghcr.io/d-fine/dataland/dataland_frontend_test:${DATALAND_FRONTEND_TEST_VERSION}}
     networks:
       - internal
-    environment:
-      <<: [*max-number-of-days-selectable-for-api-key-validity, *document-upload-max-file-size-in-megabytes, *data-request-upload-max-file-size-in-megabytes]
+    <<: *uncritical-constants-env
   internal-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -242,7 +240,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal-storage-db
-    image: postgres:15.3
+    image: postgres:15.4
     volumes:
       - internal_storage_data:/var/lib/postgresql/data
     environment:
@@ -259,7 +257,7 @@ services:
     profiles: ["production", "testing", "development", "init"]
     networks:
       - keycloak-db
-    image: postgres:15.3
+    image: postgres:15.4
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
@@ -334,6 +332,7 @@ services:
       - internal-storage-db
       - document-manager-db
       - qa-service-db
+      - community-manager-db
     profiles: ["production", "testing", "development"]
     volumes:
       - pgadmin_config:/var/lib/pgadmin
@@ -346,6 +345,7 @@ services:
       INTERNAL_STORAGE_DB_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
+      COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
   rabbitmq:
@@ -388,7 +388,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - qa-service-db
-    image: postgres:15.3
+    image: postgres:15.4
     volumes:
       - qa_service_data:/var/lib/postgresql/data
     environment:
@@ -414,6 +414,41 @@ services:
       - ./dataland-batch-manager/config:/config
     extra_hosts:
       - "host.docker.internal:host-gateway"
+  community-manager:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${COMMUNITY_MANAGER_IMAGE:-ghcr.io/d-fine/dataland/dataland_community_manager_test:${DATALAND_COMMUNITY_MANAGER_TEST_VERSION}}
+    networks:
+      - internal
+      - community-manager-db
+    expose:
+      - "8080"
+    environment:
+      <<: *mailjet-api-id-and-secret
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
+      NOTIFICATION_RECEIVERS_BULK_DATA_REQUEST: ${NOTIFICATION_RECEIVERS_BULK_DATA_REQUEST}
+      NOTIFICATION_RECEIVERS_CC_BULK_DATA_REQUEST: ${NOTIFICATION_RECEIVERS_CC_BULK_DATA_REQUEST}
+    depends_on:
+      - community-manager-db
+  community-manager-db:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - community-manager-db
+    image: postgres:15.4
+    volumes:
+      - community_manager_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: community_manager
+      POSTGRES_USER: community_manager
+      POSTGRES_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
+      PGUSER: community_manager
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready || false" ]
+      interval: 30s
+      timeout: 3s
 networks:
   internal:
   external:
@@ -423,6 +458,7 @@ networks:
   internal-storage-db:
   document-manager-db:
   qa-service-db:
+  community-manager-db:
 volumes:
   keycloak_data:
     driver: local
@@ -443,4 +479,6 @@ volumes:
   document_manager_data:
     driver: local
   qa_service_data:
+    driver: local
+  community_manager_data:
     driver: local

@@ -30,9 +30,9 @@ dependencies {
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.awaitility:awaitility")
+    implementation(Spring.boot.web)
+    testImplementation(Spring.boot.test)
+    testImplementation(libs.awaitility)
 }
 
 tasks.withType<Test> {
@@ -117,11 +117,34 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
     )
 }
 
+tasks.register("generateCommunityManagerClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val communityManagerClientDestinationPackage = "org.dataland.communitymanager.openApiClient"
+    input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path
+    outputDir.set("$buildDir/clients/community-manager")
+    packageName.set(communityManagerClientDestinationPackage)
+    modelPackage.set("$communityManagerClientDestinationPackage.model")
+    apiPackage.set("$communityManagerClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "java17",
+            "useTags" to "true",
+        ),
+    )
+}
+
 tasks.register("generateClients") {
     dependsOn("generateBackendClient")
     dependsOn("generateQaServiceClient")
     dependsOn("generateApiKeyManagerClient")
     dependsOn("generateDocumentManagerClient")
+    dependsOn("generateCommunityManagerClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -138,6 +161,7 @@ sourceSets {
     main.kotlin.srcDir("$buildDir/clients/api-key-manager/src/main/kotlin")
     main.kotlin.srcDir("$buildDir/clients/document-manager/src/main/kotlin")
     main.kotlin.srcDir("$buildDir/clients/qa-service/src/main/kotlin")
+    main.kotlin.srcDir("$buildDir/clients/community-manager/src/main/kotlin")
 }
 
 ktlint {
