@@ -142,7 +142,7 @@ class CompanyDataController(
     ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> {
         return ResponseEntity.ok(
             DataType.values.associateWith {
-                AggregatedFrameworkDataSummary(0)
+                AggregatedFrameworkDataSummary(companyQueryManager.countActiveDatasets(companyId, it))
             },
         )
     }
