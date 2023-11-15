@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service("CompanyQueryManager")
 class CompanyQueryManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
+    @Autowired private val dataMetaInfoRepository: DataMetaInformationRepository,
 ) {
     /**
      * Method to verify that a given company exists in the company store
@@ -139,6 +141,10 @@ class CompanyQueryManager(
      * @returns the number of active data sets of the specified company and data type
      */
     fun countActiveDatasets(companyId: String, dataType: DataType): Long {
-        return 0
+        return dataMetaInfoRepository.countByCompanyIdAndDataTypeAndCurrentlyActive(
+            companyId,
+            dataType.name,
+            true,
+        )
     }
 }
