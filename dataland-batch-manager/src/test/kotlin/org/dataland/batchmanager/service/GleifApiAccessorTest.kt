@@ -56,4 +56,12 @@ class GleifApiAccessorTest {
         GleifApiAccessor(dummyUrl, dummyUrl).getLastMonthGoldenCopyDelta(File("test"))
         mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(1))
     }
+
+    @Test
+    fun `test if download LEI-ISIN mapping works fine under the right conditions`() {
+//        fails atm because the .split in .getIsinMappingFile() does not do what it prob should be doing
+        `when`(FileUtils.copyURLToFile(any(), any())).thenAnswer { }
+        GleifApiAccessor(dummyUrl, dummyUrl).getIsinMappingFile(File("test"))
+        mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(1))
+    }
 }

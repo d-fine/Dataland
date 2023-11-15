@@ -109,7 +109,7 @@ class IsinDeltaBuilder(
             }
             val renamedFile = File(savedMappingFile.parent, "isinMapping.csv")
             newMappingFile.copyTo(renamedFile, true)
-        } catch (e: Exception) {
+        } catch (e: FileSystemException) {
             logger.error("Error while replacing the old mapping file: ${e.message}")
         }
     }

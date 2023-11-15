@@ -64,7 +64,6 @@ class IsinDeltaBuilderTest {
         newFile.delete()
     }
 
-    @Disabled
     @Test
     fun `test if delta of two files with LEI-ISIN mapping looks as expected`() {
         val tmpFile = File("tmp")

@@ -6,6 +6,8 @@ import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
 import org.dataland.datalandbatchmanager.service.GleifCsvParser
 import org.dataland.datalandbatchmanager.service.GleifGoldenCopyIngestor
+import org.dataland.datalandbatchmanager.service.IsinDeltaBuilder
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -19,6 +21,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import java.io.BufferedReader
 import java.io.File
+import java.io.PrintWriter
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class GleifGoldenCopyIngestorTest {
@@ -26,7 +29,55 @@ class GleifGoldenCopyIngestorTest {
     private val mockGleifCsvParser = mock(GleifCsvParser::class.java)
     private val mockCompanyUploader = mock(CompanyUploader::class.java)
     private val mockActuatorApi = mock(ActuatorApi::class.java)
+    private val mockIsinDeltaBuilder = mock(IsinDeltaBuilder::class.java)
     private lateinit var companyIngestor: GleifGoldenCopyIngestor
+
+    private lateinit var oldFile: File
+    private lateinit var newFile: File
+
+    @BeforeEach
+    fun setup() {
+        val oldContent = """
+            LEI,ISIN
+            1000,1111
+            1000,1112
+            2000,2222
+            3000,3333
+            3000,3334
+            4000,4444
+            6000,6666
+            6000,6667
+        """.trimIndent()
+        val newContent = """
+            LEI,ISIN
+            1000,1111
+            1000,1112
+            1000,1113
+            2000,2222
+            3000,3333
+            4000, 
+            5000,5555
+            6000,6666
+            6000,6667
+        """.trimIndent()
+
+//        create file oldFile
+        oldFile = File("oldFile.csv")
+        var printWriter = PrintWriter(oldFile)
+        printWriter.println(oldContent)
+        printWriter.close()
+//        create file newFile
+        newFile = File("newFile.csv")
+        printWriter = PrintWriter(newFile)
+        printWriter.println(newContent)
+        printWriter.close()
+    }
+
+    @AfterAll
+    fun cleanup() {
+        oldFile.delete()
+        newFile.delete()
+    }
 
     @BeforeEach
     fun setupTest() {
@@ -34,14 +85,15 @@ class GleifGoldenCopyIngestorTest {
         reset(mockGleifCsvParser)
         reset(mockCompanyUploader)
         reset(mockActuatorApi)
+        reset(mockIsinDeltaBuilder)
     }
 
     @Test
     fun `test ingestion is not executed if no flag file is provided`() {
         val mockStaticFile = mockStatic(File::class.java)
         companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi,
-            false, null,
+            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
+            false, null, oldFile
         )
         companyIngestor.processFullGoldenCopyFileIfEnabled()
         mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(0))
@@ -60,13 +112,13 @@ class GleifGoldenCopyIngestorTest {
         )
             .thenReturn(MappingIterator.emptyIterator())
         companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi,
-            false, flagFile.absolutePath,
+            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
+            false, flagFile.absolutePath, oldFile
         )
         val mockStaticFile = mockStatic(File::class.java)
         `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
         companyIngestor.processFullGoldenCopyFileIfEnabled()
-        mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(1))
+        mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(2))
         verify(mockGleifCsvParser, times(1)).readGleifDataFromBufferedReader(any() ?: emptyBufferedReader)
         mockStaticFile.close()
     }
