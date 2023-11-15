@@ -37,12 +37,12 @@ export default defineComponent({
   inject: {
     injectedUseMobileView: {
       from: "useMobileView",
-      default: false,
+      default: { value: false },
     },
   },
   computed: {
     useMobileView() {
-      return this.injectedUseMobileView;
+      return (this.injectedUseMobileView as { value: boolean }).value;
     },
     DataTypeEnum() {
       return DataTypeEnum;

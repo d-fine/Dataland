@@ -112,7 +112,7 @@ describeIf(
       executeCompanySearchWithStandardSearchBar(searchValue);
     });
 
-    it("Visit framework data view page and assure that title is present and a Framework Data Search Bar exists", () => {
+    it("Visit framework data view page and assure that title is present and a Company Search Bar exists", () => {
       const placeholder = "Search company by name or PermID";
       const inputValue = "A company name";
 
@@ -122,7 +122,7 @@ describeIf(
             cy.visitAndCheckAppMount(
               `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
             );
-            cy.get("input[id=framework_data_search_bar_standard]")
+            cy.get("input[id=company_search_bar_standard]")
               .should("not.be.disabled")
               .type(inputValue)
               .should("have.value", inputValue)
