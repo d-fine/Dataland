@@ -1,6 +1,6 @@
 <template>
   <div :class="`p-fluid ${classes}`">
-    <span class="p-input-icon-left p-input-icon-right">
+    <span class="p-input-icon-left p-input-icon-right p-input-icon-align">
       <i class="pi pi-search d-framework-searchbar-input-icon" aria-hidden="true" style="z-index: 20; color: #958d7c" />
       <AutoComplete
         inputId="company_search_bar_standard"
@@ -98,3 +98,8 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.p-input-icon-align {
+  text-align: left;
+}
+</style>
