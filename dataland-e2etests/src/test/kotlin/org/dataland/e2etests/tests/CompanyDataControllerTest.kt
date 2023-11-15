@@ -370,7 +370,7 @@ class CompanyDataControllerTest {
         uploadDummyDataset(companyId = companyId, reportingPeriod = "2022", bypassQa = true)
         uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
         sleep(100)
-        val sortedCompanyNames = apiAccessor.companyDataControllerApi.getAggregatedFrameworkDataSummary(
+        val aggregatedFrameworkDataSummary = apiAccessor.companyDataControllerApi.getAggregatedFrameworkDataSummary(
             companyId = companyId,
         )
         assertEquals(
@@ -380,7 +380,7 @@ class CompanyDataControllerTest {
                 "p2p=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
                 "sfdr=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
                 "sme=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0)}",
-            sortedCompanyNames.toString(),
+            aggregatedFrameworkDataSummary.toString(),
         )
     }
 }
