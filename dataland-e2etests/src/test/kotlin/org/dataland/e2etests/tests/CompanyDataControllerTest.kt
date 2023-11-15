@@ -383,4 +383,44 @@ class CompanyDataControllerTest {
             aggregatedFrameworkDataSummary.toString(),
         )
     }
+
+    @Test
+    fun `checks that the correct company information are returned`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val companyInformation = baseCompanyInformation.copy(
+            companyName = "aggregated",
+            companyAlternativeNames = listOf("alternativeNames"),
+            identifiers = mapOf(
+                IdentifierType.isin.value to listOf(UUID.randomUUID().toString()),
+            ),
+        )
+        println(companyInformation)
+
+        val companyId = apiAccessor.companyDataControllerApi.postCompany(companyInformation).companyId
+        println(companyId)
+        sleep(100)
+        val aggregatedFrameworkDataSummary = apiAccessor.companyDataControllerApi.getCompanyInfo(
+            companyId = companyId,
+        )
+        assertEquals(
+            companyInformation,
+            aggregatedFrameworkDataSummary,
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if it can be retrieved by the companiesInfo endpoint`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val expectedCompanyInformation = StoredCompany(
+            uploadInfo.actualStoredCompany.companyId,
+            uploadInfo.inputCompanyInformation,
+            emptyList(),
+        ).companyInformation
+        assertEquals(
+            expectedCompanyInformation,
+            apiAccessor.companyDataControllerApi.getCompanyInfo(uploadInfo.actualStoredCompany.companyId),
+            "Dataland does not contain the posted company.",
+        )
+    }
 }
