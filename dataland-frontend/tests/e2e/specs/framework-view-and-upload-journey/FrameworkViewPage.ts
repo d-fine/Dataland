@@ -86,6 +86,7 @@ describeIf(
       cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
       cy.wait("@searchCompanies");
       cy.wait("@fetchFilters");
+      cy.wait(5000); // TODO debugging
       verifySearchResultTableExists();
       const companySelector = "span:contains(VIEW)";
       cy.get(companySelector).first().click({ force: true });
