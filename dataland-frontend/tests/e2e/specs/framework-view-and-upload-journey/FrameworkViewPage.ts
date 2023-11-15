@@ -215,7 +215,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        * Clicks the back button on the page.
        */
       function clickBackButton(): void {
-        cy.get('[data-test="backButton"]').click();
+        cy.get('[data-test="back-button"]').click();
       }
 
       /**
