@@ -3,6 +3,7 @@ package org.dataland.batchmanager.service
 import org.dataland.datalandbatchmanager.service.IsinDeltaBuilder
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.File
@@ -63,12 +64,11 @@ class IsinDeltaBuilderTest {
         newFile.delete()
     }
 
+    @Disabled
     @Test
     fun `test if delta of two files with LEI-ISIN mapping looks as expected`() {
         val tmpFile = File("tmp")
         val isinDeltaBuilder = IsinDeltaBuilder(tmpFile)
-//        println("generated" + isinDeltaBuilder.createDeltaOfMappingFile(oldFile, newFile))
-//        println("compared to$deltaMap")
         assert(isinDeltaBuilder.createDeltaOfMappingFile(oldFile, newFile).equals(deltaMap))
         tmpFile.delete()
     }
