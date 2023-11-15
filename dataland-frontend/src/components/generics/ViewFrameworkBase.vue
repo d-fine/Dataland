@@ -1,21 +1,11 @@
 <template>
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
   <TheContent class="paper-section min-h-screen">
-    <SearchbarAndBackButton :companyID="companyID" :isReviewableByCurrentUser="isReviewableByCurrentUser" />
-    <MarginWrapper class="surface-0" style="margin-right: 0">
-      <div class="grid align-items-end">
-        <div class="col-9">
-          <CompanyInformationBanner
-            :companyId="companyID"
-            @fetchedCompanyInformation="handleFetchedCompanyInformation"
-          />
-        </div>
-      </div>
-    </MarginWrapper>
+    <CompanyInfoSheet :company-id="companyID" @fetched-company-information="handleFetchedCompanyInformation" />
     <div v-if="isDataProcessedSuccesfully">
       <MarginWrapper
         class="text-left surface-0 dataland-toolbar"
-        style="margin-right: 0"
+        style="box-shadow: 0 4px 4px 0 #00000005; margin-right: 0"
         :class="[pageScrolled ? ['fixed w-100'] : '']"
       >
         <div class="flex justify-content-between align-items-center d-search-filters-panel">
@@ -84,7 +74,6 @@
 <script lang="ts">
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
-import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -102,17 +91,16 @@ import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import OverlayPanel from "primevue/overlaypanel";
 import QualityAssuranceButtons from "@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue";
-import SearchbarAndBackButton from "@/components/general/SearchbarAndBackButton.vue";
+import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
   components: {
-    SearchbarAndBackButton,
+    CompanyInfoSheet,
     TheContent,
     TheHeader,
     MarginWrapper,
     Dropdown,
-    CompanyInformationBanner,
     TheFooter,
     PrimeButton,
     OverlayPanel,

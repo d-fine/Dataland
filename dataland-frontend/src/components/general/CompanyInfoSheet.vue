@@ -31,7 +31,7 @@ import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/C
 import { type CompanyIdAndName, type CompanyInformation } from "@clients/backend";
 import { computed, inject, onMounted, onUnmounted, ref } from "vue";
 
-const useMobileView = inject<boolean>("useMobileView");
+const useMobileView = inject<{ value: boolean }>("useMobileView");
 
 const sheet = ref<HTMLDivElement>();
 const attachedSheet = ref<HTMLDivElement>();
@@ -71,10 +71,10 @@ const attachedSheetHeight = ref<number>();
  * Sets the value of sheetRect and mobilHeaderHeight
  */
 function onScroll(): void {
-  sheetRect.value = sheet.value!.getBoundingClientRect(); // TODO Emanuel: this throws lots of console errors for me
+  sheetRect.value = sheet.value!.getBoundingClientRect();
+  // TODO Emanuel: this throws lots of console errors for me
+  // TODO Florian: i don't get these
   attachedSheetHeight.value = attachedSheet.value!.getBoundingClientRect().height;
-  console.log("rect", sheetRect.value);
-  console.log("height", attachedSheetHeight.value);
 }
 onMounted(() => {
   window.addEventListener("scroll", onScroll);
@@ -83,11 +83,8 @@ onUnmounted(() => {
   window.removeEventListener("scroll", onScroll);
 });
 const isCollapsed = computed<boolean>(() => {
-  console.log("enter");
-  if (useMobileView && sheetRect.value != undefined && attachedSheetHeight.value != undefined) {
-    console.log("if");
+  if (useMobileView?.value && sheetRect.value != undefined && attachedSheetHeight.value != undefined) {
     if (sheetRect.value.bottom <= attachedSheetHeight.value) {
-      console.log("true");
       return true;
     }
   }
