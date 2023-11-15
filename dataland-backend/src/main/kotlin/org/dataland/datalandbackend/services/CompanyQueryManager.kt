@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
-import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
@@ -130,15 +129,5 @@ class CompanyQueryManager(
      */
     fun isCompanyPublic(companyId: String): Boolean {
         return getCompanyById(companyId).isTeaserCompany
-    }
-
-    /**
-     * Counts the active data sets of a company and a specific data type
-     * @param companyId the ID of the company
-     * @param dataType the data type for which the datasets should be counted
-     * @returns the number of active data sets of the specified company and data type
-     */
-    fun countActiveDatasets(companyId: String, dataType: DataType): Long {
-        return 0
     }
 }
