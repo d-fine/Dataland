@@ -233,7 +233,7 @@ export default defineComponent({
      */
     handleScroll() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      this.frameworkDataSearchBar?.$refs.autocomplete.hide(); // TODO must be added to new component
+      this.frameworkDataSearchBar?.$refs.autocomplete.hide();
       const windowScrollY = window.scrollY;
       if (this.scrollEmittedByToolbar) {
         this.scrollEmittedByToolbar = false;

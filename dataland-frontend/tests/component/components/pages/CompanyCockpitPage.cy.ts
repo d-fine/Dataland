@@ -6,6 +6,7 @@ import { AggregatedDataRequestDataTypeEnum } from "@clients/communitymanager";
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 import type * as Cypress from "cypress";
 import { setMobileDeviceViewport } from "@sharedUtils/TestSetupUtils";
+import { computed } from "vue";
 
 describe("Component test for the company cockpit", () => {
   let companyInformationForTest: CompanyInformation;
@@ -69,7 +70,7 @@ describe("Component test for the company cockpit", () => {
       }),
       global: {
         provide: {
-          useMobileView: { value: isMobile },
+          useMobileView: computed((): boolean => isMobile),
         },
       },
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
