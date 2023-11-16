@@ -44,7 +44,7 @@ class IsinDeltaBuilderTest {
 
         deltaMap.put("1000", "1111,1112,1113")
         deltaMap.put("3000", "3333")
-        deltaMap.put("4000", "")
+        deltaMap.put("4000", " ")
         deltaMap.put("5000", "5555")
 //        create file oldFile
         oldFile = File("oldFile.csv")
@@ -68,7 +68,7 @@ class IsinDeltaBuilderTest {
     fun `test if delta of two files with LEI-ISIN mapping looks as expected`() {
         val tmpFile = File("tmp")
         val isinDeltaBuilder = IsinDeltaBuilder(tmpFile)
-        assert(isinDeltaBuilder.createDeltaOfMappingFile(oldFile, newFile).equals(deltaMap))
+        assert(isinDeltaBuilder.createDeltaOfMappingFile(newFile, oldFile).equals(deltaMap))
         tmpFile.delete()
     }
 

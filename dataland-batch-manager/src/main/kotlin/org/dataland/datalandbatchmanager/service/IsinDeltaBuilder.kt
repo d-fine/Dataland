@@ -51,7 +51,6 @@ class IsinDeltaBuilder(
                 deltaMap[lei] = newIsins
             }
         }
-
         return deltaMap
     }
 
