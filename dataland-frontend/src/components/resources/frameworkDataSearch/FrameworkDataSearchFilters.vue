@@ -57,7 +57,6 @@
 
 <script lang="ts">
 import { defineComponent, inject, ref } from "vue";
-import type Keycloak from "keycloak-js";
 import { type ApiClientProvider } from "@/services/ApiClients";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
@@ -79,7 +78,6 @@ export default defineComponent({
       sectorFilter: ref(),
       countryFilter: ref(),
       frameworkFilter: ref(),
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
       apiClientProvider: inject<ApiClientProvider>("apiClientProvider"),
     };
   },
@@ -186,7 +184,7 @@ export default defineComponent({
       this.availableCountries = [...(availableSearchFilters.data.countryCodes ?? [])].map((countryCode) => {
         return {
           countryCode: countryCode,
-          displayName: getCountryNameFromCountryCode(countryCode),
+          displayName: getCountryNameFromCountryCode(countryCode) as string,
           disabled: false,
         };
       });

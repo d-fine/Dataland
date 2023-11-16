@@ -93,6 +93,6 @@ export function tryToRefreshSession(keycloak: Keycloak): void {
   if (isRefreshTokenExpiryTimestampInSharedStoreReached()) {
     loginAndRedirectToSearchPage(keycloak);
   } else {
-    updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
+    void updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
   }
 }
