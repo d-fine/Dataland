@@ -72,14 +72,14 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.fiscalYearDeviation,
         explanation: euTaxonomyKpiInfoMappings.fiscalYearDeviation,
         shouldDisplay: (): boolean => true,
-        valueGetter: plainStringValueGetterFactory("fiscalYearDeviation", sampleField),
+        valueGetter: plainStringValueGetterFactory("fiscalYearDeviation"),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.fiscalYearEnd,
         explanation: euTaxonomyKpiInfoMappings.fiscalYearEnd,
         shouldDisplay: (): boolean => true,
-        valueGetter: plainStringValueGetterFactory("fiscalYearEnd", sampleField),
+        valueGetter: plainStringValueGetterFactory("fiscalYearEnd"),
       },
       {
         type: "cell",
