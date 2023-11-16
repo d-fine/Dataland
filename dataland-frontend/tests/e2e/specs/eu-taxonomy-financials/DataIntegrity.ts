@@ -39,8 +39,7 @@ describeIf(
       "Create a company and a Eu Taxonomy Financials dataset via api, then re-upload it with the upload form in Edit mode and " +
         "assure that the re-uploaded dataset equals the pre-uploaded one",
       () => {
-        const uniqueCompanyMarker = Date.now().toString();
-        const testCompanyName = "Company-Created-In-Eu-Taxonomy-Financials-Blanket-Test-" + uniqueCompanyMarker;
+        const testCompanyName = "Company-Created-In-Eu-Taxonomy-Financials-Blanket-Test-Company";
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
             return uploadFrameworkData(
@@ -73,9 +72,11 @@ describeIf(
                   const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
                   return new EuTaxonomyDataForFinancialsControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedEuTaxonomyDataForFinancials(dataMetaInformationOfReuploadedDataset.dataId)
-                    .then((axiosGetResponse) => {
-                      const frontendSubmittedEuTaxonomyFinancialsDataset = axiosGetResponse.data
-                        .data as unknown as Record<string, object>;
+                    .then((axiosResponse) => {
+                      const frontendSubmittedEuTaxonomyFinancialsDataset = axiosResponse.data.data as unknown as Record<
+                        string,
+                        object
+                      >;
                       const originallyUploadedEuTaxonomyFinancialsDataset =
                         euTaxonomyFinancialsFixtureForTest.t as unknown as Record<string, object>;
                       compareObjectKeysAndValuesDeep(
