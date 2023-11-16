@@ -88,7 +88,8 @@ const sortedReports = computed(() => {
       return mldtDatasets.value.map((it) => (it.dataset as EuTaxonomyDataForFinancials).referencedReports);
     }
     default: {
-      return null;
+      return null; //Since other frameworks don't have referenced reports and therefore banners, reports don't need
+      // to be added and the banner will never receive "null" as an input
     }
   }
 });
