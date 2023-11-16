@@ -379,6 +379,9 @@ class CompanyDataControllerTest {
         val aggregatedFrameworkDataSummary = apiAccessor.companyDataControllerApi.getAggregatedFrameworkDataSummary(
             companyId = companyId,
         )
+        println("OUTPUT START")
+        println(aggregatedFrameworkDataSummary)
+        println("OUTPUT END")
         assertEquals(
             "{eutaxonomy-financials=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
                 "eutaxonomy-non-financials=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=2), " +
