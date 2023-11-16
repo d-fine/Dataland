@@ -1,28 +1,26 @@
 <template>
-  <div :class="`p-fluid ${classes}`">
-    <span class="p-input-icon-left p-input-icon-right p-input-icon-align">
-      <i class="pi pi-search d-framework-searchbar-input-icon" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-      <AutoComplete
-        inputId="company_search_bar_standard"
-        ref="autocomplete"
-        v-model="searchBarInput"
-        :suggestions="autocompleteArray"
-        :minLength="3"
-        optionLabel="companyName"
-        :autoOptionFocus="false"
-        placeholder="Search company by name or identifier"
-        inputClass="h-3rem d-framework-searchbar-input"
-        panelClass="d-framework-searchbar-panel"
-        style="z-index: 10"
-        @complete="searchCompanyName($event)"
-        @item-select="$emit('selectCompany', $event.value)"
-      >
-        <template #option="slotProps">
-          <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
-          <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
-        </template>
-      </AutoComplete>
-    </span>
+  <div :class="wrapperClass">
+    <i :class="iconClass" aria-hidden="true" />
+    <AutoComplete
+      inputId="company_search_bar_standard"
+      ref="autocomplete"
+      v-model="searchBarInput"
+      :suggestions="autocompleteArray"
+      :minLength="3"
+      optionLabel="companyName"
+      :autoOptionFocus="false"
+      placeholder="Search company by name or identifier"
+      :inputClass="inputClass"
+      panelClass="d-framework-searchbar-panel"
+      style="z-index: 10"
+      @complete="searchCompanyName($event)"
+      @item-select="$emit('selectCompany', $event.value)"
+    >
+      <template #option="slotProps">
+        <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
+        <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
+      </template>
+    </AutoComplete>
   </div>
 </template>
 
@@ -58,9 +56,17 @@ export default defineComponent({
     };
   },
   props: {
-    classes: {
+    wrapperClass: {
       type: String,
-      default: "",
+      default: "p-fluid p-input-icon-left p-input-icon-right p-input-icon-align",
+    },
+    inputClass: {
+      type: String,
+      default: "h-3rem d-framework-searchbar-input",
+    },
+    iconClass: {
+      type: String,
+      default: "pi pi-search d-framework-searchbar-input-icon search-icon",
     },
   },
 
@@ -101,5 +107,9 @@ export default defineComponent({
 <style scoped>
 .p-input-icon-align {
   text-align: left;
+}
+.search-icon {
+  z-index: 20;
+  color: #958d7c;
 }
 </style>

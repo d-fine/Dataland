@@ -2,7 +2,7 @@
   <div ref="sheet" :class="`sheet ${isCollapsed ? 'visuals-hidden' : ''}`" data-test="sheet">
     <template v-if="!useMobileView">
       <BackButton />
-      <CompaniesOnlySearchBar @select-company="$router.push(`/companies/${$event.companyId}`)" classes="w-8 mt-2" />
+      <CompaniesOnlySearchBar @select-company="$router.push(`/companies/${$event.companyId}`)" class="w-8 mt-2" />
     </template>
     <template v-else>
       <div class="mobile-header">
@@ -12,7 +12,11 @@
         </div>
       </div>
     </template>
-    <CompanyInformationBanner :companyId="companyId" @fetchedCompanyInformation="onFetchedCompanyInformation($event)" />
+    <CompanyInformationBanner
+      :companyId="companyId"
+      @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
+      class="w-12"
+    />
   </div>
   <div ref="attachedSheet" :class="`sheet--attached ${isCollapsed ? '' : 'visuals-hidden'}`" data-test="sheet-attached">
     <div class="mobile-header">
@@ -96,6 +100,9 @@ const isCollapsed = computed<boolean>(() => {
   background-color: var(--surface-0);
   box-shadow: 0 4px 4px 0 #00000005;
   padding: 0.5rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 
   &--attached {
     width: 100%;
