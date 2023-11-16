@@ -416,6 +416,7 @@ describe("Component tests for the Eu Taxonomy Financials", () => {
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
+          companyID: companyAssociatedEuTaxoFinancialsData.companyId,
           templateDataset: companyAssociatedEuTaxoFinancialsData?.data,
           selectedFinancialServiceOptions: [
             { label: "Credit Institution", value: "creditInstitutionKpis" },

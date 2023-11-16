@@ -50,14 +50,14 @@
                   />
                 </div>
 
-                <FormKit type="hidden" :modelValue="reportingPeriodYear" name="reportingPeriod" />
+                <FormKit type="hidden" :modelValue="reportingPeriodYear.toString()" name="reportingPeriod" />
               </div>
               <FormKit type="group" name="data" label="data" validation-label="data" validation="required">
                 <UploadReports
                   name="UploadReports"
                   ref="UploadReports"
                   :isEuTaxonomy="true"
-                  :referencedReportsForPrefill="templateDataset?.referencedReports"
+                  :referencedReportsForPrefill="templateDataset?.referencedReports ?? undefined"
                   @reportsUpdated="handleChangeOfReferenceableReportNamesAndReferences"
                 />
 
@@ -369,6 +369,7 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
+      companyID: "" as string,
       formId: "createEuTaxonomyForFinancialsForm",
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       fiscalYearEndAsDate: null as Date | null,
@@ -457,13 +458,13 @@ export default defineComponent({
       );
     },
   },
-
+  /*
   props: {
     companyID: {
       type: String,
       required: true,
     },
-  },
+  }, */
 
   created() {
     const dataId = this.route.query.templateDataId;
