@@ -2,16 +2,16 @@
   <div :class="wrapperClass">
     <i :class="iconClass" aria-hidden="true" />
     <AutoComplete
-      inputId="company_search_bar_standard"
+      input-id="company_search_bar_standard"
       ref="autocomplete"
       v-model="searchBarInput"
       :suggestions="autocompleteArray"
-      :minLength="3"
-      optionLabel="companyName"
-      :autoOptionFocus="false"
+      :min-length="3"
+      option-label="companyName"
+      :auto-option-focus="false"
       placeholder="Search company by name or identifier"
-      :inputClass="inputClass"
-      panelClass="d-framework-searchbar-panel"
+      :input-class="inputClass"
+      panel-class="d-framework-searchbar-panel"
       style="z-index: 10"
       @complete="searchCompanyName($event)"
       @item-select="$emit('selectCompany', $event.value)"
