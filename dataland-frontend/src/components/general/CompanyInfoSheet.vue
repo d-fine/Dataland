@@ -42,7 +42,7 @@ const { companyId } = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: "fetchedCompanyInformation", companyInformation: CompanyInformation): void;
+  fetchedCompanyInformation: [companyInformation: CompanyInformation];
 }>();
 
 /**
