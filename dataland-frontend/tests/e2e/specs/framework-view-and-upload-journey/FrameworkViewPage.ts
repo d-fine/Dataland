@@ -80,58 +80,34 @@ describeIf(
       frameworkQueryParam: string,
       searchStringQueryParam: string,
     ): void {
-      cy.intercept({ url: "/api/companies*" }).as("searchCompanies");
+      cy.intercept({ url: "/api/companies*", times: 2 }).as("searchCompanies");
       cy.intercept({ url: "/api/companies/meta-information" }).as("fetchFilters");
       cy.visit(`/companies?input=${searchStringQueryParam}&framework=${frameworkQueryParam}`);
       cy.wait("@searchCompanies");
       cy.wait("@fetchFilters");
-      cy.wait(5000); // TODO debugging
       verifySearchResultTableExists();
       const companySelector = "span:contains(VIEW)";
-      cy.get(companySelector).first().click({ force: true });
+      cy.get(companySelector).first().click();
     }
 
     /**
      * Types a company name into the searchbar and clicks on the first autocomplete suggestion.
      * @param companyName to type into the search bar
-     * @param searchBarSelector for the correct search bar from the DOM
-     * @param interceptUrl the url to intercept
+     * @param expectedCompanyId of the company that is expected to be the first autocomplete suggestion
+     * @param isOnViewPage determines if cypress is expected to be on the view page
      */
     function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(
       companyName: string,
-      searchBarSelector: string,
-      interceptUrl: string,
+      expectedCompanyId: string,
+      isOnViewPage: boolean,
     ): void {
-      cy.intercept({ url: interceptUrl, times: 1 }).as("autocompleteSuggestions");
+      const searchBarSelector = isOnViewPage ? "input#company_search_bar_standard" : "input#search_bar_top";
+      cy.intercept({ url: `/api/companies${isOnViewPage ? "/names" : ""}?*`, times: 1 }).as("autocompleteSuggestions");
       cy.get(searchBarSelector).click();
       cy.get(searchBarSelector).type(companyName, { force: true });
       cy.wait("@autocompleteSuggestions", { timeout: Cypress.env("long_timeout_in_ms") as number });
       const companySelector = ".p-autocomplete-item";
       cy.get(companySelector).first().click({ force: true });
-    }
-
-    /**
-     * Types a company name into the framework searchbar and clicks on the first autocomplete suggestion.
-     * @param companyName to type into the search bar
-     */
-    function typeCompanyNameIntoFrameworkSearchBarAndSelectFirstSuggestion(companyName: string): void {
-      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(
-        companyName,
-        "input#search_bar_top",
-        "/api/companies?searchString=**true",
-      );
-    }
-
-    /**
-     * Types a company name into the company searchbar and clicks on the first autocomplete suggestion.
-     * @param companyName to type into the search bar
-     */
-    function typeCompanyNameIntoCompanySearchBarAndSelectFirstSuggestion(companyName: string): void {
-      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(
-        companyName,
-        "input#company_search_bar_standard",
-        "/api/companies/names*",
-      );
     }
 
     /**
@@ -449,7 +425,7 @@ describeIf(
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       cy.visit(`/companies?framework=${DataTypeEnum.Lksg}`);
       verifySearchResultTableExists();
-      typeCompanyNameIntoFrameworkSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha);
+      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, companyIdOfAlpha, false);
 
       validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
       validateFrameworkSummaryPanel(DataTypeEnum.Lksg, 2, true);
@@ -469,7 +445,7 @@ describeIf(
       selectFrameworkInDropdown(DataTypeEnum.Sfdr);
 
       validateChosenFramework(DataTypeEnum.Sfdr);
-      typeCompanyNameIntoCompanySearchBarAndSelectFirstSuggestion(nameOfCompanyBeta);
+      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
 
       validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
     });
@@ -596,7 +572,7 @@ describeIf(
       getElementAndAssertExistence("noCompanyWithThisIdErrorIndicator", "not.exist");
       getElementAndAssertExistence("noDataCouldBeLoadedErrorIndicator", "not.exist");
 
-      typeCompanyNameIntoCompanySearchBarAndSelectFirstSuggestion(nameOfCompanyBeta);
+      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
 
       validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
       validateFrameworkSummaryPanel(DataTypeEnum.Sme, 1, false);
