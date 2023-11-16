@@ -3,7 +3,9 @@
     <TheHeader />
     <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
       <TheContent>
-        <BackButton id="backButton" label="BACK" />
+        <div class="pl-2">
+          <BackButton id="backButton" label="BACK" class />
+        </div>
         <Card class="col-12 text-left page-wrapper-card">
           <template #title>New Dataset - Company</template>
           <template #content>
@@ -19,7 +21,10 @@
                     <div class="mb-3">
                       <span>Type at least 3 characters to search for companies on Dataland:</span>
                     </div>
-                    <CompaniesOnlySearchBar @select-company="pushToChooseFrameworkForDataUploadPageForItem" />
+                    <CompaniesOnlySearchBar
+                      @select-company="pushToChooseFrameworkForDataUploadPageForItem"
+                      class="w-12"
+                    />
                     <div class="mt-6">
                       <span>Can't find the company? </span>
                       <a @click="autoScrollToCreateACompanyForm" class="cursor-pointer text-primary font-semibold"
