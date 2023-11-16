@@ -1,9 +1,9 @@
 package org.dataland.batchmanager.service
 
+import okhttp3.internal.wait
 import org.dataland.datalandbatchmanager.service.IsinDeltaBuilder
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.File
@@ -78,9 +78,9 @@ class IsinDeltaBuilderTest {
         val isinDeltaBuilder = IsinDeltaBuilder(oldFile)
         isinDeltaBuilder.replaceOldMappingFile(newFile)
         assert(!File("newFile.csv").exists())
-        assert(File("oldFile.csv").exists())
+        assert(File("isinMapping.csv").exists())
 
-        val movedLines: List<String> = File(oldFile.toString()).useLines { lines -> lines.take(5).toList() }
+        val movedLines: List<String> = File(File("isinMapping.csv").toString()).useLines { lines -> lines.take(5).toList() }
         assert(movedLines.hashCode().equals(newLines.hashCode()))
     }
 }

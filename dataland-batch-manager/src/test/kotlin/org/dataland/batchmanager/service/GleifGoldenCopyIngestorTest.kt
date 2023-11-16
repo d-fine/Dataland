@@ -93,7 +93,7 @@ class GleifGoldenCopyIngestorTest {
         val mockStaticFile = mockStatic(File::class.java)
         companyIngestor = GleifGoldenCopyIngestor(
             mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
-            false, null, oldFile
+            false, null, oldFile,
         )
         companyIngestor.processFullGoldenCopyFileIfEnabled()
         mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(0))
@@ -113,7 +113,7 @@ class GleifGoldenCopyIngestorTest {
             .thenReturn(MappingIterator.emptyIterator())
         companyIngestor = GleifGoldenCopyIngestor(
             mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
-            false, flagFile.absolutePath, oldFile
+            false, flagFile.absolutePath, oldFile,
         )
         val mockStaticFile = mockStatic(File::class.java)
         `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
