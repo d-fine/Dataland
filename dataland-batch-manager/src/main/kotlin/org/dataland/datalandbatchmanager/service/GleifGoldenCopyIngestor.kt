@@ -23,6 +23,7 @@ import kotlin.time.toDuration
  * @param gleifApiAccessor downloads the golden copy files from GLEIF
  * @param gleifParser reads in the csv file from GLEIF and creates GleifCompanyInformation objects
  */
+@Suppress("LongParameterList")
 @Component
 class GleifGoldenCopyIngestor(
     @Autowired private val gleifApiAccessor: GleifApiAccessor,
@@ -34,7 +35,8 @@ class GleifGoldenCopyIngestor(
     private val allCompaniesForceIngest: Boolean,
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
     private val allCompaniesIngestFlagFilePath: String?,
-    @Value("\${dataland.dataland-batch-manager.mapping-file}") private val savedMappingFile: File,
+    @Value("\${dataland.dataland-batch-manager.mapping-file}")
+    private val savedMappingFile: File,
 ) {
     companion object {
         const val MS_PER_S = 1000L
