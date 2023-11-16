@@ -98,7 +98,7 @@ const isCollapsed = computed<boolean>(() => {
  * Executes a router push to upload overview page of the given company
  * @param selectedCompany the company selected through the search bar
  */
-async function onSelectCompany(selectedCompany: CompanyIdAndName): void {
+async function onSelectCompany(selectedCompany: CompanyIdAndName): Promise<void> {
   await router.push(`/companies/${selectedCompany.companyId}`);
 }
 </script>
