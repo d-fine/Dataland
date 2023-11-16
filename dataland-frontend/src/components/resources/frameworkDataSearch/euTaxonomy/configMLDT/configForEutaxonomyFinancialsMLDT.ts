@@ -1,8 +1,4 @@
-import {
-  type AvailableMLDTDisplayObjectTypes,
-  MLDTDisplayComponentName,
-  type MLDTDisplayObject,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
@@ -19,6 +15,7 @@ import { type ExtendedDataPoint } from "@/utils/DataPoint";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { numberValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 
 const sampleField: Field = {
   showIf: () => true,
@@ -64,26 +61,10 @@ export const configForEuTaxonomyFinancialsMLDT = [
         valueGetter: multiSelectValueGetterFactory("financialServicesTypes", {
           ...sampleField,
           label: euTaxonomyKpiNameMappings.financialServicesTypes,
-          options: [
-            {
-              value: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution,
-              label: humanizeStringOrNumber(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution),
-            },
-            {
-              value: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance,
-              label: humanizeStringOrNumber(
-                EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance,
-              ),
-            },
-            {
-              value: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement,
-              label: humanizeStringOrNumber(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement),
-            },
-            {
-              value: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm,
-              label: humanizeStringOrNumber(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm),
-            },
-          ],
+          options: Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum).map((financialServiceType) => ({
+            value: financialServiceType,
+            label: humanizeStringOrNumber(financialServiceType),
+          })),
         }),
       },
       {
@@ -91,24 +72,14 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.fiscalYearDeviation,
         explanation: euTaxonomyKpiInfoMappings.fiscalYearDeviation,
         shouldDisplay: (): boolean => true,
-        valueGetter: (
-          dataset: EuTaxonomyDataForFinancials,
-        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
-          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-          displayValue: dataset.fiscalYearDeviation,
-        }),
+        valueGetter: plainStringValueGetterFactory("fiscalYearDeviation", sampleField),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.fiscalYearEnd,
         explanation: euTaxonomyKpiInfoMappings.fiscalYearEnd,
         shouldDisplay: (): boolean => true,
-        valueGetter: (
-          dataset: EuTaxonomyDataForFinancials,
-        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
-          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-          displayValue: dataset.fiscalYearEnd,
-        }),
+        valueGetter: plainStringValueGetterFactory("fiscalYearEnd", sampleField),
       },
       {
         type: "cell",
@@ -136,12 +107,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.numberOfEmployees,
         explanation: euTaxonomyKpiInfoMappings.numberOfEmployees,
         shouldDisplay: (): boolean => true,
-        valueGetter: (
-          dataset: EuTaxonomyDataForFinancials,
-        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
-          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-          displayValue: dataset.numberOfEmployees?.toString(),
-        }),
+        valueGetter: numberValueGetterFactory("numberOfEmployees", sampleField),
       },
     ],
   },
