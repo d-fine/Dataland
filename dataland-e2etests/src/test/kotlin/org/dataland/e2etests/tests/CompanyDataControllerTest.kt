@@ -2,12 +2,7 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.IdentifierType
-import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalandbackend.openApiClient.model.*
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -15,7 +10,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.lang.Thread.sleep
-import java.util.UUID
+import java.util.*
 
 class CompanyDataControllerTest {
 
@@ -316,7 +311,7 @@ class CompanyDataControllerTest {
         val testString = "unique-test-string-${UUID.randomUUID()}"
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         uploadCompaniesInReverseToExpectedOrder(testString)
-        sleep(10000)
+        sleep(2000)
         val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
             searchString = testString,
         ).map { it.companyName }
@@ -375,21 +370,23 @@ class CompanyDataControllerTest {
         val companyId = uploadModifiedBaseCompany("AggregatedInformation", null)
         uploadDummyDataset(companyId = companyId, reportingPeriod = "2022", bypassQa = true)
         uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
-        sleep(10000)
-        val aggregatedFrameworkDataSummary = apiAccessor.companyDataControllerApi.getAggregatedFrameworkDataSummary(
+        sleep(100)
+        val expectedMap = mapOf( DataTypeEnum.eutaxonomyMinusFinancials.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0),
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=2),
+            DataTypeEnum.lksg.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0),
+            DataTypeEnum.p2p.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0),
+            DataTypeEnum.sfdr.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0),
+            DataTypeEnum.sme.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0))
+        val aggregatedFrameworkDataSummary =apiAccessor.companyDataControllerApi.getAggregatedFrameworkDataSummary(
             companyId = companyId,
         )
         println("OUTPUT START")
+        println(expectedMap)
         println(aggregatedFrameworkDataSummary)
         println("OUTPUT END")
         assertEquals(
-            "{eutaxonomy-financials=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
-                "eutaxonomy-non-financials=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=2), " +
-                "lksg=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
-                "p2p=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
-                "sfdr=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0), " +
-                "sme=AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods=0)}",
-            aggregatedFrameworkDataSummary.toString(),
+            expectedMap,
+            aggregatedFrameworkDataSummary,
         )
     }
 
