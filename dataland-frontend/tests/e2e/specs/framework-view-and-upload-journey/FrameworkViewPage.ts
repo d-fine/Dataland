@@ -98,12 +98,31 @@ describeIf(
      * @param expectedCompanyId of the company that is expected to be the first autocomplete suggestion
      * @param searchBarSelector for the correct search bar from the DOM
      */
-    function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(
+    function typeCompanyNameIntoFrameworkSearchBarAndSelectFirstSuggestion(
       companyName: string,
       expectedCompanyId: string,
       searchBarSelector = "input#search_bar_top",
     ): void {
       cy.intercept({ url: "/api/companies?searchString=**true", times: 1 }).as("autocompleteSuggestions");
+      cy.get(searchBarSelector).click();
+      cy.get(searchBarSelector).type(companyName, { force: true });
+      cy.wait("@autocompleteSuggestions", { timeout: Cypress.env("long_timeout_in_ms") as number });
+      const companySelector = ".p-autocomplete-item";
+      cy.get(companySelector).first().click({ force: true });
+    }
+
+    /**
+     * Types a company name into the searchbar and clicks on the first autocomplete suggestion.
+     * @param companyName to type into the search bar
+     * @param expectedCompanyId of the company that is expected to be the first autocomplete suggestion
+     * @param searchBarSelector for the correct search bar from the DOM
+     */
+    function typeCompanyNameIntoCompanySearchBarAndSelectFirstSuggestion(
+      companyName: string,
+      expectedCompanyId: string,
+      searchBarSelector = "input#search_bar_top",
+    ): void {
+      cy.intercept({ url: "/api/companies/names*", times: 1 }).as("autocompleteSuggestions");
       cy.get(searchBarSelector).click();
       cy.get(searchBarSelector).type(companyName, { force: true });
       cy.wait("@autocompleteSuggestions", { timeout: Cypress.env("long_timeout_in_ms") as number });
@@ -426,7 +445,7 @@ describeIf(
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       cy.visit(`/companies?framework=${DataTypeEnum.Lksg}`);
       verifySearchResultTableExists();
-      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, companyIdOfAlpha);
+      typeCompanyNameIntoFrameworkSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, companyIdOfAlpha);
 
       validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
       validateFrameworkSummaryPanel(DataTypeEnum.Lksg, 2, true);
@@ -446,7 +465,7 @@ describeIf(
       selectFrameworkInDropdown(DataTypeEnum.Sfdr);
 
       validateChosenFramework(DataTypeEnum.Sfdr);
-      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(
+      typeCompanyNameIntoCompanySearchBarAndSelectFirstSuggestion(
         nameOfCompanyBeta,
         companyIdOfBeta,
         searchBarSelectorForViewPage,
@@ -577,7 +596,7 @@ describeIf(
       getElementAndAssertExistence("noCompanyWithThisIdErrorIndicator", "not.exist");
       getElementAndAssertExistence("noDataCouldBeLoadedErrorIndicator", "not.exist");
 
-      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(
+      typeCompanyNameIntoCompanySearchBarAndSelectFirstSuggestion(
         nameOfCompanyBeta,
         companyIdOfBeta,
         searchBarSelectorForViewPage,

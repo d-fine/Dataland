@@ -1,7 +1,7 @@
 <template>
   <TheHeader v-if="!useMobileView" />
   <TheContent class="paper-section flex">
-    <CompanyInfoSheet :company-id="companyId" @select-company="pushToCompanyCockpit" />
+    <CompanyInfoSheet :company-id="companyId" />
     <div class="card-wrapper">
       <div class="card-grid">
         <FrameworkSummaryPanel
@@ -25,7 +25,7 @@ import { defineComponent, inject } from "vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheFooter from "@/components/generics/TheFooter.vue";
-import { type AggregatedFrameworkDataSummary, type CompanyIdAndName, DataTypeEnum } from "@clients/backend";
+import { type AggregatedFrameworkDataSummary, DataTypeEnum } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
@@ -87,14 +87,6 @@ export default defineComponent({
       this.aggregatedFrameworkDataSummary = (
         await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
       ).data;
-    },
-
-    /**
-     * Executes a router push to upload overview page of the given company
-     * @param selectedCompany the company selected through the search bar
-     */
-    async pushToCompanyCockpit(selectedCompany: CompanyIdAndName) {
-      await this.$router.push(`/companies/${selectedCompany.companyId}`);
     },
   },
 });
