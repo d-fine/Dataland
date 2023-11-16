@@ -141,8 +141,12 @@ class CompanyUploader(
                 val company = companyDataControllerApi.getCompaniesBySearchString(lei)
                 if (company.isNotEmpty()) {
                     val companyId = company.first().companyId
-                    // make sure existing identifiers are not overwritten
-                    val companyPatch = CompanyInformationPatch(identifiers = mapOf("Isin" to isinList))
+
+                    val existingIdentifiers = companyDataControllerApi.getCompanyById(companyId).companyInformation.identifiers
+                    val updatedIdentifiers = existingIdentifiers.toMutableMap()
+                    updatedIdentifiers["isin"] = isinList
+
+                    val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
                     companyDataControllerApi.patchCompanyById(
                         companyId,
                         companyPatch,
