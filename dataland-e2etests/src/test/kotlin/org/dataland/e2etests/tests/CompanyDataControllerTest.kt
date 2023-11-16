@@ -392,10 +392,6 @@ class CompanyDataControllerTest {
         val aggregatedFrameworkDataSummary = apiAccessor.companyDataControllerApi.getAggregatedFrameworkDataSummary(
             companyId = companyId,
         )
-        println("OUTPUT START")
-        println(expectedMap)
-        println(aggregatedFrameworkDataSummary)
-        println("OUTPUT END")
         assertEquals(
             expectedMap,
             aggregatedFrameworkDataSummary,
