@@ -14,10 +14,11 @@ import {
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
-import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelectModal.vue";
 import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
 import { type ExtendedDataPoint } from "@/utils/DataPoint";
 import { type Field } from "@/utils/GenericFrameworkTypes";
+import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 
 const sampleField: Field = {
   showIf: () => true,
@@ -60,37 +61,29 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.financialServicesTypes,
         explanation: euTaxonomyKpiInfoMappings.financialServicesTypes,
         shouldDisplay: (): boolean => true,
-        valueGetter: (): MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent> => ({
-          displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
-          displayValue: {
-            label: "Financial Service Types",
-            modalComponent: MultiSelectModal,
-            modalOptions: {
-              props: {
-                header: "Financial Service Types",
-                modal: true,
-                dismissableMask: true,
-              },
-              data: [
-                {
-                  value: "CreditInstitution",
-                  label: "CreditInstitution",
-                },
-                {
-                  value: "InsuranceOrReinsurance",
-                  label: "InsuranceOrReinsurance",
-                },
-                {
-                  value: "AssetManagement",
-                  label: "AssetManagement",
-                },
-                {
-                  value: "InvestmentFirm",
-                  label: "InvestmentFirm",
-                },
-              ],
+        valueGetter: multiSelectValueGetterFactory("financialServicesTypes", {
+          ...sampleField,
+          label: euTaxonomyKpiNameMappings.financialServicesTypes,
+          options: [
+            {
+              value: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution,
+              label: humanizeStringOrNumber(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution),
             },
-          },
+            {
+              value: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance,
+              label: humanizeStringOrNumber(
+                EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance,
+              ),
+            },
+            {
+              value: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement,
+              label: humanizeStringOrNumber(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement),
+            },
+            {
+              value: EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm,
+              label: humanizeStringOrNumber(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm),
+            },
+          ],
         }),
       },
       {
