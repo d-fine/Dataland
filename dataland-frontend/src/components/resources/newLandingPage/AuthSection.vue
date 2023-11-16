@@ -1,34 +1,33 @@
 <template>
-  <div v-if="isLandingPage">
+  <template v-if="isLandingPage">
     <div class="header__authsection">
       <a aria-label="Login to preview account" class="header__authsection-login" @click="login"> Login </a>
       <ButtonComponent
         label="Sign Up"
-        buttonType="primary button-component-landing"
         ariaLabel="Sign up to preview account"
         name="signup_dataland_button"
         @click="register"
       />
     </div>
-  </div>
-  <div v-else>
+  </template>
+  <template v-else>
     <div class="header__authsection">
       <ButtonComponent
         label="Log in"
-        buttonType="primary button-component-login"
+        buttonType="login-button"
         ariaLabel="Login to preview account"
         name="login_dataland_button"
         @click="login"
       />
       <ButtonComponent
         label="Sign Up"
-        buttonType="primary button-component-registration"
+        buttonType="registration-button"
         ariaLabel="Sign up to preview account"
         name="signup_dataland_button"
         @click="register"
       />
     </div>
-  </div>
+  </template>
 </template>
 
 <script setup lang="ts">
@@ -128,6 +127,39 @@ const register = (): void => {
         }
       }
     }
+  }
+}
+</style>
+
+<style lang="scss">
+.login-button {
+  padding: 10px 38px;
+  border-radius: 0;
+  color: var(--primary-orange);
+  background-color: var(--basic-dark);
+  border: 2px solid var(--primary-orange);
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:hover {
+    border: 2px solid var(--default-neutral-white);
+    background-color: var(--basic-dark);
+    color: var(--default-neutral-white);
+  }
+}
+
+.registration-button {
+  padding: 10px 38px;
+  border-radius: 0;
+  background-color: var(--primary-orange);
+  color: var(--default-neutral-white);
+  border: 2px solid var(--primary-orange);
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--basic-dark);
+    background-color: var(--default-neutral-white);
   }
 }
 </style>
