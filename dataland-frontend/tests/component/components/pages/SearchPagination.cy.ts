@@ -1,16 +1,15 @@
 import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
-import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { prepareSimpleDataSearchStoredCompanyArray } from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
+import {minimalKeycloakMock} from "@ct/testUtils/Keycloak";
+import {prepareSimpleDataSearchStoredCompanyArray} from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
 
 
-function intercept() {
+function intercept(arr: undefined | [] = undefined) {
     const mockDataSearchStoredCompanyArray = prepareSimpleDataSearchStoredCompanyArray(200);
-    cy.intercept("**/api/companies?**", mockDataSearchStoredCompanyArray);
+    cy.intercept("**/api/companies?**", arr || mockDataSearchStoredCompanyArray);
     cy.intercept("**/api/companies/meta-information", mockDataSearchStoredCompanyArray[0].dataRegisteredByDataland[0]);
     const keycloakMock = minimalKeycloakMock({
         roles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_REVIEWER"],
     });
-
     cy.mountWithPlugins<typeof SearchCompaniesForFrameworkData>(SearchCompaniesForFrameworkData, {
         keycloak: keycloakMock,
     }).then((mounted) => {
@@ -23,9 +22,8 @@ function intercept() {
 
 describe("As a user, I expect there to be multiple result pages if there are many results to be displayed", () => {
 
-
     it("Do a search with 0 matches, then assure that the paginator is gone and the page text says no results", () => {
-        intercept();
+        intercept([]);
         const inputValueThatWillResultInZeroMatches = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345678987654321";
         cy.get("input[id=search_bar_top]")
             .should("exist")
@@ -42,13 +40,14 @@ describe("As a user, I expect there to be multiple result pages if there are man
         const inputValue = "a";
         cy.get("input[id=search_bar_top]")
             .should("not.be.disabled")
-            .click({ force: true })
+            .click({force: true})
             .type(inputValue)
             .type("{enter}")
             .should("have.value", inputValue);
         cy.get("table.p-datatable-table").should("exist");
         cy.get(".p-paginator-current").should("contain.text", "Showing 1 to 100 of").contains("entries");
-        // cy.contains("span", "1-100 of");
+        cy.scrollTo("top")
+        cy.contains("span", "1-100 of");
     });
 
     it("Search for all companies, go to page 2 of the search results, then run a another query and verify that paginator and the page text are reset", () => {
@@ -59,12 +58,13 @@ describe("As a user, I expect there to be multiple result pages if there are man
         const inputValue = "a";
         cy.get("input[id=search_bar_top]")
             .should("not.be.disabled")
-            .click({ force: true })
+            .click({force: true})
             .type(inputValue)
             .type("{enter}")
             .should("have.value", inputValue);
         cy.get(".p-paginator-current").should("contain.text", "Showing 1 to 100 of").contains("entries");
-        // cy.contains("span", "1-100 of");
+        cy.scrollTo("top")
+        cy.contains("span", "1-100 of");
     });
 });
 
