@@ -64,10 +64,6 @@ describeIf(
             cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
             cy.get("h1").should("contain", testData.companyInformation.companyName);
 
-            uploadDocuments.removeAllReportsFromAlreadyUploadedReports();
-
-            uploadDocuments.validateNoReportsAreAlreadyUploadedOrSelectedForUpload();
-
             uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
             uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
             uploadDocuments.validateReportToUploadHasContainerWithInfoForm(TEST_PDF_FILE_NAME);

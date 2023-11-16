@@ -369,7 +369,6 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
-      companyID: "" as string,
       formId: "createEuTaxonomyForFinancialsForm",
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       fiscalYearEndAsDate: null as Date | null,
@@ -458,14 +457,11 @@ export default defineComponent({
       );
     },
   },
-  /*
   props: {
     companyID: {
       type: String,
-      required: true,
     },
-  }, */
-
+  },
   created() {
     const dataId = this.route.query.templateDataId;
     if (typeof dataId === "string" && dataId !== "") {
