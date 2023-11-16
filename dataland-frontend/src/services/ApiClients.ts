@@ -13,7 +13,6 @@ import * as backendApis from "@clients/backend/api";
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
-  inviteController: backendApis.InviteControllerApiInterface;
   companyDataController: backendApis.CompanyDataControllerApiInterface;
   metaDataController: backendApis.MetaDataControllerApiInterface;
   euTaxonomyDataForFinancialsController: backendApis.EuTaxonomyDataForFinancialsControllerApiInterface;
@@ -64,8 +63,9 @@ export class ApiClientProvider {
       actuator: backendClientFactory(backendApis.ActuatorApi),
       companyDataController: backendClientFactory(backendApis.CompanyDataControllerApi),
       euTaxonomyDataForFinancialsController: backendClientFactory(backendApis.EuTaxonomyDataForFinancialsControllerApi),
-      euTaxonomyDataForNonFinancialsController: backendClientFactory(backendApis.EuTaxonomyDataForNonFinancialsControllerApi),
-      inviteController: backendClientFactory(backendApis.InviteControllerApi),
+      euTaxonomyDataForNonFinancialsController: backendClientFactory(
+        backendApis.EuTaxonomyDataForNonFinancialsControllerApi,
+      ),
       lksgDataController: backendClientFactory(backendApis.LksgDataControllerApi),
       metaDataController: backendClientFactory(backendApis.MetaDataControllerApi),
       p2pDataController: backendClientFactory(backendApis.P2pDataControllerApi),
@@ -133,7 +133,8 @@ export class ApiClientProvider {
     return getUnifiedFrameworkDataControllerFromConfiguration(framework, configuration);
   }
 
-  async getMetaDataControllerApi(): Promise<backendApis.MetaDataControllerApiInterface> { //TODO this is a backend controller, why needed?
+  async getMetaDataControllerApi(): Promise<backendApis.MetaDataControllerApiInterface> {
+    //TODO this is a backend controller, why needed?
     return this.getConstructedApi(backendApis.MetaDataControllerApi);
   }
 
@@ -147,10 +148,6 @@ export class ApiClientProvider {
 
   async getDocumentControllerApi(): Promise<DocumentControllerApi> {
     return this.getConstructedDocumentManager(DocumentControllerApi); // TODO why only one without the basePath and ApiKeyController?
-  }
-
-  async getInviteControllerApi(): Promise<backendApis.InviteControllerApi> { //TODO this is a backend controller, why needed?
-    return this.getConstructedApi(backendApis.InviteControllerApi);
   }
 
   async getQaControllerApi(): Promise<QaControllerApi> {
