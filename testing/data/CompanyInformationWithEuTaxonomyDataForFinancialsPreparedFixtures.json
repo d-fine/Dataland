@@ -734,7 +734,12 @@
 			"assurance": {
 				"value": "None",
 				"provider": null,
-				"dataSource": null
+				"dataSource": {
+					"page": null,
+					"tagName": null,
+					"fileName": "",
+					"fileReference": ""
+				}
 			},
 			"scopeOfEntities": "Yes",
 			"nfrdMandatory": "No",
@@ -771,7 +776,12 @@
 					},
 					"investmentNonNfrdInPercent": {
 						"value": 57.0201,
-						"dataSource": null,
+						"dataSource": {
+							"page": null,
+							"tagName": null,
+							"fileName": "",
+							"fileReference": ""
+						},
 						"quality": "Incomplete",
 						"comment": null
 					},
@@ -812,7 +822,12 @@
 					},
 					"derivativesInPercent": {
 						"value": 17.974,
-						"dataSource": null,
+						"dataSource": {
+							"page": null,
+							"tagName": null,
+							"fileName": "",
+							"fileReference": ""
+						},
 						"quality": "Estimated",
 						"comment": null
 					},
@@ -910,7 +925,12 @@
 				"CreditInstitution": {
 					"banksAndIssuersInPercent": {
 						"value": 89.7418,
-						"dataSource": null,
+						"dataSource": {
+							"page": null,
+							"tagName": null,
+							"fileName": "",
+							"fileReference": ""
+						},
 						"quality": "Incomplete",
 						"comment": null
 					},
@@ -927,7 +947,12 @@
 					},
 					"investmentNonNfrdInPercent": {
 						"value": 89.7493,
-						"dataSource": null,
+						"dataSource": {
+							"page": null,
+							"tagName": null,
+							"fileName": "",
+							"fileReference": ""
+						},
 						"quality": "Estimated",
 						"comment": null
 					},
@@ -1004,7 +1029,12 @@
 			"insuranceKpis": {
 				"taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
 					"value": 12.9732,
-					"dataSource": null,
+					"dataSource": {
+						"page": null,
+						"fileName": "",
+						"fileReference": "",
+						"tagName": null
+					},
 					"quality": "Incomplete",
 					"comment": null
 				}
