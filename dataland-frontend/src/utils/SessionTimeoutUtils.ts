@@ -46,7 +46,7 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
   keycloak: Keycloak,
   onSurpassingExpiredSessionTimestampCallback: () => void,
 ): number {
-  const functionIdOfSetInterval = setInterval(() => {
+  const functionIdOfSetInterval = window.setInterval(() => {
     const currentTimestampInMs = new Date().getTime();
     const sessionWarningTimestamp = useSharedSessionStateStore().sessionWarningTimestampInMs as number;
     if (!sessionWarningTimestamp) {
@@ -56,8 +56,6 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
       onSurpassingExpiredSessionTimestampCallback();
     }
   }, TIME_DISTANCE_SET_INTERVAL_SESSION_CHECK_IN_MS);
-  // TODO for now we ignore the next line. NodeJS thinks that this is not a number. However in a browser-env it is!
-  // @ts-ignore
   return functionIdOfSetInterval;
 }
 
