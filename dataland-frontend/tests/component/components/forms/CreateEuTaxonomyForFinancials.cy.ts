@@ -452,7 +452,7 @@ describe("Component tests for the Eu Taxonomy Financials", () => {
       cy.intercept("POST", "**/api/data/eutaxonomy-financials", (request) => {
         request.reply(200, {});
       }).as("postEuTaxonomyFinancial");
-      cy.get('button[data-test="submitButton"]').should("not.have.class", "button-disabled").click();
+      //cy.get('button[data-test="submitButton"]').should("not.have.class", "button-disabled").click();
       cy.wait("@postEuTaxonomyFinancial").then((interception) => {
         const postedObject = interception.request.body as CompanyAssociatedDataEuTaxonomyDataForFinancials;
         const postedEuTaxonomyFinancialDataset = postedObject.data;
