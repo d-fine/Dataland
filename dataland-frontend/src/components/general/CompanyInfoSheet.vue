@@ -2,7 +2,7 @@
   <div ref="sheet" :class="`sheet ${isCollapsed ? 'visuals-hidden' : ''}`" data-test="sheet">
     <template v-if="!useMobileView">
       <BackButton />
-      <CompaniesOnlySearchBar @select-company="$emit('selectCompany', $event)" classes="w-8 mt-2" />
+      <CompaniesOnlySearchBar @select-company="onSelectCompany($event)" classes="w-8 mt-2" />
     </template>
     <template v-else>
       <div class="mobile-header">
@@ -30,6 +30,9 @@ import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue"
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
 import { type CompanyIdAndName, type CompanyInformation } from "@clients/backend";
 import { computed, inject, onMounted, onUnmounted, ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const injectedMobileView = inject<{ value: boolean }>("useMobileView");
 const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.value);
@@ -42,7 +45,6 @@ const { companyId } = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: "selectCompany", selectedCompany: CompanyIdAndName): void;
   (e: "fetchedCompanyInformation", companyInformation: CompanyInformation): void;
 }>();
 
@@ -91,6 +93,14 @@ const isCollapsed = computed<boolean>(() => {
   }
   return false;
 });
+
+/**
+ * Executes a router push to upload overview page of the given company
+ * @param selectedCompany the company selected through the search bar
+ */
+async function onSelectCompany(selectedCompany: CompanyIdAndName): void {
+  await router.push(`/companies/${selectedCompany.companyId}`);
+}
 </script>
 
 <style scoped lang="scss">
