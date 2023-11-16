@@ -14,12 +14,19 @@
         <template v-else>{{ part }}</template>
       </template>
     </h1>
+    <CompaniesOnlySearchBar
+      @select-company="$router.push(`/companies/${$event.companyId}`)"
+      wrapper-class="p-input-icon-left p-input-icon-right p-input-icon-align search"
+      input-class="h-3rem search__field"
+      icon-class="pi pi-search search__icon"
+    />
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
 import type { Section } from "@/types/ContentTypes";
+import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
 
 const { sections } = defineProps<{ sections?: Section[] }>();
 
@@ -111,6 +118,54 @@ const introSection = computed(() => {
         line-height: 32px;
       }
     }
+  }
+}
+</style>
+
+<style lang="scss">
+.search {
+  position: relative;
+  margin: 80px auto 0;
+  max-width: 701px;
+  height: 80px;
+  padding: 28px 24px;
+  border-radius: 16px;
+  border: 2px solid var(--grey-tones-100);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  & .p-inputwrapper {
+    width: 100%;
+  }
+
+  &__field {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding-left: 40px;
+    background: transparent;
+    &::placeholder {
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 24px; /* 150% */
+      letter-spacing: 0.25px;
+      color: var(--grey-tones-400);
+    }
+  }
+
+  &__icon {
+    font-size: 18px;
+    pointer-events: none; // Let click events pass through to the input
+  }
+}
+@media only screen and (max-width: 1440px) {
+  .search {
+    margin-top: 31px;
   }
 }
 </style>
