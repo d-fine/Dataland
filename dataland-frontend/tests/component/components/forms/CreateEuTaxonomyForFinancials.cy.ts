@@ -413,9 +413,9 @@ describe("Component tests for the Eu Taxonomy Financials", () => {
 
   it("Open upload page, fill out and validate the upload form", () => {
     cy.mountWithPlugins(CreateEuTaxonomyForFinancials, {
-      keycloak: minimalKeycloakMock({}),
       props: {
         companyID: companyAssociatedEuTaxoFinancialsData.companyId,
+        keycloak: minimalKeycloakMock({}),
       },
       data() {
         return {
