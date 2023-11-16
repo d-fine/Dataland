@@ -82,7 +82,7 @@ const sortedReportingPeriods = computed(() => {
 const sortedReports = computed(() => {
   switch (props.frameworkIdentifier) {
     case DataTypeEnum.EutaxonomyNonFinancials: {
-      return mldtDatasets.value.map((it) => (it as EuTaxonomyDataForNonFinancials).general?.referencedReports);
+      return mldtDatasets.value.map((it) => (it.dataset as EuTaxonomyDataForNonFinancials).general?.referencedReports);
     }
     case DataTypeEnum.EutaxonomyFinancials: {
       return mldtDatasets.value.map((it) => (it.dataset as EuTaxonomyDataForFinancials).referencedReports);
