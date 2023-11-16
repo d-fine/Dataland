@@ -3,9 +3,7 @@
     <TheHeader />
     <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
       <TheContent>
-        <div class="pl-2">
-          <BackButton id="backButton" label="BACK" class />
-        </div>
+        <BackButton id="backButton" label="BACK" class="pl-2" />
         <Card class="col-12 text-left page-wrapper-card">
           <template #title>New Dataset - Company</template>
           <template #content>

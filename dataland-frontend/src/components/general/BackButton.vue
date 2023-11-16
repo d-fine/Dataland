@@ -1,5 +1,5 @@
 <template>
-  <div class="back-button cursor-pointer flex align-items-center" @click="goBack">
+  <div class="back-button cursor-pointer flex flex-row align-items-center" @click="goBack">
     <span class="material-icons text-primary">arrow_back_ios</span>
     <span class="text-primary font-semibold d-letters" title="back_button" :data-test="dataTestMarker">{{
       label
@@ -36,10 +36,6 @@ export default defineComponent({
 <style scoped lang="scss">
 .back-button {
   width: fit-content;
-  padding-left: 10px;
-  margin-left: -10px;
-  padding-right: 10px;
-  margin-right: -10px;
   @media only screen and (min-width: $small) {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
