@@ -75,8 +75,6 @@ const attachedSheetHeight = ref<number>();
  */
 function onScroll(): void {
   sheetRect.value = sheet.value!.getBoundingClientRect();
-  // TODO Emanuel: this throws lots of console errors for me
-  // TODO Florian: i don't get these
   attachedSheetHeight.value = attachedSheet.value!.getBoundingClientRect().height;
 }
 onMounted(() => {
