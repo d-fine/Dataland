@@ -316,7 +316,7 @@ class CompanyDataControllerTest {
         val testString = "unique-test-string-${UUID.randomUUID()}"
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         uploadCompaniesInReverseToExpectedOrder(testString)
-        sleep(2000)
+        sleep(10000)
         val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
             searchString = testString,
         ).map { it.companyName }
@@ -375,7 +375,7 @@ class CompanyDataControllerTest {
         val companyId = uploadModifiedBaseCompany("AggregatedInformation", null)
         uploadDummyDataset(companyId = companyId, reportingPeriod = "2022", bypassQa = true)
         uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
-        sleep(2000)
+        sleep(10000)
         val aggregatedFrameworkDataSummary = apiAccessor.companyDataControllerApi.getAggregatedFrameworkDataSummary(
             companyId = companyId,
         )
