@@ -76,7 +76,7 @@ const mldtDatasets = computed(() => {
 });
 
 const sortedReportingPeriods = computed(() => {
-  return mldtDatasets.value.map((it) => it.headerLabel);
+  return mldtDatasets.value.map((mldtDataset) => mldtDataset.headerLabel);
 });
 
 const sortedReports = computed(() => {
