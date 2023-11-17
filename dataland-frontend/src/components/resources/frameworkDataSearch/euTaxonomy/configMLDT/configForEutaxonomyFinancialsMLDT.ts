@@ -1,8 +1,4 @@
-import {
-  type AvailableMLDTDisplayObjectTypes,
-  MLDTDisplayComponentName,
-  type MLDTDisplayObject,
-} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
@@ -14,10 +10,12 @@ import {
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
-import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelectModal.vue";
 import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
 import { type ExtendedDataPoint } from "@/utils/DataPoint";
 import { type Field } from "@/utils/GenericFrameworkTypes";
+import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
+import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { numberValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 
 const sampleField: Field = {
   showIf: () => true,
@@ -60,37 +58,13 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.financialServicesTypes,
         explanation: euTaxonomyKpiInfoMappings.financialServicesTypes,
         shouldDisplay: (): boolean => true,
-        valueGetter: (): MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent> => ({
-          displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
-          displayValue: {
-            label: "Financial Service Types",
-            modalComponent: MultiSelectModal,
-            modalOptions: {
-              props: {
-                header: "Financial Service Types",
-                modal: true,
-                dismissableMask: true,
-              },
-              data: [
-                {
-                  value: "CreditInstitution",
-                  label: "CreditInstitution",
-                },
-                {
-                  value: "InsuranceOrReinsurance",
-                  label: "InsuranceOrReinsurance",
-                },
-                {
-                  value: "AssetManagement",
-                  label: "AssetManagement",
-                },
-                {
-                  value: "InvestmentFirm",
-                  label: "InvestmentFirm",
-                },
-              ],
-            },
-          },
+        valueGetter: multiSelectValueGetterFactory("financialServicesTypes", {
+          ...sampleField,
+          label: euTaxonomyKpiNameMappings.financialServicesTypes,
+          options: Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum).map((financialServiceType) => ({
+            value: financialServiceType,
+            label: humanizeStringOrNumber(financialServiceType),
+          })),
         }),
       },
       {
@@ -98,24 +72,14 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.fiscalYearDeviation,
         explanation: euTaxonomyKpiInfoMappings.fiscalYearDeviation,
         shouldDisplay: (): boolean => true,
-        valueGetter: (
-          dataset: EuTaxonomyDataForFinancials,
-        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
-          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-          displayValue: dataset.fiscalYearDeviation,
-        }),
+        valueGetter: plainStringValueGetterFactory("fiscalYearDeviation"),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.fiscalYearEnd,
         explanation: euTaxonomyKpiInfoMappings.fiscalYearEnd,
         shouldDisplay: (): boolean => true,
-        valueGetter: (
-          dataset: EuTaxonomyDataForFinancials,
-        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
-          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-          displayValue: dataset.fiscalYearEnd,
-        }),
+        valueGetter: plainStringValueGetterFactory("fiscalYearEnd"),
       },
       {
         type: "cell",
@@ -143,12 +107,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.numberOfEmployees,
         explanation: euTaxonomyKpiInfoMappings.numberOfEmployees,
         shouldDisplay: (): boolean => true,
-        valueGetter: (
-          dataset: EuTaxonomyDataForFinancials,
-        ): MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent> => ({
-          displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-          displayValue: dataset.numberOfEmployees?.toString(),
-        }),
+        valueGetter: numberValueGetterFactory("numberOfEmployees", sampleField),
       },
     ],
   },

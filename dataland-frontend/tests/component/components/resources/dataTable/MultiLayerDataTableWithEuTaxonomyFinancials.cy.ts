@@ -1,14 +1,17 @@
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { DataTypeEnum, type EligibilityKpis, type EuTaxonomyDataForFinancials } from "@clients/backend";
+
 import {
-  DataTypeEnum,
-  type EligibilityKpis,
-  type EuTaxonomyDataForFinancials,
-  type ExtendedDataPointBigDecimal,
-} from "@clients/backend";
+  getCellValueContainer,
+  getSectionHead,
+} from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { mountMLDTFrameworkPanelFromFakeFixture } from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
 import { configForEuTaxonomyFinancialsMLDT } from "@/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/configForEutaxonomyFinancialsMLDT";
+import { formatPercentageNumberAsString } from "@/utils/Formatter";
+import { assertDefined } from "@/utils/TypeScriptUtils";
+import { euTaxonomyKpiNameMappings } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
 
 describe("Component test for EuTaxonomyFinancialPanel", () => {
   let preparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
@@ -22,44 +25,36 @@ describe("Component test for EuTaxonomyFinancialPanel", () => {
   });
 
   /**
-   * Formats a datapoint as a percentage value rounded to a precision of 0.01%.
-   * Returns "No data has been reported" if the datapoint contains no value
-   * @param value the value of the datapoint to format as a percentage
-   * @returns the formatted string
-   */
-  function formatPercentageNumberAsString(value?: ExtendedDataPointBigDecimal | null): string {
-    if (value === undefined || value === null || value.value === undefined || value.value === null) {
-      return "";
-    }
-    return (Math.round(value.value * 100) / 100).toString();
-  }
-
-  /**
    * Verifies that the frontend correctly displays eligibilityKPIs for a specific company type
    * @param financialCompanyType the company type to check
    * @param eligibilityKpis the dataset used as the source of truth
    */
   function checkCommonFields(financialCompanyType: string, eligibilityKpis: EligibilityKpis): void {
-    cy.get(`tr[data-test="${financialCompanyType}"]`).click().next('tr[data-section-label="Eligibility KPIs"').click();
-    cy.get('td[data-test="taxonomyEligibleActivityInPercent"]').should(
+    getSectionHead(financialCompanyType, true).click();
+    getSectionHead("Eligibility KPIs", true).click();
+    getCellValueContainer(euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent).should(
       "contain",
-      formatPercentageNumberAsString(eligibilityKpis.taxonomyEligibleActivityInPercent),
+      formatPercentageNumberAsString(assertDefined(eligibilityKpis.taxonomyEligibleActivityInPercent?.value)),
     );
-    cy.get('td[data-test="taxonomyNonEligibleActivityInPercent"]').should(
+
+    getCellValueContainer(euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent).should(
       "contain",
-      formatPercentageNumberAsString(eligibilityKpis.taxonomyNonEligibleActivityInPercent),
+      formatPercentageNumberAsString(assertDefined(eligibilityKpis.taxonomyNonEligibleActivityInPercent?.value)),
     );
-    cy.get('td[data-test="derivativesInPercent"]').should(
+
+    getCellValueContainer(euTaxonomyKpiNameMappings.derivativesInPercent).should(
       "contain",
-      formatPercentageNumberAsString(eligibilityKpis.derivativesInPercent),
+      formatPercentageNumberAsString(assertDefined(eligibilityKpis.derivativesInPercent?.value)),
     );
-    cy.get('td[data-test="banksAndIssuersInPercent"]').should(
+
+    getCellValueContainer(euTaxonomyKpiNameMappings.banksAndIssuersInPercent).should(
       "contain",
-      formatPercentageNumberAsString(eligibilityKpis.banksAndIssuersInPercent),
+      formatPercentageNumberAsString(assertDefined(eligibilityKpis.banksAndIssuersInPercent?.value)),
     );
-    cy.get('td[data-test="investmentNonNfrdInPercent"]').should(
+
+    getCellValueContainer(euTaxonomyKpiNameMappings.investmentNonNfrdInPercent).should(
       "contain",
-      formatPercentageNumberAsString(eligibilityKpis.investmentNonNfrdInPercent),
+      formatPercentageNumberAsString(assertDefined(eligibilityKpis.investmentNonNfrdInPercent?.value)),
     );
   }
 
@@ -68,24 +63,32 @@ describe("Component test for EuTaxonomyFinancialPanel", () => {
    * @param testData he dataset used as the source of truth
    */
   function checkCreditInstitutionValues(testData: EuTaxonomyDataForFinancials): void {
-    checkCommonFields("CreditInstitution", testData.eligibilityKpis!.CreditInstitution);
+    checkCommonFields("Credit Institution", testData.eligibilityKpis!.CreditInstitution);
 
-    cy.get('td[data-test="tradingPortfolioCreditInstitution"]').should(
+    getCellValueContainer(euTaxonomyKpiNameMappings.tradingPortfolioInPercent).should(
       "contain",
-      formatPercentageNumberAsString(testData.creditInstitutionKpis!.tradingPortfolioInPercent),
+      formatPercentageNumberAsString(assertDefined(testData.creditInstitutionKpis!.tradingPortfolioInPercent?.value)),
     );
-    cy.get('td[data-test="interbankLoansCreditInstitution"]').should(
+
+    getCellValueContainer(euTaxonomyKpiNameMappings.interbankLoansInPercent).should(
       "contain",
-      formatPercentageNumberAsString(testData.creditInstitutionKpis!.interbankLoansInPercent),
+      formatPercentageNumberAsString(assertDefined(testData.creditInstitutionKpis!.interbankLoansInPercent?.value)),
     );
-    cy.get('td[data-test="tradingPortfolioAndInterbankLoansInPercent"]').should(
+
+    getCellValueContainer(euTaxonomyKpiNameMappings.tradingPortfolioAndInterbankLoansInPercent).should(
       "contain",
-      formatPercentageNumberAsString(testData.creditInstitutionKpis!.tradingPortfolioAndInterbankLoansInPercent),
+      formatPercentageNumberAsString(
+        assertDefined(testData.creditInstitutionKpis!.tradingPortfolioAndInterbankLoansInPercent?.value),
+      ),
     );
-    cy.get('td[data-test="greenAssetRatioCreditInstitution"]').should(
+
+    getCellValueContainer(euTaxonomyKpiNameMappings.greenAssetRatioInPercent).should(
       "contain",
-      formatPercentageNumberAsString(testData.creditInstitutionKpis!.greenAssetRatioInPercent),
+      formatPercentageNumberAsString(assertDefined(testData.creditInstitutionKpis!.greenAssetRatioInPercent?.value)),
     );
+
+    getSectionHead("Eligibility KPIs", true).click();
+    getSectionHead("Credit Institution", true).click();
   }
 
   /**
@@ -93,11 +96,15 @@ describe("Component test for EuTaxonomyFinancialPanel", () => {
    * @param testData the dataset used as the source of truth
    */
   function checkInsuranceValues(testData: EuTaxonomyDataForFinancials): void {
-    checkCommonFields("InsuranceOrReinsurance", testData.eligibilityKpis!.InsuranceOrReinsurance);
-    cy.get('td[data-test="taxonomyEligibleNonLifeInsuranceActivities"]').should(
+    checkCommonFields("Insurance or Reinsurance", testData.eligibilityKpis!.InsuranceOrReinsurance);
+    getCellValueContainer(euTaxonomyKpiNameMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent).should(
       "contain",
-      formatPercentageNumberAsString(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivitiesInPercent),
+      formatPercentageNumberAsString(
+        assertDefined(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivitiesInPercent?.value),
+      ),
     );
+    getSectionHead("Eligibility KPIs", true).click();
+    getSectionHead("Insurance or Reinsurance", true).click();
   }
 
   /**
@@ -105,10 +112,10 @@ describe("Component test for EuTaxonomyFinancialPanel", () => {
    * @param testData the dataset used as the source of truth
    */
   function checkInvestmentFirmValues(testData: EuTaxonomyDataForFinancials): void {
-    checkCommonFields("InvestmentFirm", testData.eligibilityKpis!.InvestmentFirm);
-    cy.get('td[data-test="greenAssetRatioInvestmentFirm"]').should(
+    checkCommonFields("Investment Firm", testData.eligibilityKpis!.InvestmentFirm);
+    getCellValueContainer(euTaxonomyKpiNameMappings.greenAssetRatioInPercent).should(
       "contain",
-      formatPercentageNumberAsString(testData.investmentFirmKpis!.greenAssetRatioInPercent),
+      formatPercentageNumberAsString(assertDefined(testData.investmentFirmKpis!.greenAssetRatioInPercent?.value)),
     );
   }
 

@@ -29,7 +29,7 @@ export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
   companyId: string,
   dataType: DataTypeEnum,
 ): Chainable<Interception> {
-  const getRequestAlias = "getData";
+  const getRequestAlias = "fetchDataForPrefill";
   cy.intercept({
     method: "GET",
     url: "**/api/data/**",
