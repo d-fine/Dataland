@@ -69,9 +69,9 @@ const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.framewo
 
 const mldtDatasets = computed(() => {
   const sortedDataAndMetaInformation = sortDatasetsByReportingPeriod(dataAndMetaInformationForDisplay.value);
-  return sortedDataAndMetaInformation.map((it) => ({
-    headerLabel: it.metaInfo.reportingPeriod,
-    dataset: it.data,
+  return sortedDataAndMetaInformation.map((singleDataSet) => ({
+    headerLabel: singleDataSet.metaInfo.reportingPeriod,
+    dataset: singleDataSet.data,
   }));
 });
 
