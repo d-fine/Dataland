@@ -78,7 +78,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         searchBarSelector = "input#search_bar_top",
       ): void {
         cy.intercept("/api/companies?searchString=**true").as("autocompleteSuggestions");
-        cy.get(searchBarSelector).click();
+        cy.get(searchBarSelector).click({ force: true });
         cy.get(searchBarSelector).type(searchString, { force: true });
         cy.wait("@autocompleteSuggestions", { timeout: Cypress.env("long_timeout_in_ms") as number });
         cy.intercept("**/api/companies/*").as("searchCompany");
@@ -158,7 +158,7 @@ describe("The shared header of the framework pages should act as expected", { sc
        * @param frameworkToSelect The framework/item that shall be selected
        */
       function selectFrameworkInDropdown(frameworkToSelect: string): void {
-        cy.get(frameworkDropdownSelector).click();
+        cy.get(frameworkDropdownSelector).click({ force: true });
         cy.get(`${dropdownItemsSelector}:contains(${humanizeStringOrNumber(frameworkToSelect)})`).click({
           force: true,
         });
@@ -403,10 +403,6 @@ describe("The shared header of the framework pages should act as expected", { sc
       it("Check that the redirect depends correctly on the applied filters and the framework select dropdown works as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
 
-        cy.setCookie(
-          "CookieConsent",
-          "{stamp:%27sg==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:12%2Cregion:%27%27}",
-        );
         cy.intercept("/api/companies?searchString=&dataTypes=*").as("firstLoadOfSearchPage");
         cy.visit(`/companies?framework=${DataTypeEnum.Sme}`);
         cy.wait("@firstLoadOfSearchPage", { timeout: Cypress.env("long_timeout_in_ms") as number });
@@ -470,10 +466,6 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       it("Check that using back-button and dropdowns on the view-page work as expected", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
-        cy.setCookie(
-          "CookieConsent",
-          "{stamp:%27sg==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:12%2Cregion:%27%27}",
-        );
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
         validateNoErrorMessagesAreShown();
         validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
@@ -501,10 +493,6 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       it("Check that invalid data ID, reporting period or company ID in URL don't break any user flow on the view-page", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
-        cy.setCookie(
-          "CookieConsent",
-          "{stamp:%27sg==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:12%2Cregion:%27%27}",
-        );
         cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
 
         validateNoErrorMessagesAreShown();
@@ -535,10 +523,6 @@ describe("The shared header of the framework pages should act as expected", { sc
 
       it("Check if the version change bar works as expected on several framework view pages", () => {
         cy.ensureLoggedIn(uploader_name, uploader_pw);
-        cy.setCookie(
-          "CookieConsent",
-          "{stamp:%27sg==%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cmethod:%27explicit%27%2Cver:1%2Cutc:12%2Cregion:%27%27}",
-        );
         cy.intercept("/api/metadata/**").as("getMetaDataForSpecificDataId");
         cy.visit(
           `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`,
@@ -547,7 +531,7 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.contains("2023-04-18").should("exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
         validateDataDatesOfDisplayedLksgDatasets(["2023-04-18"]);
-        validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
+        validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click({ force: true });
 
         cy.url().should(
           "eq",
@@ -556,10 +540,9 @@ describe("The shared header of the framework pages should act as expected", { sc
         cy.contains("2023-06-22").should("exist");
         validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
         validateDataDatesOfDisplayedLksgDatasets(["2023-06-22"]);
-        validateDisplayStatusContainerAndGetButton(
-          "You are only viewing a single available dataset",
-          "View All",
-        ).click();
+        validateDisplayStatusContainerAndGetButton("You are only viewing a single available dataset", "View All").click(
+          { force: true },
+        );
 
         cy.url().should("eq", `${getBaseUrl()}/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}`);
         cy.contains("2022-07-30").should("exist");
