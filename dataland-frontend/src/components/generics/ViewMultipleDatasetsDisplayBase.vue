@@ -30,7 +30,7 @@
               v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
               :frameworkIdentifier="DataTypeEnum.EutaxonomyFinancials"
               :companyId="companyId"
-              :display-configuration="configForEutaxonomyFinancialsMLDT"
+              :display-configuration="configForEuTaxonomyFinancialsMLDT"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               :inReviewMode="slotProps.inReviewMode"
             />
@@ -123,7 +123,7 @@ export default defineComponent({
     p2pDataModel() {
       return p2pDataModel;
     },
-    configForEutaxonomyFinancialsMLDT() {
+    configForEuTaxonomyFinancialsMLDT() {
       return configForEuTaxonomyFinancialsMLDT;
     },
   },
