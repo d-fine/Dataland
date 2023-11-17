@@ -9,7 +9,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.net.SocketException
 import java.net.URL
-import java.util.zip.ZipInputStream
+
 
 /**
  * The class to download the zipped GLEIF golden copy CSV files
@@ -43,33 +43,9 @@ class GleifApiAccessor(
      */
     fun getIsinMappingFile(targetFile: File) {
         val apiText = URL(gleifMappingBaseUrl).readText()
-        val downloadLink = apiText.split("\"downloadLink\":\"")[1].split("\"")[0]
-
-        val tempZipFile = File.createTempFile("gleif_mapping_update", ".zip")
-        downloadFile(URL(downloadLink), tempZipFile)
-
-        val tempCsvFile = File.createTempFile("gleif_mapping_update", ".csv")
-        convertZipToCsv(tempZipFile, tempCsvFile)
-
-        FileUtils.copyFile(tempCsvFile, targetFile)
-
-        tempZipFile.delete()
-        tempCsvFile.delete()
-    }
-
-    /**
-     * Extracts CSV file from Zip file
-     * @param zipFile the zip file
-     * @param csvFile the csv file
-     */
-    private fun convertZipToCsv(zipFile: File, csvFile: File) {
-        val zipInputStream = ZipInputStream(zipFile.inputStream())
-        val zipEntry = zipInputStream.nextEntry
-        require(zipEntry?.name?.endsWith(".csv") ?: false) {
-            "The downloaded ZIP file does not contain the CSV file position"
-        }
-        FileUtils.copyInputStreamToFile(zipInputStream, csvFile)
-        // similar to getCsvStreamFromZip in gleifCsvParser but tricky to reuse
+        val downloadLink = URL(apiText.split("\"downloadLink\":\"")[1].split("\"")[0])
+        logger.info("Successfully acquired download link for mapping")
+        downloadFile(downloadLink, targetFile)
     }
 
     private fun downloadFileFromGleif(urlSuffx: String, targetFile: File, fileDescription: String) {
