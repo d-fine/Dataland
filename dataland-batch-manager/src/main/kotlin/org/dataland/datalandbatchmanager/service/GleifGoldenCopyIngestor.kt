@@ -68,6 +68,11 @@ class GleifGoldenCopyIngestor(
             logger.info("Retrieving all company data available via GLEIF.")
             val tempFile = File.createTempFile("gleif_golden_copy", ".csv")
             processDeltaFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
+            if (savedMappingFile.exists()) {
+                if (!savedMappingFile.delete()) {
+                    logger.error("Unable to delete mapping file $savedMappingFile")
+                }
+            }
             prepareMappingFile()
         } else {
             logger.info("Flag file not present & no force update variable set => Not performing any download")
@@ -106,7 +111,6 @@ class GleifGoldenCopyIngestor(
         logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
         val tempFile = File.createTempFile("gleif_mapping_update", ".csv")
         processMappingFile(tempFile, gleifApiAccessor::getIsinMappingFile)
-        // upload file via API, see also hint from Andreas
     }
 
     @Synchronized
