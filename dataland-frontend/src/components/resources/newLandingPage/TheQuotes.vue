@@ -12,6 +12,9 @@
       :scroll-screen-width-limit="1800"
       :slide-width="slideWidth"
     >
+      <div role="listitem" class="quotes__slide">
+        <div class="quotes__slide-videoContainer" />
+      </div>
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div class="quotes__slide-videoContainer">
           <iframe
