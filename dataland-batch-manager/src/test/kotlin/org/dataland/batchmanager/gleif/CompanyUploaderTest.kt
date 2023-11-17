@@ -5,6 +5,10 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
+import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
@@ -22,6 +26,7 @@ import java.net.SocketTimeoutException
 class CompanyUploaderTest {
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
     private lateinit var companyUploader: CompanyUploader
+    private lateinit var mockStoredCompany: StoredCompany
 
     private val dummyCompanyInformation1 = GleifCompanyInformation(
         companyName = "CompanyName1",
@@ -43,6 +48,45 @@ class CompanyUploaderTest {
     fun setup() {
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         companyUploader = CompanyUploader(mockCompanyDataControllerApi, jacksonObjectMapper())
+        mockStoredCompany = mock()
+    }
+
+    @Test
+    fun `check that the upload of delta-mappings calls correct function as intended`() {
+        val deltaMap = mutableMapOf<String, String>()
+        deltaMap.put("1000", "1111,1112,1113")
+        deltaMap.put("3000", "3333")
+        deltaMap.put("4000", " ")
+        deltaMap.put("5000", "5555")
+        val companyList = mutableListOf<CompanyIdAndName>(CompanyIdAndName("testName", "testId"))
+        val testIdentifier = mapOf<String, List<String>>("test" to listOf<String>("test"))
+        val testCompany2: StoredCompany = mock(StoredCompany::class.java)
+
+        `when`(mockCompanyDataControllerApi.getCompaniesBySearchString("1000")).thenReturn(companyList)
+        `when`(mockCompanyDataControllerApi.getCompanyById("testId")).thenReturn(testCompany2)
+
+        `when`(testCompany2.companyInformation).thenReturn(mock(CompanyInformation::class.java))
+        `when`(testCompany2.companyInformation.identifiers).thenReturn(testIdentifier)
+
+        companyUploader.updateIsinMapping(deltaMap)
+
+        val compIdentifiers = mapOf<String, List<String>>(
+            "test" to listOf<String>("test"),
+            "isin" to listOf<String>("1111", "1112", "1113"),
+        )
+        println("compIdentifiers " + compIdentifiers)
+        val compPatch = CompanyInformationPatch(
+            companyName = null, companyAlternativeNames = null, companyLegalForm = null,
+            headquarters = null, headquartersPostalCode = null, sector = null, compIdentifiers, countryCode = null,
+            website = null, teaserCompany = null, isTeaserCompany = null,
+        )
+
+        verify(mockCompanyDataControllerApi, times(1)).getCompaniesBySearchString("1000")
+        verify(mockCompanyDataControllerApi, times(1)).getCompaniesBySearchString("3000")
+        verify(mockCompanyDataControllerApi, times(1)).getCompaniesBySearchString("4000")
+        verify(mockCompanyDataControllerApi, times(1)).getCompaniesBySearchString("5000")
+        verify(mockCompanyDataControllerApi, times(1)).getCompanyById("testId")
+        verify(mockCompanyDataControllerApi, times(1)).patchCompanyById("testId", compPatch)
     }
 
     @Test

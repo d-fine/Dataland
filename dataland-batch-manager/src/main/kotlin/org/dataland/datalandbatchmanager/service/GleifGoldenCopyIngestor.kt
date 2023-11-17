@@ -106,7 +106,6 @@ class GleifGoldenCopyIngestor(
         logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
         val tempFile = File.createTempFile("gleif_mapping_update", ".csv")
         processMappingFile(tempFile, gleifApiAccessor::getIsinMappingFile)
-        // upload file via API, see also hint from Andreas
     }
 
     @Synchronized

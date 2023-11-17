@@ -132,9 +132,7 @@ class CompanyUploader(
      * Updates the ISINs of all companies.
      * @param leiIsinMap the delta-map with the format "LEI"->"ISIN1,ISIN2,..."
      */
-    fun updateIsinMapping(
-        leiIsinMap: Map<String, String>,
-    ) {
+    fun updateIsinMapping(leiIsinMap: Map<String, String>) {
         retryOnCommonApiErrors {
             for ((lei, isins) in leiIsinMap) {
                 val isinList = isins.split(",").map { it.trim() }
