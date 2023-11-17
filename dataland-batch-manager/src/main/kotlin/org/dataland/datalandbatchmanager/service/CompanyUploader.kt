@@ -142,7 +142,8 @@ class CompanyUploader(
                 if (company.isNotEmpty()) {
                     val companyId = company.first().companyId
 
-                    val existingIdentifiers = companyDataControllerApi.getCompanyById(companyId).companyInformation.identifiers
+                    val existingIdentifiers = companyDataControllerApi.getCompanyById(companyId)
+                        .companyInformation.identifiers
                     val updatedIdentifiers = existingIdentifiers.toMutableMap()
                     updatedIdentifiers["isin"] = isinList
 
