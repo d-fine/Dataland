@@ -82,10 +82,14 @@ const sortedReportingPeriods = computed(() => {
 const sortedReports = computed(() => {
   switch (props.frameworkIdentifier) {
     case DataTypeEnum.EutaxonomyNonFinancials: {
-      return mldtDatasets.value.map((it) => (it.dataset as EuTaxonomyDataForNonFinancials).general?.referencedReports);
+      return mldtDatasets.value.map(
+        (mldtDataset) => (mldtDataset.dataset as EuTaxonomyDataForNonFinancials).general?.referencedReports,
+      );
     }
     case DataTypeEnum.EutaxonomyFinancials: {
-      return mldtDatasets.value.map((it) => (it.dataset as EuTaxonomyDataForFinancials).referencedReports);
+      return mldtDatasets.value.map(
+        (mldtDataset) => (mldtDataset.dataset as EuTaxonomyDataForFinancials).referencedReports,
+      );
     }
     default: {
       return null; //Since other frameworks don't have referenced reports and therefore banners, reports don't need
