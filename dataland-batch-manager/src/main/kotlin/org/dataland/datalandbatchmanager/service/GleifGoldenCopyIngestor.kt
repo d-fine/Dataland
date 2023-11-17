@@ -119,11 +119,12 @@ class GleifGoldenCopyIngestor(
         val start = System.nanoTime()
 
         downloadFile(newMappingFile)
+        val newMappingFileCsv = gleifParser.getCsvFileFromZip(newMappingFile)
 
         val deltaMap: Map<String, String> = if (!savedMappingFile.exists() || savedMappingFile.length() == 0L) {
-            isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
+            isinDeltaBuilder.createDeltaOfMappingFile(newMappingFileCsv, null)
         } else {
-            isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedMappingFile)
+            isinDeltaBuilder.createDeltaOfMappingFile(newMappingFileCsv, savedMappingFile)
         }
 
         companyUploader.updateIsinMapping(deltaMap)
