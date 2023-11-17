@@ -10,9 +10,10 @@ import {
 /**
  * Method to prepare an array consisting of one simple dataset to be displayed in the data table of the "AVAILABLE
  * DATASETS" page
+ * @param no_iterations no of iterations, how many mock dataset to generate
  * @returns The dummy dataSearchStoredCompany instance as an array with one entry
  */
-export function prepareSimpleDataSearchStoredCompanyArray(no_iterations= 1): DataSearchStoredCompany[] {
+export function prepareSimpleDataSearchStoredCompanyArray(no_iterations = 1): DataSearchStoredCompany[] {
   const mockCompanyInformation: CompanyInformation = {
     companyName: "testCompany",
     headquarters: "testHeadquarters",
@@ -32,13 +33,13 @@ export function prepareSimpleDataSearchStoredCompanyArray(no_iterations= 1): Dat
     currentlyActive: true,
     qaStatus: QaStatus.Accepted,
   } as DataMetaInformation;
-  const oneMockCompany =     {
+  const oneMockCompany = {
     companyName: mockCompanyInformation.companyName,
     companyInformation: mockCompanyInformation,
     companyId: mockDataMetaInformation.companyId,
     permId: mockCompanyInformation.identifiers[IdentifierType.PermId][0],
     dataRegisteredByDataland: [mockDataMetaInformation],
-  }
+  };
   const result = [];
   for (let i = 0; i < no_iterations; i++) {
     result.push(oneMockCompany);
