@@ -1986,7 +1986,7 @@
         ]
       }
     },
-    "/companies/{companyId}/aggregated-framework-meta-info": {
+    "/companies/{companyId}/aggregated-framework-data-summary": {
       "get": {
         "tags": [
           "company-data-controller"

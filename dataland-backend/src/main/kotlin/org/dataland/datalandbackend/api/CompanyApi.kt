@@ -276,7 +276,7 @@ interface CompanyApi {
         ],
     )
     @GetMapping(
-        value = ["/{companyId}/aggregated-framework-meta-info"],
+        value = ["/{companyId}/aggregated-framework-data-summary"],
         produces = ["application/json"],
     )
     fun getAggregatedFrameworkDataSummary(

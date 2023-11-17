@@ -37,7 +37,7 @@ describe("Component test for the company cockpit", () => {
       body: companyInformationForTest,
       times: 1,
     }).as("fetchCompanyInfo");
-    cy.intercept("**/api/companies/*/aggregated-framework-meta-info", {
+    cy.intercept("**/api/companies/*/aggregated-framework-data-summary", {
       body: mockMapOfDataTypeToAggregatedFrameworkDataSummary,
       times: 1,
     }).as("fetchAggregatedFrameworkMetaInfo");
