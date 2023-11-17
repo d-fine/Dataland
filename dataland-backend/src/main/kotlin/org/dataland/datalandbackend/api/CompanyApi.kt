@@ -262,13 +262,13 @@ interface CompanyApi {
     fun getTeaserCompanies(): List<String>
 
     /**
-     * A method used to retrieve the aggregated meta information for all frameworks
+     * A method used to retrieve the aggregated data summary for all frameworks
      * @param companyId the identifier of the company to collect the information for
-     * @returns the collected aggregated meta information per framework
+     * @returns the collected aggregated data summary per framework
      */
     @Operation(
-        summary = "Retrieve aggregated meta information for all frameworks",
-        description = "For each framework retrieves the amount of availabe reporting periods",
+        summary = "Retrieve aggregated data summary for all frameworks",
+        description = "For each framework retrieves the amount of available reporting periods",
     )
     @ApiResponses(
         value = [
