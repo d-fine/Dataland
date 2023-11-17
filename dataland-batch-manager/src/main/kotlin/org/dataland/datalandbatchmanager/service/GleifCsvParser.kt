@@ -39,7 +39,7 @@ class GleifCsvParser {
      * @return CSV file inside Zip file
      */
     fun getCsvFileFromZip(zipFile: File): File {
-        val csvFile= File.createTempFile("gleif_mapping_update", ".csv")
+        val csvFile = File.createTempFile("gleif_mapping_update", ".csv")
         val zipInputStream = ZipInputStream(zipFile.inputStream())
         val zipEntry = zipInputStream.nextEntry
         require(zipEntry?.name?.endsWith(".csv") ?: false) {

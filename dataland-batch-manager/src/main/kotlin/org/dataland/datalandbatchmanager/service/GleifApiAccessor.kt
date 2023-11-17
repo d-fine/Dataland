@@ -10,7 +10,6 @@ import java.io.FileNotFoundException
 import java.net.SocketException
 import java.net.URL
 
-
 /**
  * The class to download the zipped GLEIF golden copy CSV files
  */
