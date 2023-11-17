@@ -21,48 +21,50 @@ describeIf(
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
   function () {
-    beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
-    });
-
-    let testData: FixtureData<EuTaxonomyDataForFinancials>;
+    let euTaxoFinancialsFixture: FixtureData<EuTaxonomyDataForFinancials>;
 
     before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
         const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
-        testData = getPreparedFixture("company-for-all-types", preparedFixtures);
+        euTaxoFinancialsFixture = getPreparedFixture("company-for-all-types", preparedFixtures);
       });
     });
 
     it("Check if the files upload works as expected", () => {
-      testData.companyInformation.companyName = "financials-upload-form-document-upload-test";
+      euTaxoFinancialsFixture.companyInformation.companyName =
+        "financials-upload-form-document-upload-test" + Date.now();
       let areBothDocumentsStillUploaded = true;
-      let companyID = "";
+      let storedCompanyId: string;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
         return uploadCompanyViaApi(
           token,
-          generateDummyCompanyInformation(testData.companyInformation.companyName),
+          generateDummyCompanyInformation(euTaxoFinancialsFixture.companyInformation.companyName),
         ).then((storedCompany) => {
-          companyID = storedCompany.companyId;
+          storedCompanyId = storedCompany.companyId;
           return uploadFrameworkData(
             DataTypeEnum.EutaxonomyFinancials,
             token,
-            companyID,
+            storedCompanyId,
             "2023",
-            testData.t,
+            euTaxoFinancialsFixture.t,
             true,
           ).then((dataMetaInformation) => {
-            cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
+            cy.ensureLoggedIn(admin_name, admin_pw);
+            cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}/${dataMetaInformation.dataId}`).as(
+              "fetchDataForPrefill",
+            );
             cy.visitAndCheckAppMount(
               "/companies/" +
-                companyID +
+                storedCompanyId +
                 "/frameworks/" +
                 DataTypeEnum.EutaxonomyFinancials +
                 "/upload?templateDataId=" +
                 dataMetaInformation.dataId,
             );
-            cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-            cy.get("h1").should("contain", testData.companyInformation.companyName);
+            cy.wait("@fetchDataForPrefill", {
+              timeout: Cypress.env("medium_timeout_in_ms") as number,
+            });
+            cy.get("h1").should("contain", euTaxoFinancialsFixture.companyInformation.companyName);
 
             uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
             uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
@@ -103,9 +105,9 @@ describeIf(
                 expect(interception.response?.statusCode).to.eq(200);
               },
             );
-
-            checkIfLinkedReportsAreDownloadable(companyID);
-            gotoEditForm(companyID, true);
+            cy.get('[data-test="datasets-table"]').should("be.visible");
+            checkIfLinkedReportsAreDownloadable(storedCompanyId);
+            gotoEditForm(storedCompanyId, true);
             uploadDocuments.selectMultipleFilesAtOnce([TEST_PDF_FILE_NAME, `${TEST_PDF_FILE_NAME}2`]);
             cy.get(".p-dialog.p-component").should("exist").get('[data-pc-section="closebutton"]').click();
             cy.get(".p-dialog.p-component").should("not.exist");
@@ -134,7 +136,8 @@ describeIf(
                 expect(interception.response?.statusCode).to.eq(200);
               },
             );
-            gotoEditForm(companyID, false);
+            cy.get('[data-test="datasets-table"]').should("be.visible");
+            gotoEditForm(storedCompanyId, false);
           });
         });
       });
