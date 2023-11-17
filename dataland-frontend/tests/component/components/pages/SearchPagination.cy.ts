@@ -2,10 +2,12 @@ import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesF
 import {minimalKeycloakMock} from "@ct/testUtils/Keycloak";
 import {prepareSimpleDataSearchStoredCompanyArray} from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
 
-
-function intercept(arr: undefined | [] = undefined) {
+/**
+ * Loads mock data
+ */
+function intercept(arr: undefined | [] = undefined): undefined {
     const mockDataSearchStoredCompanyArray = prepareSimpleDataSearchStoredCompanyArray(200);
-    cy.intercept("**/api/companies?**", arr || mockDataSearchStoredCompanyArray);
+    cy.intercept("**/api/companies?**", arr ?? mockDataSearchStoredCompanyArray);
     cy.intercept("**/api/companies/meta-information", mockDataSearchStoredCompanyArray[0].dataRegisteredByDataland[0]);
     const keycloakMock = minimalKeycloakMock({
         roles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_REVIEWER"],
@@ -67,8 +69,3 @@ describe("As a user, I expect there to be multiple result pages if there are man
         cy.contains("span", "1-100 of");
     });
 });
-
-/**
- *
- * @param keycloakMock abc
- */
