@@ -50,7 +50,9 @@ describeIf(
               euTaxonomyFinancialsFixtureForTest.t,
               true,
             ).then((dataMetaInformation) => {
-              cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
+              cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}/${dataMetaInformation.dataId}`).as(
+                "fetchDataForPrefill",
+              );
               cy.visitAndCheckAppMount(
                 "/companies/" +
                   storedCompany.companyId +
@@ -59,7 +61,7 @@ describeIf(
                   "/upload?templateDataId=" +
                   dataMetaInformation.dataId,
               );
-              cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+              cy.wait("@fetchDataForPrefill", { timeout: Cypress.env("medium_timeout_in_ms") as number });
               cy.get("h1").should("contain", testCompanyName);
               cy.intercept({
                 url: `**/api/data/${DataTypeEnum.EutaxonomyFinancials}`,
@@ -73,15 +75,15 @@ describeIf(
                   return new EuTaxonomyDataForFinancialsControllerApi(new Configuration({ accessToken: token }))
                     .getCompanyAssociatedEuTaxonomyDataForFinancials(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosResponse) => {
-                      const frontendSubmittedEuTaxonomyFinancialsDataset = axiosResponse.data.data as unknown as Record<
-                        string,
-                        object
-                      >;
-                      const originallyUploadedEuTaxonomyFinancialsDataset =
-                        euTaxonomyFinancialsFixtureForTest.t as unknown as Record<string, object>;
+                      const frontendSubmittedEuTaxonomyFinancialsDataset = axiosResponse.data
+                        .data as unknown as EuTaxonomyDataForFinancials;
+
+                      frontendSubmittedEuTaxonomyFinancialsDataset.financialServicesTypes?.sort();
+                      euTaxonomyFinancialsFixtureForTest.t.financialServicesTypes?.sort();
+
                       compareObjectKeysAndValuesDeep(
-                        originallyUploadedEuTaxonomyFinancialsDataset,
-                        frontendSubmittedEuTaxonomyFinancialsDataset,
+                        euTaxonomyFinancialsFixtureForTest.t as unknown as Record<string, object>,
+                        frontendSubmittedEuTaxonomyFinancialsDataset as Record<string, object>,
                       );
                     });
                 },
