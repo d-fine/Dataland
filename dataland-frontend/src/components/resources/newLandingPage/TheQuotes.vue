@@ -7,13 +7,13 @@
       left-arrow-classes="quotes__arrow quotes__arrow--left"
       right-arrow-classes="quotes__arrow quotes__arrow--right"
       :slide-count="cards.length"
-      :initial-center-slide="1"
+      :initial-center-slide="2"
       @update:currentSlide="updateCurrentSlide"
       :scroll-screen-width-limit="1800"
       :slide-width="slideWidth"
     >
       <div role="listitem" class="quotes__slide">
-        <div class="quotes__slide-videoContainer"></div>
+        <div class="quotes__slide-videoContainer" />
       </div>
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div :class="{ 'quotes__slide-video--zoom-out': currentSlide !== index - 1, 'quotes__slide-video': true }">
@@ -21,7 +21,7 @@
           <div
             class="quotes__slide-thumbnail-overlay cookieconsent-optin-marketing"
             :style="{ backgroundImage: `url(https://img.youtube.com/vi/${card.icon}/maxresdefault.jpg)` }"
-            v-show="currentSlide === index - 1 ? showThumbnail : true"
+            v-show="showThumbnail || currentSlide === index - 1"
             @click="toggleThumbnailAndPlayVideo(index - 1, card.icon)"
           >
             <div class="quotes__play-icon">
@@ -31,7 +31,7 @@
           <div
             class="quotes__slide-thumbnail-overlay cookieconsent-optout-marketing"
             :style="{ backgroundImage: `url(https://img.youtube.com/vi/${card.icon}/maxresdefault.jpg)` }"
-            v-show="currentSlide === index - 1 ? showThumbnail : true"
+            v-show="showThumbnail || currentSlide === index - 1"
           ></div>
         </div>
       </div>
@@ -53,7 +53,6 @@
       ariaLabel="Start your Dataland Journey"
       @click="register"
     />
-    <RegisterButton :buttonText="quotesSection.text[0]" />
   </section>
 </template>
 
@@ -101,7 +100,7 @@ const ytPlayers = ref<Map<string, { playVideo: () => void; pauseVideo: () => voi
 const { sections } = defineProps<{ sections?: Section[] }>();
 const quotesSection = computed(() => sections?.find((section) => section.title === "Quotes"));
 const cards = computed(() => quotesSection.value?.cards ?? []);
-const currentSlide = ref(0);
+const currentSlide = ref(1);
 const slideWidth = ref(640);
 const showThumbnail = ref(true);
 
@@ -130,7 +129,7 @@ const toggleThumbnailAndPlayVideo = (slideIndex: number, videoId?: string): void
 };
 
 const updateCurrentSlide = (newSlide: number): void => {
-  currentSlide.value = newSlide;
+  currentSlide.value = newSlide + 1;
   pauseAllVideos();
 };
 watch(
@@ -147,6 +146,7 @@ const updateSlideWidth = (): void => {
 
 onMounted(() => {
   window.addEventListener("resize", updateSlideWidth);
+  updateSlideWidth();
   const firstScriptTag = document.querySelector("script");
   if (firstScriptTag?.parentNode) {
     const tag = document.createElement("script");

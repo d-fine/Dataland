@@ -142,7 +142,7 @@ function validateStruggleSection(): void {
  */
 function validateQuotesSection(): void {
   cy.get("section.quotes").should("exist");
-  cy.get(".quotes__slide").should("have.length", 5);
+  cy.get(".quotes__slide").should("have.length", 7);
 }
 
 /**
