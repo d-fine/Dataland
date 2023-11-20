@@ -104,7 +104,9 @@ class IsinDeltaBuilder(
     fun replaceOldMappingFile(newMappingFile: File) {
         try {
             newMappingFile.copyTo(File(savedMappingFile.parent, "isinMapping.csv"), true)
-            newMappingFile.delete()
+            if (!newMappingFile.delete()) {
+                logger.error("failed to delete file $newMappingFile")
+            }
         } catch (e: FileSystemException) {
             logger.error("Error while replacing the old mapping file: ${e.message}")
         }
