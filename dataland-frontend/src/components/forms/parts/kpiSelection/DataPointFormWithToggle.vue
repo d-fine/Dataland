@@ -68,10 +68,10 @@
           name="value"
           validation-label=""
           v-model="currentAmountValue"
-          :placeholder="'Value'"
+          :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
           step="any"
           min="0"
-          :validation="'number'"
+          :validation="valueType === 'percent' ? 'number|between:0,100' : 'number'"
           :inner-class="{
             short: true,
           }"
