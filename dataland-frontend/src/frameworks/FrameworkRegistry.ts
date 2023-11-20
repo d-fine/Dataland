@@ -1,5 +1,5 @@
 import { type FrameworkDefinition } from "@/frameworks/FrameworkDefinition";
-import { FrameworkDefinitions } from "@/frameworks/FrameworkRegistryImports.generated";
+import { FrameworkDefinitions } from "@/frameworks/FrameworkRegistryImports";
 
 /**
  * Retrieve the framework definition for the provided framework identifier if it exists
