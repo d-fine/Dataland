@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.MappingIterator
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.kotlinModule
-import org.apache.commons.io.FileUtils
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.springframework.stereotype.Component
 import java.io.BufferedReader
@@ -31,22 +30,6 @@ class GleifCsvParser {
 
         val inputStreamReader = InputStreamReader(zipInputStream)
         return BufferedReader(inputStreamReader)
-    }
-
-    /**
-     * Extracts CSV file from Zip file
-     * @param zipFile the zip file
-     * @return CSV file inside Zip file
-     */
-    fun getCsvFileFromZip(zipFile: File): File {
-        val csvFile = File.createTempFile("gleif_mapping_update", ".csv")
-        val zipInputStream = ZipInputStream(zipFile.inputStream())
-        val zipEntry = zipInputStream.nextEntry
-        require(zipEntry?.name?.endsWith(".csv") ?: false) {
-            "The downloaded ZIP file does not contain the CSV file in the first position"
-        }
-        FileUtils.copyInputStreamToFile(zipInputStream, csvFile)
-        return csvFile
     }
 
     /**
