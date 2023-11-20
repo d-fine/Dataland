@@ -39,12 +39,15 @@ abstract class PavedRoadFramework(
      * Can be overwritten to configure the diagnosticManager (to e.g., suppress issues)
      */
     open fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
+        // Empty as it's just a customization endpoint
     }
 
     /**
      * Can be overwritten to programmatically customize the excelTemplate (to e.g, add a prefix to all fields)
      */
-    open fun customizeExcelTemplate(excelTemplate: ExcelTemplate) {}
+    open fun customizeExcelTemplate(excelTemplate: ExcelTemplate) {
+        // Empty as it's just a customization endpoint
+    }
 
     /**
      * Retrieve the ComponentGenerationUtils instance for this framework.
@@ -87,7 +90,9 @@ abstract class PavedRoadFramework(
      * Can be overwritten to programmatically customize the framework representation
      * (to e.g, add new fields)
      */
-    open fun customizeHighLevelIntermediateRepresentation(framework: Framework) {}
+    open fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
+        // Empty as it's just a customization endpoint
+    }
 
     /**
      * Generate the data-model for the framework
@@ -100,7 +105,9 @@ abstract class PavedRoadFramework(
      * Can be overwritten to programmatically customize the dataModel
      * (to e.g, change the JVM type of certain fields)
      */
-    open fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {}
+    open fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
+        // Empty as it's just a customization endpoint
+    }
 
     /**
      * Generate the view-model for the framework
@@ -113,7 +120,9 @@ abstract class PavedRoadFramework(
      * Can be overwritten to programmatically customize the viewModel
      * (to e.g, change the way certain fields are displayed in the frontend)
      */
-    open fun customizeViewModel(viewModel: FrameworkViewConfigBuilder) {}
+    open fun customizeViewModel(viewModel: FrameworkViewConfigBuilder) {
+        // Empty as it's just a customization endpoint
+    }
 
     /**
      * Generate the fixture-generator for the framework
@@ -126,7 +135,9 @@ abstract class PavedRoadFramework(
      * Can be overwritten to programmatically customize the fixtureGenerator
      * (to e.g, change the probabilities for certain outcomes of the fixture generation)
      */
-    open fun customizeFixtureGenerator(fixtureGenerator: FrameworkFixtureGeneratorBuilder) {}
+    open fun customizeFixtureGenerator(fixtureGenerator: FrameworkFixtureGeneratorBuilder) {
+        // Empty as it's just a customization endpoint
+    }
 
     /**
      * Compiles a framework following the template and integrates it into the dataland repository
