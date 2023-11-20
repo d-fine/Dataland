@@ -9,7 +9,6 @@ describe("As a user I want to be able to register for an account and be able to 
 
   it("Checks that the Dataland password-policy gets respected", () => {
     cy.visitAndCheckAppMount("/")
-      .wait("@youtube")
       .get("button[name='signup_dataland_button']")
       .click()
       .get("#email")
