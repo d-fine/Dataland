@@ -13,7 +13,8 @@ class DatalandRepositoryGradleInterface(val repository: DatalandRepository) {
     private val logger by LoggerDelegate()
     private fun withGradleConnection(usingFunction: (ProjectConnection) -> Unit) {
         val gradleConnector = GradleConnector.newConnector()
-        val projectConnection = gradleConnector.forProjectDirectory(repository.path.toFile())
+        val projectConnection = gradleConnector
+            .forProjectDirectory(repository.path.toFile())
 
         projectConnection.connect().use(usingFunction)
     }
