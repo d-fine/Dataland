@@ -101,7 +101,7 @@ class IsinDeltaBuilder(
      * Replaces the locally saved old mapping file with the recently downloaded one after creating delta is done
      * @param newMappingFile latest version of the LEI-ISIN mapping file
      */
-    private fun replaceOldMappingFile(newMappingFile: File) {
+    fun replaceOldMappingFile(newMappingFile: File) {
         try {
             newMappingFile.copyTo(File(savedMappingFile.parent, "isinMapping.csv"), true)
         } catch (e: FileSystemException) {
