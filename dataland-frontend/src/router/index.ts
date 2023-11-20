@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
+const CompanyCockpitPage = (): Promise<RouteComponent> => import("@/components/pages/CompanyCockpitPage.vue");
 const NewLandingPage = (): Promise<RouteComponent> => import("@/components/pages/NewLandingPage.vue");
 
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
@@ -54,6 +55,12 @@ const routes = [
     path: "/companies",
     name: "Search Companies for Framework Data",
     component: SearchCompaniesForFrameworkData,
+  },
+  {
+    path: `/companies/:companyId`,
+    props: true,
+    name: "Company Cockpit",
+    component: CompanyCockpitPage,
   },
   {
     path: `/companies/:companyId/frameworks/:dataType`,
