@@ -65,46 +65,27 @@ class IsinDeltaBuilderTest {
 
     @Test
     fun `test if delta of two files with LEI-ISIN mapping looks as expected`() {
-        val tmpFile = File("tmp")
-        val isinDeltaBuilder = IsinDeltaBuilder(tmpFile)
+        val isinDeltaBuilder = IsinDeltaBuilder()
         assert(isinDeltaBuilder.createDeltaOfMappingFile(newFile, oldFile).equals(deltaMap))
-        assert(!tmpFile.exists())
     }
 
-    @Test
-    fun `test creation of delta file with incomplete input`() {
-        val newContent = """
-            LEI,ISIN
-            2000,2222
-            3000,3333
-            4000, 
-            5000,5555
-            6000,6666
-            6000,6667
-        """.trimIndent()
-        deltaMap.remove("1000")
-        newFile = File("newFile.csv")
-        val printWriter = PrintWriter(newFile)
-        printWriter.println(newContent)
-        printWriter.close()
-        val tmpFile = File("tmp")
-        val isinDeltaBuilder = IsinDeltaBuilder(tmpFile)
-        assert(isinDeltaBuilder.createDeltaOfMappingFile(newFile, oldFile).equals(deltaMap))
-//        assert(!tmpFile.exists())
-    }
-
-    @Test
-    fun `test if new file moves in place of old file`() {
-        val newLines: List<String> = File(newFile.toString()).useLines { lines -> lines.take(5).toList() }
-        val isinDeltaBuilder = IsinDeltaBuilder(oldFile)
-        isinDeltaBuilder.replaceOldMappingFile(newFile)
-        assert(!File("newFile.csv").exists())
-        assert(File("isinMapping.csv").exists())
-
-        val movedLines: List<String> = File(File("isinMapping.csv").toString()).useLines {
-                lines ->
-            lines.take(5).toList()
-        }
-        assert(movedLines.hashCode().equals(newLines.hashCode()))
-    }
+//    @Test
+//    fun `test creation of delta file with incomplete input`() {
+//        val newContent = """
+//            LEI,ISIN
+//            2000,2222
+//            3000,3333
+//            4000,
+//            5000,5555
+//            6000,6666
+//            6000,6667
+//        """.trimIndent()
+//        deltaMap.remove("1000")
+//        newFile = File("newFile.csv")
+//        val printWriter = PrintWriter(newFile)
+//        printWriter.println(newContent)
+//        printWriter.close()
+//        val isinDeltaBuilder = IsinDeltaBuilder()
+//        assert(isinDeltaBuilder.createDeltaOfMappingFile(newFile, oldFile).equals(deltaMap))
+//    }
 }

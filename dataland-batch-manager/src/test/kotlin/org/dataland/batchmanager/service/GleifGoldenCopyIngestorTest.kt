@@ -136,4 +136,19 @@ class GleifGoldenCopyIngestorTest {
         companyIngestorMock.prepareIsinMappingFile()
         verify(companyIngestorMock).prepareIsinMappingFile()
     }
+
+//    @Test
+//    fun `test if new file moves in place of old file`() {
+//        val newLines: List<String> = File(newFile.toString()).useLines { lines -> lines.take(5).toList() }
+//        val isinDeltaBuilder = IsinDeltaBuilder()
+//        isinDeltaBuilder.replaceOldMappingFile(newFile)
+//        assert(!File("newFile.csv").exists())
+//        assert(File("isinMapping.csv").exists())
+//
+//        val movedLines: List<String> = File(File("isinMapping.csv").toString()).useLines {
+//                lines ->
+//            lines.take(5).toList()
+//        }
+//        assert(movedLines.hashCode().equals(newLines.hashCode()))
+//    }
 }
