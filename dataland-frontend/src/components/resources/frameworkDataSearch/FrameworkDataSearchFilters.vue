@@ -174,10 +174,6 @@ export default defineComponent({
      * availableCountries and availableSectors elements in the format expected by the dropdown filters
      */
     async retrieveCountryAndSectorFilterOptions() {
-      /*const companyDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
-      ).getCompanyDataControllerApi();*/ // TODO Emanuel: Remove if the new way works => Also use in other api calls
-
       const companyDataControllerApi = assertDefined(this.apiClientProvider).backendClients.companyDataController;
 
       const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();

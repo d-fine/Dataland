@@ -24,7 +24,7 @@ interface ApiBackendClients {
 }
 
 type ApiClientConstructor<T> = new (
-  configuration: Configuration | undefined, // TODO why not writing "configuration?: Configuration"
+  configuration: Configuration | undefined,
   basePath: string,
   axios: AxiosInstance,
 ) => T;
@@ -75,7 +75,6 @@ export class ApiClientProvider {
   }
 
   private async getBearerToken(): Promise<string | undefined> {
-    console.log("Obtaining Bearer Token"); // TODO delete at the very end
     const keycloak = await this.keycloakPromise;
     if (keycloak.authenticated) {
       await updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);

@@ -16,6 +16,7 @@ const minRequiredRemainingValidityTimeOfRefreshTokenDuringCheck = TIME_DISTANCE_
  * @param keycloak is the keycloak adaptor used to actually update the token
  * @param forceStoringValues forces storing the refresh token and its expiry timestamp in the shared storage, even if
  * the updateToken() has not done an update itself because of the minValidity value
+ * @returns a generic resolved Promise
  */
 export async function updateTokenAndItsExpiryTimestampAndStoreBoth(
   keycloak: Keycloak,
@@ -30,6 +31,8 @@ export async function updateTokenAndItsExpiryTimestampAndStoreBoth(
       useSharedSessionStateStore().refreshTokenExpiryTimestampInMs = refreshTokenExpiryTime * 1000;
     }
   }
+
+  return Promise.resolve();
 }
 
 /**
