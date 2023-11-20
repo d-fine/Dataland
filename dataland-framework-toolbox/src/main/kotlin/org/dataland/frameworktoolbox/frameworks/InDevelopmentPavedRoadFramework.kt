@@ -1,14 +1,21 @@
 package org.dataland.frameworktoolbox.frameworks
 
+import org.dataland.frameworktoolbox.SpringConfig
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
+import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
 import org.dataland.frameworktoolbox.template.ExcelTemplate
 import org.dataland.frameworktoolbox.template.TemplateComponentBuilder
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.dataland.frameworktoolbox.template.components.TemplateComponentFactory
 import org.dataland.frameworktoolbox.template.model.TemplateRow
+import org.dataland.frameworktoolbox.utils.DatalandRepository
+import org.dataland.frameworktoolbox.utils.LoggerDelegate
+import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
+import org.springframework.beans.factory.getBean
 import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.io.File
 
 /**
@@ -22,7 +29,8 @@ abstract class InDevelopmentPavedRoadFramework(
     explanation: String,
     frameworkTemplateCsvFile: File,
 ) :
-    PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile, false) {
+    PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile) {
+    private val logger by LoggerDelegate()
 
     override fun convertExcelTemplateToToHighLevelComponentRepresentation(
         context: ApplicationContext,
@@ -60,5 +68,49 @@ abstract class InDevelopmentPavedRoadFramework(
         )
         intermediateBuilder.build(into = framework.root)
         return framework
+    }
+
+    @Suppress("TooGenericExceptionCaught")
+    override fun compileFramework(datalandProject: DatalandRepository) {
+        val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
+        val diagnostics = context.getBean<DiagnosticManager>()
+
+        configureDiagnostics(diagnostics)
+        val excelTemplate = ExcelTemplate.fromCsv(frameworkTemplateCsvFile)
+        customizeExcelTemplate(excelTemplate)
+
+        val frameworkIntermediateRepresentation = convertExcelTemplateToToHighLevelComponentRepresentation(
+            template = excelTemplate,
+            context = context,
+        )
+
+        customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
+
+        val dataModel = generateDataModel(framework)
+        customizeDataModel(dataModel)
+        try {
+            dataModel.build(into = datalandProject)
+        } catch (ex: Exception) {
+            logger.error("Could not build framework data-model!", ex)
+        }
+
+        val viewConfig = generateViewModel(framework)
+        customizeViewModel(viewConfig)
+        try {
+            viewConfig.build(into = datalandProject)
+        } catch (ex: Exception) {
+            logger.error("Could not build framework view configuration!", ex)
+        }
+
+        val fixtureGenerator = generateFakeFixtureGenerator(framework)
+        customizeFixtureGenerator(fixtureGenerator)
+
+        try {
+            fixtureGenerator.build(into = datalandProject)
+        } catch (ex: Exception) {
+            logger.error("Could not build framework fixture generator", ex)
+        }
+
+        FrameworkRegistryImportsUpdater().update(datalandProject)
     }
 }
