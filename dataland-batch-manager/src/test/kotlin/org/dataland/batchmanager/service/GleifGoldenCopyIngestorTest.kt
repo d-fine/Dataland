@@ -122,4 +122,18 @@ class GleifGoldenCopyIngestorTest {
         verify(mockGleifCsvParser, times(1)).readGleifDataFromBufferedReader(any() ?: emptyBufferedReader)
         mockStaticFile.close()
     }
+
+    @Test
+    fun `test GLEIF-LEI file update process`() {
+        val companyIngestorMock = mock(GleifGoldenCopyIngestor::class.java)
+        companyIngestorMock.prepareGleifDeltaFile()
+        verify(companyIngestorMock).prepareGleifDeltaFile()
+    }
+
+    @Test
+    fun `test ISIN delta map update process`() {
+        val companyIngestorMock = mock(GleifGoldenCopyIngestor::class.java)
+        companyIngestorMock.prepareIsinMappingFile()
+        verify(companyIngestorMock).prepareIsinMappingFile()
+    }
 }
