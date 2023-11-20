@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onUnmounted, onMounted } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import DynamicDialog from "primevue/dynamicdialog";
 import Keycloak from "keycloak-js";
 import { logoutAndRedirectToUri } from "@/utils/KeycloakUtils";
@@ -17,6 +17,12 @@ import SessionDialog from "@/components/general/SessionDialog.vue";
 import { KEYCLOAK_INIT_OPTIONS } from "@/utils/Constants";
 import { useSharedSessionStateStore } from "@/stores/Stores";
 import { ApiClientProvider } from "@/services/ApiClients";
+
+const smallScreenBreakpoint = 768;
+const windowWidth = ref<number>();
+const storeWindowWidth = (): void => {
+  windowWidth.value = window.innerWidth;
+};
 
 export default defineComponent({
   name: "app",
@@ -78,26 +84,18 @@ export default defineComponent({
       apiClientProvider: computed(() => {
         return this.apiClientProvider;
       }),
+      useMobileView: computed(() => (windowWidth?.value ?? window.innerWidth) <= smallScreenBreakpoint),
     };
   },
 
-  methods: {
-const windowWidth = ref<number>();
-const storeWindowWidth = (): void => {
-  windowWidth.value = window.innerWidth;
-};
-onMounted(() => {
-  window.addEventListener("resize", storeWindowWidth);
-});
-onUnmounted(() => {
-  window.removeEventListener("resize", storeWindowWidth);
-});
-const smallScreenBreakpoint = 768;
-provide(
-  "useMobileView",
-  computed(() => (windowWidth?.value ?? window.innerWidth) <= smallScreenBreakpoint),
-);
+  mounted() {
+    window.addEventListener("resize", storeWindowWidth);
+  },
+  unmounted() {
+    window.removeEventListener("resize", storeWindowWidth);
+  },
 
+  methods: {
     /**
      * Initializes the Keycloak adaptor and configures it according to the requirements of the Dataland application.
      * @returns a promise which resolves to the Keycloak adaptor object
