@@ -29,8 +29,14 @@ tasks.test {
     }
 }
 
+tasks.register("integrationTest", JavaExec::class) {
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass = "org.dataland.frameworktoolbox.integration.IntegrationTestMainKt"
+}
+
 jacoco {
     toolVersion = jacocoVersion
+    this.applyTo(tasks.named<JavaExec>("integrationTest").get())
 }
 
 dependencies {
