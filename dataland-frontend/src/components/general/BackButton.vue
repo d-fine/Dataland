@@ -1,9 +1,9 @@
 <template>
-  <div class="col-12">
-    <div @click="goBack" class="cursor-pointer flex align-items-center" data-test="backButton">
-      <span class="material-icons text-primary">arrow_back_ios</span>
-      <span class="text-primary font-semibold d-letters" title="back_button">{{ label }}</span>
-    </div>
+  <div class="back-button cursor-pointer flex flex-row align-items-center" @click="goBack">
+    <span class="material-icons text-primary">arrow_back_ios</span>
+    <span class="text-primary font-semibold d-letters" title="back_button" :data-test="dataTestMarker">{{
+      label
+    }}</span>
   </div>
 </template>
 
@@ -17,6 +17,10 @@ export default defineComponent({
       type: String,
       default: "BACK",
     },
+    dataTestMarker: {
+      type: String,
+      default: "back-button",
+    },
   },
   methods: {
     /**
@@ -28,3 +32,13 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped lang="scss">
+.back-button {
+  width: fit-content;
+  @media only screen and (min-width: $small) {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+</style>

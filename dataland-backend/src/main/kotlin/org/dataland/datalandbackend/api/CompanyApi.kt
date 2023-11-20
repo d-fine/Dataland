@@ -8,6 +8,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
 import org.dataland.datalandbackend.model.companies.CompanyAvailableDistinctValues
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
@@ -115,7 +116,6 @@ interface CompanyApi {
         value = ["/names"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompaniesBySearchString(
         @RequestParam searchString: String,
     ):
@@ -190,7 +190,7 @@ interface CompanyApi {
     /**
      * A method to update company informtion for one specific company identified by its company Id
      * @param companyId identifier of the company in dataland
-     * @param companyInformation includes the company information
+     * @param companyInformationPatch includes the company information
      * @return updated information about the company
      */
     @Operation(
@@ -260,4 +260,46 @@ interface CompanyApi {
         produces = ["application/json"],
     )
     fun getTeaserCompanies(): List<String>
+
+    /**
+     * A method used to retrieve the aggregated data summary for all frameworks
+     * @param companyId the identifier of the company to collect the information for
+     * @returns the collected aggregated data summary per framework
+     */
+    @Operation(
+        summary = "Retrieve aggregated data summary for all frameworks",
+        description = "For each framework retrieves the amount of available reporting periods",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved values."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{companyId}/aggregated-framework-data-summary"],
+        produces = ["application/json"],
+    )
+    fun getAggregatedFrameworkDataSummary(
+        @PathVariable("companyId") companyId: String,
+    ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>>
+
+    /**
+     * A method to retrieve company information for one specific company identified by its company ID
+     * @param companyId identifier of the company in dataland
+     * @return information about the company without framework information
+     */
+    @Operation(
+        summary = "Retrieve company information.",
+        description = "Company information behind the given company ID is retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved company information."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{companyId}/info"],
+        produces = ["application/json"],
+    )
+    fun getCompanyInfo(@PathVariable("companyId") companyId: String): ResponseEntity<CompanyInformation>
 }
