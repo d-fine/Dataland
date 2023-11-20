@@ -1,0 +1,53 @@
+package org.dataland.datalandbackend.frameworks.heimathafen
+
+import com.fasterxml.jackson.databind.ObjectMapper
+import io.swagger.v3.oas.annotations.Operation
+import org.dataland.datalandbackend.controller.DataController
+import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.services.DataManager
+import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+import org.dataland.datalandbackend.frameworks.heimathafen.model.HeimathafenData
+
+/**
+ * Controller for the Heimathafen framework endpoints
+ * @param myDataManager data manager to be used
+ * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
+ */
+@RequestMapping("/data/heimathafen")
+@RestController
+class HeimathafenDataController(
+    @Autowired var myDataManager: DataManager,
+    @Autowired var myMetaDataManager: DataMetaInformationManager,
+    @Autowired var myObjectMapper: ObjectMapper,
+) : DataController<HeimathafenData>(
+    myDataManager,
+    myMetaDataManager,
+    myObjectMapper,
+    HeimathafenData::class.java,
+) {
+    @Operation(operationId = "getCompanyAssociatedHeimathafenData")
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<HeimathafenData>> {
+        return super.getCompanyAssociatedData(dataId)
+    }
+
+    @Operation(operationId = "postCompanyAssociatedHeimathafenData")
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<HeimathafenData>, bypassQa: Boolean):
+        ResponseEntity<DataMetaInformation> {
+        return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+    }
+
+    @Operation(operationId = "getAllCompanyHeimathafenData")
+    override fun getFrameworkDatasetsForCompany(
+        companyId: String,
+        showOnlyActive: Boolean,
+        reportingPeriod: String?,
+    ): ResponseEntity<List<DataAndMetaInformation<HeimathafenData>>> {
+        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+    }
+}

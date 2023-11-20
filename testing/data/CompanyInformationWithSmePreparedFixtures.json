@@ -2,58 +2,49 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Lake Danielle",
-			"headquartersPostalCode": "79108",
+			"headquarters": "Baumbachberg",
+			"headquartersPostalCode": "93586-8941",
 			"sector": null,
 			"identifiers": {
-				"Lei": [
-					"uHRI9K5uIjoPrVFrmLYF"
-				],
+				"Lei": [],
 				"Isin": [
-					"09CmpSlLAt0W"
+					"bmkkqKzTAQm4"
 				],
 				"PermId": [
-					"KEKtBsxfiy"
+					"XdzZRXrW7j"
 				],
-				"Ticker": [
-					"4WQvejv"
-				],
-				"Duns": [
-					"9kk4VHmmx"
-				],
+				"Ticker": [],
+				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"BgRhIfSl8OU4qJJ"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KE",
+			"countryCode": "IN",
 			"companyAlternativeNames": [
-				"Hackett LLC",
-				"Lueilwitz, Heathcote and O'Reilly"
+				"Barton Group",
+				"Kertzmann, O'Conner and Hegmann",
+				"Mitchell and Sons",
+				"Torp, Mertz and Nicolas"
 			],
 			"companyLegalForm": "Sole Trader",
-			"website": null,
+			"website": "https://aggressive-driving.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"05.1",
-						"23.62",
-						"25.93",
-						"30.1",
-						"69.10"
+						"46.18",
+						"63.1"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Trantow Land 50834",
-						"postalCode": "38890-0409",
-						"city": "Beierchester",
+						"streetAndHouseNumber": null,
+						"postalCode": "18404",
+						"city": "Kent",
 						"state": null,
-						"country": "LY"
+						"country": "US"
 					},
-					"numberOfEmployees": 4803,
-					"fiscalYearStart": "2024-04-29"
+					"numberOfEmployees": 4801,
+					"fiscalYearStart": "2024-02-05"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -63,17 +54,69 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Dach and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Katlynn Port 4264",
+								"postalCode": "32271",
+								"city": "Lebsackchester",
+								"state": "North Dakota",
+								"country": "AZ"
+							},
+							"shareOfTotalRevenueInPercent": 18.6912
+						},
+						{
+							"nameOfProductionSite": "Jenkins LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": null,
+								"city": "Tacoma",
+								"state": "Washington",
+								"country": "FO"
+							},
+							"shareOfTotalRevenueInPercent": 69.4319
+						},
+						{
+							"nameOfProductionSite": "Romaguera, Huel and Prohaska",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Schoen Groves 6703",
+								"postalCode": "69322",
+								"city": "West Kirstintown",
+								"state": "Louisiana",
+								"country": "GR"
+							},
+							"shareOfTotalRevenueInPercent": 52.9978
+						},
+						{
+							"nameOfProductionSite": "Senger LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Madalyn Forges 72606",
+								"postalCode": "10525-7726",
+								"city": "New Jerome",
+								"state": "Michigan",
+								"country": "VA"
+							},
+							"shareOfTotalRevenueInPercent": 74.1563
+						},
+						{
+							"nameOfProductionSite": "Gislason - Weber",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "O'Keefe Fort 8340",
+								"postalCode": null,
+								"city": "South Cyril",
+								"state": null,
+								"country": "KW"
+							},
+							"shareOfTotalRevenueInPercent": 70.3171
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Handcrafted Frozen Shirt",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Electronic Concrete Keyboard",
-							"shareOfTotalRevenueInPercent": 9.9931
+							"name": "Elegant Cotton Ball",
+							"shareOfTotalRevenueInPercent": 6.6801
 						}
 					]
 				}
@@ -83,18 +126,25 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 69,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 44,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMWh": 1872,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 900,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 39443916,
-					"naturalHazardsCovered": null
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 2013038,
+					"naturalHazardsCovered": [
+						"EarthQuake",
+						"Snow",
+						"Flooding",
+						"Hail",
+						"Wind",
+						"Avalanche"
+					]
 				}
 			}
 		},
@@ -103,42 +153,40 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fort Gabe",
-			"headquartersPostalCode": "55642",
-			"sector": "relationships",
+			"headquarters": "New Chaimcester",
+			"headquartersPostalCode": "10905-0902",
+			"sector": "functionalities",
 			"identifiers": {
-				"Lei": [
-					"6zWR93nY1oXOR7oO7EOc"
-				],
+				"Lei": [],
 				"Isin": [
-					"7MMHvTv4WZM7",
-					"WlpXlnV57Dqh"
+					"lxwk4UpZN3Nl"
 				],
 				"PermId": [],
 				"Ticker": [
-					"kRKjbCo"
+					"bniCDIv"
 				],
 				"Duns": [
-					"EQAt5mzDZ"
+					"7HmEA2lfh"
 				],
-				"VatNumber": [],
+				"VatNumber": [
+					"nQxFziApm"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "IE",
+			"countryCode": "AZ",
 			"companyAlternativeNames": [
-				"Heaney - Simonis",
-				"Hoeger and Sons",
-				"Stiedemann - Considine"
+				"Streich, Lakin and Prosacco",
+				"Williamson Inc"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://imperturbable-oyster.org",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://elegant-tell.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"86.21"
+						"46.33"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -147,44 +195,67 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 9313,
-					"fiscalYearStart": "2024-04-29"
+					"numberOfEmployees": 2162,
+					"fiscalYearStart": "2023-12-01"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 82028874,
+					"revenueInEUR": 14276716,
 					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 57483359
+					"capitalAssetsInEUR": 37141590
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": []
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Electronic Rubber Cheese",
+							"shareOfTotalRevenueInPercent": 96.4062
+						},
+						{
+							"name": "Tasty Plastic Ball",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Licensed Concrete Cheese",
+							"shareOfTotalRevenueInPercent": 44.2432
+						},
+						{
+							"name": "Bespoke Fresh Tuna",
+							"shareOfTotalRevenueInPercent": 89.7894
+						},
+						{
+							"name": "Rustic Cotton Bacon",
+							"shareOfTotalRevenueInPercent": 6.522
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 448,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 47,
+					"powerConsumptionInMWh": 419,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 77,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 15555391,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 46866680,
 					"naturalHazardsCovered": [
 						"Avalanche",
+						"Wind",
+						"Snow",
 						"Hail",
 						"EarthQuake",
-						"Snow"
+						"Flooding"
 					]
 				}
 			}
@@ -194,36 +265,40 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Kamrynbury",
-			"headquartersPostalCode": "06169-7324",
-			"sector": null,
+			"headquarters": "Binsshire",
+			"headquartersPostalCode": "44880-1873",
+			"sector": "networks",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"zuTVB8ZpowQdWFLnCSBV"
+				],
 				"Isin": [
-					"pLz6YmjRCy4U",
-					"E9iPyTzmEUdL"
+					"2RyzJf8Cx1nj",
+					"4G1ZpcsRmbvm"
 				],
-				"PermId": [
-					"KRoLTsv1v8"
+				"PermId": [],
+				"Ticker": [
+					"GgWCnZO"
 				],
-				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"ACvFbys0U"
+					"brEUdfqPM"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BI",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://extra-small-ray.name",
+			"countryCode": "DE",
+			"companyAlternativeNames": [
+				"Cremin - Cummings"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://jam-packed-playground.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"71"
+						"10.84"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -232,33 +307,42 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 8684,
-					"fiscalYearStart": "2024-03-21"
+					"numberOfEmployees": 6360,
+					"fiscalYearStart": "2024-09-03"
 				},
 				"companyFinancials": {
-					"revenueInEUR": null,
+					"revenueInEUR": 40167470,
 					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 51253567
+					"capitalAssetsInEUR": 64217800
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Blick - Goldner",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": null,
-								"city": "Funkville",
-								"state": null,
-								"country": "SZ"
-							},
-							"shareOfTotalRevenueInPercent": 97.4859
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Electronic Bronze Pants",
+							"shareOfTotalRevenueInPercent": 36.436
+						},
+						{
+							"name": "Gorgeous Frozen Shirt",
+							"shareOfTotalRevenueInPercent": 66.8246
+						},
+						{
+							"name": "Small Concrete Shirt",
+							"shareOfTotalRevenueInPercent": 94.5174
+						},
+						{
+							"name": "Incredible Rubber Tuna",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Intelligent Steel Cheese",
+							"shareOfTotalRevenueInPercent": 57.14
+						}
+					]
 				}
 			},
 			"power": {
@@ -266,20 +350,23 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"powerConsumptionInMWh": 117,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 547,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 34319794,
 					"naturalHazardsCovered": [
-						"Wind",
-						"Flooding"
+						"Flooding",
+						"Hail",
+						"Avalanche",
+						"Snow",
+						"EarthQuake"
 					]
 				}
 			}
