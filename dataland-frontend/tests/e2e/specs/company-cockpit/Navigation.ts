@@ -7,7 +7,7 @@ describe("As a user, I expect the navigation around the company cockpit to work 
   let someCompanyIdAndName: CompanyIdAndName;
   let otherCompanyName: string;
 
-  const companyCockpitRegex = RegExp("/companies/[0-9a-fA-F-]{36}$");
+  const companyCockpitRegex = /\/companies\/[0-9a-fA-F-]{36}$/;
 
   before(() => {
     getKeycloakToken(reader_name, reader_pw)
