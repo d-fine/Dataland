@@ -3,8 +3,6 @@ package org.dataland.datalandbatchmanager.service
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import com.fasterxml.jackson.module.kotlin.kotlinModule
-import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -12,11 +10,7 @@ import java.io.File
  * The class to create csv file containing updated LEI-ISIN mapping
  */
 @Component
-class IsinDeltaBuilder(
-    @Value("\${dataland.dataland-batch-manager.isin-mapping-file}") private val savedMappingFile: File,
-) {
-
-    private val logger = LoggerFactory.getLogger(javaClass)
+class IsinDeltaBuilder {
 
     /**
      * Creates the delta file of the updated LEI-ISIN mapping file
@@ -26,13 +20,10 @@ class IsinDeltaBuilder(
     fun createDeltaOfMappingFile(newMappingFile: File, oldMappingFile: File?): Map<String, String> {
         val newMapping = parseCsvToGroupedMap(newMappingFile)
         if (oldMappingFile == null) {
-            replaceOldMappingFile(newMappingFile)
             return newMapping
         }
         val oldMapping = parseCsvToGroupedMap(oldMappingFile)
-        val deltaMapping = findLeisWithUpdatedIsin(newMapping, oldMapping)
-        replaceOldMappingFile(newMappingFile)
-        return deltaMapping
+        return findLeisWithUpdatedIsin(newMapping, oldMapping)
     }
 
     /**
@@ -94,20 +85,5 @@ class IsinDeltaBuilder(
         }
 
         return mappings.mapValues { it.value.toString() }
-    }
-
-    /**
-     * Replaces the locally saved old mapping file with the recently downloaded one after creating delta is done
-     * @param newMappingFile latest version of the LEI-ISIN mapping file
-     */
-    fun replaceOldMappingFile(newMappingFile: File) {
-        try {
-            newMappingFile.copyTo(savedMappingFile, true)
-            if (!newMappingFile.delete()) {
-                logger.error("failed to delete file $newMappingFile")
-            }
-        } catch (e: FileSystemException) {
-            logger.error("Error while replacing the old mapping file: ${e.message}")
-        }
     }
 }

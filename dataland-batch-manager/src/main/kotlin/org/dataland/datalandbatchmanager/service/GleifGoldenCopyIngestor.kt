@@ -130,7 +130,7 @@ class GleifGoldenCopyIngestor(
         } else {
             isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedMappingFile)
         }
-
+        replaceOldMappingFile(newMappingFile)
         companyUploader.updateIsinMapping(deltaMap)
 
         logger.info("Finished processing of file $newMappingFile in ${getExecutionTime(start)}.")
@@ -176,5 +176,20 @@ class GleifGoldenCopyIngestor(
                     Locale.getDefault(), "%02dh %02dm %02ds", hours, minutes, seconds,
                 )
             }
+    }
+
+    /**
+     * Replaces the locally saved old mapping file with the recently downloaded one after creating delta is done
+     * @param newMappingFile latest version of the LEI-ISIN mapping file
+     */
+    fun replaceOldMappingFile(newMappingFile: File) {
+        try {
+            newMappingFile.copyTo(savedMappingFile, true)
+            if (!newMappingFile.delete()) {
+                logger.error("failed to delete file $newMappingFile")
+            }
+        } catch (e: FileSystemException) {
+            logger.error("Error while replacing the old mapping file: ${e.message}")
+        }
     }
 }
