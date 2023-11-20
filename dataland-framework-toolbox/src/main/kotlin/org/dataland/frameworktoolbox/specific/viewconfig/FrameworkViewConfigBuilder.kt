@@ -20,6 +20,10 @@ import kotlin.io.path.div
 class FrameworkViewConfigBuilder(
     private val framework: Framework,
 ) {
+    companion object {
+        private const val ESLINT_TIMEOUT = 60L
+    }
+
     private val logger by LoggerDelegate()
 
     val rootSectionConfigBuilder = SectionConfigBuilder(
@@ -98,6 +102,6 @@ class FrameworkViewConfigBuilder(
             .redirectOutput(ProcessBuilder.Redirect.INHERIT)
             .redirectError(ProcessBuilder.Redirect.INHERIT)
             .start()
-            .waitFor(60, TimeUnit.SECONDS)
+            .waitFor(ESLINT_TIMEOUT, TimeUnit.SECONDS)
     }
 }

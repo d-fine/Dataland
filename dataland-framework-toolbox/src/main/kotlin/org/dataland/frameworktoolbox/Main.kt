@@ -5,7 +5,9 @@ import org.springframework.beans.factory.getBeansOfType
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.nio.file.Path
 
-
+/**
+ * Performs the framework-specific compilation
+ */
 fun main(args: Array<String>) {
     val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
     val allPavedRoadFrameworks = context.getBeansOfType<PavedRoadFramework>().values.toList()

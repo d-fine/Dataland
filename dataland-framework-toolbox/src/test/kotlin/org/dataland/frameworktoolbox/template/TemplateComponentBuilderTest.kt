@@ -59,7 +59,7 @@ class TemplateComponentBuilderTest {
     }
 
     @Test
-    fun `ensure that the category can be left empty to generate top-level components`() {
+    fun `ensure that the category can be left empty to generate top level components`() {
         val rowWithoutCategory = dummyTemplateRow.copy(category = "", subCategory = "")
         val templateComponentBuilder = getComponentBuilderForRow(rowWithoutCategory)
         val targetGroup = DemoComponentGroupApiImpl()

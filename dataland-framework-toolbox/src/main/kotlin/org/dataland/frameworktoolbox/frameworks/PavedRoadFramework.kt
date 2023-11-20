@@ -18,6 +18,11 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.io.File
 
+/**
+ * A PavedRoadFramework is the simplest way to integrate a new framework into Dataland or
+ * update an existing one! It provides a template for implementing frameworks.
+ */
+@Suppress("TooManyFunctions")
 abstract class PavedRoadFramework(
     val identifier: String,
     val label: String,
@@ -27,28 +32,47 @@ abstract class PavedRoadFramework(
     val framework = Framework(
         identifier = identifier,
         label = label,
-        explanation = explanation
+        explanation = explanation,
     )
 
+    /**
+     * Can be overwritten to configure the diagnosticManager (to e.g., suppress issues)
+     */
     open fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
-
+        // Empty as it's just a customization endpoint
     }
 
-    open fun customizeExcelTemplate(excelTemplate: ExcelTemplate) {}
+    /**
+     * Can be overwritten to programmatically customize the excelTemplate (to e.g, add a prefix to all fields)
+     */
+    open fun customizeExcelTemplate(excelTemplate: ExcelTemplate) {
+        // Empty as it's just a customization endpoint
+    }
 
+    /**
+     * Retrieve the ComponentGenerationUtils instance for this framework.
+     * Can be overwritten to supply a custom, framework-specific instance (to e.g., customize the field-name generation)
+     */
     open fun getComponentGenerationUtils(): ComponentGenerationUtils {
         return ComponentGenerationUtils()
     }
 
+    /**
+     * Retrieve a list of TemplateComponentFactories that are responsible for converting template rows.
+     * Can be overwritten to e.g., insert factories for framework-specific components
+     */
     open fun getComponentFactoriesForIntermediateRepresentation(
-        context: ApplicationContext
+        context: ApplicationContext,
     ): List<TemplateComponentFactory> {
         return context.getBeansOfType<TemplateComponentFactory>().values.toList()
     }
 
+    /**
+     * Convert the excel-template to a high-level component representation.
+     */
     open fun convertExcelTemplateToToHighLevelComponentRepresentation(
         context: ApplicationContext,
-        template: ExcelTemplate
+        template: ExcelTemplate,
     ): Framework {
         val generationUtils = getComponentGenerationUtils()
         val componentFactories = getComponentFactoriesForIntermediateRepresentation(context)
@@ -62,27 +86,63 @@ abstract class PavedRoadFramework(
         return framework
     }
 
-    open fun customizeHighLevelIntermediateRepresentation(framework: Framework) {}
+    /**
+     * Can be overwritten to programmatically customize the framework representation
+     * (to e.g, add new fields)
+     */
+    open fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
+        // Empty as it's just a customization endpoint
+    }
 
+    /**
+     * Generate the data-model for the framework
+     */
     open fun generateDataModel(framework: Framework): FrameworkDataModelBuilder {
         return framework.generateDataModel()
     }
 
-    open fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {}
+    /**
+     * Can be overwritten to programmatically customize the dataModel
+     * (to e.g, change the JVM type of certain fields)
+     */
+    open fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
+        // Empty as it's just a customization endpoint
+    }
 
+    /**
+     * Generate the view-model for the framework
+     */
     open fun generateViewModel(framework: Framework): FrameworkViewConfigBuilder {
         return framework.generateViewModel()
     }
 
-    open fun customizeViewModel(viewModel: FrameworkViewConfigBuilder) {}
+    /**
+     * Can be overwritten to programmatically customize the viewModel
+     * (to e.g, change the way certain fields are displayed in the frontend)
+     */
+    open fun customizeViewModel(viewModel: FrameworkViewConfigBuilder) {
+        // Empty as it's just a customization endpoint
+    }
 
+    /**
+     * Generate the fixture-generator for the framework
+     */
     open fun generateFakeFixtureGenerator(framework: Framework): FrameworkFixtureGeneratorBuilder {
         return framework.generateFixtureGenerator()
     }
 
-    open fun customizeFixtureGenerator(fixtureGenerator: FrameworkFixtureGeneratorBuilder) {}
+    /**
+     * Can be overwritten to programmatically customize the fixtureGenerator
+     * (to e.g, change the probabilities for certain outcomes of the fixture generation)
+     */
+    open fun customizeFixtureGenerator(fixtureGenerator: FrameworkFixtureGeneratorBuilder) {
+        // Empty as it's just a customization endpoint
+    }
 
-    fun compileFramework(datalandProject: DatalandRepository) {
+    /**
+     * Compiles a framework following the template and integrates it into the dataland repository
+     */
+    open fun compileFramework(datalandProject: DatalandRepository) {
         val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
         val diagnostics = context.getBean<DiagnosticManager>()
 
@@ -92,7 +152,7 @@ abstract class PavedRoadFramework(
 
         val frameworkIntermediateRepresentation = convertExcelTemplateToToHighLevelComponentRepresentation(
             template = excelTemplate,
-            context = context
+            context = context,
         )
         diagnostics.finalizeDiagnosticStream()
 

@@ -47,6 +47,9 @@ open class ComponentGenerationUtils {
         component.documentSupport = DocumentSupport.fromTemplate(row.documentSupport)
     }
 
+    /**
+     * Inserts showWhenValueIs Inter-Field dependencies into the datamodel
+     */
     open fun defaultDependencyConfiguration(
         row: TemplateRow,
         identifierMap: Map<String, ComponentBase>,
