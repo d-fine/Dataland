@@ -69,10 +69,8 @@ class GleifGoldenCopyIngestor(
             val tempFile = File.createTempFile("gleif_golden_copy", ".csv")
             processGleifDeltaFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
 
-            if (savedMappingFile.exists()) {
-                if (!savedMappingFile.delete()) {
-                    logger.error("Unable to delete mapping file $savedMappingFile")
-                }
+            if (savedMappingFile.exists() && (!savedMappingFile.delete())) {
+                logger.error("Unable to delete mapping file $savedMappingFile")
             }
             prepareIsinMappingFile()
         } else {

@@ -35,9 +35,7 @@ class GleifGoldenCopyIngestorTest {
     private lateinit var oldFile: File
     private lateinit var newFile: File
 
-    @BeforeEach
-    fun setup() {
-        val oldContent = """
+    val oldContent = """
             LEI,ISIN
             1000,1111
             1000,1112
@@ -47,8 +45,9 @@ class GleifGoldenCopyIngestorTest {
             4000,4444
             6000,6666
             6000,6667
-        """.trimIndent()
-        val newContent = """
+        """
+
+    val newContent = """
             LEI,ISIN
             1000,1111
             1000,1112
@@ -59,8 +58,12 @@ class GleifGoldenCopyIngestorTest {
             5000,5555
             6000,6666
             6000,6667
-        """.trimIndent()
+        """
 
+    @BeforeEach
+    fun setup() {
+        oldContent.trimIndent()
+        newContent.trimIndent()
 //        create file oldFile
         oldFile = File("oldFile.csv")
         var printWriter = PrintWriter(oldFile)
