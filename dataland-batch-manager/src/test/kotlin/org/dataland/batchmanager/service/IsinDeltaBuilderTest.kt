@@ -15,8 +15,8 @@ class IsinDeltaBuilderTest {
     private lateinit var newFile: File
     private var deltaMap = mutableMapOf<String, List<String>>()
 
-    val oldContent = """
-            LEI,ISIN
+    private val oldContent = """
+            LEI_ISIN
             1000,1111
             1000,1112
             2000,2222
@@ -27,8 +27,8 @@ class IsinDeltaBuilderTest {
             6000,6667
         """
 
-    val newContent = """
-            LEI,ISIN
+    private val newContent = """
+            LEI_ISIN
             1000,1111
             1000,1112
             1000,1113
@@ -48,6 +48,7 @@ class IsinDeltaBuilderTest {
         deltaMap["3000"] = listOf("3333")
         deltaMap["4000"] = emptyList()
         deltaMap["5000"] = listOf("5555")
+
 //        create file oldFile
         oldFile = File("oldFile.csv")
         var printWriter = PrintWriter(oldFile)

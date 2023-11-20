@@ -50,7 +50,7 @@ class IsinDeltaBuilder {
 
     /**
      * Coverts CSV file to a LEI-ISIN map, while also aggregating all ISINs of a specific
-     * LEI into one comma-separated string
+     * LEI into a list
      * @param csvFile the file to be parsed
      * @return map of LEI-ISINs
      */
@@ -59,7 +59,7 @@ class IsinDeltaBuilder {
         csvMapper.registerModule(kotlinModule())
 
         val csvSchema = CsvSchema.builder()
-            .addColumn("LeiIsinMap")
+            .addColumn("LEI_ISIN", CsvSchema.ColumnType.STRING)
             .setUseHeader(true)
             .build()
 
@@ -71,8 +71,8 @@ class IsinDeltaBuilder {
             .readValues<Map<String, String>>(csvFile)
 
         csvParser.forEach { entry ->
-            val data = entry["LeiIsinMap"]
-
+            val data = entry["LEI_ISIN"]
+            println("Data: $data") // Add this line for debugging
             if (data != null) {
                 val values = data.split(",")
                 if (values.size == 2) {
