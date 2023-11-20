@@ -3,16 +3,16 @@ import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 type MetaInfoAssociatedWithReportingPeriodByDataType = { [key in DataTypeEnum]?: (string | DataMetaInformation)[][] };
 
 /**
- * Extracts data meta information with data type "EU taxonomy for financials" and "LkSG" and stores them in a custom format
- * @param listOfMetaInformationForOneCompany the list of data meta information to parse
- * @returns the generated structure
+ * Creates an object that is used on the framework view page to hold data meta info
+ * @param metaInfoDataForOneCompany the underlying data meta info to build the object
+ * @returns the object
  */
-export function extractMetaInfoForEuFinancialsAndLksg(
-  listOfMetaInformationForOneCompany: DataMetaInformation[],
+export function extractMetaInfoAssociatedWithReportingPeriodByDataType(
+  metaInfoDataForOneCompany: DataMetaInformation[],
 ): MetaInfoAssociatedWithReportingPeriodByDataType {
   const holdingObject: MetaInfoAssociatedWithReportingPeriodByDataType = {};
   [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.Lksg].forEach((dataType) => {
-    holdingObject[dataType] = listOfMetaInformationForOneCompany
+    holdingObject[dataType] = metaInfoDataForOneCompany
       .filter((metaInfo) => metaInfo.dataType == dataType)
       .map((metaInfo) => [metaInfo.reportingPeriod, metaInfo]);
   });

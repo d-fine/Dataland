@@ -10,7 +10,7 @@
       :alwaysShowPaginator="false"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       @update:first="firstUpdated"
-      @row-click="goToData"
+      @row-click="goToCompanyCockpit"
       class="table-cursor"
       id="search-result-framework-data"
       :rowHover="true"
@@ -68,10 +68,7 @@
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Tooltip from "primevue/tooltip";
-import {
-  type DataSearchStoredCompany,
-  getRouterLinkTargetFramework,
-} from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import { type DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent } from "vue";
 import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
 
@@ -93,13 +90,14 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Navigates to the view framework data page on a click on the row of the company
+     * Navigates to the company cockpit page on a click on the row of the company
      * @param event the row click event
      * @param event.data the company the user clicked on
      * @returns the promise of the router push action
      */
-    goToData(event: { data: DataSearchStoredCompany }) {
-      return this.$router.push(getRouterLinkTargetFramework(event.data));
+    goToCompanyCockpit(event: { data: DataSearchStoredCompany }) {
+      const companyIdOfClickedRow = event.data.companyId;
+      return this.$router.push(`/companies/${companyIdOfClickedRow}`);
     },
     /**
      * Resets the pagination of the dataTable
