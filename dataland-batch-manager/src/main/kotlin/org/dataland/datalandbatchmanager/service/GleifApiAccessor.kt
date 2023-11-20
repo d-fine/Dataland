@@ -16,7 +16,7 @@ import java.net.URL
 @Component
 class GleifApiAccessor(
     @Value("\${gleif.download.baseurl}") private val gleifBaseUrl: String,
-    @Value("\${gleif.mapping.download.baseurl}") private val gleifMappingBaseUrl: String,
+    @Value("\${gleif.isin.mapping.download.url}") private val gleifToIsinMappingReferenceUrl: String,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -40,9 +40,11 @@ class GleifApiAccessor(
      * Downloads the latest complete Lei-ISIN mapping file
      * @param targetFile the local target file to be written
      */
-    fun getIsinMappingFile(targetFile: File) {
-        val apiText = URL(gleifMappingBaseUrl).readText()
-        val downloadLink = URL(apiText.split("\"downloadLink\":\"")[1].split("\"")[0])
+    fun getFullIsinMappingFile(targetFile: File) {
+        val apiText = URL(gleifToIsinMappingReferenceUrl).readText()
+        logger.info("API Response: $apiText")
+        //val downloadLink = URL(apiText.split("\"downloadLink\":\"")[1].split("\"")[0])
+        val downloadLink = URL("https://mapping.gleif.org/api/v2/isin-lei/465e4f8f-ade3-42f3-a014-e742a78e43df/download")
         logger.info("Successfully acquired download link for mapping")
         downloadFile(downloadLink, targetFile)
     }

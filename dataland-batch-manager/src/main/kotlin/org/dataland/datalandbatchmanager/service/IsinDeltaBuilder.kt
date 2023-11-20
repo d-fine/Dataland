@@ -13,7 +13,7 @@ import java.io.File
  */
 @Component
 class IsinDeltaBuilder(
-    @Value("\${dataland.dataland-batch-manager.mapping-file}") private val savedMappingFile: File,
+    @Value("\${dataland.dataland-batch-manager.isin-mapping-file}") private val savedMappingFile: File,
 ) {
 
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -37,21 +37,21 @@ class IsinDeltaBuilder(
 
     /**
      * Compares the two LEI-ISIN maps and identifies LEIs that have new ISINs
-     * @param newMap the new LEI-ISIN map
-     * @param oldMap the old LEI-ISIN map
+     * @param newMapping the new LEI-ISIN mapping
+     * @param oldMapping the old LEI-ISIN mapping
      * @return map of changed LEI-ISINs
      */
-    fun findLeisWithUpdatedIsin(newMap: Map<String, String>, oldMap: Map<String, String>): Map<String, String> {
-        val deltaMap = mutableMapOf<String, String>()
+    private fun findLeisWithUpdatedIsin(newMapping: Map<String, String>, oldMapping: Map<String, String>): Map<String, String> {
+        val deltaMapping = mutableMapOf<String, String>()
 
-        for ((lei, newIsins) in newMap) {
-            val oldIsins = oldMap[lei]
+        for ((lei, newIsins) in newMapping) {
+            val oldIsins = oldMapping[lei]
 
             if (oldIsins == null || oldIsins != newIsins) {
-                deltaMap[lei] = newIsins
+                deltaMapping[lei] = newIsins
             }
         }
-        return deltaMap
+        return deltaMapping
     }
 
     /**
@@ -101,15 +101,9 @@ class IsinDeltaBuilder(
      * Replaces the locally saved old mapping file with the recently downloaded one after creating delta is done
      * @param newMappingFile latest version of the LEI-ISIN mapping file
      */
-    fun replaceOldMappingFile(newMappingFile: File) {
+    private fun replaceOldMappingFile(newMappingFile: File) {
         try {
-            if (savedMappingFile.exists() && !savedMappingFile.delete()) {
-                logger.error("Unable to delete the old mapping file $savedMappingFile")
-                return
-            }
-            val renamedFile = File(savedMappingFile.parent, "isinMapping.csv")
-            newMappingFile.copyTo(renamedFile, true)
-            newMappingFile.delete()
+            newMappingFile.copyTo(File(savedMappingFile.parent, "isinMapping.csv"), true)
         } catch (e: FileSystemException) {
             logger.error("Error while replacing the old mapping file: ${e.message}")
         }

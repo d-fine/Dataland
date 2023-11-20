@@ -130,15 +130,17 @@ class CompanyUploader(
 
     /**
      * Updates the ISINs of all companies.
-     * @param leiIsinMap the delta-map with the format "LEI"->"ISIN1,ISIN2,..."
+     * @param leiIsinMapping the delta-map with the format "LEI"->"ISIN1,ISIN2,..."
      */
-    fun updateIsinMapping(leiIsinMap: Map<String, String>) {
+    fun updateIsinMapping(
+        leiIsinMapping: Map<String, String>,
+    ) {
         retryOnCommonApiErrors {
-            for ((lei, isins) in leiIsinMap) {
+            for ((lei, isins) in leiIsinMapping) {
                 val isinList = isins.split(",").map { it.trim() }
-                val company = companyDataControllerApi.getCompaniesBySearchString(lei)
-                if (company.isNotEmpty()) {
-                    val companyId = company.first().companyId
+                val companies = companyDataControllerApi.getCompaniesBySearchString(lei)
+                if (companies.isNotEmpty()) {
+                    val companyId = companies.first().companyId
 
                     val existingIdentifiers = companyDataControllerApi.getCompanyById(companyId)
                         .companyInformation.identifiers
