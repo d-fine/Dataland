@@ -11,6 +11,7 @@ import org.dataland.frameworktoolbox.template.TemplateComponentBuilder
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.dataland.frameworktoolbox.template.components.TemplateComponentFactory
 import org.dataland.frameworktoolbox.utils.DatalandRepository
+import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
 import org.springframework.beans.factory.getBean
 import org.springframework.beans.factory.getBeansOfType
@@ -28,6 +29,7 @@ abstract class PavedRoadFramework(
     val label: String,
     val explanation: String,
     val frameworkTemplateCsvFile: File,
+    val enableDiagnosticErrors: Boolean = true,
 ) {
     val framework = Framework(
         identifier = identifier,
@@ -154,7 +156,7 @@ abstract class PavedRoadFramework(
             template = excelTemplate,
             context = context,
         )
-        diagnostics.finalizeDiagnosticStream()
+        if (enableDiagnosticErrors) diagnostics.finalizeDiagnosticStream()
 
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
 
@@ -171,6 +173,6 @@ abstract class PavedRoadFramework(
         fixtureGenerator.build(into = datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
-        diagnostics.finalizeDiagnosticStream()
+        if (enableDiagnosticErrors) diagnostics.finalizeDiagnosticStream()
     }
 }
