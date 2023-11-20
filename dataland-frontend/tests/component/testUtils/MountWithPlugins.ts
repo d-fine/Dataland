@@ -10,6 +10,7 @@ import { type DefineComponent, defineComponent, h } from "vue";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import DynamicDialog from "primevue/dynamicdialog";
+import { ApiClientProvider } from "@/services/ApiClients";
 
 /*
   This file defines a alternative mounting function that also includes many creature comforts
@@ -92,6 +93,7 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   }
 
   if (options.keycloak) {
+    options.global.provide.apiClientProvider = new ApiClientProvider(Promise.resolve(options.keycloak));
     options.global.provide.getKeycloakPromise = (): Promise<Keycloak> => {
       return Promise.resolve(options.keycloak as Keycloak);
     };
