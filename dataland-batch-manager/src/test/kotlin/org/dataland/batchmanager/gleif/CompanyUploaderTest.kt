@@ -52,7 +52,7 @@ class CompanyUploaderTest {
     }
 
     @Test
-    fun `check that the upload of delta-mappings calls correct function as intended`() {
+    fun `check that the upload of delta mappings calls correct function as intended`() {
         val deltaMap = mutableMapOf<String, List<String>>()
         deltaMap["1000"] = listOf("1111", "1112", "1113")
         deltaMap["3000"] = listOf("3333")

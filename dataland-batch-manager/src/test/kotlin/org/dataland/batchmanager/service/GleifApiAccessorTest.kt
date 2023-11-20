@@ -60,7 +60,7 @@ class GleifApiAccessorTest {
 
     @Disabled
     @Test
-    fun `test if download LEI-ISIN mapping works fine under the right conditions`() {
+    fun `test if download LEI ISIN mapping works fine under the right conditions`() {
 //        fails atm because the .split in .getIsinMappingFile() does not do what it prob should be doing
         `when`(FileUtils.copyURLToFile(any(), any())).thenAnswer { }
         GleifApiAccessor(dummyUrl, dummyUrl).getFullIsinMappingFile(File("test"))
