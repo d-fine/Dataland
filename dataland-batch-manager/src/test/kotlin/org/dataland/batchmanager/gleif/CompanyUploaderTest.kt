@@ -58,15 +58,15 @@ class CompanyUploaderTest {
         deltaMap.put("3000", "3333")
         deltaMap.put("4000", " ")
         deltaMap.put("5000", "5555")
-        val companyList = mutableListOf<CompanyIdAndName>(CompanyIdAndName("testName", "testId"))
+        val companyList = mutableListOf<CompanyIdAndName>(CompanyIdAndName("testId", "testId"))
         val testIdentifier = mapOf<String, List<String>>("test" to listOf<String>("test"))
-        val testCompany2: StoredCompany = mock(StoredCompany::class.java)
+        val testCompany: StoredCompany = mock(StoredCompany::class.java)
 
         `when`(mockCompanyDataControllerApi.getCompaniesBySearchString("1000")).thenReturn(companyList)
-        `when`(mockCompanyDataControllerApi.getCompanyById("testId")).thenReturn(testCompany2)
+        `when`(mockCompanyDataControllerApi.getCompanyById("testId")).thenReturn(testCompany)
 
-        `when`(testCompany2.companyInformation).thenReturn(mock(CompanyInformation::class.java))
-        `when`(testCompany2.companyInformation.identifiers).thenReturn(testIdentifier)
+        `when`(testCompany.companyInformation).thenReturn(mock(CompanyInformation::class.java))
+        `when`(testCompany.companyInformation.identifiers).thenReturn(testIdentifier)
 
         companyUploader.updateIsinMapping(deltaMap)
 
@@ -74,7 +74,6 @@ class CompanyUploaderTest {
             "test" to listOf<String>("test"),
             "isin" to listOf<String>("1111", "1112", "1113"),
         )
-        println("compIdentifiers " + compIdentifiers)
         val compPatch = CompanyInformationPatch(
             companyName = null, companyAlternativeNames = null, companyLegalForm = null,
             headquarters = null, headquartersPostalCode = null, sector = null, compIdentifiers, countryCode = null,
