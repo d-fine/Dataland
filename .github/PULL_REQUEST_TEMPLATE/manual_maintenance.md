@@ -35,6 +35,8 @@ appear.
 - [ ] The docker-compose-plugin v.2.19.1 causes connection issues:
   If running `sudo apt-get update && sudo apt-get upgrade` on the servers causes connection issues
   this can be possibly fixed by reverting the docker-compose-plugin version
+- [ ] Check that it is still valid for `**/CompanyApi.kt', '**/CompanyDataController.kt` to be excluded from detekt, 
+      at latest once the refactoring of the APIs is done this must be reevaluated
 ### Gradle update
 
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates

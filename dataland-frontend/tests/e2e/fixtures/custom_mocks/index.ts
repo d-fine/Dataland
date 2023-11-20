@@ -1,7 +1,9 @@
 import fs from "fs";
-import { extractMetaInfoForEuFinancialsAndLksg } from "@e2e/fixtures/custom_mocks/CustomMetaDataFormatFixtures";
-import { generateListOfMetaInformationForOneCompany } from "@e2e/fixtures/custom_mocks/ListOfMetaInfoFixtures";
-import { generateEuTaxonomyForNonFinancialsMocks } from "@e2e/fixtures/custom_mocks/AllEuNonFinancialsDataServerResponse";
+import { extractMetaInfoAssociatedWithReportingPeriodByDataType } from "@e2e/fixtures/custom_mocks/CustomMetaDataFormatFixtures";
+import { generateMetaInfoDataForOneCompany } from "@e2e/fixtures/custom_mocks/DataMetaInformationFaker";
+import { generateEuTaxonomyForNonFinancials } from "@e2e/fixtures/custom_mocks/EuTaxonomyDataForNonFinancialsFaker";
+import { generateMapOfFrameworkNameToAggregatedFrameworkDataSummary } from "@e2e/fixtures/custom_mocks/MapOfDataTypeToAggregatedFrameworkDataSummaryFaker";
+import { generateListOfDataSearchStoredCompany } from "@e2e/fixtures/custom_mocks/DataSearchStoredCompanyFaker";
 
 /**
  * Generates mocks that are not only dataset mocks
@@ -9,18 +11,26 @@ import { generateEuTaxonomyForNonFinancialsMocks } from "@e2e/fixtures/custom_mo
 export function exportCustomMocks(): void {
   fs.writeFileSync(
     "../testing/data/EuTaxonomyForNonFinancialsMocks.json",
-    JSON.stringify(generateEuTaxonomyForNonFinancialsMocks(), null, "\t"),
+    JSON.stringify(generateEuTaxonomyForNonFinancials(), null, "\t"),
   );
-  const listOfMetaInformationForOneCompany = generateListOfMetaInformationForOneCompany();
+
+  const metaInfoDataForOneCompany = generateMetaInfoDataForOneCompany();
   fs.writeFileSync(
-    "../testing/data/MetaInfoDataForCompany.json",
-    JSON.stringify(listOfMetaInformationForOneCompany, null, "\t"),
-  );
-  const extractedMetaInformationPerFramework = extractMetaInfoForEuFinancialsAndLksg(
-    listOfMetaInformationForOneCompany,
+    "../testing/data/MetaInfoDataMocksForOneCompany.json",
+    JSON.stringify(metaInfoDataForOneCompany, null, "\t"),
   );
   fs.writeFileSync(
-    "../testing/data/MapsForReportingsPeriodForDifferentDatasetAsArrays.json",
-    JSON.stringify(extractedMetaInformationPerFramework, null, "\t"),
+    "../testing/data/MetaInfoAssociatedWithReportingPeriodByDataTypeMock.json",
+    JSON.stringify(extractMetaInfoAssociatedWithReportingPeriodByDataType(metaInfoDataForOneCompany), null, "\t"),
+  );
+
+  fs.writeFileSync(
+    "../testing/data/MapOfFrameworkNameToAggregatedFrameworkDataSummaryMock.json",
+    JSON.stringify(generateMapOfFrameworkNameToAggregatedFrameworkDataSummary(), null, "\t"),
+  );
+
+  fs.writeFileSync(
+    "../testing/data/DataSearchStoredCompanyMocks.json",
+    JSON.stringify(generateListOfDataSearchStoredCompany(), null, "\t"),
   );
 }

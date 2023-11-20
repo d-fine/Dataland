@@ -3,8 +3,10 @@
     <TheHeader />
     <TheContent>
       <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
-        <BackButton id="backButton" class="mt-2 pl-3" />
-        <CompanyInformation :companyId="companyID" />
+        <MarginWrapper class="mb-2">
+          <BackButton id="backButton" class="mt-2" />
+          <CompanyInformation :companyId="companyID" />
+        </MarginWrapper>
         <component
           :is="frameworkToUploadComponent"
           :companyID="companyID"
@@ -35,10 +37,12 @@ import { redirectToMyDatasets } from "@/components/resources/uploadDataset/Datas
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import { defineComponent } from "vue";
 import TheContent from "@/components/generics/TheContent.vue";
+import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 
 export default defineComponent({
   name: "UploadFormWrapper",
   components: {
+    MarginWrapper,
     TheContent,
     AuthorizationWrapper,
     TheHeader,

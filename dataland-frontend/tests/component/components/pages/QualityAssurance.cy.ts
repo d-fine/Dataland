@@ -14,7 +14,7 @@ describe("Component tests for the Quality Assurance page", () => {
     cy.fixture("CompanyInformationWithP2pPreparedFixtures").then(function (jsonContent) {
       const preparedP2pFixtures = jsonContent as Array<FixtureData<PathwaysToParisData>>;
       p2pFixtureForTest = getPreparedFixture("P2p-date-2023-04-18", preparedP2pFixtures);
-      cy.fixture("MetaInfoDataForCompany.json").then((metaInfos: Array<DataMetaInformation>) => {
+      cy.fixture("MetaInfoDataMocksForOneCompany.json").then((metaInfos: Array<DataMetaInformation>) => {
         mockDataMetaInfoForActiveDataset = metaInfos[0];
       });
     });
@@ -51,11 +51,10 @@ describe("Component tests for the Quality Assurance page", () => {
     cy.intercept(`**/api/metadata?companyId=${mockDataMetaInfoForP2pTestDataset.companyId}`, [
       mockDataMetaInfoForActiveDataset,
     ]);
-    cy.intercept(`**/api/companies/${mockDataMetaInfoForP2pTestDataset.companyId}`, {
-      companyId: mockDataMetaInfoForP2pTestDataset.companyId,
-      companyInformation: p2pFixtureForTest.companyInformation,
-      dataRegisteredByDataland: [mockDataMetaInfoForActiveDataset, mockDataMetaInfoForP2pTestDataset],
-    });
+    cy.intercept(
+      `**/api/companies/${mockDataMetaInfoForP2pTestDataset.companyId}/info`,
+      p2pFixtureForTest.companyInformation,
+    );
     cy.intercept(`**/api/metadata/${mockDataMetaInfoForP2pTestDataset.dataId}`, mockDataMetaInfoForP2pTestDataset);
     cy.intercept(`**/api/data/${DataTypeEnum.P2p}/${mockDataMetaInfoForP2pTestDataset.dataId}`, {
       companyId: mockDataMetaInfoForP2pTestDataset.companyId,
