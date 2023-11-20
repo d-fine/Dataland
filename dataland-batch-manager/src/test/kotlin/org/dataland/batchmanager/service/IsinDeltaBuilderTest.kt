@@ -15,9 +15,7 @@ class IsinDeltaBuilderTest {
     private lateinit var newFile: File
     private var deltaMap = mutableMapOf<String, String>()
 
-    @BeforeEach
-    fun setup() {
-        val oldContent = """
+    val oldContent = """
             LEI,ISIN
             1000,1111
             1000,1112
@@ -27,8 +25,9 @@ class IsinDeltaBuilderTest {
             4000,4444
             6000,6666
             6000,6667
-        """.trimIndent()
-        val newContent = """
+        """
+
+    val newContent = """
             LEI,ISIN
             1000,1111
             1000,1112
@@ -39,8 +38,11 @@ class IsinDeltaBuilderTest {
             5000,5555
             6000,6666
             6000,6667
-        """.trimIndent()
-
+        """
+    @BeforeEach
+    fun setup() {
+        oldContent.trimIndent()
+        newContent.trimIndent()
         deltaMap.put("1000", "1111,1112,1113")
         deltaMap.put("3000", "3333")
         deltaMap.put("4000", " ")
@@ -64,9 +66,9 @@ class IsinDeltaBuilderTest {
     }
 
     @Test
-    fun `test if delta of two files with LEI-ISIN mapping looks as expected`() {
+    fun `test if delta of two files with LEI ISIN mapping looks as expected`() {
         val isinDeltaBuilder = IsinDeltaBuilder()
-        assert(isinDeltaBuilder.createDeltaOfMappingFile(newFile, oldFile).equals(deltaMap))
+        assert(isinDeltaBuilder.createDeltaOfMappingFile(newFile, oldFile)==(deltaMap))
     }
 
 //    @Test
