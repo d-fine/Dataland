@@ -1,5 +1,12 @@
 package org.dataland.frameworktoolbox.specific.fixturegenerator.elements
 
+/**
+ * A FixtureSectionBuilder is an in-memory Representation of fixture generator for a
+ * JS Object
+ * @param identifier the name of the object
+ * @param parentSection the containing object
+ * @param elements the contained elements
+ */
 class FixtureSectionBuilder(
     override val identifier: String,
     val parentSection: FixtureSectionBuilder?,
@@ -19,11 +26,22 @@ class FixtureSectionBuilder(
         elements.add(element)
         return element
     }
+
+    /**
+     * Add a new section to this object
+     */
     fun addSection(identifier: String): FixtureSectionBuilder {
         return addElement(FixtureSectionBuilder(identifier, this, mutableListOf()))
     }
 
-    fun addAtomicExpression(identifier: String, typescriptExpression: String, imports: Set<String> = emptySet()): FixtureAtomicExpression {
+    /**
+     * Add a new atomic TS expression to this object
+     */
+    fun addAtomicExpression(
+        identifier: String,
+        typescriptExpression: String,
+        imports: Set<String> = emptySet(),
+    ): FixtureAtomicExpression {
         return addElement(
             FixtureAtomicExpression(
                 identifier = identifier,

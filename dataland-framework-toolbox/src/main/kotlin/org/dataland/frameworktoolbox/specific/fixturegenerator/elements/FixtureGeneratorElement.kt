@@ -1,5 +1,8 @@
 package org.dataland.frameworktoolbox.specific.fixturegenerator.elements
 
+/**
+ * A FixtureGeneratorElement is part of the fixture-generation hierarchy
+ */
 sealed interface FixtureGeneratorElement {
     val identifier: String
     val imports: Set<String>

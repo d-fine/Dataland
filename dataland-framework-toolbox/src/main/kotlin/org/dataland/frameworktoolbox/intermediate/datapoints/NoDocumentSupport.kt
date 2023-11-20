@@ -3,6 +3,9 @@ package org.dataland.frameworktoolbox.intermediate.datapoints
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
+/**
+ * Elements marked with NoDocumentSupport do not require any documentation / proof
+ */
 data object NoDocumentSupport : DocumentSupport {
     override fun getJvmTypeReference(innerType: TypeReference, nullable: Boolean): TypeReference {
         return innerType

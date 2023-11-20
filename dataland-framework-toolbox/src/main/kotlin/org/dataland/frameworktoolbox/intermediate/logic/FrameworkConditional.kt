@@ -7,17 +7,26 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBoo
  * into account for it's calculation
  */
 abstract class FrameworkConditional {
+    /**
+     * Always TRUE. Forever.
+     */
     object AlwaysTrue : FrameworkConditional() {
         override fun toFrameworkBooleanLambda(): FrameworkBooleanLambda {
             return FrameworkBooleanLambda.TRUE
         }
     }
 
+    /**
+     * Always FALSE. Forever.
+     */
     object AlwaysFalse : FrameworkConditional() {
         override fun toFrameworkBooleanLambda(): FrameworkBooleanLambda {
             return FrameworkBooleanLambda.FALSE
         }
     }
 
+    /**
+     * Convert this conditional expression to a TS-Lambda
+     */
     abstract fun toFrameworkBooleanLambda(): FrameworkBooleanLambda
 }

@@ -4,6 +4,9 @@ import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
+/**
+ * Elements marked with SimpleDocumentSupport are converted to BaseDataPoints
+ */
 data object SimpleDocumentSupport : DocumentSupport {
     override fun getJvmTypeReference(innerType: TypeReference, nullable: Boolean): TypeReference {
         return TypeReference(
@@ -24,7 +27,8 @@ data object SimpleDocumentSupport : DocumentSupport {
                 " \"${StringEscapeUtils.escapeEcmaScript(fieldLabel)}\"," +
                 " $dataPointAccessor)",
             imports = innerLambda.imports +
-                "import { wrapDisplayValueWithDatapointInformation } from \"@/components/resources/dataTable/conversion/DataPoints\";",
+                "import { wrapDisplayValueWithDatapointInformation } " +
+                "from \"@/components/resources/dataTable/conversion/DataPoints\";",
         )
     }
 
