@@ -21,7 +21,7 @@
           <div
             class="quotes__slide-thumbnail-overlay cookieconsent-optin-marketing"
             :style="{ backgroundImage: `url(https://img.youtube.com/vi/${card.icon}/maxresdefault.jpg)` }"
-            v-show="showThumbnail || currentSlide === index - 1"
+            v-show="currentSlide === index - 1 ? showThumbnail : true"
             @click="toggleThumbnailAndPlayVideo(index - 1, card.icon)"
           >
             <div class="quotes__play-icon">
@@ -31,8 +31,12 @@
           <div
             class="quotes__slide-thumbnail-overlay cookieconsent-optout-marketing"
             :style="{ backgroundImage: `url(https://img.youtube.com/vi/${card.icon}/maxresdefault.jpg)` }"
-            v-show="showThumbnail || currentSlide === index - 1"
-          ></div>
+            v-show="currentSlide === index - 1 ? showThumbnail : true"
+          >
+            <div class="quotes__play-icon" @click="renewCookieConsent">
+              <div class="quotes__play-arrow"></div>
+            </div>
+          </div>
         </div>
       </div>
     </SlideShow>
@@ -73,6 +77,9 @@ interface YouTubeEvent {
 }
 declare global {
   interface Window {
+    Cookiebot?: {
+      renew: () => void;
+    };
     YT: {
       Player: new (
         elementId: string,
@@ -112,6 +119,11 @@ const currentCardInfo = computed(() => {
     text: card?.text,
   };
 });
+
+const renewCookieConsent = (): void => {
+  window.Cookiebot?.renew();
+};
+
 const pauseAllVideos = (): void => {
   ytPlayers.value.forEach((player) => {
     player.pauseVideo();
