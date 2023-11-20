@@ -70,11 +70,11 @@ abstract class InDevelopmentPavedRoadFramework(
         return framework
     }
 
-
     private fun compileDataModel(datalandProject: DatalandRepository) {
         val dataModel = generateDataModel(framework)
         customizeDataModel(dataModel)
 
+        @Suppress("TooGenericExceptionCaught")
         try {
             dataModel.build(into = datalandProject)
         } catch (ex: Exception) {
@@ -86,6 +86,7 @@ abstract class InDevelopmentPavedRoadFramework(
         val viewConfig = generateViewModel(framework)
         customizeViewModel(viewConfig)
 
+        @Suppress("TooGenericExceptionCaught")
         try {
             viewConfig.build(into = datalandProject)
         } catch (ex: Exception) {
@@ -97,6 +98,7 @@ abstract class InDevelopmentPavedRoadFramework(
         val fixtureGenerator = generateFakeFixtureGenerator(framework)
         customizeFixtureGenerator(fixtureGenerator)
 
+        @Suppress("TooGenericExceptionCaught")
         try {
             fixtureGenerator.build(into = datalandProject)
         } catch (ex: Exception) {
@@ -104,7 +106,6 @@ abstract class InDevelopmentPavedRoadFramework(
         }
     }
 
-    @Suppress("TooGenericExceptionCaught")
     override fun compileFramework(datalandProject: DatalandRepository) {
         val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
         val diagnostics = context.getBean<DiagnosticManager>()
