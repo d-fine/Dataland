@@ -83,7 +83,7 @@ export function getDataPointGetterFactory<
 interface DatapointProperties {
   quality?: string;
   dataSource?: ExtendedDocumentReference | BaseDocumentReference | null;
-  comment?: string;
+  comment?: string | null;
 }
 
 /**
@@ -103,7 +103,7 @@ export function wrapDisplayValueWithDatapointInformation(
     displayValue: {
       innerContents: inputValue,
       quality: datapointProperties?.quality,
-      comment: datapointProperties?.comment,
+      comment: datapointProperties?.comment ?? undefined,
       dataSource: datapointProperties?.dataSource,
       fieldLabel: fieldLabel,
     },
