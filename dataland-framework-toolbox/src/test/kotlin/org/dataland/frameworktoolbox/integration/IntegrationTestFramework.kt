@@ -12,7 +12,7 @@ class IntegrationTestFramework : PavedRoadFramework(
     label = "Integration Testing",
     explanation = "This framework is used for testing the framework-toolbox",
     File(
-        "./dataland-framework-toolbox/src/test/resources/org/dataland/" +
+        "./src/test/resources/org/dataland/" +
             "frameworktoolbox/integration/integrationTestFrameworkDefinition.csv",
     ),
 )
