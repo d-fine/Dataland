@@ -22,7 +22,7 @@
     <a
       v-if="showProvideDataButton && !useMobileView"
       class="summary-panel__provide-button"
-      @click="this.$router.push(`/companies/${props.companyId}/frameworks/${props.framework}/upload`)"
+      @click="$router.push(`/companies/${props.companyId}/frameworks/${props.framework}/upload`)"
       @pointerenter="onCursorEnterProvideButton"
       @pointerleave="onCursorLeaveProvideButton"
       :data-test="`${framework}-provide-data-button`"
