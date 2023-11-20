@@ -85,7 +85,8 @@ class IsinDeltaBuilder(
                 if (lei != null && isin != null && mappings.containsKey(lei)) {
                     mappings[lei]?.append(",")
                     mappings[lei]?.append(isin)
-                } else if (lei != null && isin != null && !mappings.containsKey(lei)) {
+                }
+                if (lei != null && isin != null && !mappings.containsKey(lei)) {
                     mappings[lei] = StringBuilder(isin)
                 }
             }
