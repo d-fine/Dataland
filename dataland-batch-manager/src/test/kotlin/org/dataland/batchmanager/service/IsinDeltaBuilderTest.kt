@@ -13,12 +13,12 @@ class IsinDeltaBuilderTest {
 
     private lateinit var oldFile: File
     private lateinit var newFile: File
-    private var deltaMap = mutableMapOf<String, String>()
+    private var deltaMap = mutableMapOf<String, List<String>>()
 
     @BeforeEach
     fun setup() {
         val oldContent = """
-            LEI,ISIN
+            LeiIsinMap
             1000,1111
             1000,1112
             2000,2222
@@ -29,7 +29,7 @@ class IsinDeltaBuilderTest {
             6000,6667
         """.trimIndent()
         val newContent = """
-            LEI,ISIN
+            LeiIsinMap
             1000,1111
             1000,1112
             1000,1113
@@ -41,10 +41,10 @@ class IsinDeltaBuilderTest {
             6000,6667
         """.trimIndent()
 
-        deltaMap.put("1000", "1111,1112,1113")
-        deltaMap.put("3000", "3333")
-        deltaMap.put("4000", " ")
-        deltaMap.put("5000", "5555")
+        deltaMap["1000"] = listOf("1111", "1112", "1113")
+        deltaMap["3000"] = listOf("3333")
+        deltaMap["4000"] = emptyList()
+        deltaMap["5000"] = listOf("5555")
 //        create file oldFile
         oldFile = File("oldFile.csv")
         var printWriter = PrintWriter(oldFile)
