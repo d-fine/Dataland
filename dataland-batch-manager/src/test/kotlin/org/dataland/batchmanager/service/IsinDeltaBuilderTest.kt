@@ -2,7 +2,6 @@ package org.dataland.batchmanager.service
 
 import org.dataland.datalandbatchmanager.service.IsinDeltaBuilder
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -69,7 +68,7 @@ class IsinDeltaBuilderTest {
         val tmpFile = File("tmp")
         val isinDeltaBuilder = IsinDeltaBuilder(tmpFile)
         assert(isinDeltaBuilder.createDeltaOfMappingFile(newFile, oldFile).equals(deltaMap))
-        Assertions.assertTrue(tmpFile.delete())
+        assert(!tmpFile.exists())
     }
 
     @Test
@@ -91,7 +90,7 @@ class IsinDeltaBuilderTest {
         val tmpFile = File("tmp")
         val isinDeltaBuilder = IsinDeltaBuilder(tmpFile)
         assert(isinDeltaBuilder.createDeltaOfMappingFile(newFile, oldFile).equals(deltaMap))
-        Assertions.assertTrue(tmpFile.delete())
+        assert(!tmpFile.exists())
     }
 
     @Test
