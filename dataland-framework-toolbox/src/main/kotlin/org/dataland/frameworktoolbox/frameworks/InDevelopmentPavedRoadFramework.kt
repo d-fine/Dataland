@@ -70,6 +70,40 @@ abstract class InDevelopmentPavedRoadFramework(
         return framework
     }
 
+
+    private fun compileDataModel(datalandProject: DatalandRepository) {
+        val dataModel = generateDataModel(framework)
+        customizeDataModel(dataModel)
+
+        try {
+            dataModel.build(into = datalandProject)
+        } catch (ex: Exception) {
+            logger.error("Could not build framework data-model!", ex)
+        }
+    }
+
+    private fun compileViewModel(datalandProject: DatalandRepository) {
+        val viewConfig = generateViewModel(framework)
+        customizeViewModel(viewConfig)
+
+        try {
+            viewConfig.build(into = datalandProject)
+        } catch (ex: Exception) {
+            logger.error("Could not build framework view configuration!", ex)
+        }
+    }
+
+    private fun compileFixtureGenerator(datalandProject: DatalandRepository) {
+        val fixtureGenerator = generateFakeFixtureGenerator(framework)
+        customizeFixtureGenerator(fixtureGenerator)
+
+        try {
+            fixtureGenerator.build(into = datalandProject)
+        } catch (ex: Exception) {
+            logger.error("Could not build framework fixture generator", ex)
+        }
+    }
+
     @Suppress("TooGenericExceptionCaught")
     override fun compileFramework(datalandProject: DatalandRepository) {
         val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
@@ -86,30 +120,9 @@ abstract class InDevelopmentPavedRoadFramework(
 
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
 
-        val dataModel = generateDataModel(framework)
-        customizeDataModel(dataModel)
-        try {
-            dataModel.build(into = datalandProject)
-        } catch (ex: Exception) {
-            logger.error("Could not build framework data-model!", ex)
-        }
-
-        val viewConfig = generateViewModel(framework)
-        customizeViewModel(viewConfig)
-        try {
-            viewConfig.build(into = datalandProject)
-        } catch (ex: Exception) {
-            logger.error("Could not build framework view configuration!", ex)
-        }
-
-        val fixtureGenerator = generateFakeFixtureGenerator(framework)
-        customizeFixtureGenerator(fixtureGenerator)
-
-        try {
-            fixtureGenerator.build(into = datalandProject)
-        } catch (ex: Exception) {
-            logger.error("Could not build framework fixture generator", ex)
-        }
+        compileDataModel(datalandProject)
+        compileViewModel(datalandProject)
+        compileFixtureGenerator(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
     }
