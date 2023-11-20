@@ -59,6 +59,7 @@ class GleifGoldenCopyIngestorTest {
             6000,6666
             6000,6667
         """
+
     @BeforeEach
     fun setup() {
         oldContent.trimIndent()

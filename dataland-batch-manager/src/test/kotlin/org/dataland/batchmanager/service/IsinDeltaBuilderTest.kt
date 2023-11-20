@@ -39,6 +39,7 @@ class IsinDeltaBuilderTest {
             6000,6666
             6000,6667
         """
+
     @BeforeEach
     fun setup() {
         oldContent.trimIndent()
@@ -68,7 +69,7 @@ class IsinDeltaBuilderTest {
     @Test
     fun `test if delta of two files with LEI ISIN mapping looks as expected`() {
         val isinDeltaBuilder = IsinDeltaBuilder()
-        assert(isinDeltaBuilder.createDeltaOfMappingFile(newFile, oldFile)==(deltaMap))
+        assert(isinDeltaBuilder.createDeltaOfMappingFile(newFile, oldFile) == (deltaMap))
     }
 
 //    @Test

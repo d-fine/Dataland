@@ -70,7 +70,7 @@ class GleifGoldenCopyIngestor(
             processGleifDeltaFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
 
             if (savedMappingFile.exists() && (!savedMappingFile.delete())) {
-                    logger.error("Unable to delete mapping file $savedMappingFile")
+                logger.error("Unable to delete mapping file $savedMappingFile")
             }
             prepareIsinMappingFile()
         } else {
