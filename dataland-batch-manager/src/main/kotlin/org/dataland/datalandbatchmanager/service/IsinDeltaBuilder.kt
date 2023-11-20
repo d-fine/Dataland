@@ -75,28 +75,24 @@ class IsinDeltaBuilder(
 
         val mappings = mutableMapOf<String, StringBuilder>()
 
-        try {
-            val csvParser = csvMapper
-                .readerFor(Map::class.java)
-                .with(csvSchema)
-                .readValues<Map<String, String>>(csvFile)
+        val csvParser = csvMapper
+            .readerFor(Map::class.java)
+            .with(csvSchema)
+            .readValues<Map<String, String>>(csvFile)
 
-            csvParser.forEach { entry ->
-                val lei = entry["LEI"]
-                val isin = entry["ISIN"]
+        csvParser.forEach { entry ->
+            val lei = entry["LEI"]
+            val isin = entry["ISIN"]
 
-                if (lei != null && isin != null && mappings.containsKey(lei)) {
-                    mappings[lei]?.append(",")
-                    mappings[lei]?.append(isin)
-                }
-                if (lei != null && isin != null && !mappings.containsKey(lei)) {
-                    mappings[lei] = StringBuilder(isin)
-                }
+            if (lei != null && isin != null && mappings.containsKey(lei)) {
+                mappings[lei]?.append(",")
+                mappings[lei]?.append(isin)
             }
-        } catch (e: FileSystemException) {
-            logger.error("Error while parsing CSV: ${e.message}")
+            if (lei != null && isin != null && !mappings.containsKey(lei)) {
+                mappings[lei] = StringBuilder(isin)
+            }
         }
-        // Convert StringBuilder to String
+
         return mappings.mapValues { it.value.toString() }
     }
 
@@ -106,7 +102,7 @@ class IsinDeltaBuilder(
      */
     fun replaceOldMappingFile(newMappingFile: File) {
         try {
-            newMappingFile.copyTo(File(savedMappingFile.parent, "isinMapping.csv"), true)
+            newMappingFile.copyTo(savedMappingFile, true)
             if (!newMappingFile.delete()) {
                 logger.error("failed to delete file $newMappingFile")
             }

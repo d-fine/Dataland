@@ -63,7 +63,7 @@ class CompanyUploader(
         while (counter < MAX_RETRIES) {
             try {
                 functionToExecute()
-                break
+                return
             } catch (exception: ClientException) {
                 logger.error("Unexpected client exception occurred. Response was: ${exception.message}.")
                 counter++
@@ -75,6 +75,7 @@ class CompanyUploader(
                 counter++
             }
         }
+        logger.error("Maximum number of retries exceeded.")
     }
 
     /**
@@ -153,7 +154,7 @@ class CompanyUploader(
                         companyPatch,
                     )
                 } else {
-                    logger.info("No company found for LEI: $lei")
+                    logger.warn("No company found for LEI: $lei")
                 }
             }
         }
