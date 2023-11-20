@@ -1,11 +1,6 @@
 <template>
-  <span
-    @click="downloadDocument()"
-    class="text-primary cursor-pointer"
-    :class="fontStyle"
-    :data-test="'Report-Download-' + downloadName"
-  >
-    <span class="underline pl-1">
+  <span @click="downloadDocument()" class="text-primary cursor-pointer" :class="fontStyle">
+    <span class="underline pl-1" :data-test="'Report-Download-' + downloadName">
       {{ label ?? downloadName }}
     </span>
     <i

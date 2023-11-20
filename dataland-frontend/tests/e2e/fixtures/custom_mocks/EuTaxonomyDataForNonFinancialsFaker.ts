@@ -1,4 +1,5 @@
 import {
+  type CurrencyDataPoint,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   type EuTaxonomyDataForNonFinancials,
   type EuTaxonomyDetailsPerCashFlowType,
@@ -8,11 +9,11 @@ import { EuNonFinancialsGenerator } from "@e2e/fixtures/eutaxonomy/non-financial
 import { generateCurrencyValue, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
-import { generateDataPoint, generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { generateArray } from "@e2e/fixtures/FixtureUtils";
 import { range } from "@/utils/ArrayUtils";
+import { DataPointGenerator } from "@e2e/fixtures/common/DataPointFixtures";
 
 /**
  * This class is a generator for prepared fixtures
@@ -30,7 +31,11 @@ class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
 
   generateMinimumAcceptedDetailsPerCashFlowType(): EuTaxonomyDetailsPerCashFlowType {
     return {
-      totalAmount: generateDataPoint(this.valueOrNull(generateCurrencyValue()), this.reports, generateCurrencyCode()),
+      totalAmount: this.dataPointGenerator.generateDataPoint(
+        this.valueOrNull(generateCurrencyValue()),
+        this.reports,
+        generateCurrencyCode(),
+      ) as CurrencyDataPoint,
       nonEligibleShare: this.generateFinancialShare(),
       eligibleShare: this.generateFinancialShare(),
       nonAlignedShare: this.generateFinancialShare(),
@@ -65,7 +70,7 @@ export function generateEuTaxonomyForNonFinancials(): DataAndMetaInformationEuTa
     };
   });
   let data = generatedDataAndMetaInfo[0].data;
-  data.general!.referencedReports = generateReferencedReports(DEFAULT_PROBABILITY, ["IntegratedReport"]);
+  data.general!.referencedReports = new DataPointGenerator().generateReferencedReports(["IntegratedReport"]);
   data.revenue!.totalAmount!.value = 0;
   data.revenue!.alignedActivities![0].share ??= {};
   data.revenue!.alignedActivities![0].share.relativeShareInPercent = generatePercentageValue();
