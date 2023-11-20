@@ -59,8 +59,8 @@ class IsinDeltaBuilderTest {
 
     @AfterAll
     fun cleanup() {
-        oldFile.delete()
-        newFile.delete()
+        oldFile.deleteOnExit()
+        newFile.deleteOnExit()
     }
 
     @Test

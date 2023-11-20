@@ -75,8 +75,8 @@ class GleifGoldenCopyIngestorTest {
 
     @AfterAll
     fun cleanup() {
-        oldFile.delete()
-        newFile.delete()
+        oldFile.deleteOnExit()
+        newFile.deleteOnExit()
     }
 
     @BeforeEach
