@@ -1,14 +1,33 @@
 <template>
-  <div class="header__authsection">
-    <a aria-label="Login to preview account" class="header__authsection-login" @click="login"> Login </a>
-    <ButtonComponent
-      label="Sign Up"
-      buttonType="primary"
-      ariaLabel="Sign up to preview account"
-      name="signup_dataland_button"
-      @click="register"
-    />
-  </div>
+  <template v-if="isLandingPage">
+    <div class="header__authsection">
+      <a aria-label="Login to preview account" class="header__authsection-login" @click="login"> Login </a>
+      <ButtonComponent
+        label="Sign Up"
+        ariaLabel="Sign up to preview account"
+        name="signup_dataland_button"
+        @click="register"
+      />
+    </div>
+  </template>
+  <template v-else>
+    <div class="header__authsection">
+      <ButtonComponent
+        label="Log in"
+        buttonType="login-button"
+        ariaLabel="Login to preview account"
+        name="login_dataland_button"
+        @click="login"
+      />
+      <ButtonComponent
+        label="Sign Up"
+        buttonType="registration-button"
+        ariaLabel="Sign up to preview account"
+        name="signup_dataland_button"
+        @click="register"
+      />
+    </div>
+  </template>
 </template>
 
 <script setup lang="ts">
@@ -19,7 +38,9 @@ import type Keycloak from "keycloak-js";
 import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
-
+const { isLandingPage } = defineProps<{
+  isLandingPage: boolean;
+}>();
 /**
  * Sends the user to the keycloak login page (if not authenticated already)
  */
@@ -106,6 +127,39 @@ const register = (): void => {
         }
       }
     }
+  }
+}
+</style>
+
+<style lang="scss">
+.login-button {
+  padding: 10px 38px;
+  border-radius: 0;
+  color: var(--primary-orange);
+  background-color: var(--basic-dark);
+  border: 2px solid var(--primary-orange);
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:hover {
+    border: 2px solid var(--default-neutral-white);
+    background-color: var(--basic-dark);
+    color: var(--default-neutral-white);
+  }
+}
+
+.registration-button {
+  padding: 10px 38px;
+  border-radius: 0;
+  background-color: var(--primary-orange);
+  color: var(--default-neutral-white);
+  border: 2px solid var(--primary-orange);
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--basic-dark);
+    background-color: var(--default-neutral-white);
   }
 }
 </style>

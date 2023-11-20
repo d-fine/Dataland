@@ -49,6 +49,7 @@ function validateIntroSection(): void {
   );
   cy.get("h1").should("contain.text", "Liberate Data");
   cy.get("h1").should("contain.text", "Empower Autonomy");
+  cy.get("input#company_search_bar_standard").should("exist");
 }
 
 /**

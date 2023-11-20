@@ -742,18 +742,21 @@
 			"referencedReports": {
 				"ESEFReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"fileName": "ESEFReport",
 					"isGroupLevel": "Yes",
 					"reportDate": "2022-12-07",
 					"currency": "NIO"
 				},
 				"IntegratedReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"fileName": "IntegratedReport",
 					"isGroupLevel": "NA",
 					"reportDate": "2023-03-11",
 					"currency": "BSD"
 				},
 				"AnnualReport": {
 					"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"fileName": "AnnualReport",
 					"isGroupLevel": "No",
 					"reportDate": "2023-05-01",
 					"currency": "CAD"
@@ -815,7 +818,12 @@
 					},
 					"taxonomyEligibleActivityInPercent": {
 						"value": 8.0164,
-						"dataSource": null,
+						"dataSource": {
+							"page": null,
+							"tagName": null,
+							"fileName": "",
+							"fileReference": ""
+						},
 						"quality": "Incomplete",
 						"comment": null
 					},
@@ -970,7 +978,12 @@
 					},
 					"investmentNonNfrdInPercent": {
 						"value": 78.8433,
-						"dataSource": null,
+						"dataSource": {
+							"page": null,
+							"tagName": null,
+							"fileName": "",
+							"fileReference": ""
+						},
 						"quality": "Incomplete",
 						"comment": null
 					},
