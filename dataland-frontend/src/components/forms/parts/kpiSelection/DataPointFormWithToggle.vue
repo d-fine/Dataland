@@ -127,7 +127,7 @@
           type="select"
           v-model="currentQualityValue"
           name="quality"
-          :validation="dataPointIsAvailable ? 'required' : ''"
+          validation="required"
           validation-label="Data quality"
           placeholder="Data quality"
           :options="qualityOptions"
@@ -169,15 +169,31 @@ export default defineComponent({
     currentReportValue: "",
     currentPageValue: "",
     currentQualityValue: "",
+    amountValueBeforeDataPointWasDisabled: "",
+    percentageValueBeforeDataPointWasDisabled: "",
+    reportValueBeforeDataPointWasDisabled: "",
+    pageValueBeforeDataPointWasDisabled: "",
     qualityValueBeforeDataPointWasDisabled: "",
   }),
   watch: {
     dataPointIsAvailable(newValue: boolean) {
       if (!newValue) {
+        this.amountValueBeforeDataPointWasDisabled = this.currentAmountValue;
+        this.percentageValueBeforeDataPointWasDisabled = this.currentPercentageValue;
+        this.reportValueBeforeDataPointWasDisabled = this.currentReportValue;
+        this.pageValueBeforeDataPointWasDisabled = this.currentPageValue;
         this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
+        this.currentAmountValue = "";
+        this.currentPercentageValue = "";
+        this.currentReportValue = "";
+        this.currentPageValue = "";
         this.currentQualityValue = "NA";
       } else {
         this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
+        this.currentPageValue = this.pageValueBeforeDataPointWasDisabled;
+        this.currentReportValue = this.reportValueBeforeDataPointWasDisabled;
+        this.currentPercentageValue = this.percentageValueBeforeDataPointWasDisabled;
+        this.currentAmountValue = this.amountValueBeforeDataPointWasDisabled;
       }
     },
   },
