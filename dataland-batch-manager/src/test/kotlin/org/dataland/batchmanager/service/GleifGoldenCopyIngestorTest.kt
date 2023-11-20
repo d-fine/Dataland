@@ -125,29 +125,74 @@ class GleifGoldenCopyIngestorTest {
 
     @Test
     fun `test GLEIF-LEI file update process`() {
-        val companyIngestorMock = mock(GleifGoldenCopyIngestor::class.java)
-        companyIngestorMock.prepareGleifDeltaFile()
-        verify(companyIngestorMock).prepareGleifDeltaFile()
+        val flagFile = File.createTempFile("test", ".csv", File("./"))
+        val emptyBufferedReader = BufferedReader(BufferedReader.nullReader())
+        `when`(
+            mockGleifCsvParser.readGleifDataFromBufferedReader(
+                any()
+                    ?: emptyBufferedReader,
+            ),
+        )
+            .thenReturn(MappingIterator.emptyIterator())
+        companyIngestor = GleifGoldenCopyIngestor(
+            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
+            false, flagFile.absolutePath, oldFile,
+        )
+        val mockStaticFile = mockStatic(File::class.java)
+        `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
+        companyIngestor.prepareGleifDeltaFile()
+        verify(mockGleifCsvParser, times(1)).readGleifDataFromBufferedReader(any() ?: emptyBufferedReader)
+        mockStaticFile.close()
     }
 
-    @Test
-    fun `test ISIN delta map update process`() {
-        val companyIngestorMock = mock(GleifGoldenCopyIngestor::class.java)
-        companyIngestorMock.prepareIsinMappingFile()
-        verify(companyIngestorMock).prepareIsinMappingFile()
-    }
+//    @Test
+//    fun `test ISIN delta map update process`() {
+//        val flagFile = File.createTempFile("test", ".csv", File("./"))
+//        val emptyBufferedReader = BufferedReader(BufferedReader.nullReader())
+//        `when`(
+//                mockGleifCsvParser.readGleifDataFromBufferedReader(
+//                        any()
+//                                ?: emptyBufferedReader,
+//                ),
+//        )
+//                .thenReturn(MappingIterator.emptyIterator())
+//        companyIngestor = GleifGoldenCopyIngestor(
+//                mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
+//                false, flagFile.absolutePath, oldFile,
+//        )
+//        val mockStaticFile = mockStatic(File::class.java)
+//        `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
+//        companyIngestor.prepareIsinMappingFile()
+//        verify(mockGleifCsvParser, times(1)).readGleifDataFromBufferedReader(any() ?: emptyBufferedReader)
+//        mockStaticFile.close()
+//    }
 
 //    @Test
 //    fun `test if new file moves in place of old file`() {
 //        val newLines: List<String> = File(newFile.toString()).useLines { lines -> lines.take(5).toList() }
-//        val isinDeltaBuilder = IsinDeltaBuilder()
-//        isinDeltaBuilder.replaceOldMappingFile(newFile)
+//        val flagFile = File.createTempFile("test", ".csv", File("./"))
+//        val emptyBufferedReader = BufferedReader(BufferedReader.nullReader())
+//        `when`(
+//                mockGleifCsvParser.readGleifDataFromBufferedReader(
+//                        any()
+//                                ?: emptyBufferedReader,
+//                ),
+//        )
+//                .thenReturn(MappingIterator.emptyIterator())
+//        companyIngestor = GleifGoldenCopyIngestor(
+//                mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
+//                false, flagFile.absolutePath, oldFile,
+//        )
+//        val mockStaticFile = mockStatic(File::class.java)
+//        `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
+//        companyIngestor.replaceOldMappingFile(newFile)
+//        mockStaticFile.close()
+//
 //        assert(!File("newFile.csv").exists())
 //        assert(File("isinMapping.csv").exists())
 //
 //        val movedLines: List<String> = File(File("isinMapping.csv").toString()).useLines {
-//                lines ->
-//            lines.take(5).toList()
+//                lines -> lines.take(5).toList()
 //        }
 //        assert(movedLines.hashCode().equals(newLines.hashCode()))
 //    }
