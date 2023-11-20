@@ -1,5 +1,6 @@
 package org.dataland.e2etests.utils
 
+import jdk.jshell.spi.ExecutionControl.NotImplementedException
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
@@ -242,6 +243,8 @@ class ApiAccessor {
                 testDataProvider = testDataProviderForP2pData,
                 frameworkDataUploadFunction = this::p2pUploaderFunction,
             )
+            else -> throw NotImplementedException("Upload for the framework $dataType has not been implemented" +
+                    "into the Dataland API E2E-Tests")
         }
     }
 

@@ -19,8 +19,8 @@ class HeimathafenFramework: PavedRoadFramework(
 ) {
     var excelTemplate: ExcelTemplate? = null
 
-    override fun configureDiagnostics(diagnostic: DiagnosticManager) {
-       diagnostic.suppress("TemplateConversion-UnusedColumn-showWhenValueIs-Row-205-85a39ab3")
+    override fun configureDiagnostics(diagnostics: DiagnosticManager) {
+        diagnostics.suppress("TemplateConversion-UnusedColumn-showWhenValueIs-Row-205-85a39ab3")
     }
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
