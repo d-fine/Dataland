@@ -44,8 +44,9 @@ class GleifApiAccessor(
     fun getFullIsinMappingFile(targetFile: File) {
         val apiText = URL(gleifToIsinMappingReferenceUrl).readText()
         logger.info("API Response: $apiText")
-        //val downloadLink = URL(apiText.split("\"downloadLink\":\"")[1].split("\"")[0])
-        val downloadLink = URL("https://mapping.gleif.org/api/v2/isin-lei/465e4f8f-ade3-42f3-a014-e742a78e43df/download")
+        // val downloadLink = URL(apiText.split("\"downloadLink\":\"")[1].split("\"")[0])
+        val downloadLink =
+            URL("https://mapping.gleif.org/api/v2/isin-lei/465e4f8f-ade3-42f3-a014-e742a78e43df/download")
         logger.info("Successfully acquired download link for mapping")
         val tempZipFile = File.createTempFile("gleif_mapping_update", ".zip")
         downloadFile(downloadLink, tempZipFile)

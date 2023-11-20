@@ -41,7 +41,10 @@ class IsinDeltaBuilder(
      * @param oldMapping the old LEI-ISIN mapping
      * @return map of changed LEI-ISINs
      */
-    private fun findLeisWithUpdatedIsin(newMapping: Map<String, String>, oldMapping: Map<String, String>): Map<String, String> {
+    private fun findLeisWithUpdatedIsin(
+        newMapping: Map<String, String>,
+        oldMapping: Map<String, String>,
+    ): Map<String, String> {
         val deltaMapping = mutableMapOf<String, String>()
 
         for ((lei, newIsins) in newMapping) {
