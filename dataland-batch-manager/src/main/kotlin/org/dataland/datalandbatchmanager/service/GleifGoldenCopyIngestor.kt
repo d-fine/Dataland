@@ -87,7 +87,10 @@ class GleifGoldenCopyIngestor(
         prepareIsinMappingFile()
     }
 
-    private fun prepareGleifDeltaFile() {
+    /**
+     * Starting point for GLEIF delta file handling
+     */
+    fun prepareGleifDeltaFile() {
         logger.info("Starting Gleif company update cycle for latest delta file.")
         val tempFile = File.createTempFile("gleif_update_delta", ".csv")
         processGleifDeltaFile(tempFile, gleifApiAccessor::getLastMonthGoldenCopyDelta)
@@ -108,7 +111,10 @@ class GleifGoldenCopyIngestor(
         logger.info("Finished processing of file $csvFile in ${getExecutionTime(start)}.")
     }
 
-    private fun prepareIsinMappingFile() {
+    /**
+     * Starting point for ISIN mapping file handling
+     */
+    fun prepareIsinMappingFile() {
         logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
         val tempFile = File.createTempFile("gleif_mapping_update", ".csv")
         processIsinMappingFile(tempFile, gleifApiAccessor::getFullIsinMappingFile)

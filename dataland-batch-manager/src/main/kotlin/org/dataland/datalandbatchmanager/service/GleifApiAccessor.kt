@@ -46,7 +46,9 @@ class GleifApiAccessor(
         val tempZipFile = File.createTempFile("gleif_mapping_update", ".zip")
         downloadFile(URL(isinMappingReferenceUrl), tempZipFile)
         FileUtils.copyFile(getCsvFileFromZip(tempZipFile), targetFile)
-        tempZipFile.delete()
+        if (!tempZipFile.delete()) {
+            logger.error("Unable to delete file $tempZipFile")
+        }
     }
 
     /**
