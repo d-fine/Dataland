@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.frameworks.heimathafen
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandbackend.controller.DataController
+import org.dataland.datalandbackend.frameworks.heimathafen.model.HeimathafenData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import org.dataland.datalandbackend.frameworks.heimathafen.model.HeimathafenData
 
 /**
  * Controller for the Heimathafen framework endpoints
@@ -37,7 +37,10 @@ class HeimathafenDataController(
     }
 
     @Operation(operationId = "postCompanyAssociatedHeimathafenData")
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<HeimathafenData>, bypassQa: Boolean):
+    override fun postCompanyAssociatedData(
+        companyAssociatedData: CompanyAssociatedData<HeimathafenData>,
+        bypassQa: Boolean,
+    ):
         ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }

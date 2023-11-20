@@ -243,8 +243,10 @@ class ApiAccessor {
                 testDataProvider = testDataProviderForP2pData,
                 frameworkDataUploadFunction = this::p2pUploaderFunction,
             )
-            else -> throw NotImplementedException("Upload for the framework $dataType has not been implemented" +
-                    "into the Dataland API E2E-Tests")
+            else -> throw NotImplementedException(
+                "Upload for the framework $dataType has not been implemented" +
+                    "into the Dataland API E2E-Tests",
+            )
         }
     }
 

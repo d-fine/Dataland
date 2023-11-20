@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.frameworks.heimathafen.model.general.implementierung
 
-import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
-import java.time.LocalDate
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
+import java.time.LocalDate
 
 /**
  * The data-model for the Implementierung section

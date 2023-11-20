@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.frameworks.heimathafen.model.environmental
 
+import org.dataland.datalandbackend.frameworks.heimathafen.model.environmental.kontroverseGeschaeftsfelder.HeimathafenEnvironmentalKontroverseGeschaeftsfelder
 import org.dataland.datalandbackend.frameworks.heimathafen.model.environmental.nachhaltigskeitsrisiken.HeimathafenEnvironmentalNachhaltigskeitsrisiken
 import org.dataland.datalandbackend.frameworks.heimathafen.model.environmental.pais.HeimathafenEnvironmentalPais
 import org.dataland.datalandbackend.frameworks.heimathafen.model.environmental.sfdr.HeimathafenEnvironmentalSfdr
-import org.dataland.datalandbackend.frameworks.heimathafen.model.environmental.kontroverseGeschaeftsfelder.HeimathafenEnvironmentalKontroverseGeschaeftsfelder
 
 /**
  * The data-model for the Environmental section

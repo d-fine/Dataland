@@ -5,6 +5,10 @@ import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtil
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.dataland.frameworktoolbox.utils.Naming
 
+/**
+ * The HeimathafenComponentGenerationUtils implement framework-specific field-name generation
+ * for the heimathafen framework
+ */
 class HeimathafenComponentGenerationUtils(private val excelTemplate: ExcelTemplate) : ComponentGenerationUtils() {
 
     private fun getFieldNameFromGermanString(technicalFieldName: String): String {
@@ -35,6 +39,7 @@ class HeimathafenComponentGenerationUtils(private val excelTemplate: ExcelTempla
         return pattern.replace("{{dependencyFieldName}}", dependsOnRow.fieldName)
     }
 
+    @Suppress("CyclomaticComplexMethod")
     private fun getTechnicalFieldNameFromRow(row: TemplateRow): String {
         return when (true) {
             (row.fieldName == "Wenn Nein, bitte begründen") ->

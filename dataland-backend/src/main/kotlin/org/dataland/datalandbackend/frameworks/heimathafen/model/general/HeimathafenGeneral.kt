@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.frameworks.heimathafen.model.general
 
 import org.dataland.datalandbackend.frameworks.heimathafen.model.general.datenanbieter.HeimathafenGeneralDatenanbieter
-import org.dataland.datalandbackend.frameworks.heimathafen.model.general.methodik.HeimathafenGeneralMethodik
 import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmale.HeimathafenGeneralImpactmerkmale
 import org.dataland.datalandbackend.frameworks.heimathafen.model.general.implementierung.HeimathafenGeneralImplementierung
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.methodik.HeimathafenGeneralMethodik
 
 /**
  * The data-model for the General section

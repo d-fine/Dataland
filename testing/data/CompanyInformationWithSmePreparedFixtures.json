@@ -2,49 +2,52 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Baumbachberg",
-			"headquartersPostalCode": "93586-8941",
-			"sector": null,
+			"headquarters": "Syracuse",
+			"headquartersPostalCode": "76628",
+			"sector": "eyeballs",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"bmkkqKzTAQm4"
+					"291QrUQYQvTK",
+					"aqIW5uUi61Pp"
 				],
 				"PermId": [
-					"XdzZRXrW7j"
+					"1Op6nwoVYV"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"aZqKIOD"
+				],
 				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"vKKZ6Qv1TPMKefY"
+				]
 			},
-			"countryCode": "IN",
+			"countryCode": "VN",
 			"companyAlternativeNames": [
-				"Barton Group",
-				"Kertzmann, O'Conner and Hegmann",
-				"Mitchell and Sons",
-				"Torp, Mertz and Nicolas"
+				"Hettinger - Feest"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://aggressive-driving.info",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://easy-going-snowsuit.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"46.18",
-						"63.1"
+						"10.91",
+						"17.22",
+						"27.51"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
-						"postalCode": "18404",
-						"city": "Kent",
-						"state": null,
-						"country": "US"
+						"postalCode": "21385",
+						"city": "Schmidtborough",
+						"state": "Colorado",
+						"country": "JE"
 					},
-					"numberOfEmployees": 4801,
-					"fiscalYearStart": "2024-02-05"
+					"numberOfEmployees": 581,
+					"fiscalYearStart": "2023-12-07"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -56,67 +59,60 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Dach and Sons",
+							"nameOfProductionSite": "Harris Group",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Katlynn Port 4264",
-								"postalCode": "32271",
-								"city": "Lebsackchester",
-								"state": "North Dakota",
-								"country": "AZ"
-							},
-							"shareOfTotalRevenueInPercent": 18.6912
-						},
-						{
-							"nameOfProductionSite": "Jenkins LLC",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": null,
-								"city": "Tacoma",
-								"state": "Washington",
-								"country": "FO"
-							},
-							"shareOfTotalRevenueInPercent": 69.4319
-						},
-						{
-							"nameOfProductionSite": "Romaguera, Huel and Prohaska",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Schoen Groves 6703",
-								"postalCode": "69322",
-								"city": "West Kirstintown",
+								"streetAndHouseNumber": "Mathilde Gateway 20581",
+								"postalCode": "42041-2012",
+								"city": "Dietrichfurt",
 								"state": "Louisiana",
-								"country": "GR"
+								"country": "CL"
 							},
-							"shareOfTotalRevenueInPercent": 52.9978
+							"shareOfTotalRevenueInPercent": 8.8353
 						},
 						{
-							"nameOfProductionSite": "Senger LLC",
+							"nameOfProductionSite": "Luettgen - Torphy",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Madalyn Forges 72606",
-								"postalCode": "10525-7726",
-								"city": "New Jerome",
-								"state": "Michigan",
-								"country": "VA"
+								"streetAndHouseNumber": "Marlborough Road 6614",
+								"postalCode": "02614",
+								"city": "Johnsbury",
+								"state": "Maine",
+								"country": "CD"
 							},
-							"shareOfTotalRevenueInPercent": 74.1563
+							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"nameOfProductionSite": "Gislason - Weber",
+							"nameOfProductionSite": "Effertz - Cummerata",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "O'Keefe Fort 8340",
-								"postalCode": null,
-								"city": "South Cyril",
+								"streetAndHouseNumber": "Fleta Cliffs 458",
+								"postalCode": "48701-1164",
+								"city": "Doral",
 								"state": null,
-								"country": "KW"
+								"country": "YT"
 							},
-							"shareOfTotalRevenueInPercent": 70.3171
+							"shareOfTotalRevenueInPercent": 51.192
+						},
+						{
+							"nameOfProductionSite": "Doyle, Bins and Bruen",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Rempel Loaf 8110",
+								"postalCode": "08752",
+								"city": "Roweboro",
+								"state": null,
+								"country": "AS"
+							},
+							"shareOfTotalRevenueInPercent": 27.9067
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Elegant Cotton Ball",
-							"shareOfTotalRevenueInPercent": 6.6801
+							"name": "Generic Plastic Shoes",
+							"shareOfTotalRevenueInPercent": 67.8432
+						},
+						{
+							"name": "Modern Wooden Shirt",
+							"shareOfTotalRevenueInPercent": 9.1929
 						}
 					]
 				}
@@ -126,24 +122,22 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1872,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 900,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"powerConsumptionInMWh": 880,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 871,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 2013038,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Snow",
 						"Flooding",
-						"Hail",
-						"Wind",
-						"Avalanche"
+						"Avalanche",
+						"Snow",
+						"Hail"
 					]
 				}
 			}
@@ -153,40 +147,37 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "New Chaimcester",
-			"headquartersPostalCode": "10905-0902",
-			"sector": "functionalities",
+			"headquarters": "Gerholdworth",
+			"headquartersPostalCode": null,
+			"sector": "systems",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"lxwk4UpZN3Nl"
+					"rdzez9Z2gB9d"
 				],
 				"PermId": [],
-				"Ticker": [
-					"bniCDIv"
-				],
+				"Ticker": [],
 				"Duns": [
-					"7HmEA2lfh"
+					"DoIK22LjR"
 				],
-				"VatNumber": [
-					"nQxFziApm"
-				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"PsRlZyaGIgfEGp0"
+				]
 			},
-			"countryCode": "AZ",
+			"countryCode": "GR",
 			"companyAlternativeNames": [
-				"Streich, Lakin and Prosacco",
-				"Williamson Inc"
+				"Jenkins Inc"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://elegant-tell.biz",
+			"companyLegalForm": "Sole Trader",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"46.33"
+						"24.2"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -195,13 +186,13 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 2162,
-					"fiscalYearStart": "2023-12-01"
+					"numberOfEmployees": 68,
+					"fiscalYearStart": "2024-07-06"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 14276716,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 37141590
+					"revenueInEUR": null,
+					"operatingCostInEUR": 8135918,
+					"capitalAssetsInEUR": 3849827
 				}
 			},
 			"production": {
@@ -209,52 +200,29 @@
 					"listOfProductionSites": []
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Electronic Rubber Cheese",
-							"shareOfTotalRevenueInPercent": 96.4062
-						},
-						{
-							"name": "Tasty Plastic Ball",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Licensed Concrete Cheese",
-							"shareOfTotalRevenueInPercent": 44.2432
-						},
-						{
-							"name": "Bespoke Fresh Tuna",
-							"shareOfTotalRevenueInPercent": 89.7894
-						},
-						{
-							"name": "Rustic Cotton Bacon",
-							"shareOfTotalRevenueInPercent": 6.522
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 419,
+					"powerConsumptionInMWh": 178,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 77,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"energyConsumptionHeatingAndHotWaterInMWh": 958,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 46866680,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 13465007,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Wind",
-						"Snow",
 						"Hail",
-						"EarthQuake",
+						"Snow",
+						"Avalanche",
 						"Flooding"
 					]
 				}
@@ -265,40 +233,36 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Binsshire",
-			"headquartersPostalCode": "44880-1873",
-			"sector": "networks",
+			"headquarters": "Metabury",
+			"headquartersPostalCode": "45510-9610",
+			"sector": "e-markets",
 			"identifiers": {
 				"Lei": [
-					"zuTVB8ZpowQdWFLnCSBV"
+					"Es7L1OCQBlxcyQnmDLEF"
 				],
 				"Isin": [
-					"2RyzJf8Cx1nj",
-					"4G1ZpcsRmbvm"
+					"efNCRGNTBrSz",
+					"Mepc7dPrvrRx"
 				],
 				"PermId": [],
-				"Ticker": [
-					"GgWCnZO"
-				],
+				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"brEUdfqPM"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "DE",
+			"countryCode": "CA",
 			"companyAlternativeNames": [
-				"Cremin - Cummings"
+				"Ankunding Group"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://jam-packed-playground.org",
+			"companyLegalForm": "GmbH",
+			"website": "https://scholarly-stalk.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"10.84"
+						"79.11"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -307,67 +271,106 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 6360,
-					"fiscalYearStart": "2024-09-03"
+					"numberOfEmployees": 3929,
+					"fiscalYearStart": "2024-06-23"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 40167470,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 64217800
+					"revenueInEUR": null,
+					"operatingCostInEUR": 31902953,
+					"capitalAssetsInEUR": null
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Parker - Little",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Cornell Heights 812",
+								"postalCode": "35730-5781",
+								"city": "Gunnershire",
+								"state": "Pennsylvania",
+								"country": "RU"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "McCullough - Berge",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "48945",
+								"city": "Yuma",
+								"state": "South Dakota",
+								"country": "ZW"
+							},
+							"shareOfTotalRevenueInPercent": 11.0219
+						},
+						{
+							"nameOfProductionSite": "Fahey - Langworth",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Effertz Neck 2438",
+								"postalCode": "56143",
+								"city": "Mohrland",
+								"state": null,
+								"country": "BB"
+							},
+							"shareOfTotalRevenueInPercent": 48.9073
+						},
+						{
+							"nameOfProductionSite": "Raynor, Baumbach and Nitzsche",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Nitzsche Loop 7310",
+								"postalCode": "92495-2337",
+								"city": "Wittingboro",
+								"state": null,
+								"country": "MA"
+							},
+							"shareOfTotalRevenueInPercent": 24.7042
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Electronic Bronze Pants",
-							"shareOfTotalRevenueInPercent": 36.436
+							"name": "Elegant Bronze Mouse",
+							"shareOfTotalRevenueInPercent": 57.7257
 						},
 						{
-							"name": "Gorgeous Frozen Shirt",
-							"shareOfTotalRevenueInPercent": 66.8246
-						},
-						{
-							"name": "Small Concrete Shirt",
-							"shareOfTotalRevenueInPercent": 94.5174
-						},
-						{
-							"name": "Incredible Rubber Tuna",
+							"name": "Modern Wooden Hat",
 							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Intelligent Steel Cheese",
-							"shareOfTotalRevenueInPercent": 57.14
+							"name": "Awesome Soft Towels",
+							"shareOfTotalRevenueInPercent": 19.3681
+						},
+						{
+							"name": "Elegant Fresh Table",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Elegant Bronze Chips",
+							"shareOfTotalRevenueInPercent": 23.1608
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 117,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 547,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMWh": 1768,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 744,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 34319794,
-					"naturalHazardsCovered": [
-						"Flooding",
-						"Hail",
-						"Avalanche",
-						"Snow",
-						"EarthQuake"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 34085475,
+					"naturalHazardsCovered": null
 				}
 			}
 		},

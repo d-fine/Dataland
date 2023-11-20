@@ -10,12 +10,15 @@ import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
 import org.springframework.stereotype.Component
 import java.io.File
 
+/**
+ * Definition of the Heimathafen framework
+ */
 @Component
-class HeimathafenFramework: PavedRoadFramework(
+class HeimathafenFramework : PavedRoadFramework(
     identifier = "heimathafen",
     label = "Heimathafen",
     explanation = "Das Heimathafen Framework",
-    File("./dataland-framework-toolbox/inputs/heimathafen/Heimathafen_Data_Model-German version.csv")
+    File("./dataland-framework-toolbox/inputs/heimathafen/Heimathafen_Data_Model-German version.csv"),
 ) {
     var excelTemplate: ExcelTemplate? = null
 
