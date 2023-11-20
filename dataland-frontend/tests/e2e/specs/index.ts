@@ -36,6 +36,7 @@ if (testGroupingDisabled || cypressTestGroup === 1) {
   require("./framework-view-and-upload-journey");
   require("./sfdr");
   require("./lksg");
+  require("./company-cockpit");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 2) {

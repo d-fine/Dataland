@@ -1926,6 +1926,129 @@
         ]
       }
     },
+    "/companies/{companyId}/info": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve company information.",
+        "description": "Company information behind the given company ID is retrieved.",
+        "operationId": "getCompanyInfo",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved company information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/companies/{companyId}/aggregated-framework-data-summary": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve aggregated data summary for all frameworks",
+        "description": "For each framework retrieves the amount of available reporting periods",
+        "operationId": "getAggregatedFrameworkDataSummary",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved values.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/AggregatedFrameworkDataSummary"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies/teaser": {
       "get": {
         "tags": [
@@ -8022,6 +8145,18 @@
           }
         }
       },
+      "AggregatedFrameworkDataSummary": {
+        "required": [
+          "numberOfProvidedReportingPeriods"
+        ],
+        "type": "object",
+        "properties": {
+          "numberOfProvidedReportingPeriods": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "CompanyIdAndName": {
         "required": [
           "companyId",
@@ -8029,10 +8164,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

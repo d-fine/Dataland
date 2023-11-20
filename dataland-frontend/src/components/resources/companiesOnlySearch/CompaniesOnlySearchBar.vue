@@ -1,33 +1,31 @@
 <template>
-  <span class="p-fluid">
-    <span class="p-input-icon-left p-input-icon-right">
-      <i class="pi pi-search d-framework-searchbar-input-icon" aria-hidden="true" style="z-index: 20; color: #958d7c" />
-      <AutoComplete
-        inputId="company_search_bar_standard"
-        ref="autocomplete"
-        v-model="searchBarInput"
-        :suggestions="autocompleteArray"
-        :minLength="3"
-        optionLabel="companyName"
-        :autoOptionFocus="false"
-        placeholder="Search company by name or identifier"
-        inputClass="h-3rem d-framework-searchbar-input"
-        panelClass="d-framework-searchbar-panel"
-        style="z-index: 10"
-        @complete="searchCompanyName($event)"
-        @item-select="pushToChooseFrameworkForDataUploadPageForItem($event)"
-      >
-        <template #option="slotProps">
-          <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
-          <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
-        </template>
-      </AutoComplete>
-    </span>
-  </span>
+  <div :class="wrapperClass">
+    <i :class="iconClass" aria-hidden="true" />
+    <AutoComplete
+      input-id="company_search_bar_standard"
+      ref="autocomplete"
+      v-model="searchBarInput"
+      :suggestions="autocompleteArray"
+      :min-length="3"
+      option-label="companyName"
+      :auto-option-focus="false"
+      placeholder="Search company by name or identifier"
+      :input-class="inputClass"
+      panel-class="d-framework-searchbar-panel"
+      style="z-index: 10"
+      @complete="searchCompanyName($event)"
+      @item-select="$emit('selectCompany', $event.value)"
+    >
+      <template #option="slotProps">
+        <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
+        <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
+      </template>
+    </AutoComplete>
+  </div>
 </template>
 
 <script lang="ts">
-import AutoComplete, { type AutoCompleteCompleteEvent, type AutoCompleteItemSelectEvent } from "primevue/autocomplete";
+import AutoComplete, { type AutoCompleteCompleteEvent } from "primevue/autocomplete";
 import { type CompanyIdAndName } from "@clients/backend";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import { defineComponent, inject, ref } from "vue";
@@ -44,7 +42,6 @@ export default defineComponent({
   },
   name: "CompaniesOnlySearchBar",
   components: { AutoComplete, SearchResultHighlighter },
-
   mounted() {
     const autocompleteRefsObject = this.autocomplete?.$refs as Record<string, unknown>;
     const inputOfAutocompleteComponent = autocompleteRefsObject.focusInput as HTMLInputElement;
@@ -58,13 +55,27 @@ export default defineComponent({
       autocompleteArray: [] as Array<CompanyIdAndName>,
     };
   },
+  props: {
+    wrapperClass: {
+      type: String,
+      default: "p-fluid p-input-icon-left p-input-icon-right p-input-icon-align",
+    },
+    inputClass: {
+      type: String,
+      default: "h-3rem d-framework-searchbar-input",
+    },
+    iconClass: {
+      type: String,
+      default: "pi pi-search d-framework-searchbar-input-icon search-icon",
+    },
+  },
 
   watch: {
     searchBarInput(newValue: string) {
       this.saveCurrentSearchStringIfValid(newValue);
     },
   },
-
+  emits: ["selectCompany"],
   methods: {
     /**
      * The input string is stored in the variable latestValidSearchString if it is a string and not empty
@@ -74,14 +85,6 @@ export default defineComponent({
       if (currentSearchString && typeof currentSearchString === "string") {
         this.latestValidSearchString = currentSearchString;
       }
-    },
-    /**
-     * Executes a router push to upload overview page of the given company
-     * @param event object containing the stored company
-     * @param event.value the stored company object
-     */
-    async pushToChooseFrameworkForDataUploadPageForItem(event: AutoCompleteItemSelectEvent) {
-      await this.$router.push(`/companies/${(event.value as CompanyIdAndName).companyId}/frameworks/upload`);
     },
     /**
      * Queries the getCompanies endpoint and writes the response to the variable autoCompleteArray
@@ -101,3 +104,12 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.p-input-icon-align {
+  text-align: left;
+}
+.search-icon {
+  z-index: 20;
+  color: #958d7c;
+}
+</style>

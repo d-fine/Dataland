@@ -14,7 +14,6 @@ import {
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { useFrameworkFiltersStore } from "@/stores/Stores";
 
 export interface DataSearchStoredCompany {
   companyName: string;
@@ -121,34 +120,4 @@ function filterCompaniesForAcceptedDataset(companies: StoredCompany[]): StoredCo
   return companies.filter((company) =>
     company.dataRegisteredByDataland.some((dataMetaInfo) => dataMetaInfo.qaStatus == QaStatus.Accepted),
   );
-}
-
-/**
- * Generates a router link for the view button on the framework search page, or if an autocomplete suggestion is selected.
- * If no filter is set, or if the number of framework-filters equals the number of all viewable frameworks,
- * it links to the first framework that is included in the data in the company object.
- * Otherwise, it links to the first framework that is included in the currently stored framework filters.
- * @param companyData the company to generate a link for
- * @param selectedFiltersForFrameworks applied framework filters
- * @returns a vue router link to the view page for a specific framework
- */
-export function getRouterLinkTargetFramework(
-  companyData: DataSearchStoredCompany,
-  selectedFiltersForFrameworks: DataTypeEnum[] = useFrameworkFiltersStore().selectedFiltersForFrameworks,
-): string {
-  const activeDataRegisteredByDataland = companyData.dataRegisteredByDataland.filter(
-    (dataMetaInfo: DataMetaInformation) => dataMetaInfo.currentlyActive,
-  );
-  const actuallySelectedFiltersForFrameworks =
-    selectedFiltersForFrameworks.length == 0 ? ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE : selectedFiltersForFrameworks;
-  const frameworkToRouteTo = activeDataRegisteredByDataland.find((dataMetaInfo) =>
-    actuallySelectedFiltersForFrameworks.includes(dataMetaInfo.dataType),
-  )?.dataType;
-  if (frameworkToRouteTo) {
-    return `/companies/${companyData.companyId}/frameworks/${frameworkToRouteTo}`;
-  } else {
-    throw new Error(
-      "No data meta info for the frameworks set in the filters could be found in the data of the server response.",
-    );
-  }
 }
