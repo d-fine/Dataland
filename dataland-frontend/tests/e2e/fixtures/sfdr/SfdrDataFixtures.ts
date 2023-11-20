@@ -1,4 +1,5 @@
-import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
+import { FrameworkGenerator } from "@e2e/utils/FrameworkFakeFixtureUtils";
 import { generateFloat, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { type ExtendedDataPointBigDecimal, type SfdrData } from "@clients/backend";
 import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
@@ -7,7 +8,6 @@ import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { generateFixtureDataset, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 import { HighImpactClimateSector } from "@/api-models/HighImpactClimateSector";
-import { generateDataPoint } from "@e2e/fixtures/common/DataPointFixtures";
 
 /**
  * Generates a set number of SFDR fixtures
@@ -153,7 +153,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
   };
 }
 
-class SfdrGenerator extends Generator {
+class SfdrGenerator extends FrameworkGenerator {
   /**
    * Generates a random map of procurement categories
    * @returns random map of procurement categories
@@ -164,7 +164,7 @@ class SfdrGenerator extends Generator {
       new Map<string, ExtendedDataPointBigDecimal>(
         keys.map((naceCode) => [
           naceCode as string,
-          generateDataPoint(this.randomFloat(), this.reports) as ExtendedDataPointBigDecimal,
+          this.dataPointGenerator.generateDataPoint(this.randomFloat(), this.reports) as ExtendedDataPointBigDecimal,
         ]),
       ),
     );
