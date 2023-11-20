@@ -127,7 +127,7 @@ class GleifGoldenCopyIngestorTest {
     }
 
     @Test
-    fun `test GLEIF-LEI file update process`() {
+    fun `test GLEIF LEI file update process`() {
         val flagFile = File.createTempFile("test", ".csv", File("./"))
         val emptyBufferedReader = BufferedReader(BufferedReader.nullReader())
         `when`(
