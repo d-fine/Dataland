@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
+import jakarta.validation.constraints.Min
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
@@ -19,5 +20,6 @@ data class SfdrSocialHumanRights(
 
     val reportedForcedOrCompulsoryLabourIncidents: ExtendedDataPoint<YesNo>? = null,
 
+    @Min(0)
     val numberOfReportedIncidentsOfHumanRightsViolations: ExtendedDataPoint<Long>? = null,
 )
