@@ -59,7 +59,9 @@ class IsinDeltaBuilder {
         csvMapper.registerModule(kotlinModule())
 
         val csvSchema = CsvSchema.builder()
-            .addColumn("LEI_ISIN", CsvSchema.ColumnType.STRING)
+            .setColumnSeparator(',')
+            .addColumn("LEI")
+            .addColumn("ISIN")
             .setUseHeader(true)
             .build()
 
@@ -71,20 +73,12 @@ class IsinDeltaBuilder {
             .readValues<Map<String, String>>(csvFile)
 
         csvParser.forEach { entry ->
-            val data = entry["LEI_ISIN"]
-            println("Data: $data") // Add this line for debugging
-            if (data != null) {
-                val values = data.split(",")
-                if (values.size == 2) {
-                    val lei = values[0].trim()
-                    val isin = values[1].trim()
-
-                    if (mappings.containsKey(lei)) {
-                        mappings[lei]?.add(isin)
-                    } else {
-                        mappings[lei] = mutableListOf(isin)
-                    }
-                }
+            val lei = entry["LEI"]
+            val isin = entry["ISIN"]
+            // println("LEI: $lei ISIN: $isin") // Add this line for debugging
+            if (lei != null && isin != null) {
+                // Use getOrPut to initialize the list if the key doesn't exist
+                mappings.getOrPut(lei) { mutableListOf() }.add(isin)
             }
         }
 
