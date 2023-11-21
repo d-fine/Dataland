@@ -74,6 +74,11 @@ class GleifApiAccessor(
         logger.info("Download of $fileDescription completed.")
     }
 
+    /**
+     * Downloads a file and saves it to disk
+     * @param url: the target URL of the file
+     * @param targetFile: the destination file name where the target file is copied to
+     */
     fun downloadFile(url: URL, targetFile: File) {
         var counter = 0
         while (counter < MAX_RETRIES) {

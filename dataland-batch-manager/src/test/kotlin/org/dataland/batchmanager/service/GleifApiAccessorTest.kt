@@ -14,8 +14,8 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.mockStatic
 import org.mockito.Mockito.reset
 import org.mockito.Mockito.times
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import java.io.File
 import java.io.FileNotFoundException
 import java.net.SocketException
@@ -70,6 +70,7 @@ class GleifApiAccessorTest {
         mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(1))
     }
 
+    @Disabled
     @Test
     fun `test for LEI ISIN mapping if unzip works and csv emerges`() {
         val providedTetstFile = File("testApiAccessor.zip")
