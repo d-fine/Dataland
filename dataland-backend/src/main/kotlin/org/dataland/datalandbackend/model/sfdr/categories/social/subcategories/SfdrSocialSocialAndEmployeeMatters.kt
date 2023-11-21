@@ -82,5 +82,6 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @Min(0)
     val sanctionedIncidentsOfDiscrimination: ExtendedDataPoint<Long>? = null,
 
+    @Min(0)
     val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal>? = null,
 )
