@@ -2,10 +2,19 @@ package org.dataland.batchmanager.service
 
 import org.apache.commons.io.FileUtils
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockedStatic
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mockStatic
+import org.mockito.Mockito.reset
+import org.mockito.Mockito.spy
+import org.mockito.Mockito.times
+import org.mockito.Mockito.`when`
 import java.io.File
 import java.io.FileNotFoundException
 import java.net.SocketException
@@ -58,13 +67,8 @@ class GleifApiAccessorTest {
         val url = URL("https://mapping.gleif.org/api/v2/isin-lei/latest/download")
         val gleifApiAccessorMock = spy(GleifApiAccessor(dummyUrl, dummyUrl))
 
-        `when`(
-            gleifApiAccessorMock.downloadFile(
-                any()?:url,
-                any()?:zipFile,
-                ),
-            )
-                .then { providedTestFile.copyTo(it.arguments[1] as File, true) }
+        `when`(gleifApiAccessorMock.downloadFile(any() ?: url, any() ?: zipFile))
+            .then { providedTestFile.copyTo(it.arguments[1] as File, true) }
 
         val tempCsvFile = File.createTempFile("gleif_mapping_update", ".csv")
         gleifApiAccessorMock.getFullIsinMappingFile(tempCsvFile)
