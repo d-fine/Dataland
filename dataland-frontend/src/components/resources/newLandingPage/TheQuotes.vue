@@ -53,7 +53,7 @@
     </transition>
     <ButtonComponent
       :label="quotesSection.text[0]"
-      buttonType="quotes__button"
+      buttonType="button-component quotes__button"
       ariaLabel="Start your Dataland Journey"
       @click="register"
     />

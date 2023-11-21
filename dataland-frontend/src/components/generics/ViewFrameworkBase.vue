@@ -1,30 +1,11 @@
 <template>
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
   <TheContent class="paper-section min-h-screen">
-    <MarginWrapper class="text-left surface-0" style="margin-right: 0">
-      <BackButton />
-      <FrameworkDataSearchBar
-        v-if="!viewInPreviewMode && !isReviewableByCurrentUser"
-        :companyIdIfOnViewPage="companyID"
-        class="mt-2"
-        ref="frameworkDataSearchBar"
-        @search-confirmed="handleSearchConfirm"
-      />
-    </MarginWrapper>
-    <MarginWrapper class="surface-0" style="margin-right: 0">
-      <div class="grid align-items-end">
-        <div class="col-9">
-          <CompanyInformationBanner
-            :companyId="companyID"
-            @fetchedCompanyInformation="handleFetchedCompanyInformation"
-          />
-        </div>
-      </div>
-    </MarginWrapper>
+    <CompanyInfoSheet :company-id="companyID" @fetched-company-information="handleFetchedCompanyInformation" />
     <div v-if="isDataProcessedSuccesfully">
       <MarginWrapper
         class="text-left surface-0 dataland-toolbar"
-        style="margin-right: 0"
+        style="box-shadow: 0 4px 4px 0 #00000005; margin-right: 0"
         :class="[pageScrolled ? ['fixed w-100'] : '']"
       >
         <div class="flex justify-content-between align-items-center d-search-filters-panel">
@@ -91,11 +72,8 @@
 </template>
 
 <script lang="ts">
-import BackButton from "@/components/general/BackButton.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
-import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
-import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -113,17 +91,16 @@ import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import OverlayPanel from "primevue/overlaypanel";
 import QualityAssuranceButtons from "@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue";
+import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
   components: {
+    CompanyInfoSheet,
     TheContent,
     TheHeader,
-    BackButton,
     MarginWrapper,
-    FrameworkDataSearchBar,
     Dropdown,
-    CompanyInformationBanner,
     TheFooter,
     PrimeButton,
     OverlayPanel,
@@ -278,17 +255,6 @@ export default defineComponent({
       if (this.dataType != dropDownChangeEvent.value) {
         void this.$router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
       }
-    },
-    /**
-     * Handles the "search-confirmed" event of the search bar by visiting the search page with the query param set to
-     * the search term provided by the event.
-     * @param searchTerm The search term provided by the "search-confirmed" event of the search bar
-     */
-    async handleSearchConfirm(searchTerm: string) {
-      await this.$router.push({
-        name: "Search Companies for Framework Data",
-        query: { input: searchTerm },
-      });
     },
 
     /**

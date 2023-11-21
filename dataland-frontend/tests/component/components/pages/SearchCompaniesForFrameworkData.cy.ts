@@ -1,41 +1,107 @@
 import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { prepareSimpleDataSearchStoredCompanyArray } from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
 import type Keycloak from "keycloak-js";
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
+import { verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
+import { type DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 
-describe("Component tests for 'Request Data' button on the level of company search", function (): void {
-  const mockDataSearchStoredCompanyArray = prepareSimpleDataSearchStoredCompanyArray();
+let mockDataSearchResponse: Array<DataSearchStoredCompany>;
 
+before(function () {
+  cy.fixture("DataSearchStoredCompanyMocks").then(function (jsonContent) {
+    mockDataSearchResponse = jsonContent as Array<DataSearchStoredCompany>;
+  });
+});
+
+describe("Component tests for the Dataland companies search page", function (): void {
   beforeEach(() => {
-    cy.intercept("**/api/companies?**", mockDataSearchStoredCompanyArray);
-    cy.intercept("**/api/companies/meta-information", mockDataSearchStoredCompanyArray[0].dataRegisteredByDataland[0]);
+    cy.intercept("**/api/companies?**", mockDataSearchResponse);
+    cy.intercept("**/api/companies/meta-information", {});
   });
 
   /**
-   * Method to check the existence and the functionality of the Request Data button after it has been ensured that only
-   * one button of this kind can be visible at all (via data table entry)
-   * @param keycloakMock Keycloak settings for the mock, especially containing user roles
+   * Method to check the existence and the redirect-functionality of the Request Data button
+   * @param keycloakMock to be used for the login status
    */
   function verifyExistenceAndFunctionalityOfRequestDataButton(keycloakMock: Keycloak): void {
-    cy.mountWithPlugins<typeof SearchCompaniesForFrameworkData>(SearchCompaniesForFrameworkData, {
+    cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
     }).then((mounted) => {
-      void mounted.wrapper.setData({
-        resultArray: mockDataSearchStoredCompanyArray,
-      });
       cy.wait(500);
       cy.get("button").contains("Request Data").should("exist").click({ force: true });
       cy.wrap(mounted.component).its("$route.path").should("eq", "/requests");
     });
   }
 
+  it("Check static layout of the search page", function () {
+    cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
+      keycloak: minimalKeycloakMock({}),
+    }).then(() => {
+      const placeholder = "Search company by name or PermID";
+      const inputValue = "A company name";
+      cy.get("input[id=search_bar_top]")
+        .should("not.be.disabled")
+        .type(inputValue)
+        .should("have.value", inputValue)
+        .invoke("attr", "placeholder")
+        .should("contain", placeholder);
+    });
+  });
+
+  it("Check correct behaviour of search bar when scrolling", { scrollBehavior: false }, function () {
+    cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
+      keycloak: minimalKeycloakMock({}),
+    }).then(() => {
+      verifySearchResultTableExists();
+      cy.get("button[name=search_bar_collapse]").should("not.be.visible");
+
+      cy.scrollTo(0, 500, { duration: 200 });
+      cy.get("input[id=search_bar_top]").should("exist");
+      cy.get("button[name=search_bar_collapse]").should("be.visible");
+
+      cy.scrollTo(0, 0, { duration: 200 });
+      cy.get("input[id=search_bar_top]").should("exist");
+      cy.get("button[name=search_bar_collapse]").should("not.be.visible");
+
+      cy.scrollTo(0, 500, { duration: 200 });
+      cy.get("button[name=search_bar_collapse]").should("exist").click();
+      cy.get("input[id=search_bar_top]").should("not.exist");
+      cy.get("input[id=search_bar_scrolled]").should("exist");
+      cy.get("button[name=search_bar_collapse]").should("not.be.visible");
+
+      cy.scrollTo(0, 480, { duration: 200 });
+      cy.get("button[name=search_bar_collapse]").should("be.visible");
+      cy.get("input[id=search_bar_top]").should("exist");
+      cy.get("input[id=search_bar_scrolled]").should("not.exist");
+    });
+  });
+
+  it(
+    "Scroll the page to type into the search bar in different states and check if the input is always saved",
+    { scrollBehavior: false },
+    () => {
+      cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
+        keycloak: minimalKeycloakMock({}),
+      }).then(() => {
+        const inputValue1 = "ABCDEFG";
+        const inputValue2 = "XYZ";
+        verifySearchResultTableExists();
+        cy.get("input[id=search_bar_top]").type(inputValue1);
+        cy.scrollTo(0, 500, { duration: 200 });
+        cy.get("button[name=search_bar_collapse]").click();
+        cy.get("input[id=search_bar_scrolled]").should("have.value", inputValue1).type(inputValue2);
+        cy.scrollTo(0, 0, { duration: 200 });
+        cy.get("input[id=search_bar_top]").should("have.value", inputValue1 + inputValue2);
+      });
+    },
+  );
+
   it("Check that the 'Request Data' button exists and works as expected for a data reader", () => {
     const keycloakMock = minimalKeycloakMock({});
     verifyExistenceAndFunctionalityOfRequestDataButton(keycloakMock);
   });
 
-  it("Check that the 'Request Data' button exists and works as expected when the 'New Dataset' button is also present", () => {
+  it("Check that the 'Request Data' button exists and works as expected for uploaders and reviewers", () => {
     const keycloakMock = minimalKeycloakMock({
       roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_REVIEWER],
     });

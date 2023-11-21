@@ -47,7 +47,7 @@ describeIf(
               "2021",
               p2pFixtureForTest.t,
             ).then((dataMetaInformation) => {
-              cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
+              cy.intercept("**/api/companies/" + storedCompany.companyId + "/info").as("getCompanyInformation");
               cy.visitAndCheckAppMount(
                 "/companies/" +
                   storedCompany.companyId +

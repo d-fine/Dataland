@@ -6,7 +6,7 @@ describe("As a user, I expect the sample page to be functional and reachable wit
       .as("getTeaserCompanies")
       .intercept("**/api/metadata*")
       .as("getMetaDataOfFirstTeaserCompany")
-      .intercept("**/api/companies/*")
+      .intercept("**/api/companies/**")
       .as("getCompanyById")
       .intercept("**/api/data/**")
       .as("getDataById");

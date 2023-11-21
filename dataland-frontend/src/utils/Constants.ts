@@ -28,8 +28,6 @@ export const TIME_BEFORE_REFRESH_TOKEN_EXPIRY_TO_DISPLAY_SESSION_WARNING_IN_MS =
 
 export const TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS = 2000;
 
-export const UPLOAD_FILE_SIZE_DISPLAY_DECIMALS = 2;
-
 // Same as standard for Windows machines. File name can't have one of the special characters <>:"|?/*\
 // and shouldn't start or end with a whitespace or end with the special character .
 export const REGEX_FOR_FILE_NAMES = /^[^<>:"|?/*\\\s][^<>:"|?/*\\]{0,252}[^<>:"|?/*\\.\s]$/;

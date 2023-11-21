@@ -2,6 +2,8 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.AggregatedFrameworkDataSummary
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -10,23 +12,19 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.UUID
+import java.lang.Thread.sleep
+import java.util.*
 
 class CompanyDataControllerTest {
 
     private val apiAccessor = ApiAccessor()
     private val baseCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithRandomIdentifiers(1).first()
-    private val company2 = "Company 2"
-    private val company3 = "Company 3"
-    private val company5 = "Company 5"
-    private val company6 = "Company 6"
-    private val company8 = "Company 8"
-    private val company9 = "Company 9"
+    private val checkOtherCompanyTrue = "Other Company true"
+    private val checkOtherCompanyFalse = "Other Company false"
 
     @Test
     fun `post a dummy company and check if post was successful`() {
@@ -317,47 +315,98 @@ class CompanyDataControllerTest {
     @Test
     fun `check if the new companies search via name and ids endpoint works as expected`() {
         val testString = "unique-test-string-${UUID.randomUUID()}"
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         uploadCompaniesInReverseToExpectedOrder(testString)
+        sleep(2000)
         val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
             searchString = testString,
         ).map { it.companyName }
         assertEquals(
-            listOf(testString, company2, "${testString}2", company5, company6, "3$testString", company9),
-            sortedCompanyNames.filter { it != company8 && it != company3 },
+            listOf("$testString true", checkOtherCompanyTrue, "$testString none"),
+            sortedCompanyNames.filter { it.contains("none") || it.contains("true") },
         )
         assertEquals(
-            listOf(company3, company2, "${testString}2", company5, company6, company8, company9),
-            sortedCompanyNames.filter { it != "3$testString" && it != testString },
+            listOf("$testString true", checkOtherCompanyTrue, "$testString false"),
+            sortedCompanyNames.filter { it.contains("$testString false") || it.contains("true") },
         )
-
-        val otherCompanyNames = apiAccessor.companyDataControllerApi.getCompaniesBySearchString(
-            searchString = "other_name",
-        ).map { it.companyName }
-        assertTrue(otherCompanyNames.contains(company8))
-        assertFalse(otherCompanyNames.contains("Company 7"))
+        assertEquals(
+            listOf("$testString true", checkOtherCompanyTrue, checkOtherCompanyFalse),
+            sortedCompanyNames.filter { it.contains(checkOtherCompanyFalse) || it.contains("true") },
+        )
     }
 
     private fun uploadCompaniesInReverseToExpectedOrder(expectedSearchString: String) {
-        uploadModifiedBaseCompany(company9, null, "3$expectedSearchString")
-        uploadModifiedBaseCompany(company8, listOf("3$expectedSearchString", "other_name"), null)
-        uploadModifiedBaseCompany("3$expectedSearchString", null, null)
-        uploadModifiedBaseCompany(company6, null, "${expectedSearchString}2")
-        uploadModifiedBaseCompany(company5, listOf("${expectedSearchString}2"), null)
-        uploadModifiedBaseCompany("${expectedSearchString}2", null, null)
-        uploadModifiedBaseCompany(company3, null, expectedSearchString)
-        uploadModifiedBaseCompany(company2, listOf(expectedSearchString), null)
-        uploadModifiedBaseCompany(expectedSearchString, null, null)
+        uploadModifiedBaseCompany("$expectedSearchString none", null)
+        var companyId = uploadModifiedBaseCompany("$expectedSearchString false", null)
+        uploadDummyDataset(companyId = companyId, bypassQa = false)
+        companyId = uploadModifiedBaseCompany("$expectedSearchString true", null)
+        uploadDummyDataset(companyId = companyId, bypassQa = true)
+        companyId = uploadModifiedBaseCompany(checkOtherCompanyFalse, listOf("1${expectedSearchString}2"))
+        uploadDummyDataset(companyId = companyId, bypassQa = false)
+        companyId = uploadModifiedBaseCompany(checkOtherCompanyTrue, listOf("1${expectedSearchString}2"))
+        uploadDummyDataset(companyId = companyId, bypassQa = true)
     }
 
-    private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?, identifier: String?) {
+    private fun uploadModifiedBaseCompany(name: String, alternativeNames: List<String>?): String {
         val companyInformation = baseCompanyInformation.copy(
             companyName = name,
             companyAlternativeNames = alternativeNames,
             identifiers = mapOf(
-                IdentifierType.isin.value to listOf(identifier ?: UUID.randomUUID().toString()),
+                IdentifierType.isin.value to listOf(UUID.randomUUID().toString()),
             ),
         )
-        apiAccessor.companyDataControllerApi.postCompany(companyInformation)
+        return apiAccessor.companyDataControllerApi.postCompany(companyInformation).companyId
+    }
+
+    val dummyCompanyAssociatedDataWithoutCompanyId = CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+        companyId = "placeholder",
+        reportingPeriod = "placeholder",
+        data = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first(),
+    )
+    private fun uploadDummyDataset(companyId: String, reportingPeriod: String = "default", bypassQa: Boolean = false) {
+        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+            dummyCompanyAssociatedDataWithoutCompanyId.copy(companyId = companyId, reportingPeriod = reportingPeriod),
+            bypassQa,
+        )
+    }
+
+    @Test
+    fun `counts the number of datasets for a company`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val companyId = uploadModifiedBaseCompany("AggregatedInformation", null)
+        uploadDummyDataset(companyId = companyId, reportingPeriod = "2022", bypassQa = true)
+        uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
+        sleep(100)
+        val expectedMap = mapOf(
+            DataTypeEnum.eutaxonomyMinusFinancials.toString() to AggregatedFrameworkDataSummary(
+                numberOfProvidedReportingPeriods = 0,
+            ),
+            DataTypeEnum.eutaxonomyMinusNonMinusFinancials.toString() to AggregatedFrameworkDataSummary(
+                numberOfProvidedReportingPeriods = 2,
+            ),
+            DataTypeEnum.lksg.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
+            DataTypeEnum.p2p.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
+            DataTypeEnum.sfdr.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
+            DataTypeEnum.sme.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
+        )
+        val aggregatedFrameworkDataSummary = apiAccessor.companyDataControllerApi.getAggregatedFrameworkDataSummary(
+            companyId = companyId,
+        )
+        assertEquals(
+            expectedMap,
+            aggregatedFrameworkDataSummary,
+        )
+    }
+
+    @Test
+    fun `post a dummy company and check if it can be retrieved by the companiesInfo endpoint`() {
+        val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val expectedCompanyInformation = uploadInfo.inputCompanyInformation
+        assertEquals(
+            expectedCompanyInformation,
+            apiAccessor.companyDataControllerApi.getCompanyInfo(uploadInfo.actualStoredCompany.companyId),
+            "Dataland does not contain the posted company.",
+        )
     }
 }

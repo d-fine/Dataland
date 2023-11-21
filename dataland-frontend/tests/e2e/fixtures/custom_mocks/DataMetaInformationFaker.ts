@@ -7,7 +7,7 @@ import { range } from "@/utils/ArrayUtils";
  * Generates a list of data meta information for some data types
  * @returns a lost of data meta information
  */
-export function generateListOfMetaInformationForOneCompany(): DataMetaInformation[] {
+export function generateMetaInfoDataForOneCompany(): DataMetaInformation[] {
   const listOfMetaInfo: DataMetaInformation[] = [];
   const metaInfoGenerator = new DataMetaInformationGenerator();
   const companyId = faker.string.uuid();
