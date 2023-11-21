@@ -17,7 +17,7 @@ class IsinDeltaBuilder {
      * @param newMappingFile latest version of the LEI-ISIN mapping file
      * @param oldMappingFile previously stored version of the LEI-ISIN mapping file, if one exists
      */
-    fun createDeltaOfMappingFile(newMappingFile: File, oldMappingFile: File?): Map<String, String> {
+    fun createDeltaOfMappingFile(newMappingFile: File, oldMappingFile: File?): Map<String, List<String>> {
         val newMapping = parseCsvToGroupedMap(newMappingFile)
         if (oldMappingFile == null) {
             return newMapping
@@ -33,10 +33,10 @@ class IsinDeltaBuilder {
      * @return map of changed LEI-ISINs
      */
     private fun findLeisWithUpdatedIsin(
-        newMapping: Map<String, String>,
-        oldMapping: Map<String, String>,
-    ): Map<String, String> {
-        val deltaMapping = mutableMapOf<String, String>()
+        newMapping: Map<String, List<String>>,
+        oldMapping: Map<String, List<String>>,
+    ): Map<String, List<String>> {
+        val deltaMapping = mutableMapOf<String, List<String>>()
 
         for ((lei, newIsins) in newMapping) {
             val oldIsins = oldMapping[lei]
@@ -50,21 +50,20 @@ class IsinDeltaBuilder {
 
     /**
      * Coverts CSV file to a LEI-ISIN map, while also aggregating all ISINs of a specific
-     * LEI into one comma-separated string
+     * LEI into a list
      * @param csvFile the file to be parsed
      * @return map of LEI-ISINs
      */
-    private fun parseCsvToGroupedMap(csvFile: File): Map<String, String> {
+    private fun parseCsvToGroupedMap(csvFile: File): Map<String, List<String>> {
         val csvMapper = CsvMapper()
         csvMapper.registerModule(kotlinModule())
 
         val csvSchema = CsvSchema.builder()
-            .addColumn("LEI")
-            .addColumn("ISIN")
+            .addColumn("LEI_ISIN", CsvSchema.ColumnType.STRING)
             .setUseHeader(true)
             .build()
 
-        val mappings = mutableMapOf<String, StringBuilder>()
+        val mappings = mutableMapOf<String, MutableList<String>>()
 
         val csvParser = csvMapper
             .readerFor(Map::class.java)
@@ -72,18 +71,23 @@ class IsinDeltaBuilder {
             .readValues<Map<String, String>>(csvFile)
 
         csvParser.forEach { entry ->
-            val lei = entry["LEI"]
-            val isin = entry["ISIN"]
+            val data = entry["LEI_ISIN"]
+            println("Data: $data") // Add this line for debugging
+            if (data != null) {
+                val values = data.split(",")
+                if (values.size == 2) {
+                    val lei = values[0].trim()
+                    val isin = values[1].trim()
 
-            if (lei != null && isin != null && mappings.containsKey(lei)) {
-                mappings[lei]?.append(",")
-                mappings[lei]?.append(isin)
-            }
-            if (lei != null && isin != null && !mappings.containsKey(lei)) {
-                mappings[lei] = StringBuilder(isin)
+                    if (mappings.containsKey(lei)) {
+                        mappings[lei]?.add(isin)
+                    } else {
+                        mappings[lei] = mutableListOf(isin)
+                    }
+                }
             }
         }
 
-        return mappings.mapValues { it.value.toString() }
+        return mappings
     }
 }

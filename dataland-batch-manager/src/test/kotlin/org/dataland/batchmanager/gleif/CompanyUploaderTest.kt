@@ -53,11 +53,11 @@ class CompanyUploaderTest {
 
     @Test
     fun `check that the upload of delta mappings calls correct function as intended`() {
-        val deltaMap = mutableMapOf<String, String>()
-        deltaMap.put("1000", "1111,1112,1113")
-        deltaMap.put("3000", "3333")
-        deltaMap.put("4000", " ")
-        deltaMap.put("5000", "5555")
+        val deltaMap = mutableMapOf<String, List<String>>()
+        deltaMap["1000"] = listOf("1111", "1112", "1113")
+        deltaMap["3000"] = listOf("3333")
+        deltaMap["4000"] = emptyList()
+        deltaMap["5000"] = listOf("5555")
         val companyList = mutableListOf<CompanyIdAndName>(CompanyIdAndName("testId", "testId"))
         val testIdentifier = mapOf<String, List<String>>("test" to listOf<String>("test"))
         val testCompany: StoredCompany = mock(StoredCompany::class.java)
@@ -71,8 +71,8 @@ class CompanyUploaderTest {
         companyUploader.updateIsinMapping(deltaMap)
 
         val compIdentifiers = mapOf<String, List<String>>(
-            "test" to listOf<String>("test"),
-            "isin" to listOf<String>("1111", "1112", "1113"),
+            "test" to listOf("test"),
+            "isin" to listOf("1111", "1112", "1113"),
         )
         val compPatch = CompanyInformationPatch(
             companyName = null, companyAlternativeNames = null, companyLegalForm = null,

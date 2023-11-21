@@ -134,11 +134,10 @@ class CompanyUploader(
      * @param leiIsinMapping the delta-map with the format "LEI"->"ISIN1,ISIN2,..."
      */
     fun updateIsinMapping(
-        leiIsinMapping: Map<String, String>,
+        leiIsinMapping: Map<String, List<String>>,
     ) {
         retryOnCommonApiErrors {
-            for ((lei, isins) in leiIsinMapping) {
-                val isinList = isins.split(",").map { it.trim() }
+            for ((lei, isinList) in leiIsinMapping) {
                 val companies = companyDataControllerApi.getCompaniesBySearchString(lei)
                 if (companies.isNotEmpty()) {
                     val companyId = companies.first().companyId
