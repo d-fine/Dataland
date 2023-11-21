@@ -43,7 +43,7 @@ class GleifApiAccessor(
      */
     fun getFullIsinMappingFile(targetFile: File) {
         logger.info("Successfully acquired download link for mapping")
-        val tempZipFile = File.createTempFile("gleif_mapping_update", ".zip")
+        val tempZipFile = File("gleif_mapping_update.zip")
         downloadFile(URL(isinMappingReferenceUrl), tempZipFile)
         FileUtils.copyFile(getCsvFileFromZip(tempZipFile), targetFile)
         if (!tempZipFile.delete()) {
@@ -56,7 +56,7 @@ class GleifApiAccessor(
      * @param zipFile the zip file
      * @return CSV file inside Zip file
      */
-    private fun getCsvFileFromZip(zipFile: File): File {
+    fun getCsvFileFromZip(zipFile: File): File {
         val csvFile = File.createTempFile("gleif_mapping_update", ".csv")
         val zipInputStream = ZipInputStream(zipFile.inputStream())
         val zipEntry = zipInputStream.nextEntry
@@ -74,7 +74,7 @@ class GleifApiAccessor(
         logger.info("Download of $fileDescription completed.")
     }
 
-    private fun downloadFile(url: URL, targetFile: File) {
+    fun downloadFile(url: URL, targetFile: File) {
         var counter = 0
         while (counter < MAX_RETRIES) {
             try {

@@ -10,13 +10,16 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockedStatic
+import org.mockito.Mockito.mock
 import org.mockito.Mockito.mockStatic
 import org.mockito.Mockito.reset
 import org.mockito.Mockito.times
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import java.io.File
 import java.io.FileNotFoundException
 import java.net.SocketException
+import java.net.URL
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class GleifApiAccessorTest {
@@ -65,5 +68,22 @@ class GleifApiAccessorTest {
         `when`(FileUtils.copyURLToFile(any(), any())).thenAnswer { }
         GleifApiAccessor(dummyUrl, dummyUrl).getFullIsinMappingFile(File("test"))
         mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(1))
+    }
+
+    @Test
+    fun `test for LEI ISIN mapping if unzip works and csv emerges`() {
+        val providedTetstFile = File("testApiAccessor.zip")
+        val gleifApiAccessorMock = mock(GleifApiAccessor::class.java)
+
+        `when`(
+            gleifApiAccessorMock.downloadFile(
+                URL("https://mapping.gleif.org/api/v2/isin-lei/latest/download"),
+                File("gleif_mapping_update.zip"),
+            ),
+        )
+            .then { providedTetstFile.copyTo(File("testApiAccessor.zip")) }
+
+        gleifApiAccessorMock.getFullIsinMappingFile(File("testTargetFile.csv"))
+        verify(gleifApiAccessorMock).getCsvFileFromZip(File("gleif_mapping_update.zip"))
     }
 }
