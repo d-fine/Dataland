@@ -2,20 +2,10 @@ package org.dataland.batchmanager.service
 
 import org.apache.commons.io.FileUtils
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.*
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockedStatic
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.mockStatic
-import org.mockito.Mockito.reset
-import org.mockito.Mockito.times
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import java.io.File
 import java.io.FileNotFoundException
 import java.net.SocketException
@@ -61,29 +51,23 @@ class GleifApiAccessorTest {
         mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(1))
     }
 
-    @Disabled
-    @Test
-    fun `test if download LEI ISIN mapping works fine under the right conditions`() {
-//        fails atm because the .split in .getIsinMappingFile() does not do what it prob should be doing
-        `when`(FileUtils.copyURLToFile(any(), any())).thenAnswer { }
-        GleifApiAccessor(dummyUrl, dummyUrl).getFullIsinMappingFile(File("test"))
-        mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(1))
-    }
-
     @Test
     fun `test for LEI ISIN mapping if unzip works and csv emerges`() {
-        val providedTetstFile = File("testApiAccessor.zip")
-        val gleifApiAccessorMock = mock(GleifApiAccessor::class.java)
+        val providedTestFile = File(javaClass.getResource("/testApiAccessor.zip")!!.path)
+        val zipFile = File("gleif_mapping_update.zip")
+        val url = URL("https://mapping.gleif.org/api/v2/isin-lei/latest/download")
+        val gleifApiAccessorMock = spy(GleifApiAccessor(dummyUrl, dummyUrl))
 
         `when`(
             gleifApiAccessorMock.downloadFile(
-                URL("https://mapping.gleif.org/api/v2/isin-lei/latest/download"),
-                File("gleif_mapping_update.zip"),
-            ),
-        )
-            .then { providedTetstFile.copyTo(File("testApiAccessor.zip")) }
+                any()?:url,
+                any()?:zipFile,
+                ),
+            )
+                .then { providedTestFile.copyTo(it.arguments[1] as File, true) }
 
-        gleifApiAccessorMock.getFullIsinMappingFile(File("testTargetFile.csv"))
-        verify(gleifApiAccessorMock).getCsvFileFromZip(File("gleif_mapping_update.zip"))
+        val tempCsvFile = File.createTempFile("gleif_mapping_update", ".csv")
+        gleifApiAccessorMock.getFullIsinMappingFile(tempCsvFile)
+        Assertions.assertEquals("1111,2222", tempCsvFile.readText())
     }
 }

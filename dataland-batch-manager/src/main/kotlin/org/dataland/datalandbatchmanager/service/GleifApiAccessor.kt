@@ -43,9 +43,9 @@ class GleifApiAccessor(
      */
     fun getFullIsinMappingFile(targetFile: File) {
         logger.info("Successfully acquired download link for mapping")
-        val tempZipFile = File("gleif_mapping_update.zip")
+        val tempZipFile = File.createTempFile("gleif_mapping_update", ".zip")
         downloadFile(URL(isinMappingReferenceUrl), tempZipFile)
-        FileUtils.copyFile(getCsvFileFromZip(tempZipFile), targetFile)
+        getCsvFileFromZip(tempZipFile).copyTo(targetFile, true)
         if (!tempZipFile.delete()) {
             logger.error("Unable to delete file $tempZipFile")
         }
@@ -63,7 +63,7 @@ class GleifApiAccessor(
         require(zipEntry?.name?.endsWith(".csv") ?: false) {
             "The downloaded ZIP file does not contain the CSV file in the first position"
         }
-        FileUtils.copyInputStreamToFile(zipInputStream, csvFile)
+        csvFile.writeBytes(zipInputStream.readBytes())
         return csvFile
     }
 
