@@ -29,7 +29,7 @@
               :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
               step="any"
               min="0"
-              :validation="valueType === 'percent' ? 'number|between:0,100' : 'number'"
+              validation="number"
               :inner-class="{
                 short: false,
               }"
@@ -71,7 +71,7 @@
           :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
           step="any"
           min="0"
-          :validation="valueType === 'percent' ? 'number|between:0,100' : 'number'"
+          validation="number"
           :inner-class="{
             short: true,
           }"
