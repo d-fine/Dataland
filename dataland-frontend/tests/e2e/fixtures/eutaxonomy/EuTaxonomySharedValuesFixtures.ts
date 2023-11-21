@@ -1,6 +1,6 @@
 import { type EuTaxonomyDataForFinancials, type EuTaxonomyGeneral } from "@clients/backend";
 import { generateYesNoNa, generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
-import { generateAssuranceData } from "./AssuranceDataFixture";
+import { generateAssuranceDatapoint } from "./AssuranceDataFixture";
 import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
 import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
 import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
@@ -22,7 +22,7 @@ export function generateEuTaxonomyWithBaseFields(
     fiscalYearEnd: valueOrNull(generatePastDate(), nullProbability),
     numberOfEmployees: valueOrNull(generateInt(100000), nullProbability),
     referencedReports: referencedReports,
-    assurance: generateAssuranceData(referencedReports),
+    assurance: generateAssuranceDatapoint(referencedReports, nullProbability),
     scopeOfEntities: valueOrNull(generateYesNoNa(), nullProbability),
     nfrdMandatory: valueOrNull(generateYesNo(), nullProbability),
     euTaxonomyActivityLevelReporting: valueOrNull(generateYesNo(), nullProbability),

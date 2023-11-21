@@ -17,6 +17,8 @@ export interface MLDTCellConfig<FrameworkDataType> {
   shouldDisplay: (dataset: FrameworkDataType) => boolean;
   valueGetter: (dataset: FrameworkDataType) => AvailableMLDTDisplayObjectTypes;
   explanation?: string;
+  class?: string;
+  name?: string;
 }
 
 export interface MLDTSectionConfig<FrameworkDataType> {
@@ -27,6 +29,7 @@ export interface MLDTSectionConfig<FrameworkDataType> {
   children: MLDTConfig<FrameworkDataType>;
   labelBadgeColor?: BadgeColor;
   areThisSectionAndAllParentSectionsDisplayedForTheDataset?: (dataset: FrameworkDataType) => boolean;
+  name?: string;
 }
 
 /**

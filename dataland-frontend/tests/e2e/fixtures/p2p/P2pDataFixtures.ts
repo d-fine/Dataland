@@ -17,7 +17,8 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
 import { generateFixtureDataset, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { faker } from "@faker-js/faker";
-import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
+import { FrameworkGenerator } from "@e2e/utils/FrameworkFakeFixtureUtils";
 import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { DriveMixType } from "@/api-models/DriveMixType";
 
@@ -63,7 +64,7 @@ function generateP2pData(nullProbability = DEFAULT_PROBABILITY, toggleRandomSect
   };
 }
 
-class P2pGenerator extends Generator {
+class P2pGenerator extends FrameworkGenerator {
   sectors: Array<P2pSector>;
 
   constructor(nullProbability = DEFAULT_PROBABILITY, toggleRandomSectors = true) {
