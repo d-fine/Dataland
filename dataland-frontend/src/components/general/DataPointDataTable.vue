@@ -52,7 +52,6 @@ export default defineComponent({
     const dialogRefData = dialogRefToDisplay.data as {
       dataPointDisplay: DataPointDisplay;
     };
-    console.log(dialogRefData.dataPointDisplay);
     this.dataPointDisplay = dialogRefData.dataPointDisplay;
   },
   computed: {

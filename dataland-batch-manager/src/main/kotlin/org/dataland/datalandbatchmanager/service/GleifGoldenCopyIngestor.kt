@@ -123,11 +123,12 @@ class GleifGoldenCopyIngestor(
         waitForBackend()
         val start = System.nanoTime()
         downloadFile(newMappingFile)
-        val deltaMapping: Map<String, List<String>> = if (!savedMappingFile.exists() || savedMappingFile.length() == 0L) {
-            isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
-        } else {
-            isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedMappingFile)
-        }
+        val deltaMapping: Map<String, List<String>> =
+            if (!savedMappingFile.exists() || savedMappingFile.length() == 0L) {
+                isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
+            } else {
+                isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedMappingFile)
+            }
         replaceOldMappingFile(newMappingFile)
         companyUploader.updateIsinMapping(deltaMapping)
 

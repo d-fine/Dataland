@@ -96,7 +96,9 @@ sonar {
                 "dataland-frontend/src/components/forms/parts/elements/derived/ActivityTree.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
-                "EuTaxonomyForNonFinancialsDisplayDataModel.ts",
+                "EuTaxonomyForNonFinancialsDisplayDataModel.ts," +
+                "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
+                "configForEutaxonomyFinancialsMLDT.ts",
 
         )
         property(

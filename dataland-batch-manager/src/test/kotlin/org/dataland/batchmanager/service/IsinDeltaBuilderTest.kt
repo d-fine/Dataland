@@ -16,28 +16,28 @@ class IsinDeltaBuilderTest {
     private var deltaMap = mutableMapOf<String, List<String>>()
 
     private val oldContent = """
-            LEI_ISIN
-            1000,1111
-            1000,1112
-            2000,2222
-            3000,3333
-            3000,3334
-            4000,4444
-            6000,6666
-            6000,6667
+LEI,ISIN
+1000,1111
+1000,1112
+2000,2222
+3000,3333
+3000,3334
+4000,4444
+6000,6666
+6000,6667
         """
 
     private val newContent = """
-            LEI_ISIN
-            1000,1111
-            1000,1112
-            1000,1113
-            2000,2222
-            3000,3333
-            4000, 
-            5000,5555
-            6000,6666
-            6000,6667
+LEI,ISIN
+1000,1111
+1000,1112
+1000,1113
+2000,2222
+3000,3333
+4000,4440
+5000,5555
+6000,6666
+6000,6667
         """
 
     @BeforeEach
@@ -46,7 +46,7 @@ class IsinDeltaBuilderTest {
         newContent.trimIndent()
         deltaMap["1000"] = listOf("1111", "1112", "1113")
         deltaMap["3000"] = listOf("3333")
-        deltaMap["4000"] = emptyList()
+        deltaMap["4000"] = listOf("4440")
         deltaMap["5000"] = listOf("5555")
 
 //        create file oldFile

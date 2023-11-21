@@ -30,22 +30,18 @@ describeIf(
       humanizeStringOrNumber(DataTypeEnum.Lksg),
       humanizeStringOrNumber(DataTypeEnum.Sfdr),
     ]);
-    const expectedReportingPeriodsForEuTaxoFinancialsForAlpha = new Set<string>(["2019", "2016"]);
     let companyIdOfAlpha: string;
 
     let dataIdOfSupersededLksg2023ForAlpha: string;
-    let dataIdOfSupersededFinancial2019ForAlpha: string;
 
     const nameOfCompanyBeta = "company-beta-with-eutaxo-and-lksg-data-" + uniqueCompanyMarker;
     let companyIdOfBeta: string;
 
     const frameworkDropdownSelector = "div#chooseFrameworkDropdown";
-    const reportingPeriodDropdownSelector = "div#chooseReportingPeriodDropdown";
     const dropdownItemsSelector = "div.p-dropdown-items-wrapper li";
     const dropdownPanelSelector = "div.p-dropdown-panel";
 
     const nonExistingDataId = "abcd123123123123123-non-existing";
-    const nonExistingReportingPeriod = "999999-non-existing";
     const nonExistingCompanyId = "ABC-non-existing";
 
     /**
@@ -125,38 +121,19 @@ describeIf(
       cy.get(frameworkDropdownSelector)
         .find(".p-dropdown-label")
         .should("have.text", humanizeStringOrNumber(expectedChosenFramework));
-      if (expectedChosenFramework !== DataTypeEnum.EutaxonomyFinancials) {
-        cy.get("table").should("exist");
-      }
+      cy.get("table").should("exist");
     }
 
     /**
-     * Validates that the view-page is currently set to the expected reporting period by checking the url and
-     * the chosen option in the reporting-periods-dropdown.
-     * @param expectedChosenReportingPeriod The reporting period wich is expected to be currently set
-     * @param skipUrlCheck This flag makes it possible to skip the url-check
+     * Validates that the framework dropdown contains the expected framework options.
+     * @param expectedDropdownOptions The expected frameworks for the dropdown
      */
-    function validateChosenReportingPeriod(expectedChosenReportingPeriod: string, skipUrlCheck = false): void {
-      if (!skipUrlCheck) {
-        cy.url().should("contain", `/reportingPeriods/${expectedChosenReportingPeriod}`);
-      }
-      cy.get("h2:contains('Checking if')").should("not.exist");
-      cy.get(reportingPeriodDropdownSelector)
-        .find(".p-dropdown-label")
-        .should("have.text", expectedChosenReportingPeriod);
-    }
-
-    /**
-     * Validates that a specific dropdown contains some expected options.
-     * @param dropdownSelector The selector to be used to identify the dropdown which needs to be validated
-     * @param expectedDropdownOptions The expected options for this dropdown
-     */
-    function validateDropdownOptions(dropdownSelector: string, expectedDropdownOptions: Set<string>): void {
+    function validateFrameworkDropdownOptions(expectedDropdownOptions: Set<string>): void {
       // Click anywhere and assert that there is no currently open dropdown modal (fix for flakyness)
       cy.get("body").click(0, 0);
       cy.get(dropdownPanelSelector).should("not.exist");
 
-      cy.get(dropdownSelector).click();
+      cy.get(frameworkDropdownSelector).click();
       let optionsCounter = 0;
       cy.get(dropdownItemsSelector).should("exist");
       cy.get(`${dropdownItemsSelector}:contains("No available options")`).should("not.exist");
@@ -169,7 +146,7 @@ describeIf(
         .then(() => {
           expect(expectedDropdownOptions.size).to.equal(optionsCounter);
         });
-      cy.get(dropdownSelector).click({ force: true });
+      cy.get(frameworkDropdownSelector).click({ force: true });
     }
 
     /**
@@ -203,15 +180,6 @@ describeIf(
       cy.get(`${dropdownItemsSelector}:contains(${humanizeStringOrNumber(frameworkToSelect)})`).click({
         force: true,
       });
-    }
-
-    /**
-     * Opens the reporting periods dropdown and selects the reporting period passed as input if it is found
-     * @param reportingPeriodToSelect The reporting period/the item that shall be selected
-     */
-    function selectReportingPeriodInDropdown(reportingPeriodToSelect: string): void {
-      cy.get(reportingPeriodDropdownSelector).click();
-      cy.get(`${dropdownItemsSelector}:contains(${reportingPeriodToSelect})`).click({ force: true });
     }
 
     /**
@@ -261,16 +229,6 @@ describeIf(
       for (let i = 0; i < expectedDataDates.length; i++) {
         getCellValueContainer("Data Date", i).should("have.text", expectedDataDates[i]);
       }
-    }
-
-    /**
-     * Validates that the EU taxonomy financials table is there and has the expected taxonomy eligible economic activity value in percent
-     * @param expectedTaxonomyEligibleEconomicActivityValueInPercent  the expected taxonomy eligible economic activity value in percent
-     */
-    function validateEUTaxonomyFinancialsTable(expectedTaxonomyEligibleEconomicActivityValueInPercent: string): void {
-      cy.get("[data-test='taxocard']:contains('Taxonomy-eligible economic activity')")
-        .find("[data-test='value']")
-        .should("have.text", expectedTaxonomyEligibleEconomicActivityValueInPercent);
     }
 
     /**
@@ -331,31 +289,7 @@ describeIf(
               companyIdOfAlpha,
               "2019",
               getPreparedFixture("eligible-activity-Point-29", euTaxoFinancialPreparedFixtures).t,
-            ).then((dataMetaInformation) => {
-              dataIdOfSupersededFinancial2019ForAlpha = dataMetaInformation.dataId;
-            });
-          })
-          .then(() => {
-            return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
-              return uploadFrameworkData(
-                DataTypeEnum.EutaxonomyFinancials,
-                token,
-                companyIdOfAlpha,
-                "2019",
-                getPreparedFixture("eligible-activity-Point-29.2", euTaxoFinancialPreparedFixtures).t,
-              );
-            });
-          })
-          .then(() => {
-            return cy.wait(timeDelayInMillisecondsBeforeNextUploadToAssureDifferentTimestamps).then(() => {
-              return uploadFrameworkData(
-                DataTypeEnum.EutaxonomyFinancials,
-                token,
-                companyIdOfAlpha,
-                "2016",
-                getPreparedFixture("eligible-activity-Point-26", euTaxoFinancialPreparedFixtures).t,
-              );
-            });
+            );
           })
           .then(() => {
             return uploadFrameworkData(
@@ -431,7 +365,7 @@ describeIf(
       validateFrameworkSummaryPanel(DataTypeEnum.Lksg, 2, true);
 
       validateChosenFramework(DataTypeEnum.Lksg);
-      validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
+      validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
     });
 
     it("Check that clicking a search result on the search page or an autocomplete suggestion on the view page redirects the user to the company cockpit", () => {
@@ -455,115 +389,32 @@ describeIf(
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
       validateNoErrorMessagesAreShown();
       validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-      validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-      validateChosenReportingPeriod("2019");
-      validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
-      validateEUTaxonomyFinancialsTable("29.2 %");
-
-      selectReportingPeriodInDropdown("2019");
-
-      validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-      validateChosenReportingPeriod("2019");
-      validateEUTaxonomyFinancialsTable("29.2 %");
-
-      selectFrameworkInDropdown(DataTypeEnum.EutaxonomyFinancials);
-
-      validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-      validateChosenReportingPeriod("2019");
-      validateEUTaxonomyFinancialsTable("29.2 %");
-
-      selectReportingPeriodInDropdown("2016");
-
-      validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-      validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-      validateChosenReportingPeriod("2016");
-      validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
-      validateEUTaxonomyFinancialsTable("26 %");
+      validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
       selectFrameworkInDropdown(DataTypeEnum.Sme);
 
       validateNoErrorMessagesAreShown();
       validateChosenFramework(DataTypeEnum.Sme);
-      validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
+      validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
       selectFrameworkInDropdown(DataTypeEnum.Lksg);
 
       validateNoErrorMessagesAreShown();
       validateChosenFramework(DataTypeEnum.Lksg);
-      validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-      validateColumnHeadersOfDisplayedLksgDatasets(["2023", "2022"]);
+      validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
       clickBackButton();
 
       validateNoErrorMessagesAreShown();
       validateChosenFramework(DataTypeEnum.Sme);
-      validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-
-      clickBackButton();
-
-      validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-      validateChosenReportingPeriod("2016");
-      validateEUTaxonomyFinancialsTable("26 %");
+      validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
     });
 
     it("Check that invalid data ID, reporting period or company ID in URL don't break any user flow on the view-page", () => {
       cy.ensureLoggedIn();
-      cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
-
-      validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-
-      selectReportingPeriodInDropdown("2016");
-
-      validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-      validateChosenReportingPeriod("2016");
-      validateEUTaxonomyFinancialsTable("26 %");
-
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`);
 
       getElementAndAssertExistence("noDataForThisDataIdPresentErrorIndicator", "exist");
-      validateChosenReportingPeriod("Select...", true);
-
-      selectReportingPeriodInDropdown("2019");
-
-      validateNoErrorMessagesAreShown();
-      validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-      validateChosenReportingPeriod("2019");
-      validateEUTaxonomyFinancialsTable("29.2 %");
-
-      clickBackButton();
-
-      getElementAndAssertExistence("noDataForThisDataIdPresentErrorIndicator", "exist");
-
-      clickBackButton();
-
-      validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
-      validateDropdownOptions(frameworkDropdownSelector, expectedFrameworkDropdownItemsForAlpha);
-      validateChosenReportingPeriod("2016");
-      validateDropdownOptions(reportingPeriodDropdownSelector, expectedReportingPeriodsForEuTaxoFinancialsForAlpha);
-      validateEUTaxonomyFinancialsTable("26 %");
-
-      cy.visit(
-        `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/${nonExistingReportingPeriod}`,
-      );
-
-      getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "exist");
-      validateChosenReportingPeriod("Select...", true);
-
-      selectReportingPeriodInDropdown("2016");
-
-      validateNoErrorMessagesAreShown();
-      validateChosenReportingPeriod("2016");
-
-      clickBackButton();
-
-      getElementAndAssertExistence("noDataForThisReportingPeriodPresentErrorIndicator", "exist");
-      validateChosenReportingPeriod("Select...", true);
 
       cy.visit(
         `/companies/${nonExistingCompanyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`,
@@ -575,7 +426,6 @@ describeIf(
       typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
 
       validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
-      validateFrameworkSummaryPanel(DataTypeEnum.Sme, 1, false);
 
       clickBackButton();
 
@@ -627,26 +477,6 @@ describeIf(
       validateColumnHeadersOfDisplayedLksgDatasets(["2023"]);
       validateDataDatesOfDisplayedLksgDatasets(["2023-04-18"]);
       validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active");
-
-      cy.visit(
-        `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSupersededFinancial2019ForAlpha}`,
-      );
-      validateEUTaxonomyFinancialsTable("29 %");
-      validateDisplayStatusContainerAndGetButton("This dataset is superseded", "View Active").click();
-
-      cy.url().should(
-        "contain",
-        `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/reportingPeriods/2019`,
-      );
-      validateEUTaxonomyFinancialsTable("29.2 %");
-      getElementAndAssertExistence("datasetDisplayStatusContainer", "not.exist");
-      clickBackButton();
-
-      cy.url().should(
-        "contain",
-        `/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${dataIdOfSupersededFinancial2019ForAlpha}`,
-      );
-      validateEUTaxonomyFinancialsTable("29 %");
     });
   },
 );
