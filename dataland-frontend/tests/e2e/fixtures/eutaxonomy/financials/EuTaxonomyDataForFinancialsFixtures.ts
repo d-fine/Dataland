@@ -8,7 +8,8 @@ import {
   type InvestmentFirmKpis,
 } from "@clients/backend";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
+import { FrameworkGenerator } from "@e2e/utils/FrameworkFakeFixtureUtils";
 import { generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 
@@ -24,7 +25,7 @@ export function generateEuTaxonomyDataForFinancials(
   return dataGenerator.generateEuTaxonomyDataForFinancialsWithTypes();
 }
 
-export class EuFinancialsGenerator extends Generator {
+export class EuFinancialsGenerator extends FrameworkGenerator {
   financialServicesTypes = pickSubsetOfElements(Object.values(EuTaxonomyDataForFinancialsFinancialServicesTypesEnum));
 
   /**

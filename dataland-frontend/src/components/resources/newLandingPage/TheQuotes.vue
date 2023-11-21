@@ -12,6 +12,9 @@
       :scroll-screen-width-limit="1800"
       :slide-width="slideWidth"
     >
+      <div role="listitem" class="quotes__slide">
+        <div class="quotes__slide-videoContainer" />
+      </div>
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div class="quotes__slide-videoContainer">
           <iframe
@@ -47,7 +50,7 @@
     </h3>
     <ButtonComponent
       :label="quotesSection.text[0]"
-      buttonType="quotes__button"
+      buttonType="button-component quotes__button"
       ariaLabel="Start your Dataland Journey"
       @click="register"
     />

@@ -9,7 +9,8 @@ import {
   type SmeProductionSite,
 } from "@clients/backend";
 import { generateInt } from "@e2e/fixtures/common/NumberFixtures";
-import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
+import { FrameworkGenerator } from "@e2e/utils/FrameworkFakeFixtureUtils";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateAddress } from "@e2e/fixtures/common/AddressFixtures";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
@@ -82,7 +83,7 @@ export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData 
   };
 }
 
-class SmeGenerator extends Generator {
+class SmeGenerator extends FrameworkGenerator {
   /**
    * Generates a random product
    * @returns a random product

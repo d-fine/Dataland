@@ -23,7 +23,7 @@ function instantiateVueApp(): void {
   const pinia = createPinia();
   pinia.use(
     PiniaSharedState({
-      enable: false,
+      enable: true,
       type: "native",
     }) as PiniaPlugin,
   );

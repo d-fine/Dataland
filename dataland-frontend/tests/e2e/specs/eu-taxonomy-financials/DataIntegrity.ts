@@ -1,232 +1,97 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import {
-  type CompanyInformation,
-  type ExtendedDataPointBigDecimal,
-  DataTypeEnum,
-  type EligibilityKpis,
-  type EuTaxonomyDataForFinancials,
-} from "@clients/backend";
-import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
-import { admin_name, admin_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
+import {
+  Configuration,
+  type DataMetaInformation,
+  DataTypeEnum,
+  type EuTaxonomyDataForFinancials,
+  EuTaxonomyDataForFinancialsControllerApi,
+} from "@clients/backend";
+import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+
+let euTaxonomyFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForFinancials>;
+before(function () {
+  cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
+    const preparedFixturesEuTaxonomyFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
+    euTaxonomyFinancialsFixtureForTest = getPreparedFixture(
+      "company-for-all-types",
+      preparedFixturesEuTaxonomyFinancials,
+    );
+  });
+});
 
 describeIf(
-  "As a user, I expect that the correct data gets displayed depending on the type of the financial company",
+  "As a user, I expect to be able to edit and submit Eu Taxonomy Financials data via the upload form",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
-  function () {
+  function (): void {
     beforeEach(() => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      cy.ensureLoggedIn(admin_name, admin_pw);
     });
 
-    let preparedFixtures: Array<FixtureData<EuTaxonomyDataForFinancials>>;
-
-    before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {
-        preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
-      });
-    });
-
-    /**
-     * Uploads the provided company and dataset to Dataland via the API and navigates to the page of the uploaded
-     * dataset
-     * @param companyInformation the company information to upload
-     * @param testData the dataset to upload
-     * @param reportingPeriod the period associated to the EU Taxonomy data for Financials to upload
-     */
-    function uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
-      companyInformation: CompanyInformation,
-      testData: EuTaxonomyDataForFinancials,
-      reportingPeriod: string,
-    ): void {
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(companyInformation.companyName)).then(
-          (storedCompany) => {
+    it(
+      "Create a company and a Eu Taxonomy Financials dataset via api, then re-upload it with the upload form in Edit mode and " +
+        "assure that the re-uploaded dataset equals the pre-uploaded one",
+      () => {
+        const testCompanyName = "Company-Created-In-Eu-Taxonomy-Financials-Blanket-Test-Company";
+        getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
             return uploadFrameworkData(
               DataTypeEnum.EutaxonomyFinancials,
               token,
               storedCompany.companyId,
-              reportingPeriod,
-              testData,
-            ).then(() => {
+              "2023",
+              euTaxonomyFinancialsFixtureForTest.t,
+              true,
+            ).then((dataMetaInformation) => {
+              cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}/${dataMetaInformation.dataId}`).as(
+                "fetchDataForPrefill",
+              );
               cy.visitAndCheckAppMount(
-                `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
+                "/companies/" +
+                  storedCompany.companyId +
+                  "/frameworks/" +
+                  DataTypeEnum.EutaxonomyFinancials +
+                  "/upload?templateDataId=" +
+                  dataMetaInformation.dataId,
+              );
+              cy.wait("@fetchDataForPrefill", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+              cy.get("h1").should("contain", testCompanyName);
+              cy.intercept({
+                url: `**/api/data/${DataTypeEnum.EutaxonomyFinancials}`,
+                times: 1,
+              }).as("postCompanyAssociatedData");
+              submitButton.clickButton();
+              cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
+                (postInterception) => {
+                  cy.url().should("eq", getBaseUrl() + "/datasets");
+                  const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
+                  return new EuTaxonomyDataForFinancialsControllerApi(new Configuration({ accessToken: token }))
+                    .getCompanyAssociatedEuTaxonomyDataForFinancials(dataMetaInformationOfReuploadedDataset.dataId)
+                    .then((axiosResponse) => {
+                      const frontendSubmittedEuTaxonomyFinancialsDataset = axiosResponse.data
+                        .data as unknown as EuTaxonomyDataForFinancials;
+
+                      frontendSubmittedEuTaxonomyFinancialsDataset.financialServicesTypes?.sort();
+                      euTaxonomyFinancialsFixtureForTest.t.financialServicesTypes?.sort();
+
+                      compareObjectKeysAndValuesDeep(
+                        euTaxonomyFinancialsFixtureForTest.t as unknown as Record<string, object>,
+                        frontendSubmittedEuTaxonomyFinancialsDataset as Record<string, object>,
+                      );
+                    });
+                },
               );
             });
-          },
-        );
-      });
-    }
-
-    /**
-     * Formats a datapoint as a percentage value rounded to a precision of 0.01%.
-     * Returns "No data has been reported" if the datapoint contains no value
-     * @param value the value of the datapoint to format as a percentage
-     * @returns the formatted string
-     */
-    function formatPercentNumber(value?: ExtendedDataPointBigDecimal | null): string {
-      if (value === undefined || value === null || value.value === undefined || value.value === null)
-        return "No data has been reported";
-      return (Math.round(value.value * 100) / 100).toString();
-    }
-
-    /**
-     * Verifies that the frontend correctly displays eligibilityKPIs for a specific company type
-     * @param financialCompanyType the company type to check
-     * @param eligibilityKpis the dataset used as the source of truth
-     */
-    function checkCommonFields(financialCompanyType: string, eligibilityKpis: EligibilityKpis): void {
-      cy.get(`div[name="taxonomyEligibleActivity${financialCompanyType}"]`)
-        .should("contain", "Taxonomy-eligible economic activity")
-        .should("contain", formatPercentNumber(eligibilityKpis.taxonomyEligibleActivityInPercent));
-      cy.get(`div[name="taxonomyNonEligibleActivity${financialCompanyType}"]`)
-        .should("contain", "Taxonomy-non-eligible economic activity")
-        .should("contain", formatPercentNumber(eligibilityKpis.taxonomyNonEligibleActivityInPercent));
-      cy.get(`div[name="derivatives${financialCompanyType}"]`)
-        .should("contain", "Derivatives")
-        .should("contain", formatPercentNumber(eligibilityKpis.derivativesInPercent));
-      cy.get(`div[name="banksAndIssuers${financialCompanyType}"]`)
-        .should("contain", "Banks and issuers")
-        .should("contain", formatPercentNumber(eligibilityKpis.banksAndIssuersInPercent));
-      cy.get(`div[name="investmentNonNfrd${financialCompanyType}"]`)
-        .should("contain", "Non-NFRD")
-        .should("contain", formatPercentNumber(eligibilityKpis.investmentNonNfrdInPercent));
-    }
-
-    /**
-     * Verifies that the frontend correctly displays the insurance firm KPIs
-     * @param testData the dataset used as the source of truth
-     */
-    function checkInsuranceValues(testData: EuTaxonomyDataForFinancials): void {
-      checkCommonFields("InsuranceOrReinsurance", testData.eligibilityKpis!.InsuranceOrReinsurance);
-      cy.get('div[name="taxonomyEligibleNonLifeInsuranceActivities"]')
-        .should("contain", "Taxonomy-eligible non-life insurance economic activities")
-        .should(
-          "contain",
-          formatPercentNumber(testData.insuranceKpis!.taxonomyEligibleNonLifeInsuranceActivitiesInPercent),
-        );
-    }
-
-    /**
-     * Verifies that the frontend correctly displays the investment firm KPIs
-     * @param testData the dataset used as the source of truth
-     */
-    function checkInvestmentFirmValues(testData: EuTaxonomyDataForFinancials): void {
-      checkCommonFields("InvestmentFirm", testData.eligibilityKpis!.InvestmentFirm);
-      cy.get('div[name="greenAssetRatioInvestmentFirm"]')
-        .should("contain", "Green asset ratio")
-        .should("contain", formatPercentNumber(testData.investmentFirmKpis!.greenAssetRatioInPercent));
-    }
-
-    /**
-     * Verifies that the frontend correctly displays the credit institution KPIs
-     * @param testData he dataset used as the source of truth
-     * @param individualFieldSubmission whether individual field submission is expected
-     * @param dualFieldSubmission whether dual field submission is expected
-     */
-    function checkCreditInstitutionValues(
-      testData: EuTaxonomyDataForFinancials,
-      individualFieldSubmission: boolean,
-      dualFieldSubmission: boolean,
-    ): void {
-      checkCommonFields("CreditInstitution", testData.eligibilityKpis!.CreditInstitution);
-      if (individualFieldSubmission) {
-        cy.get('div[name="tradingPortfolio"]')
-          .should("contain", "Trading portfolio")
-          .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolioInPercent));
-        cy.get('div[name="onDemandInterbankLoans"]')
-          .should("contain", "On demand interbank loans")
-          .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.interbankLoansInPercent));
-        if (!dualFieldSubmission) {
-          cy.get("body").should("not.contain", "Trading portfolio & on demand interbank loans");
-        }
-      }
-      if (dualFieldSubmission) {
-        cy.get('div[name="tradingPortfolioAndOnDemandInterbankLoans"]')
-          .should("contain", "Trading portfolio & on demand interbank loans")
-          .should(
-            "contain",
-            formatPercentNumber(testData.creditInstitutionKpis!.tradingPortfolioAndInterbankLoansInPercent),
-          );
-        if (!individualFieldSubmission) {
-          cy.get("body").should("not.contain", /^Trading portfolio$/);
-          cy.get("body").should("not.contain", "On demand interbank loans");
-        }
-      }
-      cy.get('div[name="greenAssetRatioCreditInstitution"]')
-        .should("contain", "Green asset ratio")
-        .should("contain", formatPercentNumber(testData.creditInstitutionKpis!.greenAssetRatioInPercent));
-    }
-
-    it("Create a CreditInstitution (combined field submission)", () => {
-      const testData = getPreparedFixture("credit-institution-single-field-submission", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
-        testData.companyInformation,
-        testData.t,
-        testData.reportingPeriod,
-      );
-      checkCreditInstitutionValues(testData.t, false, true);
-    });
-
-    it("Create a CreditInstitution (individual field submission)", () => {
-      const testData = getPreparedFixture("credit-institution-dual-field-submission", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
-        testData.companyInformation,
-        testData.t,
-        testData.reportingPeriod,
-      );
-      checkCreditInstitutionValues(testData.t, true, false);
-    });
-
-    it("Create an insurance company", () => {
-      const testData = getPreparedFixture("insurance-company", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
-        testData.companyInformation,
-        testData.t,
-        testData.reportingPeriod,
-      );
-      checkInsuranceValues(testData.t);
-      cy.get("body").should("not.contain", "Trading portfolio");
-      cy.get("body").should("not.contain", "demand interbank loans");
-    });
-
-    it("Create an Investment Firm", () => {
-      const testData = getPreparedFixture("company-for-all-types", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
-        testData.companyInformation,
-        testData.t,
-        testData.reportingPeriod,
-      );
-      checkInvestmentFirmValues(testData.t);
-    });
-
-    it("Create an Asset Manager", () => {
-      const testData = getPreparedFixture("asset-management-company", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
-        testData.companyInformation,
-        testData.t,
-        testData.reportingPeriod,
-      );
-      checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
-      cy.get("body").should("not.contain", "Trading portfolio");
-      cy.get("body").should("not.contain", "demand interbank loans");
-      cy.get("body").should("not.contain", "Taxonomy-eligible non-life insurance economic activities");
-    });
-
-    it("Create a Company that is Asset Manager and Insurance", () => {
-      const testData = getPreparedFixture("asset-management-insurance-company", preparedFixtures);
-      uploadCompanyAndEuTaxonomyDataForFinancialsViaApiAndVisitFrameworkDataViewPage(
-        testData.companyInformation,
-        testData.t,
-        testData.reportingPeriod,
-      );
-      checkInsuranceValues(testData.t);
-      checkCommonFields("AssetManagement", testData.t.eligibilityKpis!.AssetManagement);
-      cy.get("body").should("not.contain", "Trading portfolio");
-      cy.get("body").should("not.contain", "demand interbank loans");
-    });
+          });
+        });
+      },
+    );
   },
 );

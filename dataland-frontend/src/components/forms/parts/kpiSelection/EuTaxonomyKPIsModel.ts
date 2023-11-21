@@ -127,6 +127,11 @@ export const euTaxonomyKpiNameMappings = {
   alignedOpExPercentage: "Aligned OpEx (%)",
   alignedOpEx: "Aligned OpEx",
   totalOpEx: "Total OpEx",
+
+  CreditInstitution: "Credit Institution",
+  AssetManagement: "Asset Management",
+  InsuranceOrReinsurance: "Insurance and Reinsurance",
+  InvestmentFirm: "Investment Firm",
 };
 export const euTaxonomyKpiInfoMappings = {
   investmentNonNfrdInPercent:
@@ -159,7 +164,7 @@ export const euTaxonomyKpiInfoMappings = {
   financialServicesTypes:
     "Defines the type of financial company. Credit Institution (1), Insurance/Reinsurance (2), Asset Manager (3), Investment Firm (4).",
 
-  fiscalYearDeviation: "Does the fiscal year deviate from the calender year?",
+  fiscalYearDeviation: "Does the fiscal year deviate from the calendar year?",
   fiscalYear: "Fiscal Year (Deviation/ No Deviation)",
   fiscalYearEnd: "The date at which the fiscal year ends.",
 

@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_e2etests_base ./dataland-e2etests/DockerfileBase \
-       ./gradle/ ./gradlew ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./environments/.env.uncritical
+       ./gradle/ ./gradlew ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./environments/.env.uncritical ./versions.properties
 
 set -o allexport
 source ./*github_env.log
@@ -13,4 +13,4 @@ set +o allexport
        ./dataland-backend/backendOpenApi.json  ./dataland-api-key-manager/apiKeyManagerOpenApi.json \
        ./dataland-document-manager/documentManagerOpenApi.json  ./dataland-qa-service/qaServiceOpenApi.json \
        ./dataland-community-manager/communityManagerOpenApi.json \
-       ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./environments/.env.uncritical
+       ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./environments/.env.uncritical ./versions.properties
