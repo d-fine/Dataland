@@ -412,7 +412,7 @@ services:
       DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
     volumes:
       - ./dataland-batch-manager/config:/config
-      - batch_manager_data_volume:/deltafiles
+      - batch_manager_data:/deltafiles
     extra_hosts:
       - "host.docker.internal:host-gateway"
   community-manager:
@@ -483,5 +483,5 @@ volumes:
     driver: local
   community_manager_data:
     driver: local
-  batch_manager_data_volume:
+  batch_manager_data:
     driver: local
