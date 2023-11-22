@@ -50,14 +50,14 @@
                   />
                 </div>
 
-                <FormKit type="hidden" :modelValue="reportingPeriodYear" name="reportingPeriod" />
+                <FormKit type="hidden" :modelValue="reportingPeriodYear.toString()" name="reportingPeriod" />
               </div>
               <FormKit type="group" name="data" label="data" validation-label="data" validation="required">
                 <UploadReports
                   name="UploadReports"
                   ref="UploadReports"
                   :isEuTaxonomy="true"
-                  :referencedReportsForPrefill="templateDataset?.referencedReports"
+                  :referencedReportsForPrefill="templateDataset?.referencedReports ?? undefined"
                   @reportsUpdated="handleChangeOfReferenceableReportNamesAndReferences"
                 />
 
@@ -331,7 +331,6 @@ import {
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-  type EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
 import { type AxiosResponse } from "axios";
 import { type ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
@@ -429,7 +428,7 @@ export default defineComponent({
       confirmedSelectedFinancialServiceTypes: [] as EuTaxonomyDataForFinancialsFinancialServicesTypesEnum[],
       message: "",
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
-      templateDataset: undefined as undefined | EuTaxonomyDataForNonFinancials,
+      templateDataset: undefined as undefined | EuTaxonomyDataForFinancials,
     };
   },
   computed: {
@@ -458,14 +457,12 @@ export default defineComponent({
       );
     },
   },
-
   props: {
     companyID: {
       type: String,
       required: true,
     },
   },
-
   created() {
     const dataId = this.route.query.templateDataId;
     if (typeof dataId === "string" && dataId !== "") {

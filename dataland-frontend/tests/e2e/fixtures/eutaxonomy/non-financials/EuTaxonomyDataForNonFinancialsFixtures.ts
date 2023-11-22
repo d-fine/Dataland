@@ -8,7 +8,8 @@ import {
   type EuTaxonomyDetailsPerCashFlowType,
 } from "@clients/backend";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
-import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
+import { FrameworkGenerator } from "@e2e/utils/FrameworkFakeFixtureUtils";
 import { getRandomNumberOfNaceCodesForSpecificActivity } from "@e2e/fixtures/common/NaceCodeFixtures";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
@@ -30,7 +31,7 @@ export function generateEuTaxonomyDataForNonFinancials(
   };
 }
 
-export class EuNonFinancialsGenerator extends Generator {
+export class EuNonFinancialsGenerator extends FrameworkGenerator {
   /**
    * Generates a random amount of money
    * @returns an amount of money
