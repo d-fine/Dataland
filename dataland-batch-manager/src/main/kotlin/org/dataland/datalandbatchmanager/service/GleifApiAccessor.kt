@@ -1,10 +1,7 @@
 package org.dataland.datalandbatchmanager.service
 
-import okhttp3.Call
-import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 import org.apache.commons.io.FileUtils
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.MAX_RETRIES
 import org.slf4j.LoggerFactory
@@ -131,15 +128,13 @@ class GleifApiAccessor(
                 val request = Request.Builder()
                     .url(url)
                     .build()
-                OkHttpClient().newCall(request).enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) { handleDownloadError(e) }
-                    override fun onResponse(call: Call, response: Response) {
-                        targetFile.writeBytes(response.body!!.bytes())
-                    }
-                })
+                val response = OkHttpClient().newCall(request).execute()
+                targetFile.writeBytes(response.body!!.bytes())
                 logger.info("Successfully saved local copy of the required file.")
                 break
             } catch (exception: SocketException) {
+                handleDownloadError(exception)
+            } catch (exception: IOException) {
                 handleDownloadError(exception)
             }
         }
