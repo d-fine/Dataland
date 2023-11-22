@@ -11,6 +11,8 @@ import java.net.SocketException
 import java.net.URL
 import java.util.zip.ZipInputStream
 
+const val ZIP_BUFFER_SIZE = 8192
+
 /**
  * The class to download the zipped GLEIF golden copy CSV files
  */
@@ -58,12 +60,23 @@ class GleifApiAccessor(
      */
     fun getCsvFileFromZip(zipFile: File): File {
         val csvFile = File.createTempFile("gleif_mapping_update", ".csv")
-        val zipInputStream = ZipInputStream(zipFile.inputStream())
-        val zipEntry = zipInputStream.nextEntry
-        require(zipEntry?.name?.endsWith(".csv") ?: false) {
-            "The downloaded ZIP file does not contain the CSV file in the first position"
+
+        ZipInputStream(zipFile.inputStream()).use { zipInputStream ->
+            val zipEntry = zipInputStream.nextEntry
+            require(zipEntry?.name?.endsWith(".csv") ?: false) {
+                "The downloaded ZIP file does not contain the CSV file in the first position"
+            }
+
+            csvFile.outputStream().use { csvOutputStream ->
+                val buffer = ByteArray(ZIP_BUFFER_SIZE)
+                var bytesRead: Int
+
+                while (zipInputStream.read(buffer).also { bytesRead = it } != -1) {
+                    csvOutputStream.write(buffer, 0, bytesRead)
+                }
+            }
         }
-        csvFile.writeBytes(zipInputStream.readBytes())
+
         return csvFile
     }
 
