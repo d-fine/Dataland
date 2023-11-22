@@ -1,7 +1,7 @@
 import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { FrameworkGenerator } from "@e2e/utils/FrameworkFakeFixtureUtils";
 import { generateFloat, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
-import { type ExtendedDataPointBigDecimal, type SfdrData } from "@clients/backend";
+import { type SfdrData, type SfdrHighImpactClimateSectorEnergyConsumption } from "@clients/backend";
 import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
 import { generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
@@ -47,17 +47,28 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
       greenhouseGasEmissions: {
         scope1GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
         scope2GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        scope2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        scope2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        scope1And2GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        scope1And2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        scope1And2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
         scope3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        scope1And2And3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
         enterpriseValue: dataGenerator.randomCurrencyDataPoint(),
         totalRevenue: dataGenerator.randomCurrencyDataPoint(),
+        carbonFootprintInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        ghgIntensityInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(generateFloat()),
         fossilFuelSectorExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
       },
       energyPerformance: {
         renewableEnergyProductionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         renewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyProductionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        nonRenewableEnergyProductionInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
         nonRenewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        nonRenewableEnergyConsumptionInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
         applicableHighImpactClimateSectors: dataGenerator.generateHighImpactClimateSectors(),
+        totalHighImpactClimateSectorEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyConsumptionFossilFuelsInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyConsumptionCrudeOilInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyConsumptionNaturalGasInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
@@ -76,6 +87,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         emissionsToWaterInTonnes: dataGenerator.randomExtendedDataPoint(generateFloat()),
         waterConsumptionInCubicMeters: dataGenerator.randomExtendedDataPoint(generateFloat()),
         waterReusedInCubicMeters: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        relativeWaterUsageInCubicMetersPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(generateFloat()),
         waterManagementPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         highWaterStressAreaExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
       },
@@ -120,8 +132,10 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         ),
         averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(),
         averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(),
+        unadjustedGenderPayGapInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
         femaleBoardMembers: dataGenerator.randomExtendedDataPoint(generateInt()),
         maleBoardMembers: dataGenerator.randomExtendedDataPoint(generateInt()),
+        boardGenderDiversityInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
         controversialWeaponsExposure: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         workplaceAccidentPreventionPolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
         rateOfAccidentsInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
@@ -132,6 +146,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         reportedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateInt()),
         sanctionedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(generateInt()),
         ceoToEmployeePayGapRatio: dataGenerator.randomExtendedDataPoint(generateFloat()),
+        excessiveCeoPayRatioInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
       },
       greenSecurities: {
         securitiesNotCertifiedAsGreen: dataGenerator.randomExtendedDataPoint(generateYesNo()),
@@ -158,13 +173,18 @@ class SfdrGenerator extends FrameworkGenerator {
    * Generates a random map of procurement categories
    * @returns random map of procurement categories
    */
-  generateHighImpactClimateSectors(): { [key: string]: ExtendedDataPointBigDecimal } {
+  generateHighImpactClimateSectors(): { [key: string]: SfdrHighImpactClimateSectorEnergyConsumption } {
     const keys: HighImpactClimateSector[] = pickSubsetOfElements(Object.values(HighImpactClimateSector), 0);
     return Object.fromEntries(
-      new Map<string, ExtendedDataPointBigDecimal>(
+      new Map<string, SfdrHighImpactClimateSectorEnergyConsumption>(
         keys.map((naceCode) => [
           naceCode as string,
-          this.dataPointGenerator.generateDataPoint(this.randomFloat(), this.reports) as ExtendedDataPointBigDecimal,
+          {
+            highImpactClimateSectorEnergyConsumptionInGWh: this.randomExtendedDataPoint(generateFloat()),
+            highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue: this.randomExtendedDataPoint(
+              generateFloat(),
+            ),
+          } as SfdrHighImpactClimateSectorEnergyConsumption,
         ]),
       ),
     );
