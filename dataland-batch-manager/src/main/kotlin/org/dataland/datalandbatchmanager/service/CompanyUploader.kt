@@ -90,6 +90,15 @@ class CompanyUploader(
 
         retryOnCommonApiErrors {
             try {
+                // TODO this if statement must not stay in the final version
+                if (companyInformation.lei != "01ERPZV3DOLNXY2MLB90") {
+                    logger.info(
+                        "Skipping uploading company ${companyInformation.companyName} with " +
+                            "(LEI: ${companyInformation.lei})",
+                    )
+                    patchCompanyId = ""
+                    return@retryOnCommonApiErrors
+                }
                 logger.info(
                     "Uploading company data for ${companyInformation.companyName} " +
                         "(LEI: ${companyInformation.lei})",
