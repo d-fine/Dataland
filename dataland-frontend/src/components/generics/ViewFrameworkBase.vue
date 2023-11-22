@@ -26,6 +26,17 @@
             <slot name="reportingPeriodDropdown" />
           </div>
           <div class="flex align-content-end align-items-center">
+            <div data-test="dataPointToggle" class="form-field vertical-middle">
+              <InputSwitch
+                data-test="dataPointToggleButton"
+                inputId="dataPointIsAvailableSwitch"
+                @click="showHiddenFieldsToggle"
+                v-model="showHidden"
+              />
+              <h5 data-test="dataPointToggleTitle" class="ml-2">
+                {{ showHidden ? "Empty fields are shown" : "Empty fields are hidden" }}
+              </h5>
+            </div>
             <QualityAssuranceButtons
               v-if="isReviewableByCurrentUser"
               :meta-info="singleDataMetaInfoToDisplay"
@@ -80,7 +91,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 import Dropdown, { type DropdownChangeEvent } from "primevue/dropdown";
-import { defineComponent, inject, ref } from "vue";
+import { computed, defineComponent, inject, ref } from "vue";
 
 import TheFooter from "@/components/generics/TheFooter.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
@@ -92,6 +103,8 @@ import SelectReportingPeriodDialog from "@/components/general/SelectReportingPer
 import OverlayPanel from "primevue/overlaypanel";
 import QualityAssuranceButtons from "@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
+import type FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
+import InputSwitch from "primevue/inputswitch";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -106,6 +119,7 @@ export default defineComponent({
     OverlayPanel,
     SelectReportingPeriodDialog,
     QualityAssuranceButtons,
+    InputSwitch,
   },
   emits: ["updateActiveDataMetaInfoForChosenFramework"],
   props: {
@@ -134,7 +148,7 @@ export default defineComponent({
   data() {
     return {
       fetchedCompanyInformation: {} as CompanyInformation,
-
+      showHidden: false,
       chosenDataTypeInDropdown: "",
       dataTypesInDropdown: [] as { label: string; value: string }[],
       humanizeStringOrNumber,
@@ -148,6 +162,13 @@ export default defineComponent({
       isDataProcessedSuccesfully: true,
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
+    };
+  },
+  provide() {
+    return {
+      showHidden: computed(() => {
+        return this.showHidden;
+      }),
     };
   },
   computed: {
@@ -326,6 +347,13 @@ export default defineComponent({
         this.isDataProcessedSuccesfully = false;
         console.error(error);
       }
+    },
+    /**
+     * Toggle dataPointIsAvailable variable value and emit event
+     *
+     */
+    showHiddenFieldsToggle(): void {
+      this.showHidden = !this.showHidden;
     },
   },
   watch: {

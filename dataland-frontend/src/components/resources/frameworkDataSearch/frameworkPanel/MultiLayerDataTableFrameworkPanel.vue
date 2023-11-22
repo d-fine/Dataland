@@ -18,7 +18,7 @@
           : displayConfiguration
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
-      :show-hidden="false"
+      :show-hidden="showHidden"
     />
   </div>
   <div v-if="status == 'Error'">
@@ -51,6 +51,8 @@ const props = defineProps<{
   displayConfiguration: MLDTConfig<FrameworkDataTypes[Framework]["data"]>;
   inReviewMode: boolean;
 }>();
+const injecShowHidden = inject<{ value: boolean }>("showHidden");
+const showHidden = computed<boolean | undefined>(() => injecShowHidden?.value);
 
 const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.frameworkIdentifier));
 
