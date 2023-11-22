@@ -66,7 +66,7 @@ class GleifGoldenCopyIngestor(
             }
 
             logger.info("Retrieving all company data available via GLEIF.")
-            val tempFile = File.createTempFile("gleif_golden_copy", ".csv")
+            val tempFile = File.createTempFile("gleif_golden_copy", ".zip")
             processGleifDeltaFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
 
             if (savedMappingFile.exists() && (!savedMappingFile.delete())) {
@@ -90,23 +90,23 @@ class GleifGoldenCopyIngestor(
      */
     fun prepareGleifDeltaFile() {
         logger.info("Starting Gleif company update cycle for latest delta file.")
-        val tempFile = File.createTempFile("gleif_update_delta", ".csv")
+        val tempFile = File.createTempFile("gleif_update_delta", ".zip")
         processGleifDeltaFile(tempFile, gleifApiAccessor::getLastMonthGoldenCopyDelta)
     }
 
     @Synchronized
-    private fun processGleifDeltaFile(csvFile: File, downloadFile: (file: File) -> Unit) {
+    private fun processGleifDeltaFile(zipFile: File, downloadFile: (file: File) -> Unit) {
         waitForBackend()
         val start = System.nanoTime()
         try {
-            downloadFile(csvFile)
-            uploadCompanies(csvFile)
+            downloadFile(zipFile)
+            uploadCompanies(zipFile)
         } finally {
-            if (!csvFile.delete()) {
-                logger.error("Unable to delete temporary file $csvFile")
+            if (!zipFile.delete()) {
+                logger.error("Unable to delete temporary file $zipFile")
             }
         }
-        logger.info("Finished processing of file $csvFile in ${getExecutionTime(start)}.")
+        logger.info("Finished processing of file $zipFile in ${getExecutionTime(start)}.")
     }
 
     /**
@@ -151,8 +151,8 @@ class GleifGoldenCopyIngestor(
         }
     }
 
-    private fun uploadCompanies(csvFile: File) {
-        val gleifDataStream = gleifParser.getCsvStreamFromZip(csvFile)
+    private fun uploadCompanies(zipFile: File) {
+        val gleifDataStream = gleifParser.getCsvStreamFromZip(zipFile)
         val gleifIterator = gleifParser.readGleifDataFromBufferedReader(gleifDataStream)
         val gleifIterable = Iterable<GleifCompanyInformation> { gleifIterator }
 
