@@ -3,11 +3,10 @@
     <template v-if="isCellOrSectionVisible(cellOrSectionConfig, mldtDatasets)">
       <tr
         v-if="cellOrSectionConfig.type == 'cell'"
-        v-show="isVisible"
-        :class="cellOrSectionConfig.class ?? null"
+        v-show="isVisible && checkToShowFieldsWithNullValue(mldtDatasets, cellOrSectionConfig, props.showHidden)"
         :data-cell-label="cellOrSectionConfig.label"
       >
-        <td class="headers-bg pl-4" :data-cell-label="cellOrSectionConfig.label" data-row-header="true">
+        <td class="headers-bg" :data-cell-label="cellOrSectionConfig.label" data-row-header="true">
           <span class="table-left-label">{{ cellOrSectionConfig.label }}</span>
           <em
             v-if="cellOrSectionConfig.explanation"
@@ -23,7 +22,6 @@
         <td
           v-for="(mldtDataset, idx) in mldtDatasets"
           :key="idx"
-          :data-test="cellOrSectionConfig.name ?? null"
           :data-cell-label="cellOrSectionConfig.label"
           :data-dataset-index="idx"
         >
@@ -37,13 +35,12 @@
               ? ['p-rowgroup-header', 'p-topmost-header', 'border-bottom-table']
               : ['p-rowgroup-header', 'border-bottom-table']
           "
-          :data-test="cellOrSectionConfig.name ?? null"
           :data-section-label="cellOrSectionConfig.label"
           :data-section-expanded="expandedSections.has(idx)"
           @click="toggleSection(idx)"
           v-show="isVisible"
         >
-          <td :colspan="mldtDatasets.length + 1" :class="isTopLevel ? 'pl-2' : null">
+          <td :colspan="mldtDatasets.length + 1">
             <ChevronDownIcon v-if="expandedSections.has(idx)" class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
             <ChevronLeftIcon v-else class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
             <i
@@ -65,6 +62,7 @@
           :mldtDatasets="mldtDatasets"
           :isTopLevel="false"
           :isVisible="isVisible && expandedSections.has(idx)"
+          :show-hidden="showHidden"
         />
       </template>
     </template>
@@ -74,6 +72,7 @@
 <script setup lang="ts" generic="T">
 import {
   isCellOrSectionVisible,
+  type MLDTCellConfig,
   type MLDTConfig,
   type MLDTDataset,
   type MLDTSectionConfig,
@@ -84,6 +83,7 @@ import MultiLayerDataTableBody from "@/components/resources/dataTable/MultiLayer
 import { onMounted, ref } from "vue";
 import MultiLayerDataTableCell from "@/components/resources/dataTable/MultiLayerDataTableCell.vue";
 import Tooltip from "primevue/tooltip";
+import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 
 const expandedSections = ref(new Set<number>());
 const vTooltip = Tooltip;
@@ -111,6 +111,28 @@ function expandSectionsOnPageLoad(): void {
     }
   }
 }
+/**
+ * Checks if fields with null values should be shown or not
+ * @param mldtDatasets datasets for the specified company and framework
+ * @param cellOrSectionConfig config for the specified framework
+ * @param showHidden toggle if fields with null values should be shown or not
+ * @returns boolean to set hidden to true or false
+ */
+function checkToShowFieldsWithNullValue(
+  mldtDatasets: MLDTDataset<FrameworkDataTypes>[],
+  cellOrSectionConfig: MLDTCellConfig<FrameworkDataTypes>,
+  showHidden: boolean,
+): boolean {
+  if (showHidden) {
+    return true;
+  }
+  for (const key in mldtDatasets) {
+    if (cellOrSectionConfig.valueGetter(mldtDatasets[key].dataset).displayValue) {
+      return true;
+    }
+  }
+  return false;
+}
 
 /**
  * Check if a crossed-eye-symbol shall be added to a section label to express to a reviewer that this section is
@@ -130,6 +152,7 @@ const props = defineProps<{
   mldtDatasets: Array<MLDTDataset<T>>;
   isTopLevel: boolean;
   isVisible: boolean;
+  showHidden: boolean;
 }>();
 
 onMounted(() => {
