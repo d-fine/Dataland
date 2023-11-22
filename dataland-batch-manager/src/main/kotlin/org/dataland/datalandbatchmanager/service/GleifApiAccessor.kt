@@ -95,7 +95,7 @@ class GleifApiAccessor(
      * @param url: the target URL of the file
      * @param targetFile: the destination file name where the target file is copied to
      */
-    fun downloadFile(url: URL, targetFile: File) {
+    private fun downloadFile(url: URL, targetFile: File) {
         var counter = 0
         while (counter < MAX_RETRIES) {
             try {
@@ -128,7 +128,7 @@ class GleifApiAccessor(
                 val request = Request.Builder()
                     .url(url)
                     .build()
-                val response = OkHttpClient().newCall(request).execute()
+                val response = OkHttpClient().newCall(request).execute() // TODO inject okhttp client
                 targetFile.writeBytes(response.body!!.bytes())
                 logger.info("Successfully saved local copy of the required file.")
                 break

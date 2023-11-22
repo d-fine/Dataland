@@ -10,6 +10,7 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.any
 import org.mockito.MockedStatic
+import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mockStatic
 import org.mockito.Mockito.reset
 import org.mockito.Mockito.spy
@@ -67,8 +68,9 @@ class GleifApiAccessorTest {
         val gleifApiAccessorMock = spy(GleifApiAccessor(dummyUrl, dummyUrl))
 
         // TODO this should rather mock the download method and not a method that should be private
-        `when`(gleifApiAccessorMock.downloadIndirectFile(any() ?: url, any() ?: File("")))
-            .then { providedTestFile.copyTo(it.arguments[1] as File, true) }
+        doAnswer { providedTestFile.copyTo(it.arguments[1] as File, true) }
+            .`when`(gleifApiAccessorMock)
+            .downloadIndirectFile(any() ?: url, any() ?: File(""))
 
         val tempCsvFile = File.createTempFile("gleif_mapping_update", ".csv")
         gleifApiAccessorMock.getFullIsinMappingFile(tempCsvFile)
