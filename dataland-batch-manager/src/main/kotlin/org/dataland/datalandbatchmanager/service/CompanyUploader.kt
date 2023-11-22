@@ -96,7 +96,7 @@ class CompanyUploader(
                         "Skipping uploading company ${companyInformation.companyName} with " +
                             "(LEI: ${companyInformation.lei})",
                     )
-                    patchCompanyId = ""
+                    patchCompanyId = null
                     return@retryOnCommonApiErrors
                 }
                 logger.info(
