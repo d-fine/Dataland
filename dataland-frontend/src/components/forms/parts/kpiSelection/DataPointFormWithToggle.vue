@@ -12,7 +12,7 @@
     </h5>
   </div>
   <div v-show="dataPointIsAvailable">
-    <div class="form-field" v-if="dataPointIsAvailable">
+    <div class="form-field">
       <div v-if="valueType === 'percent' && showSecondInput" class="p-0">
         <div class="next-to-each-other">
           <div class="p-0">
@@ -23,9 +23,10 @@
             <FormKit
               :disabled="!dataPointIsAvailable"
               type="number"
+              data-test="valueAsPercentageInSecondInputMode"
               name="valueAsPercentage"
-              validation-label=""
-              v-model="currentPercentageValue"
+              validation-label="Value"
+              v-model="currentValue"
               :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
               step="any"
               min="0"
@@ -43,8 +44,9 @@
             <FormKit
               :disabled="!dataPointIsAvailable"
               type="number"
+              data-test="valueAsAbsoluteInSecondInputMode"
               name="valueAsAbsolute"
-              validation-label=""
+              validation-label="Value"
               v-model="currentAmountValue"
               :placeholder="'Value'"
               step="any"
@@ -65,9 +67,10 @@
         <FormKit
           :disabled="!dataPointIsAvailable"
           type="number"
+          data-test="valueAsPercentage"
           name="value"
-          validation-label=""
-          v-model="currentAmountValue"
+          validation-label="Value"
+          v-model="currentValue"
           :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
           step="any"
           min="0"
@@ -79,7 +82,7 @@
       </div>
     </div>
     <div class="form-field">
-      <FormKit type="group" v-if="dataPointIsAvailable" name="dataSource">
+      <FormKit type="group" name="dataSource">
         <h4 class="mt-0">Data source</h4>
         <div class="next-to-each-other">
           <div class="flex-1">
@@ -125,6 +128,7 @@
         <FormKit
           :disabled="!dataPointIsAvailable"
           type="select"
+          data-test="qualityValue"
           v-model="currentQualityValue"
           name="quality"
           validation="required"
@@ -165,12 +169,12 @@ export default defineComponent({
       value: qualityOption,
     })),
     currentAmountValue: "",
-    currentPercentageValue: "",
+    currentValue: "",
     currentReportValue: "",
     currentPageValue: "",
     currentQualityValue: "",
     amountValueBeforeDataPointWasDisabled: "",
-    percentageValueBeforeDataPointWasDisabled: "",
+    valueBeforeDataPointWasDisabled: "",
     reportValueBeforeDataPointWasDisabled: "",
     pageValueBeforeDataPointWasDisabled: "",
     qualityValueBeforeDataPointWasDisabled: "",
@@ -179,12 +183,12 @@ export default defineComponent({
     dataPointIsAvailable(newValue: boolean) {
       if (!newValue) {
         this.amountValueBeforeDataPointWasDisabled = this.currentAmountValue;
-        this.percentageValueBeforeDataPointWasDisabled = this.currentPercentageValue;
+        this.valueBeforeDataPointWasDisabled = this.currentValue;
         this.reportValueBeforeDataPointWasDisabled = this.currentReportValue;
         this.pageValueBeforeDataPointWasDisabled = this.currentPageValue;
         this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
         this.currentAmountValue = "";
-        this.currentPercentageValue = "";
+        this.currentValue = "";
         this.currentReportValue = "";
         this.currentPageValue = "";
         this.currentQualityValue = "NA";
@@ -192,7 +196,7 @@ export default defineComponent({
         this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
         this.currentPageValue = this.pageValueBeforeDataPointWasDisabled;
         this.currentReportValue = this.reportValueBeforeDataPointWasDisabled;
-        this.currentPercentageValue = this.percentageValueBeforeDataPointWasDisabled;
+        this.currentValue = this.valueBeforeDataPointWasDisabled;
         this.currentAmountValue = this.amountValueBeforeDataPointWasDisabled;
       }
     },
@@ -208,6 +212,7 @@ export default defineComponent({
   props: {
     name: {
       type: String,
+      default: "",
     },
     kpiInfoMappings: {
       type: Object,
