@@ -63,11 +63,11 @@ class GleifApiAccessorTest {
     @Test
     fun `test for LEI ISIN mapping if unzip works and csv emerges`() {
         val providedTestFile = File(javaClass.getResource("/testApiAccessor.zip")!!.path)
-        val zipFile = File("gleif_mapping_update.zip")
         val url = URL("https://mapping.gleif.org/api/v2/isin-lei/latest/download")
         val gleifApiAccessorMock = spy(GleifApiAccessor(dummyUrl, dummyUrl))
 
-        `when`(gleifApiAccessorMock.downloadFile(any() ?: url, any() ?: zipFile))
+        // TODO this should rather mock the download method and not a method that should be private
+        `when`(gleifApiAccessorMock.downloadIndirectFile(any() ?: url, any() ?: File("")))
             .then { providedTestFile.copyTo(it.arguments[1] as File, true) }
 
         val tempCsvFile = File.createTempFile("gleif_mapping_update", ".csv")
