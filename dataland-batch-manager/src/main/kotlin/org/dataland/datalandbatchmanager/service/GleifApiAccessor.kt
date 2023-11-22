@@ -1,5 +1,10 @@
 package org.dataland.datalandbatchmanager.service
 
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import org.apache.commons.io.FileUtils
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.MAX_RETRIES
 import org.slf4j.LoggerFactory
@@ -7,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.IOException
 import java.net.SocketException
 import java.net.URL
 import java.util.zip.ZipInputStream
@@ -46,7 +52,7 @@ class GleifApiAccessor(
     fun getFullIsinMappingFile(targetFile: File) {
         logger.info("Successfully acquired download link for mapping")
         val tempZipFile = File.createTempFile("gleif_mapping_update", ".zip")
-        downloadFile(URL(isinMappingReferenceUrl), tempZipFile)
+        downloadIndirectFile(URL(isinMappingReferenceUrl), tempZipFile)
         getCsvFileFromZip(tempZipFile).copyTo(targetFile, true)
         if (!tempZipFile.delete()) {
             logger.error("Unable to delete file $tempZipFile")
@@ -102,6 +108,39 @@ class GleifApiAccessor(
             } catch (exception: SocketException) {
                 logger.warn("Download attempt failed. Exception was: ${exception.message}.")
                 counter++
+            }
+        }
+        if (counter >= MAX_RETRIES) {
+            throw FileNotFoundException("Unable to download file behind $url after $MAX_RETRIES attempts.")
+        }
+    }
+
+    /**
+     * Downloads a file from an API endpoint and saves it to disk
+     * @param url: the URL triggering the file download
+     * @param targetFile: the destination file name where the target file is copied to
+     */
+    fun downloadIndirectFile(url: URL, targetFile: File) {
+        var counter = 0
+        fun handleDownloadError(exception: Exception) {
+            logger.warn("Download attempt failed. Exception was: ${exception.message}.")
+            counter++
+        }
+        while (counter < MAX_RETRIES) {
+            try {
+                val request = Request.Builder()
+                    .url(url)
+                    .build()
+                OkHttpClient().newCall(request).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) { handleDownloadError(e) }
+                    override fun onResponse(call: Call, response: Response) {
+                        targetFile.writeBytes(response.body!!.bytes())
+                    }
+                })
+                logger.info("Successfully saved local copy of the required file.")
+                break
+            } catch (exception: SocketException) {
+                handleDownloadError(exception)
             }
         }
         if (counter >= MAX_RETRIES) {
