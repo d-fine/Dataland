@@ -145,9 +145,8 @@ class CompanyUploader(
     fun updateIsinMapping(
         leiIsinMapping: Map<String, List<String>>,
     ) {
-        retryOnCommonApiErrors {
-            @Suppress("unused")
-            for ((lei, isinList) in leiIsinMapping) {
+        for ((lei, isinList) in leiIsinMapping) {
+            retryOnCommonApiErrors {
                 val companies = companyDataControllerApi.getCompaniesBySearchString(lei)
                 if (companies.isNotEmpty()) {
                     val companyId = companies.first().companyId
