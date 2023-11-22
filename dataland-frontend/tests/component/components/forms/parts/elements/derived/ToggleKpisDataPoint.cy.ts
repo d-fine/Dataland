@@ -21,6 +21,8 @@ describe("Component tests for toggle data point", () => {
           qualityValueBeforeDataPointWasDisabled: "",
         };
       },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       props: {
         name: "tradingPortfolioInPercent",
         kpiInfoMappings: euTaxonomyKpiInfoMappings,
