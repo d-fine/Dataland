@@ -126,8 +126,8 @@ function checkToShowFieldsWithNullValue(
   if (showHidden) {
     return true;
   }
-  for (const key in mldtDatasets) {
-    if (cellOrSectionConfig.valueGetter(mldtDatasets[key].dataset).displayValue) {
+  for (const element of mldtDatasets) {
+    if (cellOrSectionConfig.valueGetter(element.dataset).displayValue) {
       return true;
     }
   }
