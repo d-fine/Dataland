@@ -5,7 +5,6 @@ import org.dataland.datalandbatchmanager.service.GleifApiAccessor
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
@@ -61,7 +60,6 @@ class GleifApiAccessorTest {
         mockFileUtils.verify({ FileUtils.copyURLToFile(any(), any()) }, times(1))
     }
 
-    @Disabled
     @Test
     fun `test for LEI ISIN mapping if unzip works and csv emerges`() {
         val providedTestFile = File(javaClass.getResource("/testApiAccessor.zip")!!.path)

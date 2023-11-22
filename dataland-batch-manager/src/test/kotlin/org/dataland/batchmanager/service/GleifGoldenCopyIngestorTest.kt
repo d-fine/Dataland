@@ -13,9 +13,11 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.mockito.Mockito.any
 import org.mockito.Mockito.anyString
+import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.mockStatic
 import org.mockito.Mockito.reset
+import org.mockito.Mockito.spy
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
@@ -149,7 +151,7 @@ class GleifGoldenCopyIngestorTest {
     }
 
     @Test
-    fun`test replacemen of delta mapping file`() {
+    fun`test replacement of delta mapping file`() {
         val flagFile = File.createTempFile("test", ".csv", File("./"))
         val newLines: List<String> = File(newFile.toString()).useLines { lines -> lines.take(5).toList() }
         companyIngestor = GleifGoldenCopyIngestor(
@@ -166,5 +168,20 @@ class GleifGoldenCopyIngestorTest {
         assert(!newFile.exists())
         assert(oldFile.exists())
         assert(movedLines.hashCode().equals(newLines.hashCode()))
+    }
+
+    @Test
+    fun`test failing of file deletion`() {
+        val flagFile = File.createTempFile("abc", ".csv", File("./"))
+        companyIngestor = GleifGoldenCopyIngestor(
+            mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
+            false, flagFile.absolutePath, oldFile,
+        )
+
+        val newFile = spy(File.createTempFile("ccc", ".xyz", File("./")))
+        doReturn(false).`when`(newFile).delete()
+        companyIngestor.replaceOldMappingFile(newFile)
+
+        assert(newFile.exists())
     }
 }
