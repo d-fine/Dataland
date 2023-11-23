@@ -3,8 +3,8 @@ import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
+import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
   {
     type: "section",
@@ -22,18 +22,10 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Unternehmenseigentum und Eigentümerstruktur",
             explanation:
-              "Bitte geben Sie eine kurze Auskunft über die Besitzverhältnisse und Eigentümerstruktur des Unternehmens. ",
+              "Bitte geben Sie eine kurze Auskunft über die Besitzverhältnisse und Eigentümerstruktur des Unternehmens.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.datenanbieter?.unternehmenseigentumUndEigentuemerstruktur),
-          },
-          {
-            type: "cell",
-            label: "Kernkompetenzen und Geschäftsbereiche",
-            explanation: "Bitte beschreiben Sie kurz Ihre Kernkompetenzen und Geschäftsfelder",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.datenanbieter?.kernkompetenzenUndGeschaeftsbereiche),
           },
           {
             type: "cell",
@@ -56,7 +48,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verständnis von Nachhaltigkeit als Teil der Bewertung",
             explanation:
-              "Bitte führen Sie Ihr Verständnis von Nachhaltigkeit im Rahmen der Bewertung aus. \nBitte machen Sie Angaben zu den Komponenten, die Sie bei der Bewertung des Grades der Nachhaltigkeit von Unternehmen berücksichtigen. ",
+              "Bitte führen Sie Ihr Verständnis von Nachhaltigkeit im Rahmen der Bewertung aus.\nBitte machen Sie Angaben zu den Komponenten, die Sie bei der Bewertung des Grades der Nachhaltigkeit von Unternehmen berücksichtigen.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.methodik?.verstaendnisVonNachhaltigkeitAlsTeilDerBewertung),
@@ -108,7 +100,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenerfassung",
             explanation:
-              "Wie erfolgt die Datenerhebung?\nHier sollten Angaben zur Vorgehensweise bei der Datenerhebung gemacht werden, z.B. mithilfe eines Fragebogens, Interviews, etc. ",
+              "Wie erfolgt die Datenerhebung?\nHier sollten Angaben zur Vorgehensweise bei der Datenerhebung gemacht werden, z.B. mithilfe eines Fragebogens, Interviews, etc.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.methodik?.datenerfassung),
@@ -126,10 +118,14 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden für die Datenerhebung verwendet?\nAngabe von Quellen für die Datenerhebung, zum Beispiel Nachhaltigkeitsberichte von Unternehmen, Daten von NGOs etc. ",
+              "Welche Quellen werden für die Datenerhebung verwendet?\nAngabe von Quellen für die Datenerhebung, zum Beispiel Nachhaltigkeitsberichte von Unternehmen, Daten von NGOs etc.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.datenquelle),
+              wrapDisplayValueWithDatapointInformation(
+                formatStringForDatatable(dataset.general?.methodik?.datenquelle?.value),
+                "Datenquelle",
+                dataset.general?.methodik?.datenquelle,
+              ),
           },
           {
             type: "cell",
@@ -153,7 +149,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Zuverlässigkeit der Methodik sicherstellen",
             explanation:
-              "Wie wird die Reliabilität der Methodik sichergestellt?\nBei einer Methodik muss sichergestellt werden, dass mehrere Anwender zum selben Ergebnis kommen. Angaben dazu, wie das gewährleistet wird. ",
+              "Wie wird die Reliabilität der Methodik sichergestellt?\nBei einer Methodik muss sichergestellt werden, dass mehrere Anwender zum selben Ergebnis kommen. Angaben dazu, wie das gewährleistet wird.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.methodik?.zuverlaessigkeitDerMethodikSicherstellen),
@@ -171,7 +167,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Liste potenzieller Interessenkonflikte",
             explanation:
-              "Bitte führen Sie mögliche Interessenskonflikte auf. \nKurze Beschreibung möglicher entstehender Interessenskonflikte bei der Bewertung eines Unternehmens.",
+              "Bitte führen Sie mögliche Interessenskonflikte auf.\nKurze Beschreibung möglicher entstehender Interessenskonflikte bei der Bewertung eines Unternehmens.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.methodik?.listePotenziellerInteressenkonflikte),
@@ -233,7 +229,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Struktur des Qualitätssicherungsprozesses",
             explanation:
-              "Wie ist der Qualitätssicherungsprozess aufgebaut?\nBeschreibung des Prozesses, wie z.B. sichergestellt wird, dass keine falschen Daten oder  unvollständige Daten erhoben werden. ",
+              "Wie ist der Qualitätssicherungsprozess aufgebaut?\nBeschreibung des Prozesses, wie z.B. sichergestellt wird, dass keine falschen Daten oder unvollständige Daten erhoben werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.methodik?.qualitaetssicherungsprozess == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -241,7 +237,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           },
           {
             type: "cell",
-            label: " Die Aktualität der Methodik",
+            label: "Die Aktualität der Methodik",
             explanation:
               "Wie wird die Aktualität der Methodik sichergestellt?\nAngaben dazu, wie Adhoc/kurzfristige Meldungen bei Emittenten und kurzfristige regulatorische Veränderungen überwacht und in die Methodik integriert werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
@@ -303,7 +299,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           {
             type: "cell",
             label: "Kontroversen um die Quellenerfassung",
-            explanation: "Welche Quellen werden zur Erfassung von Kontroversen genutzt? ",
+            explanation: "Welche Quellen werden zur Erfassung von Kontroversen genutzt?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.methodik?.kontroversenUmDieQuellenerfassung),
@@ -337,7 +333,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgKeineArmut == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -367,7 +363,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgKeineArmut == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -376,25 +372,16 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           {
             type: "cell",
             label: "SDG - Kein Hunger",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "kein Hunger" gemessen werden?  ',
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "kein Hunger" gemessen werden?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.impactmerkmale?.sdgKeinHunger),
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.general?.impactmerkmale?.sdgKeinHunger == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmale?.wennSdgKeinHungerNeinBitteBegruenden),
-          },
-          {
-            type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgKeinHunger == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -424,7 +411,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgKeinHunger == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -433,7 +420,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           {
             type: "cell",
             label: "SDG - Gesundheit und Wohlergehen",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Gesundheit und Wohlergehen" gemessen werden?    ',
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Gesundheit und Wohlergehen" gemessen werden?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.impactmerkmale?.sdgGesundheitUndWohlergehen),
@@ -453,7 +440,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgGesundheitUndWohlergehen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -475,7 +462,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Daten Plausibilitätsprüfung",
             explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Wie erfolgt die Datenplausibilisierung?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgGesundheitUndWohlergehen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -487,7 +474,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgGesundheitUndWohlergehen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -514,7 +501,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgHochwertigeBildung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -548,7 +535,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgHochwertigeBildung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -577,7 +564,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgGeschlechtergleichheit == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -611,7 +598,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgGeschlechtergleichheit == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -641,7 +628,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -679,7 +666,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -710,7 +697,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgBezahlbareUndSaubereEnergie == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -746,7 +733,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgBezahlbareUndSaubereEnergie == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -756,7 +743,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "SDG - Menschenwürdige Arbeit und Wirtschaftswachstum",
             explanation:
-              'Kann mit der Methodik ein Beitrag zum SDG "Menschenwürdige Arbeit und Wirtschaftswachstum" gemessen werden? ',
+              'Kann mit der Methodik ein Beitrag zum SDG "Menschenwürdige Arbeit und Wirtschaftswachstum" gemessen werden?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
@@ -778,7 +765,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -816,7 +803,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -828,7 +815,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "SDG - Industrie, Innovation und Infrastruktur",
             explanation:
-              'Kann mit der Methodik ein Beitrag zum SDG "Industrie, Innovation und Infrastruktur" gemessen werden?  ',
+              'Kann mit der Methodik ein Beitrag zum SDG "Industrie, Innovation und Infrastruktur" gemessen werden?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.impactmerkmale?.sdgIndustrieInnovationUndInfrastruktur),
@@ -848,7 +835,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -884,7 +871,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -895,7 +882,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           {
             type: "cell",
             label: "SDG - Weniger Ungleichheiten",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Weniger Ungleichheiten" gemessen werden?  ',
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Weniger Ungleichheiten" gemessen werden?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.impactmerkmale?.sdgWenigerUngleichheiten),
@@ -915,7 +902,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgWenigerUngleichheiten == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -949,7 +936,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgWenigerUngleichheiten == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -959,7 +946,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "SDG - Nachhaltige Städte und Gemeinden",
             explanation:
-              'Kann mit der Methodik ein Beitrag zum SDG "Nachhaltige Städte und Gemeinden" gemessen werden?  ',
+              'Kann mit der Methodik ein Beitrag zum SDG "Nachhaltige Städte und Gemeinden" gemessen werden?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.impactmerkmale?.sdgNachhaltigeStaedteUndGemeinden),
@@ -979,7 +966,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1015,7 +1002,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1027,7 +1014,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "SDG - Nachhaliger Konsum und Produktion",
             explanation:
-              'Kann mit der Methodik ein Beitrag zum SDG "Nachhaliger Konsum und Produktion" gemessen werden?  ',
+              'Kann mit der Methodik ein Beitrag zum SDG "Nachhaliger Konsum und Produktion" gemessen werden?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.impactmerkmale?.sdgNachhaligerKonsumUndProduktion),
@@ -1047,7 +1034,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgNachhaligerKonsumUndProduktion == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1083,7 +1070,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgNachhaligerKonsumUndProduktion == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1094,7 +1081,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           {
             type: "cell",
             label: "SDG - Maßnahmen zum Klimaschutz",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Maßnahmen zum Klimaschutz" gemessen werden?  ',
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Maßnahmen zum Klimaschutz" gemessen werden?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.impactmerkmale?.sdgMassnahmenZumKlimaschutz),
@@ -1114,7 +1101,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgMassnahmenZumKlimaschutz == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1148,7 +1135,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgMassnahmenZumKlimaschutz == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1157,7 +1144,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           {
             type: "cell",
             label: "SDG - Leben unter Wasser",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Leben unter Wasser" gemessen werden?  ',
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Leben unter Wasser" gemessen werden?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.impactmerkmale?.sdgLebenUnterWasser),
@@ -1175,7 +1162,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgLebenUnterWasser == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1209,7 +1196,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgLebenUnterWasser == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1218,7 +1205,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           {
             type: "cell",
             label: "SDG - Leben an Land",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Leben an Land" gemessen werden?  ',
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Leben an Land" gemessen werden?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.impactmerkmale?.sdgLebenAnLand),
@@ -1236,7 +1223,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgLebenAnLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1266,7 +1253,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgLebenAnLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1276,7 +1263,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "SDG - Frieden, Gerechtigkeit und starke Institutionen",
             explanation:
-              'Kann mit der Methodik ein Beitrag zum SDG "Frieden, Gerechtigkeit und starke Institutionen" gemessen werden?  ',
+              'Kann mit der Methodik ein Beitrag zum SDG "Frieden, Gerechtigkeit und starke Institutionen" gemessen werden?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
@@ -1298,7 +1285,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgFriedenGerechtigkeitUndStarkeInstitutionen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1336,7 +1323,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgFriedenGerechtigkeitUndStarkeInstitutionen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1348,7 +1335,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "SDG - Partnerschaften zur Erreichung der Ziele",
             explanation:
-              'Kann mit der Methodik ein Beitrag zum SDG "Partnerschaften zur Erreichung der Ziele" gemessen werden?  ',
+              'Kann mit der Methodik ein Beitrag zum SDG "Partnerschaften zur Erreichung der Ziele" gemessen werden?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.impactmerkmale?.sdgPartnerschaftenZurErreichungDerZiele),
@@ -1368,7 +1355,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden. ",
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1405,7 +1392,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmale?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1530,7 +1517,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           {
             type: "cell",
             label: "Import der Ergebnisse in das Data Warehouse",
-            explanation: "Können die Ergebnisse  einem Datawarehouse zum Einlesen zur Verfügung gestellt werden?",
+            explanation: "Können die Ergebnisse einem Datawarehouse zum Einlesen zur Verfügung gestellt werden?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.implementierung?.importDerErgebnisseInDasDataWarehouse),
@@ -1683,7 +1670,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie und mit wievielen Mitarbeitern können Sie einen Kunden in den ersten sechs Monaten nach Einführung unterstützen?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.general?.implementierung?.kundenbetreuung, ""),
+              formatStringForDatatable(dataset.general?.implementierung?.kundenbetreuung),
           },
         ],
       },
@@ -1705,7 +1692,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Methodik für ökologische Nachhaltigkeitsrisiken",
             explanation:
-              "Werden Nachhaltigkeitsrisiken bezogen auf den Bereich Umwelt in der Methodik abgebildet?\nNachhaltigkeitsrisiken können einen wesentlichen negativen Einfluss auf die Performance eines Unternehmens haben. Angaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Umwelt in der Methodik abgebildet werden. ",
+              "Werden Nachhaltigkeitsrisiken bezogen auf den Bereich Umwelt in der Methodik abgebildet?\nNachhaltigkeitsrisiken können einen wesentlichen negativen Einfluss auf die Performance eines Unternehmens haben. Angaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Umwelt in der Methodik abgebildet werden.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
@@ -1741,7 +1728,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             label:
               "Identifizierung der wesentlichen Risiken für die ökologische Nachhaltigkeit und der Konstruktionsmethodik",
             explanation:
-              "Wie werden wesentliche Nachhaltigkeitsrisiken eines Unternehmens im Bereich Umwelt identifiziert und in der Methodik berücksichtigt?\nAngaben zur Wesentlichkeitsanalyse bei der Einstufung der Wesentlichkeit eines Risikos bezogen auf ein Unternehmen. Sowie Angaben dazu, wie sich die unterschiedliche Risikoeinstufung in der Methodik widerspiegelt. ",
+              "Wie werden wesentliche Nachhaltigkeitsrisiken eines Unternehmens im Bereich Umwelt identifiziert und in der Methodik berücksichtigt?\nAngaben zur Wesentlichkeitsanalyse bei der Einstufung der Wesentlichkeit eines Risikos bezogen auf ein Unternehmen. Sowie Angaben dazu, wie sich die unterschiedliche Risikoeinstufung in der Methodik widerspiegelt.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1754,7 +1741,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Umweltbewertung unter Berücksichtigung von Nachhaltigkeitsrisiken",
             explanation:
-              "Wie werden Nachhaltigkeitsrisiken in der Bewertung bezogen auf den Bereich Umwelt berücksichtigt?\nAngaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Umwelt in die Erstellung des Ratings miteinbezogen werden und wenn ja wie. ",
+              "Wie werden Nachhaltigkeitsrisiken in der Bewertung bezogen auf den Bereich Umwelt berücksichtigt?\nAngaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Umwelt in die Erstellung des Ratings miteinbezogen werden und wenn ja wie.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1778,11 +1765,15 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Quelle",
             explanation:
-              "Welche Quellen werden für die Erfassung von Nachhaltigkeitsrisiken im Bereich Umwelt verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc. ",
+              "Welche Quellen werden für die Erfassung von Nachhaltigkeitsrisiken im Bereich Umwelt verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.nachhaltigskeitsrisiken?.quelle),
+              wrapDisplayValueWithDatapointInformation(
+                formatStringForDatatable(dataset.environmental?.nachhaltigskeitsrisiken?.quelle?.value),
+                "Quelle",
+                dataset.environmental?.nachhaltigskeitsrisiken?.quelle,
+              ),
           },
           {
             type: "cell",
@@ -1889,7 +1880,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -1950,7 +1941,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.paisBiologischeVielfalt == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -2003,7 +1994,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews, Daten von NGOs etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews, Daten von NGOs etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.pais?.paiWasser == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.environmental?.pais?.datenquelleFuerPaiWasser),
@@ -2055,7 +2046,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärung, Daten von NGOs etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärung, Daten von NGOs etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.pais?.paiAbfall == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.environmental?.pais?.datenquelleFuerPaiAbfall),
@@ -2196,7 +2187,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Quellen",
             explanation:
-              "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen ",
+              "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelder?.ausschlussDerTabakerzeugung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -2256,7 +2247,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Quellen",
             explanation:
-              "Welche Quellen werden verwendet?Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen ",
+              "Welche Quellen werden verwendet?Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelder?.ausschlussDerKohlefoerderungUndVerteilung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -2285,7 +2276,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Methodik Soziale Nachhaltigkeitsrisiken",
             explanation:
-              "Werden Nachhaltigkeitsrisiken bezogen auf den Bereich Soziales in der Methodik abgebildet?\nNachhaltigkeitsrisiken können einen wesentlichen negativen Einfluss auf die Performance eines Unternehmens haben. Angaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Soziales in der Methodik abgebildet werden. ",
+              "Werden Nachhaltigkeitsrisiken bezogen auf den Bereich Soziales in der Methodik abgebildet?\nNachhaltigkeitsrisiken können einen wesentlichen negativen Einfluss auf die Performance eines Unternehmens haben. Angaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Soziales in der Methodik abgebildet werden.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
@@ -2317,7 +2308,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Identifizierung wesentlicher sozialer Nachhaltigkeitsrisiken und Konstruktionsmethodik",
             explanation:
-              "Wie werden wesentliche Nachhaltigkeitsrisiken eines Unternehmens im Bereich Soziales identifiziert und berücksichtigt?\nAngaben zur Wesentlichkeitsanalyse bei der Einstufung der Wesentlichkeit eines Risikos bezogen auf ein Unternehmen. Sowie Angaben dazu, wie sich die unterschiedliche Risikoeinstufung in der Methodik widerspiegelt. ",
+              "Wie werden wesentliche Nachhaltigkeitsrisiken eines Unternehmens im Bereich Soziales identifiziert und berücksichtigt?\nAngaben zur Wesentlichkeitsanalyse bei der Einstufung der Wesentlichkeit eines Risikos bezogen auf ein Unternehmen. Sowie Angaben dazu, wie sich die unterschiedliche Risikoeinstufung in der Methodik widerspiegelt.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.nachhaltigskeitsrisiken?.methodikSozialeNachhaltigkeitsrisiken == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -2330,7 +2321,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Soziale Bewertung unter Berücksichtigung von Nachhaltigkeitsrisiken",
             explanation:
-              "Wie werden Nachhaltigkeitsrisiken in der Bewertung bezogen auf den Bereich Soziales berücksichtigt?\nAngaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Soziales in die Erstellung des Ratings miteinbezogen werden und wenn ja wie. ",
+              "Wie werden Nachhaltigkeitsrisiken in der Bewertung bezogen auf den Bereich Soziales berücksichtigt?\nAngaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Soziales in die Erstellung des Ratings miteinbezogen werden und wenn ja wie.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
@@ -2402,14 +2393,6 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozial == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.pais?.wennPaiSozialNeinBitteBegruenden),
-          },
-          {
-            type: "cell",
             label: "Verwendete Schlüsselzahlen",
             explanation:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werden.",
@@ -2439,7 +2422,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, Gender Pay Report etc. ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, Gender Pay Report etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozial == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.pais?.datenquelleFuerPaiSozial),
@@ -2447,18 +2430,10 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           {
             type: "cell",
             label: "PAI - Soziales auf dem Land",
-            explanation: "Werden die Sozialen PAIs bei Staaten abgebildet?\nJa/Nein bezogen auf Annex I C(2022)1931 ",
+            explanation: "Werden die Sozialen PAIs bei Staaten abgebildet?\nJa/Nein bezogen auf Annex I C(2022)1931",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.social?.pais?.paiSozialesAufDemLand),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozialesAufDemLand == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.pais?.wennPaiSozialesAufDemLandNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -2491,12 +2466,28 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Datenquelle",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Freedom House Index ",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Freedom House Index",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozialesAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.social?.pais?.datenquelleFuerPaiSozialesAufDemLand),
           },
         ],
+      },
+      {
+        type: "cell",
+        label: "Wenn Nein, bitte begründen",
+
+        shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozial == "No",
+        valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+          formatStringForDatatable(dataset.social?.wennPaiSozialNeinBitteBegruenden),
+      },
+      {
+        type: "cell",
+        label: "Wenn Nein, bitte begründen",
+
+        shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozialesAufDemLand == "No",
+        valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+          formatStringForDatatable(dataset.social?.wennPaiSozialesAufDemLandNeinBitteBegruenden),
       },
       {
         type: "section",
@@ -2607,7 +2598,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Metrisch verwendet",
             explanation:
-              "Welche Kennzahl wird für geächtete Waffen herangezogen?\nAngaben zu den Bestandteilen der Kennzahl zur Abbildung geächteter Waffen. ",
+              "Welche Kennzahl wird für geächtete Waffen herangezogen?\nAngaben zu den Bestandteilen der Kennzahl zur Abbildung geächteter Waffen.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelder?.ausschlussVerbotenerWaffen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -2676,7 +2667,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Liste der KPIs für gute Unternehmensführung",
             explanation:
-              "Welche KPIs werden zur Berurteilung einer Good Governance genutzt?\nAufführung der KPIs zur Beurteilung von Good Governance. ",
+              "Welche KPIs werden zur Berurteilung einer Good Governance genutzt?\nAufführung der KPIs zur Beurteilung von Good Governance.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernance?.methodikDerGutenRegierungsfuehrung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -2697,7 +2688,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           {
             type: "cell",
             label: "Berücksichtigung des UNGC",
-            explanation: "Werden die UNGC in  der Analyse berücksichtigt?",
+            explanation: "Werden die UNGC in der Analyse berücksichtigt?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.governance?.goodGovernance?.beruecksichtigungDesUngc),
@@ -2717,7 +2708,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Berücksichtigung der UNGC- Beschreibung",
             explanation:
-              "Wie erfolgt die Berücksichtigung der UNGC?\nWenn eine Berücksichtigung der UNGC erfolgt Angaben darüber, wie die Berücksichtigung abgebildet wird. ",
+              "Wie erfolgt die Berücksichtigung der UNGC?\nWenn eine Berücksichtigung der UNGC erfolgt Angaben darüber, wie die Berücksichtigung abgebildet wird.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernance?.beruecksichtigungDesUngc == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -2727,7 +2718,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Quellen",
             explanation:
-              "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel UNGC, Nachhaltigkeitsberichte ",
+              "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel UNGC, Nachhaltigkeitsberichte",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernance?.beruecksichtigungDesUngc == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
@@ -2769,7 +2760,7 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Verwendete Metriken und Methodik",
             explanation:
-              "Wie werden Kontroversen im Bereich Bestechung und Korruption abgebildet?\nAngabe von Kennzahlen und Methodiken zur Abbildung von Kontroversen im Bereich Bestechung und Korruption. ",
+              "Wie werden Kontroversen im Bereich Bestechung und Korruption abgebildet?\nAngabe von Kennzahlen und Methodiken zur Abbildung von Kontroversen im Bereich Bestechung und Korruption.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.kontroverseGeschaeftsfelder?.kontroversenImBereichDerBestechungUndKorruption == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>

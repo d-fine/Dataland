@@ -7,13 +7,11 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class HeimathafenSocialPais(
     val paiSozial: YesNo?,
-    val wennPaiSozialNeinBitteBegruenden: String?,
     val verwendeteSchluesselzahlenFuerPaiSozial: String?,
     val datenerfassungFuerPaiSozial: String?,
     val datenPlausibilitaetspruefungFuerPaiSozial: String?,
     val datenquelleFuerPaiSozial: String?,
     val paiSozialesAufDemLand: YesNo?,
-    val wennPaiSozialesAufDemLandNeinBitteBegruenden: String?,
     val verwendeteSchluesselzahlenFuerPaiSozialesAufDemLand: String?,
     val datenerfassungFuerPaiSozialesAufDemLand: String?,
     val datenPlausibilitaetspruefungFuerPaiSozialesAufDemLand: String?,

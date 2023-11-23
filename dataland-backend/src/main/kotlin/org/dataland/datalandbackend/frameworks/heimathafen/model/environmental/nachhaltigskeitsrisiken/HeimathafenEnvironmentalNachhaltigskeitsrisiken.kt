@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.frameworks.heimathafen.model.environmental.nachhaltigskeitsrisiken
 
+import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -12,7 +13,7 @@ data class HeimathafenEnvironmentalNachhaltigskeitsrisiken(
     val identifizierungDerWesentlichenRisikenFuerDieOekologischeNachhaltigkeitUndDerKonstruktionsmethodik: String?,
     val umweltbewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken: String?,
     val risikenFuerDieOekologischeNachhaltigkeitAbsichern: String?,
-    val quelle: String?,
+    val quelle: BaseDataPoint<String>?,
     val vierAugenPruefung: YesNo?,
     val wennVierAugenPruefungNeinBitteBegruenden: String?,
     val beschreibungDerVierAugenPruefung: String?,

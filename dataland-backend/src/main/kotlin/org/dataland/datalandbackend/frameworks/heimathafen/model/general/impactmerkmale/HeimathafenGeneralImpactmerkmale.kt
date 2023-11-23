@@ -13,7 +13,6 @@ data class HeimathafenGeneralImpactmerkmale(
     val datenPlausibilitaetspruefungFuerSdgKeineArmut: String?,
     val datenquelleFuerSdgKeineArmut: String?,
     val sdgKeinHunger: YesNo?,
-    val wennSdgKeinHungerNeinBitteBegruenden: String?,
     val verwendeteSchluesselzahlenFuerSdgKeinHunger: String?,
     val datenerfassungFuerSdgKeinHunger: String?,
     val datenPlausibilitaetspruefungFuerSdgKeinHunger: String?,

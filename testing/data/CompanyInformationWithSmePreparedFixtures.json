@@ -2,52 +2,53 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Syracuse",
-			"headquartersPostalCode": "76628",
-			"sector": "eyeballs",
+			"headquarters": "Okunevashire",
+			"headquartersPostalCode": "17027-1794",
+			"sector": "applications",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"291QrUQYQvTK",
-					"aqIW5uUi61Pp"
+					"pFY1hzC8GNHl",
+					"7bQI8TBY3j2t"
 				],
 				"PermId": [
-					"1Op6nwoVYV"
+					"jhe76R3i6V"
 				],
 				"Ticker": [
-					"aZqKIOD"
+					"BXF1SPw"
 				],
-				"Duns": [],
+				"Duns": [
+					"9I9n2QHMq"
+				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"vKKZ6Qv1TPMKefY"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "VN",
+			"countryCode": "ZM",
 			"companyAlternativeNames": [
-				"Hettinger - Feest"
+				"Mosciski LLC"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://easy-going-snowsuit.com/",
+			"companyLegalForm": null,
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"10.91",
-						"17.22",
-						"27.51"
+						"19.1",
+						"25.3",
+						"28.9",
+						"47.4"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": "21385",
-						"city": "Schmidtborough",
-						"state": "Colorado",
-						"country": "JE"
+						"streetAndHouseNumber": "Weissnat Springs 84351",
+						"postalCode": "13811-6340",
+						"city": "Rodriguezland",
+						"state": "Connecticut",
+						"country": "TV"
 					},
-					"numberOfEmployees": 581,
-					"fiscalYearStart": "2023-12-07"
+					"numberOfEmployees": 6755,
+					"fiscalYearStart": "2023-12-10"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -59,62 +60,53 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Harris Group",
+							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Mathilde Gateway 20581",
-								"postalCode": "42041-2012",
-								"city": "Dietrichfurt",
-								"state": "Louisiana",
-								"country": "CL"
-							},
-							"shareOfTotalRevenueInPercent": 8.8353
-						},
-						{
-							"nameOfProductionSite": "Luettgen - Torphy",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Marlborough Road 6614",
-								"postalCode": "02614",
-								"city": "Johnsbury",
-								"state": "Maine",
-								"country": "CD"
+								"streetAndHouseNumber": null,
+								"postalCode": "12035",
+								"city": "South Carlotta",
+								"state": null,
+								"country": "YT"
 							},
 							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"nameOfProductionSite": "Effertz - Cummerata",
+							"nameOfProductionSite": "Stamm and Sons",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Fleta Cliffs 458",
-								"postalCode": "48701-1164",
-								"city": "Doral",
-								"state": null,
-								"country": "YT"
+								"streetAndHouseNumber": null,
+								"postalCode": null,
+								"city": "Freedashire",
+								"state": "Kentucky",
+								"country": "MN"
 							},
-							"shareOfTotalRevenueInPercent": 51.192
+							"shareOfTotalRevenueInPercent": 7.5687
 						},
 						{
-							"nameOfProductionSite": "Doyle, Bins and Bruen",
+							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Rempel Loaf 8110",
-								"postalCode": "08752",
-								"city": "Roweboro",
-								"state": null,
-								"country": "AS"
+								"streetAndHouseNumber": null,
+								"postalCode": "20841-7953",
+								"city": "Lake Arliestead",
+								"state": "Rhode Island",
+								"country": "KN"
 							},
-							"shareOfTotalRevenueInPercent": 27.9067
+							"shareOfTotalRevenueInPercent": 33.1935
+						},
+						{
+							"nameOfProductionSite": "Zieme - Kirlin",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "23560-0139",
+								"city": "Dublin",
+								"state": "Texas",
+								"country": "CH"
+							},
+							"shareOfTotalRevenueInPercent": 81.3076
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Generic Plastic Shoes",
-							"shareOfTotalRevenueInPercent": 67.8432
-						},
-						{
-							"name": "Modern Wooden Shirt",
-							"shareOfTotalRevenueInPercent": 9.1929
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
@@ -122,22 +114,22 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 880,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 871,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 471283,
 					"naturalHazardsCovered": [
 						"Flooding",
 						"Avalanche",
 						"Snow",
-						"Hail"
+						"Wind"
 					]
 				}
 			}
@@ -147,37 +139,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Gerholdworth",
-			"headquartersPostalCode": null,
-			"sector": "systems",
+			"headquarters": "South Reva",
+			"headquartersPostalCode": "68330-3222",
+			"sector": "bandwidth",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"rdzez9Z2gB9d"
+					"kRzduwKCYUmD",
+					"4p9uWp6e4sWd"
 				],
-				"PermId": [],
+				"PermId": [
+					"c8FcCaZozP"
+				],
 				"Ticker": [],
-				"Duns": [
-					"DoIK22LjR"
+				"Duns": [],
+				"VatNumber": [
+					"yUaP9h99p"
 				],
-				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"PsRlZyaGIgfEGp0"
+					"X1AXyBAIpNxYgIV"
 				]
 			},
 			"countryCode": "GR",
 			"companyAlternativeNames": [
-				"Jenkins Inc"
+				"Mertz, Greenholt and Murray",
+				"Satterfield, Crona and Carter",
+				"Schinner and Sons",
+				"Smitham, Heaney and Raynor"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": null,
+			"companyLegalForm": "AG",
+			"website": "https://subdued-note.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"24.2"
+						"70.2"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -186,45 +184,105 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 68,
-					"fiscalYearStart": "2024-07-06"
+					"numberOfEmployees": 8629,
+					"fiscalYearStart": "2024-10-14"
 				},
 				"companyFinancials": {
 					"revenueInEUR": null,
-					"operatingCostInEUR": 8135918,
-					"capitalAssetsInEUR": 3849827
+					"operatingCostInEUR": 58496203,
+					"capitalAssetsInEUR": 67063113
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Dare - Kreiger",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Treutel Shore 694",
+								"postalCode": null,
+								"city": "East Lydia",
+								"state": "Colorado",
+								"country": "NU"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Balistreri, Waters and Nader",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Brannon Harbor 931",
+								"postalCode": null,
+								"city": "Jeffereytown",
+								"state": null,
+								"country": "GU"
+							},
+							"shareOfTotalRevenueInPercent": 0.5352
+						},
+						{
+							"nameOfProductionSite": "Spencer and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Grant Pines 719",
+								"postalCode": "06166",
+								"city": "Langworthcester",
+								"state": null,
+								"country": "KH"
+							},
+							"shareOfTotalRevenueInPercent": 83.0962
+						},
+						{
+							"nameOfProductionSite": "Kohler Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Reynolds Dale 715",
+								"postalCode": null,
+								"city": "College Station",
+								"state": "Minnesota",
+								"country": "NU"
+							},
+							"shareOfTotalRevenueInPercent": 26.8787
+						},
+						{
+							"nameOfProductionSite": "Collier, Hills and Hagenes",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "71050-2825",
+								"city": "Alessandrobury",
+								"state": "Alaska",
+								"country": "NI"
+							},
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Recycled Concrete Gloves",
+							"shareOfTotalRevenueInPercent": 30.9714
+						},
+						{
+							"name": "Modern Frozen Mouse",
+							"shareOfTotalRevenueInPercent": 36.3816
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 178,
+					"powerConsumptionInMWh": 1518,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 958,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"energyConsumptionHeatingAndHotWaterInMWh": 907,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 13465007,
-					"naturalHazardsCovered": [
-						"Hail",
-						"Snow",
-						"Avalanche",
-						"Flooding"
-					]
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 36345201,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -233,36 +291,38 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Metabury",
-			"headquartersPostalCode": "45510-9610",
-			"sector": "e-markets",
+			"headquarters": "Rancho Cordova",
+			"headquartersPostalCode": "40136",
+			"sector": "synergies",
 			"identifiers": {
-				"Lei": [
-					"Es7L1OCQBlxcyQnmDLEF"
-				],
+				"Lei": [],
 				"Isin": [
-					"efNCRGNTBrSz",
-					"Mepc7dPrvrRx"
+					"fHlqhRwPxJug"
 				],
 				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"8KHOKIk"
+				],
 				"Duns": [],
-				"VatNumber": [],
+				"VatNumber": [
+					"2Fbyya3uZ"
+				],
 				"CompanyRegistrationNumber": []
 			},
 			"countryCode": "CA",
 			"companyAlternativeNames": [
-				"Ankunding Group"
+				"Hickle, Altenwerth and Swift",
+				"Zieme, Lubowitz and Wyman"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://scholarly-stalk.net",
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"79.11"
+						"47.82"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -271,106 +331,51 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 3929,
-					"fiscalYearStart": "2024-06-23"
+					"numberOfEmployees": 6983,
+					"fiscalYearStart": "2024-08-18"
 				},
 				"companyFinancials": {
 					"revenueInEUR": null,
-					"operatingCostInEUR": 31902953,
-					"capitalAssetsInEUR": null
+					"operatingCostInEUR": 17000003,
+					"capitalAssetsInEUR": 43529182
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Parker - Little",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Cornell Heights 812",
-								"postalCode": "35730-5781",
-								"city": "Gunnershire",
-								"state": "Pennsylvania",
-								"country": "RU"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "McCullough - Berge",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "48945",
-								"city": "Yuma",
-								"state": "South Dakota",
-								"country": "ZW"
-							},
-							"shareOfTotalRevenueInPercent": 11.0219
-						},
-						{
-							"nameOfProductionSite": "Fahey - Langworth",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Effertz Neck 2438",
-								"postalCode": "56143",
-								"city": "Mohrland",
-								"state": null,
-								"country": "BB"
-							},
-							"shareOfTotalRevenueInPercent": 48.9073
-						},
-						{
-							"nameOfProductionSite": "Raynor, Baumbach and Nitzsche",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Nitzsche Loop 7310",
-								"postalCode": "92495-2337",
-								"city": "Wittingboro",
-								"state": null,
-								"country": "MA"
-							},
-							"shareOfTotalRevenueInPercent": 24.7042
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Elegant Bronze Mouse",
-							"shareOfTotalRevenueInPercent": 57.7257
-						},
-						{
-							"name": "Modern Wooden Hat",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Awesome Soft Towels",
-							"shareOfTotalRevenueInPercent": 19.3681
-						},
-						{
-							"name": "Elegant Fresh Table",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Elegant Bronze Chips",
-							"shareOfTotalRevenueInPercent": 23.1608
+							"name": "Fantastic Bronze Pizza",
+							"shareOfTotalRevenueInPercent": 60.3636
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1768,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 744,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"powerConsumptionInMWh": 371,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 694,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 34085475,
-					"naturalHazardsCovered": null
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 122771,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Hail",
+						"Avalanche",
+						"Snow",
+						"Flooding"
+					]
 				}
 			}
 		},

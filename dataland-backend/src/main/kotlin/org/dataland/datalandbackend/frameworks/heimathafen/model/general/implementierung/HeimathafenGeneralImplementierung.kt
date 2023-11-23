@@ -38,5 +38,5 @@ data class HeimathafenGeneralImplementierung(
     val geschaetzterZeitrahmenFuerDieVollstaendigeIntegrationDesProjekts: String?,
     val durchschnittlicheAnzahlDerBenoetigtenRessourcen: BigDecimal?,
     val anzahlDerVerfuegbarenRessourcen: BigDecimal?,
-    val kundenbetreuung: BigDecimal?,
+    val kundenbetreuung: String?,
 )

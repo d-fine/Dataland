@@ -7182,6 +7182,25 @@
           "Greater50"
         ]
       },
+      "BaseDataPointString": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        }
+      },
       "CompanyAssociatedDataHeimathafenData": {
         "required": [
           "companyId",
@@ -7360,8 +7379,12 @@
             "nullable": true
           },
           "quelle": {
-            "type": "string",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointString"
+              }
+            ]
           },
           "vierAugenPruefung": {
             "nullable": true,
@@ -7583,10 +7606,6 @@
             "type": "string",
             "nullable": true
           },
-          "kernkompetenzenUndGeschaeftsbereiche": {
-            "type": "string",
-            "nullable": true
-          },
           "anzahlDerFuerEsgZustaendigenMitarbeiter": {
             "type": "number",
             "nullable": true
@@ -7631,10 +7650,6 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
-          },
-          "wennSdgKeinHungerNeinBitteBegruenden": {
-            "type": "string",
-            "nullable": true
           },
           "verwendeteSchluesselzahlenFuerSdgKeinHunger": {
             "type": "string",
@@ -8255,7 +8270,7 @@
             "nullable": true
           },
           "kundenbetreuung": {
-            "type": "number",
+            "type": "string",
             "nullable": true
           }
         }
@@ -8300,8 +8315,12 @@
             ]
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointString"
+              }
+            ]
           },
           "datenPlausibilitaetspruefung": {
             "type": "string",
@@ -8511,6 +8530,14 @@
               }
             ]
           },
+          "wennPaiSozialNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "wennPaiSozialesAufDemLandNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
           "sfdr": {
             "nullable": true,
             "allOf": [
@@ -8642,10 +8669,6 @@
               }
             ]
           },
-          "wennPaiSozialNeinBitteBegruenden": {
-            "type": "string",
-            "nullable": true
-          },
           "verwendeteSchluesselzahlenFuerPaiSozial": {
             "type": "string",
             "nullable": true
@@ -8669,10 +8692,6 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
-          },
-          "wennPaiSozialesAufDemLandNeinBitteBegruenden": {
-            "type": "string",
-            "nullable": true
           },
           "verwendeteSchluesselzahlenFuerPaiSozialesAufDemLand": {
             "type": "string",

@@ -11,6 +11,8 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.social.sfdr.Hei
 data class HeimathafenSocial(
     val nachhaltigskeitsrisiken: HeimathafenSocialNachhaltigskeitsrisiken?,
     val pais: HeimathafenSocialPais?,
+    val wennPaiSozialNeinBitteBegruenden: String?,
+    val wennPaiSozialesAufDemLandNeinBitteBegruenden: String?,
     val sfdr: HeimathafenSocialSfdr?,
     val kontroverseGeschaeftsfelder: HeimathafenSocialKontroverseGeschaeftsfelder?,
 )

@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.FrameworkFixtureGeneratorBuilder
 import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
+import org.dataland.frameworktoolbox.specific.inputconfig.FrameworkInputConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuilder
 import org.dataland.frameworktoolbox.template.ExcelTemplate
 import org.dataland.frameworktoolbox.template.TemplateComponentBuilder
@@ -117,10 +118,25 @@ abstract class PavedRoadFramework(
     }
 
     /**
+     * Generate the input-model for the framework
+     */
+    open fun generateInputModel(framework: Framework): FrameworkInputConfigBuilder {
+        return framework.generateInputModel()
+    }
+
+    /**
      * Can be overwritten to programmatically customize the viewModel
      * (to e.g, change the way certain fields are displayed in the frontend)
      */
     open fun customizeViewModel(viewModel: FrameworkViewConfigBuilder) {
+        // Empty as it's just a customization endpoint
+    }
+
+    /**
+     * Can be overwritten to programmatically customize the inputModel
+     * (to e.g, change the way certain fields are displayed in the frontend)
+     */
+    open fun customizeInputModel(inputModel: FrameworkInputConfigBuilder) {
         // Empty as it's just a customization endpoint
     }
 

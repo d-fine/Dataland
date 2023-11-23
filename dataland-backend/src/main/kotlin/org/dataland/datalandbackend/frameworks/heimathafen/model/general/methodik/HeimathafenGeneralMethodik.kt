@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.frameworks.heimathafen.model.general.methodik
 
+import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
@@ -14,7 +15,7 @@ data class HeimathafenGeneralMethodik(
     val sindIhreBewertungenUnabhaengig: String?,
     val datenerfassung: String?,
     val dieMethodikUmfasstUmweltSozialesUndGovernance: YesNo?,
-    val datenquelle: String?,
+    val datenquelle: BaseDataPoint<String>?,
     val datenPlausibilitaetspruefung: String?,
     val intervalleFuerDieDatenaktualisierung: String?,
     val zuverlaessigkeitDerMethodikSicherstellen: String?,

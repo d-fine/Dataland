@@ -8,6 +8,7 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.inputconfig.elements.SectionInputConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 
 /**
@@ -41,6 +42,11 @@ open class ComponentBase(
      * The viewConfigGenerator allows users to overwrite the ViewConfig generation of this specific component instance
      */
     var viewConfigGenerator: ((sectionConfigBuilder: SectionConfigBuilder) -> Unit)? = null
+
+    /**
+     * The inputConfigGenerator allows users to overwrite the InputConfig generation of this specific component instance
+     */
+    var inputConfigGenerator: ((sectionInputConfigBuilder: SectionInputConfigBuilder) -> Unit)? = null
 
     /**
      * The fixtureGeneratorGenerator allows users to overwrite the FixtureGeneration generation
@@ -103,10 +109,26 @@ open class ComponentBase(
     }
 
     /**
+     * Build this component instance into the provided input-section configuration
+     * using the default generator for this component
+     */
+    open fun generateDefaultInputConfig(sectionInputConfigBuilder: SectionInputConfigBuilder) {
+        throw NotImplementedError("This component did not implement input config conversion.")
+    }
+
+    /**
      * Build this component instance into the provided view-section configuration
      */
     fun generateViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         return viewConfigGenerator?.let { it(sectionConfigBuilder) } ?: generateDefaultViewConfig(sectionConfigBuilder)
+    }
+
+    /**
+     * Build this component instance into the provided input-section configuration
+     */
+    fun generateInputConfig(sectionInputConfigBuilder: SectionInputConfigBuilder) {
+        return inputConfigGenerator?.let { it(sectionInputConfigBuilder) }
+            ?: generateDefaultInputConfig(sectionInputConfigBuilder)
     }
 
     /**

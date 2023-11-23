@@ -1,6 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.heimathafen
 
-import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.edit
@@ -14,11 +14,11 @@ import java.io.File
  * Definition of the Heimathafen framework
  */
 @Component
-class HeimathafenFramework : PavedRoadFramework(
+class HeimathafenFramework : InDevelopmentPavedRoadFramework(
     identifier = "heimathafen",
     label = "Heimathafen",
     explanation = "Das Heimathafen Framework",
-    File("./dataland-framework-toolbox/inputs/heimathafen/Heimathafen_Data_Model-German version.csv"),
+    File("./dataland-framework-toolbox/inputs/heimathafen/dataDictionary-Heimathafen.csv"),
 ) {
     var excelTemplate: ExcelTemplate? = null
 
