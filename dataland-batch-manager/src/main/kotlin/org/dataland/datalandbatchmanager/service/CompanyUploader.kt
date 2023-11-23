@@ -85,26 +85,15 @@ class CompanyUploader(
      */
     fun uploadOrPatchSingleCompany(
         companyInformation: GleifCompanyInformation,
-    ): Boolean {
+    ) {
         var patchCompanyId: String? = null
 
-        var foundCorrectCompany = false // TODO remove
         retryOnCommonApiErrors {
             try {
-                // TODO this if statement must not stay in the final version
-                if (companyInformation.lei != "01ERPZV3DOLNXY2MLB90") {
-                    logger.info(
-                        "Skipping uploading company ${companyInformation.companyName} with " +
-                            "(LEI: ${companyInformation.lei})",
-                    )
-                    patchCompanyId = null
-                    return@retryOnCommonApiErrors
-                }
                 logger.info(
                     "Uploading company data for ${companyInformation.companyName} " +
                         "(LEI: ${companyInformation.lei})",
                 )
-                foundCorrectCompany = true // TODO remove
                 companyDataControllerApi.postCompany(companyInformation.toCompanyPost())
             } catch (exception: ClientException) {
                 val conflictingCompanyId = checkForDuplicateIdentifierAndGetConflictingCompanyId(exception)
@@ -123,7 +112,6 @@ class CompanyUploader(
             )
             patchSingleCompany(it, companyInformation)
         }
-        return foundCorrectCompany // TODO remove
     }
 
     /**
@@ -148,34 +136,33 @@ class CompanyUploader(
     fun updateIsinMapping(
         leiIsinMapping: Map<String, List<String>>,
     ) {
-        var shouldContinue = true // TODO remove
         for ((lei, isinList) in leiIsinMapping) {
+            val noCompanyForLeiWarning = "No company found for LEI: $lei"
             retryOnCommonApiErrors {
-                val companies = companyDataControllerApi.getCompaniesBySearchString(lei)
-                if (companies.isNotEmpty()) {
-                    shouldContinue = false // TODO remove
+                val matchingCompanies = companyDataControllerApi.getCompaniesBySearchString(lei)
+                if (matchingCompanies.isNotEmpty()) {
                     logger.warn("Uploading company with LEI: $lei")
-                    val companyId = companies.first().companyId
+                    val companyId = matchingCompanies.first().companyId
 
-                    println("SEARCHING EXISITNG IDENTIFIERS for ID $companyId") // TODO remove
                     val existingIdentifiers = companyDataControllerApi.getCompanyById(companyId)
                         .companyInformation.identifiers
+                    if (!existingIdentifiers.getOrDefault(IdentifierType.lei.value, listOf()).contains(lei)) {
+                        logger.warn(noCompanyForLeiWarning)
+                        return@retryOnCommonApiErrors
+                    }
                     val updatedIdentifiers = existingIdentifiers.toMutableMap()
                     updatedIdentifiers[IdentifierType.isin.value] = isinList
                     // TODO merge with the ones already existing isins
 
                     val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
-                    println("PATCHING") // TODO remove
-                    println(companyPatch.toString())
                     companyDataControllerApi.patchCompanyById(
                         companyId,
                         companyPatch,
                     )
                 } else {
-                    logger.warn("No company found for LEI: $lei")
+                    logger.warn(noCompanyForLeiWarning)
                 }
             }
-            if (!shouldContinue) break // TODO remove
         }
     }
 }
