@@ -68,7 +68,7 @@ class CompanyUploaderTest {
         `when`(testCompany.companyInformation).thenReturn(mock(CompanyInformation::class.java))
         `when`(testCompany.companyInformation.identifiers).thenReturn(testIdentifier)
 
-        companyUploader.updateIsinMapping(deltaMap)
+        companyUploader.updateIsins(deltaMap)
 
         val compIdentifiers = mapOf(
             "Isin" to listOf("1111", "1112", "1113"),

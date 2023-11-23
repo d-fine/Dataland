@@ -132,7 +132,7 @@ class CompanyUploader(
      * Updates the ISINs of all companies.
      * @param leiIsinMapping the delta-map with the format "LEI"->"ISIN1,ISIN2,..."
      */
-    fun updateIsinMapping(
+    fun updateIsins(
         leiIsinMapping: Map<String, Set<String>>,
     ) {
         for ((lei, newIsins) in leiIsinMapping) {

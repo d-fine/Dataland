@@ -130,7 +130,7 @@ class GleifGoldenCopyIngestor(
                 isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedMappingFile)
             }
         replaceOldMappingFile(newMappingFile)
-        companyUploader.updateIsinMapping(deltaMapping)
+        companyUploader.updateIsins(deltaMapping)
 
         logger.info("Finished processing of file $newMappingFile in ${getExecutionTime(start)}.")
     }
