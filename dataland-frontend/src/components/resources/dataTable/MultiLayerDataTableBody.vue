@@ -127,7 +127,10 @@ function checkToShowFieldsWithNullValue(
     return true;
   }
   for (const element of mldtDatasets) {
-    if (cellOrSectionConfig.valueGetter(element.dataset).displayValue) {
+    if (
+      cellOrSectionConfig.valueGetter(element.dataset).displayValue &&
+      cellOrSectionConfig.valueGetter(element.dataset).displayValue != "No data provided"
+    ) {
       return true;
     }
   }
