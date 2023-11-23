@@ -146,6 +146,7 @@ class GleifGoldenCopyIngestorTest {
     @Test
     fun`test replacement of delta mapping file`() {
         val flagFile = File.createTempFile("test", ".csv")
+        flagFile.deleteOnExit()
         val newLines: List<String> = File(newFile.toString()).useLines { lines -> lines.take(5).toList() }
         companyIngestor = GleifGoldenCopyIngestor(
             mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
@@ -161,23 +162,25 @@ class GleifGoldenCopyIngestorTest {
         assert(!newFile.exists())
         assert(oldFile.exists())
         assert(movedLines.hashCode() == newLines.hashCode())
-        flagFile.delete()
     }
 
     @Test
     fun`test failing of file deletion`() {
         val flagFile = File.createTempFile("flagFile", ".csv")
+        flagFile.deleteOnExit()
         companyIngestor = GleifGoldenCopyIngestor(
             mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
             false, flagFile.absolutePath, oldFile,
         )
 
-        val newMappingFile = spy(File.createTempFile("newMappingFile", ".csv"))
+        val newMappingFile = spy(
+            File.createTempFile("newMappingFile", ".csv").apply {
+                deleteOnExit()
+            },
+        )
         doReturn(false).`when`(newMappingFile).delete()
         companyIngestor.replaceOldMappingFile(newMappingFile)
 
         assert(newMappingFile.exists())
-        flagFile.delete()
-        newMappingFile.delete()
     }
 }
