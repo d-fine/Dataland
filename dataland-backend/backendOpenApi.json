@@ -3422,7 +3422,7 @@
             },
             "nullable": true,
             "example": {
-              "NaceCodeAInGWh": {
+              "NaceCodeA": {
                 "highImpactClimateSectorEnergyConsumptionInGWh": {
                   "quality": "Audited",
                   "dataSource": {
@@ -3446,7 +3446,7 @@
                   "value": 0
                 }
               },
-              "NaceCodeBInGWh": {
+              "NaceCodeB": {
                 "highImpactClimateSectorEnergyConsumptionInGWh": {
                   "quality": "Audited",
                   "dataSource": {
@@ -3470,7 +3470,7 @@
                   "value": 0
                 }
               },
-              "NaceCodeCInGWh": {
+              "NaceCodeC": {
                 "highImpactClimateSectorEnergyConsumptionInGWh": {
                   "quality": "Audited",
                   "dataSource": {
@@ -3494,7 +3494,7 @@
                   "value": 0
                 }
               },
-              "NaceCodeDInGWh": {
+              "NaceCodeD": {
                 "highImpactClimateSectorEnergyConsumptionInGWh": {
                   "quality": "Audited",
                   "dataSource": {
@@ -3518,7 +3518,7 @@
                   "value": 0
                 }
               },
-              "NaceCodeEInGWh": {
+              "NaceCodeE": {
                 "highImpactClimateSectorEnergyConsumptionInGWh": {
                   "quality": "Audited",
                   "dataSource": {
@@ -3542,7 +3542,7 @@
                   "value": 0
                 }
               },
-              "NaceCodeFInGWh": {
+              "NaceCodeF": {
                 "highImpactClimateSectorEnergyConsumptionInGWh": {
                   "quality": "Audited",
                   "dataSource": {
@@ -3566,7 +3566,7 @@
                   "value": 0
                 }
               },
-              "NaceCodeGInGWh": {
+              "NaceCodeG": {
                 "highImpactClimateSectorEnergyConsumptionInGWh": {
                   "quality": "Audited",
                   "dataSource": {
@@ -3590,7 +3590,7 @@
                   "value": 0
                 }
               },
-              "NaceCodeHInGWh": {
+              "NaceCodeH": {
                 "highImpactClimateSectorEnergyConsumptionInGWh": {
                   "quality": "Audited",
                   "dataSource": {
@@ -3614,7 +3614,7 @@
                   "value": 0
                 }
               },
-              "NaceCodeLInGWh": {
+              "NaceCodeL": {
                 "highImpactClimateSectorEnergyConsumptionInGWh": {
                   "quality": "Audited",
                   "dataSource": {
@@ -4030,7 +4030,7 @@
           }
         },
         "example": {
-          "NaceCodeAInGWh": {
+          "NaceCodeA": {
             "highImpactClimateSectorEnergyConsumptionInGWh": {
               "quality": "Audited",
               "dataSource": {
@@ -4054,7 +4054,7 @@
               "value": 0
             }
           },
-          "NaceCodeBInGWh": {
+          "NaceCodeB": {
             "highImpactClimateSectorEnergyConsumptionInGWh": {
               "quality": "Audited",
               "dataSource": {
@@ -4078,7 +4078,7 @@
               "value": 0
             }
           },
-          "NaceCodeCInGWh": {
+          "NaceCodeC": {
             "highImpactClimateSectorEnergyConsumptionInGWh": {
               "quality": "Audited",
               "dataSource": {
@@ -4102,7 +4102,7 @@
               "value": 0
             }
           },
-          "NaceCodeDInGWh": {
+          "NaceCodeD": {
             "highImpactClimateSectorEnergyConsumptionInGWh": {
               "quality": "Audited",
               "dataSource": {
@@ -4126,7 +4126,7 @@
               "value": 0
             }
           },
-          "NaceCodeEInGWh": {
+          "NaceCodeE": {
             "highImpactClimateSectorEnergyConsumptionInGWh": {
               "quality": "Audited",
               "dataSource": {
@@ -4150,7 +4150,7 @@
               "value": 0
             }
           },
-          "NaceCodeFInGWh": {
+          "NaceCodeF": {
             "highImpactClimateSectorEnergyConsumptionInGWh": {
               "quality": "Audited",
               "dataSource": {
@@ -4174,7 +4174,7 @@
               "value": 0
             }
           },
-          "NaceCodeGInGWh": {
+          "NaceCodeG": {
             "highImpactClimateSectorEnergyConsumptionInGWh": {
               "quality": "Audited",
               "dataSource": {
@@ -4198,7 +4198,7 @@
               "value": 0
             }
           },
-          "NaceCodeHInGWh": {
+          "NaceCodeH": {
             "highImpactClimateSectorEnergyConsumptionInGWh": {
               "quality": "Audited",
               "dataSource": {
@@ -4222,7 +4222,7 @@
               "value": 0
             }
           },
-          "NaceCodeLInGWh": {
+          "NaceCodeL": {
             "highImpactClimateSectorEnergyConsumptionInGWh": {
               "quality": "Audited",
               "dataSource": {

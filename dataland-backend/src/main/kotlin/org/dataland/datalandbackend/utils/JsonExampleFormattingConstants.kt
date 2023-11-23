@@ -73,15 +73,15 @@ object JsonExampleFormattingConstants {
         "}"
 
     const val HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE: String = "{" +
-        "\"NaceCodeAInGWh\": $highImpactClimateSectorEnergyConsumption," +
-        "\"NaceCodeBInGWh\": $highImpactClimateSectorEnergyConsumption," +
-        "\"NaceCodeCInGWh\": $highImpactClimateSectorEnergyConsumption," +
-        "\"NaceCodeDInGWh\": $highImpactClimateSectorEnergyConsumption," +
-        "\"NaceCodeEInGWh\": $highImpactClimateSectorEnergyConsumption," +
-        "\"NaceCodeFInGWh\": $highImpactClimateSectorEnergyConsumption," +
-        "\"NaceCodeGInGWh\": $highImpactClimateSectorEnergyConsumption," +
-        "\"NaceCodeHInGWh\": $highImpactClimateSectorEnergyConsumption," +
-        "\"NaceCodeLInGWh\": $highImpactClimateSectorEnergyConsumption" +
+        "\"NaceCodeA\": $highImpactClimateSectorEnergyConsumption," +
+        "\"NaceCodeB\": $highImpactClimateSectorEnergyConsumption," +
+        "\"NaceCodeC\": $highImpactClimateSectorEnergyConsumption," +
+        "\"NaceCodeD\": $highImpactClimateSectorEnergyConsumption," +
+        "\"NaceCodeE\": $highImpactClimateSectorEnergyConsumption," +
+        "\"NaceCodeF\": $highImpactClimateSectorEnergyConsumption," +
+        "\"NaceCodeG\": $highImpactClimateSectorEnergyConsumption," +
+        "\"NaceCodeH\": $highImpactClimateSectorEnergyConsumption," +
+        "\"NaceCodeL\": $highImpactClimateSectorEnergyConsumption" +
         "}"
 
     private const val companyReport = "{" +

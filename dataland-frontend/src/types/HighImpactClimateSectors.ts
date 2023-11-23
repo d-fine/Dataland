@@ -19,13 +19,13 @@ export const optionsForHighImpactClimateSectors = naceCodeTreeFilteredByHighImpa
 });
 
 export enum HighImpactClimateSectorsNaceCodes {
-  "NaceCodeAInGWh" = "A",
-  "NaceCodeBInGWh" = "B",
-  "NaceCodeCInGWh" = "C",
-  "NaceCodeDInGWh" = "D",
-  "NaceCodeEInGWh" = "E",
-  "NaceCodeFInGWh" = "F",
-  "NaceCodeGInGWh" = "G",
-  "NaceCodeHInGWh" = "H",
-  "NaceCodeLInGWh" = "L",
+  "NaceCodeA" = "A",
+  "NaceCodeB" = "B",
+  "NaceCodeC" = "C",
+  "NaceCodeD" = "D",
+  "NaceCodeE" = "E",
+  "NaceCodeF" = "F",
+  "NaceCodeG" = "G",
+  "NaceCodeH" = "H",
+  "NaceCodeL" = "L",
 }

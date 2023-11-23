@@ -21,7 +21,7 @@ describe("Unit test for the HighImpactClimateGetterFactory", () => {
 
   it("Should display the name of sectors if they exist", () => {
     const highImpactClimateData: HighImpactClimateValueObject = {
-      [HighImpactClimateSector.NaceCodeAInGWh]: {
+      [HighImpactClimateSector.NaceCodeA]: {
         highImpactClimateSectorEnergyConsumptionInGWh: {
           value: 12345,
           quality: "Estimated",
@@ -40,7 +40,7 @@ describe("Unit test for the HighImpactClimateGetterFactory", () => {
     expect(value).to.have.nested.property("displayValue.label", "Applicable High Impact Climate Sectors");
     expect(value).to.have.deep.nested.property("displayValue.modalOptions.data.listOfRowContents", [
       {
-        sector: HighImpactClimateSectorsKeys[HighImpactClimateSector.NaceCodeAInGWh] ?? "",
+        sector: HighImpactClimateSectorsKeys[HighImpactClimateSector.NaceCodeA] ?? "",
         energyConsumption: "12,345 GWh",
         relativeEnergyConsumption: "54 GWh / €M revenue",
       },
