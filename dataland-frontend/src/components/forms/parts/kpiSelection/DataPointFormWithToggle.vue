@@ -67,7 +67,7 @@
         <FormKit
           :disabled="!dataPointIsAvailable"
           type="number"
-          data-test="valueAsPercentage"
+          data-test="value"
           name="value"
           validation-label="Value"
           v-model="currentValue"

@@ -29,17 +29,17 @@ describe("Component tests for toggle data point", () => {
         kpiNameMappings: euTaxonomyKpiNameMappings,
       },
     }).then((mounted) => {
-      cy.get('[data-test="valueAsPercentage"]').should("be.visible").type("133");
+      cy.get('[data-test="value"]').should("be.visible").type("133");
       cy.get('[data-test="valueAsPercentageInSecondInputMode"]').should("not.exist");
       cy.get('[data-test="qualityValue"]').select("Estimated");
       cy.wrap(mounted.component).its("currentQualityValue").should("eq", "Estimated");
       cy.get('[data-test="dataPointToggleButton"]').click();
-      cy.get('[data-test="valueAsPercentage"]').should("not.be.visible");
+      cy.get('[data-test="value"]').should("not.be.visible");
       cy.get('[data-test="qualityValue"]').should("not.be.visible");
       cy.wrap(mounted.component).its("currentValue").should("eq", "");
       cy.wrap(mounted.component).its("currentQualityValue").should("eq", "NA");
       cy.get('[data-test="dataPointToggleButton"]').click();
-      cy.get('[data-test="valueAsPercentage"]').should("be.visible");
+      cy.get('[data-test="value"]').should("be.visible");
       cy.get('[data-test="qualityValue"]').should("be.visible");
       cy.wrap(mounted.component).its("currentValue").should("eq", "133");
       cy.wrap(mounted.component).its("currentQualityValue").should("eq", "Estimated");
