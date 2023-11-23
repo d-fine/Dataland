@@ -5,6 +5,7 @@ import okhttp3.Request
 import org.apache.commons.io.FileUtils
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.MAX_RETRIES
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.io.File
@@ -21,6 +22,7 @@ const val ZIP_BUFFER_SIZE = 8192
  */
 @Component
 class GleifApiAccessor(
+    @Qualifier("UnauthenticatedOkHttpClient") private val httpClient: OkHttpClient,
     @Value("\${gleif.download.baseurl}") private val gleifBaseUrl: String,
     @Value("\${gleif.isin.mapping.download.url}") private val isinMappingReferenceUrl: String,
 ) {
@@ -128,7 +130,7 @@ class GleifApiAccessor(
                 val request = Request.Builder()
                     .url(url)
                     .build()
-                val response = OkHttpClient().newCall(request).execute() // TODO inject okhttp client
+                val response = httpClient.newCall(request).execute()
                 targetFile.writeBytes(response.body!!.bytes())
                 logger.info("Successfully saved local copy of the required file.")
                 break
