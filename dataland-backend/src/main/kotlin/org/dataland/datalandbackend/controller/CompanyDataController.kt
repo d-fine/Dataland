@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.controller
 
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
@@ -20,6 +21,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
+import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController
  */
 
 @RestController
+@Validated
 class CompanyDataController(
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
     @Autowired private val companyQueryManager: CompanyQueryManager,
@@ -37,7 +41,7 @@ class CompanyDataController(
 ) : CompanyApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
+    override fun postCompany(@Valid @RequestBody companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
         logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
         return ResponseEntity.ok(
             companyAlterationManager.addCompany(companyInformation)

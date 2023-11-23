@@ -1,5 +1,7 @@
 package org.dataland.datalandbackend.services
 
+import jakarta.validation.ConstraintViolation
+import jakarta.validation.Validator
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntity
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+
 
 /**
  * Implementation of a company manager for Dataland
@@ -96,6 +99,8 @@ class CompanyAlterationManager(
         }
     }
 
+    @Autowired
+    private val validator: Validator? = null
     /**
      * Method to add a company
      * @param companyInformation denotes information of the company
@@ -104,6 +109,17 @@ class CompanyAlterationManager(
      */
     @Transactional(rollbackFor = [InvalidInputApiException::class])
     fun addCompany(companyInformation: CompanyInformation): StoredCompanyEntity {
+
+        val violations: Set<ConstraintViolation<CompanyInformation>> = validator!!.validate(companyInformation)
+
+        if (violations.isNotEmpty()) {
+            val sb = StringBuilder()
+            for (constraintViolation in violations) {
+                sb.append(constraintViolation.getMessage())
+            }
+            throw IllegalArgumentException("Fields could not be validated")
+        }
+
         val companyId = IdUtils.generateUUID()
         logger.info("Creating Company ${companyInformation.companyName} with ID $companyId")
         val savedCompany = createStoredCompanyEntityWithoutForeignReferences(companyId, companyInformation)

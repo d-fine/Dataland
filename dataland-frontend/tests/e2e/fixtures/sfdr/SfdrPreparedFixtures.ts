@@ -30,9 +30,23 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
     ),
   );
   preparedFixtures.push(manipulateFixtureForNoNullFields(generateSfdrFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForMalformedInputValues(generateSfdrFixtures(1)[0]))
 
   return preparedFixtures;
 }
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * sets the dateDate to something not allowed in the YYYY-MM-DD scheme
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForMalformedInputValues(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-malformed-input-values";
+  input.t.general.general.dataDate = "2022-1-1"
+  return input;
+}
+
 
 /**
  * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.

@@ -47,24 +47,24 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNo>? = null,
 
-    @Min(0)
+    @field:Min(0)
     val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
 
-    @Min(0)
+    @field:Min(0)
     val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
-    @Min(0)
+    @field:Min(0)
     val femaleBoardMembers: ExtendedDataPoint<Long>? = null,
 
-    @Min(0)
+    @field:Min(0)
     val maleBoardMembers: ExtendedDataPoint<Long>? = null,
 
     val controversialWeaponsExposure: ExtendedDataPoint<YesNo>? = null,
 
     val workplaceAccidentPreventionPolicy: BaseDataPoint<YesNo>? = null,
 
-    @Min(0)
-    @Max(100)
+    @field:Max(100)
+    @field:Min(0)
     val rateOfAccidentsInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
     @Min(0)
@@ -76,12 +76,11 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val whistleblowerProtectionPolicy: BaseDataPoint<YesNo>? = null,
 
-    @Min(0)
+    @field:Min(0)
     val reportedIncidentsOfDiscrimination: ExtendedDataPoint<BigDecimal>? = null,
-
-    @Min(0)
+    @field:Min(0)
     val sanctionedIncidentsOfDiscrimination: ExtendedDataPoint<Long>? = null,
 
-    @Min(0)
+    @field:Min(0)
     val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal>? = null,
 )

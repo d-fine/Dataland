@@ -16,12 +16,10 @@ data class SfdrSocialHumanRights(
 
     val traffickingInHumanBeingsPolicy: BaseDataPoint<YesNo>? = null,
 
-    @Min(0)
     val reportedChildLabourIncidents: ExtendedDataPoint<YesNo>? = null,
 
-    @Min(0)
     val reportedForcedOrCompulsoryLabourIncidents: ExtendedDataPoint<YesNo>? = null,
 
-    @Min(0)
+    @field:Min(0)
     val numberOfReportedIncidentsOfHumanRightsViolations: ExtendedDataPoint<Long>? = null,
 )

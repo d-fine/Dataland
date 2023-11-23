@@ -11,12 +11,12 @@ import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
  */
 data class SfdrSocialAntiCorruptionAndAntiBribery(
 
-    @Min(0)
+        @field:Min(0)
     val casesOfInsufficientActionAgainstBriberyAndCorruption: ExtendedDataPoint<Long>? = null,
 
-    @Min(0)
+    @field:Min(0)
     val reportedConvictionsOfBriberyAndCorruption: ExtendedDataPoint<Long>? = null,
 
-    @Min(0)
+    @field:Min(0)
     val totalAmountOfReportedFinesOfBriberyAndCorruption: CurrencyDataPoint? = null,
 )

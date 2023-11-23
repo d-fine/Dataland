@@ -15,19 +15,23 @@ import java.time.LocalDate
  * Fields of the subcategory "General" belonging to the category "General" of the sfdr framework.
  */
 data class SfdrGeneralGeneral(
+
+    @field:Pattern(regexp = "^(?<year>\\d{4})(?<sep>[^\\w\\s])(?<month>1[0-2]|0[1-9])\\k<sep>(?<day>0[1-9]|[12][0-9]|" +
+           "(11\\k<sep>|[^1][4-9]\\k<sep>)30|(1[02]\\k<sep>|[^1][13578]\\k<sep>)3[01])",
+            message = "date is not formatted correctly (must be YYYY-MM-DD)")
     @field:JsonProperty(required = true)
-    @Pattern(regexp = "^(?<year>\\d{4})(?<sep>[^\\w\\s])(?<month>1[0-2]|0[1-9])\\k<sep>(?<day>0[1-9]|[12][0-9]|" +
-            "(11\\k<sep>|[^1][4-9]\\k<sep>)30|(1[02]\\k<sep>|[^1][13578]\\k<sep>)3[01])")
     val dataDate: LocalDate,
 
+    @field:Pattern(regexp = "^(?<year>\\d{4})(?<sep>[^\\w\\s])(?<month>1[0-2]|0[1-9])\\k<sep>(?<day>0[1-9]|[12][0-9]|" +
+            "(11\\k<sep>|[^1][4-9]\\k<sep>)30|(1[02]\\k<sep>|[^1][13578]\\k<sep>)3[01])",
+            message = "date is not formatted correctly (must be YYYY-MM-DD)")
     @field:JsonProperty(required = true)
-    @Pattern(regexp = "^(?<year>\\d{4})(?<sep>[^\\w\\s])(?<month>1[0-2]|0[1-9])\\k<sep>(?<day>0[1-9]|[12][0-9]|" +
-            "(11\\k<sep>|[^1][4-9]\\k<sep>)30|(1[02]\\k<sep>|[^1][13578]\\k<sep>)3[01])")
     val fiscalYearDeviation: FiscalYearDeviation,
 
+    @field:Pattern(regexp = "^(?<year>\\d{4})(?<sep>[^\\w\\s])(?<month>1[0-2]|0[1-9])\\k<sep>(?<day>0[1-9]|[12][0-9]|" +
+           "(11\\k<sep>|[^1][4-9]\\k<sep>)30|(1[02]\\k<sep>|[^1][13578]\\k<sep>)3[01])",
+            message = "date is not formatted correctly (must be YYYY-MM-DD)")
     @field:JsonProperty(required = true)
-    @Pattern(regexp = "^(?<year>\\d{4})(?<sep>[^\\w\\s])(?<month>1[0-2]|0[1-9])\\k<sep>(?<day>0[1-9]|[12][0-9]|" +
-            "(11\\k<sep>|[^1][4-9]\\k<sep>)30|(1[02]\\k<sep>|[^1][13578]\\k<sep>)3[01])")
     val fiscalYearEnd: LocalDate,
 
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)

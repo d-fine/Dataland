@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -10,6 +11,7 @@ import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -36,7 +38,7 @@ class SfdrDataController(
     }
 
     @Operation(operationId = "postCompanyAssociatedSfdrData")
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<SfdrData>, bypassQa: Boolean):
+    override fun postCompanyAssociatedData(@Valid @RequestBody companyAssociatedData: CompanyAssociatedData<SfdrData>, bypassQa: Boolean):
         ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }
