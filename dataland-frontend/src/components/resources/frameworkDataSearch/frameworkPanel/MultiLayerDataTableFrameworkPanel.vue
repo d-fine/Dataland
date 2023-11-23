@@ -18,7 +18,7 @@
           : displayConfiguration
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
-      :show-hidden="showHidden"
+      :show-hidden="inReviewMode ? true : showHidden"
     />
   </div>
   <div v-if="status == 'Error'">

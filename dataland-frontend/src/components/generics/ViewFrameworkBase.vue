@@ -26,7 +26,7 @@
             <slot name="reportingPeriodDropdown" />
           </div>
           <div class="flex align-content-end align-items-center">
-            <div data-test="dataPointToggle" class="form-field vertical-middle">
+            <div v-if="!isReviewableByCurrentUser" data-test="dataPointToggle" class="form-field vertical-middle">
               <InputSwitch
                 data-test="dataPointToggleButton"
                 inputId="dataPointIsAvailableSwitch"
@@ -350,7 +350,6 @@ export default defineComponent({
     },
     /**
      * Toggle dataPointIsAvailable variable value and emit event
-     *
      */
     showHiddenFieldsToggle(): void {
       this.showHidden = !this.showHidden;
