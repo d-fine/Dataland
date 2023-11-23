@@ -22,9 +22,15 @@ describe("Unit test for the HighImpactClimateGetterFactory", () => {
   it("Should display the name of sectors if they exist", () => {
     const highImpactClimateData: HighImpactClimateValueObject = {
       [HighImpactClimateSector.NaceCodeAInGWh]: {
-        value: 12345,
-        quality: "Estimated",
-      } as ExtendedDataPointBigDecimal,
+        highImpactClimateSectorEnergyConsumptionInGWh: {
+          value: 12345,
+          quality: "Estimated",
+        } as ExtendedDataPointBigDecimal,
+        highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue: {
+          value: 54,
+          quality: "Estimated",
+        } as ExtendedDataPointBigDecimal,
+      },
     };
 
     const dataset = { data: highImpactClimateData };
@@ -36,6 +42,7 @@ describe("Unit test for the HighImpactClimateGetterFactory", () => {
       {
         sector: HighImpactClimateSectorsKeys[HighImpactClimateSector.NaceCodeAInGWh] ?? "",
         energyConsumption: "12,345 GWh",
+        relativeEnergyConsumption: "54 GWh / €M revenue",
       },
     ]);
   });
