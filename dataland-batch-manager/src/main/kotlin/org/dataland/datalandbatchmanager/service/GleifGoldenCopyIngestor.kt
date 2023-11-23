@@ -36,7 +36,7 @@ class GleifGoldenCopyIngestor(
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
     private val allCompaniesIngestFlagFilePath: String?,
     @Value("\${dataland.dataland-batch-manager.isin-mapping-file}")
-    private val isinMappingFile: File,
+    private val savedIsinMappingFile: File,
 ) {
     companion object {
         const val MS_PER_S = 1000L
@@ -65,10 +65,10 @@ class GleifGoldenCopyIngestor(
                 }
             }
 
-            if (isinMappingFile.exists() && (!isinMappingFile.delete())) {
+            if (savedIsinMappingFile.exists() && (!savedIsinMappingFile.delete())) {
                 throw FileSystemException(
-                    file = isinMappingFile,
-                    reason = "Unable to delete ISIN mapping file $isinMappingFile",
+                    file = savedIsinMappingFile,
+                    reason = "Unable to delete ISIN mapping file $savedIsinMappingFile",
                 )
             }
 
@@ -128,10 +128,10 @@ class GleifGoldenCopyIngestor(
         val duration = measureTime {
             downloadFile(newMappingFile)
             val deltaMapping: Map<String, Set<String>> =
-                if (!isinMappingFile.exists() || isinMappingFile.length() == 0L) {
+                if (!savedIsinMappingFile.exists() || savedIsinMappingFile.length() == 0L) {
                     isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
                 } else {
-                    isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, isinMappingFile)
+                    isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedIsinMappingFile)
                 }
             replaceOldMappingFile(newMappingFile)
             companyUploader.updateIsins(deltaMapping)
@@ -186,7 +186,7 @@ class GleifGoldenCopyIngestor(
      */
     fun replaceOldMappingFile(newMappingFile: File) {
         try {
-            newMappingFile.copyTo(isinMappingFile, true)
+            newMappingFile.copyTo(savedIsinMappingFile, true)
             if (!newMappingFile.delete()) {
                 logger.error("failed to delete file $newMappingFile")
             }
