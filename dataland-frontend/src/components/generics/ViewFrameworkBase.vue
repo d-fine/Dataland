@@ -26,14 +26,14 @@
             <slot name="reportingPeriodDropdown" />
           </div>
           <div class="flex align-content-end align-items-center">
-            <div v-if="!isReviewableByCurrentUser" data-test="dataPointToggle" class="form-field vertical-middle">
+            <div v-if="!isReviewableByCurrentUser" data-test="hideEmptyDataToggle" class="form-field vertical-middle">
               <InputSwitch
                 data-test="dataPointToggleButton"
                 inputId="dataPointIsAvailableSwitch"
                 @click="showHiddenFieldsToggle"
                 v-model="showHidden"
               />
-              <h5 data-test="dataPointToggleTitle" class="ml-2">
+              <h5 data-test="hideEmptyDataToggl" class="ml-2">
                 {{ showHidden ? "Empty fields are shown" : "Empty fields are hidden" }}
               </h5>
             </div>
