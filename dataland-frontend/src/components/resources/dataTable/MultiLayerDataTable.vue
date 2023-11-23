@@ -27,7 +27,7 @@
             :config="config"
             :isTopLevel="true"
             :isVisible="true"
-            :show-hidden="showHidden"
+            :hide-empty-fields="hideEmptyFields"
           />
         </tbody>
       </table>
@@ -50,6 +50,6 @@ defineProps<{
   config: MLDTConfig<T>;
   mldtDatasets: Array<MLDTDataset<T>>;
   ariaLabel?: string;
-  showHidden: boolean;
+  hideEmptyFields: boolean;
 }>();
 </script>

@@ -3,7 +3,7 @@
     <template v-if="isCellOrSectionVisible(cellOrSectionConfig, mldtDatasets)">
       <tr
         v-if="cellOrSectionConfig.type == 'cell'"
-        v-show="isVisible && checkToShowFieldsWithNullValue(mldtDatasets, cellOrSectionConfig, props.showHidden)"
+        v-show="isVisible && checkToShowFieldsWithNullValue(mldtDatasets, cellOrSectionConfig, props.hideEmptyFields)"
         :data-cell-label="cellOrSectionConfig.label"
       >
         <td class="headers-bg" :data-cell-label="cellOrSectionConfig.label" data-row-header="true">
@@ -62,7 +62,7 @@
           :mldtDatasets="mldtDatasets"
           :isTopLevel="false"
           :isVisible="isVisible && expandedSections.has(idx)"
-          :show-hidden="showHidden"
+          :hide-empty-fields="hideEmptyFields"
         />
       </template>
     </template>
@@ -115,15 +115,16 @@ function expandSectionsOnPageLoad(): void {
  * Checks if fields with null values should be shown or not
  * @param mldtDatasets datasets for the specified company and framework
  * @param cellOrSectionConfig config for the specified framework
- * @param showHidden toggle if fields with null values should be shown or not
+ * @param hideEmptyFields toggle if fields with null values should be shown or not
  * @returns boolean to set hidden to true or false
  */
 function checkToShowFieldsWithNullValue(
   mldtDatasets: MLDTDataset<FrameworkDataTypes>[],
   cellOrSectionConfig: MLDTCellConfig<FrameworkDataTypes>,
-  showHidden: boolean,
+  hideEmptyFields: boolean,
 ): boolean {
-  if (showHidden) {
+  console.log(hideEmptyFields);
+  if (!hideEmptyFields) {
     return true;
   }
   for (const element of mldtDatasets) {
@@ -152,7 +153,7 @@ const props = defineProps<{
   mldtDatasets: Array<MLDTDataset<T>>;
   isTopLevel: boolean;
   isVisible: boolean;
-  showHidden: boolean;
+  hideEmptyFields: boolean;
 }>();
 
 onMounted(() => {

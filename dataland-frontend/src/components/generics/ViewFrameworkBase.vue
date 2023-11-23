@@ -24,23 +24,21 @@
               @change="handleChangeFrameworkEvent"
             />
             <slot name="reportingPeriodDropdown" />
-              <div class="flex align-content-start align-items-center pl-3">
-                  <div v-if="!isReviewableByCurrentUser" data-test="hideEmptyDataToggle" class="form-field vertical-middle">
-                      <InputSwitch
-                              data-test="dataPointToggleButton"
-                              inputId="dataPointIsAvailableSwitch"
-                              @click="showHiddenFieldsToggle"
-                              v-model="showHidden"
-                      />
-                      <h5 data-test="hideEmptyDataToggl" class="ml-2">
-                          {{ showHidden ? "Hide empty fields" : "Hide empty fields" }}
-                      </h5>
-                  </div>
+            <div class="flex align-content-start align-items-center pl-3">
+              <div v-if="!isReviewableByCurrentUser" data-test="hideEmptyDataToggle" class="form-field vertical-middle">
+                <InputSwitch
+                  data-test="dataPointToggleButton"
+                  inputId="dataPointIsAvailableSwitch"
+                  v-model="hideEmptyFields"
+                />
+                <h5 data-test="hideEmptyDataToggl" class="ml-2">
+                  {{ hideEmptyFields ? "Hide empty fields" : "Hide empty fields" }}
+                </h5>
               </div>
+            </div>
           </div>
 
           <div class="flex align-content-end align-items-center">
-
             <QualityAssuranceButtons
               v-if="isReviewableByCurrentUser"
               :meta-info="singleDataMetaInfoToDisplay"
@@ -147,12 +145,12 @@ export default defineComponent({
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
       frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
+      hideEmptyFields: ref(true),
     };
   },
   data() {
     return {
       fetchedCompanyInformation: {} as CompanyInformation,
-      showHidden: false,
       chosenDataTypeInDropdown: "",
       dataTypesInDropdown: [] as { label: string; value: string }[],
       humanizeStringOrNumber,
@@ -170,8 +168,8 @@ export default defineComponent({
   },
   provide() {
     return {
-      showHidden: computed(() => {
-        return this.showHidden;
+      hideEmptyFields: computed(() => {
+        return this.hideEmptyFields;
       }),
     };
   },
@@ -351,12 +349,6 @@ export default defineComponent({
         this.isDataProcessedSuccesfully = false;
         console.error(error);
       }
-    },
-    /**
-     * Toggle dataPointIsAvailable variable value and emit event
-     */
-    showHiddenFieldsToggle(): void {
-      this.showHidden = !this.showHidden;
     },
   },
   watch: {

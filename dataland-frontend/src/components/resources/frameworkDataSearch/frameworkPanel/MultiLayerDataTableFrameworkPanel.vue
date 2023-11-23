@@ -26,7 +26,7 @@
           : displayConfiguration
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
-      :show-hidden="inReviewMode ? true : showHidden"
+      :hide-empty-fields="inReviewMode ? true : hideEmptyFields"
     />
   </div>
   <div v-if="status == 'Error'">
@@ -65,8 +65,8 @@ const props = defineProps<{
   displayConfiguration: MLDTConfig<FrameworkDataTypes[Framework]["data"]>;
   inReviewMode: boolean;
 }>();
-const injecShowHidden = inject<{ value: boolean }>("showHidden");
-const showHidden = computed<boolean | undefined>(() => injecShowHidden?.value);
+const injecHideEmptyFields = inject<{ value: boolean }>("hideEmptyFields");
+const hideEmptyFields = computed<boolean | undefined>(() => injecHideEmptyFields?.value);
 
 const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.frameworkIdentifier));
 
