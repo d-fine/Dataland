@@ -88,6 +88,7 @@ class CompanyUploader(
     ): Boolean {
         var patchCompanyId: String? = null
 
+        var foundCorrectCompany = false // TODO remove
         retryOnCommonApiErrors {
             try {
                 // TODO this if statement must not stay in the final version
@@ -103,6 +104,7 @@ class CompanyUploader(
                     "Uploading company data for ${companyInformation.companyName} " +
                         "(LEI: ${companyInformation.lei})",
                 )
+                foundCorrectCompany = true // TODO remove
                 companyDataControllerApi.postCompany(companyInformation.toCompanyPost())
             } catch (exception: ClientException) {
                 val conflictingCompanyId = checkForDuplicateIdentifierAndGetConflictingCompanyId(exception)
@@ -121,7 +123,7 @@ class CompanyUploader(
             )
             patchSingleCompany(it, companyInformation)
         }
-        return patchCompanyId != null // TODO remove
+        return foundCorrectCompany // TODO remove
     }
 
     /**
@@ -151,14 +153,17 @@ class CompanyUploader(
             retryOnCommonApiErrors {
                 val companies = companyDataControllerApi.getCompaniesBySearchString(lei)
                 if (companies.isNotEmpty()) {
+                    logger.warn("Uploading company with LEI: $lei")
                     val companyId = companies.first().companyId
 
+                    println("SEARCHING EXISITNG IDENTIFIERS") // TODO remove
                     val existingIdentifiers = companyDataControllerApi.getCompanyById(companyId)
                         .companyInformation.identifiers
                     val updatedIdentifiers = existingIdentifiers.toMutableMap()
                     updatedIdentifiers["isin"] = isinList // TODO merge with the ones already existing
 
                     val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
+                    println("PATCHING") // TODO remove
                     companyDataControllerApi.patchCompanyById(
                         companyId,
                         companyPatch,
