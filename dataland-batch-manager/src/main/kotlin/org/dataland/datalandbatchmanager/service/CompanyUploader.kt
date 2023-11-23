@@ -156,7 +156,7 @@ class CompanyUploader(
                     logger.warn("Uploading company with LEI: $lei")
                     val companyId = companies.first().companyId
 
-                    println("SEARCHING EXISITNG IDENTIFIERS") // TODO remove
+                    println("SEARCHING EXISITNG IDENTIFIERS for ID $companyId") // TODO remove
                     val existingIdentifiers = companyDataControllerApi.getCompanyById(companyId)
                         .companyInformation.identifiers
                     val updatedIdentifiers = existingIdentifiers.toMutableMap()
