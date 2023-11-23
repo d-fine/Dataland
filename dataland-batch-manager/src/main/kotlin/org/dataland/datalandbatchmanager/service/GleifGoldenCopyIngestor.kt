@@ -160,14 +160,8 @@ class GleifGoldenCopyIngestor(
         try {
             uploadThreadPool.submit {
                 StreamSupport.stream(gleifIterable.spliterator(), true)
-                    .forEach {
-                        if (companyUploader.uploadOrPatchSingleCompany(it)) {
-                            throw IllegalArgumentException("Just wanted to get out of here")
-                        }
-                    } // TODO remove if
+                    .forEach { if (companyUploader.uploadOrPatchSingleCompany(it)) return@forEach } // TODO remove if
             }.get()
-        } catch (e: IllegalArgumentException) {
-            println(e.message)
         } finally {
             uploadThreadPool.shutdown()
         }
