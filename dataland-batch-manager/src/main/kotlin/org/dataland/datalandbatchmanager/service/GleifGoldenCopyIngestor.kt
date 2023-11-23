@@ -72,9 +72,10 @@ class GleifGoldenCopyIngestor(
                 )
             }
 
+            waitForBackend()
             logger.info("Retrieving all company data available via GLEIF.")
             val tempFile = File.createTempFile("gleif_golden_copy", ".zip")
-            processGleifDeltaFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
+            processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
             prepareIsinMappingFile()
         } else {
             logger.info("Flag file not present & no force update variable set => Not performing any download")
@@ -84,6 +85,7 @@ class GleifGoldenCopyIngestor(
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
     @Scheduled(cron = "0 0 3 * * SUN")
     private fun processUpdates() {
+        waitForBackend()
         prepareGleifDeltaFile()
         prepareIsinMappingFile()
     }
@@ -94,12 +96,11 @@ class GleifGoldenCopyIngestor(
     fun prepareGleifDeltaFile() {
         logger.info("Starting Gleif company update cycle for latest delta file.")
         val tempFile = File.createTempFile("gleif_update_delta", ".zip")
-        processGleifDeltaFile(tempFile, gleifApiAccessor::getLastMonthGoldenCopyDelta)
+        processGleifFile(tempFile, gleifApiAccessor::getLastMonthGoldenCopyDelta)
     }
 
     @Synchronized
-    private fun processGleifDeltaFile(zipFile: File, downloadFile: (file: File) -> Unit) {
-        waitForBackend()
+    private fun processGleifFile(zipFile: File, downloadFile: (file: File) -> Unit) {
         val start = System.nanoTime()
         try {
             downloadFile(zipFile)
@@ -123,7 +124,6 @@ class GleifGoldenCopyIngestor(
 
     @Synchronized
     private fun processIsinMappingFile(newMappingFile: File, downloadFile: (file: File) -> Unit) {
-        waitForBackend()
         val start = System.nanoTime()
         downloadFile(newMappingFile)
         val deltaMapping: Map<String, Set<String>> =
