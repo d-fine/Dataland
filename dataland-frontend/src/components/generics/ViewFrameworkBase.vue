@@ -31,9 +31,9 @@
                   inputId="dataPointIsAvailableSwitch"
                   v-model="hideEmptyFields"
                 />
-                <h5 data-test="hideEmptyDataToggle" class="ml-2">
+                <span data-test="hideEmptyDataToggle" class="ml-2 font-semibold">
                   {{ hideEmptyFields ? "Hide empty fields" : "Hide empty fields" }}
-                </h5>
+                </span>
               </div>
             </div>
           </div>
