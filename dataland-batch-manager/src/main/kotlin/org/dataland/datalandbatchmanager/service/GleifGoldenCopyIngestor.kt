@@ -36,7 +36,7 @@ class GleifGoldenCopyIngestor(
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
     private val allCompaniesIngestFlagFilePath: String?,
     @Value("\${dataland.dataland-batch-manager.isin-mapping-file}")
-    private val savedMappingFile: File,
+    private val isinMappingFile: File,
 ) {
     companion object {
         const val MS_PER_S = 1000L
@@ -65,13 +65,16 @@ class GleifGoldenCopyIngestor(
                 }
             }
 
+            if (isinMappingFile.exists() && (!isinMappingFile.delete())) {
+                throw FileSystemException(
+                    file = isinMappingFile,
+                    reason = "Unable to delete ISIN mapping file $isinMappingFile",
+                )
+            }
+
             logger.info("Retrieving all company data available via GLEIF.")
             val tempFile = File.createTempFile("gleif_golden_copy", ".zip")
             processGleifDeltaFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
-
-            if (savedMappingFile.exists() && (!savedMappingFile.delete())) {
-                logger.error("Unable to delete mapping file $savedMappingFile")
-            }
             prepareIsinMappingFile()
         } else {
             logger.info("Flag file not present & no force update variable set => Not performing any download")
@@ -124,10 +127,10 @@ class GleifGoldenCopyIngestor(
         val start = System.nanoTime()
         downloadFile(newMappingFile)
         val deltaMapping: Map<String, Set<String>> =
-            if (!savedMappingFile.exists() || savedMappingFile.length() == 0L) {
+            if (!isinMappingFile.exists() || isinMappingFile.length() == 0L) {
                 isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
             } else {
-                isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedMappingFile)
+                isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, isinMappingFile)
             }
         replaceOldMappingFile(newMappingFile)
         companyUploader.updateIsins(deltaMapping)
@@ -183,7 +186,7 @@ class GleifGoldenCopyIngestor(
      */
     fun replaceOldMappingFile(newMappingFile: File) {
         try {
-            newMappingFile.copyTo(savedMappingFile, true)
+            newMappingFile.copyTo(isinMappingFile, true)
             if (!newMappingFile.delete()) {
                 logger.error("failed to delete file $newMappingFile")
             }
