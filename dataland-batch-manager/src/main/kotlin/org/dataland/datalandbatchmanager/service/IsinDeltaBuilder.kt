@@ -17,7 +17,7 @@ class IsinDeltaBuilder {
      * @param newMappingFile latest version of the LEI-ISIN mapping file
      * @param oldMappingFile previously stored version of the LEI-ISIN mapping file, if one exists
      */
-    fun createDeltaOfMappingFile(newMappingFile: File, oldMappingFile: File?): Map<String, List<String>> {
+    fun createDeltaOfMappingFile(newMappingFile: File, oldMappingFile: File?): Map<String, Set<String>> {
         val newMapping = parseCsvToGroupedMap(newMappingFile)
         if (oldMappingFile == null) {
             return newMapping
@@ -33,10 +33,10 @@ class IsinDeltaBuilder {
      * @return map of changed LEI-ISINs
      */
     private fun findLeisWithUpdatedIsin(
-        newMapping: Map<String, List<String>>,
-        oldMapping: Map<String, List<String>>,
-    ): Map<String, List<String>> {
-        val deltaMapping = mutableMapOf<String, List<String>>()
+        newMapping: Map<String, Set<String>>,
+        oldMapping: Map<String, Set<String>>,
+    ): Map<String, Set<String>> {
+        val deltaMapping = mutableMapOf<String, Set<String>>()
 
         for ((lei, newIsins) in newMapping) {
             val oldIsins = oldMapping[lei]
@@ -54,7 +54,7 @@ class IsinDeltaBuilder {
      * @param csvFile the file to be parsed
      * @return map of LEI-ISINs
      */
-    private fun parseCsvToGroupedMap(csvFile: File): Map<String, List<String>> {
+    private fun parseCsvToGroupedMap(csvFile: File): Map<String, Set<String>> {
         val csvMapper = CsvMapper()
         csvMapper.registerModule(kotlinModule())
 
@@ -65,7 +65,7 @@ class IsinDeltaBuilder {
             .setUseHeader(true)
             .build()
 
-        val mappings = mutableMapOf<String, MutableList<String>>()
+        val mappings = mutableMapOf<String, MutableSet<String>>()
 
         val csvParser = csvMapper
             .readerFor(Map::class.java)
@@ -78,7 +78,7 @@ class IsinDeltaBuilder {
             // println("LEI: $lei ISIN: $isin") // Add this line for debugging
             if (lei != null && isin != null) {
                 // Use getOrPut to initialize the list if the key doesn't exist
-                mappings.getOrPut(lei) { mutableListOf() }.add(isin)
+                mappings.getOrPut(lei) { mutableSetOf() }.add(isin)
             }
         }
 

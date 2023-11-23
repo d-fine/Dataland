@@ -126,7 +126,7 @@ class GleifGoldenCopyIngestorTest {
     }
 
     private fun commonMock(): Pair<BufferedReader, MockedStatic<File>> {
-        val flagFile = File.createTempFile("test", ".csv", File("./"))
+        val flagFile = File.createTempFile("test", ".csv")
         val emptyBufferedReader = BufferedReader(BufferedReader.nullReader())
         `when`(
             mockGleifCsvParser.readGleifDataFromBufferedReader(
@@ -145,7 +145,7 @@ class GleifGoldenCopyIngestorTest {
 
     @Test
     fun`test replacement of delta mapping file`() {
-        val flagFile = File.createTempFile("test", ".csv", File("./"))
+        val flagFile = File.createTempFile("test", ".csv")
         val newLines: List<String> = File(newFile.toString()).useLines { lines -> lines.take(5).toList() }
         companyIngestor = GleifGoldenCopyIngestor(
             mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
@@ -161,20 +161,23 @@ class GleifGoldenCopyIngestorTest {
         assert(!newFile.exists())
         assert(oldFile.exists())
         assert(movedLines.hashCode() == newLines.hashCode())
+        flagFile.delete()
     }
 
     @Test
     fun`test failing of file deletion`() {
-        val flagFile = File.createTempFile("abc", ".csv", File("./"))
+        val flagFile = File.createTempFile("flagFile", ".csv")
         companyIngestor = GleifGoldenCopyIngestor(
             mockGleifApiAccessor, mockGleifCsvParser, mockCompanyUploader, mockActuatorApi, mockIsinDeltaBuilder,
             false, flagFile.absolutePath, oldFile,
         )
 
-        val newFile = spy(File.createTempFile("ccc", ".xyz", File("./")))
-        doReturn(false).`when`(newFile).delete()
-        companyIngestor.replaceOldMappingFile(newFile)
+        val newMappingFile = spy(File.createTempFile("newMappingFile", ".csv"))
+        doReturn(false).`when`(newMappingFile).delete()
+        companyIngestor.replaceOldMappingFile(newMappingFile)
 
-        assert(newFile.exists())
+        assert(newMappingFile.exists())
+        flagFile.delete()
+        newMappingFile.delete()
     }
 }

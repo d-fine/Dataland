@@ -13,7 +13,7 @@ class IsinDeltaBuilderTest {
 
     private lateinit var oldFile: File
     private lateinit var newFile: File
-    private var deltaMap = mutableMapOf<String, List<String>>()
+    private var deltaMap = mutableMapOf<String, Set<String>>()
 
     private val oldContent = """
 LEI,ISIN
@@ -44,10 +44,10 @@ LEI,ISIN
     fun setup() {
         oldContent.trimIndent()
         newContent.trimIndent()
-        deltaMap["1000"] = listOf("1111", "1112", "1113")
-        deltaMap["3000"] = listOf("3333")
-        deltaMap["4000"] = listOf("4440")
-        deltaMap["5000"] = listOf("5555")
+        deltaMap["1000"] = setOf("1111", "1112", "1113")
+        deltaMap["3000"] = setOf("3333")
+        deltaMap["4000"] = setOf("4440")
+        deltaMap["5000"] = setOf("5555")
 
 //        create file oldFile
         oldFile = File("oldFile.csv")

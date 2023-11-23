@@ -134,29 +134,26 @@ class CompanyUploader(
      * @param leiIsinMapping the delta-map with the format "LEI"->"ISIN1,ISIN2,..."
      */
     fun updateIsinMapping(
-        leiIsinMapping: Map<String, List<String>>,
+        leiIsinMapping: Map<String, Set<String>>,
     ) {
-        for ((lei, isinList) in leiIsinMapping) {
+        for ((lei, newIsins) in leiIsinMapping) {
             val noCompanyForLeiWarning = "No company found for LEI: $lei"
             retryOnCommonApiErrors {
+                logger.info("Searching for company with LEI: $lei")
                 val matchingCompanies = companyDataControllerApi.getCompaniesBySearchString(lei)
-                if (matchingCompanies.isNotEmpty()) {
-                    logger.warn("Uploading company with LEI: $lei")
-                    val companyId = matchingCompanies.first().companyId
-
-                    val existingIdentifiers = companyDataControllerApi.getCompanyById(companyId)
-                        .companyInformation.identifiers
-                    if (!existingIdentifiers.getOrDefault(IdentifierType.lei.value, listOf()).contains(lei)) {
-                        logger.warn(noCompanyForLeiWarning)
-                        return@retryOnCommonApiErrors
-                    }
-                    val updatedIdentifiers = existingIdentifiers.toMutableMap()
-                    updatedIdentifiers[IdentifierType.isin.value] = isinList
-                    // TODO merge with the ones already existing isins
-
+                val companyIdOfMatchingCompanyLei = matchingCompanies.find {
+                    val existingLeis = companyDataControllerApi.getCompanyById(it.companyId)
+                        .companyInformation.identifiers.getOrDefault(IdentifierType.lei.value, listOf())
+                    existingLeis.contains(lei)
+                }?.companyId
+                if (companyIdOfMatchingCompanyLei != null) {
+                    logger.warn("Patching company with ID: $companyIdOfMatchingCompanyLei and LEI: $lei")
+                    val updatedIdentifiers = mapOf(
+                        IdentifierType.isin.value to newIsins.toList(),
+                    )
                     val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
                     companyDataControllerApi.patchCompanyById(
-                        companyId,
+                        companyIdOfMatchingCompanyLei,
                         companyPatch,
                     )
                 } else {

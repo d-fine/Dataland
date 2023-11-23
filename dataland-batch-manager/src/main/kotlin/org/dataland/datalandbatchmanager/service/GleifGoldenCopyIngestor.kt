@@ -123,7 +123,7 @@ class GleifGoldenCopyIngestor(
         waitForBackend()
         val start = System.nanoTime()
         downloadFile(newMappingFile)
-        val deltaMapping: Map<String, List<String>> =
+        val deltaMapping: Map<String, Set<String>> =
             if (!savedMappingFile.exists() || savedMappingFile.length() == 0L) {
                 isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
             } else {
