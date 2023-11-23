@@ -87,7 +87,6 @@ class CompanyUploader(
         companyInformation: GleifCompanyInformation,
     ) {
         var patchCompanyId: String? = null
-
         retryOnCommonApiErrors {
             try {
                 logger.info(
