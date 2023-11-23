@@ -212,7 +212,7 @@ export default defineComponent({
   props: {
     name: {
       type: String,
-      default: "",
+      required: true,
     },
     kpiInfoMappings: {
       type: Object,

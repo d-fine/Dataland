@@ -6,21 +6,6 @@ import {
 describe("Component tests for toggle data point", () => {
   it("On the upload page, ensure that data point can be hidden and shown and the data will be assigned accordingly", () => {
     cy.mountWithPlugins(DataPointFormWithToggle, {
-      data() {
-        return {
-          dataPointIsAvailable: true,
-          currentAmountValue: "",
-          currentPercentageValue: "",
-          currentReportValue: "",
-          currentPageValue: "",
-          currentQualityValue: "",
-          amountValueBeforeDataPointWasDisabled: "",
-          percentageValueBeforeDataPointWasDisabled: "",
-          reportValueBeforeDataPointWasDisabled: "",
-          pageValueBeforeDataPointWasDisabled: "",
-          qualityValueBeforeDataPointWasDisabled: "",
-        };
-      },
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
