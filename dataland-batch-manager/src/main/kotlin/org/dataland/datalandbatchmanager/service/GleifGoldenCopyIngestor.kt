@@ -15,8 +15,8 @@ import java.time.Instant
 import java.util.*
 import java.util.concurrent.ForkJoinPool
 import java.util.stream.StreamSupport
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
+import kotlin.time.Duration
+import kotlin.time.measureTime
 
 /**
  * Class to execute scheduled tasks, like the import of the GLEIF golden copy files
@@ -101,16 +101,17 @@ class GleifGoldenCopyIngestor(
 
     @Synchronized
     private fun processGleifFile(zipFile: File, downloadFile: (file: File) -> Unit) {
-        val start = System.nanoTime()
-        try {
-            downloadFile(zipFile)
-            uploadCompanies(zipFile)
-        } finally {
-            if (!zipFile.delete()) {
-                logger.error("Unable to delete temporary file $zipFile")
+        val duration = measureTime {
+            try {
+                downloadFile(zipFile)
+                uploadCompanies(zipFile)
+            } finally {
+                if (!zipFile.delete()) {
+                    logger.error("Unable to delete temporary file $zipFile")
+                }
             }
         }
-        logger.info("Finished processing of file $zipFile in ${getExecutionTime(start)}.")
+        logger.info("Finished processing of file $zipFile in ${formatExecutionTime(duration)}.")
     }
 
     /**
@@ -124,18 +125,18 @@ class GleifGoldenCopyIngestor(
 
     @Synchronized
     private fun processIsinMappingFile(newMappingFile: File, downloadFile: (file: File) -> Unit) {
-        val start = System.nanoTime()
-        downloadFile(newMappingFile)
-        val deltaMapping: Map<String, Set<String>> =
-            if (!isinMappingFile.exists() || isinMappingFile.length() == 0L) {
-                isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
-            } else {
-                isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, isinMappingFile)
-            }
-        replaceOldMappingFile(newMappingFile)
-        companyUploader.updateIsins(deltaMapping)
-
-        logger.info("Finished processing of file $newMappingFile in ${getExecutionTime(start)}.")
+        val duration = measureTime {
+            downloadFile(newMappingFile)
+            val deltaMapping: Map<String, Set<String>> =
+                if (!isinMappingFile.exists() || isinMappingFile.length() == 0L) {
+                    isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
+                } else {
+                    isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, isinMappingFile)
+                }
+            replaceOldMappingFile(newMappingFile)
+            companyUploader.updateIsins(deltaMapping)
+        }
+        logger.info("Finished processing of file $newMappingFile in ${formatExecutionTime(duration)}.")
     }
 
     private fun waitForBackend() {
@@ -170,9 +171,8 @@ class GleifGoldenCopyIngestor(
         }
     }
 
-    private fun getExecutionTime(startTime: Long): String {
-        return (System.nanoTime() - startTime)
-            .toDuration(DurationUnit.NANOSECONDS)
+    private fun formatExecutionTime(duration: Duration): String {
+        return duration
             .toComponents { hours, minutes, seconds, _ ->
                 String.format(
                     Locale.getDefault(), "%02dh %02dm %02ds", hours, minutes, seconds,

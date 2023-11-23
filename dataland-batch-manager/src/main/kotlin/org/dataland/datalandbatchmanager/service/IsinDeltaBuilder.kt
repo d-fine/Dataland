@@ -75,9 +75,7 @@ class IsinDeltaBuilder {
         csvParser.forEach { entry ->
             val lei = entry["LEI"]
             val isin = entry["ISIN"]
-            // println("LEI: $lei ISIN: $isin") // Add this line for debugging
             if (lei != null && isin != null) {
-                // Use getOrPut to initialize the list if the key doesn't exist
                 mappings.getOrPut(lei) { mutableSetOf() }.add(isin)
             }
         }
