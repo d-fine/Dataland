@@ -85,7 +85,7 @@ class CompanyUploader(
      */
     fun uploadOrPatchSingleCompany(
         companyInformation: GleifCompanyInformation,
-    ) {
+    ): Boolean {
         var patchCompanyId: String? = null
 
         retryOnCommonApiErrors {
@@ -121,6 +121,7 @@ class CompanyUploader(
             )
             patchSingleCompany(it, companyInformation)
         }
+        return patchCompanyId != null // TODO remove
     }
 
     /**
@@ -145,6 +146,7 @@ class CompanyUploader(
     fun updateIsinMapping(
         leiIsinMapping: Map<String, List<String>>,
     ) {
+        var shouldContinue = true // TODO remove
         for ((lei, isinList) in leiIsinMapping) {
             retryOnCommonApiErrors {
                 val companies = companyDataControllerApi.getCompaniesBySearchString(lei)
@@ -154,17 +156,19 @@ class CompanyUploader(
                     val existingIdentifiers = companyDataControllerApi.getCompanyById(companyId)
                         .companyInformation.identifiers
                     val updatedIdentifiers = existingIdentifiers.toMutableMap()
-                    updatedIdentifiers["isin"] = isinList
+                    updatedIdentifiers["isin"] = isinList // TODO merge with the ones already existing
 
                     val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
                     companyDataControllerApi.patchCompanyById(
                         companyId,
                         companyPatch,
                     )
+                    shouldContinue = false // TODO remove
                 } else {
                     logger.warn("No company found for LEI: $lei")
                 }
             }
+            if (!shouldContinue) break // TODO remove
         }
     }
 }

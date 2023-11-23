@@ -160,7 +160,7 @@ class GleifGoldenCopyIngestor(
         try {
             uploadThreadPool.submit {
                 StreamSupport.stream(gleifIterable.spliterator(), true)
-                    .forEach { companyUploader.uploadOrPatchSingleCompany(it) }
+                    .forEach { if (companyUploader.uploadOrPatchSingleCompany(it)) return@forEach } // TODO remove if
             }.get()
         } finally {
             uploadThreadPool.shutdown()
