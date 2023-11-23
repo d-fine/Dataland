@@ -5,6 +5,7 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type BaseDataPoint, type ExtendedDataPoint } from "@/utils/DataPoint";
+import { QualityOptions } from "@clients/backend";
 
 /**
  * Retrieves a deeply nested value from an object by an identifier.
@@ -66,6 +67,15 @@ export function getDataPointGetterFactory<
       displayValue = formattedValue;
     }
     const dataPointAsExtendedDataPoint = dataPoint as unknown as ExtendedDataPoint<V>;
+    if (
+      dataPointAsExtendedDataPoint.quality == QualityOptions.Na &&
+      (!dataPointAsExtendedDataPoint.dataSource || dataPointAsExtendedDataPoint.dataSource?.fileReference == "")
+    ) {
+      return {
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+        displayValue: displayValue,
+      };
+    }
     if (
       dataPointAsExtendedDataPoint.quality ||
       dataPointAsExtendedDataPoint.comment?.length ||
