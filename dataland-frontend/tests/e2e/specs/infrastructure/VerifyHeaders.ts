@@ -28,7 +28,7 @@ describe("As a developer, I want to ensure that security relevant headers are se
   }
 
   const cspHeaders =
-    "frame-src 'self' data: https://www.youtube.com https://www.youtube-nocookie.com/ https://img.youtube.com/ https://consentcdn.cookiebot.com; script-src-elem 'self' 'unsafe-eval' 'sha256-/0dJfWlZ9/P1qMKyXvELqM6+ycG3hol3gmKln32el8o=' https://consent.cookiebot.com https://consentcdn.cookiebot.com https://www.youtube.com/; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:; img-src 'self' data: https://*.googleusercontent.com/ https://*.licdn.com/ https://consent.cookiebot.com https://i.ytimg.com/";
+    "frame-src 'self' data: https://www.youtube.com https://consentcdn.cookiebot.com; script-src-elem 'self' 'unsafe-eval' 'sha256-/0dJfWlZ9/P1qMKyXvELqM6+ycG3hol3gmKln32el8o=' https://consent.cookiebot.com https://consentcdn.cookiebot.com https://www.youtube.com/; style-src 'self' 'unsafe-inline'; frame-ancestors 'self'; form-action 'self'; font-src 'self' data:; img-src 'self' data: https://*.googleusercontent.com/ https://*.licdn.com/ https://consent.cookiebot.com https://i.ytimg.com/ https://img.youtube.com/";
 
   describeIf(
     "Check CSP headers in the local development environment",
