@@ -11,18 +11,18 @@
         :show-toggle-all="false"
         :class="inputClass"
       />
-      <div class="grid mt-3">
+      <div class="mt-3">
         <FormKit type="group" name="applicableHighImpactClimateSectors">
           <div
             v-for="selection of selections"
             data-test="applicableHighImpactClimateSector"
             :key="selection"
-            class="bordered-box p-3 positionRelative col-12"
+            class="bordered-box p-3 positionRelative col-12 mb-4"
           >
             <em @click="removeItem(selection)" class="material-icons gray-closeIcon">close</em>
             <h4 class="gray-text fw-normal">{{ options.find((option) => option.value == selection).label }}</h4>
-            <div class="next-to-each-other">
-              <div class="col-6">
+            <div class="grid-2-form-cards">
+              <div>
                 <UploadFormHeader
                   :label="`Sector ${selection} Energy Consumption`"
                   :description="`Total energy consumption for high impact climate sector ${selection}`"
@@ -35,7 +35,7 @@
                   validation-label="Energy Consumption"
                 />
               </div>
-              <div class="col-6" style="border-left: 1px solid #c3c3c3">
+              <div>
                 <UploadFormHeader
                   :label="`Sector ${selection} Relative Energy Consumption`"
                   :description="`Energy consumption for high impact climate sector ${selection} per revenue`"
