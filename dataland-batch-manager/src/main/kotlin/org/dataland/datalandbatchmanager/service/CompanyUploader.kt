@@ -153,6 +153,7 @@ class CompanyUploader(
             retryOnCommonApiErrors {
                 val companies = companyDataControllerApi.getCompaniesBySearchString(lei)
                 if (companies.isNotEmpty()) {
+                    shouldContinue = false // TODO remove
                     logger.warn("Uploading company with LEI: $lei")
                     val companyId = companies.first().companyId
 
@@ -164,11 +165,11 @@ class CompanyUploader(
 
                     val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
                     println("PATCHING") // TODO remove
+                    println(companyPatch.toString())
                     companyDataControllerApi.patchCompanyById(
                         companyId,
                         companyPatch,
                     )
-                    shouldContinue = false // TODO remove
                 } else {
                     logger.warn("No company found for LEI: $lei")
                 }
