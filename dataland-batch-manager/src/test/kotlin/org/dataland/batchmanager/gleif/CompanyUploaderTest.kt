@@ -72,7 +72,7 @@ class CompanyUploaderTest {
 
         val compIdentifiers = mapOf<String, List<String>>(
             "test" to listOf("test"),
-            "isin" to listOf("1111", "1112", "1113"),
+            "Isin" to listOf("1111", "1112", "1113"),
         )
         val compPatch = CompanyInformationPatch(
             companyName = null, companyAlternativeNames = null, companyLegalForm = null,

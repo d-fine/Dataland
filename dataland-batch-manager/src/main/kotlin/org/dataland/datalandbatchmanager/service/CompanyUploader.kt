@@ -161,7 +161,8 @@ class CompanyUploader(
                     val existingIdentifiers = companyDataControllerApi.getCompanyById(companyId)
                         .companyInformation.identifiers
                     val updatedIdentifiers = existingIdentifiers.toMutableMap()
-                    updatedIdentifiers["isin"] = isinList // TODO merge with the ones already existing
+                    updatedIdentifiers[IdentifierType.isin.value] = isinList
+                    // TODO merge with the ones already existing isins
 
                     val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
                     println("PATCHING") // TODO remove
