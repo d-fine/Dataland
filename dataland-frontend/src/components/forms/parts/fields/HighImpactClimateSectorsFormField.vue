@@ -11,27 +11,44 @@
         :show-toggle-all="false"
         :class="inputClass"
       />
-      <div class="grid2 mt-3">
+      <div class="grid mt-3">
         <FormKit type="group" name="applicableHighImpactClimateSectors">
           <div
             v-for="selection of selections"
             data-test="applicableHighImpactClimateSector"
             :key="selection"
-            class="bordered-box p-3 positionRelative"
+            class="bordered-box p-3 positionRelative col-12"
           >
             <em @click="removeItem(selection)" class="material-icons gray-closeIcon">close</em>
             <h4 class="gray-text fw-normal">{{ options.find((option) => option.value == selection).label }}</h4>
-            <UploadFormHeader
-              :label="`Sector ${selection} Energy Consumption`"
-              :description="`Total energy consumption for high impact climate sector ${selection}`"
-              :is-required="true"
-            />
-            <BigDecimalExtendedDataPointFormField
-              unit="in GWh"
-              :name="`NaceCode${selection}InGWh`"
-              :placeholder="`Sector ${selection} Energy Consumption`"
-              validation-label="Energy Consumption"
-            />
+            <div class="next-to-each-other">
+              <div class="col-6">
+                <UploadFormHeader
+                  :label="`Sector ${selection} Energy Consumption`"
+                  :description="`Total energy consumption for high impact climate sector ${selection}`"
+                  :is-required="false"
+                />
+                <BigDecimalExtendedDataPointFormField
+                  unit="GWh"
+                  :name="`NaceCode${selection}InGWh`"
+                  :placeholder="`Sector ${selection} Energy Consumption`"
+                  validation-label="Energy Consumption"
+                />
+              </div>
+              <div class="col-6" style="border-left: 1px solid #c3c3c3">
+                <UploadFormHeader
+                  :label="`Sector ${selection} Relative Energy Consumption`"
+                  :description="`Energy consumption for high impact climate sector ${selection} per revenue`"
+                  :is-required="false"
+                />
+                <BigDecimalExtendedDataPointFormField
+                  unit="GWh / €M revenue"
+                  :name="`NaceCode${selection}InGWhPerMillionEURRevenue`"
+                  :placeholder="`Sector ${selection} Relative Energy Consumption`"
+                  validation-label="Relative Energy Consumption"
+                />
+              </div>
+            </div>
           </div>
         </FormKit>
       </div>
@@ -45,7 +62,7 @@ import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadForm
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import MultiSelect from "primevue/multiselect";
 import { optionsForHighImpactClimateSectors } from "@/types/HighImpactClimateSectors";
-import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
+import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
 
 export default defineComponent({
   name: "HighImpactClimateSectorsFormField",
