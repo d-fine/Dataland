@@ -26,7 +26,7 @@
             <slot name="reportingPeriodDropdown" />
           </div>
           <div class="flex align-content-end align-items-center">
-            <div data-test="dataPointToggle" class="form-field vertical-middle">
+            <div data-test="dataPointToggle"  class="form-field vertical-middle">
               <InputSwitch
                 data-test="dataPointToggleButton"
                 inputId="dataPointIsAvailableSwitch"
