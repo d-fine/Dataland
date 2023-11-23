@@ -1,7 +1,7 @@
 <template>
   <div class="mb-3">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <div class="next-to-each-other">
+    <div class="grid">
       <FormKit
         type="text"
         :name="name"
@@ -15,7 +15,7 @@
         :outer-class="inputClass"
         @input="$emit('update:currentValue', $event)"
       />
-      <div v-if="unit" class="form-field-label pb-3">
+      <div v-if="unit" class="form-field-label pb-3 col-4">
         <span>{{ unit }}</span>
       </div>
     </div>

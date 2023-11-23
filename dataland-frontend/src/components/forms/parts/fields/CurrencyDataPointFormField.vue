@@ -53,6 +53,9 @@ export default defineComponent({
   components: { NumberFormField, ExtendedDataPointFormField, UploadFormHeader, FormKit },
   props: {
     ...BaseFormFieldProps,
+    unit: {
+      type: String,
+    },
   },
   methods: {
     hasDataPointProperValue,

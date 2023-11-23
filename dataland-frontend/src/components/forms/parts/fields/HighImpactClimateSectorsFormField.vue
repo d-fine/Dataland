@@ -9,7 +9,7 @@
         option-label="label"
         option-value="value"
         :show-toggle-all="false"
-        :class="inputClass"
+        class="medium"
       />
       <div class="mt-3">
         <FormKit type="group" name="applicableHighImpactClimateSectors">
@@ -22,32 +22,36 @@
             <em @click="removeItem(selection)" class="material-icons gray-closeIcon">close</em>
             <h4 class="gray-text fw-normal">{{ options.find((option) => option.value == selection).label }}</h4>
             <div class="grid-2-form-cards">
-              <div>
-                <UploadFormHeader
-                  :label="`Sector ${selection} Energy Consumption`"
-                  :description="`Total energy consumption for high impact climate sector ${selection}`"
-                  :is-required="false"
-                />
-                <BigDecimalExtendedDataPointFormField
-                  unit="GWh"
-                  :name="`NaceCode${selection}InGWh`"
-                  :placeholder="`Sector ${selection} Energy Consumption`"
-                  validation-label="Energy Consumption"
-                />
-              </div>
-              <div>
-                <UploadFormHeader
-                  :label="`Sector ${selection} Relative Energy Consumption`"
-                  :description="`Energy consumption for high impact climate sector ${selection} per revenue`"
-                  :is-required="false"
-                />
-                <BigDecimalExtendedDataPointFormField
-                  unit="GWh / €M revenue"
-                  :name="`NaceCode${selection}InGWhPerMillionEURRevenue`"
-                  :placeholder="`Sector ${selection} Relative Energy Consumption`"
-                  validation-label="Relative Energy Consumption"
-                />
-              </div>
+              <FormKit type="group" :name="`NaceCode${selection}InGWh`">
+                <div>
+                  <UploadFormHeader
+                    :label="`Sector ${selection} Energy Consumption`"
+                    :description="`Total energy consumption for high impact climate sector ${selection}`"
+                    :is-required="false"
+                  />
+                  <BigDecimalExtendedDataPointFormField
+                    unit="GWh"
+                    name="highImpactClimateSectorEnergyConsumptionInGWh"
+                    :placeholder="`Sector ${selection} Energy Consumption`"
+                    validation-label="Energy Consumption"
+                    inputClass="col-8"
+                  />
+                </div>
+                <div>
+                  <UploadFormHeader
+                    :label="`Sector ${selection} Relative Energy Consumption`"
+                    :description="`Energy consumption for high impact climate sector ${selection} per revenue`"
+                    :is-required="false"
+                  />
+                  <BigDecimalExtendedDataPointFormField
+                    unit="GWh / €M revenue"
+                    name="highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue"
+                    :placeholder="`Sector ${selection} Relative Energy Consumption`"
+                    validation-label="Relative Energy Consumption"
+                    inputClass="col-8"
+                  />
+                </div>
+              </FormKit>
             </div>
           </div>
         </FormKit>

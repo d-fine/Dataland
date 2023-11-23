@@ -12,10 +12,14 @@ import { HighImpactClimateSectorsKeys } from "@/types/HighImpactClimateSectors";
 interface HighImpactClimateDisplayFormat {
   sector: string;
   energyConsumption: string;
+  relativeEnergyConsumption: string;
 }
 
 export type HighImpactClimateValueObject = {
-  [key: string]: ExtendedDataPointBigDecimal;
+  [key: string]: {
+    highImpactClimateSectorEnergyConsumptionInGWh: ExtendedDataPointBigDecimal;
+    highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue: ExtendedDataPointBigDecimal;
+  };
 };
 
 /**
@@ -29,12 +33,24 @@ function convertHighImpactClimateToListForModal(
 ): HighImpactClimateDisplayFormat[] {
   const listForModal: HighImpactClimateDisplayFormat[] = [];
   for (const [naceCodeType, climateSectorValues] of Object.entries(datasetValue)) {
-    if (!climateSectorValues) continue;
+    if (!climateSectorValues.highImpactClimateSectorEnergyConsumptionInGWh) {
+      continue;
+    }
     listForModal.push({
       sector: HighImpactClimateSectorsKeys[naceCodeType as keyof typeof HighImpactClimateSectorsKeys],
       energyConsumption:
-        climateSectorValues.value !== null && climateSectorValues.value !== undefined
-          ? `${formatNumberToReadableFormat(climateSectorValues.value)} GWh`
+        climateSectorValues.highImpactClimateSectorEnergyConsumptionInGWh.value !== null &&
+        climateSectorValues.highImpactClimateSectorEnergyConsumptionInGWh.value !== undefined
+          ? `${formatNumberToReadableFormat(
+              climateSectorValues.highImpactClimateSectorEnergyConsumptionInGWh.value,
+            )} GWh`
+          : "",
+      relativeEnergyConsumption:
+        climateSectorValues.highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue.value !== null &&
+        climateSectorValues.highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue.value !== undefined
+          ? `${formatNumberToReadableFormat(
+              climateSectorValues.highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue.value,
+            )} GWh / €M revenue`
           : "",
     });
   }
@@ -58,10 +74,16 @@ export function highImpactClimateGetterFactory(
     highImpactClimateSectors.forEach((sector: string) => {
       accumulatedData = {
         ...accumulatedData,
-        [`NaceCode${sector}InGWh`]: getFieldValueFromDataModel(
-          `${path}.NaceCode${sector}InGWh`,
-          dataset,
-        ) as ExtendedDataPointBigDecimal,
+        [`NaceCode${sector}InGWh`]: {
+          highImpactClimateSectorEnergyConsumptionInGWh: getFieldValueFromDataModel(
+            `${path}.NaceCode${sector}InGWh.highImpactClimateSectorEnergyConsumptionInGWh`,
+            dataset,
+          ) as ExtendedDataPointBigDecimal,
+          highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue: getFieldValueFromDataModel(
+            `${path}.NaceCode${sector}InGWh.highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue`,
+            dataset,
+          ) as ExtendedDataPointBigDecimal,
+        },
       };
     });
     return {
@@ -82,6 +104,7 @@ export function highImpactClimateGetterFactory(
               highImpactSectorEnergyConsumptions: {
                 sector: "Sector",
                 energyConsumption: "Energy Consumption",
+                relativeEnergyConsumption: "Relative Energy Consumption",
               },
             },
           },

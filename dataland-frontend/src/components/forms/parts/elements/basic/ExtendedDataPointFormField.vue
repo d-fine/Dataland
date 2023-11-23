@@ -3,8 +3,8 @@
     <slot />
     <div>
       <FormKit type="group" name="dataSource">
-        <div class="next-to-each-other">
-          <div class="flex-1">
+        <div class="grid align-content-end">
+          <div class="col-8">
             <UploadFormHeader
               :label="`${label} Report`"
               description="Select a report as a reference for this data point."
@@ -18,7 +18,7 @@
             />
             <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
           </div>
-          <div>
+          <div class="col-4">
             <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
             <FormKit
               outer-class="w-100"
@@ -42,7 +42,7 @@
         description="The level of confidence associated to the value."
         :is-required="isDataQualityRequired"
       />
-      <div class="md:col-6 col-12 p-0">
+      <div class="md:col-8 col-12 p-0">
         <FormKit
           type="select"
           v-model="qualityValue"
