@@ -123,7 +123,6 @@ function checkToShowFieldsWithNullValue(
   cellOrSectionConfig: MLDTCellConfig<FrameworkDataTypes>,
   hideEmptyFields: boolean,
 ): boolean {
-  console.log(hideEmptyFields);
   if (!hideEmptyFields) {
     return true;
   }
