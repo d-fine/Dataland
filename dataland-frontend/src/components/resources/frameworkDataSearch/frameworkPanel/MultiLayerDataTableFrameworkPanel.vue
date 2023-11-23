@@ -37,6 +37,7 @@
 <script setup generic="Framework extends keyof FrameworkDataTypes" lang="ts">
 import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
+import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { computed, inject, ref, shallowRef, watch } from "vue";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
