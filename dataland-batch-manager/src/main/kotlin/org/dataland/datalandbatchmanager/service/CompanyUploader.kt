@@ -139,26 +139,34 @@ class CompanyUploader(
             val noCompanyForLeiWarning = "No company found for LEI: $lei"
             retryOnCommonApiErrors {
                 logger.info("Searching for company with LEI: $lei")
-                val matchingCompanies = companyDataControllerApi.getCompaniesBySearchString(lei)
-                val companyIdOfMatchingCompanyLei = matchingCompanies.find {
-                    val existingLeis = companyDataControllerApi.getCompanyById(it.companyId)
-                        .companyInformation.identifiers.getOrDefault(IdentifierType.lei.value, listOf())
-                    existingLeis.contains(lei)
-                }?.companyId
-                if (companyIdOfMatchingCompanyLei != null) {
-                    logger.warn("Patching company with ID: $companyIdOfMatchingCompanyLei and LEI: $lei")
-                    val updatedIdentifiers = mapOf(
-                        IdentifierType.isin.value to newIsins.toList(),
-                    )
-                    val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
-                    companyDataControllerApi.patchCompanyById(
-                        companyIdOfMatchingCompanyLei,
-                        companyPatch,
-                    )
+                val companyId = findCompanyWithLei(lei)
+                if (companyId != null) {
+                    logger.info("Patching company with ID: $companyId and LEI: $lei")
+                    updateIsinsOfCompany(newIsins, companyId)
                 } else {
                     logger.warn(noCompanyForLeiWarning)
                 }
             }
         }
+    }
+
+    private fun findCompanyWithLei(lei: String): String? {
+        val matchingCompanies = companyDataControllerApi.getCompaniesBySearchString(lei)
+        return matchingCompanies.find {
+            val existingLeis = companyDataControllerApi.getCompanyById(it.companyId)
+                .companyInformation.identifiers.getOrDefault(IdentifierType.lei.value, listOf())
+            existingLeis.contains(lei)
+        }?.companyId
+    }
+
+    private fun updateIsinsOfCompany(isins: Set<String>, companyId: String) {
+        val updatedIdentifiers = mapOf(
+            IdentifierType.isin.value to isins.toList(),
+        )
+        val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
+        companyDataControllerApi.patchCompanyById(
+            companyId,
+            companyPatch,
+        )
     }
 }

@@ -63,7 +63,7 @@ class GleifApiAccessor(
      * @param zipFile the zip file
      * @return CSV file inside Zip file
      */
-    fun getCsvFileFromZip(zipFile: File): File {
+    private fun getCsvFileFromZip(zipFile: File): File {
         val csvFile = File.createTempFile("gleif_mapping_update", ".csv")
 
         ZipInputStream(zipFile.inputStream()).use { zipInputStream ->
