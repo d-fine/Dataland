@@ -106,7 +106,7 @@ export const sfdrDataModel = [
           {
             name: "scope2GhgEmissionsLocationBasedInTonnes",
             label: "Scope 2 GHG emissions (location-based)",
-            description: "",
+            description: "Scope 2 carbon emissions computed using the location-based method",
             unit: "tonnes",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -115,7 +115,7 @@ export const sfdrDataModel = [
           {
             name: "scope2GhgEmissionsMarketBasedInTonnes",
             label: "Scope 2 GHG emissions (market-based)",
-            description: "",
+            description: "Scope 2 carbon emissions computed using the market-based method",
             unit: "tonnes",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -124,7 +124,7 @@ export const sfdrDataModel = [
           {
             name: "scope1And2GhgEmissionsInTonnes",
             label: "Scope 1 and 2 GHG emissions",
-            description: "",
+            description: "Sum of scope 1 and 2 carbon emissions",
             unit: "tonnes",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -133,7 +133,8 @@ export const sfdrDataModel = [
           {
             name: "scope1And2GhgEmissionsLocationBasedInTonnes",
             label: "Scope 1 and 2 GHG emissions (location-based)",
-            description: "",
+            description:
+              "Sum of scope 1 and 2 carbon emissions, using the location-based method to compute scope 2 carbon emissions",
             unit: "tonnes",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -142,7 +143,8 @@ export const sfdrDataModel = [
           {
             name: "scope1And2GhgEmissionsMarketBasedInTonnes",
             label: "Scope 1 and 2 GHG emissions (market-based)",
-            description: "",
+            description:
+              "Sum of scope 1 and 2 carbon emissions, using the market-based method to compute scope 2 carbon emissions",
             unit: "tonnes",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -160,7 +162,7 @@ export const sfdrDataModel = [
           {
             name: "scope1And2And3GhgEmissionsInTonnes",
             label: "Scope 1 and 2 and 3 GHG emissions",
-            description: "",
+            description: "Sum of scope 1, 2 and 3 carbon emissions",
             unit: "tonnes",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -187,7 +189,8 @@ export const sfdrDataModel = [
           {
             name: "carbonFootprintInTonnesPerMillionEURRevenue",
             label: "Carbon footprint",
-            description: "",
+            description:
+              'Carbon footprint computed according to the Principal Adverse Sustainability Impacts Statement\'s "carbon footprint" formula (incl. scope 1, 2, and 3 carbon emissions)',
             unit: "tonnes / €M revenue",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -196,7 +199,8 @@ export const sfdrDataModel = [
           {
             name: "ghgIntensityInTonnesPerMillionEURRevenue",
             label: "GHG intensity",
-            description: "",
+            description:
+              'GHG intensity computed according to the Principal Adverse Sustainability Impacts Statement\'s "GHG intensity of investee companies" formula (incl. scope 1, 2, and 3 carbon emissions)',
             unit: "tonnes / €M revenue",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -247,7 +251,8 @@ export const sfdrDataModel = [
           {
             name: "nonRenewableEnergyProductionInPercent",
             label: "Non-Renewable Energy Production",
-            description: "",
+            description:
+              "Share of non-renewable energy production from non-renewable energy sources compared to renewable energy sources",
             unit: "%",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -266,7 +271,8 @@ export const sfdrDataModel = [
           {
             name: "nonRenewableEnergyConsumptionInPercent",
             label: "Non-Renewable Energy Consumption",
-            description: "",
+            description:
+              "Share of non-renewable energy consumption from non-renewable energy sources compared to renewable energy sources",
             unit: "%",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -285,7 +291,8 @@ export const sfdrDataModel = [
           {
             name: "totalHighImpactClimateSectorEnergyConsumptionInGWh",
             label: "Total High Impact Climate Sector Energy Consumption",
-            description: "",
+            description:
+              "High impact climate sectors’ means the sectors listed in Sections A to H and Section L of Annex I to Regulation (EC) No 1893/2006 of the European Parliament and of the Council (Regulation (EC) No 1893/2006 of the European Parliament and of the Council of 20 December 2006 establishing the statistical classification of economic activities NACE Revision 2 and amending Council Regulation (EEC) No 3037/90 as well as certain EC Regulations on specific statistical domains (OJ L 393, 30.12.2006, p. 1)).",
             unit: "GWh",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -394,7 +401,8 @@ export const sfdrDataModel = [
           {
             name: "highlyBiodiverseGrasslandExposure",
             label: "Highly Biodiverse Grassland Exposure",
-            description: "",
+            description:
+              "Do you have sites/operations located in highly biodiverse grassland that is: (i) natural, namely, grassland that would remain grassland in the absence of human intervention and which maintains the natural species composition and ecological characteristics and processes; or (ii) non-natural, namely, grassland that would cease to be grassland in the absence of human intervention and which is species-rich and not degraded, unless evidence is provided that the harvesting of the raw material is necessary to preserve its grassland status?",
             unit: "",
             component: "YesNoExtendedDataPointFormField",
             required: false,
@@ -436,7 +444,7 @@ export const sfdrDataModel = [
           {
             name: "relativeWaterUsageInCubicMetersPerMillionEURRevenue",
             label: "Relative Water Usage",
-            description: "",
+            description: "Average amount in cubic metres of fresh water used per million EUR revenue",
             unit: "m³ / €M revenue",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -674,7 +682,8 @@ export const sfdrDataModel = [
           {
             name: "policyAgainstForcedLabour",
             label: "Policy against Forced Labour",
-            description: "",
+            description:
+              "Do you have policies in place to abolish all forms of forced labour? If yes, please share the policy with us.",
             unit: "",
             component: "YesNoBaseDataPointFormField",
             required: false,
@@ -683,7 +692,8 @@ export const sfdrDataModel = [
           {
             name: "policyAgainstDiscriminationInTheWorkplace",
             label: "Policy against Discrimination in the Workplace",
-            description: "",
+            description:
+              "Do you have policies in place to eliminate discrimination in the workplace? If yes, please share the policy with us.",
             unit: "",
             component: "YesNoBaseDataPointFormField",
             required: false,
@@ -788,7 +798,7 @@ export const sfdrDataModel = [
           {
             name: "unadjustedGenderPayGapInPercent",
             label: "Unadjusted gender pay gap",
-            description: "",
+            description: "Average unadjusted gender pay gap (female to male ratio, only considering gender)",
             unit: "%",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -818,7 +828,8 @@ export const sfdrDataModel = [
           {
             name: "boardGenderDiversityInPercent",
             label: "Board gender diversity",
-            description: "",
+            description:
+              "Average ratio of female to male board members, expressed as a percentage of all board members",
             unit: "%",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -923,7 +934,8 @@ export const sfdrDataModel = [
           {
             name: "excessiveCeoPayRatioInPercent",
             label: "Excessive CEO pay ratio",
-            description: "",
+            description:
+              "Average ratio of the annual total compensation for the highest compensated individual to the median annual total compensation for all employees (excluding the highest-compensated individual)",
             unit: "%",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
