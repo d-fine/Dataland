@@ -25,7 +25,15 @@
             />
             <slot name="reportingPeriodDropdown" />
             <div class="flex align-content-start align-items-center pl-3">
-              <div v-if="!isReviewableByCurrentUser" data-test="hideEmptyDataToggle" class="form-field vertical-middle">
+              <div
+                v-if="
+                  !isReviewableByCurrentUser &&
+                  dataType != DataTypeEnum.EutaxonomyNonFinancials &&
+                  dataType !== DataTypeEnum.Sme
+                "
+                data-test="hideEmptyDataToggle"
+                class="form-field vertical-middle"
+              >
                 <InputSwitch
                   data-test="dataPointToggleButton"
                   inputId="dataPointIsAvailableSwitch"
@@ -99,7 +107,7 @@ import TheFooter from "@/components/generics/TheFooter.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from "@/utils/KeycloakUtils";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
-import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } from "@clients/backend";
+import { type DataMetaInformation, type CompanyInformation, DataTypeEnum } from "@clients/backend";
 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import OverlayPanel from "primevue/overlaypanel";
@@ -174,6 +182,9 @@ export default defineComponent({
     };
   },
   computed: {
+    DataTypeEnum() {
+      return DataTypeEnum;
+    },
     isReviewableByCurrentUser() {
       return this.hasUserReviewerRights && this.singleDataMetaInfoToDisplay?.qaStatus === "Pending";
     },
