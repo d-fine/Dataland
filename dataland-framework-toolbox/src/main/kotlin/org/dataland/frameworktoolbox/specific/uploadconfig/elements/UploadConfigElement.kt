@@ -1,16 +1,16 @@
-package org.dataland.frameworktoolbox.specific.inputconfig.elements
+package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
 /**
  * A single element of a MLDT View-Configuration (either Cell or Section)
  */
-sealed interface ViewConfigElement {
-    val parentSection: SectionInputConfigBuilder?
+sealed interface UploadConfigElement {
+    val parentSection: SectionUploadConfigBuilder?
     val imports: Set<String>
 
     /**
      * Returns true iff this is an instance of a section (required for FreeMarker)
      */
-    fun isSection() = this is SectionInputConfigBuilder
+    fun isSection() = this is SectionUploadConfigBuilder
 
     /**
      * Returns true iff this is an instance of a cell (required for FreeMarker)

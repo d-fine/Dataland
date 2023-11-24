@@ -1,4 +1,4 @@
-package org.dataland.frameworktoolbox.specific.inputconfig.elements
+package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup

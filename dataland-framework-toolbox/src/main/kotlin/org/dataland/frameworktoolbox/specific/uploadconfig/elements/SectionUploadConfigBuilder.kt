@@ -1,7 +1,7 @@
-package org.dataland.frameworktoolbox.specific.inputconfig.elements
+package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
-import org.dataland.frameworktoolbox.specific.inputconfig.functional.FrameworkBooleanLambda
-import org.dataland.frameworktoolbox.specific.inputconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkBooleanLambda
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda
 
 /**
  * An In-Memory representation of a MLDTSectionConfig
@@ -11,14 +11,14 @@ import org.dataland.frameworktoolbox.specific.inputconfig.functional.FrameworkDi
  * @param children the elements contained in this section
  * @param labelBadgeColor the color of the badge in which the label is contained
  */
-data class SectionInputConfigBuilder(
-    override val parentSection: SectionInputConfigBuilder?,
+data class SectionUploadConfigBuilder(
+    override val parentSection: SectionUploadConfigBuilder?,
     var label: String,
     var expandOnPageLoad: Boolean,
     var shouldDisplay: FrameworkBooleanLambda,
-    var children: MutableList<ViewConfigElement> = mutableListOf(),
+    var children: MutableList<UploadConfigElement> = mutableListOf(),
     var labelBadgeColor: LabelBadgeColor? = null,
-) : ViewConfigElement {
+) : UploadConfigElement {
 
     override val imports: Set<String>
         get() = children.foldRight(setOf()) { it, acc -> acc + it.imports }
@@ -31,8 +31,8 @@ data class SectionInputConfigBuilder(
         labelBadgeColor: LabelBadgeColor?,
         expandOnPageLoad: Boolean,
         shouldDisplay: FrameworkBooleanLambda,
-    ): SectionInputConfigBuilder {
-        val newSection = SectionInputConfigBuilder(
+    ): SectionUploadConfigBuilder {
+        val newSection = SectionUploadConfigBuilder(
             parentSection = this,
             label = label,
             labelBadgeColor = labelBadgeColor,

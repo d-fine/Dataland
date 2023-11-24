@@ -1,7 +1,7 @@
-package org.dataland.frameworktoolbox.specific.inputconfig.elements
+package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
-import org.dataland.frameworktoolbox.specific.inputconfig.functional.FrameworkBooleanLambda
-import org.dataland.frameworktoolbox.specific.inputconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkBooleanLambda
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda
 
 /**
  * An In-Memory representation of a MLDTCellConfig.
@@ -11,12 +11,12 @@ import org.dataland.frameworktoolbox.specific.inputconfig.functional.FrameworkDi
  * @param valueGetter a lambda deciding the content of this cell based on the framework dataset
  */
 class CellConfigBuilder(
-    override val parentSection: SectionInputConfigBuilder?,
+    override val parentSection: SectionUploadConfigBuilder?,
     var label: String,
     var explanation: String?,
     var shouldDisplay: FrameworkBooleanLambda,
     var valueGetter: FrameworkDisplayValueLambda,
-) : ViewConfigElement {
+) : UploadConfigElement {
     override val imports: Set<String>
         get() = valueGetter.imports
 }

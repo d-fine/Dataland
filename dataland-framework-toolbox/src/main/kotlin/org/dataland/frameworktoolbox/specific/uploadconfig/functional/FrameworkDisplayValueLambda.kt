@@ -1,4 +1,4 @@
-package org.dataland.frameworktoolbox.specific.inputconfig.functional
+package org.dataland.frameworktoolbox.specific.uploadconfig.functional
 
 /**
  * A TypeScript lambda of the format (dataset: FrameworkDataType): AvailableMLDTDisplayObjectTypes => BODY

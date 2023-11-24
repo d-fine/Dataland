@@ -1,8 +1,8 @@
-package org.dataland.frameworktoolbox.specific.inputconfig
+package org.dataland.frameworktoolbox.specific.uploadconfig
 
 import org.dataland.frameworktoolbox.intermediate.Framework
-import org.dataland.frameworktoolbox.specific.inputconfig.elements.SectionInputConfigBuilder
-import org.dataland.frameworktoolbox.specific.inputconfig.functional.FrameworkBooleanLambda
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.capitalizeEn
@@ -13,11 +13,11 @@ import java.util.concurrent.TimeUnit
 import kotlin.io.path.div
 
 /**
- * A FrameworkInputConfigBuilder converts an Intermediate-Representation framework to a TypeScript Input-Configuration
+ * A FrameworkUploadConfigBuilder converts an Intermediate-Representation framework to a TypeScript Input-Configuration
  * and integrates the generated code into a Dataland Repository.
  * @param framework the framework DataModel to convert
  */
-class FrameworkInputConfigBuilder(
+class FrameworkUploadConfigBuilder(
     private val framework: Framework,
 ) {
     companion object {
@@ -26,25 +26,25 @@ class FrameworkInputConfigBuilder(
 
     private val logger by LoggerDelegate()
 
-    val rootSectionConfigBuilder = SectionInputConfigBuilder(
+    val rootSectionConfigBuilder = SectionUploadConfigBuilder(
         parentSection = null,
         label = "root-section",
         expandOnPageLoad = false,
         shouldDisplay = FrameworkBooleanLambda.TRUE,
     )
 
-    private fun buildInputConfig(inputConfigTsPath: Path) {
+    private fun buildUploadConfig(uploadConfigTsPath: Path) {
         val freeMarkerContext = mapOf(
-            "inputConfig" to rootSectionConfigBuilder.children,
+            "uploadConfig" to rootSectionConfigBuilder.children,
             "frameworkDataType" to "${framework.identifier.capitalizeEn()}Data",
             "frameworkIdentifier" to framework.identifier,
             "imports" to rootSectionConfigBuilder.imports,
         )
 
         val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/inputconfig/InputConfig.ts.ftl")
+            .getTemplate("/specific/uploadconfig/UploadConfig.ts.ftl")
 
-        val writer = FileWriter(inputConfigTsPath.toFile())
+        val writer = FileWriter(uploadConfigTsPath.toFile())
         freemarkerTemplate.process(freeMarkerContext, writer)
         writer.close()
     }
@@ -55,7 +55,7 @@ class FrameworkInputConfigBuilder(
         )
 
         val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/inputconfig/ApiClient.ts.ftl")
+            .getTemplate("/specific/uploadconfig/ApiClient.ts.ftl")
 
         val writer = FileWriter(apiClientTsPath.toFile())
         freemarkerTemplate.process(freeMarkerContext, writer)
@@ -70,7 +70,7 @@ class FrameworkInputConfigBuilder(
         )
 
         val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/inputconfig/index.ts.ftl")
+            .getTemplate("/specific/uploadconfig/index.ts.ftl")
 
         val writer = FileWriter(indexTsPath.toFile())
         freemarkerTemplate.process(freeMarkerContext, writer)
@@ -78,7 +78,7 @@ class FrameworkInputConfigBuilder(
     }
 
     /**
-     * Generate the code for the InputConfig and integrates it into the Dataland Repository
+     * Generate the code for the UploadConfig and integrates it into the Dataland Repository
      */
     fun build(into: DatalandRepository) {
         logger.info("Starting to build to backend data-model into the dataland-repository at ${into.path}")
@@ -89,15 +89,15 @@ class FrameworkInputConfigBuilder(
             mkdirs()
         }
 
-        val inputConfigTsPath = frameworkConfigDir / "InputConfig.ts"
+        val uploadConfigTsPath = frameworkConfigDir / "UploadConfig.ts"
 
-        buildInputConfig(inputConfigTsPath)
+        buildUploadConfig(uploadConfigTsPath)
         buildApiClient(frameworkConfigDir / "ApiClient.ts")
         buildIndexTs(frameworkConfigDir / "index.ts")
 
         into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_checkfrontendcompilation"))
 
-        ProcessBuilder("npx", "eslint", "--fix", inputConfigTsPath.toAbsolutePath().toString())
+        ProcessBuilder("npx", "eslint", "--fix", uploadConfigTsPath.toAbsolutePath().toString())
             .directory((into.path / "dataland-frontend").toFile())
             .redirectOutput(ProcessBuilder.Redirect.INHERIT)
             .redirectError(ProcessBuilder.Redirect.INHERIT)

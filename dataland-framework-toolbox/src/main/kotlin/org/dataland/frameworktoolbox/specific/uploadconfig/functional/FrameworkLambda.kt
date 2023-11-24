@@ -1,4 +1,4 @@
-package org.dataland.frameworktoolbox.specific.inputconfig.functional
+package org.dataland.frameworktoolbox.specific.uploadconfig.functional
 
 /**
  * A base-class for TypeScript Lambdas of the format (dataset: FrameworkDataType): T => BODY

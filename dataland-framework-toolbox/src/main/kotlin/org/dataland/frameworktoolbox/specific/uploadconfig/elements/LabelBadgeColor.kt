@@ -1,4 +1,4 @@
-package org.dataland.frameworktoolbox.specific.inputconfig.elements
+package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
 /**
  * A collection of implemented badge-colors in the frontend
