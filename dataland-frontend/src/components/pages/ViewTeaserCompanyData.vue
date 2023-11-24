@@ -69,9 +69,9 @@ export default defineComponent({
         const companyResponse = await companyDataControllerApi.getTeaserCompanies();
         if (companyResponse.data.length > 0) {
           this.companyId = companyResponse.data[0];
-          const metaDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)(),
-          ).getMetaDataControllerApi();
+
+          const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
+          const metaDataControllerApi = backendClients.metaDataController;
           const listOfMetaDataInfo = (await metaDataControllerApi.getListOfDataMetaInfo(this.companyId)).data;
           if (listOfMetaDataInfo.length > 0) {
             const dataMetaInfoForDisplay = listOfMetaDataInfo[0];

@@ -139,7 +139,7 @@ export default defineComponent({
         this.waitingForData = true;
         this.displayDataOfPage = [];
         const dataOfPage = [] as QaDataObject[];
-        await this.gatherControllerApis();
+        this.gatherControllerApis();
         const response = await (this.qaServiceControllerApi as QaControllerApi).getUnreviewedDatasetsIds();
         this.dataIdList = response.data;
         const firstDatasetOnPageIndex = this.currentPage * this.datasetsPerPage;
@@ -159,16 +159,11 @@ export default defineComponent({
     /**
      * Gathers the controller APIs
      */
-    async gatherControllerApis() {
-      this.qaServiceControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
-      ).getQaControllerApi();
-      this.metaDataInformationControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
-      ).getMetaDataControllerApi();
-      this.companyDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
-      ).getCompanyDataControllerApi();
+    gatherControllerApis() {
+      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+      this.qaServiceControllerApi = apiClientProvider.apiClients.qaController;
+      this.metaDataInformationControllerApi = apiClientProvider.backendClients.metaDataController;
+      this.companyDataControllerApi = apiClientProvider.backendClients.companyDataController;
     },
     /**
      * Gathers meta and company information associated with a dataset if the information can be retrieved

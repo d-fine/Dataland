@@ -2,7 +2,7 @@ import { Configuration } from "@clients/backend/configuration";
 import { DocumentControllerApi } from "@clients/documentmanager";
 import { QaControllerApi } from "@clients/qaservice";
 import type Keycloak from "keycloak-js";
-import { ApiKeyControllerApi, type ApiKeyControllerApiInterface } from "@clients/apikeymanager";
+import { ApiKeyControllerApi } from "@clients/apikeymanager";
 import { RequestControllerApi, type RequestControllerApiInterface } from "@clients/communitymanager";
 import axios, { type AxiosInstance } from "axios";
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
@@ -23,6 +23,13 @@ interface ApiBackendClients {
   smeDataController: backendApis.SmeDataControllerApiInterface;
 }
 
+interface ApiClients {
+  apiKeyController: ApiKeyControllerApi;
+  documentController: DocumentControllerApi;
+  requestController: RequestControllerApiInterface;
+  qaController: QaControllerApi;
+}
+
 type ApiClientConstructor<T> = new (
   configuration: Configuration | undefined,
   basePath: string,
@@ -35,6 +42,7 @@ export class ApiClientProvider {
   private readonly axiosInstance: AxiosInstance;
 
   readonly backendClients: ApiBackendClients;
+  readonly apiClients: ApiClients;
 
   constructor(keycloakPromise: Promise<Keycloak>) {
     this.keycloakPromise = keycloakPromise;
@@ -42,6 +50,7 @@ export class ApiClientProvider {
     this.registerAutoAuthenticatingAxiosInterceptor();
 
     this.backendClients = this.constructBackendClients();
+    this.apiClients = this.constructApiClients();
   }
 
   private registerAutoAuthenticatingAxiosInterceptor(): void {
@@ -67,10 +76,21 @@ export class ApiClientProvider {
         backendApis.EuTaxonomyDataForNonFinancialsControllerApi,
       ),
       lksgDataController: backendClientFactory(backendApis.LksgDataControllerApi),
-      metaDataController: backendClientFactory(backendApis.MetaDataControllerApi),
+      metaDataController: backendClientFactory(
+        backendApis.MetaDataControllerApi,
+      ) as backendApis.MetaDataControllerApiInterface,
       p2pDataController: backendClientFactory(backendApis.P2pDataControllerApi),
       sfdrDataController: backendClientFactory(backendApis.SfdrDataControllerApi),
       smeDataController: backendClientFactory(backendApis.SmeDataControllerApi),
+    };
+  }
+
+  private constructApiClients(): ApiClients {
+    return {
+      apiKeyController: this.getClientFactory("/api-keys")(ApiKeyControllerApi),
+      documentController: this.getClientFactory("/documents")(DocumentControllerApi),
+      requestController: this.getClientFactory("/community")(RequestControllerApi),
+      qaController: this.getClientFactory("/qa")(QaControllerApi),
     };
   }
 
@@ -108,13 +128,6 @@ export class ApiClientProvider {
     return new constructor(configuration, basePath);
   }
 
-  async getConstructedDocumentManager<T>(
-    constructor: new (configuration: Configuration | undefined, basePath: string) => T,
-  ): Promise<T> {
-    const configuration = await this.getConfiguration();
-    return new constructor(configuration, "/documents");
-  }
-
   async getCompanyDataControllerApi(): Promise<backendApis.CompanyDataControllerApiInterface> {
     return this.getConstructedApi(backendApis.CompanyDataControllerApi);
   }
@@ -132,24 +145,4 @@ export class ApiClientProvider {
     return getUnifiedFrameworkDataControllerFromConfiguration(framework, configuration);
   }
 
-  async getMetaDataControllerApi(): Promise<backendApis.MetaDataControllerApiInterface> {
-    //TODO this is a backend controller, why needed?
-    return this.getConstructedApi(backendApis.MetaDataControllerApi);
-  }
-
-  async getApiKeyManagerController(): Promise<ApiKeyControllerApiInterface> {
-    return this.getConstructedApi(ApiKeyControllerApi, "/api-keys");
-  }
-
-  async getRequestDataControllerApi(): Promise<RequestControllerApiInterface> {
-    return this.getConstructedApi(RequestControllerApi, "/community");
-  }
-
-  async getDocumentControllerApi(): Promise<DocumentControllerApi> {
-    return this.getConstructedDocumentManager(DocumentControllerApi); // TODO why only one without the basePath and ApiKeyController?
-  }
-
-  async getQaControllerApi(): Promise<QaControllerApi> {
-    return this.getConstructedApi(QaControllerApi, "/qa");
-  }
 }
