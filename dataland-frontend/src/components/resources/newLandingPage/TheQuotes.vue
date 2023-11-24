@@ -23,8 +23,8 @@
           <div
             class="quotes__slide-thumbnail-overlay cookieconsent-optin-marketing"
             :style="{ backgroundImage: `url(https://img.youtube.com/vi/${card.icon}/maxresdefault.jpg)` }"
-            v-show="currentSlide === index - initialCenterSlide ? showThumbnail : true"
-            @click="toggleThumbnailAndPlayVideo(index - 1, card.icon)"
+            v-show="currentSlide === index - initialCenterSlide + 1 ? showThumbnail : true"
+            @click="toggleThumbnailAndPlayVideo(index - initialCenterSlide + 1, card.icon)"
           >
             <div class="quotes__play-icon">
               <div class="quotes__play-arrow"></div>
@@ -33,7 +33,7 @@
           <div
             class="quotes__slide-thumbnail-overlay cookieconsent-optout-marketing"
             :style="{ backgroundImage: `url(https://img.youtube.com/vi/${card.icon}/maxresdefault.jpg)` }"
-            v-show="currentSlide === index - initialCenterSlide ? showThumbnail : true"
+            v-show="currentSlide === index - initialCenterSlide + 1 ? showThumbnail : true"
           >
             <div class="quotes__play-icon" @click="renewCookieConsent">
               <div class="quotes__play-arrow"></div>
