@@ -8,7 +8,7 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
-import org.dataland.frameworktoolbox.specific.inputconfig.elements.SectionInputConfigBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 
 /**
@@ -44,9 +44,10 @@ open class ComponentBase(
     var viewConfigGenerator: ((sectionConfigBuilder: SectionConfigBuilder) -> Unit)? = null
 
     /**
-     * The inputConfigGenerator allows users to overwrite the InputConfig generation of this specific component instance
+     * The uploadConfigGenerator allows users to overwrite the UploadConfig generation of
+     * this specific component instance
      */
-    var inputConfigGenerator: ((sectionInputConfigBuilder: SectionInputConfigBuilder) -> Unit)? = null
+    var uploadConfigGenerator: ((sectionUploadConfigBuilder: SectionUploadConfigBuilder) -> Unit)? = null
 
     /**
      * The fixtureGeneratorGenerator allows users to overwrite the FixtureGeneration generation
@@ -109,11 +110,11 @@ open class ComponentBase(
     }
 
     /**
-     * Build this component instance into the provided input-section configuration
+     * Build this component instance into the provided upload-section configuration
      * using the default generator for this component
      */
-    open fun generateDefaultInputConfig(sectionInputConfigBuilder: SectionInputConfigBuilder) {
-        throw NotImplementedError("This component did not implement input config conversion.")
+    open fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
+        throw NotImplementedError("This component did not implement upload config conversion.")
     }
 
     /**
@@ -124,11 +125,11 @@ open class ComponentBase(
     }
 
     /**
-     * Build this component instance into the provided input-section configuration
+     * Build this component instance into the provided upload-section configuration
      */
-    fun generateInputConfig(sectionInputConfigBuilder: SectionInputConfigBuilder) {
-        return inputConfigGenerator?.let { it(sectionInputConfigBuilder) }
-            ?: generateDefaultInputConfig(sectionInputConfigBuilder)
+    fun generateUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
+        return uploadConfigGenerator?.let { it(sectionUploadConfigBuilder) }
+            ?: generateDefaultUploadConfig(sectionUploadConfigBuilder)
     }
 
     /**

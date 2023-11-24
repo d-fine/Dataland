@@ -5,7 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.FrameworkFixtureGeneratorBuilder
 import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
-import org.dataland.frameworktoolbox.specific.inputconfig.FrameworkInputConfigBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.FrameworkUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuilder
 import org.dataland.frameworktoolbox.template.ExcelTemplate
 import org.dataland.frameworktoolbox.template.TemplateComponentBuilder
@@ -118,10 +118,10 @@ abstract class PavedRoadFramework(
     }
 
     /**
-     * Generate the input-model for the framework
+     * Generate the upload-model for the framework
      */
-    open fun generateInputModel(framework: Framework): FrameworkInputConfigBuilder {
-        return framework.generateInputModel()
+    open fun generateUploadModel(framework: Framework): FrameworkUploadConfigBuilder {
+        return framework.generateUploadModel()
     }
 
     /**
@@ -133,10 +133,10 @@ abstract class PavedRoadFramework(
     }
 
     /**
-     * Can be overwritten to programmatically customize the inputModel
+     * Can be overwritten to programmatically customize the uploadModel
      * (to e.g, change the way certain fields are displayed in the frontend)
      */
-    open fun customizeInputModel(inputModel: FrameworkInputConfigBuilder) {
+    open fun customizeUploadModel(uploadModel: FrameworkUploadConfigBuilder) {
         // Empty as it's just a customization endpoint
     }
 

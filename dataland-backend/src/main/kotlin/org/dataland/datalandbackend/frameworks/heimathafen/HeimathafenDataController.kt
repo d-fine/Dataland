@@ -40,8 +40,7 @@ class HeimathafenDataController(
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<HeimathafenData>,
         bypassQa: Boolean,
-    ):
-        ResponseEntity<DataMetaInformation> {
+    ): ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }
 

@@ -102,12 +102,12 @@ abstract class InDevelopmentPavedRoadFramework(
             logger.error("Could not build framework view configuration!", ex)
         }
 
-        val inputConfig = generateInputModel(framework)
-        customizeInputModel(inputConfig)
+        val uploadConfig = generateUploadModel(framework)
+        customizeUploadModel(uploadConfig)
         try {
-            inputConfig.build(into = datalandProject)
+            uploadConfig.build(into = datalandProject)
         } catch (ex: Exception) {
-            logger.error("Could not build framework input configuration!", ex)
+            logger.error("Could not build framework upload configuration!", ex)
         }
 
         val fixtureGenerator = generateFakeFixtureGenerator(framework)
