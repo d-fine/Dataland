@@ -136,7 +136,6 @@ class CompanyUploader(
         leiIsinMapping: Map<String, Set<String>>,
     ) {
         for ((lei, newIsins) in leiIsinMapping) {
-            val noCompanyForLeiWarning = "No company found for LEI: $lei"
             retryOnCommonApiErrors {
                 logger.info("Searching for company with LEI: $lei")
                 val companyId = findCompanyWithLei(lei)
@@ -144,7 +143,7 @@ class CompanyUploader(
                     logger.info("Patching company with ID: $companyId and LEI: $lei")
                     updateIsinsOfCompany(newIsins, companyId)
                 } else {
-                    logger.warn(noCompanyForLeiWarning)
+                    logger.warn("No company found for LEI: $lei")
                 }
             }
         }
