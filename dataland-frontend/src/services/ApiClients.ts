@@ -144,5 +144,4 @@ export class ApiClientProvider {
     const configuration = await this.getConfiguration();
     return getUnifiedFrameworkDataControllerFromConfiguration(framework, configuration);
   }
-
 }
