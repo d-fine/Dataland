@@ -12,7 +12,7 @@
     </h5>
   </div>
   <div v-show="dataPointIsAvailable">
-    <div class="form-field">
+    <div class="form-field" v-if="dataPointIsAvailable">
       <div v-if="valueType === 'percent' && showSecondInput" class="p-0">
         <div class="next-to-each-other">
           <div class="p-0">
@@ -82,7 +82,7 @@
       </div>
     </div>
     <div class="form-field">
-      <FormKit type="group" name="dataSource">
+      <FormKit type="group" v-if="dataPointIsAvailable" name="dataSource">
         <h4 class="mt-0">Data source</h4>
         <div class="next-to-each-other">
           <div class="flex-1">
