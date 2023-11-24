@@ -239,15 +239,9 @@ const register = (): void => {
     cursor: grab;
     position: relative;
 
-    &-videoContainer {
-      aspect-ratio: 16 / 9;
-      width: 100%;
-      overflow: hidden;
-    }
-
     &-video {
       width: 100%;
-      height: 100%;
+      aspect-ratio: 16 / 9;
       border-width: 0;
       border-radius: 8px;
       -webkit-border-radius: 8px;
