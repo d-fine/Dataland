@@ -1,8 +1,6 @@
 <template>
   <span @click="downloadDocument()" class="text-primary cursor-pointer" :class="fontStyle">
-    <span class="underline pl-1" :data-test="'Report-Download-' + downloadName">
-      {{ label ?? downloadName }}
-    </span>
+    <span class="underline pl-1" :data-test="'Report-Download-' + downloadName">{{ label ?? downloadName }}</span>
     <i
       v-if="showIcon"
       class="pi pi-download pl-1"
