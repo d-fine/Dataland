@@ -147,6 +147,29 @@ interface CompanyApi {
     )
 
     /**
+     * A method to get the company an identifier of a given type exists
+     * @param identifierType the type of the identifier
+     * @param identifier the identifier
+     */
+    @Operation(
+        summary = "Gets the company ID for an identifier of specified type.",
+        description = "Get the company ID for an identifier of specified type.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully checked checked for the company ID."),
+        ],
+    )
+    @GetMapping(
+        value = ["/identifiers/{identifierType}/{identifier}"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getCompanyIdByIdentifier(
+        @PathVariable("identifierType") identifierType: IdentifierType,
+        @PathVariable("identifier") identifier: String,
+    ): String?
+
+    /**
      * A method used to retrieve all available distinct values for framework type, country code & sector
      * to be used by the search UI
      */

@@ -95,6 +95,21 @@ class CompanyDataController(
         }
     }
 
+    @Suppress("SwallowedException")
+    override fun getCompanyIdByIdentifier(identifierType: IdentifierType, identifier: String): String? {
+        logger.info("Trying to retrieve company for $identifierType: $identifier")
+        return try {
+            companyIdentifierRepositoryInterface
+                .getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
+                .company?.companyId?.also {
+                logger.info("Retrieved company ID: $it")
+            }
+        } catch (e: JpaObjectRetrievalFailureException) {
+            logger.info("Could not retrieve company ID")
+            null
+        }
+    }
+
     override fun getAvailableCompanySearchFilters(): ResponseEntity<CompanyAvailableDistinctValues> {
         return ResponseEntity.ok(
             CompanyAvailableDistinctValues(
