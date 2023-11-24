@@ -4,16 +4,16 @@
       <table v-if="dataPointDisplay" class="p-datatable-table" aria-label="Data point content">
         <tbody class="p-datatable-body">
           <tr>
-            <td class="headers-bg">Value</td>
-            <td nowrap>{{ dataPointDisplay.value ?? "" }}</td>
+            <th class="headers-bg">Value</th>
+            <td class="nowrap">{{ dataPointDisplay.value ?? "" }}</td>
           </tr>
           <tr v-if="dataPointDisplay.quality">
-            <td class="headers-bg">Quality</td>
+            <th class="headers-bg">Quality</th>
             <td>{{ dataPointDisplay.quality }}</td>
           </tr>
           <tr v-if="dataPointDisplay.dataSource">
-            <td class="headers-bg">Data source</td>
-            <td nowrap>
+            <th class="headers-bg">Data source</th>
+            <td class="nowrap">
               <DocumentLink
                 :label="dataSourceLabel"
                 :download-name="dataPointDisplay.dataSource.fileName ?? dataPointDisplay.dataSource.fileReference"
@@ -23,7 +23,7 @@
             </td>
           </tr>
           <tr v-if="dataPointDisplay.comment">
-            <td class="headers-bg">Comment</td>
+            <th class="headers-bg">Comment</th>
             <td>{{ dataPointDisplay.comment }}</td>
           </tr>
         </tbody>
@@ -74,9 +74,15 @@ export default defineComponent({
     td {
       padding: 0.5rem;
       border: none;
+      &.nowrap {
+        white-space: nowrap;
+      }
+    }
+    th {
       &.headers-bg {
         width: 2rem;
         padding-right: 1rem;
+        font-weight: normal;
       }
     }
   }
