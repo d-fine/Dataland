@@ -7,7 +7,6 @@ import { generateFutureDate } from "@e2e/fixtures/common/DateFixtures";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { generateFixtureDataset, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 import { HighImpactClimateSector } from "@/api-models/HighImpactClimateSector";
-import { generateExtendedDataPoint } from "@e2e/fixtures/common/DataPointFixtures";
 
 /**
  * Generates a set number of SFDR fixtures
@@ -162,7 +161,7 @@ class SfdrGenerator extends Generator {
     const keys: HighImpactClimateSector[] = pickSubsetOfElements(Object.values(HighImpactClimateSector), 0);
     return Object.fromEntries(
       new Map<string, ExtendedDataPointBigDecimal>(
-        keys.map((naceCode) => [naceCode as string, generateExtendedDataPoint(this.randomFloat(), this.reports)]),
+        keys.map((naceCode) => [naceCode as string, this.generateExtendedDataPoint(this.randomFloat())]),
       ),
     );
   }

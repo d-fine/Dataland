@@ -9,8 +9,7 @@ import {
 } from "@clients/backend";
 import { generateYesNo, generateYesNoNa } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
-import { DEFAULT_PROBABILITY, valueOrNull } from "@e2e/utils/FakeFixtureUtils";
-import { FrameworkGenerator } from "@e2e/utils/FrameworkFakeFixtureUtils";
+import { DEFAULT_PROBABILITY, Generator, valueOrNull } from "@e2e/utils/FakeFixtureUtils";
 import { generateReportingPeriod } from "@e2e/fixtures/common/ReportingPeriodFixtures";
 import { generateArray, generateFixtureDataset, pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
@@ -311,7 +310,7 @@ export function generateLksgData(nullProbability = DEFAULT_PROBABILITY): LksgDat
   };
 }
 
-export class LksgGenerator extends FrameworkGenerator {
+export class LksgGenerator extends Generator {
   /**
    * Generates a random product
    * @returns a random product

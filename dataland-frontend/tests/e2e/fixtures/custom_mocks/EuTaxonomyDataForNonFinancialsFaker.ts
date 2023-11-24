@@ -8,7 +8,6 @@ import { EuNonFinancialsGenerator } from "@e2e/fixtures/frameworks/eutaxonomy-no
 import { generateCurrencyValue, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
-import { generateCurrencyExtendedDataPoint, generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy-shared/EuTaxonomySharedValuesFixtures";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { generateArray } from "@e2e/fixtures/FixtureUtils";
@@ -30,9 +29,8 @@ class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
 
   generateMinimumAcceptedDetailsPerCashFlowType(): EuTaxonomyDetailsPerCashFlowType {
     return {
-      totalAmount: generateCurrencyExtendedDataPoint(
+      totalAmount: this.generateCurrencyExtendedDataPoint(
         this.valueOrNull(generateCurrencyValue()),
-        this.reports,
         generateCurrencyCode(),
       ),
       nonEligibleShare: this.generateFinancialShare(),
@@ -69,7 +67,7 @@ export function generateEuTaxonomyForNonFinancials(): DataAndMetaInformationEuTa
     };
   });
   let data = generatedDataAndMetaInfo[0].data;
-  data.general!.referencedReports = generateReferencedReports(DEFAULT_PROBABILITY, ["IntegratedReport"]);
+  data.general!.referencedReports = dataGenerator.generateReferencedReports(["IntegratedReport"]);
   data.revenue!.totalAmount!.value = 0;
   data.revenue!.alignedActivities![0].share ??= {};
   data.revenue!.alignedActivities![0].share.relativeShareInPercent = generatePercentageValue();
