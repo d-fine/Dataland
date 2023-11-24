@@ -34,8 +34,7 @@ class V12__MigrateHighImpactClimateSectorsSfdr : BaseJavaMigration() {
         if (applicableHighImpactClimateSectorsObject !== null) {
             applicableHighImpactClimateSectorsObject.keys().forEach { naceCode ->
                 if (applicableHighImpactClimateSectorsObject.has(naceCode)) {
-                    val naceCodeExtendedDataPoint = applicableHighImpactClimateSectorsObject.get(naceCode) as JSONObject
-                    sectorsToMigrate[naceCode] = naceCodeExtendedDataPoint
+                    sectorsToMigrate[naceCode] = applicableHighImpactClimateSectorsObject.get(naceCode) as JSONObject
                 }
             }
             sectorsToMigrate.forEach { (sector, extendedDataPoint) ->

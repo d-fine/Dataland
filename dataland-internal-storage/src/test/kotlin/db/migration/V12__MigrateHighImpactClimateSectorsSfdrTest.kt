@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 class V12__MigrateHighImpactClimateSectorsSfdrTest {
     @Test
-    fun `check migration script for high-impact climate sectors in sfdr works properly`() {
+    fun `check migration script for high impact climate sectors in sfdr works properly`() {
         TestUtils().testMigrationOfSingleDataset(
             "sfdr",
             "V12/originalDatabaseEntry.json",
