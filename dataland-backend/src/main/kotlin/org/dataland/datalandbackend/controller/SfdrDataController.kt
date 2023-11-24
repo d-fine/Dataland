@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RequestMapping("/data/sfdr")
 @RestController
+@Validated
 class SfdrDataController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
@@ -38,7 +40,7 @@ class SfdrDataController(
     }
 
     @Operation(operationId = "postCompanyAssociatedSfdrData")
-    override fun postCompanyAssociatedData(@Valid @RequestBody companyAssociatedData: CompanyAssociatedData<SfdrData>, bypassQa: Boolean):
+    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<SfdrData>, bypassQa: Boolean):
         ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }

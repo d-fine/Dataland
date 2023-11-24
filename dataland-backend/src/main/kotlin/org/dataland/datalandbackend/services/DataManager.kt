@@ -1,9 +1,13 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.validation.ConstraintViolation
+import jakarta.validation.Validator
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.utils.canUserBypassQa
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -18,6 +22,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -29,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -74,6 +80,9 @@ class DataManager(
         )
     }
 
+
+    @Autowired
+    private val validator: Validator? = null
     /**
      * Method to make the data manager add data to a data store, store metadata in Dataland and sending messages to the
      * relevant message queues
@@ -87,6 +96,16 @@ class DataManager(
         correlationId: String,
     ):
         String {
+        val violations: Set<ConstraintViolation<StorableDataSet>> = validator!!.validate(storableDataSet)
+
+        if (violations.isNotEmpty()) {
+            val sb = StringBuilder()
+            for (constraintViolation in violations) {
+                sb.append(constraintViolation.getMessage())
+            }
+            throw IllegalArgumentException("Fields could not be validated")
+        }
+
         val dataId = generateRandomDataId()
         storeMetaDataFrom(dataId, storableDataSet, correlationId)
         storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)

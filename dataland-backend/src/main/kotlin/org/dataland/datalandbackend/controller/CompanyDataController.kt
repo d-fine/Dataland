@@ -1,6 +1,8 @@
 package org.dataland.datalandbackend.controller
 
+import jakarta.validation.ConstraintViolation
 import jakarta.validation.Valid
+import jakarta.validation.Validator
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
@@ -31,6 +33,8 @@ import org.springframework.web.bind.annotation.RestController
  * @param companyQueryManager the company manager service to handle company database queries
  * @param companyIdentifierRepositoryInterface the company identifier repository
  */
+@Autowired
+private val validator: Validator? = null
 
 @RestController
 @Validated
@@ -43,6 +47,16 @@ class CompanyDataController(
 
     override fun postCompany(@Valid @RequestBody companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
         logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
+
+        val violations: Set<ConstraintViolation<CompanyInformation>> = validator!!.validate(companyInformation)
+
+        if (violations.isNotEmpty()) {
+            val sb = StringBuilder()
+            for (constraintViolation in violations) {
+                sb.append(constraintViolation.getMessage())
+            }
+            throw IllegalArgumentException("Fields could not be validated")
+        }
         return ResponseEntity.ok(
             companyAlterationManager.addCompany(companyInformation)
                 .toApiModel(DatalandAuthentication.fromContext()),

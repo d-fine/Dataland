@@ -1,11 +1,15 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.validation.ConstraintViolation
+import jakarta.validation.Valid
+import jakarta.validation.Validator
 import org.dataland.datalandbackend.LogMessageBuilder
 import org.dataland.datalandbackend.api.DataApi
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataManager
@@ -14,8 +18,10 @@ import org.dataland.datalandbackend.utils.canUserBypassQa
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
+import org.springframework.validation.annotation.Validated
 import java.time.Instant
 import java.util.UUID.randomUUID
 
@@ -35,9 +41,21 @@ abstract class DataController<T>(
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
     private val logMessageBuilder = LogMessageBuilder()
-
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>, bypassQa: Boolean):
+/*
+    @Autowired
+    private val validator: Validator? = null*/
+    override fun postCompanyAssociatedData(@Valid companyAssociatedData: CompanyAssociatedData<T>, bypassQa: Boolean):
         ResponseEntity<DataMetaInformation> {
+
+//        val violations: Set<ConstraintViolation<CompanyAssociatedData<T>>> = validator!!.validate(companyAssociatedData)
+
+        /*if (violations.isNotEmpty()) {
+            val sb = StringBuilder()
+            for (constraintViolation in violations) {
+                sb.append(constraintViolation.getMessage())
+            }
+            throw IllegalArgumentException("Fields could not be validated")
+        }*/
         if (bypassQa && !canUserBypassQa(DatalandAuthentication.fromContextOrNull())) {
             throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
         }
