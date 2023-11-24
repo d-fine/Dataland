@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.validator.NonNegativeDataPoint
 import java.math.BigDecimal
 
 /**
@@ -81,6 +82,9 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Min(0)
     val sanctionedIncidentsOfDiscrimination: ExtendedDataPoint<Long>? = null,
 
-    @field:Min(0)
+    @field:NonNegativeDataPoint
     val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal>? = null,
+
+    @field:Min(0)
+    val justTest: Number? = null,
 )

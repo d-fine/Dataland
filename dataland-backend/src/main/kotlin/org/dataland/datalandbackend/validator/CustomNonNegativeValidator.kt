@@ -7,10 +7,10 @@ import jakarta.validation.Payload
 import kotlin.reflect.KClass
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 
-class CustomNonNegativeValidator : ConstraintValidator<NonNegativeDataPoint, ExtendedDataPoint<T>> {
-    override fun isValid(dataPoint: ExtendedDataPoint<T>, context: ConstraintValidatorContext?): Boolean {
+class CustomNonNegativeValidator: ConstraintValidator<NonNegativeDataPoint, ExtendedDataPoint<Number>> {
+    override fun isValid(dataPoint: ExtendedDataPoint<Number>, context: ConstraintValidatorContext?): Boolean {
         if (dataPoint.value == null) return true
-        return (dataPoint.value > 0)
+        return (dataPoint.value.toDouble() >= 0) //is this ok?
     }
 }
 

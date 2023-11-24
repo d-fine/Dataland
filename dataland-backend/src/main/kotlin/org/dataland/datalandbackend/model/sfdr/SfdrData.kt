@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.sfdr
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.sfdr.categories.environmental.SfdrEnvironmental
 import org.dataland.datalandbackend.model.sfdr.categories.general.SfdrGeneral
@@ -18,5 +19,6 @@ data class SfdrData(
 
     val environmental: SfdrEnvironmental? = null,
 
+    @field:Valid
     val social: SfdrSocial? = null,
 )
