@@ -42,14 +42,16 @@ export default defineComponent({
   name: "DataPointDataTableInModal",
   props: {
     dataPointDisplay: {
-      type: Object as DataPointDisplay,
+      type: Object as () => DataPointDisplay,
       require: true,
     },
   },
   computed: {
     dataSourceLabel() {
       return this.dataPointDisplay?.dataSource.page
-        ? `${this.dataPointDisplay?.dataSource.fileName}, page ${this.dataPointDisplay?.dataSource.page}`
+        ? `${this.dataPointDisplay?.dataSource.fileName ?? ""}, page ${
+            this.dataPointDisplay?.dataSource.page as number
+          }`
         : this.dataPointDisplay?.dataSource.fileName;
     },
   },
