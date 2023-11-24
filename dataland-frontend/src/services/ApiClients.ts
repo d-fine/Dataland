@@ -15,12 +15,6 @@ interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
   companyDataController: backendApis.CompanyDataControllerApiInterface;
   metaDataController: backendApis.MetaDataControllerApiInterface;
-  euTaxonomyDataForFinancialsController: backendApis.EuTaxonomyDataForFinancialsControllerApiInterface;
-  euTaxonomyDataForNonFinancialsController: backendApis.EuTaxonomyDataForNonFinancialsControllerApiInterface;
-  lksgDataController: backendApis.LksgDataControllerApiInterface;
-  p2pDataController: backendApis.P2pDataControllerApiInterface;
-  sfdrDataController: backendApis.SfdrDataControllerApiInterface;
-  smeDataController: backendApis.SmeDataControllerApiInterface;
 }
 
 interface ApiClients {
@@ -71,17 +65,9 @@ export class ApiClientProvider {
     return {
       actuator: backendClientFactory(backendApis.ActuatorApi),
       companyDataController: backendClientFactory(backendApis.CompanyDataControllerApi),
-      euTaxonomyDataForFinancialsController: backendClientFactory(backendApis.EuTaxonomyDataForFinancialsControllerApi),
-      euTaxonomyDataForNonFinancialsController: backendClientFactory(
-        backendApis.EuTaxonomyDataForNonFinancialsControllerApi,
-      ),
-      lksgDataController: backendClientFactory(backendApis.LksgDataControllerApi),
       metaDataController: backendClientFactory(
         backendApis.MetaDataControllerApi,
       ) as backendApis.MetaDataControllerApiInterface,
-      p2pDataController: backendClientFactory(backendApis.P2pDataControllerApi),
-      sfdrDataController: backendClientFactory(backendApis.SfdrDataControllerApi),
-      smeDataController: backendClientFactory(backendApis.SmeDataControllerApi),
     };
   }
 
