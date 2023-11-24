@@ -9,7 +9,7 @@
       <p class="joincampaign__paragraph" v-if="joinCampaignSection.text[3]">{{ joinCampaignSection.text[3] }}</p>
       <ButtonComponent
         label="I am interested"
-        buttonType="joincampaign__button"
+        buttonType="button-component joincampaign__button"
         ariaLabel="Indicate interest by opening email client"
         @click="() => openEmailClient(getInTouchSection?.cards?.[2])"
       />

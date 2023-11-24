@@ -7,19 +7,6 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "./CompanyU
 import { submitFilledInEuTaxonomyForm } from "./EuTaxonomyFinancialsUpload";
 
 /**
- * This function clicks "Allow all" on the Cookie Banner by Cookiebot.com to accept all optional cookies
- * Otherwise, dataland.com lacks functionality.
- */
-export function clickAllowAllOnCookieBanner(): void {
-  cy.get("body").then((body$) => {
-    const button = body$.find("button[id='CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll']");
-    if (button.length) {
-      button.trigger("click");
-    }
-  });
-}
-
-/**
  * Visits the edit page for a framework via UI navigation.
  * @param companyId the id of the company for which to edit a dataset
  * @param dataType the framework
@@ -29,7 +16,7 @@ export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
   companyId: string,
   dataType: DataTypeEnum,
 ): Chainable<Interception> {
-  const getRequestAlias = "getData";
+  const getRequestAlias = "fetchDataForPrefill";
   cy.intercept({
     method: "GET",
     url: "**/api/data/**",

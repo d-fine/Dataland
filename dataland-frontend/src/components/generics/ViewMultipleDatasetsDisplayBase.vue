@@ -27,6 +27,14 @@
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
             />
             <MultiLayerDataTableFrameworkPanel
+              v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
+              :frameworkIdentifier="DataTypeEnum.EutaxonomyFinancials"
+              :companyId="companyId"
+              :display-configuration="configForEuTaxonomyFinancialsMLDT"
+              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
+              :inReviewMode="slotProps.inReviewMode"
+            />
+            <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.Lksg"
               :frameworkIdentifier="DataTypeEnum.Lksg"
               :companyId="companyId"
@@ -111,6 +119,7 @@ import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/L
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
 import { type FrameworkDefinition, type FrameworkViewConfiguration } from "@/frameworks/FrameworkDefinition";
+import { configForEuTaxonomyFinancialsMLDT } from "@/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/configForEutaxonomyFinancialsMLDT";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
@@ -129,6 +138,9 @@ export default defineComponent({
     },
     frameworkViewConfiguration(): FrameworkViewConfiguration<unknown> | undefined {
       return this.frameworkConfiguration?.getFrameworkViewConfiguration();
+    },
+    configForEuTaxonomyFinancialsMLDT() {
+      return configForEuTaxonomyFinancialsMLDT;
     },
   },
   components: {

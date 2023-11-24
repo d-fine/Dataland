@@ -107,14 +107,17 @@ sonar {
                 "dataland-frontend/src/components/forms/parts/elements/derived/ActivityTree.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
-                "EuTaxonomyForNonFinancialsDisplayDataModel.ts",
+                "EuTaxonomyForNonFinancialsDisplayDataModel.ts," +
+                "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
+                "configForEutaxonomyFinancialsMLDT.ts",
 
         )
         property(
             "sonar.exclusions",
             "dataland-backend/src/main/kotlin/" +
                 "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt," +
-                "dataland-frontend/src/components/general/SlideShow.vue",
+                "dataland-frontend/src/components/general/SlideShow.vue," +
+                "dataland-frontend/src/components/resources/newLandingPage/TheQuotes.vue",
         )
     }
 }

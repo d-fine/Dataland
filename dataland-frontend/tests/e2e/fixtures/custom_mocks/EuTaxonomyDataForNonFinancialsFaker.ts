@@ -57,7 +57,7 @@ class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
  * Generates a list of data and meta information with EU taxonomy for non financials data
  * @returns a list of data and meta information with EU taxonomy for non financials data
  */
-export function generateEuTaxonomyForNonFinancialsMocks(): DataAndMetaInformationEuTaxonomyDataForNonFinancials[] {
+export function generateEuTaxonomyForNonFinancials(): DataAndMetaInformationEuTaxonomyDataForNonFinancials[] {
   const dataMetaInfoGenerator = new DataMetaInformationGenerator();
   const dataGenerator = new MinimumAcceptedEuNonFinancialsGenerator(DEFAULT_PROBABILITY);
   const generatedDataAndMetaInfo = range(3).map((index): DataAndMetaInformationEuTaxonomyDataForNonFinancials => {

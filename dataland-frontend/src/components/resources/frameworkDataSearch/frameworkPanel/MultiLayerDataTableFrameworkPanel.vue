@@ -9,7 +9,15 @@
       going to be visible in the final view page. Normally hidden fields are highlighted (start with a
       <i class="pi pi-eye-slash pl-1 text-red-500" aria-hidden="true" />) and should be empty.
     </p>
-
+    <ShowMultipleReportsBanner
+      data-test="multipleReportsBanner"
+      v-if="
+        frameworkIdentifier == DataTypeEnum.EutaxonomyFinancials ||
+        frameworkIdentifier == DataTypeEnum.EutaxonomyNonFinancials
+      "
+      :reporting-periods="sortedReportingPeriods"
+      :reports="sortedReports"
+    />
     <MultiLayerDataTable
       :mldtDatasets="mldtDatasets"
       :config="
@@ -27,12 +35,18 @@
 
 <script setup generic="FrameworkDataType" lang="ts">
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
+import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { computed, inject, ref, shallowRef, watch } from "vue";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 import { sortDatasetsByReportingPeriod } from "@/utils/DataTableDisplay";
-import { type DataMetaInformation } from "@clients/backend";
+import {
+  type DataMetaInformation,
+  DataTypeEnum,
+  type EuTaxonomyDataForFinancials,
+  type EuTaxonomyDataForNonFinancials,
+} from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -57,10 +71,33 @@ const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.framewo
 
 const mldtDatasets = computed(() => {
   const sortedDataAndMetaInformation = sortDatasetsByReportingPeriod(dataAndMetaInformationForDisplay.value);
-  return sortedDataAndMetaInformation.map((it) => ({
-    headerLabel: it.metaInfo.reportingPeriod,
-    dataset: it.data,
+  return sortedDataAndMetaInformation.map((singleDataSet) => ({
+    headerLabel: singleDataSet.metaInfo.reportingPeriod,
+    dataset: singleDataSet.data,
   }));
+});
+
+const sortedReportingPeriods = computed(() => {
+  return mldtDatasets.value.map((mldtDataset) => mldtDataset.headerLabel);
+});
+
+const sortedReports = computed(() => {
+  switch (props.frameworkIdentifier) {
+    case DataTypeEnum.EutaxonomyNonFinancials: {
+      return mldtDatasets.value.map(
+        (mldtDataset) => (mldtDataset.dataset as EuTaxonomyDataForNonFinancials).general?.referencedReports,
+      );
+    }
+    case DataTypeEnum.EutaxonomyFinancials: {
+      return mldtDatasets.value.map(
+        (mldtDataset) => (mldtDataset.dataset as EuTaxonomyDataForFinancials).referencedReports,
+      );
+    }
+    default: {
+      return null; //Since other frameworks don't have referenced reports and therefore banners, reports don't need
+      // to be added and the banner will never receive "null" as an input
+    }
+  }
 });
 
 const updateCounter = ref(0);
