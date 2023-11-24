@@ -74,13 +74,13 @@ export function highImpactClimateGetterFactory(
     highImpactClimateSectors.forEach((sector: string) => {
       accumulatedData = {
         ...accumulatedData,
-        [`NaceCode${sector}InGWh`]: {
+        [`NaceCode${sector}`]: {
           highImpactClimateSectorEnergyConsumptionInGWh: getFieldValueFromDataModel(
-            `${path}.NaceCode${sector}InGWh.highImpactClimateSectorEnergyConsumptionInGWh`,
+            `${path}.NaceCode${sector}.highImpactClimateSectorEnergyConsumptionInGWh`,
             dataset,
           ) as ExtendedDataPointBigDecimal,
           highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue: getFieldValueFromDataModel(
-            `${path}.NaceCode${sector}InGWh.highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue`,
+            `${path}.NaceCode${sector}.highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue`,
             dataset,
           ) as ExtendedDataPointBigDecimal,
         },

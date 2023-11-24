@@ -22,7 +22,7 @@
             <em @click="removeItem(selection)" class="material-icons gray-closeIcon">close</em>
             <h4 class="gray-text fw-normal">{{ options.find((option) => option.value == selection).label }}</h4>
             <div class="grid-2-form-cards">
-              <FormKit type="group" :name="`NaceCode${selection}InGWh`">
+              <FormKit type="group" :name="`NaceCode${selection}`">
                 <div>
                   <UploadFormHeader
                     :label="`Sector ${selection} Energy Consumption`"
