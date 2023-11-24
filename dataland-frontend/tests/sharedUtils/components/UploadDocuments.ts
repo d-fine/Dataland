@@ -99,10 +99,6 @@ export const uploadDocuments = {
     cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
     cy.get(`[data-test="${reportName}ToUploadContainer"]`).should("not.exist");
   },
-  removeAllReportsFromSelectionForUpload(): void {
-    cy.get('button[data-test="files-to-upload-remove"]').each((element) => Cypress.$(element).trigger("click"));
-    cy.get('button[data-test="files-to-upload-remove"]').should("not.exist");
-  },
   removeAlreadyUploadedReport(reportName: string): Cypress.Chainable {
     return cy.get(`[data-test="${reportName}AlreadyUploadedContainer"] button`).click();
   },

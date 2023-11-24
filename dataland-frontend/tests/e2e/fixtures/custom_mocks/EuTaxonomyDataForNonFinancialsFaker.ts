@@ -8,7 +8,6 @@ import { EuNonFinancialsGenerator } from "@e2e/fixtures/frameworks/eutaxonomy-no
 import { generateCurrencyValue, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
-import { generateCurrencyExtendedDataPoint, generateReferencedReports } from "@e2e/fixtures/common/DataPointFixtures";
 import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy-shared/EuTaxonomySharedValuesFixtures";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { generateArray } from "@e2e/fixtures/FixtureUtils";
@@ -30,9 +29,8 @@ class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
 
   generateMinimumAcceptedDetailsPerCashFlowType(): EuTaxonomyDetailsPerCashFlowType {
     return {
-      totalAmount: generateCurrencyExtendedDataPoint(
+      totalAmount: this.generateCurrencyExtendedDataPoint(
         this.valueOrNull(generateCurrencyValue()),
-        this.reports,
         generateCurrencyCode(),
       ),
       nonEligibleShare: this.generateFinancialShare(),
@@ -57,7 +55,7 @@ class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
  * Generates a list of data and meta information with EU taxonomy for non financials data
  * @returns a list of data and meta information with EU taxonomy for non financials data
  */
-export function generateEuTaxonomyForNonFinancialsMocks(): DataAndMetaInformationEuTaxonomyDataForNonFinancials[] {
+export function generateEuTaxonomyForNonFinancials(): DataAndMetaInformationEuTaxonomyDataForNonFinancials[] {
   const dataMetaInfoGenerator = new DataMetaInformationGenerator();
   const dataGenerator = new MinimumAcceptedEuNonFinancialsGenerator(DEFAULT_PROBABILITY);
   const generatedDataAndMetaInfo = range(3).map((index): DataAndMetaInformationEuTaxonomyDataForNonFinancials => {
@@ -69,7 +67,7 @@ export function generateEuTaxonomyForNonFinancialsMocks(): DataAndMetaInformatio
     };
   });
   let data = generatedDataAndMetaInfo[0].data;
-  data.general!.referencedReports = generateReferencedReports(DEFAULT_PROBABILITY, ["IntegratedReport"]);
+  data.general!.referencedReports = dataGenerator.generateReferencedReports(["IntegratedReport"]);
   data.revenue!.totalAmount!.value = 0;
   data.revenue!.alignedActivities![0].share ??= {};
   data.revenue!.alignedActivities![0].share.relativeShareInPercent = generatePercentageValue();
