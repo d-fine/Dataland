@@ -48,6 +48,17 @@ open class ComponentGenerationUtils {
     }
 
     /**
+     * Loads the options column required for some components (e.g. drop-downs)
+     */
+    open fun getOptions(row: TemplateRow): MutableSet<String> {
+        val options = row.options.split(",").toMutableSet()
+        require(options.isNotEmpty()) {
+            "Field ${row.fieldIdentifier} does not specify required options for component ${row.component}."
+        }
+        return options
+    }
+
+    /**
      * Inserts showWhenValueIs Inter-Field dependencies into the datamodel
      */
     open fun defaultDependencyConfiguration(

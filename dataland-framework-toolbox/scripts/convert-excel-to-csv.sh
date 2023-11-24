@@ -15,7 +15,7 @@ set -euxo pipefail
 # false - Remove spaces --> No
 # -1 - Export all sheets
 
-libreoffice --headless \
+"/c/Program Files/LibreOffice/program"/scalc.exe --headless \
   --convert-to csv:"Text - txt - csv (StarCalc)":44,34,UTF8,1,,1033,false,true,false,false,false,-1 \
   --outdir "$2" \
   "$1"

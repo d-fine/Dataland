@@ -492,6 +492,75 @@
         ]
       }
     },
+    "/data/gdv": {
+      "post": {
+        "tags": [
+          "gdv-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedGdvData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataGdvData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-non-financials": {
       "post": {
         "tags": [
@@ -1618,6 +1687,142 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationLksgData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/gdv/{dataId}": {
+      "get": {
+        "tags": [
+          "gdv-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedGdvData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataGdvData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/gdv/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "gdv-data-controller"
+        ],
+        "operationId": "getAllCompanyGdvData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationGdvData"
                   }
                 }
               }
@@ -6977,6 +7182,743 @@
           "Greater50"
         ]
       },
+      "AnreizmechanismenFuerDasManagementSoziales": {
+        "type": "string",
+        "enum": [
+          "Ja",
+          "Nein"
+        ]
+      },
+      "AnreizmechanismenFuerDasManagementUmwelt": {
+        "type": "string",
+        "enum": [
+          "Ja",
+          "Nein"
+        ]
+      },
+      "ArtDesAudits": {
+        "type": "string",
+        "enum": [
+          "Ja",
+          "Nein"
+        ]
+      },
+      "BaseDataPointString": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "CompanyAssociatedDataGdvData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/GdvData"
+          }
+        }
+      },
+      "FrequenzDerBerichterstattung": {
+        "type": "string",
+        "enum": [
+          "Ja",
+          "Nein"
+        ]
+      },
+      "GdvAllgemein": {
+        "type": "object",
+        "properties": {
+          "esgZiele": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "ziele": {
+            "type": "string",
+            "nullable": true
+          },
+          "investitionen": {
+            "type": "string",
+            "nullable": true
+          },
+          "sektorMitHohenKlimaauswirkungen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "nachhaltigkeitsbericht": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "frequenzDerBerichterstattung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FrequenzDerBerichterstattung"
+              }
+            ]
+          },
+          "mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "uncgPrinzipien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "erklaerungUngc": {
+            "type": "string",
+            "nullable": true
+          },
+          "oecdLeitsaetze": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "erklaerungOecd": {
+            "type": "string",
+            "nullable": true
+          },
+          "ausrichtungAufDieUnSdgsUndAktivesVerfolgen": {
+            "type": "string",
+            "nullable": true
+          },
+          "ausschlusslistenAufBasisVonEsgKriterien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "ausschlusslisten": {
+            "type": "string",
+            "nullable": true
+          },
+          "oekologischeSozialeFuehrungsstandardsOderPrinzipien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "anreizmechanismenFuerDasManagementUmwelt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementUmwelt"
+              }
+            ]
+          },
+          "anreizmechanismenFuerDasManagementSoziales": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementSoziales"
+              }
+            ]
+          },
+          "esgBezogeneRechtsstreitigkeiten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "rechtsstreitigkeitenMitBezugZuE": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "statusE": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusE"
+              }
+            ]
+          },
+          "einzelheitenZuDenRechtsstreitigkeitenE": {
+            "type": "string",
+            "nullable": true
+          },
+          "rechtsstreitigkeitenMitBezugZuS": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "statusS": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusS"
+              }
+            ]
+          },
+          "einzelheitenZuDenRechtsstreitigkeitenS": {
+            "type": "string",
+            "nullable": true
+          },
+          "rechtsstreitigkeitenMitBezugZuG": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "statusG": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusG"
+              }
+            ]
+          },
+          "einzelheitenZuDenRechtsstreitigkeitenG": {
+            "type": "string",
+            "nullable": true
+          },
+          "esgRating": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "agentur": {
+            "type": "string",
+            "nullable": true
+          },
+          "ergebnis": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointString"
+              }
+            ]
+          },
+          "kritischePunkte": {
+            "type": "string",
+            "nullable": true
+          },
+          "nachhaltigkeitsbezogenenAnleihen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wichtigsteESUndGRisikenUndBewertung": {
+            "type": "string",
+            "nullable": true
+          },
+          "hindernisseBeimUmgangMitEsgBedenken": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvGeneral"
+              }
+            ]
+          },
+          "allgemein": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvAllgemein"
+              }
+            ]
+          },
+          "umwelt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUmwelt"
+              }
+            ]
+          },
+          "soziales": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvSoziales"
+              }
+            ]
+          },
+          "unternehmensfuehrungGovernance": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernance"
+              }
+            ]
+          }
+        }
+      },
+      "GdvGeneral": {
+        "type": "object",
+        "properties": {
+          "masterData": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvGeneralMasterData"
+              }
+            ]
+          }
+        }
+      },
+      "GdvGeneralMasterData": {
+        "required": [
+          "gueltigkeitsDatum"
+        ],
+        "type": "object",
+        "properties": {
+          "gueltigkeitsDatum": {
+            "type": "string",
+            "format": "date"
+          },
+          "berichtsPflicht": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          }
+        }
+      },
+      "GdvSoziales": {
+        "type": "object",
+        "properties": {
+          "aenderungenUnternehmensstruktur": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "sicherheitsmassnahmenFuerMitarbeiter": {
+            "type": "string",
+            "nullable": true
+          },
+          "einkommensgleichheit": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvSozialesEinkommensgleichheit"
+              }
+            ]
+          },
+          "geschlechterdiversitaet": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvSozialesGeschlechterdiversitaet"
+              }
+            ]
+          },
+          "audit": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvSozialesAudit"
+              }
+            ]
+          }
+        }
+      },
+      "GdvSozialesAudit": {
+        "type": "object",
+        "properties": {
+          "auditsZurEinhaltungVonArbeitsstandards": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "artDesAudits": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ArtDesAudits"
+              }
+            ]
+          },
+          "auditErgebnisse": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvSozialesEinkommensgleichheit": {
+        "type": "object",
+        "properties": {
+          "massnahmenZurVerbesserungDerEinkommensungleichheit": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvSozialesGeschlechterdiversitaet": {
+        "type": "object",
+        "properties": {
+          "definitionTopManagement": {
+            "type": "string",
+            "nullable": true
+          },
+          "einhaltungRechtlicherVorgaben": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUmwelt": {
+        "type": "object",
+        "properties": {
+          "treibhausgasemissionen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUmweltTreibhausgasemissionen"
+              }
+            ]
+          },
+          "produkteZurVerringerungDerUmweltbelastung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "verringerungenDerUmweltbelastung": {
+            "type": "string",
+            "nullable": true
+          },
+          "oekologischerMindestStandardFuerProduktionsprozesse": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "energieverbrauch": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUmweltEnergieverbrauch"
+              }
+            ]
+          },
+          "energieeffizienzImmobilienanlagen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUmweltEnergieeffizienzImmobilienanlagen"
+              }
+            ]
+          },
+          "wasserverbrauch": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUmweltWasserverbrauch"
+              }
+            ]
+          },
+          "abfallproduktion": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUmweltAbfallproduktion"
+              }
+            ]
+          },
+          "gefaehrlicheAbfaelle": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUmweltGefaehrlicheAbfaelle"
+              }
+            ]
+          },
+          "biodiversitaet": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUmweltBiodiversitaet"
+              }
+            ]
+          },
+          "fossileBrennstoffe": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUmweltFossileBrennstoffe"
+              }
+            ]
+          },
+          "taxonomie": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUmweltTaxonomie"
+              }
+            ]
+          }
+        }
+      },
+      "GdvUmweltAbfallproduktion": {
+        "type": "object",
+        "properties": {
+          "unternehmensGruppenStrategieBzglAbfallproduktion": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUmweltBiodiversitaet": {
+        "type": "object",
+        "properties": {
+          "negativeAktivitaetenFuerDieBiologischeVielfalt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "negativeMassnahmenFuerDieBiologischeVielfalt": {
+            "type": "string",
+            "nullable": true
+          },
+          "positiveAktivitaetenFuerDieBiologischeVielfalt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "positiveMassnahmenFuerDieBiologischeVielfalt": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUmweltEnergieeffizienzImmobilienanlagen": {
+        "type": "object",
+        "properties": {
+          "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUmweltEnergieverbrauch": {
+        "type": "object",
+        "properties": {
+          "unternehmensGruppenStrategieBzglEnergieverbrauch": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUmweltFossileBrennstoffe": {
+        "type": "object",
+        "properties": {
+          "einnahmenAusFossilenBrennstoffen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          }
+        }
+      },
+      "GdvUmweltGefaehrlicheAbfaelle": {
+        "type": "object",
+        "properties": {
+          "gefaehrlicherAbfall": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUmweltTaxonomie": {
+        "type": "object",
+        "properties": {
+          "taxonomieBerichterstattung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          }
+        }
+      },
+      "GdvUmweltTreibhausgasemissionen": {
+        "type": "object",
+        "properties": {
+          "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird": {
+            "type": "string",
+            "nullable": true
+          },
+          "strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUmweltWasserverbrauch": {
+        "type": "object",
+        "properties": {
+          "unternehmensGruppenStrategieBzglWasserverbrauch": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernance": {
+        "type": "object",
+        "properties": {
+          "wirtschaftspruefer": {
+            "type": "string",
+            "nullable": true
+          },
+          "ceoVorsitzender": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "amtszeit": {
+            "type": "string",
+            "nullable": true
+          },
+          "einbeziehungVonStakeholdern": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "prozessDerEinbeziehungVonStakeholdern": {
+            "type": "string",
+            "nullable": true
+          },
+          "mechanismenZurAusrichtungAufStakeholder": {
+            "type": "string",
+            "nullable": true
+          },
+          "esgKriterienUndUeberwachungDerLieferanten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "auswahlkriterien": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "StatusE": {
+        "type": "string",
+        "enum": [
+          "Ja",
+          "Nein"
+        ]
+      },
+      "StatusG": {
+        "type": "string",
+        "enum": [
+          "Ja",
+          "Nein"
+        ]
+      },
+      "StatusS": {
+        "type": "string",
+        "enum": [
+          "Ja",
+          "Nein"
+        ]
+      },
       "Activity": {
         "type": "string",
         "enum": [
@@ -7982,6 +8924,21 @@
           }
         }
       },
+      "DataAndMetaInformationGdvData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/GdvData"
+          }
+        }
+      },
       "DataAndMetaInformationEuTaxonomyDataForNonFinancials": {
         "required": [
           "data",
@@ -8066,6 +9023,7 @@
       "DataTypeEnum": {
         "type": "string",
         "enum": [
+          "gdv",
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "lksg",

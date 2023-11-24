@@ -1,0 +1,36 @@
+package org.dataland.frameworktoolbox.frameworks.gdv
+
+import org.dataland.frameworktoolbox.template.ExcelTemplate
+import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
+import org.dataland.frameworktoolbox.template.model.TemplateRow
+import org.dataland.frameworktoolbox.utils.Naming
+
+class GdvComponentGenerationUtils (private val excelTemplate: ExcelTemplate) : ComponentGenerationUtils() {
+    private fun getFieldNameFromGermanString(technicalFieldName: String): String {
+        return Naming.getNameFromLabel(
+            technicalFieldName
+                .replace("ö", "oe")
+                .replace("Ö", "Oe")
+                .replace("Ä", "Ae")
+                .replace("ä", "ae")
+                .replace("Ü", "Ue")
+                .replace("ü", "ue")
+                .replace("ß", "ss")
+                .replace("\"", "")
+                .replace(".", ""),
+        )
+    }
+
+    override fun generateSectionIdentifierFromRow(row: TemplateRow): String {
+        return getFieldNameFromGermanString(row.category)
+    }
+
+    override fun generateSubSectionIdentifierFromRow(row: TemplateRow): String {
+        return getFieldNameFromGermanString(row.subCategory)
+    }
+
+    override fun generateFieldIdentifierFromRow(row: TemplateRow): String {
+        return getFieldNameFromGermanString(row.fieldName)
+    }
+
+}
