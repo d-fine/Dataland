@@ -117,14 +117,11 @@ const slideWidth = ref(640);
 const showThumbnail = ref(true);
 const initialCenterSlide = computed(() => {
   if (cards.value.length % 2 === 0) {
-    // For even slideCount
     return cards.value.length / 2 - 1;
   } else {
-    // For odd slideCount
     return cards.value.length / 2 - 0.5;
   }
 });
-console.log(initialCenterSlide.value);
 
 const currentCardInfo = computed(() => {
   const card = cards.value[currentSlide.value + initialCenterSlide.value - 1];
