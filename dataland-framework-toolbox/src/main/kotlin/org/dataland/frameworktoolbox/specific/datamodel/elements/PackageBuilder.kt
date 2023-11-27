@@ -57,6 +57,21 @@ data class PackageBuilder(
         return newPackage
     }
 
+    /**
+     * Add a new enum to the package
+     * @param name the name of the package
+     */
+    fun addEnum(name: String, options: MutableSet<String>, comment: String): EnumBuilder {
+        val newEnum = EnumBuilder(
+            name = name,
+            parentPackage = this,
+            options = options,
+            comment = comment
+        )
+        childElements.add(newEnum)
+        return newEnum
+    }
+
     override fun toString(): String {
         return "$name/\n" + childElements.joinToString("\n") { it.toString().prependIndent("  ") }
     }
