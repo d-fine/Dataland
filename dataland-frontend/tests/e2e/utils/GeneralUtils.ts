@@ -126,7 +126,7 @@ function checkIfContentIsIdentical(
  */
 export function checkToggleEmptyFieldsSwitch(datasetIdentifier: string, toggledFieldName: string): void {
   cy.wait(30);
-  cy.get("span").contains(datasetIdentifier).click();
+  cy.get("tr").contains(datasetIdentifier).click();
   cy.get("span").contains(toggledFieldName).should("not.exist");
   cy.get('div[data-test="hideEmptyDataToggle"]').should("exist");
   cy.get('div[data-test="dataPointToggleButton"]')
