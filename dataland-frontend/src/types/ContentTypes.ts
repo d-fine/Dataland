@@ -16,6 +16,7 @@ export interface Section {
 }
 
 export interface Card {
+  thumbnail?: string;
   icon?: string;
   text: string;
   title?: string;
