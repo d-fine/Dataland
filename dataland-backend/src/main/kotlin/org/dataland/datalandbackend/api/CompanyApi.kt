@@ -157,7 +157,8 @@ interface CompanyApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully checked checked for the company ID."),
+            ApiResponse(responseCode = "200", description = "Found a company corresponding the identifier."),
+            ApiResponse(responseCode = "404", description = "Found no company corresponding the identifier."),
         ],
     )
     @GetMapping(
@@ -167,7 +168,7 @@ interface CompanyApi {
     fun getCompanyIdByIdentifier(
         @PathVariable("identifierType") identifierType: IdentifierType,
         @PathVariable("identifier") identifier: String,
-    ): String?
+    ): String
 
     /**
      * A method used to retrieve all available distinct values for framework type, country code & sector

@@ -138,24 +138,11 @@ class CompanyUploader(
         for ((lei, newIsins) in leiIsinMapping) {
             retryOnCommonApiErrors {
                 logger.info("Searching for company with LEI: $lei")
-                val companyId = findCompanyWithLei(lei)
-                if (companyId != null) {
-                    logger.info("Patching company with ID: $companyId and LEI: $lei")
-                    updateIsinsOfCompany(newIsins, companyId)
-                } else {
-                    logger.warn("No company found for LEI: $lei")
-                }
+                val companyId = companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.lei, lei)
+                logger.info("Patching company with ID: $companyId and LEI: $lei")
+                updateIsinsOfCompany(newIsins, companyId)
             }
         }
-    }
-
-    private fun findCompanyWithLei(lei: String): String? {
-        val matchingCompanies = companyDataControllerApi.getCompaniesBySearchString(lei)
-        return matchingCompanies.find {
-            val existingLeis = companyDataControllerApi.getCompanyById(it.companyId)
-                .companyInformation.identifiers.getOrDefault(IdentifierType.lei.value, listOf())
-            existingLeis.contains(lei)
-        }?.companyId
     }
 
     private fun updateIsinsOfCompany(isins: Set<String>, companyId: String) {

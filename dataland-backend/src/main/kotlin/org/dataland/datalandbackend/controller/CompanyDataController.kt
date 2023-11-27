@@ -95,18 +95,31 @@ class CompanyDataController(
         }
     }
 
-    @Suppress("SwallowedException")
-    override fun getCompanyIdByIdentifier(identifierType: IdentifierType, identifier: String): String? {
+    override fun getCompanyIdByIdentifier(identifierType: IdentifierType, identifier: String): String {
+        val companyNotFoundSummary = "Company identifier does not exist"
+        val companyNotFoundMessage = "Company identifier $identifier of type $identifierType does not exist"
         logger.info("Trying to retrieve company for $identifierType: $identifier")
-        return try {
-            companyIdentifierRepositoryInterface
+        try {
+            val companyId = companyIdentifierRepositoryInterface
                 .getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
-                .company?.companyId?.also {
-                logger.info("Retrieved company ID: $it")
+                .company?.companyId
+            if (companyId != null) {
+                logger.info("Retrieved company ID: $companyId")
+                return companyId
+            } else {
+                logger.info(companyNotFoundMessage)
+                throw ResourceNotFoundApiException(
+                    companyNotFoundSummary,
+                    companyNotFoundMessage,
+                )
             }
         } catch (e: JpaObjectRetrievalFailureException) {
-            logger.info("Could not retrieve company ID")
-            null
+            logger.info(companyNotFoundMessage)
+            throw ResourceNotFoundApiException(
+                companyNotFoundSummary,
+                companyNotFoundMessage,
+                e,
+            )
         }
     }
 

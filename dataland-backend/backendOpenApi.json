@@ -830,8 +830,18 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Found no company corresponding the identifier.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "200": {
-            "description": "Successfully checked checked for the company ID.",
+            "description": "Found a company corresponding the identifier.",
             "content": {
               "*/*": {
                 "schema": {
@@ -8230,10 +8240,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
