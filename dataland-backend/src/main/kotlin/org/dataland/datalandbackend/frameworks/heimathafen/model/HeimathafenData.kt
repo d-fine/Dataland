@@ -1,10 +1,7 @@
 package org.dataland.datalandbackend.frameworks.heimathafen.model
 
 import org.dataland.datalandbackend.annotations.DataType
-import org.dataland.datalandbackend.frameworks.heimathafen.model.environmental.HeimathafenEnvironmental
 import org.dataland.datalandbackend.frameworks.heimathafen.model.general.HeimathafenGeneral
-import org.dataland.datalandbackend.frameworks.heimathafen.model.governance.HeimathafenGovernance
-import org.dataland.datalandbackend.frameworks.heimathafen.model.social.HeimathafenSocial
 
 /**
  * The root data-model for the Heimathafen Framework
@@ -12,7 +9,4 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.social.Heimatha
 @DataType("heimathafen")
 data class HeimathafenData(
     val general: HeimathafenGeneral?,
-    val environmental: HeimathafenEnvironmental?,
-    val social: HeimathafenSocial?,
-    val governance: HeimathafenGovernance?,
 )

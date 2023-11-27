@@ -53,10 +53,10 @@ sealed interface DocumentSupport {
      * @param dataPointAccessor a ts-accessor to the containing datapoint
      */
     fun getFrameworkDisplayValueLambdaUpload(
-        innerLambda: FrameworkDisplayValueLambdaUpload,
+        innerLambda: org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda,
         fieldLabel: String?,
         dataPointAccessor: String,
-    ): FrameworkDisplayValueLambda
+    ): FrameworkDisplayValueLambdaUpload
 
     /**
      * Calculate a TS-Accessor for getting the value of a datapoint with the current DocumentSupport requirements

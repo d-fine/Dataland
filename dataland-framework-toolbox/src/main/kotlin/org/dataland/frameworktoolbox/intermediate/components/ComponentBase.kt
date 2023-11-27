@@ -6,6 +6,7 @@ import org.dataland.frameworktoolbox.intermediate.TreeNode
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
+import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditionalUpload
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
@@ -64,6 +65,11 @@ open class ComponentBase(
      * A logical condition that decides whether this component is available / shown to users
      */
     var availableIf: FrameworkConditional = FrameworkConditional.AlwaysTrue
+
+    /**
+     * A logical condition that decides whether this component is available / shown to users
+     */
+    var availableIfUpload: FrameworkConditionalUpload = FrameworkConditionalUpload.AlwaysTrue
 
     /**
      * Specifies which kind of document-support (Datapoint-type) is desired for this component

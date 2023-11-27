@@ -42,7 +42,7 @@ class Framework(
     }
 
     /**
-     * Generate a TypeScript InputModel for this framework In-Memory.
+     * Generate a TypeScript UploadModel for this framework In-Memory.
      */
     fun generateUploadModel(): FrameworkUploadConfigBuilder {
         val frameworkUploadConfigBuilder = FrameworkUploadConfigBuilder(this)
