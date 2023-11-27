@@ -19,8 +19,12 @@ annotation class BigDecimalNonNegativeDataPoint(
 
 
 class CustomBigDecimalNonNegativeValidator : ConstraintValidator<BigDecimalNonNegativeDataPoint, ExtendedDataPoint<BigDecimal>> {
-    override fun isValid(dataPoint: ExtendedDataPoint<BigDecimal>, context: ConstraintValidatorContext?): Boolean {
-        return dataPoint.value == null || dataPoint.value >= BigDecimal.ZERO
+    override fun isValid(dataPoint: ExtendedDataPoint<BigDecimal>?, context: ConstraintValidatorContext?): Boolean {
+        return if (dataPoint == null) {
+            true
+        } else {
+            dataPoint.value == null || dataPoint.value >= BigDecimal.ZERO
+        }
     }
 }
 

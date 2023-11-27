@@ -17,8 +17,12 @@ annotation class LongNonNegativeDataPoint(
 )
 
 class CustomLongNonNegativeValidator : ConstraintValidator<LongNonNegativeDataPoint, ExtendedDataPoint<Long>> {
-    override fun isValid(dataPoint: ExtendedDataPoint<Long>, context: ConstraintValidatorContext?): Boolean {
-        return dataPoint.value == null || dataPoint.value >= 0
+    override fun isValid(dataPoint: ExtendedDataPoint<Long>?, context: ConstraintValidatorContext?): Boolean {
+        return if (dataPoint == null) {
+            true
+        } else {
+            dataPoint.value == null || dataPoint.value >= 0
+        }
     }
 }
 

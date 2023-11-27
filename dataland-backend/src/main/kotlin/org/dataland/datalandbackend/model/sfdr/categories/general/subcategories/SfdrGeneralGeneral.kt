@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
-import org.dataland.datalandbackend.validator.YearFormat
 import java.time.LocalDate
 
 /**
@@ -16,15 +15,15 @@ import java.time.LocalDate
  */
 data class SfdrGeneralGeneral(
 
-    @field:YearFormat
+//    @field:YearFormat
     @field:JsonProperty(required = true)
     val dataDate: LocalDate,
 
-    @field:YearFormat
+//    @field:YearFormat
     @field:JsonProperty(required = true)
     val fiscalYearDeviation: FiscalYearDeviation,
 
-    @field:YearFormat
+//    @field:YearFormat
     @field:JsonProperty(required = true)
     val fiscalYearEnd: LocalDate,
 

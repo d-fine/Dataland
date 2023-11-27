@@ -21,8 +21,12 @@ annotation class BigDecimalPercentageDataPoint(
 
 
 class CustomPercentageValidator: ConstraintValidator<BigDecimalPercentageDataPoint, ExtendedDataPoint<BigDecimal>> {
-    override fun isValid(dataPoint: ExtendedDataPoint<BigDecimal>, context: ConstraintValidatorContext?): Boolean {
-        return dataPoint.value == null || dataPoint.value in BigDecimal.ZERO..BigDecimal(100)
+    override fun isValid(dataPoint: ExtendedDataPoint<BigDecimal>?, context: ConstraintValidatorContext?): Boolean {
+        return if (dataPoint == null) {
+            true
+        } else {
+            dataPoint.value == null || dataPoint.value in BigDecimal.ZERO..BigDecimal(100)
+        }
     }
 }
 
