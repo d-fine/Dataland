@@ -118,3 +118,26 @@ function checkIfContentIsIdentical(
     throwErrorBecauseOfFieldValue(newPath);
   }
 }
+
+/**
+ * This function opens a given dataset with its Multi Layer Data Table and checks wether a specific field can be hidden using the input switch.
+ * @param datasetIdentifier Identifies a dataset on the "my dataset" Page. The function will open the corresponding dataset.
+ * @param toggledFieldName Name of a field which is toggled by the input switch
+ */
+export function checkToggleEmptyFieldsSwitch(datasetIdentifier: string, toggledFieldName: string): void {
+  cy.pause();
+  cy.get("span").contains(datasetIdentifier).click();
+  cy.get("span").contains(toggledFieldName).should("not.exist");
+  cy.get('div[data-test="hideEmptyDataToggle"]').should("exist");
+  cy.get('div[data-test="dataPointToggleButton"]')
+    .should("have.class", "p-inputswitch p-component p-inputswitch-checked")
+    .click();
+  cy.get('div[data-test="dataPointToggleButton"]').should("have.class", "p-inputswitch p-component");
+  cy.get("span").contains(toggledFieldName).should("exist");
+  cy.get('div[data-test="dataPointToggleButton"]').should("have.class", "p-inputswitch p-component").click();
+  cy.get('div[data-test="dataPointToggleButton"]').should(
+    "have.class",
+    "p-inputswitch p-component p-inputswitch-checked",
+  );
+  cy.get(`tr[data-cell-label="${toggledFieldName}"]`).should("not.be.visible");
+}
