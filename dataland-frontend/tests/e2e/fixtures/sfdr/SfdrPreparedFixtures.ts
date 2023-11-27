@@ -30,20 +30,20 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
     ),
   );
   preparedFixtures.push(manipulateFixtureForNoNullFields(generateSfdrFixtures(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureForMalformedInputValues(generateSfdrFixtures(1)[0]))
+  preparedFixtures.push(manipulateFixtureForInvalidInputValues(generateSfdrFixtures(1,0)[0]))
 
   return preparedFixtures;
 }
 
 /**
  * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
- * sets the dateDate to something not allowed in the YYYY-MM-DD scheme
+ * sets the currencyDataPoint to an illegal negative value
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
-function manipulateFixtureForMalformedInputValues(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
-  input.companyInformation.companyName = "Sfdr-dataset-with-malformed-input-values";
-  input.t.general.general.dataDate = "2022-1-1"
+function manipulateFixtureForInvalidInputValues(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-invalid-currency-input";
+  input.t.social!.socialAndEmployeeMatters!.averageGrossHourlyEarningsFemaleEmployees!.value = -100;
   return input;
 }
 
@@ -138,9 +138,9 @@ function generateOneSfdrDatasetWithManyNulls(): SfdrData {
   return {
     general: {
       general: {
-        dataDate: "27-08-2022",
+        dataDate: "2022-08-27",
         fiscalYearDeviation: "Deviation",
-        fiscalYearEnd: "marker-for-test",
+        fiscalYearEnd: "2023-01-01",
         scopeOfEntities: null!,
         referencedReports: null!,
       },

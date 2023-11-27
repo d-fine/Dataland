@@ -19,8 +19,12 @@ annotation class NonNegativeCurrencyDataPoint(
 
 
 class CustomCurrencyNonNegativeValidator : ConstraintValidator<NonNegativeCurrencyDataPoint, CurrencyDataPoint> {
-    override fun isValid(dataPoint: CurrencyDataPoint, context: ConstraintValidatorContext?): Boolean {
-        return dataPoint.value == null || dataPoint.value >= BigDecimal.ZERO
+    override fun isValid(dataPoint: CurrencyDataPoint?, context: ConstraintValidatorContext?): Boolean {
+        return if (dataPoint == null) {
+            true
+        } else {
+            dataPoint.value == null || dataPoint.value >= BigDecimal.ZERO
+        }
     }
 }
 
