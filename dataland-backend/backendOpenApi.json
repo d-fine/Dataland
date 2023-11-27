@@ -833,9 +833,9 @@
           "404": {
             "description": "Found no company corresponding the identifier.",
             "content": {
-              "text/plain": {
+              "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/CompanyId"
                 }
               }
             }
@@ -843,9 +843,9 @@
           "200": {
             "description": "Found a company corresponding the identifier.",
             "content": {
-              "text/plain": {
+              "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/CompanyId"
                 }
               }
             }
@@ -8268,6 +8268,17 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "CompanyId": {
+        "required": [
+          "companyId"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
           }
         }
       },

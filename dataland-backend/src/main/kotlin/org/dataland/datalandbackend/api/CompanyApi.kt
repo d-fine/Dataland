@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
 import org.dataland.datalandbackend.model.companies.CompanyAvailableDistinctValues
+import org.dataland.datalandbackend.model.companies.CompanyId
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -163,13 +164,13 @@ interface CompanyApi {
     )
     @GetMapping(
         value = ["/identifiers/{identifierType}/{identifier}"],
-        produces = ["text/plain"],
+        produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanyIdByIdentifier(
         @PathVariable("identifierType") identifierType: IdentifierType,
         @PathVariable("identifier") identifier: String,
-    ): String
+    ): CompanyId
 
     /**
      * A method used to retrieve all available distinct values for framework type, country code & sector

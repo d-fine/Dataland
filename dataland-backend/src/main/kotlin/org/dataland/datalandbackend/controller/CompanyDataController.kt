@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
 import org.dataland.datalandbackend.model.companies.CompanyAvailableDistinctValues
+import org.dataland.datalandbackend.model.companies.CompanyId
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -95,7 +96,7 @@ class CompanyDataController(
         }
     }
 
-    override fun getCompanyIdByIdentifier(identifierType: IdentifierType, identifier: String): String {
+    override fun getCompanyIdByIdentifier(identifierType: IdentifierType, identifier: String): CompanyId {
         val companyNotFoundSummary = "Company identifier does not exist"
         val companyNotFoundMessage = "Company identifier $identifier of type $identifierType does not exist"
         logger.info("Trying to retrieve company for $identifierType: $identifier")
@@ -105,7 +106,7 @@ class CompanyDataController(
                 .company?.companyId
             if (companyId != null) {
                 logger.info("Retrieved company ID: $companyId")
-                return companyId
+                return CompanyId(companyId)
             } else {
                 logger.info(companyNotFoundMessage)
                 throw ResourceNotFoundApiException(
