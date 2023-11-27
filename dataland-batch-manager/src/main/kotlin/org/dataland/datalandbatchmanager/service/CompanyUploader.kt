@@ -149,7 +149,7 @@ class CompanyUploader(
             retryOnCommonApiErrors {
                 logger.info("Searching for company with LEI: $lei")
                 val companyId = try {
-                    companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.lei, lei)
+                    companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.lei, lei).companyId
                 } catch (e: ClientException) {
                     if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
                         logger.error("Could not find company with LEI: $lei")
