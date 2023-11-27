@@ -148,7 +148,15 @@ class CompanyUploader(
         for ((lei, newIsins) in leiIsinMapping) {
             retryOnCommonApiErrors {
                 logger.info("Searching for company with LEI: $lei")
-                val companyId = companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.lei, lei)
+                val companyId = try {
+                    companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.lei, lei)
+                } catch (e: ClientException) {
+                    if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+                        logger.error("Could not find company with LEI: $lei")
+                        return@retryOnCommonApiErrors
+                    }
+                    throw e
+                }
                 shouldContinue = false // TODO remove
                 logger.info("Patching company with ID: $companyId and LEI: $lei")
                 updateIsinsOfCompany(newIsins, companyId)
