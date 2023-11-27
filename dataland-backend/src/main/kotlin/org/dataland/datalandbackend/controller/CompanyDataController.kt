@@ -1,8 +1,5 @@
 package org.dataland.datalandbackend.controller
 
-import jakarta.validation.ConstraintViolation
-import jakarta.validation.Valid
-import jakarta.validation.Validator
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
@@ -24,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -33,8 +29,6 @@ import org.springframework.web.bind.annotation.RestController
  * @param companyQueryManager the company manager service to handle company database queries
  * @param companyIdentifierRepositoryInterface the company identifier repository
  */
-@Autowired
-private val validator: Validator? = null
 
 @RestController
 @Validated
@@ -45,18 +39,8 @@ class CompanyDataController(
 ) : CompanyApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun postCompany(@Valid @RequestBody companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
+    override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
         logger.info("Received a request to post a company with name '${companyInformation.companyName}'")
-
-        val violations: Set<ConstraintViolation<CompanyInformation>> = validator!!.validate(companyInformation)
-
-        if (violations.isNotEmpty()) {
-            val sb = StringBuilder()
-            for (constraintViolation in violations) {
-                sb.append(constraintViolation.getMessage())
-            }
-            throw IllegalArgumentException("Fields could not be validated")
-        }
         return ResponseEntity.ok(
             companyAlterationManager.addCompany(companyInformation)
                 .toApiModel(DatalandAuthentication.fromContext()),

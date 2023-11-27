@@ -15,8 +15,8 @@ data class SfdrSocial(
     val socialAndEmployeeMatters: SfdrSocialSocialAndEmployeeMatters? = null,
 
     val greenSecurities: SfdrSocialGreenSecurities? = null,
-
+    @field:Valid
     val humanRights: SfdrSocialHumanRights? = null,
-
+    @field:Valid
     val antiCorruptionAndAntiBribery: SfdrSocialAntiCorruptionAndAntiBribery? = null,
 )

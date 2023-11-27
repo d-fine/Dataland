@@ -4,22 +4,22 @@ import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
+import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import kotlin.reflect.KClass
-import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import java.math.BigDecimal
 
 
 @Target(AnnotationTarget.FIELD)
-@Constraint(validatedBy = [CustomBigDecimalNonNegativeValidator::class])
-annotation class CustomNonNegativeCurrencyDataPoint(
+@Constraint(validatedBy = [CustomCurrencyNonNegativeValidator::class])
+annotation class NonNegativeCurrencyDataPoint(
         val message: String = "{javax.validation.constraints.NotBlank.message}",
         val groups: Array<KClass<*>> = [],
         val payload: Array<KClass<out Payload>> = []
 )
 
 
-class CustomNonNegativeValidator : ConstraintValidator<CustomNonNegativeCurrencyDataPoint, ExtendedDataPoint<BigDecimal>> {
-    override fun isValid(dataPoint: ExtendedDataPoint<BigDecimal>, context: ConstraintValidatorContext?): Boolean {
+class CustomCurrencyNonNegativeValidator : ConstraintValidator<NonNegativeCurrencyDataPoint, CurrencyDataPoint> {
+    override fun isValid(dataPoint: CurrencyDataPoint, context: ConstraintValidatorContext?): Boolean {
         return dataPoint.value == null || dataPoint.value >= BigDecimal.ZERO
     }
 }

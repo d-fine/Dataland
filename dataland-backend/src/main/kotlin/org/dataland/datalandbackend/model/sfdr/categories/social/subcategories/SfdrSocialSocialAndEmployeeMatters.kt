@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.validator.BigDecimalNonNegativeDataPoint
 import org.dataland.datalandbackend.validator.BigDecimalPercentageDataPoint
 import org.dataland.datalandbackend.validator.LongNonNegativeDataPoint
+import org.dataland.datalandbackend.validator.NonNegativeCurrencyDataPoint
 import java.math.BigDecimal
 
 /**
@@ -48,10 +49,10 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNo>? = null,
 
- //custom validator needed
+    @field:NonNegativeCurrencyDataPoint
     val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
 
- //custom validator needed
+    @field:NonNegativeCurrencyDataPoint
     val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
     @field:LongNonNegativeDataPoint
