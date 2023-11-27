@@ -76,7 +76,10 @@ describeIf(
                       >;
                       const originallyUploadedP2pDataset = p2pFixtureForTest.t as unknown as Record<string, object>;
                       compareObjectKeysAndValuesDeep(originallyUploadedP2pDataset, frontendSubmittedP2pDataset);
-                      checkToggleEmptyFieldsSwitch("Mon, 27 Nov 2023, 12:13", "Drive mix per fleet segment");
+                      checkToggleEmptyFieldsSwitch(
+                        "Company-Created-In-P2p-Blanket-Test-1701084013187",
+                        "Drive mix per fleet segment",
+                      );
                     });
                 },
               );

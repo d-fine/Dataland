@@ -85,7 +85,10 @@ describeIf(
                         euTaxonomyFinancialsFixtureForTest.t as unknown as Record<string, object>,
                         frontendSubmittedEuTaxonomyFinancialsDataset as Record<string, object>,
                       );
-                      checkToggleEmptyFieldsSwitch("Mon, 27 Nov 2023, 09:43", "Scope Of Entities");
+                      checkToggleEmptyFieldsSwitch(
+                        "Company-Created-In-Eu-Taxonomy-Financials-Blanket-Test-Company",
+                        "Scope Of Entities",
+                      );
                     });
                 },
               );
