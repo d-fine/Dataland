@@ -1,12 +1,12 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
-import jakarta.validation.constraints.Max
-import jakarta.validation.constraints.Min
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.validator.NonNegativeDataPoint
+import org.dataland.datalandbackend.validator.BigDecimalNonNegativeDataPoint
+import org.dataland.datalandbackend.validator.BigDecimalPercentageDataPoint
+import org.dataland.datalandbackend.validator.LongNonNegativeDataPoint
 import java.math.BigDecimal
 
 /**
@@ -48,27 +48,26 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNo>? = null,
 
-    @field:Min(0)
+ //custom validator needed
     val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
 
-    @field:Min(0)
+ //custom validator needed
     val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
-    @field:Min(0)
+    @field:LongNonNegativeDataPoint
     val femaleBoardMembers: ExtendedDataPoint<Long>? = null,
 
-    @field:Min(0)
+    @field:LongNonNegativeDataPoint
     val maleBoardMembers: ExtendedDataPoint<Long>? = null,
 
     val controversialWeaponsExposure: ExtendedDataPoint<YesNo>? = null,
 
     val workplaceAccidentPreventionPolicy: BaseDataPoint<YesNo>? = null,
 
-    @field:Max(100)
-    @field:Min(0)
+    @field:BigDecimalPercentageDataPoint
     val rateOfAccidentsInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    @Min(0)
+    @field:BigDecimalNonNegativeDataPoint
     val workdaysLostInDays: ExtendedDataPoint<BigDecimal>? = null,
 
     val supplierCodeOfConduct: BaseDataPoint<YesNo>? = null,
@@ -77,14 +76,12 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val whistleblowerProtectionPolicy: BaseDataPoint<YesNo>? = null,
 
-    @field:Min(0)
+    @field:BigDecimalNonNegativeDataPoint
     val reportedIncidentsOfDiscrimination: ExtendedDataPoint<BigDecimal>? = null,
-    @field:Min(0)
+    @field:LongNonNegativeDataPoint
     val sanctionedIncidentsOfDiscrimination: ExtendedDataPoint<Long>? = null,
 
-    @field:NonNegativeDataPoint
+    @field:BigDecimalNonNegativeDataPoint
     val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:Min(0)
-    val justTest: Number? = null,
 )

@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
-import jakarta.validation.constraints.Min
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
+import org.dataland.datalandbackend.validator.LongNonNegativeDataPoint
 
 /**
  * --- API model ---
@@ -10,13 +10,11 @@ import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
  * framework.
  */
 data class SfdrSocialAntiCorruptionAndAntiBribery(
-
-    @field:Min(0)
+    @field:LongNonNegativeDataPoint
     val casesOfInsufficientActionAgainstBriberyAndCorruption: ExtendedDataPoint<Long>? = null,
 
-    @field:Min(0)
+    @field:LongNonNegativeDataPoint
     val reportedConvictionsOfBriberyAndCorruption: ExtendedDataPoint<Long>? = null,
-
-    @field:Min(0)
+//needs custom validator
     val totalAmountOfReportedFinesOfBriberyAndCorruption: CurrencyDataPoint? = null,
 )
