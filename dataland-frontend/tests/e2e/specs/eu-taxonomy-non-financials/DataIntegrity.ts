@@ -124,7 +124,6 @@ describeIf(
                         storedCompany,
                         dataMetaInformationOfReuploadedDataset.dataId,
                       );
-                      //blank
                     });
                 },
               );
