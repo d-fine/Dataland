@@ -12,6 +12,9 @@
       :scroll-screen-width-limit="1800"
       :slide-width="slideWidth"
     >
+      <div v-if="cards.length % 2 === 0" role="listitem" class="quotes__slide">
+        <div class="quotes__slide-videoContainer"></div>
+      </div>
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div
           :class="{
@@ -23,8 +26,8 @@
           <div
             class="quotes__slide-thumbnail-overlay cookieconsent-optin-marketing"
             :style="{ backgroundImage: `url(https://img.youtube.com/vi/${card.icon}/maxresdefault.jpg)` }"
-            v-show="currentSlide === index - initialCenterSlide + 1 ? showThumbnail : true"
-            @click="toggleThumbnailAndPlayVideo(index - initialCenterSlide + 1, card.icon)"
+            v-show="currentSlide === index - initialCenterSlide ? showThumbnail : true"
+            @click="toggleThumbnailAndPlayVideo(index - initialCenterSlide, card.icon)"
           >
             <div class="quotes__play-icon">
               <div class="quotes__play-arrow"></div>
@@ -33,7 +36,7 @@
           <div
             class="quotes__slide-thumbnail-overlay cookieconsent-optout-marketing"
             :style="{ backgroundImage: `url(https://img.youtube.com/vi/${card.icon}/maxresdefault.jpg)` }"
-            v-show="currentSlide === index - initialCenterSlide + 1 ? showThumbnail : true"
+            v-show="currentSlide === index - initialCenterSlide ? showThumbnail : true"
           >
             <div class="quotes__play-icon" @click="renewCookieConsent">
               <div class="quotes__play-arrow"></div>
@@ -112,7 +115,16 @@ const cards = computed(() => quotesSection.value?.cards ?? []);
 const currentSlide = ref(1);
 const slideWidth = ref(640);
 const showThumbnail = ref(true);
-const initialCenterSlide = ref(3);
+const initialCenterSlide = computed(() => {
+  if (cards.value.length % 2 === 0) {
+    // For even slideCount
+    return cards.value.length / 2 - 1;
+  } else {
+    // For odd slideCount
+    return cards.value.length / 2 - 0.5;
+  }
+});
+console.log(initialCenterSlide.value);
 
 const currentCardInfo = computed(() => {
   const card = cards.value[currentSlide.value + initialCenterSlide.value - 1];
