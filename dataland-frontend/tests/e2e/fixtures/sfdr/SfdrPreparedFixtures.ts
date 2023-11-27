@@ -30,7 +30,13 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
     ),
   );
   preparedFixtures.push(manipulateFixtureForNoNullFields(generateSfdrFixtures(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureForInvalidInputValues(generateSfdrFixtures(1,0)[0]))
+  preparedFixtures.push(manipulateFixtureForInvalidCurrencyInput(generateSfdrFixtures(1,0)[0]))
+  preparedFixtures.push(manipulateFixtureForInvalidBigDecimalDataPointInput(generateSfdrFixtures(
+      1,0)[0]))
+  preparedFixtures.push(manipulateFixtureForInvalidLongDataPointInput(generateSfdrFixtures(1,0)[0]))
+
+  preparedFixtures.push(manipulateFixtureForInvalidPercentageInput(generateSfdrFixtures(1,0)[0]))
+
 
   return preparedFixtures;
 }
@@ -41,11 +47,48 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
-function manipulateFixtureForInvalidInputValues(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+function manipulateFixtureForInvalidCurrencyInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = "Sfdr-dataset-with-invalid-currency-input";
   input.t.social!.socialAndEmployeeMatters!.averageGrossHourlyEarningsFemaleEmployees!.value = -100;
   return input;
 }
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * sets an extendedDataPoint<BigDecimal> to an invalid negative value>
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForInvalidBigDecimalDataPointInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-invalid-negative-big-decimal-input";
+  input.t.social!.socialAndEmployeeMatters!.workdaysLostInDays!.value = -1;
+  return input;
+}
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * sets an extendedDataPoint<long> to an invalid negative value>
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForInvalidLongDataPointInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-invalid-negative-long-input";
+  input.t.social!.socialAndEmployeeMatters!.sanctionedIncidentsOfDiscrimination!.value = -1;
+  return input;
+}
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * sets a percentage to an invalid value > 100
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForInvalidPercentageInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-invalid-percentage-input";
+  input.t.social!.socialAndEmployeeMatters!.rateOfAccidentsInPercent!.value = 120;
+  return input;
+}
+
 
 
 /**

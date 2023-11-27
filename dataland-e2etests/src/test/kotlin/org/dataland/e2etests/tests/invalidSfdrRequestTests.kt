@@ -29,7 +29,7 @@ class invalidSfdrRequestTests {
     }
 
     @Test
-    fun `post a company with invalid Sfdr data`() {
+    fun `post a company with invalid Sfdr currency data`() {
 
         val oneInvalidSfdrDataset = convertJsonToList(
                 File("./build/resources/test/CompanyInformationWithSfdrPreparedFixtures.json"))
@@ -45,7 +45,6 @@ class invalidSfdrRequestTests {
         Assertions.assertTrue(errorForInvalidInput.message!!.contains("Server error : 500 "))
         Assertions.assertTrue(errorForInvalidInput.message!!.contains("MethodArgumentNotValidException: " +
                 "Validation failed for argument"))
-
     }
 
 
