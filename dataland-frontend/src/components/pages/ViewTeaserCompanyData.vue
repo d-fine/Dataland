@@ -63,9 +63,8 @@ export default defineComponent({
      */
     async queryCompany() {
       try {
-        const companyDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getCompanyDataControllerApi();
+        const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
+          .companyDataController;
         const companyResponse = await companyDataControllerApi.getTeaserCompanies();
         if (companyResponse.data.length > 0) {
           this.companyId = companyResponse.data[0];

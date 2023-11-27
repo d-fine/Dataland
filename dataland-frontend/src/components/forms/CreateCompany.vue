@@ -284,9 +284,9 @@ export default defineComponent({
      */
     async identifierDoesNotExistValidator(node: FormKitNode, identifierType: IdentifierType): Promise<boolean> {
       try {
-        await (
-          await new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).getCompanyDataControllerApi()
-        ).existsIdentifier(identifierType, node.value as string);
+        await new ApiClientProvider(
+          assertDefined(this.getKeycloakPromise)(),
+        ).backendClients.companyDataController.existsIdentifier(identifierType, node.value as string);
         return false;
       } catch (error: AxiosError) {
         if ((error as AxiosError).response.status == 404) {
@@ -369,9 +369,8 @@ export default defineComponent({
           this.message = "Please specify at least one company identifier.";
           this.uploadSucceded = false;
         } else {
-          const companyDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)(),
-          ).getCompanyDataControllerApi();
+          const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
+            .backendClients.companyDataController;
           const response = await companyDataControllerApi.postCompany(company);
           const newCompanyId = response.data.companyId;
           this.$emit("companyCreated", newCompanyId);

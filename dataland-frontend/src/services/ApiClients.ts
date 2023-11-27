@@ -114,10 +114,6 @@ export class ApiClientProvider {
     return new constructor(configuration, basePath);
   }
 
-  async getCompanyDataControllerApi(): Promise<backendApis.CompanyDataControllerApiInterface> {
-    return this.getConstructedApi(backendApis.CompanyDataControllerApi);
-  }
-
   /**
    * This function returns a promise to an api controller adaption that is unified across frameworks to allow
    * for creation of generic components that work framework-independent.
