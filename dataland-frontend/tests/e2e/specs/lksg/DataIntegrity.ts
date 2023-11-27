@@ -78,7 +78,7 @@ describeIf(
                         object
                       >;
                       compareObjectKeysAndValuesDeep(originallyUploadedP2pDataset, frontendSubmittedP2pDataset);
-                      checkToggleEmptyFieldsSwitch("Mon, 27 Nov 2023, 11:57", "Industry");
+                      checkToggleEmptyFieldsSwitch("LkSG", "Industry");
                     });
                 },
               );
