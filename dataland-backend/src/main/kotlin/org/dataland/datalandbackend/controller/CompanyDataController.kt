@@ -96,7 +96,8 @@ class CompanyDataController(
         }
     }
 
-    override fun getCompanyIdByIdentifier(identifierType: IdentifierType, identifier: String): CompanyId {
+    override fun getCompanyIdByIdentifier(identifierType: IdentifierType, identifier: String):
+        ResponseEntity<CompanyId> {
         val companyNotFoundSummary = "Company identifier does not exist"
         val companyNotFoundMessage = "Company identifier $identifier of type $identifierType does not exist"
         logger.info("Trying to retrieve company for $identifierType: $identifier")
@@ -106,7 +107,7 @@ class CompanyDataController(
                 .company?.companyId
             if (companyId != null) {
                 logger.info("Retrieved company ID: $companyId")
-                return CompanyId(companyId)
+                return ResponseEntity.ok(CompanyId(companyId))
             } else {
                 logger.info(companyNotFoundMessage)
                 throw ResourceNotFoundApiException(

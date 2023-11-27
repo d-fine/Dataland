@@ -170,7 +170,7 @@ interface CompanyApi {
     fun getCompanyIdByIdentifier(
         @PathVariable("identifierType") identifierType: IdentifierType,
         @PathVariable("identifier") identifier: String,
-    ): CompanyId
+    ): ResponseEntity<CompanyId>
 
     /**
      * A method used to retrieve all available distinct values for framework type, country code & sector
