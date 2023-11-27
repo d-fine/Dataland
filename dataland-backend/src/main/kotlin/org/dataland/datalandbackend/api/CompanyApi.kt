@@ -163,7 +163,7 @@ interface CompanyApi {
     )
     @GetMapping(
         value = ["/identifiers/{identifierType}/{identifier}"],
-        produces = ["application/json"],
+        produces = ["text/plain"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanyIdByIdentifier(

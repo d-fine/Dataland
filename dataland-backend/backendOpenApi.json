@@ -833,7 +833,7 @@
           "404": {
             "description": "Found no company corresponding the identifier.",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
                   "type": "string"
                 }
@@ -843,7 +843,7 @@
           "200": {
             "description": "Found a company corresponding the identifier.",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
                   "type": "string"
                 }
