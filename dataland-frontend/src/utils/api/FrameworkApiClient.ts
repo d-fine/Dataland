@@ -17,7 +17,7 @@ import { type AxiosInstance } from "axios";
  * Create a Unified Framework Data API client using the provided API client configuration
  * @param framework The identified of the framework
  * @param configuration The API Client configuration
- * @param axiosInstance
+ * @param axiosInstance an Axios instance
  * @returns the unified API client
  */
 export function getUnifiedFrameworkDataControllerFromConfiguration<K extends keyof FrameworkDataTypes>(
