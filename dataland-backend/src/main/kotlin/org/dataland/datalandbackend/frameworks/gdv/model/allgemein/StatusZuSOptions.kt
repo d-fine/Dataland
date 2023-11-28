@@ -3,12 +3,12 @@ package org.dataland.datalandbackend.frameworks.gdv.model.allgemein
 import io.swagger.v3.oas.annotations.media.Schema
 
 /**
- * Enum class for the field statusG
+ * Enum class for the field statusZuS
  */
 @Schema(
 enumAsRef = true,
 )
-enum class StatusGOptions {
+enum class StatusZuSOptions {
     Offen,
     Geklaert,
 }
