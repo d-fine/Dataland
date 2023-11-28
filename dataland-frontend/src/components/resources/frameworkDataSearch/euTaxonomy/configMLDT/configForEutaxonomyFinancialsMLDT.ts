@@ -45,6 +45,23 @@ function getSpecifiedDataPointGetterFactory(
   return getDataPointGetterFactory(path, { ...sampleField, label: fieldLabel }, formatter);
 }
 
+/**
+ * The function defines the trigger for the shoudDisplay property
+ * @param formatter the getter factory function used
+ * @param valueName the field for which the getter functions should be used
+ * @returns boolean to trigger the shouldDisplay condition
+ */
+function setShowIf(
+  formatter: (dataset: EuTaxonomyDataForFinancials) => AvailableMLDTDisplayObjectTypes,
+  valueName: string,
+): boolean {
+  return !!(
+    formatter(valueName).displayValue &&
+    formatter(valueName).displayValue != "No data provided" &&
+    formatter(valueName).displayValue != ""
+  );
+}
+
 export const configForEuTaxonomyFinancialsMLDT = [
   {
     type: "section",
@@ -71,42 +88,54 @@ export const configForEuTaxonomyFinancialsMLDT = [
         type: "cell",
         label: euTaxonomyKpiNameMappings.fiscalYearDeviation,
         explanation: euTaxonomyKpiInfoMappings.fiscalYearDeviation,
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => !!dataset.fiscalYearDeviation,
         valueGetter: plainStringValueGetterFactory("fiscalYearDeviation"),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.fiscalYearEnd,
         explanation: euTaxonomyKpiInfoMappings.fiscalYearEnd,
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => !!dataset.fiscalYearEnd,
         valueGetter: plainStringValueGetterFactory("fiscalYearEnd"),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.scopeOfEntities,
         explanation: euTaxonomyKpiInfoMappings.scopeOfEntities,
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (): boolean =>
+          setShowIf(
+            yesNoValueGetterFactory(euTaxonomyKpiNameMappings.scopeOfEntities),
+            euTaxonomyKpiNameMappings.scopeOfEntities,
+          ),
         valueGetter: yesNoValueGetterFactory(euTaxonomyKpiNameMappings.scopeOfEntities),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.nfrdMandatory,
         explanation: euTaxonomyKpiInfoMappings.nfrdMandatory,
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (): boolean =>
+          setShowIf(
+            yesNoValueGetterFactory(euTaxonomyKpiNameMappings.nfrdMandatory),
+            euTaxonomyKpiNameMappings.nfrdMandatory,
+          ),
         valueGetter: yesNoValueGetterFactory(euTaxonomyKpiNameMappings.nfrdMandatory),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting,
         explanation: euTaxonomyKpiInfoMappings.euTaxonomyActivityLevelReporting,
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (): boolean =>
+          setShowIf(
+            yesNoValueGetterFactory(euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting),
+            euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting,
+          ),
         valueGetter: yesNoValueGetterFactory(euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.numberOfEmployees,
         explanation: euTaxonomyKpiInfoMappings.numberOfEmployees,
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => !!dataset.numberOfEmployees,
         valueGetter: numberValueGetterFactory("numberOfEmployees", sampleField),
       },
     ],
@@ -122,14 +151,14 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: "Level of Assurance",
         explanation: euTaxonomyKpiInfoMappings.assurance,
         type: "cell",
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => !!dataset.assurance?.value,
         valueGetter: plainStringValueGetterFactory("assurance.value"),
       },
       {
         label: euTaxonomyKpiNameMappings.provider,
         explanation: euTaxonomyKpiInfoMappings.provider,
         type: "cell",
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => !!dataset.assurance?.provider,
         valueGetter: plainStringValueGetterFactory("assurance.provider"),
       },
     ],
@@ -157,7 +186,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "taxonomyEligibleActivityInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.taxonomyEligibleActivityInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution]
+                .taxonomyEligibleActivityInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.CreditInstitution.taxonomyEligibleActivityInPercent",
               euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent,
@@ -170,7 +201,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "taxonomyNonEligibleActivityInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.taxonomyNonEligibleActivityInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution]
+                .taxonomyNonEligibleActivityInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.CreditInstitution.taxonomyNonEligibleActivityInPercent",
               euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent,
@@ -183,7 +216,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "derivativesInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.derivativesInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution]
+                .derivativesInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.CreditInstitution.derivativesInPercent",
               euTaxonomyKpiNameMappings.derivativesInPercent,
@@ -196,7 +231,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "banksAndIssuersInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.banksAndIssuersInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution]
+                .banksAndIssuersInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.CreditInstitution.banksAndIssuersInPercent",
               euTaxonomyKpiNameMappings.banksAndIssuersInPercent,
@@ -209,7 +246,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "investmentNonNfrdInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.investmentNonNfrdInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.CreditInstitution]
+                .investmentNonNfrdInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.CreditInstitution.investmentNonNfrdInPercent",
               euTaxonomyKpiNameMappings.investmentNonNfrdInPercent,
@@ -223,7 +262,8 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.tradingPortfolioInPercent,
         name: "tradingPortfolioCreditInstitution",
         explanation: euTaxonomyKpiInfoMappings.tradingPortfolioInPercent,
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+          !!dataset.creditInstitutionKpis?.tradingPortfolioInPercent?.value,
         valueGetter: getSpecifiedDataPointGetterFactory(
           "creditInstitutionKpis.tradingPortfolioInPercent",
           euTaxonomyKpiNameMappings.tradingPortfolioInPercent,
@@ -235,7 +275,8 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.interbankLoansInPercent,
         name: "interbankLoansCreditInstitution",
         explanation: euTaxonomyKpiInfoMappings.interbankLoansInPercent,
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+          !!dataset.creditInstitutionKpis?.interbankLoansInPercent?.value,
         valueGetter: getSpecifiedDataPointGetterFactory(
           "creditInstitutionKpis.interbankLoansInPercent",
           euTaxonomyKpiNameMappings.interbankLoansInPercent,
@@ -247,7 +288,8 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.tradingPortfolioAndInterbankLoansInPercent,
         explanation: euTaxonomyKpiInfoMappings.tradingPortfolioAndInterbankLoansInPercent,
         name: "tradingPortfolioAndInterbankLoansInPercent",
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+          !!dataset.creditInstitutionKpis?.tradingPortfolioAndInterbankLoansInPercent?.value,
         valueGetter: getSpecifiedDataPointGetterFactory(
           "creditInstitutionKpis.tradingPortfolioAndInterbankLoansInPercent",
           euTaxonomyKpiNameMappings.tradingPortfolioAndInterbankLoansInPercent,
@@ -259,7 +301,8 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
         name: "greenAssetRatioCreditInstitution",
         explanation: euTaxonomyKpiInfoMappings.greenAssetRatioInPercent,
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+          !!dataset.creditInstitutionKpis?.greenAssetRatioInPercent?.value,
         valueGetter: getSpecifiedDataPointGetterFactory(
           "creditInstitutionKpis.greenAssetRatioInPercent",
           euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
@@ -291,7 +334,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "taxonomyEligibleActivityInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.taxonomyEligibleActivityInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance]
+                .taxonomyEligibleActivityInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.InsuranceOrReinsurance.taxonomyEligibleActivityInPercent",
               euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent,
@@ -304,7 +349,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "taxonomyNonEligibleActivityInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.taxonomyNonEligibleActivityInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance]
+                .taxonomyNonEligibleActivityInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.InsuranceOrReinsurance.taxonomyNonEligibleActivityInPercent",
               euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent,
@@ -317,7 +364,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "derivativesInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.derivativesInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance]
+                .derivativesInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.InsuranceOrReinsurance.derivativesInPercent",
               euTaxonomyKpiNameMappings.derivativesInPercent,
@@ -330,7 +379,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "banksAndIssuersInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.banksAndIssuersInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance]
+                .banksAndIssuersInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.InsuranceOrReinsurance.banksAndIssuersInPercent",
               euTaxonomyKpiNameMappings.banksAndIssuersInPercent,
@@ -343,7 +394,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "investmentNonNfrdInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.investmentNonNfrdInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InsuranceOrReinsurance]
+                .investmentNonNfrdInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.InsuranceOrReinsurance.investmentNonNfrdInPercent",
               euTaxonomyKpiNameMappings.investmentNonNfrdInPercent,
@@ -357,7 +410,8 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
         name: "taxonomyEligibleNonLifeInsuranceActivities",
         explanation: euTaxonomyKpiInfoMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+          !!dataset.insuranceKpis?.taxonomyEligibleNonLifeInsuranceActivitiesInPercent?.value,
         valueGetter: getSpecifiedDataPointGetterFactory(
           "insuranceKpis.taxonomyEligibleNonLifeInsuranceActivitiesInPercent",
           euTaxonomyKpiNameMappings.taxonomyEligibleNonLifeInsuranceActivitiesInPercent,
@@ -388,7 +442,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "taxonomyEligibleActivityInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.taxonomyEligibleActivityInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement]
+                .taxonomyEligibleActivityInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.AssetManagement.taxonomyEligibleActivityInPercent",
               euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent,
@@ -401,7 +457,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "taxonomyNonEligibleActivityInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.taxonomyNonEligibleActivityInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement]
+                .taxonomyNonEligibleActivityInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.AssetManagement.taxonomyNonEligibleActivityInPercent",
               euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent,
@@ -414,7 +472,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "derivativesInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.derivativesInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement]
+                .derivativesInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.AssetManagement.derivativesInPercent",
               euTaxonomyKpiNameMappings.derivativesInPercent,
@@ -427,7 +487,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "banksAndIssuersInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.banksAndIssuersInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement]
+                .banksAndIssuersInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.AssetManagement.banksAndIssuersInPercent",
               euTaxonomyKpiNameMappings.banksAndIssuersInPercent,
@@ -440,7 +502,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "investmentNonNfrdInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.investmentNonNfrdInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.AssetManagement]
+                .investmentNonNfrdInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.AssetManagement.investmentNonNfrdInPercent",
               euTaxonomyKpiNameMappings.investmentNonNfrdInPercent,
@@ -473,7 +537,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "taxonomyEligibleActivityInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.taxonomyEligibleActivityInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm]
+                .taxonomyEligibleActivityInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.InvestmentFirm.taxonomyEligibleActivityInPercent",
               euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent,
@@ -486,7 +552,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "taxonomyNonEligibleActivityInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.taxonomyNonEligibleActivityInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm]
+                .taxonomyNonEligibleActivityInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.InvestmentFirm.taxonomyNonEligibleActivityInPercent",
               euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent,
@@ -499,7 +567,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "derivativesInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.derivativesInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm]
+                .derivativesInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.InvestmentFirm.derivativesInPercent",
               euTaxonomyKpiNameMappings.derivativesInPercent,
@@ -512,7 +582,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "banksAndIssuersInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.banksAndIssuersInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm]
+                .banksAndIssuersInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.InvestmentFirm.banksAndIssuersInPercent",
               euTaxonomyKpiNameMappings.banksAndIssuersInPercent,
@@ -525,7 +597,9 @@ export const configForEuTaxonomyFinancialsMLDT = [
             name: "investmentNonNfrdInPercent",
             class: "indentation",
             explanation: euTaxonomyKpiInfoMappings.investmentNonNfrdInPercent,
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+              !!dataset.eligibilityKpis?.[EuTaxonomyDataForFinancialsFinancialServicesTypesEnum.InvestmentFirm]
+                .investmentNonNfrdInPercent?.value,
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.InvestmentFirm.investmentNonNfrdInPercent",
               euTaxonomyKpiNameMappings.investmentNonNfrdInPercent,
@@ -539,7 +613,8 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
         name: "greenAssetRatioInvestmentFirm",
         explanation: euTaxonomyKpiInfoMappings.greenAssetRatioInPercent,
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+          !!dataset.investmentFirmKpis?.greenAssetRatioInPercent?.value,
         valueGetter: getSpecifiedDataPointGetterFactory(
           "investmentFirmKpis.greenAssetRatioInPercent",
           euTaxonomyKpiNameMappings.greenAssetRatioInPercent,
