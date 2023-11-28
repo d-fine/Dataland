@@ -2,7 +2,7 @@ import { type HeimathafenData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
-export const HeimathafenUploadConfiguration: MLDTConfig<HeimathafenData> = [
+export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
   {
     type: "section",
     label: "General",

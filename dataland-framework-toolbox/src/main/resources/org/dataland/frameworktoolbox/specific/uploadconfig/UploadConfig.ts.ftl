@@ -1,0 +1,31 @@
+<#macro mldtcell cellConfig>{
+    type: "cell",
+    label: "${cellConfig.label?js_string}",
+    <#if cellConfig.explanation??>explanation: "${cellConfig.explanation?js_string}",</#if>
+    shouldDisplay: <@frameworklambda cellConfig.shouldDisplay/>,
+    valueGetter: <@frameworklambda cellConfig.valueGetter/>,
+    }</#macro>
+<#macro mldtsection sectionConfig>{
+    type: "section",
+    label: "${sectionConfig.label?js_string}",
+    expandOnPageLoad: ${sectionConfig.expandOnPageLoad?c},
+    shouldDisplay: <@frameworklambda sectionConfig.shouldDisplay/>,
+    children: [<@mldtconfig sectionConfig.children/>],
+    <#if sectionConfig.labelBadgeColor??>labelBadgeColor: ${sectionConfig.labelBadgeColor?c},</#if>
+    }</#macro>
+<#macro frameworklambda lambda>
+    (<#if lambda.usesDataset>dataset: ${frameworkDataType}</#if>): ${lambda.returnParameter} => ${lambda.lambdaBody}
+</#macro>
+
+<#macro mldtconfig items>
+    <@indent>
+        <#list items as element><#if element.isCell()><@mldtcell element/></#if><#if element.isSection()><@mldtsection element/></#if>,
+        </#list>
+    </@indent>
+</#macro>
+import { type ${frameworkDataType} } from "@clients/backend";
+import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+<#list imports as import>${import}
+</#list>
+export const ${frameworkIdentifier?cap_first}UploadConfiguration: MLDTConfig<${frameworkDataType}> = [<@mldtconfig uploadConfig/>];

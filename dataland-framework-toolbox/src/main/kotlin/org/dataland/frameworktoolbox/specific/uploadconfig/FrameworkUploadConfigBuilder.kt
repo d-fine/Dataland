@@ -48,33 +48,33 @@ class FrameworkUploadConfigBuilder(
         writer.close()
     }
 
-    private fun buildApiClient(apiClientTsPath: Path) {
-        val freeMarkerContext = mapOf(
-            "frameworkIdentifier" to framework.identifier,
-        )
+//    private fun buildApiClient(apiClientTsPath: Path) {
+//        val freeMarkerContext = mapOf(
+//            "frameworkIdentifier" to framework.identifier,
+//        )
+//
+//        val freemarkerTemplate = FreeMarker.configuration
+//            .getTemplate("/specific/uploadconfig/ApiClient.ts.ftl")
+//
+//        val writer = FileWriter(apiClientTsPath.toFile())
+//        freemarkerTemplate.process(freeMarkerContext, writer)
+//        writer.close()
+//    }
 
-        val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/uploadconfig/ApiClient.ts.ftl")
-
-        val writer = FileWriter(apiClientTsPath.toFile())
-        freemarkerTemplate.process(freeMarkerContext, writer)
-        writer.close()
-    }
-
-    private fun buildIndexTs(indexTsPath: Path) {
-        val freeMarkerContext = mapOf(
-            "frameworkIdentifier" to framework.identifier,
-            "frameworkLabel" to framework.label,
-            "frameworkExplanation" to framework.explanation,
-        )
-
-        val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/uploadconfig/index.ts.ftl")
-
-        val writer = FileWriter(indexTsPath.toFile())
-        freemarkerTemplate.process(freeMarkerContext, writer)
-        writer.close()
-    }
+//    private fun buildIndexTs(indexTsPath: Path) {
+//        val freeMarkerContext = mapOf(
+//            "frameworkIdentifier" to framework.identifier,
+//            "frameworkLabel" to framework.label,
+//            "frameworkExplanation" to framework.explanation,
+//        )
+//
+//        val freemarkerTemplate = FreeMarker.configuration
+//            .getTemplate("/specific/uploadconfig/index.ts.ftl")
+//
+//        val writer = FileWriter(indexTsPath.toFile())
+//        freemarkerTemplate.process(freeMarkerContext, writer)
+//        writer.close()
+//    }
 
     /**
      * Generate the code for the UploadConfig and integrates it into the Dataland Repository
@@ -84,15 +84,15 @@ class FrameworkUploadConfigBuilder(
 
         val frameworkConfigDir = into.frontendSrc / "frameworks" / framework.identifier
         with(frameworkConfigDir.toFile()) {
-            deleteRecursively()
+//            deleteRecursively()
             mkdirs()
         }
 
         val uploadConfigTsPath = frameworkConfigDir / "UploadConfig.ts"
 
         buildUploadConfig(uploadConfigTsPath)
-        buildApiClient(frameworkConfigDir / "ApiClient.ts")
-        buildIndexTs(frameworkConfigDir / "index.ts")
+//        buildApiClient(frameworkConfigDir / "ApiClient.ts")
+//        buildIndexTs(frameworkConfigDir / "index.ts")
 
         into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_checkfrontendcompilation"))
 
