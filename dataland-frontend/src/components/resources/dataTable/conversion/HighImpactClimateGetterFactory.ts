@@ -34,7 +34,7 @@ function convertHighImpactClimateToListForModal(
   const listForModal: HighImpactClimateDisplayFormat[] = [];
   for (const [naceCodeType, climateSectorValues] of Object.entries(datasetValue)) {
     const value = climateSectorValues.highImpactClimateSectorEnergyConsumptionInGWh;
-    const revenueValue = climateSectorValues.highImpactClimateSectorEnergyConsumptionInGWh;
+    const revenueValue = climateSectorValues.highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue;
 
     if (!value) {
       continue;
@@ -42,16 +42,16 @@ function convertHighImpactClimateToListForModal(
     listForModal.push({
       sector: HighImpactClimateSectorsKeys[naceCodeType as keyof typeof HighImpactClimateSectorsKeys],
       energyConsumption: {
-        value: `${value.value ? value.value.toString() + " GWh" : "No data provided"}`,
-        dataSource: value.dataSource,
-        quality: value.quality,
-        comment: value.comment,
+        value: `${value?.value ? value.value.toString() + " GWh" : "No data provided"}`,
+        dataSource: value?.dataSource,
+        quality: value?.quality,
+        comment: value?.comment,
       },
       relativeEnergyConsumption: {
-        value: `${revenueValue.value ? revenueValue.value.toString() + " GWh / €M revenue" : "No data provided"}`,
-        dataSource: revenueValue.dataSource,
-        quality: revenueValue.quality,
-        comment: revenueValue.comment,
+        value: `${revenueValue?.value ? revenueValue.value.toString() + " GWh / €M revenue" : "No data provided"}`,
+        dataSource: revenueValue?.dataSource,
+        quality: revenueValue?.quality,
+        comment: revenueValue?.comment,
       },
     });
   }

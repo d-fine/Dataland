@@ -64,10 +64,6 @@ export default defineComponent({
   border-collapse: collapse;
   tr {
     border-bottom: 1px solid #e3e2df;
-    border-top: 1px solid #e3e2df;
-    &:first-child {
-      border: none;
-    }
     &:last-child {
       border: none;
     }

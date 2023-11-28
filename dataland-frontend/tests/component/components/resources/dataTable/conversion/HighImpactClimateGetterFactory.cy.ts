@@ -42,7 +42,7 @@ describe("Unit test for the HighImpactClimateGetterFactory", () => {
         sector: "AGRICULTURE, FORESTRY AND FISHING",
         energyConsumption: { value: "12345 GWh", dataSource: undefined, quality: "Estimated", comment: undefined },
         relativeEnergyConsumption: {
-          value: "12345 GWh / €M revenue",
+          value: "54 GWh / €M revenue",
           dataSource: undefined,
           quality: "Estimated",
           comment: undefined,
