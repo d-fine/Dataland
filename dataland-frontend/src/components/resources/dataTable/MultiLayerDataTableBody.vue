@@ -1,11 +1,7 @@
 <template>
   <template v-for="(cellOrSectionConfig, idx) in config" :key="idx">
     <template v-if="isCellOrSectionVisible(cellOrSectionConfig, mldtDatasets)">
-      <tr
-        v-if="cellOrSectionConfig.type == 'cell'"
-        v-show="isVisible && checkToShowFieldsWithNullValue(mldtDatasets, cellOrSectionConfig, props.hideEmptyFields)"
-        :data-cell-label="cellOrSectionConfig.label"
-      >
+      <tr v-if="cellOrSectionConfig.type == 'cell'" v-show="isVisible" :data-cell-label="cellOrSectionConfig.label">
         <td class="headers-bg" :data-cell-label="cellOrSectionConfig.label" data-row-header="true">
           <span class="table-left-label">{{ cellOrSectionConfig.label }}</span>
           <em
@@ -72,7 +68,6 @@
 <script setup lang="ts" generic="T">
 import {
   isCellOrSectionVisible,
-  type MLDTCellConfig,
   type MLDTConfig,
   type MLDTDataset,
   type MLDTSectionConfig,
@@ -83,7 +78,6 @@ import MultiLayerDataTableBody from "@/components/resources/dataTable/MultiLayer
 import { onMounted, ref } from "vue";
 import MultiLayerDataTableCell from "@/components/resources/dataTable/MultiLayerDataTableCell.vue";
 import Tooltip from "primevue/tooltip";
-import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 
 const expandedSections = ref(new Set<number>());
 const vTooltip = Tooltip;
@@ -110,31 +104,6 @@ function expandSectionsOnPageLoad(): void {
       expandedSections.value.add(i);
     }
   }
-}
-/**
- * Checks if fields with null values should be shown or not
- * @param mldtDatasets datasets for the specified company and framework
- * @param cellOrSectionConfig config for the specified framework
- * @param hideEmptyFields toggle if fields with null values should be shown or not
- * @returns boolean to set hidden to true or false
- */
-function checkToShowFieldsWithNullValue(
-  mldtDatasets: MLDTDataset<FrameworkDataTypes>[],
-  cellOrSectionConfig: MLDTCellConfig<FrameworkDataTypes>,
-  hideEmptyFields: boolean,
-): boolean {
-  if (!hideEmptyFields) {
-    return true;
-  }
-  for (const element of mldtDatasets) {
-    if (
-      cellOrSectionConfig.valueGetter(element.dataset).displayValue &&
-      cellOrSectionConfig.valueGetter(element.dataset).displayValue != "No data provided"
-    ) {
-      return true;
-    }
-  }
-  return false;
 }
 
 /**

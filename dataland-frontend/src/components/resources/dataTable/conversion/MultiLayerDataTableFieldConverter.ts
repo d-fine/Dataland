@@ -1,6 +1,10 @@
-import { type Field } from "@/utils/GenericFrameworkTypes";
+import { type Field, type FrameworkData } from "@/utils/GenericFrameworkTypes";
 import { type MLDTCellConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import {
+  type AvailableMLDTDisplayObjectTypes,
+  type MLDTDisplayComponentName,
+  type MLDTDisplayComponentTypes,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { yesNoDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoDataPointValueGetterFactory";
@@ -57,12 +61,14 @@ const formFieldValueGetterFactoryMap: { [key: string]: ValueGetterFactory } = {
 export function getDataModelFieldCellConfig(path: string, field: Field): MLDTCellConfig<any> | undefined {
   if (field.component in formFieldValueGetterFactoryMap) {
     const valueGetterFactory = formFieldValueGetterFactoryMap[field.component];
+    const valueGetter = valueGetterFactory(path, field);
     return {
       type: "cell",
       label: field.label,
       explanation: field.description,
-      shouldDisplay: field.showIf,
-      valueGetter: valueGetterFactory(path, field),
+      shouldDisplay: (dataset: FrameworkData) =>
+        field.showIf(dataset) && checkToShowFieldsWithNullValue(valueGetter(dataset).displayValue),
+      valueGetter: valueGetter,
     };
   } else if (field.component == "UploadReports") {
     return undefined;
@@ -70,4 +76,13 @@ export function getDataModelFieldCellConfig(path: string, field: Field): MLDTCel
     console.log(`!WARNING! - Could not translate component of type ${field.component}`);
     return undefined;
   }
+}
+
+/**
+ * Checks if fields with null values should be shown or not
+ * @param value This is the displayValue parsed from the field config
+ * @returns boolean to set hidden to true or false
+ */
+function checkToShowFieldsWithNullValue(value: MLDTDisplayComponentTypes[MLDTDisplayComponentName]): boolean {
+  return !!(value && value != "No data provided" && value != "");
 }
