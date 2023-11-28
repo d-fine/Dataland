@@ -30,13 +30,11 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
     ),
   );
   preparedFixtures.push(manipulateFixtureForNoNullFields(generateSfdrFixtures(1, 0)[0]));
-  preparedFixtures.push(manipulateFixtureForInvalidCurrencyInput(generateSfdrFixtures(1,0)[0]))
-  preparedFixtures.push(manipulateFixtureForInvalidBigDecimalDataPointInput(generateSfdrFixtures(
-      1,0)[0]))
-  preparedFixtures.push(manipulateFixtureForInvalidLongDataPointInput(generateSfdrFixtures(1,0)[0]))
+  preparedFixtures.push(manipulateFixtureForInvalidCurrencyInput(generateSfdrFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForInvalidBigDecimalDataPointInput(generateSfdrFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForInvalidLongDataPointInput(generateSfdrFixtures(1, 0)[0]));
 
-  preparedFixtures.push(manipulateFixtureForInvalidPercentageInput(generateSfdrFixtures(1,0)[0]))
-
+  preparedFixtures.push(manipulateFixtureForInvalidPercentageInput(generateSfdrFixtures(1, 0)[0]));
 
   return preparedFixtures;
 }
@@ -73,7 +71,7 @@ function manipulateFixtureForInvalidBigDecimalDataPointInput(input: FixtureData<
  */
 function manipulateFixtureForInvalidLongDataPointInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = "Sfdr-dataset-with-invalid-negative-long-input";
-  input.t.social!.socialAndEmployeeMatters!.sanctionedIncidentsOfDiscrimination!.value = -1;
+  input.t.social!.antiCorruptionAndAntiBribery!.reportedConvictionsOfBriberyAndCorruption!.value = -1;
   return input;
 }
 
@@ -88,8 +86,6 @@ function manipulateFixtureForInvalidPercentageInput(input: FixtureData<SfdrData>
   input.t.social!.socialAndEmployeeMatters!.rateOfAccidentsInPercent!.value = 120;
   return input;
 }
-
-
 
 /**
  * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
