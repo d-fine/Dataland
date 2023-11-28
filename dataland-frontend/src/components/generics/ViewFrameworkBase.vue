@@ -25,20 +25,16 @@
             />
             <slot name="reportingPeriodDropdown" />
             <div class="flex align-content-start align-items-center pl-3">
-              <div
+              <InputSwitch
                 v-if="dataType != DataTypeEnum.EutaxonomyNonFinancials && dataType !== DataTypeEnum.Sme"
-                data-test="hideEmptyDataToggle"
                 class="form-field vertical-middle"
-              >
-                <InputSwitch
-                  data-test="dataPointToggleButton"
-                  inputId="dataPointIsAvailableSwitch"
-                  v-model="hideEmptyFields"
-                />
-                <span data-test="hideEmptyDataToggle" class="ml-2 font-semibold" style="font-size: 14px">
-                   "Hide empty fields"
-                </span>
-              </div>
+                data-test="dataPointToggleButton"
+                inputId="dataPointIsAvailableSwitch"
+                v-model="hideEmptyFields"
+              />
+              <span data-test="hideEmptyDataToggle" class="ml-2 font-semibold" style="font-size: 14px">
+                "Hide empty fields"
+              </span>
             </div>
           </div>
 
