@@ -88,8 +88,7 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
 
     fun getSpecificCompanyByNameFromPreparedFixtures(companyName: String): CompanyInformationWithT<T>? {
         return companyListForTestingSfdrSpecificValidation().find {
-            it.companyInformation.companyName ==
-                "Sfdr-dataset-with-invalid-currency-input"
+            it.companyInformation.companyName == companyName
         }
     }
 

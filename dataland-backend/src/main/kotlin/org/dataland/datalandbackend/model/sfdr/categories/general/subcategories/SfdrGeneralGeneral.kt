@@ -15,15 +15,12 @@ import java.time.LocalDate
  */
 data class SfdrGeneralGeneral(
 
-//    @field:YearFormat
     @field:JsonProperty(required = true)
     val dataDate: LocalDate,
 
-//    @field:YearFormat
     @field:JsonProperty(required = true)
     val fiscalYearDeviation: FiscalYearDeviation,
 
-//    @field:YearFormat
     @field:JsonProperty(required = true)
     val fiscalYearEnd: LocalDate,
 
