@@ -51,10 +51,7 @@ function getSpecifiedDataPointGetterFactory(
  * @param valueName the field for which the getter functions should be used
  * @returns boolean to trigger the shouldDisplay condition
  */
-function setShowIf(
-  formatter: (dataset: EuTaxonomyDataForFinancials) => AvailableMLDTDisplayObjectTypes,
-  valueName: string,
-): boolean {
+function setShowIf(formatter: (dataset: unknown) => AvailableMLDTDisplayObjectTypes, valueName: string): boolean {
   return !!(
     formatter(valueName).displayValue &&
     formatter(valueName).displayValue != "No data provided" &&
