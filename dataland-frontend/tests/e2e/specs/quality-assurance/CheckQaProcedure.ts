@@ -94,7 +94,13 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
   cy.get('[data-test="qa-review-section"] .p-datatable-tbody tr').last().click();
 
   cy.get('[data-test="qaRejectButton"').should("exist");
-  cy.get("span[class=p-inputswitch-slider]").should("not.exist");
+  cy.get("span[class=p-inputswitch-slider]").should("exist");
+  cy.get('div[data-test="dataPointToggleButton"]').should("have.class", "p-inputswitch p-component");
+  cy.get('div[data-test="dataPointToggleButton"]').should(
+    "not.have.class",
+    "p-inputswitch p-component p-inputswitch-checked",
+  );
+
   cy.get('[data-test="qaApproveButton"').should("exist").click();
 
   safeLogout();
