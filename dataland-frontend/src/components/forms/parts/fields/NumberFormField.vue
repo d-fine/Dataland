@@ -1,6 +1,6 @@
 <template>
   <UploadFormHeader v-if="label" :label="label" :description="description" :is-required="required" />
-  <div class="grid">
+  <div class="grid" :data-test="name">
     <FormKit
       type="text"
       :name="name"
