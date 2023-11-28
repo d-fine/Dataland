@@ -4,10 +4,8 @@ import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.validator.BigDecimalNonNegativeDataPoint
-import org.dataland.datalandbackend.validator.BigDecimalPercentageDataPoint
-import org.dataland.datalandbackend.validator.LongNonNegativeDataPoint
 import org.dataland.datalandbackend.validator.NonNegativeCurrencyDataPoint
+import org.dataland.datalandbackend.validator.NonNegativeDataPoint
 import java.math.BigDecimal
 
 /**
@@ -55,20 +53,20 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:NonNegativeCurrencyDataPoint
     val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
-    @field:LongNonNegativeDataPoint
+    @field:NonNegativeDataPoint
     val femaleBoardMembers: ExtendedDataPoint<Long>? = null,
 
-    @field:LongNonNegativeDataPoint
+    @field:NonNegativeDataPoint
     val maleBoardMembers: ExtendedDataPoint<Long>? = null,
 
     val controversialWeaponsExposure: ExtendedDataPoint<YesNo>? = null,
 
     val workplaceAccidentPreventionPolicy: BaseDataPoint<YesNo>? = null,
 
-    @field:BigDecimalPercentageDataPoint
+    @field:NonNegativeDataPoint
     val rateOfAccidentsInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:BigDecimalNonNegativeDataPoint
+    @field:NonNegativeDataPoint
     val workdaysLostInDays: ExtendedDataPoint<BigDecimal>? = null,
 
     val supplierCodeOfConduct: BaseDataPoint<YesNo>? = null,
@@ -77,12 +75,13 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val whistleblowerProtectionPolicy: BaseDataPoint<YesNo>? = null,
 
-    @field:BigDecimalNonNegativeDataPoint
+    @field:NonNegativeDataPoint
     val reportedIncidentsOfDiscrimination: ExtendedDataPoint<BigDecimal>? = null,
-    @field:LongNonNegativeDataPoint
+
+    @field:NonNegativeDataPoint
     val sanctionedIncidentsOfDiscrimination: ExtendedDataPoint<Long>? = null,
 
-    @field:BigDecimalNonNegativeDataPoint
+    @field:NonNegativeDataPoint
     val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal>? = null,
 
 )

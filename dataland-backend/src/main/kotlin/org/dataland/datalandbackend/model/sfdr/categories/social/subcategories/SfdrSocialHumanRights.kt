@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.validator.LongNonNegativeDataPoint
+import org.dataland.datalandbackend.validator.NonNegativeDataPoint
 
 /**
  * --- API model ---
@@ -20,6 +20,6 @@ data class SfdrSocialHumanRights(
 
     val reportedForcedOrCompulsoryLabourIncidents: ExtendedDataPoint<YesNo>? = null,
 
-    @field:LongNonNegativeDataPoint
+    @field:NonNegativeDataPoint
     val numberOfReportedIncidentsOfHumanRightsViolations: ExtendedDataPoint<Long>? = null,
 )
