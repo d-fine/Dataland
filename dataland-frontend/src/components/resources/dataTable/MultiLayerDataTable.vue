@@ -22,13 +22,7 @@
           </tr>
         </thead>
         <tbody class="p-datatable-tbody">
-          <MultiLayerDataTableBody
-            :mldtDatasets="mldtDatasets"
-            :config="config"
-            :isTopLevel="true"
-            :isVisible="true"
-            :hide-empty-fields="hideEmptyFields"
-          />
+          <MultiLayerDataTableBody :mldtDatasets="mldtDatasets" :config="config" :isTopLevel="true" :isVisible="true" />
         </tbody>
       </table>
     </div>
@@ -50,6 +44,5 @@ defineProps<{
   config: MLDTConfig<T>;
   mldtDatasets: Array<MLDTDataset<T>>;
   ariaLabel?: string;
-  hideEmptyFields: boolean;
 }>();
 </script>

@@ -58,7 +58,6 @@
           :mldtDatasets="mldtDatasets"
           :isTopLevel="false"
           :isVisible="isVisible && expandedSections.has(idx)"
-          :hide-empty-fields="hideEmptyFields"
         />
       </template>
     </template>
@@ -124,7 +123,6 @@ const props = defineProps<{
   mldtDatasets: Array<MLDTDataset<T>>;
   isTopLevel: boolean;
   isVisible: boolean;
-  hideEmptyFields: boolean;
 }>();
 
 onMounted(() => {

@@ -21,12 +21,11 @@
     <MultiLayerDataTable
       :mldtDatasets="mldtDatasets"
       :config="
-        inReviewMode
+        hideEmptyFields
           ? editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration)
           : displayConfiguration
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
-      :hide-empty-fields="inReviewMode ? true : hideEmptyFields"
     />
   </div>
   <div v-if="status == 'Error'">
