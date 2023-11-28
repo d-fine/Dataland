@@ -76,7 +76,7 @@ class GleifGoldenCopyIngestor(
 //            logger.info("Retrieving all company data available via GLEIF.")
 //            val tempFile = File.createTempFile("gleif_golden_copy", ".zip") TODO add again
 //            processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
-            prepareIsinMappingFile()
+            processIsinMappingFile()
         } else {
             logger.info("Flag file not present & no force update variable set => Not performing any download")
         }
@@ -87,7 +87,7 @@ class GleifGoldenCopyIngestor(
     private fun processUpdates() {
         waitForBackend()
         prepareGleifDeltaFile()
-        prepareIsinMappingFile()
+        processIsinMappingFile()
     }
 
     /**
@@ -117,24 +117,29 @@ class GleifGoldenCopyIngestor(
     /**
      * Starting point for ISIN mapping file handling
      */
-    fun prepareIsinMappingFile() {
-        logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
-        val tempFile = File.createTempFile("gleif_mapping_update", ".csv")
-        processIsinMappingFile(tempFile, gleifApiAccessor::getFullIsinMappingFile)
-    }
-
     @Synchronized
-    private fun processIsinMappingFile(newMappingFile: File, downloadFile: (file: File) -> Unit) {
+    private fun processIsinMappingFile() {
+        logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
+        val newMappingFile = File.createTempFile("gleif_mapping_update", ".csv")
         val duration = measureTime {
-            downloadFile(newMappingFile)
+            gleifApiAccessor.getFullIsinMappingFile(newMappingFile)
             val deltaMapping: Map<String, Set<String>> =
                 if (!savedIsinMappingFile.exists() || savedIsinMappingFile.length() == 0L) {
                     isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
                 } else {
                     isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedIsinMappingFile)
                 }
+            logger.info("Size of delta mapping:")
+            logger.info("\tSize: ${deltaMapping.size}")
+            logger.info("\tNumber of keys: ${deltaMapping.keys.size}")
+            logger.info("\tNumber of flattened values: ${deltaMapping.values.flatten().size}")
+            val newPersistentFile = File("${savedIsinMappingFile.parent}/newIsinMapping.csv")
+            newMappingFile.copyTo(newPersistentFile)
+            if (!newMappingFile.delete()) {
+                logger.error("failed to delete temporary mapping file $newMappingFile")
+            }
             companyUploader.updateIsins(deltaMapping)
-            replaceOldMappingFile(newMappingFile)
+            replaceOldMappingFile(File("${savedIsinMappingFile.parent}/newIsinMapping.csv"))
         }
         logger.info("Finished processing of file $newMappingFile in ${formatExecutionTime(duration)}.")
     }
