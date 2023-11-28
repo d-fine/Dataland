@@ -310,7 +310,7 @@ export default defineComponent({
     updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
       this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
       this.documents = new Map();
-      if (reportsToUpload && reportsToUpload.length) {
+      if (reportsToUpload?.length) {
         reportsToUpload.forEach((document) => this.documents.set(document.file.name, document));
       }
     },
