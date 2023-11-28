@@ -73,9 +73,9 @@ class GleifGoldenCopyIngestor(
             }
 
             waitForBackend()
-            logger.info("Retrieving all company data available via GLEIF.")
-            val tempFile = File.createTempFile("gleif_golden_copy", ".zip")
-            processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
+//            logger.info("Retrieving all company data available via GLEIF.")
+//            val tempFile = File.createTempFile("gleif_golden_copy", ".zip") TODO add again
+//            processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
             prepareIsinMappingFile()
         } else {
             logger.info("Flag file not present & no force update variable set => Not performing any download")
