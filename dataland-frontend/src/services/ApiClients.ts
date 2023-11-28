@@ -68,6 +68,12 @@ export class ApiClientProvider {
       metaDataController: backendClientFactory(
         backendApis.MetaDataControllerApi,
       ) as backendApis.MetaDataControllerApiInterface,
+
+      // lksgDataController: backendClientFactory(backendApis.LksgDataControllerApi),
+      // metaDataController: backendClientFactory(backendApis.MetaDataControllerApi),
+      // p2pDataController: backendClientFactory(backendApis.P2pDataControllerApi),
+      // sfdrDataController: backendClientFactory(backendApis.SfdrDataControllerApi),
+      // smeDataController: backendClientFactory(backendApis.SmeDataControllerApi),
     };
   }
 
@@ -124,6 +130,6 @@ export class ApiClientProvider {
     framework: K,
   ): Promise<FrameworkDataApi<FrameworkDataTypes[K]["data"]>> {
     const configuration = await this.getConfiguration();
-    return getUnifiedFrameworkDataControllerFromConfiguration(framework, configuration);
+    return getUnifiedFrameworkDataControllerFromConfiguration(framework, configuration, this.axiosInstance);
   }
 }
