@@ -24,9 +24,8 @@
               @change="handleChangeFrameworkEvent"
             />
             <slot name="reportingPeriodDropdown" />
-            <div class="flex align-content-start align-items-center pl-3">
+            <div class="flex align-content-start align-items-center pl-3" v-if="dataType != DataTypeEnum.EutaxonomyNonFinancials && dataType !== DataTypeEnum.Sme">
               <InputSwitch
-                v-if="dataType != DataTypeEnum.EutaxonomyNonFinancials && dataType !== DataTypeEnum.Sme"
                 class="form-field vertical-middle"
                 data-test="dataPointToggleButton"
                 inputId="dataPointIsAvailableSwitch"
