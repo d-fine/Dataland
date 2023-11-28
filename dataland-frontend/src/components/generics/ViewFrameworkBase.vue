@@ -36,7 +36,7 @@
                   v-model="hideEmptyFields"
                 />
                 <span data-test="hideEmptyDataToggle" class="ml-2 font-semibold" style="font-size: 14px">
-                  {{ "Hide empty fields" }}
+                   "Hide empty fields"
                 </span>
               </div>
             </div>
