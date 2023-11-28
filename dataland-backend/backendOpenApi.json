@@ -7509,15 +7509,15 @@
               }
             ]
           },
-          "statusE": {
+          "statusZuE": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusEOptions"
+                "$ref": "#/components/schemas/StatusZuEOptions"
               }
             ]
           },
-          "einzelheitenZuDenRechtsstreitigkeitenE": {
+          "einzelheitenZuDenRechtsstreitigkeitenZuE": {
             "type": "string",
             "nullable": true
           },
@@ -7529,15 +7529,15 @@
               }
             ]
           },
-          "statusS": {
+          "statusZuS": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusSOptions"
+                "$ref": "#/components/schemas/StatusZuSOptions"
               }
             ]
           },
-          "einzelheitenZuDenRechtsstreitigkeitenS": {
+          "einzelheitenZuDenRechtsstreitigkeitenZuS": {
             "type": "string",
             "nullable": true
           },
@@ -7549,15 +7549,15 @@
               }
             ]
           },
-          "statusG": {
+          "statusZuG": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusGOptions"
+                "$ref": "#/components/schemas/StatusZuGOptions"
               }
             ]
           },
-          "einzelheitenZuDenRechtsstreitigkeitenG": {
+          "einzelheitenZuDenRechtsstreitigkeitenZuG": {
             "type": "string",
             "nullable": true
           },
@@ -7630,6 +7630,22 @@
               }
             ]
           },
+          "negativeAktivitaetenFuerDieBiologischeVielfalt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "positiveAktivitaetenFuerDieBiologischeVielfalt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
           "soziales": {
             "nullable": true,
             "allOf": [
@@ -7662,15 +7678,8 @@
         }
       },
       "GdvGeneralMasterData": {
-        "required": [
-          "gueltigkeitsDatum"
-        ],
         "type": "object",
         "properties": {
-          "gueltigkeitsDatum": {
-            "type": "string",
-            "format": "date"
-          },
           "berichtsPflicht": {
             "nullable": true,
             "allOf": [
@@ -7678,6 +7687,11 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
+          },
+          "gueltigkeitsDatum": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -7878,25 +7892,9 @@
       "GdvUmweltBiodiversitaet": {
         "type": "object",
         "properties": {
-          "negativeAktivitaetenFuerDieBiologischeVielfalt": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
           "negativeMassnahmenFuerDieBiologischeVielfalt": {
             "type": "string",
             "nullable": true
-          },
-          "positiveAktivitaetenFuerDieBiologischeVielfalt": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
           },
           "positiveMassnahmenFuerDieBiologischeVielfalt": {
             "type": "string",
@@ -7951,7 +7949,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/TaxonomieBerichterstattungOptions"
               }
             ]
           }
@@ -8028,25 +8026,31 @@
           }
         }
       },
-      "StatusEOptions": {
+      "StatusZuEOptions": {
         "type": "string",
         "enum": [
           "Offen",
           "Geklaert"
         ]
       },
-      "StatusGOptions": {
+      "StatusZuGOptions": {
         "type": "string",
         "enum": [
           "Offen",
           "Geklaert"
         ]
       },
-      "StatusSOptions": {
+      "StatusZuSOptions": {
         "type": "string",
         "enum": [
           "Offen",
           "Geklaert"
+        ]
+      },
+      "TaxonomieBerichterstattungOptions": {
+        "type": "string",
+        "enum": [
+          "SingleSelectDropdown"
         ]
       },
       "Activity": {

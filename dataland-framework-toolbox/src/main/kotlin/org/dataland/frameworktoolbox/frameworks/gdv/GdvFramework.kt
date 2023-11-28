@@ -1,6 +1,5 @@
 package org.dataland.frameworktoolbox.frameworks.gdv
 
-import java.io.File
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
@@ -8,6 +7,7 @@ import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.dataland.frameworktoolbox.template.ExcelTemplate
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.springframework.stereotype.Component
+import java.io.File
 
 /**
  * Definition of the Heimathafen framework
@@ -17,7 +17,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
     identifier = "gdv",
     label = "GDV/VÖB",
     explanation = "Das GDV/VÖB Framework",
-    File("./dataland-framework-toolbox/inputs/gdv/gdv-spec.csv"),
+    File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
 ) {
     var excelTemplate: ExcelTemplate? = null
 

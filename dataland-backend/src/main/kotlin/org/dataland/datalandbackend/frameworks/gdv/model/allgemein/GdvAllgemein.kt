@@ -1,13 +1,7 @@
 package org.dataland.datalandbackend.frameworks.gdv.model.allgemein
 
-import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.FrequenzDerBerichterstattungOptions
-import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.AnreizmechanismenFuerDasManagementUmweltOptions
-import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.AnreizmechanismenFuerDasManagementSozialesOptions
-import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.StatusEOptions
-import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.StatusSOptions
-import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.StatusGOptions
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * The data-model for the Allgemein section
@@ -32,14 +26,14 @@ data class GdvAllgemein(
     val anreizmechanismenFuerDasManagementSoziales: AnreizmechanismenFuerDasManagementSozialesOptions?,
     val esgBezogeneRechtsstreitigkeiten: YesNo?,
     val rechtsstreitigkeitenMitBezugZuE: YesNo?,
-    val statusE: StatusEOptions?,
-    val einzelheitenZuDenRechtsstreitigkeitenE: String?,
+    val statusZuE: StatusZuEOptions?,
+    val einzelheitenZuDenRechtsstreitigkeitenZuE: String?,
     val rechtsstreitigkeitenMitBezugZuS: YesNo?,
-    val statusS: StatusSOptions?,
-    val einzelheitenZuDenRechtsstreitigkeitenS: String?,
+    val statusZuS: StatusZuSOptions?,
+    val einzelheitenZuDenRechtsstreitigkeitenZuS: String?,
     val rechtsstreitigkeitenMitBezugZuG: YesNo?,
-    val statusG: StatusGOptions?,
-    val einzelheitenZuDenRechtsstreitigkeitenG: String?,
+    val statusZuG: StatusZuGOptions?,
+    val einzelheitenZuDenRechtsstreitigkeitenZuG: String?,
     val esgRating: YesNo?,
     val agentur: String?,
     val ergebnis: BaseDataPoint<String>?,
