@@ -5,13 +5,13 @@
     </div>
   </div>
   <div v-if="slideCount > 1" :class="arrowsContainerClasses">
-    <button @click="move(-1)" aria-label="Previous slide" :class="leftArrowClasses" />
-    <button @click="move(1)" aria-label="Next slide" :class="rightArrowClasses" />
+    <button @click="move(-1)" aria-label="Previous slide" :class="[leftArrowClasses, { disabled: disableLeftArrow }]" />
+    <button @click="move(1)" aria-label="Next slide" :class="[rightArrowClasses, { disabled: disableRightArrow }]" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, toRefs } from "vue";
+import { onUnmounted, ref, toRefs, computed } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -53,6 +53,14 @@ const preventDefault: EventListener = (e: Event) => {
     e.preventDefault();
   }
 };
+
+const disableLeftArrow = computed(() => {
+  return currentSlide.value <= 0 - initialCenterSlide.value;
+});
+
+const disableRightArrow = computed(() => {
+  return currentSlide.value >= slideCount.value - 1 - initialCenterSlide.value;
+});
 
 const toggleScrollLock = (lock: boolean): void => {
   if (lock) {
