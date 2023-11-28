@@ -12,6 +12,9 @@
       :scroll-screen-width-limit="1800"
       :slide-width="slideWidth"
     >
+      <div v-if="cards.length % 2 === 0" role="listitem" class="quotes__slide">
+        <div class="quotes__slide-videoContainer"></div>
+      </div>
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
         <div
           :class="{
@@ -112,7 +115,13 @@ const cards = computed(() => quotesSection.value?.cards ?? []);
 const currentSlide = ref(1);
 const slideWidth = ref(640);
 const showThumbnail = ref(true);
-const initialCenterSlide = ref(3);
+const initialCenterSlide = computed(() => {
+  if (cards.value.length % 2 === 0) {
+    return cards.value.length / 2 - 1;
+  } else {
+    return cards.value.length / 2 - 0.5;
+  }
+});
 
 const currentCardInfo = computed(() => {
   const card = cards.value[currentSlide.value + initialCenterSlide.value - 1];

@@ -10,7 +10,7 @@
       </router-link>
     </div>
 
-    <AuthSection :is-landing-Page="true" />
+    <AuthSection :is-landing-page="true" />
   </header>
 </template>
 
