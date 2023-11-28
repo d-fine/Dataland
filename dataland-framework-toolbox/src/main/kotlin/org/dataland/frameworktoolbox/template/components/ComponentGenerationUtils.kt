@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.template.components
 
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.template.TemplateDiagnostic
@@ -50,12 +51,22 @@ open class ComponentGenerationUtils {
     /**
      * Loads the options column required for some components (e.g. drop-downs)
      */
-    open fun getOptions(row: TemplateRow): MutableSet<String> {
-        val options = row.options.split(",").toMutableSet()
-        require(options.isNotEmpty()) {
+    open fun getSelectionOptionsFromOptionColumn(row: TemplateRow): MutableSet<SelectionOption> {
+        val stringOptions = row.options
+            .split(";")
+            .map { it.trim() }
+
+        val mappedOptions = stringOptions.map {
+            SelectionOption(
+                identifier = Naming.getNameFromLabel(it),
+                label = it
+            )
+        }.toMutableSet()
+
+        require(mappedOptions.isNotEmpty()) {
             "Field ${row.fieldIdentifier} does not specify required options for component ${row.component}."
         }
-        return options
+        return mappedOptions
     }
 
     /**

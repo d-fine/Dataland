@@ -28,7 +28,7 @@ class SingleSelectComponentFactory(@Autowired val templateDiagnostic: TemplateDi
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)
-            this.options = utils.getOptions(row)
+            this.options = utils.getSelectionOptionsFromOptionColumn(row)
         }
     }
 

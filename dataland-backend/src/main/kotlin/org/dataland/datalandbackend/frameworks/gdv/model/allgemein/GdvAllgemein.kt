@@ -1,12 +1,12 @@
 package org.dataland.datalandbackend.frameworks.gdv.model.allgemein
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.FrequenzDerBerichterstattung
-import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.AnreizmechanismenFuerDasManagementUmwelt
-import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.AnreizmechanismenFuerDasManagementSoziales
-import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.StatusE
-import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.StatusS
-import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.StatusG
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.FrequenzDerBerichterstattungOptions
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.AnreizmechanismenFuerDasManagementUmweltOptions
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.AnreizmechanismenFuerDasManagementSozialesOptions
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.StatusEOptions
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.StatusSOptions
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.StatusGOptions
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 
 /**
@@ -18,7 +18,7 @@ data class GdvAllgemein(
     val investitionen: String?,
     val sektorMitHohenKlimaauswirkungen: YesNo?,
     val nachhaltigkeitsbericht: YesNo?,
-    val frequenzDerBerichterstattung: FrequenzDerBerichterstattung?,
+    val frequenzDerBerichterstattung: FrequenzDerBerichterstattungOptions?,
     val mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze: YesNo?,
     val uncgPrinzipien: YesNo?,
     val erklaerungUngc: String?,
@@ -28,17 +28,17 @@ data class GdvAllgemein(
     val ausschlusslistenAufBasisVonEsgKriterien: YesNo?,
     val ausschlusslisten: String?,
     val oekologischeSozialeFuehrungsstandardsOderPrinzipien: YesNo?,
-    val anreizmechanismenFuerDasManagementUmwelt: AnreizmechanismenFuerDasManagementUmwelt?,
-    val anreizmechanismenFuerDasManagementSoziales: AnreizmechanismenFuerDasManagementSoziales?,
+    val anreizmechanismenFuerDasManagementUmwelt: AnreizmechanismenFuerDasManagementUmweltOptions?,
+    val anreizmechanismenFuerDasManagementSoziales: AnreizmechanismenFuerDasManagementSozialesOptions?,
     val esgBezogeneRechtsstreitigkeiten: YesNo?,
     val rechtsstreitigkeitenMitBezugZuE: YesNo?,
-    val statusE: StatusE?,
+    val statusE: StatusEOptions?,
     val einzelheitenZuDenRechtsstreitigkeitenE: String?,
     val rechtsstreitigkeitenMitBezugZuS: YesNo?,
-    val statusS: StatusS?,
+    val statusS: StatusSOptions?,
     val einzelheitenZuDenRechtsstreitigkeitenS: String?,
     val rechtsstreitigkeitenMitBezugZuG: YesNo?,
-    val statusG: StatusG?,
+    val statusG: StatusGOptions?,
     val einzelheitenZuDenRechtsstreitigkeitenG: String?,
     val esgRating: YesNo?,
     val agentur: String?,

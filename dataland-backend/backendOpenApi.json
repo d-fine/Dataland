@@ -7305,25 +7305,30 @@
           "Greater50"
         ]
       },
-      "AnreizmechanismenFuerDasManagementSoziales": {
+      "AnreizmechanismenFuerDasManagementSozialesOptions": {
         "type": "string",
         "enum": [
-          "Ja",
-          "Nein"
+          "Nein",
+          "JaAufsichtsrat",
+          "JaGeschaeftsleitung",
+          "JaAufsichtsratUndGeschaeftsleitung"
         ]
       },
-      "AnreizmechanismenFuerDasManagementUmwelt": {
+      "AnreizmechanismenFuerDasManagementUmweltOptions": {
         "type": "string",
         "enum": [
-          "Ja",
-          "Nein"
+          "Nein",
+          "JaAufsichtsrat",
+          "JaGeschaeftsleitung",
+          "JaAufsichtsratUndGeschaeftsleitung"
         ]
       },
-      "ArtDesAudits": {
+      "ArtDesAuditsOptions": {
         "type": "string",
         "enum": [
-          "Ja",
-          "Nein"
+          "InterneAnhoerung",
+          "PruefungDurchDritte",
+          "SowohlInternAlsAuchVonDrittanbietern"
         ]
       },
       "BaseDataPointString": {
@@ -7364,11 +7369,13 @@
           }
         }
       },
-      "FrequenzDerBerichterstattung": {
+      "FrequenzDerBerichterstattungOptions": {
         "type": "string",
         "enum": [
-          "Ja",
-          "Nein"
+          "Jaehrlich",
+          "Halbjaehrlich",
+          "Vierteljaehrlich",
+          "Monatlich"
         ]
       },
       "GdvAllgemein": {
@@ -7410,7 +7417,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/FrequenzDerBerichterstattung"
+                "$ref": "#/components/schemas/FrequenzDerBerichterstattungOptions"
               }
             ]
           },
@@ -7474,7 +7481,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementUmwelt"
+                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementUmweltOptions"
               }
             ]
           },
@@ -7482,7 +7489,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementSoziales"
+                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementSozialesOptions"
               }
             ]
           },
@@ -7506,7 +7513,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusE"
+                "$ref": "#/components/schemas/StatusEOptions"
               }
             ]
           },
@@ -7526,7 +7533,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusS"
+                "$ref": "#/components/schemas/StatusSOptions"
               }
             ]
           },
@@ -7546,7 +7553,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusG"
+                "$ref": "#/components/schemas/StatusGOptions"
               }
             ]
           },
@@ -7730,7 +7737,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ArtDesAudits"
+                "$ref": "#/components/schemas/ArtDesAuditsOptions"
               }
             ]
           },
@@ -8021,25 +8028,25 @@
           }
         }
       },
-      "StatusE": {
+      "StatusEOptions": {
         "type": "string",
         "enum": [
-          "Ja",
-          "Nein"
+          "Offen",
+          "Geklaert"
         ]
       },
-      "StatusG": {
+      "StatusGOptions": {
         "type": "string",
         "enum": [
-          "Ja",
-          "Nein"
+          "Offen",
+          "Geklaert"
         ]
       },
-      "StatusS": {
+      "StatusSOptions": {
         "type": "string",
         "enum": [
-          "Ja",
-          "Nein"
+          "Offen",
+          "Geklaert"
         ]
       },
       "Activity": {

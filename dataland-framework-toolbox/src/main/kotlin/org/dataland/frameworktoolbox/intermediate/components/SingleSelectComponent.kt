@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -10,20 +11,20 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
 /**
- * A DecimalComponent represents a numeric decimal value
+ * A SingleSelectComponent represents a choice between pre-defined values
  */
 open class SingleSelectComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
 
-    open var options: MutableSet<String> = mutableSetOf()
+    var options: MutableSet<SelectionOption> = mutableSetOf()
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val enum = dataClassBuilder.parentPackage.addEnum(
-            name = this.identifier.capitalizeEn(),
-            options = this.options,
-            comment = "Enum class for ${this.identifier}",
+            name = "${this.identifier.capitalizeEn()}Options",
+            options = this.options.map { it.identifier.capitalizeEn() }.toMutableSet(),
+            comment = "Enum class for the field ${this.identifier}",
         )
         dataClassBuilder.addProperty(
             this.identifier,
@@ -32,8 +33,6 @@ open class SingleSelectComponent(
                 isNullable,
             ),
         )
-
-
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
@@ -53,13 +52,18 @@ open class SingleSelectComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        sectionBuilder.addAtomicExpression(
+        val enumName = "${this.identifier.capitalizeEn()}Options"
+                sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
-                fixtureExpression = "dataGenerator.guaranteedShortString()",
-                nullableFixtureExpression = "dataGenerator.randomShortString()",
+                fixtureExpression = "pickOneElement(Object.values(${enumName}))",
+                nullableFixtureExpression = "dataGenerator.valueOrNull(pickOneElement(Object.values(${enumName})))",
                 nullable = isNullable,
             ),
+            imports = setOf(
+                "import { pickOneElement } from \"@e2e/fixtures/FixtureUtils\";",
+                "import { $enumName } from \"@clients/backend\";"
+            )
         )
     }
 }
