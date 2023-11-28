@@ -22,8 +22,8 @@
       :mldtDatasets="mldtDatasets"
       :config="
         hideEmptyFields
-          ? editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration)
-          : displayConfiguration
+        ? displayConfiguration
+          : editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration)
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
     />

@@ -33,7 +33,7 @@
                 <InputSwitch
                   data-test="dataPointToggleButton"
                   inputId="dataPointIsAvailableSwitch"
-                  v-model="inReviewMode"
+                  v-model="hideEmptyFields"
                 />
                 <span data-test="hideEmptyDataToggle" class="ml-2 font-semibold" style="font-size: 14px">
                   {{ "Hide empty fields" }}
@@ -149,8 +149,6 @@ export default defineComponent({
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
       frameworkDataSearchBar: ref<typeof FrameworkDataSearchBar>(),
-      hideEmptyFields: ref(true),
-      inReviewMode: ref(false),
     };
   },
   data() {
@@ -169,6 +167,7 @@ export default defineComponent({
       isDataProcessedSuccesfully: true,
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
+      hideEmptyFields: !this.hasUserReviewerRights,
     };
   },
   provide() {
@@ -362,6 +361,9 @@ export default defineComponent({
   watch: {
     companyID() {
       void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
+    },
+    isReviewableByCurrentUser() {
+      this.hideEmptyFields = !this.hasUserReviewerRights;
     },
     dataType(newDataType: string) {
       this.chosenDataTypeInDropdown = newDataType;
