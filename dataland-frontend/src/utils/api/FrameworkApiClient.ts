@@ -23,7 +23,7 @@ import { type AxiosInstance } from "axios";
 export function getUnifiedFrameworkDataControllerFromConfiguration<K extends keyof FrameworkDataTypes>(
   framework: K,
   configuration: Configuration | undefined,
-  axiosInstance: AxiosInstance,
+  axiosInstance?: AxiosInstance,
 ): FrameworkDataApi<FrameworkDataTypes[K]["data"]> {
   switch (framework) {
     case DataTypeEnum.Lksg:
