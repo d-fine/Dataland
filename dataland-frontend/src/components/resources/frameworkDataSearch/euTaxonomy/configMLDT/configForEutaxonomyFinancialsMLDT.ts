@@ -110,7 +110,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
         valueGetter: numberValueGetterFactory("numberOfEmployees", sampleField),
       },
     ],
-  },
+  }, //BLANK
   {
     type: "section",
     label: "Assurance",
