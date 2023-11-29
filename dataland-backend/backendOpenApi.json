@@ -7224,6 +7224,14 @@
                 "$ref": "#/components/schemas/HeimathafenGeneralDatenanbieter"
               }
             ]
+          },
+          "methodik": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralMethodik"
+              }
+            ]
           }
         }
       },
@@ -7233,6 +7241,23 @@
           "unternehmenseigentumUndEigentuemerstruktur": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralMethodik": {
+        "type": "object",
+        "properties": {
+          "verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": {
+            "type": "string",
+            "nullable": true
+          },
+          "qualitaetssicherungsprozess": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -8293,10 +8318,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

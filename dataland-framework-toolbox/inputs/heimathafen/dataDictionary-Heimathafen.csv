@@ -1,2 +1,5 @@
 Field Identifier,Category,Sub-Category,Field Name,Tooltip,Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory Field
 1,General,Datenanbieter,Unternehmenseigentum und Eigentümerstruktur,Bitte geben Sie eine kurze Auskunft über die Besitzverhältnisse und Eigentümerstruktur des Unternehmens.,String,,,,,,
+4,General,Methodik,Verständnis von Nachhaltigkeit als Teil der Bewertung,"Bitte führen Sie Ihr Verständnis von Nachhaltigkeit im Rahmen der Bewertung aus.
+Bitte machen Sie Angaben zu den Komponenten, die Sie bei der Bewertung des Grades der Nachhaltigkeit von Unternehmen berücksichtigen.",String,,,,,,
+22,General,Methodik,Qualitätssicherungsprozess,Gibt es einen Qualitätssicherungsprozess?,Yes/No,,,,,,

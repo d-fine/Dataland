@@ -2,56 +2,56 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Tyrellfort",
-			"headquartersPostalCode": "07342",
-			"sector": "convergence",
+			"headquarters": "Christiansenchester",
+			"headquartersPostalCode": "20105",
+			"sector": "models",
 			"identifiers": {
 				"Lei": [
-					"8mjEk1uNhJyPt82dcDEr"
+					"jVIl1cjNlIGlRoiYAZq6"
 				],
 				"Isin": [
-					"76a4qWHSS4Nb",
-					"25NgTYOLNBDm"
+					"2t8kt75VBAuz",
+					"x2x286JU0gYi"
 				],
-				"PermId": [
-					"lkmclPBkuN"
-				],
+				"PermId": [],
 				"Ticker": [
-					"Y7Q4FeL"
+					"RZRMPqe"
 				],
-				"Duns": [
-					"KvsGQ97F0"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"UqriJagBn"
+					"YFQqUlEbC"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "LU",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH",
-			"website": null,
+			"countryCode": "GY",
+			"companyAlternativeNames": [
+				"Lakin, Rogahn and Johnston",
+				"Ratke and Sons",
+				"Stoltenberg - Collier",
+				"Volkman, O'Reilly and Marvin"
+			],
+			"companyLegalForm": null,
+			"website": "https://exalted-corduroy.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"02.40",
-						"25.2",
-						"46.74",
-						"64.92",
-						"66.21"
+						"10.20",
+						"56.21",
+						"65.1",
+						"91"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": "37836",
-						"city": "Kadinfort",
-						"state": "West Virginia",
-						"country": "ST"
+						"streetAndHouseNumber": "Ari Stream 2037",
+						"postalCode": null,
+						"city": "Erinchester",
+						"state": "Nebraska",
+						"country": "NG"
 					},
-					"numberOfEmployees": 6289,
-					"fiscalYearStart": "2024-03-26"
+					"numberOfEmployees": 40,
+					"fiscalYearStart": "2024-05-31"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -65,46 +65,51 @@
 						{
 							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Torphy Green 394",
-								"postalCode": "89890-5828",
-								"city": "Fort Trentville",
-								"state": "Missouri",
-								"country": "MQ"
+								"streetAndHouseNumber": "N Poplar Street 37200",
+								"postalCode": "36474-4436",
+								"city": "Wichita",
+								"state": null,
+								"country": "FR"
 							},
-							"shareOfTotalRevenueInPercent": 26.8994
+							"shareOfTotalRevenueInPercent": 61.6216
 						},
 						{
-							"nameOfProductionSite": "Schowalter - Collier",
+							"nameOfProductionSite": "Watsica Group",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Keeling Trace 1494",
-								"postalCode": "02959",
-								"city": "Anabelbury",
-								"state": "Wisconsin",
-								"country": "GS"
+								"streetAndHouseNumber": "Bradly Drive 244",
+								"postalCode": "93655",
+								"city": "South Esta",
+								"state": "New Jersey",
+								"country": "XK"
 							},
-							"shareOfTotalRevenueInPercent": 65.7583
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Schiller, Tillman and Bartell",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "McKenzie Dale 308",
+								"postalCode": "38367",
+								"city": "Saigeborough",
+								"state": null,
+								"country": "GG"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Ward, Halvorson and Gibson",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Garret Roads 308",
+								"postalCode": "72275-5440",
+								"city": "Savionworth",
+								"state": "Illinois",
+								"country": "RW"
+							},
+							"shareOfTotalRevenueInPercent": 27.8358
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Intelligent Frozen Salad",
-							"shareOfTotalRevenueInPercent": 45.0776
-						},
-						{
-							"name": "Gorgeous Metal Keyboard",
-							"shareOfTotalRevenueInPercent": 4.3133
-						},
-						{
-							"name": "Recycled Concrete Salad",
-							"shareOfTotalRevenueInPercent": 90.4424
-						},
-						{
-							"name": "Tasty Metal Car",
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
@@ -112,21 +117,24 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 50,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 134,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"powerConsumptionInMWh": 1764,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 313,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazards": 23197100,
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
+						"Snow",
+						"Wind",
+						"Hail",
+						"Avalanche",
 						"EarthQuake",
-						"Flooding",
-						"Avalanche"
+						"Flooding"
 					]
 				}
 			}
@@ -136,36 +144,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Wintheiserworth",
-			"headquartersPostalCode": "38270",
-			"sector": "relationships",
+			"headquarters": "Menifee",
+			"headquartersPostalCode": "27558",
+			"sector": "portals",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"asz0JVJQ54ab",
-					"RM5yMYlX8FZQ"
+					"ZsxGfEG6GDzT",
+					"nyRxNSiOWsCm"
 				],
 				"PermId": [],
 				"Ticker": [
-					"wcbudYy"
+					"2RJJxVO"
 				],
 				"Duns": [],
 				"VatNumber": [
-					"6Z5EAgaTY"
+					"sWjl9URNK"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"xaNKdr9RdKzRG7i"
+				]
 			},
-			"countryCode": "TT",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://spotted-catalogue.net/",
+			"countryCode": "BJ",
+			"companyAlternativeNames": [
+				"Cole - Collins",
+				"Hamill - Johnston",
+				"Herzog - Robel",
+				"Schaden Inc"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://immaculate-visor.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"52.22"
+						"35.3"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -174,12 +189,12 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 1069,
-					"fiscalYearStart": "2024-05-20"
+					"numberOfEmployees": 5637,
+					"fiscalYearStart": "2024-02-09"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 91285708,
-					"operatingCostInEUR": 53073853,
+					"revenueInEUR": null,
+					"operatingCostInEUR": null,
 					"capitalAssetsInEUR": null
 				}
 			},
@@ -187,51 +202,85 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Rosenbaum Inc",
+							"nameOfProductionSite": "Green Inc",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Leuschke Knolls 4495",
-								"postalCode": "75469-3840",
-								"city": "Schowaltermouth",
-								"state": null,
-								"country": "CV"
+								"streetAndHouseNumber": "Richmond Close 36153",
+								"postalCode": "11175-2261",
+								"city": "St. George",
+								"state": "Massachusetts",
+								"country": "FO"
 							},
-							"shareOfTotalRevenueInPercent": 18.4517
+							"shareOfTotalRevenueInPercent": 96.7651
 						},
 						{
-							"nameOfProductionSite": "Zieme, Deckow and Krajcik",
+							"nameOfProductionSite": "Dickens - Kuhlman",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "44561",
-								"city": "South Leopoldo",
-								"state": "New Jersey",
-								"country": "AW"
+								"streetAndHouseNumber": "Cromwell Road 76628",
+								"postalCode": "96280",
+								"city": "Windlerland",
+								"state": null,
+								"country": "FO"
 							},
-							"shareOfTotalRevenueInPercent": 82.8728
+							"shareOfTotalRevenueInPercent": 6.4438
+						},
+						{
+							"nameOfProductionSite": "Herman, Durgan and Mueller",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Pinfold Lane 70009",
+								"postalCode": "01059",
+								"city": "Roanoke",
+								"state": "Arizona",
+								"country": "SZ"
+							},
+							"shareOfTotalRevenueInPercent": 48.8497
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kolby Mountain 779",
+								"postalCode": "05240-8748",
+								"city": "Vellaview",
+								"state": "Pennsylvania",
+								"country": "CY"
+							},
+							"shareOfTotalRevenueInPercent": 46.9101
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Unbranded Fresh Ball",
+							"shareOfTotalRevenueInPercent": 4.0145
+						},
+						{
+							"name": "Awesome Rubber Gloves",
+							"shareOfTotalRevenueInPercent": 99.1437
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 989,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMWh": 1634,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 459,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 2863336,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 47060887,
 					"naturalHazardsCovered": [
-						"Avalanche"
+						"Snow",
+						"Flooding",
+						"Avalanche",
+						"Wind"
 					]
 				}
 			}
@@ -241,40 +290,42 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Lake Herthatown",
-			"headquartersPostalCode": "56131",
-			"sector": "ROI",
+			"headquarters": "East Kirstenhaven",
+			"headquartersPostalCode": "97895",
+			"sector": "blockchains",
 			"identifiers": {
 				"Lei": [
-					"5Pep9gdLoqhZb9GlQ7Yv"
+					"Vc2QYEdP24UUBe1iGAz3"
 				],
 				"Isin": [
-					"hPSSSMHETZfL"
+					"S9KrX8dH1PO8"
 				],
-				"PermId": [
-					"40ocDPEIdY"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"ur0Mdg4Jp"
+				],
+				"CompanyRegistrationNumber": [
+					"aE25IeQaCWlNKHm"
+				]
 			},
-			"countryCode": "BE",
+			"countryCode": "SN",
 			"companyAlternativeNames": [
-				"Adams and Sons",
-				"Donnelly, Jacobson and Stiedemann",
-				"Schmidt, Jacobson and Schamberger",
-				"Schumm - Bernhard"
+				"Boyle, Lynch and Berge",
+				"Hickle - Casper",
+				"Mitchell, Labadie and Bahringer",
+				"Rowe, Howe and Collier"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://plump-midline.org/",
+			"companyLegalForm": "AG",
+			"website": "https://delirious-mathematics.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"29.1"
+						"77.4"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -283,50 +334,97 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 6622,
-					"fiscalYearStart": "2024-03-26"
+					"numberOfEmployees": 1790,
+					"fiscalYearStart": "2024-08-12"
 				},
 				"companyFinancials": {
-					"revenueInEUR": null,
-					"operatingCostInEUR": 2288800,
-					"capitalAssetsInEUR": null
+					"revenueInEUR": 34737762,
+					"operatingCostInEUR": 64751145,
+					"capitalAssetsInEUR": 66114508
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Thompson, Champlin and Koelpin",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Barton Passage 45087",
+								"postalCode": "59551-7596",
+								"city": "Nyasiaview",
+								"state": "New Hampshire",
+								"country": "BM"
+							},
+							"shareOfTotalRevenueInPercent": 48.4743
+						},
+						{
+							"nameOfProductionSite": "Hilll, Botsford and Smith",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kenya Mall 51919",
+								"postalCode": null,
+								"city": "Orlando",
+								"state": "Florida",
+								"country": "YT"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Jakubowski - Crooks",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Roberts Fields 914",
+								"postalCode": "28349",
+								"city": "Kundeton",
+								"state": "New Jersey",
+								"country": "NP"
+							},
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Incredible Plastic Computer",
-							"shareOfTotalRevenueInPercent": 35.9738
+							"name": "Licensed Concrete Hat",
+							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Rustic Wooden Cheese",
-							"shareOfTotalRevenueInPercent": 70.2268
+							"name": "Bespoke Cotton Shoes",
+							"shareOfTotalRevenueInPercent": 36.0087
+						},
+						{
+							"name": "Gorgeous Soft Hat",
+							"shareOfTotalRevenueInPercent": 86.7695
+						},
+						{
+							"name": "Modern Frozen Computer",
+							"shareOfTotalRevenueInPercent": 69.0194
+						},
+						{
+							"name": "Awesome Rubber Shoes",
+							"shareOfTotalRevenueInPercent": 89.0227
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1225,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 689,
+					"powerConsumptionInMWh": 388,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 415,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
+					"insuranceAgainstNaturalHazards": null,
 					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Avalanche"
+						"Flooding",
+						"EarthQuake"
 					]
 				}
 			}

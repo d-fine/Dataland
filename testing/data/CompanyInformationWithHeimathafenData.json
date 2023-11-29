@@ -1,589 +1,43 @@
 [
 	{
 		"companyInformation": {
-			"companyName": "Turner Group",
-			"headquarters": "San Jose",
-			"headquartersPostalCode": "82205-3278",
-			"sector": "models",
+			"companyName": "Grady, Dicki and Kihn",
+			"headquarters": "Clearwater",
+			"headquartersPostalCode": "10942",
+			"sector": "channels",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"gHX1J3r3udpfDTEeeBO8"
+				],
 				"Isin": [
-					"DJl9MpoOnpDT"
+					"nR4tDjNiJ52P"
 				],
 				"PermId": [
-					"MJvNSAY9cD"
+					"7UE2a41H1G"
 				],
-				"Ticker": [
-					"7fUBGtz"
-				],
-				"Duns": [
-					"ny7vmzrlj"
-				],
+				"Ticker": [],
+				"Duns": [],
 				"VatNumber": [
-					"lcQPkPuaJ"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "AD",
-			"companyAlternativeNames": [
-				"Kuhlman, Blanda and Marvin",
-				"Schmitt - Feil"
-			],
-			"companyLegalForm": null,
-			"website": null,
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "networks"
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Donnelly and Sons",
-			"headquarters": "Frankiechester",
-			"headquartersPostalCode": "38822-4139",
-			"sector": "applications",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"WpVV4MGWtNz1",
-					"34ocpVeko4ba"
-				],
-				"PermId": [],
-				"Ticker": [
-					"L8cEqCQ"
-				],
-				"Duns": [
-					"Ard44q22G"
-				],
-				"VatNumber": [
-					"eQvDD1clK"
+					"ZVM6ukcTD"
 				],
 				"CompanyRegistrationNumber": [
-					"As78Jn410SfzBll"
+					"qxiJAPr2eXELNY2"
 				]
 			},
-			"countryCode": "TJ",
-			"companyAlternativeNames": [
-				"Nolan, Kuhic and Frami",
-				"VonRueden - Ritchie",
-				"Wilderman LLC"
-			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://serpentine-salon.biz",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "applications"
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Johnston, Prohaska and Bahringer",
-			"headquarters": "Fort Nelle",
-			"headquartersPostalCode": "00647",
-			"sector": "ROI",
-			"identifiers": {
-				"Lei": [
-					"imQ39GCq5Vqml2gaLl9P"
-				],
-				"Isin": [
-					"3BP8uvpg4dy6",
-					"znMb6hixeO5Z"
-				],
-				"PermId": [],
-				"Ticker": [
-					"j79miG5"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "CZ",
-			"companyAlternativeNames": [
-				"Emmerich Inc",
-				"Hagenes - Parisian",
-				"Kassulke - Lebsack",
-				"Schulist, Conroy and Pollich"
-			],
-			"companyLegalForm": null,
-			"website": "https://even-mile.name",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "e-markets"
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Marquardt - Lynch",
-			"headquarters": "Lake Kayliecester",
-			"headquartersPostalCode": "58013",
-			"sector": "partnerships",
-			"identifiers": {
-				"Lei": [
-					"eEIdLxEPRJhPNs0xvbsx"
-				],
-				"Isin": [
-					"SIF3kP6BJC6Z",
-					"IL3JHqdkBtAM"
-				],
-				"PermId": [
-					"jpfcQpJoJe"
-				],
-				"Ticker": [
-					"eqYq0NO"
-				],
-				"Duns": [
-					"HYjKtoBvo"
-				],
-				"VatNumber": [
-					"b3IHDCGG0"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "CR",
-			"companyAlternativeNames": [
-				"Cole LLC",
-				"Dibbert, Reynolds and Schmeler",
-				"Effertz, Keeling and Hudson",
-				"Wisozk - Huel"
-			],
+			"countryCode": "CX",
+			"companyAlternativeNames": [],
 			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://long-vista.net/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "mindshare"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Schuster Inc",
-			"headquarters": "Port Rachellehaven",
-			"headquartersPostalCode": null,
-			"sector": "methodologies",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"nWIWi4NhXA0l"
-				],
-				"PermId": [
-					"SNVC3Lb0lp"
-				],
-				"Ticker": [
-					"Fd7AWCl"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "YE",
-			"companyAlternativeNames": [
-				"Gerlach, Baumbach and Goodwin",
-				"Reichel - Mitchell",
-				"Waelchi Group"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://several-urge.net",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "mindshare"
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Olson, Rodriguez and Stiedemann",
-			"headquarters": "Lake Ocieport",
-			"headquartersPostalCode": "70673",
-			"sector": "technologies",
-			"identifiers": {
-				"Lei": [
-					"axJgU14S4YcGjOpvRepF"
-				],
-				"Isin": [
-					"LbR0XjAAfthS",
-					"96PTVIi5Ckhs"
-				],
-				"PermId": [
-					"tsq4pzqFdH"
-				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"3o4S08rnsBKy0ut"
-				]
-			},
-			"countryCode": "UA",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://burly-facility.net",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "ROI"
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Beer, Dare and Koch",
-			"headquarters": "East Celestineboro",
-			"headquartersPostalCode": "00546",
-			"sector": "synergies",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"j8D6RSb7eHRS"
-				],
-				"PermId": [
-					"k5NdeLmhME"
-				],
-				"Ticker": [
-					"3p7RKdd"
-				],
-				"Duns": [
-					"dCQjxBl7A"
-				],
-				"VatNumber": [
-					"9d0RUmHdZ"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "ML",
-			"companyAlternativeNames": [
-				"Doyle, Emmerich and Spinka",
-				"Hessel, Robel and Goodwin"
-			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://complete-whirlwind.org/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "bandwidth"
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Lueilwitz LLC",
-			"headquarters": "Fort Zettaton",
-			"headquartersPostalCode": "28332",
-			"sector": "bandwidth",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"TI1mEomoFhgP"
-				],
-				"PermId": [],
-				"Ticker": [
-					"u6GNFaW"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "IS",
-			"companyAlternativeNames": [
-				"Torp LLC"
-			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://tough-artificer.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "metrics"
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Gislason and Sons",
-			"headquarters": "Altenwerthchester",
-			"headquartersPostalCode": "92531-4245",
-			"sector": "e-business",
-			"identifiers": {
-				"Lei": [
-					"39dj06GmLS0pOQvw3IYM"
-				],
-				"Isin": [
-					"qcpfSI7dnRmC",
-					"VJZbJThpChUS"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"gSzg4udIL"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "GD",
-			"companyAlternativeNames": [
-				"Batz - Mohr"
-			],
-			"companyLegalForm": "GmbH",
-			"website": "https://elliptical-zebrafish.biz/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "channels"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Kozey - Paucek",
-			"headquarters": "Port Elenor",
-			"headquartersPostalCode": null,
-			"sector": "schemas",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"T2mqYIu9ITPN"
-				],
-				"PermId": [
-					"Rx56SjvkpJ"
-				],
-				"Ticker": [
-					"PpbsaTL"
-				],
-				"Duns": [
-					"4eLNOd1JH"
-				],
-				"VatNumber": [
-					"rbdJI2rsD"
-				],
-				"CompanyRegistrationNumber": [
-					"aWVvIrRtbjU4sk4"
-				]
-			},
-			"countryCode": "ET",
-			"companyAlternativeNames": [
-				"Kshlerin - Pfeffer",
-				"Kutch, Flatley and Dibbert",
-				"Macejkovic - Murphy",
-				"Schaefer - Gibson"
-			],
-			"companyLegalForm": "AG",
-			"website": "https://violet-gambling.info/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "schemas"
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Wintheiser, Rippin and Steuber",
-			"headquarters": "Groverfield",
-			"headquartersPostalCode": "96884-5472",
-			"sector": "niches",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"0A82E4biDskR"
-				],
-				"PermId": [
-					"p2LslkbWHG"
-				],
-				"Ticker": [
-					"W2b1jlD"
-				],
-				"Duns": [
-					"V6p9rRV0z"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "MX",
-			"companyAlternativeNames": [
-				"Abbott, Krajcik and Wiza",
-				"Smith and Sons"
-			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://kaleidoscopic-melatonin.biz/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "applications"
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Robel Inc",
-			"headquarters": "Louport",
-			"headquartersPostalCode": "81249",
-			"sector": "web services",
-			"identifiers": {
-				"Lei": [
-					"Ph9laBMV6oLFPKXQJTQZ"
-				],
-				"Isin": [
-					"LyY9oRS1JXuf",
-					"kM77z4UsCnFo"
-				],
-				"PermId": [
-					"IlJwcPcTFn"
-				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"ylgf9JuXB"
-				],
-				"CompanyRegistrationNumber": [
-					"Wy6YQ0DMabxQOig"
-				]
-			},
-			"countryCode": "SS",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://growling-pricing.name",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "e-business"
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Conn - Goodwin",
-			"headquarters": "North Clemenston",
-			"headquartersPostalCode": "72041-6816",
-			"sector": "experiences",
-			"identifiers": {
-				"Lei": [
-					"puv6Fu338WHHHd3A2BY7"
-				],
-				"Isin": [
-					"Sjh0RV5WPBG3"
-				],
-				"PermId": [
-					"LwEOtrUc7b"
-				],
-				"Ticker": [
-					"N6uvkBq"
-				],
-				"Duns": [
-					"OJJUt6H6l"
-				],
-				"VatNumber": [
-					"KNKwc4W8I"
-				],
-				"CompanyRegistrationNumber": [
-					"QDMGchVL7ImluNB"
-				]
-			},
-			"countryCode": "MD",
-			"companyAlternativeNames": [
-				"Haley, Frami and Walter",
-				"Kling - Kovacek",
-				"Simonis, Kovacek and D'Amore"
-			],
-			"companyLegalForm": "AG",
-			"website": "https://heavenly-fireplace.net",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "users"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Gislason - Bernier",
-			"headquarters": "North Buck",
-			"headquartersPostalCode": null,
-			"sector": null,
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"coomNtlwSr5E"
-				],
-				"PermId": [],
-				"Ticker": [
-					"ynhcVRV"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"umP4QGXrQ"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "MS",
-			"companyAlternativeNames": [
-				"Gislason - Johnson"
-			],
-			"companyLegalForm": null,
-			"website": null,
+			"website": "https://fat-vitality.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"datenanbieter": {
 					"unternehmenseigentumUndEigentuemerstruktur": null
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": null,
+					"qualitaetssicherungsprozess": "No"
 				}
 			}
 		},
@@ -591,452 +45,277 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Franecki, Herman and Klocko",
-			"headquarters": "North Lori",
-			"headquartersPostalCode": null,
-			"sector": "relationships",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"NMy4Q9rRXKOJ",
-					"n8FwSIJMPgJt"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"RBrcvIHmG"
-				],
-				"CompanyRegistrationNumber": [
-					"bWBD3Un9knGDjQh"
-				]
-			},
-			"countryCode": "RW",
-			"companyAlternativeNames": [
-				"Kuhlman Group"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://quick-witted-gang.info",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "bandwidth"
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Sawayn - Frami",
-			"headquarters": "East Toney",
-			"headquartersPostalCode": "00009-7361",
+			"companyName": "Morissette - Trantow",
+			"headquarters": "Fort Jaidenberg",
+			"headquartersPostalCode": "84688",
 			"sector": "lifetime value",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"zPgNF5YJLN2i"
-				],
-				"PermId": [
-					"HktN4u3Mnc"
-				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "TF",
-			"companyAlternativeNames": [
-				"Friesen and Sons",
-				"Gutkowski, Braun and Jakubowski",
-				"Kautzer and Sons"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://complete-standoff.org/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "e-commerce"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Greenholt - Barton",
-			"headquarters": "Monterey Park",
-			"headquartersPostalCode": "50937-5366",
-			"sector": "synergies",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"1llXu2Fg15ar"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"YvOXKfzGE"
-				],
-				"VatNumber": [
-					"eXxQWd2o4"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "SI",
-			"companyAlternativeNames": [
-				"Breitenberg, Wiegand and Hettinger",
-				"King - Powlowski",
-				"Lind, Keebler and Ruecker",
-				"Rogahn, Kemmer and Denesik"
-			],
-			"companyLegalForm": null,
-			"website": "https://firm-change.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "schemas"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Schaden - Brakus",
-			"headquarters": "Vaughncester",
-			"headquartersPostalCode": "85059-5639",
-			"sector": "markets",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"TuT9SVw88cjE"
-				],
-				"PermId": [
-					"kKUKtK03Pk"
-				],
-				"Ticker": [
-					"xMbYQjH"
-				],
-				"Duns": [
-					"svoPteZlS"
-				],
-				"VatNumber": [
-					"6A9lfs02b"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "SY",
-			"companyAlternativeNames": [
-				"Brown, Schneider and Pouros",
-				"Jakubowski - Abernathy",
-				"Mayer LLC"
-			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://jagged-bloom.net",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "experiences"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Stark, Pouros and Ankunding",
-			"headquarters": "New Louie",
-			"headquartersPostalCode": null,
-			"sector": "applications",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"Km2WvwkUzHgX",
-					"PD0PWVg1jDox"
-				],
-				"PermId": [
-					"APEDpijqq5"
-				],
-				"Ticker": [],
-				"Duns": [
-					"WuQ7ljCYT"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"V9cS23u07rusm4c"
-				]
-			},
-			"countryCode": "PF",
-			"companyAlternativeNames": [
-				"DuBuque, Medhurst and Christiansen",
-				"Hyatt, Buckridge and Hintz",
-				"Johnson, Hodkiewicz and Hudson",
-				"Okuneva and Sons"
-			],
-			"companyLegalForm": null,
-			"website": null,
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "bandwidth"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Larson Group",
-			"headquarters": "North Goldenborough",
-			"headquartersPostalCode": null,
-			"sector": "technologies",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"UhKV8hSEukYA",
-					"evbMmFINZoBf"
-				],
-				"PermId": [
-					"vgsoQ5AUjV"
-				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"Lx79LyB3VLKQKLg"
-				]
-			},
-			"countryCode": "LS",
-			"companyAlternativeNames": [
-				"Christiansen LLC",
-				"Kulas - Oberbrunner",
-				"McGlynn, Waters and Padberg",
-				"Pfannerstill LLC"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://imperfect-yahoo.info",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "content"
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "D'Amore - Osinski",
-			"headquarters": "Tevinberg",
-			"headquartersPostalCode": "24747",
-			"sector": "relationships",
-			"identifiers": {
 				"Lei": [
-					"AFDnpNzuvsdfyGZv1n6t"
+					"kUPgD2AE2Xk9BVOqhJOw"
 				],
 				"Isin": [
-					"DIptvce80zaw",
-					"GjnEbEZKfGaP"
+					"G5bW6cX8ObKR"
+				],
+				"PermId": [
+					"LJwl11qzw7"
+				],
+				"Ticker": [
+					"gFLY2lz"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"B3OyydG5R"
+				],
+				"CompanyRegistrationNumber": [
+					"b4G7hWia7FlZLtz"
+				]
+			},
+			"countryCode": "FI",
+			"companyAlternativeNames": [
+				"Monahan - Olson"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "systems"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "networks",
+					"qualitaetssicherungsprozess": null
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hoeger, Mayer and Hamill",
+			"headquarters": "New Keegan",
+			"headquartersPostalCode": "88249-5359",
+			"sector": "supply-chains",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"ZXv0MuRgMgjT"
 				],
 				"PermId": [],
-				"Ticker": [
-					"fyl2Bsg"
-				],
+				"Ticker": [],
 				"Duns": [
-					"B6UMmbZQY"
+					"9PC7u7lzc"
 				],
-				"VatNumber": [],
+				"VatNumber": [
+					"RdEtrviEm"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MX",
+			"countryCode": "NA",
 			"companyAlternativeNames": [
-				"Marquardt, Kautzer and Bruen",
-				"Schiller, Purdy and Rempel"
+				"Bernier, Schamberger and Conroy",
+				"Lesch Group",
+				"McGlynn - Nader",
+				"Turcotte, Kirlin and Ortiz"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": null,
+			"companyLegalForm": null,
+			"website": "https://limited-zither.biz/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "markets"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "methodologies",
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Braun, Nienow and Treutel",
+			"headquarters": "Jenniehaven",
+			"headquartersPostalCode": "72460",
+			"sector": "architectures",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"xpGdfbLk3ZBo",
+					"M7y4Zpkaf2Xj"
+				],
+				"PermId": [
+					"LkchW98EVR"
+				],
+				"Ticker": [
+					"RqjpKAP"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"aG2ZHl6S5"
+				],
+				"CompanyRegistrationNumber": [
+					"9xkTn8cu94EYbiO"
+				]
+			},
+			"countryCode": "DJ",
+			"companyAlternativeNames": [
+				"Kub, Johns and Wisoky"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://bustling-prizefight.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"datenanbieter": {
 					"unternehmenseigentumUndEigentuemerstruktur": "interfaces"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "communities",
+					"qualitaetssicherungsprozess": "No"
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2019"
 	},
 	{
 		"companyInformation": {
-			"companyName": "Shields - Schoen",
-			"headquarters": "Gibsonboro",
-			"headquartersPostalCode": "96684-3718",
-			"sector": "applications",
+			"companyName": "Goodwin, Kiehn and Wiza",
+			"headquarters": "Charlotte",
+			"headquartersPostalCode": null,
+			"sector": "web services",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"nHKwDJPHlS24",
-					"oHfuMCuZ8ejv"
+					"lYf369FRlPDb"
 				],
-				"PermId": [
-					"swPbPT7EBZ"
+				"PermId": [],
+				"Ticker": [
+					"WGlKcHm"
 				],
-				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"4sLfgxFkV"
+					"4ReO8gdWs"
 				],
 				"CompanyRegistrationNumber": [
-					"GOxbZfjDfoNIeuR"
+					"e8TNeJda4yqTXDf"
 				]
 			},
-			"countryCode": "MQ",
+			"countryCode": "PK",
 			"companyAlternativeNames": [
-				"Dooley, Schmidt and Kunde",
-				"Hermiston - Schoen",
-				"Hettinger Group",
-				"Klocko - Gerhold"
+				"Gerlach, Cremin and Wilkinson",
+				"Keebler LLC",
+				"Kemmer - Dickinson",
+				"Quigley LLC"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://unhappy-vet.biz/",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://lighthearted-young.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "deliverables"
+					"unternehmenseigentumUndEigentuemerstruktur": null
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "communities",
+					"qualitaetssicherungsprozess": "No"
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2023"
 	},
 	{
 		"companyInformation": {
-			"companyName": "Adams - Walter",
-			"headquarters": "McDermottcester",
-			"headquartersPostalCode": "97503",
-			"sector": "lifetime value",
+			"companyName": "Schaden - Frami",
+			"headquarters": "Kertzmannfort",
+			"headquartersPostalCode": null,
+			"sector": null,
 			"identifiers": {
 				"Lei": [
-					"p4HczLMmWnLtoTWmfmQM"
+					"cqEZZ3cKI7l4DuAPE3ZS"
 				],
 				"Isin": [
-					"xfT4HxWHOrT8",
-					"n3j9ezHScHTO"
+					"xdMZq65say8W"
 				],
-				"PermId": [],
+				"PermId": [
+					"ibGwcO8aub"
+				],
 				"Ticker": [],
-				"Duns": [
-					"TGKedX7Cq"
+				"Duns": [],
+				"VatNumber": [
+					"w7LOBcv1N"
 				],
-				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BN",
+			"countryCode": "BY",
 			"companyAlternativeNames": [
-				"Dibbert and Sons"
+				"Torp Inc"
 			],
-			"companyLegalForm": null,
+			"companyLegalForm": "AG",
+			"website": "https://free-mustard.biz",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "niches"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "partnerships",
+					"qualitaetssicherungsprozess": null
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Crona - Schroeder",
+			"headquarters": "Auroretown",
+			"headquartersPostalCode": "91379",
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [
+					"ncFnIIAygLHcnO9D2JFi"
+				],
+				"Isin": [
+					"WDiEkQIAxkPE",
+					"0mVUVKyDH3Jr"
+				],
+				"PermId": [
+					"2VxWebbfE1"
+				],
+				"Ticker": [],
+				"Duns": [
+					"bHeRUfTEY"
+				],
+				"VatNumber": [
+					"4u8hIK2vI"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MM",
+			"companyAlternativeNames": [
+				"Will - McClure"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
 			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "metrics"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Wolf and Sons",
-			"headquarters": "Randyworth",
-			"headquartersPostalCode": "35919",
-			"sector": "ROI",
-			"identifiers": {
-				"Lei": [
-					"sFQoK73X8MnTwVjqm9Kd"
-				],
-				"Isin": [
-					"WKXL909q1po8"
-				],
-				"PermId": [
-					"COHXxvb8A9"
-				],
-				"Ticker": [],
-				"Duns": [
-					"Z0zymgamR"
-				],
-				"VatNumber": [
-					"L2a4Vs1sD"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "GS",
-			"companyAlternativeNames": [
-				"Kertzmann Group",
-				"Terry - Nolan"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://stark-scrambled.info/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "experiences"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Johns, Dibbert and Zulauf",
-			"headquarters": "Edina",
-			"headquartersPostalCode": "88353-4371",
-			"sector": "communities",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"qI5CniHly44p",
-					"tfkteSu8ybHX"
-				],
-				"PermId": [],
-				"Ticker": [
-					"8YEv4H4"
-				],
-				"Duns": [
-					"8j5cj33dv"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "KZ",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH",
-			"website": "https://illiterate-kimono.info",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "lifetime value"
+					"unternehmenseigentumUndEigentuemerstruktur": "technologies"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "bandwidth",
+					"qualitaetssicherungsprozess": null
 				}
 			}
 		},
@@ -1044,673 +323,46 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Vandervort, Grant and Mertz",
-			"headquarters": "New Freddyberg",
-			"headquartersPostalCode": "83827-6585",
+			"companyName": "Herman - Hoeger",
+			"headquarters": "San Buenaventura (Ventura)",
+			"headquartersPostalCode": "78560-8174",
 			"sector": null,
 			"identifiers": {
 				"Lei": [
-					"zZf2mjIuN08cgDzpXP57"
+					"zwTYuCzdI8JRVF3dQSZc"
 				],
 				"Isin": [
-					"0ePa8PM45x6l"
+					"zKFFAk8lgTNz",
+					"mGn5ZTI8x88c"
 				],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"XkTdg1p8m"
+					"awAgXKdS7"
 				],
 				"VatNumber": [
-					"xROBq1F8t"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "GU",
-			"companyAlternativeNames": [
-				"Bode, Lesch and Morissette",
-				"Herman, Reilly and Corwin",
-				"Tromp, Sporer and Mitchell"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://adept-movie.name/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "metrics"
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Reilly Group",
-			"headquarters": "South Loraland",
-			"headquartersPostalCode": "40902-4857",
-			"sector": "metrics",
-			"identifiers": {
-				"Lei": [
-					"ph7lfwXtzxVJv1DsYEay"
-				],
-				"Isin": [
-					"oIhKEjWnHvIq",
-					"PFRsU3dTeSfR"
-				],
-				"PermId": [
-					"LCuI0c4jTe"
-				],
-				"Ticker": [],
-				"Duns": [
-					"Y2VPeuAG2"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "BI",
-			"companyAlternativeNames": [
-				"Kuphal - Becker",
-				"Spinka - Mann"
-			],
-			"companyLegalForm": null,
-			"website": "https://glorious-desire.net",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "schemas"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Farrell, Hilpert and Kuphal",
-			"headquarters": "Boston",
-			"headquartersPostalCode": "10418-7246",
-			"sector": null,
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"y2KNtcZnjc00",
-					"0SI2Qs8npeNv"
-				],
-				"PermId": [
-					"4XWRdDiQDZ"
-				],
-				"Ticker": [
-					"j1hN130"
-				],
-				"Duns": [
-					"WK9H22l5Y"
-				],
-				"VatNumber": [
-					"bxH5nEo9y"
+					"d6TgCYVWx"
 				],
 				"CompanyRegistrationNumber": [
-					"xNWxgXRXNSdQrdN"
+					"b8P8IMszKGETBdF"
 				]
 			},
-			"countryCode": "JO",
+			"countryCode": "MG",
 			"companyAlternativeNames": [
-				"Cummerata Group",
-				"Hoppe, Kling and Langosh",
-				"Weimann Group"
+				"Wolff, Reynolds and Kuhic"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://delightful-quiche.name/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "initiatives"
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Bosco, Cormier and Renner",
-			"headquarters": "South Davin",
-			"headquartersPostalCode": null,
-			"sector": "functionalities",
-			"identifiers": {
-				"Lei": [
-					"Qe2pDzBGs4RoCgXcPRLW"
-				],
-				"Isin": [
-					"28RQ4MiwCs6y",
-					"P7ZloYf20qND"
-				],
-				"PermId": [],
-				"Ticker": [
-					"qOhR9HB"
-				],
-				"Duns": [
-					"7v6LEr0DC"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"ajwBYUqAXInNVo8"
-				]
-			},
-			"countryCode": "MS",
-			"companyAlternativeNames": [
-				"Glover - Maggio"
-			],
-			"companyLegalForm": null,
-			"website": "https://repentant-permission.name/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "supply-chains"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Thompson, Morissette and Ledner",
-			"headquarters": "Lincoln",
-			"headquartersPostalCode": "56118-2191",
-			"sector": "supply-chains",
-			"identifiers": {
-				"Lei": [
-					"ZQNcHxRPVAI3bzKLdf6t"
-				],
-				"Isin": [
-					"ZlHHVFaZV2Yh"
-				],
-				"PermId": [],
-				"Ticker": [
-					"nEMrfSj"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "LA",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://smooth-volume.name",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": null
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Pagac and Sons",
-			"headquarters": "New Laney",
-			"headquartersPostalCode": null,
-			"sector": "users",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"SwPTamNpw9rd"
-				],
-				"PermId": [
-					"rldCbsYEWg"
-				],
-				"Ticker": [
-					"biJPwoa"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"aNtZKvzAb"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "CN",
-			"companyAlternativeNames": [
-				"Stracke and Sons"
-			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://austere-squatter.net/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": null
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Sporer, Renner and Sawayn",
-			"headquarters": "Schillerstead",
-			"headquartersPostalCode": "94863-0560",
-			"sector": "platforms",
-			"identifiers": {
-				"Lei": [
-					"D91WrZRsNMXslV6AlJwO"
-				],
-				"Isin": [
-					"7RKYf5QGxAgd",
-					"UDB0uPvf6cdm"
-				],
-				"PermId": [
-					"AJDhLYwZMa"
-				],
-				"Ticker": [
-					"UiiCSJ3"
-				],
-				"Duns": [
-					"5RV2qOyJf"
-				],
-				"VatNumber": [
-					"9oL9w4eDM"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "SN",
-			"companyAlternativeNames": [
-				"Goldner Inc",
-				"Lubowitz LLC",
-				"Pouros - Mayer",
-				"Skiles - Brown"
-			],
-			"companyLegalForm": null,
-			"website": "https://key-ad.com",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://organic-shaw.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"datenanbieter": {
 					"unternehmenseigentumUndEigentuemerstruktur": "users"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Padberg, Mitchell and Daugherty",
-			"headquarters": "Fort Kayliestad",
-			"headquartersPostalCode": "64287",
-			"sector": "communities",
-			"identifiers": {
-				"Lei": [
-					"IJz7HAvRZoZYUUSaZarS"
-				],
-				"Isin": [
-					"zvWU8VvMaWFm"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"pZinqWczQjf7EAp"
-				]
-			},
-			"countryCode": "KM",
-			"companyAlternativeNames": [
-				"Hahn, Reichel and Gleichner",
-				"Legros and Sons",
-				"O'Connell - Bednar"
-			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://which-sulfur.org",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "lifetime value"
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Wehner, Price and Hauck",
-			"headquarters": "Lake Trevion",
-			"headquartersPostalCode": "81932",
-			"sector": null,
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"sz9ouiUXBF13",
-					"ZVG1eQwNK3iT"
-				],
-				"PermId": [],
-				"Ticker": [
-					"abGflYC"
-				],
-				"Duns": [
-					"tj56qTBiF"
-				],
-				"VatNumber": [
-					"OkO8Wvsxs"
-				],
-				"CompanyRegistrationNumber": [
-					"eKl52MCFmIyVDJs"
-				]
-			},
-			"countryCode": "ES",
-			"companyAlternativeNames": [
-				"Feil Group",
-				"Wuckert Inc"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": null,
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": null
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Carter Inc",
-			"headquarters": "West Maribel",
-			"headquartersPostalCode": "29786",
-			"sector": "partnerships",
-			"identifiers": {
-				"Lei": [
-					"y2t7wWmOGzLLIA83KhPL"
-				],
-				"Isin": [
-					"58DQhy6fY5mi",
-					"dEZScL1jEbbr"
-				],
-				"PermId": [
-					"tkXAQT6ZPM"
-				],
-				"Ticker": [
-					"rFrAchx"
-				],
-				"Duns": [
-					"mZoeDSpKi"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "EH",
-			"companyAlternativeNames": [
-				"Conn, Kuphal and Mertz",
-				"Cruickshank, Waelchi and King",
-				"O'Connell, Reichel and Kessler"
-			],
-			"companyLegalForm": null,
-			"website": "https://shimmering-jelly.info/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": null
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Gusikowski - Kuphal",
-			"headquarters": "Wisozkfort",
-			"headquartersPostalCode": "09150-0521",
-			"sector": "metrics",
-			"identifiers": {
-				"Lei": [
-					"P2x36XS5QKd0UoCawRfT"
-				],
-				"Isin": [
-					"23Qv8r9sq66U",
-					"PUuMF2n9IYtz"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "CR",
-			"companyAlternativeNames": [
-				"Boyer, Stiedemann and Schmitt",
-				"Wintheiser - Schroeder"
-			],
-			"companyLegalForm": null,
-			"website": "https://demanding-junker.com",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "e-markets"
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Towne - Schiller",
-			"headquarters": "Pourosland",
-			"headquartersPostalCode": "76634-7769",
-			"sector": "blockchains",
-			"identifiers": {
-				"Lei": [
-					"riLejfw1l9cqGRO4qkgG"
-				],
-				"Isin": [
-					"i0ExCQGjJspe"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"cFmKvjdl1"
-				],
-				"VatNumber": [
-					"0CnyqcAuN"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "MS",
-			"companyAlternativeNames": [
-				"Schneider - Torp"
-			],
-			"companyLegalForm": null,
-			"website": "https://stormy-highlight.org",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "mindshare"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Prosacco and Sons",
-			"headquarters": "Fort Mackshire",
-			"headquartersPostalCode": "38407",
-			"sector": "infrastructures",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"vyvJL3upFJ1C",
-					"vVAecDcr0AMn"
-				],
-				"PermId": [],
-				"Ticker": [
-					"bONF6en"
-				],
-				"Duns": [
-					"PMBw9OmVa"
-				],
-				"VatNumber": [
-					"Vrca5KrJ5"
-				],
-				"CompanyRegistrationNumber": [
-					"g1lhxG2ni7gACVn"
-				]
-			},
-			"countryCode": "EC",
-			"companyAlternativeNames": [
-				"Haag LLC",
-				"Tromp, Zemlak and McCullough"
-			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://total-migration.name/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": null
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Gutkowski, Lockman and Windler",
-			"headquarters": "South Lessie",
-			"headquartersPostalCode": "41516-1166",
-			"sector": "infrastructures",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"bxdE7d6Sy9Sf",
-					"IejMP6DrMWlI"
-				],
-				"PermId": [
-					"eYCzhhVdu5"
-				],
-				"Ticker": [
-					"C9mDO2d"
-				],
-				"Duns": [
-					"CZZpOuSWg"
-				],
-				"VatNumber": [
-					"lF3VFSidh"
-				],
-				"CompanyRegistrationNumber": [
-					"eFm1t8gKhXY9Cjq"
-				]
-			},
-			"countryCode": "MH",
-			"companyAlternativeNames": [
-				"Turner, Koelpin and Swift",
-				"VonRueden, Konopelski and Reynolds"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://careful-sari.com",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": null
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Ziemann - Cole",
-			"headquarters": "Dickiborough",
-			"headquartersPostalCode": "43087",
-			"sector": "users",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"dSLYW7j5kt5B",
-					"FlzmAq6lisZM"
-				],
-				"PermId": [],
-				"Ticker": [
-					"xY8Uz0l"
-				],
-				"Duns": [
-					"gZtchYxYg"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "TN",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://ill-fated-revenge.name",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": null
-				}
-			}
-		},
-		"reportingPeriod": "2020"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Jakubowski LLC",
-			"headquarters": "Waukesha",
-			"headquartersPostalCode": "92257-4377",
-			"sector": "lifetime value",
-			"identifiers": {
-				"Lei": [
-					"XAxqWAMy9qqsg2JOzubO"
-				],
-				"Isin": [
-					"gIXWgmNalMiM"
-				],
-				"PermId": [],
-				"Ticker": [
-					"qFvYpdy"
-				],
-				"Duns": [
-					"dmbMfzgsv"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "CC",
-			"companyAlternativeNames": [
-				"Emard Group",
-				"Lueilwitz, Wehner and Cummerata",
-				"Spencer and Sons"
-			],
-			"companyLegalForm": "AG",
-			"website": null,
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": null
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "convergence",
+					"qualitaetssicherungsprozess": "Yes"
 				}
 			}
 		},
@@ -1718,166 +370,42 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Gutkowski Group",
-			"headquarters": "Daisyboro",
-			"headquartersPostalCode": "05131-4100",
-			"sector": "methodologies",
+			"companyName": "Torp Group",
+			"headquarters": "Livonia",
+			"headquartersPostalCode": null,
+			"sector": "relationships",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"R4BQl0oIbrSx",
-					"KGPlEPTe2NeP"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"7tsGYr8ZN"
-				],
-				"VatNumber": [
-					"GtL7uEfSt"
-				],
-				"CompanyRegistrationNumber": [
-					"b9yzYTEnTgvXmC5"
-				]
-			},
-			"countryCode": "CF",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH",
-			"website": "https://those-pasta.net",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": null
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Ziemann, Kreiger and Schultz",
-			"headquarters": "Murphyport",
-			"headquartersPostalCode": "54074-7308",
-			"sector": "relationships",
-			"identifiers": {
-				"Lei": [
-					"Vh6b0CScz95nH1nPutHg"
-				],
-				"Isin": [
-					"dOdWWUEdB4zs"
+					"VlxZoOpbz5Mg",
+					"EFdSVVM1eFi3"
 				],
 				"PermId": [
-					"17Swx6vWNF"
+					"3wmZ7RCQxY"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"aZd1Pwp"
+				],
 				"Duns": [
-					"5riUSZDEP"
+					"e8rHeT7Bx"
 				],
-				"VatNumber": [
-					"wDic3dNrJ"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "US",
-			"companyAlternativeNames": [
-				"Boyle - Crooks",
-				"Grimes, Rice and Robel",
-				"Wilkinson, Torp and Wyman",
-				"Ziemann - Kohler"
-			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://turbulent-loss.name",
+			"countryCode": "DO",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"datenanbieter": {
 					"unternehmenseigentumUndEigentuemerstruktur": "methodologies"
-				}
-			}
-		},
-		"reportingPeriod": "2019"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Hermann, Barrows and Schumm",
-			"headquarters": "East Markusside",
-			"headquartersPostalCode": null,
-			"sector": null,
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"bzjb4rwdhcNv"
-				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"c3gbZNlTq"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "WS",
-			"companyAlternativeNames": [
-				"Borer - Grant",
-				"Romaguera - Balistreri"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://monthly-lamp.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "technologies"
-				}
-			}
-		},
-		"reportingPeriod": "2022"
-	},
-	{
-		"companyInformation": {
-			"companyName": "Hegmann LLC",
-			"headquarters": "Naderstad",
-			"headquartersPostalCode": "37596",
-			"sector": "markets",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"2Tbp26IwlsHj",
-					"FlRlm88AEgrh"
-				],
-				"PermId": [
-					"Mo3li0RO2N"
-				],
-				"Ticker": [
-					"6otRGHE"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"DndgeDdO2"
-				],
-				"CompanyRegistrationNumber": [
-					"tMDbJB7Q14stYkS"
-				]
-			},
-			"countryCode": "CN",
-			"companyAlternativeNames": [
-				"Grady, Bode and Powlowski",
-				"Greenholt, Glover and Brekke",
-				"Rohan - Harris",
-				"Runolfsdottir Inc"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://taut-availability.biz/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "models"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "e-commerce",
+					"qualitaetssicherungsprozess": "No"
 				}
 			}
 		},
@@ -1885,74 +413,179 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Schneider, Murazik and Collier",
-			"headquarters": "Troy",
-			"headquartersPostalCode": "75072",
-			"sector": "solutions",
+			"companyName": "VonRueden, Morissette and Schinner",
+			"headquarters": "Nolancester",
+			"headquartersPostalCode": null,
+			"sector": "models",
 			"identifiers": {
 				"Lei": [
-					"44rtksHEI3ANF7QJsScW"
+					"UBS2ddy2HH95v8KoYAKR"
 				],
 				"Isin": [
-					"DXE1K5e7KRzM"
+					"9qEj4UQpPIXi",
+					"FTwR3Q2tWojq"
 				],
 				"PermId": [
-					"6X5TNQLQMg"
+					"ntlLE8jof2"
 				],
+				"Ticker": [
+					"cxQcWcw"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"5hYxJffJn"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "FI",
+			"companyAlternativeNames": [
+				"Effertz and Sons",
+				"Graham and Sons",
+				"Littel, Bartoletti and Keebler",
+				"Pollich Group"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://defiant-netball.name",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "systems"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "relationships",
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hermiston, Marquardt and Johnson",
+			"headquarters": "Littleton",
+			"headquartersPostalCode": "31494-6922",
+			"sector": "functionalities",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"tBwMV6IwFalO"
+				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"MMMNfPbnC"
+					"r7dlpIhE4"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"mVFCLfTdrYF7lBL"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "LC",
+			"countryCode": "VC",
 			"companyAlternativeNames": [],
 			"companyLegalForm": null,
-			"website": "https://informal-paramedic.info/",
+			"website": "https://boiling-standard.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"datenanbieter": {
 					"unternehmenseigentumUndEigentuemerstruktur": "experiences"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "ROI",
+					"qualitaetssicherungsprozess": "Yes"
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2022"
 	},
 	{
 		"companyInformation": {
-			"companyName": "Hauck - Kunze",
-			"headquarters": "Astridberg",
-			"headquartersPostalCode": "16854",
-			"sector": "networks",
+			"companyName": "Jerde - Hettinger",
+			"headquarters": "New Roxane",
+			"headquartersPostalCode": null,
+			"sector": null,
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"cV4DaUKRxm7w",
-					"FU420m6JpYf3"
+					"WtqcjCMLMExj",
+					"UUAOxtOvodSt"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"7ly9yOpKM"
+				"PermId": [
+					"lQ6J4AZVbI"
 				],
+				"Ticker": [
+					"zc2OXCo"
+				],
+				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"6ZSfrOppzs2fJsn"
+				]
 			},
-			"countryCode": "PL",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://salty-vessel.com/",
+			"countryCode": "KI",
+			"companyAlternativeNames": [
+				"Fay, Spinka and Reichel",
+				"Leannon, Schiller and Wiza"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://helpful-overnighter.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "technologies"
+					"unternehmenseigentumUndEigentuemerstruktur": null
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "solutions",
+					"qualitaetssicherungsprozess": null
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Von Group",
+			"headquarters": "Fort Patrick",
+			"headquartersPostalCode": "07664",
+			"sector": "blockchains",
+			"identifiers": {
+				"Lei": [
+					"QRMfEcbowQOToI0JZT5c"
+				],
+				"Isin": [
+					"d3SxMVWxqUfS"
+				],
+				"PermId": [
+					"XNqqQ5Jad0"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"Go5XcOGtG"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CY",
+			"companyAlternativeNames": [
+				"Daugherty - Willms",
+				"Lakin, Considine and Sporer",
+				"Schultz Inc"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://tremendous-ophthalmologist.name/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": null
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "experiences",
+					"qualitaetssicherungsprozess": null
 				}
 			}
 		},
@@ -1960,45 +593,42 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Miller Inc",
-			"headquarters": "Victorfort",
-			"headquartersPostalCode": "27951",
-			"sector": "action-items",
+			"companyName": "Jacobi - Murazik",
+			"headquarters": "Lake Tara",
+			"headquartersPostalCode": "12340-2895",
+			"sector": "applications",
 			"identifiers": {
-				"Lei": [
-					"lreAIb0T9VxGrDg2Brjv"
-				],
+				"Lei": [],
 				"Isin": [
-					"BIW1kVAtN9gQ",
-					"CVHBZRodUPVh"
+					"Sj5CtCoSmnn6",
+					"BaYQpA1HTptm"
 				],
-				"PermId": [
-					"7kLnA7zNqz"
+				"PermId": [],
+				"Ticker": [
+					"r3xDlsw"
 				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"YjrCMTO3P"
+				"Duns": [
+					"HyFY9rUve"
 				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"HrYpeOuHsbCOhx3"
+					"lFbrgK1e8x2YaJc"
 				]
 			},
-			"countryCode": "MD",
-			"companyAlternativeNames": [
-				"Denesik - Harber",
-				"Macejkovic - Pfannerstill",
-				"O'Reilly - Kuphal",
-				"Weissnat - Green"
-			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://super-degree.biz",
+			"countryCode": "AQ",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH",
+			"website": "https://multicolored-temporary.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"datenanbieter": {
 					"unternehmenseigentumUndEigentuemerstruktur": null
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "initiatives",
+					"qualitaetssicherungsprozess": "No"
 				}
 			}
 		},
@@ -2006,40 +636,318 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Morar Inc",
-			"headquarters": "Tatyanamouth",
+			"companyName": "Stoltenberg LLC",
+			"headquarters": "West Kristopherville",
 			"headquartersPostalCode": null,
-			"sector": "experiences",
+			"sector": "paradigms",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"nU8RDk0Ji1YMNbEXth2b"
+				],
 				"Isin": [
-					"SeDmw9sJZ7dB",
-					"ljtRbgCfoEk5"
+					"hNqTW9Mb97OA",
+					"42H8L9jfAxNe"
+				],
+				"PermId": [
+					"EqEykl6aIM"
+				],
+				"Ticker": [],
+				"Duns": [
+					"HlZZAZUCH"
+				],
+				"VatNumber": [
+					"2kKsSNhAl"
+				],
+				"CompanyRegistrationNumber": [
+					"mypZH0ADhM8nbST"
+				]
+			},
+			"countryCode": "BF",
+			"companyAlternativeNames": [
+				"Langosh Inc"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://better-biplane.net",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "methodologies"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "solutions",
+					"qualitaetssicherungsprozess": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Simonis, Feest and Hirthe",
+			"headquarters": "South Lillyboro",
+			"headquartersPostalCode": null,
+			"sector": "schemas",
+			"identifiers": {
+				"Lei": [
+					"K9LVbpBLVmt1WB4izcF3"
+				],
+				"Isin": [
+					"9J6Fp2QHr3lL",
+					"1FQEgupquoJj"
+				],
+				"PermId": [
+					"QyVYkC4vJF"
+				],
+				"Ticker": [
+					"CElkJaF"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"cUItaVTom"
+				],
+				"CompanyRegistrationNumber": [
+					"Ad1u4Arbs3AbL1D"
+				]
+			},
+			"countryCode": "NR",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://formal-underweight.info/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": null
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "architectures",
+					"qualitaetssicherungsprozess": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Fadel - Miller",
+			"headquarters": "Haskellstead",
+			"headquartersPostalCode": "56164",
+			"sector": "blockchains",
+			"identifiers": {
+				"Lei": [
+					"owe3DTMZLaMacle1rfRY"
+				],
+				"Isin": [
+					"kxolD5AcAVJQ",
+					"Js8Z5SA61siM"
 				],
 				"PermId": [],
 				"Ticker": [
-					"jCryu3g"
+					"GYqoTkw"
 				],
-				"Duns": [
-					"7LKgSPfsD"
+				"Duns": [],
+				"VatNumber": [
+					"0otKjiXtW"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"IWlXfiFXXAPXFaL"
+				]
 			},
-			"countryCode": "KW",
+			"countryCode": "MF",
 			"companyAlternativeNames": [
-				"Bartell - Gibson",
-				"Simonis Group",
-				"Stamm, Ledner and Funk"
+				"Koss Group",
+				"Schinner, Schumm and Roob",
+				"Trantow, Schamberger and Kemmer",
+				"Wilderman Inc"
 			],
 			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://disastrous-chap.net",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"datenanbieter": {
 					"unternehmenseigentumUndEigentuemerstruktur": "technologies"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "models",
+					"qualitaetssicherungsprozess": null
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Jakubowski - Harvey",
+			"headquarters": "Gislasonville",
+			"headquartersPostalCode": "56830",
+			"sector": "portals",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"eQAbqBRmORUK"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"vYKdrHqo5"
+				],
+				"VatNumber": [
+					"1Qx6pOija"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "IM",
+			"companyAlternativeNames": [
+				"Spencer, McClure and Reilly"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://scratchy-waffle.org/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": null
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "web services",
+					"qualitaetssicherungsprozess": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "O'Conner LLC",
+			"headquarters": "Deangelomouth",
+			"headquartersPostalCode": "62475-9274",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"XPbgR4MLpeIy"
+				],
+				"PermId": [
+					"Q6X6E8Fof9"
+				],
+				"Ticker": [
+					"6GORm1w"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"IXBYXkIfQ"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "LB",
+			"companyAlternativeNames": [
+				"Mante - Labadie",
+				"Parker - Reichel",
+				"Rodriguez, Franecki and Bruen"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://agonizing-gale.info",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "paradigms"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "interfaces",
+					"qualitaetssicherungsprozess": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Wiegand Group",
+			"headquarters": "Orvalfield",
+			"headquartersPostalCode": "15309-4662",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"qbEMr8XqbfW9"
+				],
+				"PermId": [
+					"AfzaMtJH57"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"VjhMIrfFs"
+				],
+				"CompanyRegistrationNumber": [
+					"FMyLHzOB4Q4um91"
+				]
+			},
+			"countryCode": "KE",
+			"companyAlternativeNames": [
+				"Conn - Hyatt",
+				"Metz Inc",
+				"Ruecker - Larkin",
+				"Smitham - Muller"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://buoyant-dilapidation.info",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "synergies"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "functionalities",
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bednar - Renner",
+			"headquarters": "Encinitas",
+			"headquartersPostalCode": null,
+			"sector": "bandwidth",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"9bZYPDv01HUF"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BI",
+			"companyAlternativeNames": [
+				"Runte - Halvorson"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "models"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "eyeballs",
+					"qualitaetssicherungsprozess": "Yes"
 				}
 			}
 		},
@@ -2047,43 +955,1312 @@
 	},
 	{
 		"companyInformation": {
-			"companyName": "Botsford, Beatty and Smitham",
-			"headquarters": "Lake Rowena",
-			"headquartersPostalCode": null,
-			"sector": "channels",
+			"companyName": "Kohler LLC",
+			"headquarters": "Carmenworth",
+			"headquartersPostalCode": "07946-9470",
+			"sector": "systems",
+			"identifiers": {
+				"Lei": [
+					"dqRm8gOCG3fhqh8hlbt0"
+				],
+				"Isin": [
+					"sQ7mhdO4mW08"
+				],
+				"PermId": [
+					"mXQl6gyG10"
+				],
+				"Ticker": [],
+				"Duns": [
+					"XctSPM12F"
+				],
+				"VatNumber": [
+					"fCSBNcJ4Y"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TN",
+			"companyAlternativeNames": [
+				"Hamill and Sons",
+				"Lubowitz - Hegmann"
+			],
+			"companyLegalForm": null,
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "ROI"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": null,
+					"qualitaetssicherungsprozess": null
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kautzer - McGlynn",
+			"headquarters": "Levittown",
+			"headquartersPostalCode": "15076",
+			"sector": "technologies",
+			"identifiers": {
+				"Lei": [
+					"SJ20HwEXqppxR7G0P0q7"
+				],
+				"Isin": [
+					"LNzxTaP0t9N0"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"lpsozJtgl"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "IT",
+			"companyAlternativeNames": [
+				"Blick Inc",
+				"Jones - Erdman",
+				"Murray, Becker and Jones"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://plump-tolerance.com/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "users"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "content",
+					"qualitaetssicherungsprozess": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Barton Inc",
+			"headquarters": "Lednershire",
+			"headquartersPostalCode": "31528-5186",
+			"sector": "convergence",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"LmZgRcqYCjgv",
-					"O7ja7rFxo2kW"
+					"tpCJrSkpgIFK"
+				],
+				"PermId": [
+					"X2XS3HYDHX"
+				],
+				"Ticker": [
+					"CAmaSoF"
+				],
+				"Duns": [
+					"wm0p36e3v"
+				],
+				"VatNumber": [
+					"FcIS3tPA9"
+				],
+				"CompanyRegistrationNumber": [
+					"Ri4vRHs35Lgwrp7"
+				]
+			},
+			"countryCode": "HT",
+			"companyAlternativeNames": [
+				"McKenzie Inc"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://celebrated-organising.org/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "deliverables"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "interfaces",
+					"qualitaetssicherungsprozess": null
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Murray and Sons",
+			"headquarters": "DeSoto",
+			"headquartersPostalCode": "57797-2503",
+			"sector": "deliverables",
+			"identifiers": {
+				"Lei": [
+					"mJFWRfICMutfoquI8PiJ"
+				],
+				"Isin": [
+					"WE2IJd0NTehQ"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"xqROiArXq"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "UM",
+			"companyAlternativeNames": [
+				"Abshire, Daniel and Haley",
+				"Balistreri - Gutmann",
+				"Bergnaum, Schultz and McKenzie",
+				"Fritsch, Rogahn and Hagenes"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://active-organization.com",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "mindshare"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "action-items",
+					"qualitaetssicherungsprozess": null
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Paucek, Swaniawski and Stracke",
+			"headquarters": "Kubmouth",
+			"headquartersPostalCode": "92763",
+			"sector": "markets",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"htJ6ruS4MYFa",
+					"C502eG7NSKbs"
+				],
+				"PermId": [
+					"5tDJx1w9M2"
+				],
+				"Ticker": [
+					"7gcjO5Y"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "AQ",
+			"companyAlternativeNames": [
+				"Hane LLC",
+				"Klein - Hudson"
+			],
+			"companyLegalForm": null,
+			"website": "https://brisk-pseudocode.com/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "bandwidth"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "architectures",
+					"qualitaetssicherungsprozess": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Waelchi - Dietrich",
+			"headquarters": "Everettview",
+			"headquartersPostalCode": "17570",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"bChMgRV6lCKi7aM7AvNP"
+				],
+				"Isin": [
+					"miP3lMVMclg0"
 				],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"bpcJO6mzI"
+					"CdeQg1GqD"
 				],
-				"VatNumber": [
-					"wIFUD0kxP"
-				],
-				"CompanyRegistrationNumber": [
-					"MXZhPZFgyUP9RUX"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SC",
+			"countryCode": "PH",
 			"companyAlternativeNames": [
-				"Doyle - Prohaska"
+				"Pfannerstill, Gottlieb and Spinka"
 			],
 			"companyLegalForm": null,
-			"website": "https://tangible-innovation.net",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "mindshare"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "architectures",
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "McClure - Bauch",
+			"headquarters": "South Vivien",
+			"headquartersPostalCode": "33817-1871",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"ANE5q8c2fzAuN5UFptEy"
+				],
+				"Isin": [
+					"ixkOHZv4ohW4"
+				],
+				"PermId": [
+					"Q90cXmvMF6"
+				],
+				"Ticker": [],
+				"Duns": [
+					"iJHjunr2A"
+				],
+				"VatNumber": [
+					"MiSkugy99"
+				],
+				"CompanyRegistrationNumber": [
+					"Ui0GlUGlo8goqF4"
+				]
+			},
+			"countryCode": "LS",
+			"companyAlternativeNames": [
+				"Armstrong, Murphy and Denesik"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://woeful-hike.name",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "synergies"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": null,
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kuphal - Stroman",
+			"headquarters": "Haleytown",
+			"headquartersPostalCode": "13987-9605",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"EjorPqkYeI5r"
+				],
+				"PermId": [
+					"eqfA3tZgz3"
+				],
+				"Ticker": [
+					"P4s2Gah"
+				],
+				"Duns": [
+					"ek426UW9p"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "LV",
+			"companyAlternativeNames": [
+				"Christiansen - Grady"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "users"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "functionalities",
+					"qualitaetssicherungsprozess": null
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Medhurst and Sons",
+			"headquarters": "Delano",
+			"headquartersPostalCode": "46688",
+			"sector": "systems",
+			"identifiers": {
+				"Lei": [
+					"W2fgsSTdlQ0cO7TEMPav"
+				],
+				"Isin": [
+					"M6TntUHj86nG",
+					"4ic3J0D3TjFE"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"7AM07cEMn"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GM",
+			"companyAlternativeNames": [
+				"Cartwright, Ritchie and Mertz",
+				"Grady, Lubowitz and Koelpin",
+				"Pouros Inc"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://beneficial-ephemera.org",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "bandwidth"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "channels",
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Veum - Turner",
+			"headquarters": "North Susieland",
+			"headquartersPostalCode": "25204",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"FysSR5Hx9ozpLHXMfJIe"
+				],
+				"Isin": [
+					"YoEyLmQQ67yj"
+				],
+				"PermId": [
+					"8k2BPqsBy0"
+				],
+				"Ticker": [],
+				"Duns": [
+					"Obuvc49w7"
+				],
+				"VatNumber": [
+					"mINgF217Y"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "LS",
+			"companyAlternativeNames": [
+				"Hickle - Huels",
+				"Lubowitz, Boyer and Mante",
+				"Nader - Heathcote"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://apprehensive-victory.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"datenanbieter": {
 					"unternehmenseigentumUndEigentuemerstruktur": null
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "methodologies",
+					"qualitaetssicherungsprozess": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Lakin and Sons",
+			"headquarters": "Doyleboro",
+			"headquartersPostalCode": "10843",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"BVVFsoEMftYV6A6gyXLv"
+				],
+				"Isin": [
+					"jr2Pv2tMsJWY"
+				],
+				"PermId": [
+					"Fl4EsHXRVl"
+				],
+				"Ticker": [
+					"pT7Dp2x"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "WF",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://thrifty-overflight.net",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "eyeballs"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "convergence",
+					"qualitaetssicherungsprozess": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Walsh - Terry",
+			"headquarters": "Turnerport",
+			"headquartersPostalCode": "80862",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"fUKOjfS1wvGFeIntujok"
+				],
+				"Isin": [
+					"YqsjVqYYVi6J",
+					"sIF6oAfyMHKk"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"k6F9D9oJh"
+				],
+				"VatNumber": [
+					"bmYXvvMu3"
+				],
+				"CompanyRegistrationNumber": [
+					"kQKDHJxkoypTIoJ"
+				]
+			},
+			"countryCode": "MZ",
+			"companyAlternativeNames": [
+				"Heaney - Collier"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "architectures"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "communities",
+					"qualitaetssicherungsprozess": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Conn LLC",
+			"headquarters": "Christashire",
+			"headquartersPostalCode": "01458",
+			"sector": "interfaces",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"e4eTbRUf5Hfo",
+					"lDuELzem1WGs"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"tdEfNEi3k"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SB",
+			"companyAlternativeNames": [
+				"Mayert, Hettinger and Pfeffer",
+				"Sipes and Sons"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://male-inventory.name",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "convergence"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "markets",
+					"qualitaetssicherungsprozess": "No"
 				}
 			}
 		},
 		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hansen - Ledner",
+			"headquarters": "North Helen",
+			"headquartersPostalCode": null,
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"MemJt4Q4A5XCz7WkGkvD"
+				],
+				"Isin": [
+					"mHTbGCjhp4vV"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BO",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": null
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "eyeballs",
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Gerhold - Kihn",
+			"headquarters": "Buffalo",
+			"headquartersPostalCode": "73884-9945",
+			"sector": "bandwidth",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"8hI4Giz00L6c",
+					"buQHdz4M8G1N"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"ixpRfB4US"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"VLqyPeVij1BAaiu"
+				]
+			},
+			"countryCode": "SB",
+			"companyAlternativeNames": [
+				"Kihn, Thompson and Blick"
+			],
+			"companyLegalForm": null,
+			"website": "https://avaricious-contrary.biz/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "ROI"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": null,
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Block - Gusikowski",
+			"headquarters": "Fort Alvahfield",
+			"headquartersPostalCode": "24083",
+			"sector": "systems",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"X6KJzm2A6AVY"
+				],
+				"PermId": [
+					"Dn0k75skk6"
+				],
+				"Ticker": [
+					"OWauwR1"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"ZYC0aaggq2uZlVD"
+				]
+			},
+			"countryCode": "ZA",
+			"companyAlternativeNames": [
+				"Beatty Group",
+				"Brekke, Farrell and Schulist",
+				"Nienow - Brakus",
+				"Spinka Inc"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://unwelcome-handful.info",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": null
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "action-items",
+					"qualitaetssicherungsprozess": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Gusikowski - Berge",
+			"headquarters": "Pansyview",
+			"headquartersPostalCode": "21456",
+			"sector": "solutions",
+			"identifiers": {
+				"Lei": [
+					"iKc7YH6A7lquWJCzbCT4"
+				],
+				"Isin": [
+					"DGFZTqQwHRmb"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"702ysyrSN"
+				],
+				"CompanyRegistrationNumber": [
+					"GsfezZkz5mKe9Xg"
+				]
+			},
+			"countryCode": "BQ",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH",
+			"website": "https://simple-casino.com/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "ROI"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": null,
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Streich, Carroll and Steuber",
+			"headquarters": "Tamarac",
+			"headquartersPostalCode": "80725",
+			"sector": "technologies",
+			"identifiers": {
+				"Lei": [
+					"21EwwugWcpCg8jM3ubjO"
+				],
+				"Isin": [
+					"va1UXM4KBAbw"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"LoRkdMXDq"
+				],
+				"VatNumber": [
+					"thn5QbXmV"
+				],
+				"CompanyRegistrationNumber": [
+					"SrLntUkckfqXmAu"
+				]
+			},
+			"countryCode": "MW",
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": "https://overcooked-devil.org/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "channels"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "convergence",
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Quigley and Sons",
+			"headquarters": "Parisboro",
+			"headquartersPostalCode": "75936",
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"eEy4LKar1ouE",
+					"ZErMVAu3pLEs"
+				],
+				"PermId": [],
+				"Ticker": [
+					"mOAWm3T"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"12jd3o7TB"
+				],
+				"CompanyRegistrationNumber": [
+					"uv0B1y0bp2D7dj0"
+				]
+			},
+			"countryCode": "IN",
+			"companyAlternativeNames": [
+				"Collier and Sons",
+				"Cremin, Emard and Price",
+				"Harvey, Sipes and Mosciski",
+				"MacGyver - Grant"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://neighboring-sunbonnet.net",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "synergies"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "users",
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Satterfield, Grady and Schultz",
+			"headquarters": "Fort Bridgette",
+			"headquartersPostalCode": "09738-2021",
+			"sector": "schemas",
+			"identifiers": {
+				"Lei": [
+					"OoSOxbrTVCtGAU5c2BoH"
+				],
+				"Isin": [
+					"2E1uBVPI7iye",
+					"wo8Z9oMjXjGA"
+				],
+				"PermId": [],
+				"Ticker": [
+					"SsOCst3"
+				],
+				"Duns": [
+					"PvW9KtS6f"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "RE",
+			"companyAlternativeNames": [
+				"Haley Group",
+				"Harris LLC",
+				"Maggio - Corwin"
+			],
+			"companyLegalForm": null,
+			"website": "https://glass-address.com/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "infrastructures"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": null,
+					"qualitaetssicherungsprozess": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Blanda - Cartwright",
+			"headquarters": "Maggioside",
+			"headquartersPostalCode": "18005",
+			"sector": "partnerships",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"UJ9AqByPwcnX"
+				],
+				"PermId": [
+					"6yTLWmrFtG"
+				],
+				"Ticker": [],
+				"Duns": [
+					"JHdjGZ2Qs"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TJ",
+			"companyAlternativeNames": [
+				"Brown, Blick and Emmerich",
+				"Kuhlman Inc",
+				"McLaughlin, Daugherty and Harber"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": null
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "architectures",
+					"qualitaetssicherungsprozess": null
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bechtelar, Schinner and Towne",
+			"headquarters": "Feeneystead",
+			"headquartersPostalCode": "85074",
+			"sector": "metrics",
+			"identifiers": {
+				"Lei": [
+					"qk1Xhh7IC9LyZLs3Rmq6"
+				],
+				"Isin": [
+					"Pk8VRGAq5Xjw"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"2JAcCTAGq"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "NF",
+			"companyAlternativeNames": [
+				"Dicki - Lubowitz",
+				"Murphy, Tremblay and Yundt",
+				"Osinski Inc"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://loyal-warm-up.info/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "networks"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "channels",
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Lang Inc",
+			"headquarters": "New Damien",
+			"headquartersPostalCode": null,
+			"sector": "niches",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"7VKEhwijKCdP"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"f2jUJbgpU"
+				],
+				"CompanyRegistrationNumber": [
+					"2JV0AvNRyzAiHQt"
+				]
+			},
+			"countryCode": "FJ",
+			"companyAlternativeNames": [
+				"Beahan - Beier",
+				"Fritsch Group",
+				"Hilll - Fisher"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://supportive-paramecium.org",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "blockchains"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "technologies",
+					"qualitaetssicherungsprozess": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kertzmann - Ratke",
+			"headquarters": "South Shawna",
+			"headquartersPostalCode": null,
+			"sector": "platforms",
+			"identifiers": {
+				"Lei": [
+					"tPG3ZQymkv0sEPRAgrEm"
+				],
+				"Isin": [
+					"I8a9n3JT00FY",
+					"NHVjVWJykfPz"
+				],
+				"PermId": [
+					"oGMtEOg8GL"
+				],
+				"Ticker": [
+					"Ua3F9Kc"
+				],
+				"Duns": [
+					"58rAsNtAv"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "OM",
+			"companyAlternativeNames": [
+				"Beer LLC",
+				"Douglas, Morissette and Dickens",
+				"Funk and Sons"
+			],
+			"companyLegalForm": null,
+			"website": "https://revolving-minute.name",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "technologies"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "eyeballs",
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2019"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Daniel, DuBuque and Cummerata",
+			"headquarters": "Hirthetown",
+			"headquartersPostalCode": "30412-2870",
+			"sector": "models",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"CigMiVCOOICL"
+				],
+				"PermId": [
+					"GNRjAtQDoN"
+				],
+				"Ticker": [],
+				"Duns": [
+					"DUUKKpjq6"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "AI",
+			"companyAlternativeNames": [
+				"Reilly Group",
+				"Torp and Sons"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://querulous-suede.biz",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "e-commerce"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "applications",
+					"qualitaetssicherungsprozess": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Stamm, Lang and Volkman",
+			"headquarters": "Tannerworth",
+			"headquartersPostalCode": "07541",
+			"sector": "convergence",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"WwtGlQLizPdP",
+					"qxITMeEiAK7q"
+				],
+				"PermId": [
+					"xAbQ7xHAKY"
+				],
+				"Ticker": [
+					"EhfnDqu"
+				],
+				"Duns": [
+					"597qPIpXA"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SM",
+			"companyAlternativeNames": [
+				"Beahan and Sons",
+				"Kirlin, Langosh and Wilkinson",
+				"Larson - Bashirian",
+				"Veum - Gutmann"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://vague-undertaker.net/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "blockchains"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "channels",
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Ratke and Sons",
+			"headquarters": "South Casimer",
+			"headquartersPostalCode": "72408-3190",
+			"sector": "action-items",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"ibEyjdYskx7K",
+					"JWzGCPV8FabZ"
+				],
+				"PermId": [
+					"IcKrfpYN5y"
+				],
+				"Ticker": [
+					"y2HOBZN"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"E1igmqZlS"
+				],
+				"CompanyRegistrationNumber": [
+					"Q7SDgMWnjhh3cQz"
+				]
+			},
+			"countryCode": "CI",
+			"companyAlternativeNames": [
+				"Collins Inc",
+				"Spencer Group",
+				"Wiegand, Baumbach and Hilll",
+				"Wolff - Mraz"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://clumsy-viewer.info",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": null
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "experiences",
+					"qualitaetssicherungsprozess": "Yes"
+				}
+			}
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Pouros - Senger",
+			"headquarters": "Ashtynborough",
+			"headquartersPostalCode": "43514",
+			"sector": "infrastructures",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"c8BwW0gQr0Xo",
+					"pqA6bLuagtTw"
+				],
+				"PermId": [
+					"V8oYnwzcXO"
+				],
+				"Ticker": [
+					"9fHGhTR"
+				],
+				"Duns": [
+					"btRqwQgRM"
+				],
+				"VatNumber": [
+					"plrZvkuPu"
+				],
+				"CompanyRegistrationNumber": [
+					"a7D8uQJvFQoAIU9"
+				]
+			},
+			"countryCode": "OM",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://remarkable-voice.info",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": "partnerships"
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "supply-chains",
+					"qualitaetssicherungsprozess": "No"
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Sporer - Ernser",
+			"headquarters": "Thereseside",
+			"headquartersPostalCode": "02512",
+			"sector": "methodologies",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"FN0wXfY0wcao"
+				],
+				"PermId": [
+					"DbYYaZPGjR"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"OAOtlB2Cv"
+				],
+				"CompanyRegistrationNumber": [
+					"Va7vMRhrEXnrhhh"
+				]
+			},
+			"countryCode": "CK",
+			"companyAlternativeNames": [
+				"Green - Spencer",
+				"McDermott, Watsica and Collins",
+				"Schowalter, Wehner and Feeney"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://evil-incarnation.biz/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"datenanbieter": {
+					"unternehmenseigentumUndEigentuemerstruktur": null
+				},
+				"methodik": {
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "synergies",
+					"qualitaetssicherungsprozess": null
+				}
+			}
+		},
+		"reportingPeriod": "2019"
 	}
 ]

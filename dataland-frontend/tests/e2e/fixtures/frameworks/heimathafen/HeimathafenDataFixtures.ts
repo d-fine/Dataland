@@ -28,6 +28,10 @@ export function generateHeimathafenData(nullProbability = DEFAULT_PROBABILITY): 
       datenanbieter: {
         unternehmenseigentumUndEigentuemerstruktur: dataGenerator.randomShortString(),
       },
+      methodik: {
+        verstaendnisVonNachhaltigkeitAlsTeilDerBewertung: dataGenerator.randomShortString(),
+        qualitaetssicherungsprozess: dataGenerator.randomYesNo(),
+      },
     },
   };
 }
