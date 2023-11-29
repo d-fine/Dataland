@@ -67,7 +67,7 @@ export function getDataModelFieldCellConfig(path: string, field: Field): MLDTCel
       label: field.label,
       explanation: field.description,
       shouldDisplay: (dataset: FrameworkData) =>
-        field.showIf(dataset) && checkToShowFieldsWithNullValue(valueGetter(dataset).displayValue),
+        field.showIf(dataset) && shouldValueBeDisplayed(valueGetter(dataset).displayValue),
       valueGetter: valueGetter,
     };
   } else if (field.component == "UploadReports") {
@@ -83,6 +83,6 @@ export function getDataModelFieldCellConfig(path: string, field: Field): MLDTCel
  * @param value This is the displayValue parsed from the field config
  * @returns boolean to set hidden to true or false
  */
-function checkToShowFieldsWithNullValue(value: MLDTDisplayComponentTypes[MLDTDisplayComponentName]): boolean {
+function shouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDisplayComponentName]): boolean {
   return !!(value && value != "No data provided" && value != "");
 }
