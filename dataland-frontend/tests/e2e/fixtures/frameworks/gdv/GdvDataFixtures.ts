@@ -4,6 +4,7 @@ import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type GdvData } from "@clients/backend";
 import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { ArtDesAuditsOptions } from "@clients/backend";
+import { Activity } from "@clients/backend";
 import { TaxonomieBerichterstattungOptions } from "@clients/backend";
 import { StatusZuGOptions } from "@clients/backend";
 import { StatusZuSOptions } from "@clients/backend";
@@ -11,7 +12,7 @@ import { StatusZuEOptions } from "@clients/backend";
 import { AnreizmechanismenFuerDasManagementSozialesOptions } from "@clients/backend";
 import { AnreizmechanismenFuerDasManagementUmweltOptions } from "@clients/backend";
 import { FrequenzDerBerichterstattungOptions } from "@clients/backend";
-import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
+import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a set number of gdv fixtures
@@ -45,7 +46,7 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       ziele: dataGenerator.randomShortString(),
       investitionen: dataGenerator.randomShortString(),
       sektorMitHohenKlimaauswirkungen: dataGenerator.randomYesNo(),
-      sektor: dataGenerator.valueOrNull(generateNaceCodes(3)),
+      sektor: dataGenerator.valueOrNull(pickSubsetOfElements(["A", "B", "C", "D", "E", "F", "G", "H", "L"])),
       nachhaltigkeitsbericht: dataGenerator.randomYesNo(),
       frequenzDerBerichterstattung: dataGenerator.valueOrNull(
         pickOneElement(Object.values(FrequenzDerBerichterstattungOptions)),
@@ -118,6 +119,7 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         taxonomieBerichterstattung: dataGenerator.valueOrNull(
           pickOneElement(Object.values(TaxonomieBerichterstattungOptions)),
         ),
+        euTaxonomieKompassAktivitaeten: dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity))),
       },
     },
     negativeAktivitaetenFuerDieBiologischeVielfalt: dataGenerator.randomYesNo(),

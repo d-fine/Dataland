@@ -3,6 +3,7 @@ import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
+import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 export const GdvViewConfiguration: MLDTConfig<GdvData> = [
   {
@@ -84,7 +85,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           "Bitte geben Sie an, zu welchen Sektoren (mit hohen Klimaauswirkungen) das Unternehmen zugeordnet werden kann.",
         shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.sektorMitHohenKlimaauswirkungen == "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.allgemein?.sektor),
+          formatListOfStringsForDatatable(dataset.allgemein?.sektor, "Sektor"),
       },
       {
         type: "cell",
@@ -567,6 +568,17 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.gueltigkeitsDatum == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.umwelt?.taxonomie?.taxonomieBerichterstattung),
+          },
+          {
+            type: "cell",
+            label: "EU Taxonomie Kompass Aktivitäten",
+            explanation: "Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.gueltigkeitsDatum == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatListOfStringsForDatatable(
+                dataset.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten,
+                "EU Taxonomie Kompass Aktivitäten",
+              ),
           },
         ],
       },

@@ -7959,6 +7959,13 @@
                 "$ref": "#/components/schemas/TaxonomieBerichterstattungOptions"
               }
             ]
+          },
+          "euTaxonomieKompassAktivitaeten": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
