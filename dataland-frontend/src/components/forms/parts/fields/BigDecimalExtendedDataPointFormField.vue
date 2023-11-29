@@ -13,7 +13,7 @@
       <NumberFormField
         :name="'value'"
         :validation-label="validationLabel"
-        :validation="validation"
+        :validation="shouldBeToggle || required ? 'required' : ''"
         :unit="unit"
         :input-class="inputClass"
       />

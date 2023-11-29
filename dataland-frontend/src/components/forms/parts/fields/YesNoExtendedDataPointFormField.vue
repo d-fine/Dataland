@@ -7,6 +7,7 @@
       :required="required"
       :input-class="inputClass"
       :check-value-validity="hasDataPointProperValue"
+      :show-data-point-fields-without-value="false"
     >
       <YesNoFormField
         name="value"

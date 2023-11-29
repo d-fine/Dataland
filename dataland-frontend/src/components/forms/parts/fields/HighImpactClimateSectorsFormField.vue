@@ -1,5 +1,5 @@
 <template>
-  <div class="form-field">
+  <div class="mb-3">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <div>
       <MultiSelect

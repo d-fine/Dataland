@@ -14,7 +14,10 @@
         <div class="col-12">
           <UploadFormHeader v-if="!shouldBeToggle" :label="label" :description="description" :is-required="required" />
           <slot />
-          <div class="grid align-content-end">
+          <div
+            class="grid align-content-end"
+            v-if="showDataPointFieldsWithoutValue || (dataPoint?.value && dataPoint?.value !== 'No')"
+          >
             <FormKit type="group" name="dataSource">
               <div class="col-8">
                 <UploadFormHeader
@@ -45,9 +48,12 @@
               </div>
             </FormKit>
           </div>
-
           <!-- Data quality -->
-          <div class="md:col-8 col-12 p-0 mb-4" data-test="dataQuality">
+          <div
+            class="md:col-8 col-12 p-0 mb-4"
+            data-test="dataQuality"
+            v-if="showDataPointFieldsWithoutValue || (dataPoint?.value && dataPoint?.value !== 'No')"
+          >
             <UploadFormHeader
               :label="`${label} Quality`"
               description="The level of confidence associated to the value."
@@ -57,6 +63,7 @@
               type="select"
               v-model="qualityValue"
               name="quality"
+              :disabled="!isDataQualityRequired"
               :validation="isDataQualityRequired ? 'required' : ''"
               validation-label="Data quality"
               placeholder="Data quality"
@@ -130,6 +137,7 @@ export default defineComponent({
       qualityValue: "NA",
       currentReportValue: "",
       dataPoint: {} as unknown,
+      dataPointValuesBeforeDataPointWasDisabled: {} as unknown,
     };
   },
 
@@ -143,10 +151,21 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    showDataPointFieldsWithoutValue: {
+      type: Boolean,
+      default: true,
+    },
   },
   watch: {
     isDataValueProvided(isDataValueProvided) {
       this.handleBlurValue(isDataValueProvided);
+    },
+    dataPointIsAvailable(newValue: boolean) {
+      if (!newValue) {
+        this.dataPointValuesBeforeDataPointWasDisabled = this.dataPoint;
+      } else {
+        this.dataPoint = this.dataPointValuesBeforeDataPointWasDisabled;
+      }
     },
   },
   methods: {
