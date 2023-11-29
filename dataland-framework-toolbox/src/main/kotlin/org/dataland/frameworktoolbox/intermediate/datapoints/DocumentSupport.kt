@@ -3,6 +3,8 @@ package org.dataland.frameworktoolbox.intermediate.datapoints
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.template.model.TemplateDocumentSupport
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda
+as FrameworkDisplayValueLambdaUpload
 
 /**
  * A DocumentSupport implementation specified to which degrees evidence is desired / required for this datapoint
@@ -42,6 +44,19 @@ sealed interface DocumentSupport {
         fieldLabel: String?,
         dataPointAccessor: String,
     ): FrameworkDisplayValueLambda
+
+    /**
+     * Calculate a Framework Display Lambda for a datapoint with original lambda innerLambda given the current
+     * DocumentSupport requirements
+     * @param innerLambda a lambda for displaying the underlying datapoint
+     * @param fieldLabel a human-readable label for the field
+     * @param dataPointAccessor a ts-accessor to the containing datapoint
+     */
+    fun getFrameworkDisplayValueLambdaUpload(
+        innerLambda: org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda,
+        fieldLabel: String?,
+        dataPointAccessor: String,
+    ): FrameworkDisplayValueLambdaUpload
 
     /**
      * Calculate a TS-Accessor for getting the value of a datapoint with the current DocumentSupport requirements

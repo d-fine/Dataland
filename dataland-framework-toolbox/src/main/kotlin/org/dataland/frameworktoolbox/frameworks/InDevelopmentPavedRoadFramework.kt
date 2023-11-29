@@ -106,6 +106,18 @@ abstract class InDevelopmentPavedRoadFramework(
         }
     }
 
+    private fun compileUploadModel(datalandProject: DatalandRepository) {
+        val uploadConfig = generateUploadModel(framework)
+        customizeUploadModel(uploadConfig)
+
+        @Suppress("TooGenericExceptionCaught")
+        try {
+            uploadConfig.build(into = datalandProject)
+        } catch (ex: Exception) {
+            logger.error("Could not build framework upload configuration!", ex)
+        }
+    }
+
     override fun compileFramework(datalandProject: DatalandRepository) {
         val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
         val diagnostics = context.getBean<DiagnosticManager>()
@@ -123,6 +135,7 @@ abstract class InDevelopmentPavedRoadFramework(
 
         compileDataModel(datalandProject)
         compileViewModel(datalandProject)
+        compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)

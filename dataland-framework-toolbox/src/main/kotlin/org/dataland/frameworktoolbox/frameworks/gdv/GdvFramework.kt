@@ -17,7 +17,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
     identifier = "gdv",
     label = "GDV/VÖB",
     explanation = "Das GDV/VÖB Framework",
-    File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
+    File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV-VOEB_reduced.csv"),
 ) {
     var excelTemplate: ExcelTemplate? = null
 
