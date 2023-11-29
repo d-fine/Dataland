@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(
     enumAsRef = true,
 )
-enum class TaxonomieBerichterstattungOptions {
-    SingleSelectDropdown,
+enum class TaxonomieBerichterstattungOptions(val value: String) {
+    Nfrd("NFRD"),
+    Csrd("CSRD"),
 }

@@ -2,7 +2,6 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
-import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -23,7 +22,7 @@ open class SingleSelectComponent(
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val enum = dataClassBuilder.parentPackage.addEnum(
             name = "${this.identifier.capitalizeEn()}Options",
-            options = this.options.map { it.identifier.capitalizeEn() }.toMutableSet(),
+            options = this.options,
             comment = "Enum class for the field ${this.identifier}",
         )
         dataClassBuilder.addProperty(
@@ -41,9 +40,11 @@ open class SingleSelectComponent(
             documentSupport.getFrameworkDisplayValueLambda(
                 FrameworkDisplayValueLambda(
                     "formatStringForDatatable(${getTypescriptFieldAccessor(true)})",
+                    // TODO Problem: The ts-version of the enum does only contain the "identifier" of the original enum, not the "value" (which is the label to display)
+
                     setOf(
                         "import { formatStringForDatatable } from " +
-                                "\"@/components/resources/dataTable/conversion/PlainStringValueGetterFactory\";",
+                            "\"@/components/resources/dataTable/conversion/PlainStringValueGetterFactory\";",
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
@@ -53,17 +54,17 @@ open class SingleSelectComponent(
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         val enumName = "${this.identifier.capitalizeEn()}Options"
-                sectionBuilder.addAtomicExpression(
+        sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
-                fixtureExpression = "pickOneElement(Object.values(${enumName}))",
-                nullableFixtureExpression = "dataGenerator.valueOrNull(pickOneElement(Object.values(${enumName})))",
+                fixtureExpression = "pickOneElement(Object.values($enumName))",
+                nullableFixtureExpression = "dataGenerator.valueOrNull(pickOneElement(Object.values($enumName)))",
                 nullable = isNullable,
             ),
             imports = setOf(
                 "import { pickOneElement } from \"@e2e/fixtures/FixtureUtils\";",
-                "import { $enumName } from \"@clients/backend\";"
-            )
+                "import { $enumName } from \"@clients/backend\";",
+            ),
         )
     }
 }

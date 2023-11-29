@@ -97,7 +97,8 @@ class FrameworkViewConfigBuilder(
 
         into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_checkfrontendcompilation"))
 
-        ProcessBuilder("npx", "eslint", "--fix", viewConfigTsPath.toAbsolutePath().toString())
+        // TODO: Marc & Emanuel: We need to check the OS and for Windows use "npx.cmd" and for Linux "npx"
+        ProcessBuilder("npx.cmd", "eslint", "--fix", viewConfigTsPath.toAbsolutePath().toString())
             .directory((into.path / "dataland-frontend").toFile())
             .redirectOutput(ProcessBuilder.Redirect.INHERIT)
             .redirectError(ProcessBuilder.Redirect.INHERIT)

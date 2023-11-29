@@ -11,6 +11,7 @@ data class GdvAllgemein(
     val ziele: String?,
     val investitionen: String?,
     val sektorMitHohenKlimaauswirkungen: YesNo?,
+    val sektor: List<String>?,
     val nachhaltigkeitsbericht: YesNo?,
     val frequenzDerBerichterstattung: FrequenzDerBerichterstattungOptions?,
     val mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze: YesNo?,

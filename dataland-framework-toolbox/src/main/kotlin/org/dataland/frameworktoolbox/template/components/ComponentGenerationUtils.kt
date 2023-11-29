@@ -8,6 +8,7 @@ import org.dataland.frameworktoolbox.template.TemplateDiagnostic
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.dataland.frameworktoolbox.template.model.TemplateYesNo
 import org.dataland.frameworktoolbox.utils.Naming
+import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.springframework.stereotype.Component
 
 /**
@@ -58,8 +59,8 @@ open class ComponentGenerationUtils {
 
         val mappedOptions = stringOptions.map {
             SelectionOption(
-                identifier = Naming.getNameFromLabel(it),
-                label = it
+                identifier = Naming.getNameFromLabel(it).capitalizeEn(),
+                label = it,
             )
         }.toMutableSet()
 

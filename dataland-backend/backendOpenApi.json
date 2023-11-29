@@ -7405,6 +7405,13 @@
               }
             ]
           },
+          "sektor": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
           "nachhaltigkeitsbericht": {
             "nullable": true,
             "allOf": [
@@ -8050,7 +8057,8 @@
       "TaxonomieBerichterstattungOptions": {
         "type": "string",
         "enum": [
-          "SingleSelectDropdown"
+          "Nfrd",
+          "Csrd"
         ]
       },
       "Activity": {

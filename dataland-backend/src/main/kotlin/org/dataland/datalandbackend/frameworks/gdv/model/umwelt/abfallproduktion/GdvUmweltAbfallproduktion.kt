@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.frameworks.gdv.model.umwelt.abfallproduktion
 
-
 /**
  * The data-model for the Abfallproduktion section
  */

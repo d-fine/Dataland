@@ -6,9 +6,9 @@ import io.swagger.v3.oas.annotations.media.Schema
  * Enum class for the field statusZuG
  */
 @Schema(
-enumAsRef = true,
+    enumAsRef = true,
 )
-enum class StatusZuGOptions {
-    Offen,
-    Geklaert,
+enum class StatusZuGOptions(val value: String) {
+    Offen("offen"),
+    Geklaert("geklärt"),
 }
