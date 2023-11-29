@@ -4,9 +4,9 @@ import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.validator.BigDecimalPercentageDataPoint
-import org.dataland.datalandbackend.validator.NonNegativeCurrencyDataPoint
-import org.dataland.datalandbackend.validator.NonNegativeExtendedDataPoint
+import org.dataland.datalandbackend.validator.CurrencyDataPointValidation
+import org.dataland.datalandbackend.validator.ExtendedNumberDataPointValidation
+import org.dataland.datalandbackend.validator.PercentageDataPointValidation
 import java.math.BigDecimal
 
 /**
@@ -48,26 +48,26 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNo>? = null,
 
-    @field:NonNegativeCurrencyDataPoint
+    @field:CurrencyDataPointValidation
     val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
 
-    @field:NonNegativeCurrencyDataPoint
+    @field:CurrencyDataPointValidation
     val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:ExtendedNumberDataPointValidation
     val femaleBoardMembers: ExtendedDataPoint<Long>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:ExtendedNumberDataPointValidation
     val maleBoardMembers: ExtendedDataPoint<Long>? = null,
 
     val controversialWeaponsExposure: ExtendedDataPoint<YesNo>? = null,
 
     val workplaceAccidentPreventionPolicy: BaseDataPoint<YesNo>? = null,
 
-    @field:BigDecimalPercentageDataPoint
+    @field:PercentageDataPointValidation
     val rateOfAccidentsInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:ExtendedNumberDataPointValidation
     val workdaysLostInDays: ExtendedDataPoint<BigDecimal>? = null,
 
     val supplierCodeOfConduct: BaseDataPoint<YesNo>? = null,
@@ -76,13 +76,13 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val whistleblowerProtectionPolicy: BaseDataPoint<YesNo>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:ExtendedNumberDataPointValidation
     val reportedIncidentsOfDiscrimination: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:ExtendedNumberDataPointValidation
     val sanctionedIncidentsOfDiscrimination: ExtendedDataPoint<Long>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:ExtendedNumberDataPointValidation
     val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal>? = null,
 
 )
