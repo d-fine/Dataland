@@ -140,10 +140,9 @@ async function loadDataForDisplay(
   companyId: string,
   singleDataMetaInfoToDisplay?: DataMetaInformation,
 ): Promise<DataAndMetaInformation<FrameworkDataTypes[Framework]["data"]>[]> {
-  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
-  const dataControllerApi = await apiClientProvider.getUnifiedFrameworkDataController<Framework>(
-    props.frameworkIdentifier,
-  );
+  const dataControllerApi = new ApiClientProvider(
+    assertDefined(getKeycloakPromise)(),
+  ).getUnifiedFrameworkDataController<Framework>(props.frameworkIdentifier);
 
   if (singleDataMetaInfoToDisplay) {
     const singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;

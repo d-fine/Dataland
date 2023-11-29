@@ -232,7 +232,7 @@ export default defineComponent({
      */
     async loadLKSGData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const lkSGDataControllerApi = await new ApiClientProvider(
+      const lkSGDataControllerApi = new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
       ).getUnifiedFrameworkDataController(DataTypeEnum.Lksg);
 
@@ -253,7 +253,7 @@ export default defineComponent({
         if (this.documents.size > 0) {
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
-        const lkSGDataControllerApi = await new ApiClientProvider(
+        const lkSGDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.Lksg);
         await lkSGDataControllerApi.postFrameworkData(this.companyAssociatedLksgData);

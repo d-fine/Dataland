@@ -1,4 +1,4 @@
-import { Configuration } from "@clients/backend/configuration";
+import { type Configuration } from "@clients/backend/configuration";
 import { DocumentControllerApi } from "@clients/documentmanager";
 import { QaControllerApi } from "@clients/qaservice";
 import type Keycloak from "keycloak-js";
@@ -96,34 +96,15 @@ export class ApiClientProvider {
     };
   }
 
-  async getConfiguration(): Promise<Configuration | undefined> {
-    const keycloak = await this.keycloakPromise;
-    if (keycloak.authenticated) {
-      await updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
-      return new Configuration({ accessToken: keycloak.token });
-    } else {
-      return undefined;
-    }
-  }
-
-  async getConstructedApi<T>(
-    constructor: new (configuration: Configuration | undefined, basePath: string) => T,
-    basePath = "/api",
-  ): Promise<T> {
-    const configuration = await this.getConfiguration();
-    return new constructor(configuration, basePath);
-  }
-
   /**
    * This function returns a promise to an api controller adaption that is unified across frameworks to allow
    * for creation of generic components that work framework-independent.
    * @param framework The identified of the framework
    * @returns the unified API client
    */
-  async getUnifiedFrameworkDataController<K extends keyof FrameworkDataTypes>(
+  getUnifiedFrameworkDataController<K extends keyof FrameworkDataTypes>(
     framework: K,
-  ): Promise<FrameworkDataApi<FrameworkDataTypes[K]["data"]>> {
-    const configuration = await this.getConfiguration();
-    return getUnifiedFrameworkDataControllerFromConfiguration(framework, configuration, this.axiosInstance);
+  ): FrameworkDataApi<FrameworkDataTypes[K]["data"]> {
+    return getUnifiedFrameworkDataControllerFromConfiguration(framework, undefined, this.axiosInstance);
   }
 }
