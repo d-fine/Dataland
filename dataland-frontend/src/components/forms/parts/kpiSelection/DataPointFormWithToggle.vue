@@ -23,13 +23,14 @@
             <FormKit
               :disabled="!dataPointIsAvailable"
               type="number"
+              data-test="valueAsPercentageInSecondInputMode"
               name="valueAsPercentage"
-              validation-label=""
-              v-model="currentPercentageValue"
+              validation-label="Value"
+              v-model="currentValue"
               :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
               step="any"
               min="0"
-              :validation="valueType === 'percent' ? 'number|between:0,100' : 'number'"
+              validation="number"
               :inner-class="{
                 short: false,
               }"
@@ -43,8 +44,9 @@
             <FormKit
               :disabled="!dataPointIsAvailable"
               type="number"
+              data-test="valueAsAbsoluteInSecondInputMode"
               name="valueAsAbsolute"
-              validation-label=""
+              validation-label="Value"
               v-model="currentAmountValue"
               :placeholder="'Value'"
               step="any"
@@ -65,13 +67,14 @@
         <FormKit
           :disabled="!dataPointIsAvailable"
           type="number"
+          data-test="value"
           name="value"
-          validation-label=""
-          v-model="currentAmountValue"
-          :placeholder="'Value'"
+          validation-label="Value"
+          v-model="currentValue"
+          :placeholder="valueType === 'percent' ? 'Value %' : 'Value'"
           step="any"
           min="0"
-          :validation="'number'"
+          validation="number"
           :inner-class="{
             short: true,
           }"
@@ -125,9 +128,10 @@
         <FormKit
           :disabled="!dataPointIsAvailable"
           type="select"
+          data-test="qualityValue"
           v-model="currentQualityValue"
           name="quality"
-          :validation="dataPointIsAvailable ? 'required' : ''"
+          validation="required"
           validation-label="Data quality"
           placeholder="Data quality"
           :options="qualityOptions"
@@ -165,19 +169,35 @@ export default defineComponent({
       value: qualityOption,
     })),
     currentAmountValue: "",
-    currentPercentageValue: "",
+    currentValue: "",
     currentReportValue: "",
     currentPageValue: "",
     currentQualityValue: "",
+    amountValueBeforeDataPointWasDisabled: "",
+    valueBeforeDataPointWasDisabled: "",
+    reportValueBeforeDataPointWasDisabled: "",
+    pageValueBeforeDataPointWasDisabled: "",
     qualityValueBeforeDataPointWasDisabled: "",
   }),
   watch: {
     dataPointIsAvailable(newValue: boolean) {
       if (!newValue) {
+        this.amountValueBeforeDataPointWasDisabled = this.currentAmountValue;
+        this.valueBeforeDataPointWasDisabled = this.currentValue;
+        this.reportValueBeforeDataPointWasDisabled = this.currentReportValue;
+        this.pageValueBeforeDataPointWasDisabled = this.currentPageValue;
         this.qualityValueBeforeDataPointWasDisabled = this.currentQualityValue;
+        this.currentAmountValue = "";
+        this.currentValue = "";
+        this.currentReportValue = "";
+        this.currentPageValue = "";
         this.currentQualityValue = "NA";
       } else {
         this.currentQualityValue = this.qualityValueBeforeDataPointWasDisabled;
+        this.currentPageValue = this.pageValueBeforeDataPointWasDisabled;
+        this.currentReportValue = this.reportValueBeforeDataPointWasDisabled;
+        this.currentValue = this.valueBeforeDataPointWasDisabled;
+        this.currentAmountValue = this.amountValueBeforeDataPointWasDisabled;
       }
     },
   },
@@ -192,6 +212,7 @@ export default defineComponent({
   props: {
     name: {
       type: String,
+      required: true,
     },
     kpiInfoMappings: {
       type: Object,

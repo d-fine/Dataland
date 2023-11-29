@@ -7,22 +7,27 @@
       left-arrow-classes="quotes__arrow quotes__arrow--left"
       right-arrow-classes="quotes__arrow quotes__arrow--right"
       :slide-count="cards.length"
-      :initial-center-slide="2"
+      :initial-center-slide="initialCenterSlide"
       @update:currentSlide="updateCurrentSlide"
       :scroll-screen-width-limit="1800"
       :slide-width="slideWidth"
     >
-      <div role="listitem" class="quotes__slide">
-        <div class="quotes__slide-videoContainer" />
+      <div v-if="cards.length % 2 === 0" role="listitem" class="quotes__slide">
+        <div class="quotes__slide-videoContainer"></div>
       </div>
       <div v-for="(card, index) in cards" :key="index" role="listitem" class="quotes__slide">
-        <div :class="{ 'quotes__slide-video--zoom-out': currentSlide !== index - 1, 'quotes__slide-video': true }">
+        <div
+          :class="{
+            'quotes__slide-video--zoom-out': currentSlide !== index - initialCenterSlide + 1,
+            'quotes__slide-video': true,
+          }"
+        >
           <div :id="'video-' + card.icon" class="cookieconsent-optin-marketing"></div>
           <div
             class="quotes__slide-thumbnail-overlay cookieconsent-optin-marketing"
             :style="{ backgroundImage: `url(https://img.youtube.com/vi/${card.icon}/maxresdefault.jpg)` }"
-            v-show="currentSlide === index - 1 ? showThumbnail : true"
-            @click="toggleThumbnailAndPlayVideo(index - 1, card.icon)"
+            v-show="currentSlide === index - initialCenterSlide + 1 ? showThumbnail : true"
+            @click="toggleThumbnailAndPlayVideo(index - initialCenterSlide + 1, card.icon)"
           >
             <div class="quotes__play-icon">
               <div class="quotes__play-arrow"></div>
@@ -31,7 +36,7 @@
           <div
             class="quotes__slide-thumbnail-overlay cookieconsent-optout-marketing"
             :style="{ backgroundImage: `url(https://img.youtube.com/vi/${card.icon}/maxresdefault.jpg)` }"
-            v-show="currentSlide === index - 1 ? showThumbnail : true"
+            v-show="currentSlide === index - initialCenterSlide + 1 ? showThumbnail : true"
           >
             <div class="quotes__play-icon" @click="renewCookieConsent">
               <div class="quotes__play-arrow"></div>
@@ -110,9 +115,16 @@ const cards = computed(() => quotesSection.value?.cards ?? []);
 const currentSlide = ref(1);
 const slideWidth = ref(640);
 const showThumbnail = ref(true);
+const initialCenterSlide = computed(() => {
+  if (cards.value.length % 2 === 0) {
+    return cards.value.length / 2 - 1;
+  } else {
+    return cards.value.length / 2 - 0.5;
+  }
+});
 
 const currentCardInfo = computed(() => {
-  const card = cards.value[currentSlide.value + 1];
+  const card = cards.value[currentSlide.value + initialCenterSlide.value - 1];
   return {
     date: card?.date,
     title: card?.title,
@@ -236,15 +248,9 @@ const register = (): void => {
     cursor: grab;
     position: relative;
 
-    &-videoContainer {
-      aspect-ratio: 16 / 9;
-      width: 100%;
-      overflow: hidden;
-    }
-
     &-video {
       width: 100%;
-      height: 100%;
+      aspect-ratio: 16 / 9;
       border-width: 0;
       border-radius: 8px;
       -webkit-border-radius: 8px;
