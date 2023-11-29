@@ -78,7 +78,8 @@ describeIf(
                         object
                       >;
                       compareObjectKeysAndValuesDeep(originallyUploadedP2pDataset, frontendSubmittedP2pDataset);
-                      checkToggleEmptyFieldsSwitch("LkSG", "Industry");
+                      cy.get("tr").contains(testCompanyName).click();
+                      checkToggleEmptyFieldsSwitch(testCompanyName, "Industry");
                     });
                 },
               );

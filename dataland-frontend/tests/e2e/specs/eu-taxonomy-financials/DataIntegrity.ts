@@ -85,10 +85,8 @@ describeIf(
                         euTaxonomyFinancialsFixtureForTest.t as unknown as Record<string, object>,
                         frontendSubmittedEuTaxonomyFinancialsDataset as Record<string, object>,
                       );
-                      checkToggleEmptyFieldsSwitch(
-                        "Company-Created-In-Eu-Taxonomy-Financials-Blanket-Test-Company",
-                        "Scope Of Entities",
-                      );
+                      cy.get("tr").contains(testCompanyName).click();
+                      checkToggleEmptyFieldsSwitch(testCompanyName, "Scope Of Entities");
                     });
                 },
               );

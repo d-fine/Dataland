@@ -126,18 +126,12 @@ function checkIfContentIsIdentical(
  */
 export function checkToggleEmptyFieldsSwitch(datasetIdentifier: string, toggledFieldName: string): void {
   cy.wait(30);
-  cy.get("tr").contains(datasetIdentifier).click();
   cy.get("span").contains(toggledFieldName).should("not.exist");
   cy.get('div[data-test="hideEmptyDataToggle"]').should("exist");
-  cy.get('div[data-test="dataPointToggleButton"]')
-    .should("have.class", "p-inputswitch p-component p-inputswitch-checked")
-    .click();
-  cy.get('div[data-test="dataPointToggleButton"]').should("have.class", "p-inputswitch p-component");
+  cy.get('div[data-test="dataPointToggleButton"]').should("have.class", "p-inputswitch-checked").click();
+  cy.get('div[data-test="dataPointToggleButton"]').should("not.have.class", "p-inputswitch-checked");
   cy.get("span").contains(toggledFieldName).should("exist");
-  cy.get('div[data-test="dataPointToggleButton"]').should("have.class", "p-inputswitch p-component").click();
-  cy.get('div[data-test="dataPointToggleButton"]').should(
-    "have.class",
-    "p-inputswitch p-component p-inputswitch-checked",
-  );
-  cy.get(`tr[data-cell-label="${toggledFieldName}"]`).should("not.be.visible");
+  cy.get('div[data-test="dataPointToggleButton"]').click();
+  cy.get('div[data-test="dataPointToggleButton"]').should("have.class", "p-inputswitch-checked");
+  cy.get("span").contains(toggledFieldName).should("not.exist");
 }

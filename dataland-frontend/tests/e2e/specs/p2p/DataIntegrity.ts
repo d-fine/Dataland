@@ -76,7 +76,8 @@ describeIf(
                       >;
                       const originallyUploadedP2pDataset = p2pFixtureForTest.t as unknown as Record<string, object>;
                       compareObjectKeysAndValuesDeep(originallyUploadedP2pDataset, frontendSubmittedP2pDataset);
-                      checkToggleEmptyFieldsSwitch("WWF Pathway to Paris", "Drive mix per fleet segment");
+                      cy.get("tr").contains(testCompanyName).click();
+                      checkToggleEmptyFieldsSwitch(testCompanyName, "Drive mix per fleet segment");
                     });
                 },
               );
