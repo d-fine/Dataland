@@ -9,8 +9,8 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(
 enumAsRef = true,
 )
-enum class ${enumName} {
+enum class ${enumName}(val value: String) {
 <#list options as option>
-    ${option},
+    ${option.identifier}("${option.label}"),
 </#list>
 }

@@ -2,53 +2,54 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Karineworth",
-			"headquartersPostalCode": "87236",
-			"sector": "eyeballs",
+			"headquarters": "Annabelshire",
+			"headquartersPostalCode": "99746",
+			"sector": "paradigms",
 			"identifiers": {
 				"Lei": [
-					"GiTYd18968CbmF0AN8D3"
+					"O6vj8Pii7yZX9wOu1xA9"
 				],
 				"Isin": [
-					"teDw6kfYzKl7"
+					"Bnbk92Fr0Ixn",
+					"bj6GexVUlpMm"
 				],
-				"PermId": [
-					"s1jB0Mnpud"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"gNWo09slI"
+					"wPtPpiQMD"
 				],
 				"VatNumber": [
-					"7EQJPL0Jl"
+					"qNAkKtrkp"
 				],
 				"CompanyRegistrationNumber": [
-					"wi7By8zVGEu7VK5"
+					"OgNkFPEKmZpaq56"
 				]
 			},
-			"countryCode": "FO",
+			"countryCode": "VC",
 			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://quarrelsome-finding.net/",
+			"companyLegalForm": null,
+			"website": "https://infantile-disruption.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"10",
-						"23.7",
-						"28.24"
+						"20.13",
+						"47.59",
+						"60.10",
+						"77.4",
+						"98.10"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Nienow Rue 5517",
+						"streetAndHouseNumber": null,
 						"postalCode": null,
-						"city": "Oklahoma City",
-						"state": "Connecticut",
-						"country": "KZ"
+						"city": "Mount Pleasant",
+						"state": "Hawaii",
+						"country": "CU"
 					},
-					"numberOfEmployees": 1672,
-					"fiscalYearStart": "2024-02-19"
+					"numberOfEmployees": 2378,
+					"fiscalYearStart": "2024-02-02"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -60,74 +61,42 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": null,
+							"nameOfProductionSite": "Mills - Hackett",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kaylah Route 60305",
-								"postalCode": null,
-								"city": "Leopoldton",
-								"state": "California",
-								"country": "JP"
+								"streetAndHouseNumber": "8th Street 56867",
+								"postalCode": "19624",
+								"city": "Meaganland",
+								"state": "Rhode Island",
+								"country": "HN"
 							},
-							"shareOfTotalRevenueInPercent": 14.7504
+							"shareOfTotalRevenueInPercent": 50.7542
 						},
 						{
-							"nameOfProductionSite": "Champlin, Cole and Donnelly",
+							"nameOfProductionSite": "Klein, Brakus and Cassin",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Zemlak Overpass 16835",
-								"postalCode": null,
-								"city": "Chico",
-								"state": "Colorado",
-								"country": "PN"
+								"streetAndHouseNumber": "Leannon Junction 4573",
+								"postalCode": "19717-6965",
+								"city": "Daishaside",
+								"state": "Virginia",
+								"country": "SS"
 							},
-							"shareOfTotalRevenueInPercent": null
+							"shareOfTotalRevenueInPercent": 22.4353
 						},
 						{
-							"nameOfProductionSite": "Corwin - Wilkinson",
+							"nameOfProductionSite": "Mante, Swift and Mitchell",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": null,
-								"city": "Youngstown",
-								"state": "Hawaii",
-								"country": "NA"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Zieme and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Station Street 69168",
-								"postalCode": "34098-0055",
-								"city": "Sandy Springs",
+								"streetAndHouseNumber": "Schowalter Mews 9481",
+								"postalCode": "84600",
+								"city": "Stantonworth",
 								"state": "Connecticut",
-								"country": "KR"
+								"country": "TL"
 							},
-							"shareOfTotalRevenueInPercent": 48.2743
+							"shareOfTotalRevenueInPercent": 86.1021
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Luxurious Steel Chips",
-							"shareOfTotalRevenueInPercent": 2.2317
-						},
-						{
-							"name": "Elegant Rubber Gloves",
-							"shareOfTotalRevenueInPercent": 50.5117
-						},
-						{
-							"name": "Intelligent Steel Chair",
-							"shareOfTotalRevenueInPercent": 78.8806
-						},
-						{
-							"name": "Licensed Plastic Pants",
-							"shareOfTotalRevenueInPercent": 81.975
-						},
-						{
-							"name": "Luxurious Fresh Soap",
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
@@ -135,24 +104,21 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 454,
+					"powerConsumptionInMWh": 149,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 855,
-					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 928,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 42199506,
 					"naturalHazardsCovered": [
-						"Snow",
-						"Flooding",
-						"Wind",
-						"Hail",
 						"EarthQuake",
-						"Avalanche"
+						"Snow",
+						"Wind"
 					]
 				}
 			}
@@ -162,40 +128,41 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Belleville",
-			"headquartersPostalCode": "49735",
-			"sector": null,
+			"headquarters": "Haneboro",
+			"headquartersPostalCode": "22087",
+			"sector": "technologies",
 			"identifiers": {
 				"Lei": [
-					"cSnFi9EwiRymNEV9aoyr"
+					"7Os168dk2gOBTJ5R8qAI"
 				],
 				"Isin": [
-					"BCoFJZrXeVJC",
-					"elnzHnpEXFhp"
+					"AouFQvvmj8by"
 				],
 				"PermId": [],
-				"Ticker": [
-					"jTTmrZI"
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"mfn7neFxD"
 				],
-				"Duns": [
-					"PAD9DnHXj"
-				],
-				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"oBr2hdiYjRjRF3g"
+					"XvC3JvvIkLpZ94i"
 				]
 			},
-			"countryCode": "BG",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://warped-figurine.name/",
+			"countryCode": "BJ",
+			"companyAlternativeNames": [
+				"Greenholt - Schinner",
+				"Hegmann, Wilkinson and Rohan",
+				"Hermiston, Gottlieb and Witting"
+			],
+			"companyLegalForm": null,
+			"website": "https://weekly-family.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"91"
+						"08.92"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -204,13 +171,13 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 7323,
-					"fiscalYearStart": "2024-08-02"
+					"numberOfEmployees": 4186,
+					"fiscalYearStart": "2024-05-29"
 				},
 				"companyFinancials": {
-					"revenueInEUR": null,
-					"operatingCostInEUR": 16537685,
-					"capitalAssetsInEUR": 44014007
+					"revenueInEUR": 1291500,
+					"operatingCostInEUR": 55106797,
+					"capitalAssetsInEUR": 11676362
 				}
 			},
 			"production": {
@@ -220,37 +187,48 @@
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Ergonomic Frozen Chips",
-							"shareOfTotalRevenueInPercent": 86.5627
+							"name": "Luxurious Soft Pants",
+							"shareOfTotalRevenueInPercent": 4.4096
 						},
 						{
-							"name": "Ergonomic Metal Sausages",
-							"shareOfTotalRevenueInPercent": 87.179
+							"name": "Awesome Steel Car",
+							"shareOfTotalRevenueInPercent": 31.7523
 						},
 						{
-							"name": "Practical Metal Cheese",
-							"shareOfTotalRevenueInPercent": null
+							"name": "Ergonomic Granite Shirt",
+							"shareOfTotalRevenueInPercent": 68.2408
+						},
+						{
+							"name": "Awesome Bronze Ball",
+							"shareOfTotalRevenueInPercent": 67.8702
+						},
+						{
+							"name": "Refined Fresh Bacon",
+							"shareOfTotalRevenueInPercent": 30.1737
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 436,
+					"powerConsumptionInMWh": null,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 374,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 28741659,
-					"naturalHazardsCovered": null
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Avalanche"
+					]
 				}
 			}
 		},
@@ -259,42 +237,41 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "East Kelton",
-			"headquartersPostalCode": "37458-7365",
-			"sector": "initiatives",
+			"headquarters": "Grand Junction",
+			"headquartersPostalCode": "05733",
+			"sector": "interfaces",
 			"identifiers": {
 				"Lei": [
-					"7JjpiTNWNEPxa3KF28QG"
+					"xZU68STfX92mPtkRegYV"
 				],
 				"Isin": [
-					"6YBwiEbOz5Na",
-					"4goqeyemGuC5"
+					"HzFembjn0NZF"
 				],
 				"PermId": [
-					"t55XGbim9s"
+					"RvdvBuI1Qu"
 				],
 				"Ticker": [
-					"UMl2QHT"
+					"MUp2MNn"
 				],
 				"Duns": [
-					"jnmEncR0m"
+					"hHFKduODw"
 				],
-				"VatNumber": [],
+				"VatNumber": [
+					"kJDqXz4A7"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KR",
-			"companyAlternativeNames": [
-				"Swift Inc"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://standard-bone.com/",
+			"countryCode": "GD",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://upright-sorghum.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"38"
+						"79.1"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -303,40 +280,58 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 5911,
-					"fiscalYearStart": "2024-07-22"
+					"numberOfEmployees": 3758,
+					"fiscalYearStart": "2024-10-22"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 18861084,
-					"operatingCostInEUR": 20135645,
-					"capitalAssetsInEUR": null
+					"revenueInEUR": 20710809,
+					"operatingCostInEUR": 78805819,
+					"capitalAssetsInEUR": 60540307
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Labadie - Goldner",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "67927-9517",
+								"city": "Fort Jocelyn",
+								"state": "Maryland",
+								"country": "KY"
+							},
+							"shareOfTotalRevenueInPercent": 48.9559
+						}
+					]
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": null
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 685,
+					"powerConsumptionInMWh": 1049,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 393,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 49591990,
-					"naturalHazardsCovered": null
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 27475554,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Avalanche",
+						"Hail",
+						"Snow",
+						"EarthQuake"
+					]
 				}
 			}
 		},

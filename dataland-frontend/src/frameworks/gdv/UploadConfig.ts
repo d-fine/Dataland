@@ -1,15 +1,73 @@
-    
-    export const UploadConfiguration = [
+import { type GdvData } from "@clients/backend";
+import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
+import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+export const GdvUploadConfig = [    {
+        name: "insertNameHere",
+        label: "General",
+        showIf: ():boolean => true,
+        subcategories: [    {
+            name: "insertNameHere",
+            label: "Master Data",
+            showIf: ():boolean => true,
+            subcategories: [    {
+                name: "cell",
+                label: "Berichts-Pflicht",
+                description: "Ist das Unternehmen berichtspflichtig?",
+                unit: "",
+                component: "",
+                required: "",
+                showIf: ():boolean => true,
+                validation: "",
+                },
+            ],
+            },
+        ],
+        },
     {
-            type: "this should be coming from a section",
-            label: "General",
+        name: "insertNameHere",
+        label: "Allgemein",
+        showIf: ():boolean => true,
+        subcategories: [    {
+            name: "cell",
+            label: "ESG-Ziele",
+            description: "Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
+            unit: "",
+            component: "",
+            required: "",
+            showIf: ():boolean => true,
+            validation: "",
             },
         {
-            type: "this should be coming from a section",
-            label: "Allgemein",
+            name: "cell",
+            label: "Ziele",
+            description: "Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.",
+            unit: "",
+            component: "",
+            required: "",
+            showIf: ():boolean => true,
+            validation: "",
             },
-         ]
-    
-    
-    
-    
+        {
+            name: "cell",
+            label: "Investitionen",
+            description: "Bitte geben Sie an wieviele Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele zugewiesen wurden.",
+            unit: "",
+            component: "",
+            required: "",
+            showIf: ():boolean => true,
+            validation: "",
+            },
+        {
+            name: "cell",
+            label: "Sektor mit hohen Klimaauswirkungen",
+            description: "Kann das Unternehmen einem oder mehreren Sektoren mit hohen Klimaauswirkungen zugeordnet werden?",
+            unit: "",
+            component: "",
+            required: "",
+            showIf: ():boolean => true,
+            validation: "",
+            },
+        ],
+        },
+    ];
+

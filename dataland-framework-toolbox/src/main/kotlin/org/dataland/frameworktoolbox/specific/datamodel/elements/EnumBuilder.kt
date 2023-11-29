@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.specific.datamodel.elements
 
+import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
@@ -19,7 +20,7 @@ data class EnumBuilder(
     override val name: String,
     override val parentPackage: PackageBuilder,
     val comment: String,
-    val options: MutableSet<String>,
+    val options: MutableSet<SelectionOption>,
 ) : DataModelElement {
 
     private val logger by LoggerDelegate()
@@ -50,7 +51,7 @@ data class EnumBuilder(
         }
 
         options.forEach {
-            require(SourceVersion.isName(it)) {
+            require(SourceVersion.isName(it.identifier)) {
                 "The enum-option '$it' is not a valid java identifier"
             }
         }
