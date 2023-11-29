@@ -90,7 +90,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
   let mappedResponse: Array<DataSearchStoredCompany> = [];
 
   try {
-    const companyDataControllerApi = await new ApiClientProvider(keycloakPromise).getCompanyDataControllerApi();
+    const companyDataControllerApi = new ApiClientProvider(keycloakPromise).backendClients.companyDataController;
     if (frameworkFilter.size === 0) {
       frameworkFilter = new Set(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE);
     }
