@@ -18,11 +18,11 @@ data class SfdrEnvironmentalEnergyPerformance(
 
     val nonRenewableEnergyProductionInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyProductionInPercent: ExtendedDataPoint<BigDecimal>? = null,
+    val relativeNonRenewableEnergyProductionInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
     val nonRenewableEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
-    val nonRenewableEnergyConsumptionInPercent: ExtendedDataPoint<BigDecimal>? = null,
+    val relativeNonRenewableEnergyConsumptionInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
     @field:Schema(
         example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE,

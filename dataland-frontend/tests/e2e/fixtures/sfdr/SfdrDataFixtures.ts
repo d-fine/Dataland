@@ -64,9 +64,11 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         renewableEnergyProductionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         renewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyProductionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        nonRenewableEnergyProductionInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
+        relativeNonRenewableEnergyProductionInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
         nonRenewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        nonRenewableEnergyConsumptionInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
+        relativeNonRenewableEnergyConsumptionInPercent: dataGenerator.randomExtendedDataPoint(
+          generatePercentageValue(),
+        ),
         applicableHighImpactClimateSectors: dataGenerator.generateHighImpactClimateSectors(),
         totalHighImpactClimateSectorEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyConsumptionFossilFuelsInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),

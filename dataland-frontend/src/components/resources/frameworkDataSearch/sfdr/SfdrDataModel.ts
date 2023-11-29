@@ -257,8 +257,8 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "nonRenewableEnergyProductionInPercent",
-            label: "Non-Renewable Energy Production",
+            name: "relativeNonRenewableEnergyProductionInPercent",
+            label: "Relative Non-Renewable Energy Production",
             description:
               "Share of non-renewable energy production from non-renewable energy sources compared to renewable energy sources",
             unit: "%",
@@ -278,8 +278,8 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "nonRenewableEnergyConsumptionInPercent",
-            label: "Non-Renewable Energy Consumption",
+            name: "relativeNonRenewableEnergyConsumptionInPercent",
+            label: "Relative Non-Renewable Energy Consumption",
             description:
               "Share of non-renewable energy consumption from non-renewable energy sources compared to renewable energy sources",
             unit: "%",
@@ -774,7 +774,7 @@ export const sfdrDataModel = [
             name: "violationOfTaxRulesAndRegulation",
             label: "Violation Of Tax Rules And Regulation",
             description:
-              "Do you make contributions to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and co-operate with the tax authorities?",
+              "Are you involved in violation of OECD Guidelines for Multinational Enterprises for Taxation: In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.",
             unit: "",
             component: "YesNoExtendedDataPointFormField",
             required: false,
