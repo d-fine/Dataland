@@ -275,7 +275,7 @@ export default defineComponent({
      */
     async loadEuTaxonomyForNonFinancialsData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
+      const euTaxonomyForNonFinancialsDataControllerApi = new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
       ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyNonFinancials);
 
@@ -306,7 +306,7 @@ export default defineComponent({
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
 
-        const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
+        const euTaxonomyForNonFinancialsDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyNonFinancials);
         await euTaxonomyForNonFinancialsDataControllerApi.postFrameworkData(

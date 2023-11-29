@@ -80,7 +80,7 @@ export default defineComponent({
     async fetchSmeData() {
       try {
         this.waitingForData = true;
-        const smeDataControllerApi = await new ApiClientProvider(
+        const smeDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.Sme);
         if (this.singleDataMetaInfoToDisplay) {
