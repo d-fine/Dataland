@@ -6,8 +6,10 @@ import org.dataland.frameworktoolbox.intermediate.TreeNode
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
+import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditionalUpload
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 
 /**
@@ -43,6 +45,12 @@ open class ComponentBase(
     var viewConfigGenerator: ((sectionConfigBuilder: SectionConfigBuilder) -> Unit)? = null
 
     /**
+     * The uploadConfigGenerator allows users to overwrite the UploadConfig generation of
+     * this specific component instance
+     */
+    var uploadConfigGenerator: ((sectionUploadConfigBuilder: SectionUploadConfigBuilder) -> Unit)? = null
+
+    /**
      * The fixtureGeneratorGenerator allows users to overwrite the FixtureGeneration generation
      * of this specific component isntance
      */
@@ -57,6 +65,11 @@ open class ComponentBase(
      * A logical condition that decides whether this component is available / shown to users
      */
     var availableIf: FrameworkConditional = FrameworkConditional.AlwaysTrue
+
+    /**
+     * A logical condition that decides whether this component is available / shown to users
+     */
+    var availableIfUpload: FrameworkConditionalUpload = FrameworkConditionalUpload.AlwaysTrue
 
     /**
      * Specifies which kind of document-support (Datapoint-type) is desired for this component
@@ -103,10 +116,26 @@ open class ComponentBase(
     }
 
     /**
+     * Build this component instance into the provided upload-section configuration
+     * using the default generator for this component
+     */
+    open fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
+        throw NotImplementedError("This component did not implement upload config conversion.")
+    }
+
+    /**
      * Build this component instance into the provided view-section configuration
      */
     fun generateViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         return viewConfigGenerator?.let { it(sectionConfigBuilder) } ?: generateDefaultViewConfig(sectionConfigBuilder)
+    }
+
+    /**
+     * Build this component instance into the provided upload-section configuration
+     */
+    fun generateUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
+        return uploadConfigGenerator?.let { it(sectionUploadConfigBuilder) }
+            ?: generateDefaultUploadConfig(sectionUploadConfigBuilder)
     }
 
     /**

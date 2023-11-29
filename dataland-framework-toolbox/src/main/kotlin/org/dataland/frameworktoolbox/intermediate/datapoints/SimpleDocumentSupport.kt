@@ -31,6 +31,21 @@ data object SimpleDocumentSupport : DocumentSupport {
                 "from \"@/components/resources/dataTable/conversion/DataPoints\";",
         )
     }
+    override fun getFrameworkDisplayValueLambdaUpload(
+        innerLambda: org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda,
+        fieldLabel: String?,
+        dataPointAccessor: String,
+    ): org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda {
+        requireNotNull(fieldLabel)
+        return org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda(
+            "wrapDisplayValueWithDatapointInformation(${innerLambda.lambdaBody}," +
+                " \"${StringEscapeUtils.escapeEcmaScript(fieldLabel)}\"," +
+                " $dataPointAccessor)",
+            imports = innerLambda.imports +
+                "import { wrapDisplayValueWithDatapointInformation } " +
+                "from \"@/components/resources/dataTable/conversion/DataPoints\";",
+        )
+    }
 
     override fun getDataAccessor(dataPointAccessor: String, nullable: Boolean): String {
         return if (nullable) {
