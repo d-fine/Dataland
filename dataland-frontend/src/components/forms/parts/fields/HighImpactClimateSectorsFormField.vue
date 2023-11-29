@@ -24,12 +24,10 @@
             <div class="grid-2-form-cards">
               <FormKit type="group" :name="`NaceCode${selection}`">
                 <div>
-                  <UploadFormHeader
+                  <BigDecimalExtendedDataPointFormField
                     :label="`Sector ${selection} Energy Consumption`"
                     :description="`Total energy consumption for high impact climate sector ${selection}`"
                     :is-required="false"
-                  />
-                  <BigDecimalExtendedDataPointFormField
                     unit="GWh"
                     name="highImpactClimateSectorEnergyConsumptionInGWh"
                     :placeholder="`Sector ${selection} Energy Consumption`"
@@ -39,12 +37,10 @@
                   />
                 </div>
                 <div>
-                  <UploadFormHeader
+                  <BigDecimalExtendedDataPointFormField
                     :label="`Sector ${selection} Relative Energy Consumption`"
                     :description="`Energy consumption for high impact climate sector ${selection} per revenue`"
                     :is-required="false"
-                  />
-                  <BigDecimalExtendedDataPointFormField
                     unit="GWh / €M revenue"
                     name="highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue"
                     :placeholder="`Sector ${selection} Relative Energy Consumption`"
