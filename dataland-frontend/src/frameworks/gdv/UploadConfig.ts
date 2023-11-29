@@ -1,7 +1,4 @@
-import { type GdvData } from "@clients/backend";
-import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-export const GdvUploadConfig = [    {
+export const gdvDataModel = [    {
         name: "insertNameHere",
         label: "General",
         showIf: ():boolean => true,

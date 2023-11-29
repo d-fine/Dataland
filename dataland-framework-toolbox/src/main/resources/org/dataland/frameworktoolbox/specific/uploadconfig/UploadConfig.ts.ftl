@@ -1,7 +1,7 @@
-import { type ${frameworkDataType} } from "@clients/backend";
-import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
-import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-export const ${frameworkIdentifier?cap_first}UploadConfig = [<@mldtconfig uploadConfig/>];
+<#--import { type Category } from "@/utils/GenericFrameworkTypes";-->
+
+<#--export const ${frameworkIdentifier}DataModel : Category[] = [<@mldtconfig uploadConfig/>];  Category[] incompatible-->
+export const ${frameworkIdentifier}DataModel = [<@mldtconfig uploadConfig/>];
 
 <#macro mldtsection sectionConfig>{
     name: "insertNameHere",

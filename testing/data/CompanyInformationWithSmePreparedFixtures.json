@@ -2,54 +2,49 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Annabelshire",
-			"headquartersPostalCode": "99746",
-			"sector": "paradigms",
+			"headquarters": "Ivafield",
+			"headquartersPostalCode": "44981",
+			"sector": "e-commerce",
 			"identifiers": {
-				"Lei": [
-					"O6vj8Pii7yZX9wOu1xA9"
-				],
+				"Lei": [],
 				"Isin": [
-					"Bnbk92Fr0Ixn",
-					"bj6GexVUlpMm"
+					"EiFKG8BaSQaG"
 				],
 				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"dJ7iJT6"
+				],
 				"Duns": [
-					"wPtPpiQMD"
+					"NjdKLyqFE"
 				],
-				"VatNumber": [
-					"qNAkKtrkp"
-				],
-				"CompanyRegistrationNumber": [
-					"OgNkFPEKmZpaq56"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "VC",
+			"countryCode": "MT",
 			"companyAlternativeNames": [],
-			"companyLegalForm": null,
-			"website": "https://infantile-disruption.net/",
+			"companyLegalForm": "GmbH",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"20.13",
-						"47.59",
-						"60.10",
-						"77.4",
-						"98.10"
+						"01",
+						"05",
+						"10.82",
+						"22.29",
+						"77.1"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": null,
-						"city": "Mount Pleasant",
-						"state": "Hawaii",
-						"country": "CU"
+						"streetAndHouseNumber": "Eddie Court 5144",
+						"postalCode": "72409",
+						"city": "Kamronmouth",
+						"state": "Washington",
+						"country": "SS"
 					},
-					"numberOfEmployees": 2378,
-					"fiscalYearStart": "2024-02-02"
+					"numberOfEmployees": 8847,
+					"fiscalYearStart": "2024-08-23"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -61,42 +56,74 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Mills - Hackett",
+							"nameOfProductionSite": "Christiansen, Ward and Treutel",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "8th Street 56867",
-								"postalCode": "19624",
-								"city": "Meaganland",
-								"state": "Rhode Island",
-								"country": "HN"
-							},
-							"shareOfTotalRevenueInPercent": 50.7542
-						},
-						{
-							"nameOfProductionSite": "Klein, Brakus and Cassin",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Leannon Junction 4573",
-								"postalCode": "19717-6965",
-								"city": "Daishaside",
-								"state": "Virginia",
-								"country": "SS"
-							},
-							"shareOfTotalRevenueInPercent": 22.4353
-						},
-						{
-							"nameOfProductionSite": "Mante, Swift and Mitchell",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Schowalter Mews 9481",
-								"postalCode": "84600",
-								"city": "Stantonworth",
+								"streetAndHouseNumber": "Moen Spring 396",
+								"postalCode": "26644-7066",
+								"city": "North Marian",
 								"state": "Connecticut",
-								"country": "TL"
+								"country": "RE"
 							},
-							"shareOfTotalRevenueInPercent": 86.1021
+							"shareOfTotalRevenueInPercent": 65.5488
+						},
+						{
+							"nameOfProductionSite": "Gusikowski Inc",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "James Street 455",
+								"postalCode": "08151-1535",
+								"city": "East Maybelleshire",
+								"state": null,
+								"country": "CD"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Russel and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Carey Road 44325",
+								"postalCode": "55248",
+								"city": "West Phoebe",
+								"state": null,
+								"country": "NP"
+							},
+							"shareOfTotalRevenueInPercent": 65.5027
+						},
+						{
+							"nameOfProductionSite": "Terry - Cummings",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Malika Pines 9835",
+								"postalCode": "69197-9956",
+								"city": "Virginia Beach",
+								"state": "New Jersey",
+								"country": "DK"
+							},
+							"shareOfTotalRevenueInPercent": 6.9853
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Unbranded Granite Bike",
+							"shareOfTotalRevenueInPercent": 18.713
+						},
+						{
+							"name": "Generic Wooden Chicken",
+							"shareOfTotalRevenueInPercent": 3.7777
+						},
+						{
+							"name": "Electronic Granite Chicken",
+							"shareOfTotalRevenueInPercent": 25.0141
+						},
+						{
+							"name": "Gorgeous Rubber Sausages",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Handcrafted Frozen Chips",
+							"shareOfTotalRevenueInPercent": 5.9246
+						}
+					]
 				}
 			},
 			"power": {
@@ -104,21 +131,21 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 149,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 928,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMWh": 1747,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 178,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 42199506,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 9972133,
 					"naturalHazardsCovered": [
-						"EarthQuake",
 						"Snow",
-						"Wind"
+						"Wind",
+						"Flooding"
 					]
 				}
 			}
@@ -128,41 +155,37 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Haneboro",
-			"headquartersPostalCode": "22087",
-			"sector": "technologies",
+			"headquarters": "Orlandoberg",
+			"headquartersPostalCode": "54947-2978",
+			"sector": "paradigms",
 			"identifiers": {
-				"Lei": [
-					"7Os168dk2gOBTJ5R8qAI"
-				],
+				"Lei": [],
 				"Isin": [
-					"AouFQvvmj8by"
+					"So9qnWSpru7K"
 				],
-				"PermId": [],
+				"PermId": [
+					"abLWTndiI6"
+				],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"mfn7neFxD"
-				],
-				"CompanyRegistrationNumber": [
-					"XvC3JvvIkLpZ94i"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BJ",
+			"countryCode": "AS",
 			"companyAlternativeNames": [
-				"Greenholt - Schinner",
-				"Hegmann, Wilkinson and Rohan",
-				"Hermiston, Gottlieb and Witting"
+				"Koss and Sons",
+				"Stiedemann - Dach",
+				"Wuckert, Turcotte and Ortiz"
 			],
-			"companyLegalForm": null,
-			"website": "https://weekly-family.org/",
+			"companyLegalForm": "GmbH",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"08.92"
+						"51.22"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -171,63 +194,72 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 4186,
-					"fiscalYearStart": "2024-05-29"
+					"numberOfEmployees": 1689,
+					"fiscalYearStart": "2024-04-11"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 1291500,
-					"operatingCostInEUR": 55106797,
-					"capitalAssetsInEUR": 11676362
+					"revenueInEUR": 88474689,
+					"operatingCostInEUR": 2219940,
+					"capitalAssetsInEUR": 36097039
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "17170-9008",
+								"city": "Verniceshire",
+								"state": "Wyoming",
+								"country": "JM"
+							},
+							"shareOfTotalRevenueInPercent": 37.8708
+						},
+						{
+							"nameOfProductionSite": "Stroman Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "67778",
+								"city": "Marionworth",
+								"state": "Oklahoma",
+								"country": "PF"
+							},
+							"shareOfTotalRevenueInPercent": 24.6827
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Luxurious Soft Pants",
-							"shareOfTotalRevenueInPercent": 4.4096
-						},
-						{
-							"name": "Awesome Steel Car",
-							"shareOfTotalRevenueInPercent": 31.7523
-						},
-						{
-							"name": "Ergonomic Granite Shirt",
-							"shareOfTotalRevenueInPercent": 68.2408
-						},
-						{
-							"name": "Awesome Bronze Ball",
-							"shareOfTotalRevenueInPercent": 67.8702
-						},
-						{
-							"name": "Refined Fresh Bacon",
-							"shareOfTotalRevenueInPercent": 30.1737
+							"name": "Elegant Rubber Salad",
+							"shareOfTotalRevenueInPercent": 87.9643
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"powerConsumptionInMWh": 289,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 507,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 42484073,
 					"naturalHazardsCovered": [
-						"Wind",
-						"Avalanche"
+						"Avalanche",
+						"Flooding",
+						"Hail",
+						"EarthQuake"
 					]
 				}
 			}
@@ -237,41 +269,45 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Grand Junction",
-			"headquartersPostalCode": "05733",
-			"sector": "interfaces",
+			"headquarters": "Keanuville",
+			"headquartersPostalCode": "20448",
+			"sector": "functionalities",
 			"identifiers": {
-				"Lei": [
-					"xZU68STfX92mPtkRegYV"
-				],
+				"Lei": [],
 				"Isin": [
-					"HzFembjn0NZF"
+					"qAynM0C4oiSp",
+					"MrdZszc7YAEv"
 				],
 				"PermId": [
-					"RvdvBuI1Qu"
+					"DvWF2Y0iDl"
 				],
 				"Ticker": [
-					"MUp2MNn"
+					"xtwWfMr"
 				],
 				"Duns": [
-					"hHFKduODw"
+					"5ERPw1rrY"
 				],
 				"VatNumber": [
-					"kJDqXz4A7"
+					"IiUmxbY03"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"hH9DkOGDpdIFdrz"
+				]
 			},
-			"countryCode": "GD",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://upright-sorghum.biz/",
+			"countryCode": "TW",
+			"companyAlternativeNames": [
+				"Greenfelder, Hilll and Jacobi",
+				"Metz - Stamm"
+			],
+			"companyLegalForm": null,
+			"website": "https://clean-ornament.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"79.1"
+						"42.22"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -280,33 +316,90 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 3758,
-					"fiscalYearStart": "2024-10-22"
+					"numberOfEmployees": 5790,
+					"fiscalYearStart": "2024-10-10"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 20710809,
-					"operatingCostInEUR": 78805819,
-					"capitalAssetsInEUR": 60540307
+					"revenueInEUR": 66118581,
+					"operatingCostInEUR": 7811797,
+					"capitalAssetsInEUR": 16143232
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Labadie - Goldner",
+							"nameOfProductionSite": "Lemke Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Sandy Lane 5645",
+								"postalCode": "60539",
+								"city": "New Ricoborough",
+								"state": "Arizona",
+								"country": "US"
+							},
+							"shareOfTotalRevenueInPercent": 90.1708
+						},
+						{
+							"nameOfProductionSite": "Harber, Towne and Muller",
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": null,
-								"postalCode": "67927-9517",
-								"city": "Fort Jocelyn",
-								"state": "Maryland",
-								"country": "KY"
+								"postalCode": "38762",
+								"city": "East Elenorahaven",
+								"state": null,
+								"country": "PA"
 							},
-							"shareOfTotalRevenueInPercent": 48.9559
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Purdy - Haley",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Alena Ranch 438",
+								"postalCode": "51848",
+								"city": "Lefflerhaven",
+								"state": null,
+								"country": "GN"
+							},
+							"shareOfTotalRevenueInPercent": 97.5044
+						},
+						{
+							"nameOfProductionSite": "Veum - Roberts",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Senger Glens 50537",
+								"postalCode": null,
+								"city": "Lake Waylon",
+								"state": "Tennessee",
+								"country": "LK"
+							},
+							"shareOfTotalRevenueInPercent": 28.0338
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Willow Grove 298",
+								"postalCode": "84796",
+								"city": "Collierside",
+								"state": null,
+								"country": "CG"
+							},
+							"shareOfTotalRevenueInPercent": 54.2327
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Incredible Granite Bike",
+							"shareOfTotalRevenueInPercent": 70.8558
+						},
+						{
+							"name": "Electronic Steel Chicken",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Small Soft Mouse",
+							"shareOfTotalRevenueInPercent": 5.6556
+						}
+					]
 				}
 			},
 			"power": {
@@ -314,22 +407,21 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1049,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 393,
+					"powerConsumptionInMWh": 1844,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 453,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazards": 27475554,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 31133430,
 					"naturalHazardsCovered": [
 						"Wind",
-						"Avalanche",
-						"Hail",
 						"Snow",
+						"Flooding",
 						"EarthQuake"
 					]
 				}
