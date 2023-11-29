@@ -51,12 +51,10 @@ function getSpecifiedDataPointGetterFactory(
  * @param valueName the field for which the getter functions should be used
  * @returns boolean to trigger the shouldDisplay condition
  */
-function setShowIf(formatter: (dataset: unknown) => AvailableMLDTDisplayObjectTypes, valueName: string): boolean {
+function setShowIf(displayValue: any): boolean {
   return !!(
-    formatter(valueName).displayValue &&
-    formatter(valueName).displayValue != "No data provided" &&
-    formatter(valueName).displayValue != ""
-  );
+    displayValue &&
+    displayValue != "No data provided");
 }
 
 export const configForEuTaxonomyFinancialsMLDT = [
@@ -99,34 +97,22 @@ export const configForEuTaxonomyFinancialsMLDT = [
         type: "cell",
         label: euTaxonomyKpiNameMappings.scopeOfEntities,
         explanation: euTaxonomyKpiInfoMappings.scopeOfEntities,
-        shouldDisplay: (): boolean =>
-          setShowIf(
-            yesNoValueGetterFactory(euTaxonomyKpiNameMappings.scopeOfEntities),
-            euTaxonomyKpiNameMappings.scopeOfEntities,
-          ),
-        valueGetter: yesNoValueGetterFactory(euTaxonomyKpiNameMappings.scopeOfEntities),
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => setShowIf(dataset.scopeOfEntities),
+        valueGetter: yesNoValueGetterFactory("scopeOfEntities"),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.nfrdMandatory,
         explanation: euTaxonomyKpiInfoMappings.nfrdMandatory,
-        shouldDisplay: (): boolean =>
-          setShowIf(
-            yesNoValueGetterFactory(euTaxonomyKpiNameMappings.nfrdMandatory),
-            euTaxonomyKpiNameMappings.nfrdMandatory,
-          ),
-        valueGetter: yesNoValueGetterFactory(euTaxonomyKpiNameMappings.nfrdMandatory),
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => setShowIf(dataset.nfrdMandatory),
+        valueGetter: yesNoValueGetterFactory("nfrdMandatory"),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting,
         explanation: euTaxonomyKpiInfoMappings.euTaxonomyActivityLevelReporting,
-        shouldDisplay: (): boolean =>
-          setShowIf(
-            yesNoValueGetterFactory(euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting),
-            euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting,
-          ),
-        valueGetter: yesNoValueGetterFactory(euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting),
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => setShowIf(dataset.euTaxonomyActivityLevelReporting),
+        valueGetter: yesNoValueGetterFactory("euTaxonomyActivityLevelReporting"),
       },
       {
         type: "cell",
