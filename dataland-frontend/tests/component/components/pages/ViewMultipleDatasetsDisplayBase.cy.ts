@@ -35,7 +35,6 @@ describe("This describes a component test for the view Page", () => {
       props: {
         companyId: mockedData.metaInfo.companyId,
         dataType: DataTypeEnum.Lksg,
-        dataId: mockedData.metaInfo.dataId,
         reportingPeriod: mockedData.metaInfo.reportingPeriod,
         viewInPreviewMode: false,
       },
@@ -78,7 +77,6 @@ function constructCompanyApiResponseForLksg(baseDataset: LksgData): DataAndMetaI
  * @param toggledFieldName Name of a field which is toggled by the input switch
  */
 export function checkToggleEmptyFieldsSwitch(toggledFieldName: string): void {
-  cy.wait(300);
   cy.get("span").contains(toggledFieldName).should("not.exist");
   cy.get('span[data-test="hideEmptyDataToggle"]').should("exist");
   cy.get('div[data-test="dataPointToggleButton"]').should("have.class", "p-inputswitch-checked").click();
