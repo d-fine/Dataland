@@ -16,11 +16,6 @@ plugins {
     jacoco
 }
 
-repositories {
-    mavenCentral()
-    maven { url = uri("https://repo.gradle.org/gradle/libs-releases") }
-}
-
 tasks.test {
     useJUnitPlatform()
 
@@ -52,7 +47,7 @@ dependencies {
     implementation(libs.commons.codec)
     implementation(libs.commons.text)
     implementation(libs.slf4j.api)
-    implementation("org.gradle:gradle-tooling-api:7.1.1")
+    implementation(libs.gradle.tooling)
     implementation(libs.freemarker)
     implementation(kotlin("reflect"))
     testImplementation(kotlin("test"))

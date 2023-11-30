@@ -10,6 +10,7 @@ val jvmVersion = JavaVersion.VERSION_17
 allprojects {
     repositories {
         mavenCentral()
+        maven { url = uri("https://repo.gradle.org/gradle/libs-releases") }
     }
 }
 
