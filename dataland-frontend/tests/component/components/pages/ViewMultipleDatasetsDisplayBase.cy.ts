@@ -6,9 +6,9 @@ import {
   DataTypeEnum,
   type LksgData,
   QaStatus,
-} from "../../../../build/clients/backend";
-import { type FixtureData, getPreparedFixture } from "../../../sharedUtils/Fixtures";
-import { type DataAndMetaInformation } from "../../../../src/api-models/DataAndMetaInformation";
+} from "@clients/backend";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 describe("This describes a component test for the view Page", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
