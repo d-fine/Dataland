@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 
-
 /**
  * --- API model ---
  * Class for defining the request body of a post company request

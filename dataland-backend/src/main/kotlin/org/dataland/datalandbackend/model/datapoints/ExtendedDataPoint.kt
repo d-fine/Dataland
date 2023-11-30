@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.datapoints
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
@@ -14,5 +15,6 @@ data class ExtendedDataPoint<T>(
     @field:JsonProperty(required = true)
     override val quality: QualityOptions,
     override val comment: String? = null,
+    @field:Valid
     override val dataSource: ExtendedDocumentReference? = null,
 ) : ExtendedDataPoint<T>

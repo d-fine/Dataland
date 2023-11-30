@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.datapoints
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.documents.BaseDocumentReference
 
@@ -11,5 +12,6 @@ import org.dataland.datalandbackend.model.documents.BaseDocumentReference
 data class BaseDataPoint<T>(
     @field:JsonProperty(required = true)
     override val value: T,
+    @field:Valid
     override val dataSource: BaseDocumentReference? = null,
 ) : BaseDataPoint<T>

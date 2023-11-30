@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.sfdr.categories.social.subcategories
 
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
@@ -73,7 +74,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val supplierCodeOfConduct: BaseDataPoint<YesNo>? = null,
 
     val grievanceHandlingMechanism: ExtendedDataPoint<YesNo>? = null,
-
+    @field:Valid
     val whistleblowerProtectionPolicy: BaseDataPoint<YesNo>? = null,
 
     @field:ExtendedNumberDataPointValidation
