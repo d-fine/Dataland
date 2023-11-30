@@ -12,7 +12,7 @@ import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { checkToggleEmptyFieldsSwitch, compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
+import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 
 describeIf(
   "As a user, I expect to be able to upload LkSG data via an upload form, and that the uploaded data is displayed " +
@@ -78,8 +78,6 @@ describeIf(
                         object
                       >;
                       compareObjectKeysAndValuesDeep(originallyUploadedP2pDataset, frontendSubmittedP2pDataset);
-                      cy.get("tr").contains(testCompanyName).click();
-                      checkToggleEmptyFieldsSwitch(testCompanyName, "Industry");
                     });
                 },
               );

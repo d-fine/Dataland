@@ -11,7 +11,7 @@ import {
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
-import { compareObjectKeysAndValuesDeep, checkToggleEmptyFieldsSwitch } from "@e2e/utils/GeneralUtils";
+import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
 let p2pFixtureForTest: FixtureData<PathwaysToParisData>;
@@ -76,8 +76,6 @@ describeIf(
                       >;
                       const originallyUploadedP2pDataset = p2pFixtureForTest.t as unknown as Record<string, object>;
                       compareObjectKeysAndValuesDeep(originallyUploadedP2pDataset, frontendSubmittedP2pDataset);
-                      cy.get("tr").contains(testCompanyName).click();
-                      checkToggleEmptyFieldsSwitch(testCompanyName, "Drive mix per fleet segment");
                     });
                 },
               );

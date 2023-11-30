@@ -11,7 +11,7 @@ import {
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
-import { compareObjectKeysAndValuesDeep, checkToggleEmptyFieldsSwitch } from "@e2e/utils/GeneralUtils";
+import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
 let euTaxonomyFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForFinancials>;
@@ -85,8 +85,6 @@ describeIf(
                         euTaxonomyFinancialsFixtureForTest.t as unknown as Record<string, object>,
                         frontendSubmittedEuTaxonomyFinancialsDataset as Record<string, object>,
                       );
-                      cy.get("tr").contains(testCompanyName).click();
-                      checkToggleEmptyFieldsSwitch(testCompanyName, "Scope Of Entities");
                     });
                 },
               );

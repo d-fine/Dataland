@@ -6,9 +6,8 @@ import {
   DataTypeEnum,
   type LksgData,
   QaStatus,
-} from "../../../../build/clients/backend";
-import { type FixtureData, getPreparedFixture } from "../../../sharedUtils/Fixtures";
-import { type DataAndMetaInformation } from "../../../../src/api-models/DataAndMetaInformation";
+} from "@clients/backend";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
 describe("This describes a component test for the view Page", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -19,27 +18,31 @@ describe("This describes a component test for the view Page", () => {
     });
   });
 
-  it("Checks, if the toggle of hidden fields works", () => {
+  it("Checks, if the toggle of hidden fields works for empty and conditional fields", () => {
     const preparedFixture = getPreparedFixture("lksg-with-nulls-and-child-labor-under-18", preparedFixtures);
     const mockedData = constructCompanyApiResponseForLksg(preparedFixture.t);
     console.log("abc:", mockedData);
-    const mockCompanyId = mockedData.metaInfo.companyId;
     const companyInformationObject = preparedFixture.companyInformation;
     cy.intercept(`/api/companies/mock-company-id/info`, companyInformationObject);
-    cy.intercept(`/api/metadata/dataset-a`, mockedData.metaInfo);
-    cy.intercept(`/api/data/lksg/dataset-a`, mockedData.data);
-
-    cy.intercept("**/api/metadata*", { fixture: "MetaInfoDataMocksForOneCompany", times: 1 }).as("metaDataFetch");
+    cy.intercept(`/api/data/lksg/dataset-a`, {
+      companyId: mockedData.metaInfo.companyId,
+      reportingPeriod: mockedData.metaInfo.reportingPeriod,
+      data: mockedData.data,
+    });
+    cy.intercept(`/api/metadata?companyId=mock-company-id`, [mockedData.metaInfo]);
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({}),
       props: {
-        companyId: mockCompanyId,
+        companyId: mockedData.metaInfo.companyId,
         dataType: DataTypeEnum.Lksg,
-        dataId: mockedData.metaInfo.dataId,
-        reportingPeriod: preparedFixture.reportingPeriod,
+        reportingPeriod: mockedData.metaInfo.reportingPeriod,
         viewInPreviewMode: false,
       },
-    }).then(() => {});
+    });
+    cy.get('tr[data-section-label="Social"]').click();
+    cy.get('tr[data-section-label="Child labor"]').click();
+    cy.get('td[data-cell-label="Employee(s) Under 15"]').should("not.exist");
+    checkToggleEmptyFieldsSwitch("Number of Employees");
   });
 });
 
@@ -50,10 +53,10 @@ describe("This describes a component test for the view Page", () => {
  * @param baseDataset the lksg dataset used as a basis for constructing the 6 mocked ones
  * @returns a mocked api response
  */
-function constructCompanyApiResponseForLksg(baseDataset: LksgData): DataAndMetaInformation<LksgData> {
+function constructCompanyApiResponseForLksg(baseDataset: LksgData): DataAndMetaInformationLksgData {
   const reportingYear = 2023;
   const reportingDate = `${reportingYear}-01-01`;
-  const lksgData = structuredClone(baseDataset);
+  const lksgData: LksgData = structuredClone(baseDataset);
   lksgData.general.masterData.dataDate = reportingDate;
   const metaData: DataMetaInformation = {
     dataId: `dataset-a`,
@@ -65,9 +68,22 @@ function constructCompanyApiResponseForLksg(baseDataset: LksgData): DataAndMetaI
     uploadTime: 0,
     uploaderUserId: "mock-uploader-id",
   };
-  const lksgDataset: DataAndMetaInformationLksgData = {
-    metaInfo: metaData,
-    data: lksgData,
-  };
-  return lksgDataset;
+  return { metaInfo: metaData, data: lksgData };
+}
+
+/**
+ * This function opens a given dataset with its Multi Layer Data Table and checks wether a specific field can be hidden using the input switch.
+ * @param datasetIdentifier Identifies a dataset on the "my dataset" Page. The function will open the corresponding dataset.
+ * @param toggledFieldName Name of a field which is toggled by the input switch
+ */
+export function checkToggleEmptyFieldsSwitch(toggledFieldName: string): void {
+  cy.wait(300);
+  cy.get("span").contains(toggledFieldName).should("not.exist");
+  cy.get('span[data-test="hideEmptyDataToggle"]').should("exist");
+  cy.get('div[data-test="dataPointToggleButton"]').should("have.class", "p-inputswitch-checked").click();
+  cy.get('div[data-test="dataPointToggleButton"]').should("not.have.class", "p-inputswitch-checked");
+  cy.get("span").contains(toggledFieldName).should("exist");
+  cy.get('div[data-test="dataPointToggleButton"]').click();
+  cy.get('div[data-test="dataPointToggleButton"]').should("have.class", "p-inputswitch-checked");
+  cy.get("span").contains(toggledFieldName).should("not.exist");
 }
