@@ -1,0 +1,890 @@
+import { type Category } from "@/utils/GenericFrameworkTypes";
+
+
+export const sfdrDataModel = [ {
+  name : "general",
+  label : "General",
+  color : "orange",
+  showIf : (): boolean => true,
+  subcategories : [ {
+    name : "general",
+    label : "General",
+    fields : [ {
+      name : "dataDate",
+      label : "Data Date",
+      description : "The date until when the information collected is valid",
+      unit : "",
+      component : "DateFormField",
+      required : true,
+      showIf : (): boolean => true,
+      validation : "required"
+    }, {
+      name : "fiscalYearDeviation",
+      label : "Fiscal Year Deviation",
+      description : "Does the fiscal year deviate from the calendar year?",
+      unit : "",
+      component : "RadioButtonsFormField",
+      options : [ {
+        label : "Deviation",
+        value : "Deviation"
+      }, {
+        label : "No Deviation",
+        value : "NoDeviation"
+      } ],
+      required : true,
+      showIf : (): boolean => true,
+      validation : "required"
+    }, {
+      name : "fiscalYearEnd",
+      label : "Fiscal Year End",
+      description : "The date the fiscal year ends",
+      unit : "",
+      component : "DateFormField",
+      required : true,
+      showIf : (): boolean => true,
+      validation : "required"
+    }, {
+      name : "referencedReports",
+      label : "Referenced Reports",
+      description : "Please upload all relevant reports for this dataset in the PDF format.",
+      unit : "",
+      component : "UploadReports",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "scopeOfEntities",
+      label : "Scope Of Entities",
+      description : "Does a list of legal entities covered by Sust./Annual/Integrated report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
+      unit : "",
+      component : "YesNoNaFormField",
+      required : false,
+      showIf : (): boolean => true
+    } ]
+  } ]
+}, {
+  name : "environmental",
+  label : "Environmental",
+  color : "green",
+  showIf : (): boolean => true,
+  subcategories : [ {
+    name : "greenhouseGasEmissions",
+    label : "Greenhouse gas emissions ",
+    fields : [ {
+      name : "scope1GhgEmissionsInTonnes",
+      label : "Scope 1 GHG emissions",
+      description : "Scope 1 carbon emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "scope2GhgEmissionsInTonnes",
+      label : "Scope 2 GHG emissions",
+      description : "Scope 2 carbon emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "scope2GhgEmissionsLocationBasedInTonnes",
+      label : "Scope 2 GHG emissions (location-based)",
+      description : "Scope 2 carbon emissions computed using the location-based method",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "scope2GhgEmissionsMarketBasedInTonnes",
+      label : "Scope 2 GHG emissions (market-based)",
+      description : "Scope 2 carbon emissions computed using the market-based method",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "scope1And2GhgEmissionsInTonnes",
+      label : "Scope 1 and 2 GHG emissions",
+      description : "Sum of scope 1 and 2 carbon emissions",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "scope1And2GhgEmissionsLocationBasedInTonnes",
+      label : "Scope 1 and 2 GHG emissions (location-based)",
+      description : "Sum of scope 1 and 2 carbon emissions, using the location-based method to compute scope 2 carbon emissions",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "scope1And2GhgEmissionsMarketBasedInTonnes",
+      label : "Scope 1 and 2 GHG emissions (market-based)",
+      description : "Sum of scope 1 and 2 carbon emissions, using the market-based method to compute scope 2 carbon emissions",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "scope3GhgEmissionsInTonnes",
+      label : "Scope 3 GHG emissions",
+      description : "Scope 3 carbon emissions, namely all indirect emissions that are not covered by scope 1 and 2, that occur in the value chain of the reporting company, including both upstream and downstream emissions, in particular for sectors with a high impact on climate change and its mitigation",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "scope1And2And3GhgEmissionsInTonnes",
+      label : "Scope 1 and 2 and 3 GHG emissions",
+      description : "Sum of scope 1, 2 and 3 carbon emissions",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "enterpriseValue",
+      label : "Enterprise Value",
+      description : "Enterprise value calculated as the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, and the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents",
+      unit : "",
+      component : "CurrencyDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "totalRevenue",
+      label : "Total Revenue",
+      description : "Total revenue for the financial year. i.e., income arising in the course of an entity's ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time",
+      unit : "",
+      component : "CurrencyDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "carbonFootprintInTonnesPerMillionEURRevenue",
+      label : "Carbon footprint",
+      description : "Carbon footprint computed according to the Principal Adverse Sustainability Impacts Statement's \"carbon footprint\" formula (incl. scope 1, 2, and 3 carbon emissions)",
+      unit : "tonnes / €M revenue",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "ghgIntensityInTonnesPerMillionEURRevenue",
+      label : "GHG intensity",
+      description : "GHG intensity computed according to the Principal Adverse Sustainability Impacts Statement's \"GHG intensity of investee companies\" formula (incl. scope 1, 2, and 3 carbon emissions)",
+      unit : "tonnes / €M revenue",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "fossilFuelSectorExposure",
+      label : "Fossil Fuel Sector Exposure",
+      description : "Are you active in the fossil fuel sector? This includes (i) companies that derive any revenues from exploration, mining, extraction, distribution or refining of hard coal and lignite; (ii) companies that derive any revenues from the exploration, extraction, distribution (including transportation, storage and trade) or refining of liquid fossil fuels; and (iii) companies that derive any revenues from exploring and extracting fossil gaseous fuels or from their dedicated distribution (including transportation, storage and trade)",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    } ]
+  }, {
+    name : "energyPerformance",
+    label : "Energy performance",
+    fields : [ {
+      name : "renewableEnergyProductionInGWh",
+      label : "Renewable Energy Production",
+      description : "Value of renewable energy produced . 'Energy from renewable sources' or 'renewable energy' means energy from renewable non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas.",
+      unit : "GWh",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "renewableEnergyConsumptionInGWh",
+      label : "Renewable Energy Consumption",
+      description : "Value of energy consumed from renewable energy sources. 'Energy from renewable sources' or 'renewable energy' means energy from renewable non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas.",
+      unit : "GWh",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "nonRenewableEnergyProductionInGWh",
+      label : "Non-Renewable Energy Production",
+      description : "Value of non-renewable energy produced. 'Non-renewable energy sources' means energy sources other than energy from renewable non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas.",
+      unit : "GWh",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "nonRenewableEnergyProductionInPercent",
+      label : "Non-Renewable Energy Production",
+      description : "Share of non-renewable energy production from non-renewable energy sources compared to renewable energy sources",
+      unit : "%",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true,
+      validation : "between:0,100"
+    }, {
+      name : "nonRenewableEnergyConsumptionInGWh",
+      label : "Non-Renewable Energy Consumption",
+      description : "Value of energy consumed from non-renewable energy sources. 'Non-renewable energy sources' means energy sources other than energy from renewable non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas.",
+      unit : "GWh",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "nonRenewableEnergyConsumptionInPercent",
+      label : "Non-Renewable Energy Consumption",
+      description : "Share of non-renewable energy consumption from non-renewable energy sources compared to renewable energy sources",
+      unit : "%",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true,
+      validation : "between:0,100"
+    }, {
+      name : "applicableHighImpactClimateSectors",
+      label : "Applicable High Impact Climate Sectors",
+      description : "Please select any sector(s) applicable to your activities",
+      unit : "",
+      component : "HighImpactClimateSectorsFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "totalHighImpactClimateSectorEnergyConsumptionInGWh",
+      label : "Total High Impact Climate Sector Energy Consumption",
+      description : "High impact climate sectors’ means the sectors listed in Sections A to H and Section L of Annex I to Regulation (EC) No 1893/2006 of the European Parliament and of the Council (Regulation (EC) No 1893/2006 of the European Parliament and of the Council of 20 December 2006 establishing the statistical classification of economic activities NACE Revision 2 and amending Council Regulation (EEC) No 3037/90 as well as certain EC Regulations on specific statistical domains (OJ L 393, 30.12.2006, p. 1)).",
+      unit : "GWh",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "nonRenewableEnergyConsumptionFossilFuelsInGWh",
+      label : "Non-Renewable Energy Consumption Fossil Fuels",
+      description : "Energy consumption from fossil fuels (sum of crude oil, natural gas, lignite and coal) (non-renewable energy source)",
+      unit : "GWh",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "nonRenewableEnergyConsumptionCrudeOilInGWh",
+      label : "Non-Renewable Energy Consumption Crude Oil",
+      description : "Energy consumption from crude oil (non-renewable energy source)",
+      unit : "GWh",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "nonRenewableEnergyConsumptionNaturalGasInGWh",
+      label : "Non-Renewable Energy Consumption Natural Gas",
+      description : "Energy consumption from natural gas (non-renewable energy source)",
+      unit : "GWh",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "nonRenewableEnergyConsumptionLigniteInGWh",
+      label : "Non-Renewable Energy Consumption Lignite",
+      description : "Energy consumption from lignite (non-renewable energy source)",
+      unit : "GWh",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "nonRenewableEnergyConsumptionCoalInGWh",
+      label : "Non-Renewable Energy Consumption Coal",
+      description : "Energy consumption from coal (non-renewable energy source)",
+      unit : "GWh",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "nonRenewableEnergyConsumptionNuclearEnergyInGWh",
+      label : "Non-Renewable Energy Consumption Nuclear Energy",
+      description : "Energy consumption from nuclear energy (Uranium) (non-renewable energy source)",
+      unit : "GWh",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "nonRenewableEnergyConsumptionOtherInGWh",
+      label : "Non-Renewable Energy Consumption Other",
+      description : "Energy consumption from any other available (used) non-renewable source of energy",
+      unit : "GWh",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    } ]
+  }, {
+    name : "biodiversity",
+    label : "Biodiversity",
+    fields : [ {
+      name : "primaryForestAndWoodedLandOfNativeSpeciesExposure",
+      label : "Primary Forest And Wooded Land Of Native Species Exposure",
+      description : "Do you have sites/operations located in primary forest and other wooded land, that is forest and other wooded land of native species, where there is no clearly visible indication of human activity and the ecological processes are not significantly disturbed?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "protectedAreasExposure",
+      label : "Protected Areas Exposure",
+      description : "Do you have sites/operations located in areas designated by law or by the relevant competent authority for nature protection purposes, unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "rareOrEndangeredEcosystemsExposure",
+      label : "Rare Or Endangered Ecosystems Exposure",
+      description : "Do you have sites/operations located in areas designated for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature, subject to their recognition by the Commission (Commission may also recognise areas for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature), unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "highlyBiodiverseGrasslandExposure",
+      label : "Highly Biodiverse Grassland Exposure",
+      description : "Do you have sites/operations located in highly biodiverse grassland that is: (i) natural, namely, grassland that would remain grassland in the absence of human intervention and which maintains the natural species composition and ecological characteristics and processes; or (ii) non-natural, namely, grassland that would cease to be grassland in the absence of human intervention and which is species-rich and not degraded, unless evidence is provided that the harvesting of the raw material is necessary to preserve its grassland status?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    } ]
+  }, {
+    name : "water",
+    label : "Water",
+    fields : [ {
+      name : "emissionsToWaterInTonnes",
+      label : "Emissions To Water",
+      description : "Tonnes of emissions (direct nitrates, direct phosphate emissions, direct pesticides) to water",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "waterConsumptionInCubicMeters",
+      label : "Water Consumption",
+      description : "Amount of water consumed by the company",
+      unit : "m³",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "waterReusedInCubicMeters",
+      label : "Water Reused",
+      description : "Amount of water reused/reclaimed by the company",
+      unit : "m³",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "relativeWaterUsageInCubicMetersPerMillionEURRevenue",
+      label : "Relative Water Usage",
+      description : "Average amount in cubic metres of fresh water used per million EUR revenue",
+      unit : "m³ / €M revenue",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "waterManagementPolicy",
+      label : "Water Management Policy",
+      description : "Does the company have policies and procedures for water management? If yes, please share the relevant documents with us.",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "highWaterStressAreaExposure",
+      label : "High Water Stress Area Exposure",
+      description : "Do you have sites located in \"areas of high water stress\", i.e. regions where the percentage of total water withdrawn is high (60%) or extremely high (80%), without a water management policy?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    } ]
+  }, {
+    name : "waste",
+    label : "Waste",
+    fields : [ {
+      name : "hazardousAndRadioactiveWasteInTonnes",
+      label : "Hazardous and Radioactive Waste",
+      description : "Tonnes of hazardous waste and radioactive waste generated, which are Explosives, Oxidizing substances, Highly flammable, Flammable, Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding substance which possesses any of the characteristics listed above.",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "manufactureOfAgrochemicalPesticidesProducts",
+      label : "Manufacture Of Agrochemical Pesticides Products",
+      description : "Are you involved in manufacture of pesticides and other agrochemical products? (see activities which fall under Division 20.2 of Annex I to Regulation (EC) No 1893/2006)",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "landDegradationDesertificationSoilSealingExposure",
+      label : "Land Degradation Desertification Soil Sealing Exposure",
+      description : "Are you involved in activities which cause land degradation, desertification or soil sealing?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "sustainableAgriculturePolicy",
+      label : "Sustainable Agriculture Policy",
+      description : "Do you have sustainable land/agriculture practices or policies? If yes, please share the relevant documents with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "sustainableOceansAndSeasPolicy",
+      label : "Sustainable Oceans And Seas Policy",
+      description : "Do you have sustainable oceans/seas practices or policies? If yes, please share the relevant documents with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "nonRecycledWasteInTonnes",
+      label : "Non-Recycled Waste",
+      description : "Amount of non-recycled waste generated. \"Non-recycled waste\" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC.",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "threatenedSpeciesExposure",
+      label : "Threatened Species Exposure",
+      description : "Do you have operations which affect threatened species?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "biodiversityProtectionPolicy",
+      label : "Biodiversity Protection Policy",
+      description : "Do you have biodiversity protection policy covering operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas? If yes, please share the policy with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "deforestationPolicy",
+      label : "Deforestation Policy",
+      description : "Do you have policy to address deforestation? If yes, please share the policy with us. \"Deforestation\" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    } ]
+  }, {
+    name : "emissions",
+    label : "Emissions",
+    fields : [ {
+      name : "emissionsOfInorganicPollutantsInTonnes",
+      label : "Emissions of Inorganic Pollutants",
+      description : "Tonnes of inorganic pollutants such as those arising due to radiant energy and noise, heat, or light, including arsenic, cadmium, lead, mercury, chromium, aluminum, nitrates, nitrites, and fluorides or contaminants of water such as arsenic, fluoride, iron, nitrate, heavy metals, etc.",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "emissionsOfAirPollutantsInTonnes",
+      label : "Emissions of Air Pollutants",
+      description : "Tonnes of air pollutants (Direct Sulphur dioxides (Sox/SO2) emissions, direct nitrogen oxides (NOx/NO2) emissions, direct ammonia (NH3) emissions, direct particulate matter (PM2.5) emissions, direct non-methane volatile organic compounds (NMVOC) emissions, direct total heavy metals (HM) emissions (encompassing cadmium, mercury and lead)",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "emissionsOfOzoneDepletionSubstancesInTonnes",
+      label : "Emissions of Ozone Depletion Substances",
+      description : "Tonnes of ozone depletion substances, chemicals that destroy the earth's protective ozone layer. They include: chlorofluorocarbons (CFCs), halons, carbon tetrachloride (CCl4), methyl chloroform (CH3CCl3), hydrobromofluorocarbons (HBFCs), hydrochlorofluorocarbons (HCFCs), methyl bromide (CH3Br), bromochloromethane (CH2BrCl)",
+      unit : "tonnes",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "carbonReductionInitiatives",
+      label : "Carbon Reduction Initiatives",
+      description : "Do you have any policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    } ]
+  } ]
+}, {
+  name : "social",
+  label : "Social",
+  color : "yellow",
+  showIf : (): boolean => true,
+  subcategories : [ {
+    name : "socialAndEmployeeMatters",
+    label : "Social and employee matters",
+    fields : [ {
+      name : "humanRightsLegalProceedings",
+      label : "Human Rights Legal Proceedings",
+      description : "Have you been involved in Human Rights related legal proceedings?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "iloCoreLabourStandards",
+      label : "ILO Core Labour Standards",
+      description : "Do you abide by the ILO Core Labour Standards?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "environmentalPolicy",
+      label : "Environmental Policy",
+      description : "Do you have an environmental policy? If yes, please share the policy with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "corruptionLegalProceedings",
+      label : "Corruption Legal Proceedings",
+      description : "Have you been involved in corruption related legal proceedings?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "transparencyDisclosurePolicy",
+      label : "Transparency Disclosure Policy",
+      description : "Do you have a transparency policy? If yes, please share the policy with us. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "humanRightsDueDiligencePolicy",
+      label : "Human Rights Due Diligence Policy",
+      description : "Do you have policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact? If yes, please share the relevant documents with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "policyAgainstChildLabour",
+      label : "Policy against Child Labour",
+      description : "Do you have policies in place to abolish all forms of child labour? If yes, please share the policy with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "policyAgainstForcedLabour",
+      label : "Policy against Forced Labour",
+      description : "Do you have policies in place to abolish all forms of forced labour? If yes, please share the policy with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "policyAgainstDiscriminationInTheWorkplace",
+      label : "Policy against Discrimination in the Workplace",
+      description : "Do you have policies in place to eliminate discrimination in the workplace? If yes, please share the policy with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "iso14001Certificate",
+      label : "ISO 14001 Certificate",
+      description : "Do you have an ISO 14001 certificate? If yes, please share the certificate with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "policyAgainstBriberyAndCorruption",
+      label : "Policy against Bribery and Corruption",
+      description : "Do you have a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption? If yes, please share the policy with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "fairBusinessMarketingAdvertisingPolicy",
+      label : "Fair Business Marketing Advertising Policy",
+      description : "Do you have policies and procedures in place to to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services? If yes, please share the relevant documents with us.",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "technologiesExpertiseTransferPolicy",
+      label : "Technologies Expertise Transfer Policy",
+      description : "Do you have policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise? If yes, please share the relevant documents with us.",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "fairCompetitionPolicy",
+      label : "Fair Competition Policy",
+      description : "Do you have policies and procedures in place related to fair competition and anti-competitive cartels? If yes, please share the relevant documents with us.",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "violationOfTaxRulesAndRegulation",
+      label : "Violation Of Tax Rules And Regulation",
+      description : "Do you make contributions to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and co-operate with the tax authorities?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "unGlobalCompactPrinciplesCompliancePolicy",
+      label : "UN Global Compact Principles Compliance Policy",
+      description : "Do you have a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises? If yes, please share the policy with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling",
+      label : "OECD Guidelines For Multinational Enterprises Grievance Handling",
+      description : "Do you have grievance / complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "averageGrossHourlyEarningsMaleEmployees",
+      label : "Average Gross Hourly Earnings Male Employees",
+      description : "Average gross hourly earnings of male employees",
+      unit : "",
+      component : "CurrencyDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "averageGrossHourlyEarningsFemaleEmployees",
+      label : "Average Gross Hourly Earnings Female Employees",
+      description : "Average gross hourly earnings of female employees",
+      unit : "",
+      component : "CurrencyDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "unadjustedGenderPayGapInPercent",
+      label : "Unadjusted gender pay gap",
+      description : "Average unadjusted gender pay gap (female to male ratio, only considering gender)",
+      unit : "%",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true,
+      validation : "between:0,100"
+    }, {
+      name : "femaleBoardMembers",
+      label : "Female Board Members",
+      description : "Number of females on the board, i.e. means the administrative, management or supervisory body of a company.",
+      unit : "",
+      component : "IntegerExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "maleBoardMembers",
+      label : "Male Board Members",
+      description : "Number of males on the board, i.e. means the administrative, management or supervisory body of a company.",
+      unit : "",
+      component : "IntegerExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "boardGenderDiversityInPercent",
+      label : "Board gender diversity",
+      description : "Average ratio of female to male board members, expressed as a percentage of all board members",
+      unit : "%",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true,
+      validation : "between:0,100"
+    }, {
+      name : "controversialWeaponsExposure",
+      label : "Controversial Weapons Exposure",
+      description : "Involvement in the manufacture or selling of controversial weapons such as anti- personnel mines, cluster munitions, chemical weapons and biological weapons.",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "workplaceAccidentPreventionPolicy",
+      label : "Workplace Accident Prevention Policy",
+      description : "Do you have workplace accident prevention policy? If yes, please share the policy with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "rateOfAccidentsInPercent",
+      label : "Rate Of Accidents",
+      description : "Rate of accidents expressed as a weighted average",
+      unit : "%",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true,
+      validation : "between:0,100"
+    }, {
+      name : "workdaysLostInDays",
+      label : "Workdays Lost",
+      description : "Number of workdays lost to injuries, accidents, fatalities or illness",
+      unit : "days",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "supplierCodeOfConduct",
+      label : "Supplier Code Of Conduct",
+      description : "Do you have a supplier code of conduct (against unsafe working conditions, precarious work, child labour and forced labour)? If yes, please share the document with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "grievanceHandlingMechanism",
+      label : "Grievance Handling Mechanism",
+      description : "Do you have any grievance/complaints handling mechanism related to employee matters?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "whistleblowerProtectionPolicy",
+      label : "Whistleblower Protection Policy",
+      description : "Do you have a policy on the protection of whistleblowers? If yes, please share the policy with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "reportedIncidentsOfDiscrimination",
+      label : "Reported Incidents Of Discrimination",
+      description : "Number of reported discrimination-related incidents",
+      unit : "",
+      component : "IntegerExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "sanctionedIncidentsOfDiscrimination",
+      label : "Sanctioned Incidents Of Discrimination",
+      description : "Number of discrimination related incidents reported that lead to any kind of penalty and/or fine",
+      unit : "",
+      component : "IntegerExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "ceoToEmployeePayGapRatio",
+      label : "CEO to Employee Pay Gap Ratio",
+      description : "Ratio of the annual total compensation for the highest compensated individual to the median annual total compensation for all employees (excluding the highest-compensated individual)",
+      unit : "",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "excessiveCeoPayRatioInPercent",
+      label : "Excessive CEO pay ratio",
+      description : "Average ratio of the annual total compensation for the highest compensated individual to the median annual total compensation for all employees (excluding the highest-compensated individual)",
+      unit : "%",
+      component : "BigDecimalExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true,
+      validation : "between:0,100"
+    } ]
+  }, {
+    name : "greenSecurities",
+    label : "Green securities",
+    fields : [ {
+      name : "securitiesNotCertifiedAsGreen",
+      label : "Securities Not Certified As Green",
+      description : "Do you have securities in investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    } ]
+  }, {
+    name : "humanRights",
+    label : "Human rights",
+    fields : [ {
+      name : "humanRightsPolicy",
+      label : "Human Rights Policy",
+      description : "Do you have human rights policy? If yes, please share the policy with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "humanRightsDueDiligence",
+      label : "Human Rights Due Diligence",
+      description : "Do you have due diligence processes to identify, prevent, mitigate and address adverse human rights impacts?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "traffickingInHumanBeingsPolicy",
+      label : "Trafficking In Human Beings Policy",
+      description : "Do you have a policy against trafficking in human beings? If yes, please share the policy with us.",
+      unit : "",
+      component : "YesNoBaseDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "reportedChildLabourIncidents",
+      label : "Reported Child Labour Incidents",
+      description : "Has their been any reported child labour incident (within own operations or supply chain)?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "reportedForcedOrCompulsoryLabourIncidents",
+      label : "Reported Forced Or Compulsory Labour Incidents",
+      description : "Has their been any reported forced or compulsory labour incident (within own operations or supply chain)?",
+      unit : "",
+      component : "YesNoExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "numberOfReportedIncidentsOfHumanRightsViolations",
+      label : "Number Of Reported Incidents Of Human Rights Violations",
+      description : "Number of cases of severe human rights issues and incidents connected to the company",
+      unit : "",
+      component : "IntegerExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    } ]
+  }, {
+    name : "antiCorruptionAndAntiBribery",
+    label : "Anti-corruption and anti-bribery",
+    fields : [ {
+      name : "casesOfInsufficientActionAgainstBriberyAndCorruption",
+      label : "Cases of Insufficient Action against Bribery and Corruption",
+      description : "Identified insufficiencies in actions taken to address breaches in procedures and standards of anti-corruption and anti-bribery",
+      unit : "",
+      component : "IntegerExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "reportedConvictionsOfBriberyAndCorruption",
+      label : "Reported Convictions Of Bribery and Corruption",
+      description : "Number of reported convictions for violations of anti-corruption and anti-bribery laws",
+      unit : "",
+      component : "IntegerExtendedDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    }, {
+      name : "totalAmountOfReportedFinesOfBriberyAndCorruption",
+      label : "Total Amount Of Reported Fines Of Bribery and Corruption",
+      description : "Amount of fines for violations of anti-corruption and anti-bribery laws",
+      unit : "",
+      component : "CurrencyDataPointFormField",
+      required : false,
+      showIf : (): boolean => true
+    } ]
+  } ]
+} ] as Array<Category>;

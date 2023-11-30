@@ -1,0 +1,29 @@
+{
+  "general": {
+    "general": {
+      "data-date": "2023-11-23",
+      "fiscalYearDeviation": "Deviation",
+      "fiscalYearEnd": "2022-31-12"
+    }
+  },
+  "environmental": {
+    "energyPerformance": {
+      "applicableHighImpactClimateSectors": {
+        "NaceCodeAInGWh": {
+          "quality": "Audited",
+          "dataSource": {
+            "page": 0,
+            "tagName": "dummyTagName",
+            "fileName": "dummyFileName",
+            "fileReference": "dummyFileReference"
+          },
+          "comment": "dummyComment",
+          "value": 100
+        },
+        "NaceCodeLInGWh": {
+          "quality": "NA"
+        }
+      }
+    }
+  }
+}

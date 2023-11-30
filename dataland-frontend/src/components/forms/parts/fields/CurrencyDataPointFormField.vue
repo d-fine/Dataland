@@ -8,26 +8,28 @@
     :input-class="inputClass"
     :check-value-validity="hasDataPointProperValue"
   >
-    <div class="mb-3">
-      <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
-      <div class="next-to-each-other">
+    <div class="grid">
+      <div class="col-12">
+        <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
+      </div>
+      <div class="col-6">
         <NumberFormField
           :name="'value'"
           :validation-label="validationLabel"
           :validation="validation"
           :unit="unit"
-          input-class=""
+          input-class="col-12"
         />
-        <div class="mt-3">
-          <FormKit
-            type="select"
-            name="currency"
-            placeholder="Currency"
-            :options="getDataset(DropdownDatasetIdentifier.CurrencyCodes)"
-            outer-class="short"
-            data-test="datapoint-currency"
-          />
-        </div>
+      </div>
+      <div class="col-4">
+        <FormKit
+          type="select"
+          name="currency"
+          placeholder="Currency"
+          :options="getDataset(DropdownDatasetIdentifier.CurrencyCodes)"
+          outer-class="short"
+          data-test="datapoint-currency"
+        />
       </div>
     </div>
   </ExtendedDataPointFormField>
@@ -53,6 +55,9 @@ export default defineComponent({
   components: { NumberFormField, ExtendedDataPointFormField, UploadFormHeader, FormKit },
   props: {
     ...BaseFormFieldProps,
+    unit: {
+      type: String,
+    },
   },
   methods: {
     hasDataPointProperValue,
