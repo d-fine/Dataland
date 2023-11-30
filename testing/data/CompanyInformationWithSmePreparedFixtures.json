@@ -2,50 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Lake Hermanfort",
-			"headquartersPostalCode": "54339-3348",
-			"sector": "synergies",
+			"headquarters": "Fort Billytown",
+			"headquartersPostalCode": "15054",
+			"sector": "metrics",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"m7KURWXO3DEKUw71zipo"
+				],
 				"Isin": [
-					"cvqxgA4PQdgX",
-					"1kUbW4j42s93"
+					"ZJlGhxAFK0GQ"
 				],
-				"PermId": [],
+				"PermId": [
+					"J7adT0E1lt"
+				],
 				"Ticker": [],
-				"Duns": [
-					"PjsAUYggi"
-				],
-				"VatNumber": [
-					"W1NBqXHmN"
-				],
-				"CompanyRegistrationNumber": []
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"EANxC2uunnCFdyg"
+				]
 			},
-			"countryCode": "NA",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://constant-ladle.com",
+			"countryCode": "GR",
+			"companyAlternativeNames": [
+				"Zemlak Group"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://monumental-environment.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"03.11",
-						"32.3",
-						"36",
-						"81.29",
-						"87.1"
+						"01.63",
+						"T"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Schinner Gardens 68721",
-						"postalCode": null,
-						"city": "South Nikki",
-						"state": "Illinois",
-						"country": "BS"
+						"streetAndHouseNumber": "Samson Landing 7364",
+						"postalCode": "10311",
+						"city": "Maggioshire",
+						"state": "Iowa",
+						"country": "MK"
 					},
-					"numberOfEmployees": 6448,
-					"fiscalYearStart": "2024-09-03"
+					"numberOfEmployees": 8055,
+					"fiscalYearStart": "2024-05-03"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -55,10 +55,23 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": []
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Fantastic Frozen Pizza",
+							"shareOfTotalRevenueInPercent": 94.6956
+						},
+						{
+							"name": "Awesome Rubber Fish",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Modern Concrete Pizza",
+							"shareOfTotalRevenueInPercent": 68.7122
+						}
+					]
 				}
 			},
 			"power": {
@@ -66,22 +79,24 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 670,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 466,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"powerConsumptionInMWh": 1069,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 43,
+					"primaryEnergySourceForHeatingAndHotWater": null,
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 23945041,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 23006533,
 					"naturalHazardsCovered": [
+						"Avalanche",
+						"Flooding",
 						"Snow",
-						"Hail",
 						"Wind",
-						"EarthQuake"
+						"EarthQuake",
+						"Hail"
 					]
 				}
 			}
@@ -91,43 +106,41 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Port Shannymouth",
-			"headquartersPostalCode": "65105-5073",
-			"sector": "interfaces",
+			"headquarters": "Hagenesbury",
+			"headquartersPostalCode": "61910-8396",
+			"sector": "communities",
 			"identifiers": {
 				"Lei": [
-					"4tjH9YWxC4VTN8RaVX6M"
+					"v5yEcW23W1QWJdn5Qwaw"
 				],
 				"Isin": [
-					"f0Ib52EDN6bZ"
+					"eqYvZQ6QTARp",
+					"q2Jwhjqiou8E"
 				],
-				"PermId": [
-					"srJn9b4Ndr"
+				"PermId": [],
+				"Ticker": [
+					"w1VDkU7"
 				],
-				"Ticker": [],
 				"Duns": [
-					"9gUeusQtx"
+					"7OOXHQLn1"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"DNH5VnEz09evSIY"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BR",
+			"countryCode": "GW",
 			"companyAlternativeNames": [
-				"Legros Inc",
-				"O'Connell Group",
-				"Von Group"
+				"Beatty and Sons",
+				"McDermott - Welch"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://profitable-salmon.name",
+			"companyLegalForm": null,
+			"website": "https://overlooked-squash.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"85.31"
+						"47.25"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -136,45 +149,66 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 550,
-					"fiscalYearStart": "2024-03-25"
+					"numberOfEmployees": 5137,
+					"fiscalYearStart": "2024-10-31"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 58322978,
-					"operatingCostInEUR": 44904865,
-					"capitalAssetsInEUR": 27976084
+					"revenueInEUR": 46017457,
+					"operatingCostInEUR": 5959919,
+					"capitalAssetsInEUR": null
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Elegant Soft Fish",
+							"shareOfTotalRevenueInPercent": 2.8186
+						},
+						{
+							"name": "Bespoke Soft Pants",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Elegant Rubber Towels",
+							"shareOfTotalRevenueInPercent": 87.7296
+						},
+						{
+							"name": "Sleek Cotton Cheese",
+							"shareOfTotalRevenueInPercent": 67.1598
+						},
+						{
+							"name": "Gorgeous Rubber Shoes",
+							"shareOfTotalRevenueInPercent": 1.6732
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 753,
+					"powerConsumptionInMWh": null,
 					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 81,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"energyConsumptionHeatingAndHotWaterInMWh": 546,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 19331720,
 					"naturalHazardsCovered": [
-						"Hail",
-						"Snow",
-						"Avalanche",
 						"Flooding",
-						"Wind"
+						"Avalanche",
+						"EarthQuake",
+						"Snow",
+						"Hail"
 					]
 				}
 			}
@@ -184,42 +218,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Doyleport",
+			"headquarters": "Port Ellsworth",
 			"headquartersPostalCode": null,
-			"sector": "content",
+			"sector": "interfaces",
 			"identifiers": {
 				"Lei": [
-					"iiiB7CSfwa3gdymT2uX4"
+					"lAkPilFQYt92fH9BjUrB"
 				],
 				"Isin": [
-					"CYRfB7dHGkzl"
+					"bubISAcHKpTa",
+					"Ykhs8CKpW4Bz"
 				],
 				"PermId": [
-					"JOv795GaEG"
+					"FiN0dkO4c4"
 				],
-				"Ticker": [],
-				"Duns": [
-					"6pzDRei1y"
+				"Ticker": [
+					"1QvyFTE"
 				],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"5U7nw1cJnLFqVrg"
+					"5n6LOMTCfNyGQhR"
 				]
 			},
-			"countryCode": "PT",
+			"countryCode": "AS",
 			"companyAlternativeNames": [
-				"Lindgren - Kilback",
-				"Terry - Bashirian"
+				"Bogan LLC",
+				"Yost LLC"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://worrisome-suspect.name/",
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"61.90"
+						"17.22"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -228,75 +263,97 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 8826,
-					"fiscalYearStart": "2023-12-16"
+					"numberOfEmployees": 4310,
+					"fiscalYearStart": "2024-04-03"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 65428694,
-					"operatingCostInEUR": 58627570,
-					"capitalAssetsInEUR": 62056020
+					"revenueInEUR": 83297052,
+					"operatingCostInEUR": null,
+					"capitalAssetsInEUR": 11496907
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Dicki - Parker",
+							"nameOfProductionSite": "Walker Group",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Alma Street 85339",
-								"postalCode": "61985",
-								"city": "Spring Valley",
-								"state": "Wisconsin",
-								"country": "ZW"
+								"streetAndHouseNumber": "Silver Street 5711",
+								"postalCode": "30700",
+								"city": "Lehnerfield",
+								"state": "Michigan",
+								"country": "AL"
 							},
-							"shareOfTotalRevenueInPercent": 58.4017
+							"shareOfTotalRevenueInPercent": 36.6851
 						},
 						{
-							"nameOfProductionSite": "Mante - Smith",
+							"nameOfProductionSite": "Dickinson Group",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "17939-2501",
-								"city": "Lake Krista",
-								"state": "Connecticut",
-								"country": "MN"
+								"streetAndHouseNumber": "Dickinson Land 2083",
+								"postalCode": "34239",
+								"city": "Littelside",
+								"state": null,
+								"country": "AG"
 							},
-							"shareOfTotalRevenueInPercent": 55.6839
+							"shareOfTotalRevenueInPercent": 0.6435
+						},
+						{
+							"nameOfProductionSite": "Swift - Considine",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Cross Lane 296",
+								"postalCode": null,
+								"city": "East Isobel",
+								"state": null,
+								"country": "AM"
+							},
+							"shareOfTotalRevenueInPercent": 7.3752
+						},
+						{
+							"nameOfProductionSite": "Brekke, Stark and Christiansen",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Willow Grove 670",
+								"postalCode": "03327",
+								"city": "Myrticestead",
+								"state": "Delaware",
+								"country": "GU"
+							},
+							"shareOfTotalRevenueInPercent": 16.2473
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Rustic Concrete Car",
-							"shareOfTotalRevenueInPercent": 75.6367
+							"name": "Practical Concrete Car",
+							"shareOfTotalRevenueInPercent": 3.2815
 						},
 						{
-							"name": "Practical Wooden Ball",
-							"shareOfTotalRevenueInPercent": 67.5231
+							"name": "Sleek Fresh Ball",
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 784,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 351,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 445,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 6432376,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 21426064,
 					"naturalHazardsCovered": [
 						"Snow",
-						"EarthQuake",
-						"Avalanche"
+						"Wind",
+						"Hail"
 					]
 				}
 			}
