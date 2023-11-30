@@ -6,6 +6,7 @@ import {
 import { type BaseDocumentReference, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
 import { type BaseDataPoint, type ExtendedDataPoint } from "@/utils/DataPoint";
 import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/DataPoints";
+import { NO_DATA_PROVIDED } from "@/utils/Constants";
 
 /**
  * Some formatting function for testing
@@ -71,7 +72,7 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
   });
   describe("Tests when the data is an extended data point", () => {
     it("A placeholder string should be displayed if no data point value is provided", () => {
-      assertDataPointWithDataSourceGetsTheCorrectlyFormattedDisplayObject(undefined, "No data provided");
+      assertDataPointWithDataSourceGetsTheCorrectlyFormattedDisplayObject(undefined, NO_DATA_PROVIDED);
     });
     it("Data point display information should contain the datapoints meta information", () => {
       assertDataPointWithDataSourceGetsTheCorrectlyFormattedDisplayObject("Data", "Data Formatted");

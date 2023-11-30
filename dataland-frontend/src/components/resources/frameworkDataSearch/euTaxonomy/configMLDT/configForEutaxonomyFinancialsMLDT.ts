@@ -16,6 +16,7 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { numberValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
+import { NO_DATA_PROVIDED } from "@/utils/Constants";
 
 const sampleField: Field = {
   showIf: () => true,
@@ -52,7 +53,7 @@ function getSpecifiedDataPointGetterFactory(
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setShowIf(displayValue: any): boolean {
-  return !!(displayValue && displayValue != "No data provided");
+  return !!(displayValue && displayValue != NO_DATA_PROVIDED);
 }
 
 export const configForEuTaxonomyFinancialsMLDT = [
