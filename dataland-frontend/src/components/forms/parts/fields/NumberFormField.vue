@@ -14,7 +14,7 @@
       :outer-class="inputClass"
       @input="$emit('update:currentValue', $event)"
     />
-    <div v-if="unit" class="form-field-label pb-3 col-4">
+    <div v-if="unit" class="form-field-label pb-4 col-4">
       <span>{{ unit }}</span>
     </div>
   </div>

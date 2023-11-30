@@ -1,7 +1,7 @@
 <template>
   <div class="p-datatable p-component">
     <div class="p-datatable-wrapper overflow-auto">
-      <table v-if="dataPointDisplay" class="p-datatable-table" aria-label="Data point content">
+      <table v-if="dataPointDisplay && isDataCorrect" class="p-datatable-table" aria-label="Data point content">
         <tbody class="p-datatable-body">
           <tr>
             <th class="headers-bg">Value</th>
@@ -28,6 +28,7 @@
           </tr>
         </tbody>
       </table>
+      <template v-else>No data provided</template>
     </div>
   </div>
 </template>
@@ -47,12 +48,15 @@ export default defineComponent({
     },
   },
   computed: {
+    isDataCorrect() {
+      return !!this.dataPointDisplay?.value && this.dataPointDisplay?.value !== "No data provided";
+    },
     dataSourceLabel() {
-      return this.dataPointDisplay?.dataSource.page
+      return this.dataPointDisplay?.dataSource?.page
         ? `${this.dataPointDisplay?.dataSource.fileName ?? ""}, page ${
-            this.dataPointDisplay?.dataSource.page as number
+            this.dataPointDisplay?.dataSource?.page as number
           }`
-        : this.dataPointDisplay?.dataSource.fileName;
+        : this.dataPointDisplay?.dataSource?.fileName;
     },
   },
 });
