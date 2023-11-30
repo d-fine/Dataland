@@ -51,9 +51,7 @@ import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
-import { getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
-import { type FrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
 
@@ -140,17 +138,11 @@ async function loadDataForDisplay(
   companyId: string,
   singleDataMetaInfoToDisplay?: DataMetaInformation,
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
-  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)()); // TODO Emanuel: why not injected?
 
-  const frameworkDefinition = getFrameworkDefinition(
+  const dataControllerApi = apiClientProvider.getUnifiedFrameworkDataController(
     props.frameworkIdentifier,
-  ) as FrameworkDefinition<FrameworkDataType>;
-  let dataControllerApi: FrameworkDataApi<FrameworkDataType>;
-  if (frameworkDefinition) {
-    dataControllerApi = frameworkDefinition.getFrameworkApiClient(await apiClientProvider.getConfiguration());
-  } else {
-    dataControllerApi = await apiClientProvider.getUnifiedFrameworkDataController(props.frameworkIdentifier);
-  }
+  ) as FrameworkDataApi<FrameworkDataType>;
 
   if (singleDataMetaInfoToDisplay) {
     const singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;

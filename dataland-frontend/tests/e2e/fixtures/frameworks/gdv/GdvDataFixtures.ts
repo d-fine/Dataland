@@ -109,7 +109,9 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         gefaehrlicherAbfall: dataGenerator.randomShortString(),
       },
       biodiversitaet: {
+        negativeAktivitaetenFuerDieBiologischeVielfalt: dataGenerator.randomYesNo(),
         negativeMassnahmenFuerDieBiologischeVielfalt: dataGenerator.randomShortString(),
+        positiveAktivitaetenFuerDieBiologischeVielfalt: dataGenerator.randomYesNo(),
         positiveMassnahmenFuerDieBiologischeVielfalt: dataGenerator.randomShortString(),
       },
       fossileBrennstoffe: {
@@ -122,8 +124,6 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         euTaxonomieKompassAktivitaeten: dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity))),
       },
     },
-    negativeAktivitaetenFuerDieBiologischeVielfalt: dataGenerator.randomYesNo(),
-    positiveAktivitaetenFuerDieBiologischeVielfalt: dataGenerator.randomYesNo(),
     soziales: {
       aenderungenUnternehmensstruktur: dataGenerator.randomYesNo(),
       sicherheitsmassnahmenFuerMitarbeiter: dataGenerator.randomShortString(),

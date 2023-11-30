@@ -58,6 +58,7 @@ export default defineComponent({
   computed: {
     multiViewFrameworks(): string[] {
       const standardMultiViewFrameworks = [
+        DataTypeEnum.EutaxonomyFinancials,
         DataTypeEnum.EutaxonomyNonFinancials,
         DataTypeEnum.Lksg,
         DataTypeEnum.Sfdr,

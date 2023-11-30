@@ -43,6 +43,7 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
   require("./eu-taxonomy-financials");
   require("./eu-taxonomy-non-financials");
   require("./p2p");
+  require("./gdv"); // TODO Emanuel: In an optimal world, the devtools adds this automatically
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {

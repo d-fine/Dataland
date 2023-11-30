@@ -1,1 +1,193 @@
-[]
+[
+	{
+		"companyInformation": {
+			"companyName": "Gdv-dataset-with-no-null-fields",
+			"headquarters": "Enochview",
+			"headquartersPostalCode": "16836",
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"Z5xZUdJo9MT8",
+					"kUXFTKiEZpeI"
+				],
+				"PermId": [
+					"9c8DwV4j8u"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"jLhlSQB8uPvHdvg"
+				]
+			},
+			"countryCode": "HN",
+			"companyAlternativeNames": [
+				"Ferry LLC",
+				"Funk LLC",
+				"Rempel - Metz"
+			],
+			"companyLegalForm": null,
+			"website": "https://weepy-half.info",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"masterData": {
+					"berichtsPflicht": "Yes",
+					"gueltigkeitsDatum": "2024-09-16"
+				}
+			},
+			"allgemein": {
+				"esgZiele": "No",
+				"ziele": "models",
+				"investitionen": "communities",
+				"sektorMitHohenKlimaauswirkungen": "Yes",
+				"sektor": [
+					"D",
+					"B",
+					"L",
+					"G",
+					"E",
+					"C",
+					"A",
+					"H",
+					"F"
+				],
+				"nachhaltigkeitsbericht": "No",
+				"frequenzDerBerichterstattung": "Halbjaehrlich",
+				"mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze": "Yes",
+				"uncgPrinzipien": "No",
+				"erklaerungUngc": "models",
+				"oecdLeitsaetze": "No",
+				"erklaerungOecd": "content",
+				"ausrichtungAufDieUnSdgsUndAktivesVerfolgen": "systems",
+				"ausschlusslistenAufBasisVonEsgKriterien": "No",
+				"ausschlusslisten": "bandwidth",
+				"oekologischeSozialeFuehrungsstandardsOderPrinzipien": "No",
+				"anreizmechanismenFuerDasManagementUmwelt": "Nein",
+				"anreizmechanismenFuerDasManagementSoziales": "JaGeschaeftsleitung",
+				"esgBezogeneRechtsstreitigkeiten": "Yes",
+				"rechtsstreitigkeitenMitBezugZuE": "Yes",
+				"statusZuE": "Offen",
+				"einzelheitenZuDenRechtsstreitigkeitenZuE": "relationships",
+				"rechtsstreitigkeitenMitBezugZuS": "No",
+				"statusZuS": "Offen",
+				"einzelheitenZuDenRechtsstreitigkeitenZuS": "solutions",
+				"rechtsstreitigkeitenMitBezugZuG": "Yes",
+				"statusZuG": "Geklaert",
+				"einzelheitenZuDenRechtsstreitigkeitenZuG": "models",
+				"esgRating": "Yes",
+				"agentur": "interfaces",
+				"ergebnis": {
+					"value": "e-markets",
+					"dataSource": {
+						"fileName": "Certification",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+					}
+				},
+				"kritischePunkte": "solutions",
+				"nachhaltigkeitsbezogenenAnleihen": "Yes",
+				"wichtigsteESUndGRisikenUndBewertung": "systems",
+				"hindernisseBeimUmgangMitEsgBedenken": "relationships"
+			},
+			"umwelt": {
+				"treibhausgasemissionen": {
+					"treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird": "blockchains",
+					"strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": "web services"
+				},
+				"produkteZurVerringerungDerUmweltbelastung": "No",
+				"verringerungenDerUmweltbelastung": "niches",
+				"oekologischerMindestStandardFuerProduktionsprozesse": "No",
+				"energieverbrauch": {
+					"unternehmensGruppenStrategieBzglEnergieverbrauch": "supply-chains"
+				},
+				"energieeffizienzImmobilienanlagen": {
+					"unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": "blockchains"
+				},
+				"wasserverbrauch": {
+					"unternehmensGruppenStrategieBzglWasserverbrauch": "action-items"
+				},
+				"abfallproduktion": {
+					"unternehmensGruppenStrategieBzglAbfallproduktion": "supply-chains"
+				},
+				"gefaehrlicheAbfaelle": {
+					"gefaehrlicherAbfall": "metrics"
+				},
+				"biodiversitaet": {
+					"negativeMassnahmenFuerDieBiologischeVielfalt": "models",
+					"positiveMassnahmenFuerDieBiologischeVielfalt": "platforms"
+				},
+				"fossileBrennstoffe": {
+					"einnahmenAusFossilenBrennstoffen": "No"
+				},
+				"taxonomie": {
+					"taxonomieBerichterstattung": "Csrd",
+					"euTaxonomieKompassAktivitaeten": [
+						"InfrastructureForPersonalMobilityCycleLogistics",
+						"RetrofittingOfSeaAndCoastalFreightAndPassengerWaterTransport",
+						"ManufactureOfEquipmentForTheProductionAndUseOfHydrogen",
+						"ManufactureOfAluminium",
+						"ComputerProgrammingConsultancyAndRelatedActivities",
+						"FreightTransportServicesByRoad",
+						"TransportByMotorbikesPassengerCarsAndLightCommercialVehicles",
+						"RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent",
+						"ConservationForestry",
+						"ProductionOfHeatCoolFromBioenergy",
+						"RetrofittingOfInlandWaterPassengerAndFreightTransport",
+						"DistrictHeatingCoolingDistribution",
+						"NonLifeInsuranceUnderwritingOfClimateRelatedPerils",
+						"InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
+						"AirportInfrastructure",
+						"ElectricityGenerationFromOceanEnergyTechnologies",
+						"CreativeArtsAndEntertainmentActivities",
+						"LibrariesArchivesMuseumsAndCulturalActivities",
+						"ProgrammingAndBroadcastingActivities",
+						"TransmissionAndDistributionNetworksForRenewableAndLowCarbonGases",
+						"RenewalOfWaterCollectionTreatmentAndSupplySystems",
+						"InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
+						"ManufactureOfSodaAsh",
+						"CogenerationOfHeatCoolAndPowerFromGeothermalEnergy",
+						"ConstructionExtensionAndOperationOfWaterCollectionTreatmentAndSupplySystems",
+						"Education",
+						"ManufactureOfRenewableEnergyTechnologies",
+						"ManufactureOfIronAndSteel",
+						"PassengerInterurbanRailTransport",
+						"MaterialRecoveryFromNonHazardousWaste",
+						"ManufactureOfCement",
+						"LowCarbonAirportInfrastructure"
+					]
+				}
+			},
+			"negativeAktivitaetenFuerDieBiologischeVielfalt": "Yes",
+			"positiveAktivitaetenFuerDieBiologischeVielfalt": "Yes",
+			"soziales": {
+				"aenderungenUnternehmensstruktur": "No",
+				"sicherheitsmassnahmenFuerMitarbeiter": "supply-chains",
+				"einkommensgleichheit": {
+					"massnahmenZurVerbesserungDerEinkommensungleichheit": "paradigms"
+				},
+				"geschlechterdiversitaet": {
+					"definitionTopManagement": "interfaces",
+					"einhaltungRechtlicherVorgaben": "platforms"
+				},
+				"audit": {
+					"auditsZurEinhaltungVonArbeitsstandards": "No",
+					"artDesAudits": "InterneAnhoerung",
+					"auditErgebnisse": "eyeballs"
+				}
+			},
+			"unternehmensfuehrungGovernance": {
+				"wirtschaftspruefer": "e-business",
+				"ceoVorsitzender": "No",
+				"amtszeit": "supply-chains",
+				"einbeziehungVonStakeholdern": "No",
+				"prozessDerEinbeziehungVonStakeholdern": "applications",
+				"mechanismenZurAusrichtungAufStakeholder": "functionalities",
+				"esgKriterienUndUeberwachungDerLieferanten": "No",
+				"auswahlkriterien": "initiatives"
+			}
+		},
+		"reportingPeriod": "2019"
+	}
+]

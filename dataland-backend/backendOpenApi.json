@@ -7637,22 +7637,6 @@
               }
             ]
           },
-          "negativeAktivitaetenFuerDieBiologischeVielfalt": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "positiveAktivitaetenFuerDieBiologischeVielfalt": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
           "soziales": {
             "nullable": true,
             "allOf": [
@@ -7899,9 +7883,25 @@
       "GdvUmweltBiodiversitaet": {
         "type": "object",
         "properties": {
+          "negativeAktivitaetenFuerDieBiologischeVielfalt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
           "negativeMassnahmenFuerDieBiologischeVielfalt": {
             "type": "string",
             "nullable": true
+          },
+          "positiveAktivitaetenFuerDieBiologischeVielfalt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "positiveMassnahmenFuerDieBiologischeVielfalt": {
             "type": "string",

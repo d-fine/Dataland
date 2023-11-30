@@ -69,6 +69,7 @@ import {
   type FrameworkSelectableItem,
   type SelectableItem,
 } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
+import { getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
 
 export default defineComponent({
   name: "FrameworkDataSearchFilters",
@@ -181,7 +182,7 @@ export default defineComponent({
       this.availableCountries = [...(availableSearchFilters.data.countryCodes ?? [])].map((countryCode) => {
         return {
           countryCode: countryCode,
-          displayName: getCountryNameFromCountryCode(countryCode),
+          displayName: getCountryNameFromCountryCode(countryCode) as string,
           disabled: false,
         };
       });

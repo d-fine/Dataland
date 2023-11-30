@@ -48,7 +48,6 @@ class FrameworkUploadConfigBuilder(
         writer.close()
     }
 
-
     /**
      * Generate the code for the UploadConfig and integrates it into the Dataland Repository
      */

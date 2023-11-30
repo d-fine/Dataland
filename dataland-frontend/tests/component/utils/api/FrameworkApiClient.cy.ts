@@ -9,6 +9,7 @@ describe("It should be possible to construct Unified API Clients for every frame
     DataTypeEnum.Sfdr,
     DataTypeEnum.EutaxonomyFinancials,
     DataTypeEnum.EutaxonomyNonFinancials,
+    DataTypeEnum.Gdv, // TODO Emanuel: I had to add this manually. Can we somehow add this automatically?  Or get this whole list from a central point where it is updated?
   ];
 
   for (const frameworkIdentifier of frameworks) {

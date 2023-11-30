@@ -5,6 +5,7 @@ import {
   type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
+import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelectModal.vue";
 
 /**
  * Returns a value factory that returns the value of the MultiSelect form field.
@@ -44,7 +45,7 @@ export function formatListOfStringsForDatatable(
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${input.length} value${input.length > 1 ? "s" : ""}`,
-        modalComponent: "hello", // TODO
+        modalComponent: MultiSelectModal, // TODO Emanuel: This leads to an import error when you run prepopulation!
         modalOptions: {
           props: {
             header: fieldLabel,
