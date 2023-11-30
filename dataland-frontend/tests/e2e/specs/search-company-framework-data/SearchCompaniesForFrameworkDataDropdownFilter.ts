@@ -126,7 +126,7 @@ describe("As a user, I expect the search functionality on the /companies page to
         { scrollBehavior: false },
         () => {
           const demoCompanyToTestFor = assertDefined(
-            companiesWithEuTaxonomyDataForFinancials.find((it) => it.companyInformation?.sector !== undefined)
+            companiesWithEuTaxonomyDataForFinancials.find((it) => it.companyInformation?.sector)
               ?.companyInformation,
           );
           expect(demoCompanyToTestFor?.sector).to.not.be.undefined;
@@ -135,7 +135,7 @@ describe("As a user, I expect the search functionality on the /companies page to
             companiesWithEuTaxonomyDataForFinancials.find(
               (it) =>
                 it.companyInformation?.sector !== demoCompanyToTestFor.sector &&
-                it.companyInformation?.sector !== undefined,
+                it.companyInformation?.sector,
             )?.companyInformation,
           );
           expect(demoCompanyWithDifferentSector?.sector).to.not.be.undefined;
