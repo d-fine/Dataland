@@ -79,6 +79,7 @@ function constructCompanyApiResponseForLksg(baseDataset: LksgData): DataAndMetaI
  * @param toggledFieldName Name of a field which is toggled by the input switch
  */
 export function checkToggleEmptyFieldsSwitch(toggledFieldName: string): void {
+  cy.wait(100);
   cy.get("span").contains(toggledFieldName).should("not.exist");
   cy.get('span[data-test="hideEmptyDataToggle"]').should("exist");
   cy.get('div[data-test="dataPointToggleButton"]').should("have.class", "p-inputswitch-checked").click();
