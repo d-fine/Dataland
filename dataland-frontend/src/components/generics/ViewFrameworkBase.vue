@@ -24,7 +24,10 @@
               @change="handleChangeFrameworkEvent"
             />
             <slot name="reportingPeriodDropdown" />
-            <div class="flex align-content-start align-items-center pl-3" v-if="dataType != DataTypeEnum.EutaxonomyNonFinancials && dataType !== DataTypeEnum.Sme">
+            <div
+              class="flex align-content-start align-items-center pl-3"
+              v-if="dataType != DataTypeEnum.EutaxonomyNonFinancials && dataType !== DataTypeEnum.Sme"
+            >
               <InputSwitch
                 class="form-field vertical-middle"
                 data-test="dataPointToggleButton"
@@ -334,9 +337,8 @@ export default defineComponent({
      */
     async getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit() {
       try {
-        const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getMetaDataControllerApi();
+        const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
+        const metaDataControllerApi = backendClients.metaDataController;
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
         this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(

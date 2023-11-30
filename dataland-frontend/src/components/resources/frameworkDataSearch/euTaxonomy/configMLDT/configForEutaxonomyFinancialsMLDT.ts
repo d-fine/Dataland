@@ -47,14 +47,12 @@ function getSpecifiedDataPointGetterFactory(
 
 /**
  * The function defines the trigger for the shoudDisplay property
- * @param formatter the getter factory function used
- * @param valueName the field for which the getter functions should be used
+ * @param displayValue value of the field which is checked
  * @returns boolean to trigger the shouldDisplay condition
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setShowIf(displayValue: any): boolean {
-  return !!(
-    displayValue &&
-    displayValue != "No data provided");
+  return !!(displayValue && displayValue != "No data provided");
 }
 
 export const configForEuTaxonomyFinancialsMLDT = [
@@ -111,7 +109,8 @@ export const configForEuTaxonomyFinancialsMLDT = [
         type: "cell",
         label: euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting,
         explanation: euTaxonomyKpiInfoMappings.euTaxonomyActivityLevelReporting,
-        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => setShowIf(dataset.euTaxonomyActivityLevelReporting),
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+          setShowIf(dataset.euTaxonomyActivityLevelReporting),
         valueGetter: yesNoValueGetterFactory("euTaxonomyActivityLevelReporting"),
       },
       {

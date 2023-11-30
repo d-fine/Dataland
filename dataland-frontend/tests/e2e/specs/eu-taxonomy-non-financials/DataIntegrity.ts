@@ -72,6 +72,7 @@ describeIf(
       () => {
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = "Company-Created-In-Eu-Taxo-Non-Financials-Blanket-Test-" + uniqueCompanyMarker;
+
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
             return uploadFrameworkData(

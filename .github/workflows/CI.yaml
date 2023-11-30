@@ -59,7 +59,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: componentTestCypressLogss
+          name: componentTestCypressLogs
           path: cypress-component-test-logs.log
       - name: Upload lcov Exec Results
         if: always()
