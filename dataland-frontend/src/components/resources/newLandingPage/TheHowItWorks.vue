@@ -240,9 +240,6 @@ onUnmounted(() => {
     &__slides {
       justify-content: flex-start;
     }
-    &__slide {
-      cursor: grab;
-    }
     &__arrows {
       visibility: visible;
       justify-content: flex-start;
@@ -252,6 +249,7 @@ onUnmounted(() => {
       grid-column: 1 / -1;
     }
     &__slide {
+      cursor: grab;
       &-title {
         font-size: 40px;
         line-height: 48px;
