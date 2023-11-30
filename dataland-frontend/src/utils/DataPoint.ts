@@ -37,9 +37,6 @@ export function hasDataPointProperValue(dataPoint: { value: unknown }): boolean 
  */
 export function getFilledKpis(dataResponseData: object): string[] {
   const listOfFilledKpis: string[] = [];
-  if (!dataResponseData || typeof dataResponseData !== "object") {
-    return listOfFilledKpis;
-  }
   Object.values(dataResponseData).forEach((category) => {
     if (category && typeof category === "object") {
       Object.values(category as ObjectType).forEach((subCategory) => {
