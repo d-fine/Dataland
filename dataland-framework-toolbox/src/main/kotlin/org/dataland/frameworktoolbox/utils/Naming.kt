@@ -11,6 +11,6 @@ object Naming {
      */
     fun getNameFromLabel(label: String, useCapitalCase: Boolean = false): String {
         val sanitizedLabel = label.replace("&", " And ")
-        return CaseUtils.toCamelCase(sanitizedLabel, useCapitalCase, '-', ',', '/', '(', ')', ':')
+        return CaseUtils.toCamelCase(sanitizedLabel, useCapitalCase, '-', ',', '/', '(', ')', ':', '.', '"')
     }
 }
