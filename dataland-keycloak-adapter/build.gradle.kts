@@ -21,8 +21,6 @@ plugins {
     kotlin("kapt")
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_17
-
 dependencies {
     implementation(libs.spring.context)
     implementation(libs.spring.boot)

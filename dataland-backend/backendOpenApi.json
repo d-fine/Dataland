@@ -2497,12 +2497,12 @@
           "countryCode": {
             "type": "string"
           },
-          "website": {
-            "type": "string",
-            "nullable": true
-          },
           "isTeaserCompany": {
             "type": "boolean",
+            "nullable": true
+          },
+          "website": {
+            "type": "string",
             "nullable": true
           }
         }
@@ -2919,6 +2919,9 @@
         }
       },
       "SmeProductionSite": {
+        "required": [
+          "addressOfProductionSite"
+        ],
         "type": "object",
         "properties": {
           "nameOfProductionSite": {
@@ -2926,12 +2929,7 @@
             "nullable": true
           },
           "addressOfProductionSite": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Address"
-              }
-            ]
+            "$ref": "#/components/schemas/Address"
           },
           "shareOfTotalRevenueInPercent": {
             "type": "number",
@@ -7751,15 +7749,13 @@
         }
       },
       "EuTaxonomyActivity": {
+        "required": [
+          "activityName"
+        ],
         "type": "object",
         "properties": {
           "activityName": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Activity"
-              }
-            ]
+            "$ref": "#/components/schemas/Activity"
           },
           "naceCodes": {
             "type": "array",
@@ -7779,15 +7775,13 @@
         }
       },
       "EuTaxonomyAlignedActivity": {
+        "required": [
+          "activityName"
+        ],
         "type": "object",
         "properties": {
           "activityName": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Activity"
-              }
-            ]
+            "$ref": "#/components/schemas/Activity"
           },
           "naceCodes": {
             "type": "array",
@@ -8505,16 +8499,12 @@
             "type": "string",
             "nullable": true
           },
-          "website": {
-            "type": "string",
-            "nullable": true
-          },
-          "teaserCompany": {
-            "type": "boolean",
-            "nullable": true
-          },
           "isTeaserCompany": {
             "type": "boolean",
+            "nullable": true
+          },
+          "website": {
+            "type": "string",
             "nullable": true
           }
         }
@@ -8696,14 +8686,14 @@
         ]
       },
       "ErrorDetails": {
+        "required": [
+          "errorType",
+          "httpStatus",
+          "message",
+          "summary"
+        ],
         "type": "object",
         "properties": {
-          "httpStatus": {
-            "type": "number"
-          },
-          "metaInformation": {
-            "type": "object"
-          },
           "errorType": {
             "type": "string"
           },
@@ -8712,10 +8702,19 @@
           },
           "message": {
             "type": "string"
+          },
+          "httpStatus": {
+            "type": "number"
+          },
+          "metaInformation": {
+            "type": "object"
           }
         }
       },
       "ErrorResponse": {
+        "required": [
+          "errors"
+        ],
         "type": "object",
         "properties": {
           "errors": {

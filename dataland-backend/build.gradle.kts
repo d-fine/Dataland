@@ -26,10 +26,9 @@ plugins {
     kotlin("plugin.serialization")
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_17
-
 dependencies {
     implementation(project(":dataland-backend-utils"))
+    implementation(libs.jackson.module.kotlin)
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)

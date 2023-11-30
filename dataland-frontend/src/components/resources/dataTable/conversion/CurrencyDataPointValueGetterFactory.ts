@@ -1,8 +1,8 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type CurrencyDataPoint } from "@clients/backend";
-import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
+import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/DataPoints";
 
 /**
  * Returns a value factory that returns the value of the currency data point form field

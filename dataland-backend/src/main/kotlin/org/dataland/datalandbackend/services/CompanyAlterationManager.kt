@@ -46,7 +46,7 @@ class CompanyAlterationManager(
             identifiers = mutableListOf(),
             dataRegisteredByDataland = mutableListOf(),
             countryCode = companyInformation.countryCode,
-            isTeaserCompany = companyInformation.isTeaserCompany,
+            isTeaserCompany = companyInformation.isTeaserCompany ?: false,
             website = companyInformation.website,
         )
 
@@ -175,7 +175,7 @@ class CompanyAlterationManager(
         storedCompanyEntity.sector = companyInformation.sector
         storedCompanyEntity.countryCode = companyInformation.countryCode
         storedCompanyEntity.website = companyInformation.website
-        storedCompanyEntity.isTeaserCompany = companyInformation.isTeaserCompany
+        storedCompanyEntity.isTeaserCompany = companyInformation.isTeaserCompany ?: false
         storedCompanyEntity.companyAlternativeNames = companyInformation.companyAlternativeNames
         companyIdentifierRepositoryInterface.deleteAllByCompany(
             storedCompanyEntity,

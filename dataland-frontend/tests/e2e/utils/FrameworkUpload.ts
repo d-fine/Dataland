@@ -3,6 +3,9 @@ import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
 import { uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
+import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+
+export type ApiClientConstructor<FrameworkDataType> = (config: Configuration) => FrameworkDataApi<FrameworkDataType>;
 
 /**
  * Uploads a single framework entry for a company
@@ -22,10 +25,35 @@ export async function uploadFrameworkData<K extends keyof FrameworkDataTypes>(
   data: FrameworkDataTypes[K]["data"],
   bypassQa = true,
 ): Promise<DataMetaInformation> {
-  const apiClient = getUnifiedFrameworkDataControllerFromConfiguration(
-    framework,
-    new Configuration({ accessToken: token }),
+  return uploadGenericFrameworkData(
+    token,
+    companyId,
+    reportingPeriod,
+    data,
+    (config) => getUnifiedFrameworkDataControllerFromConfiguration(framework, config),
+    bypassQa,
   );
+}
+
+/**
+ * Uploads a single framework entry for a company
+ * @param token The API bearer token to use
+ * @param companyId The Id of the company to upload the dataset for
+ * @param reportingPeriod The reporting period to use for the upload
+ * @param data The Dataset to upload
+ * @param apiClientConstructor a function for retrieving the API client of the specified framework
+ * @param bypassQa Whether to bypass the QA process
+ * @returns a promise on the created data meta information
+ */
+export async function uploadGenericFrameworkData<FrameworkDataType>(
+  token: string,
+  companyId: string,
+  reportingPeriod: string,
+  data: FrameworkDataType,
+  apiClientConstructor: ApiClientConstructor<FrameworkDataType>,
+  bypassQa: boolean = true,
+): Promise<DataMetaInformation> {
+  const apiClient = apiClientConstructor(new Configuration({ accessToken: token }));
 
   const response = await apiClient.postFrameworkData(
     {

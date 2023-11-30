@@ -7,6 +7,19 @@ import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTa
 import { HumanizedYesNoNa } from "@/utils/YesNoNa";
 
 /**
+ * Formats the provided Yes/No/Na value for the data-table
+ * @param value the value to display
+ * @returns the value formatted for display
+ */
+export function formatYesNoValueForDatatable(value: YesNoNa | undefined | null): AvailableMLDTDisplayObjectTypes {
+  const displayValue = value ? HumanizedYesNoNa[value] : "";
+  return {
+    displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+    displayValue: displayValue,
+  };
+}
+
+/**
  * Returns a value factory that returns the value of the Yes / No form field
  * @param path the path to the field
  * @returns the created getter
@@ -14,11 +27,6 @@ import { HumanizedYesNoNa } from "@/utils/YesNoNa";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function yesNoValueGetterFactory(path: string): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const value = getFieldValueFromFrameworkDataset(path, dataset) as YesNoNa | undefined;
-    const displayValue = value ? HumanizedYesNoNa[value] : "";
-    return {
-      displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-      displayValue: displayValue,
-    };
+    return formatYesNoValueForDatatable(getFieldValueFromFrameworkDataset(path, dataset) as YesNoNa | undefined);
   };
 }

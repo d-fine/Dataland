@@ -46,6 +46,8 @@ junit-jupiter = "5.10.1"
 
 [libraries]
 
+gradle-tooling = "org.gradle:gradle-tooling-api:7.1.1"
+
 detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:_"
 
 kotlin-compiler-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-compiler-embeddable", version.ref = "kotlin" }
@@ -59,6 +61,8 @@ springdoc-openapi-starter-webmvc-ui = "org.springdoc:springdoc-openapi-starter-w
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3" }
 
 log4j = "org.apache.logging.log4j:log4j:2.21.1"
+log4j-core = "org.apache.logging.log4j:log4j-core:2.21.1"
+log4j-slf4j2-impl = "org.apache.logging.log4j:log4j-slf4j2-impl:2.21.1"
 
 log4j-api = "org.apache.logging.log4j:log4j-api:2.21.1"
 
@@ -130,6 +134,9 @@ jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.15
 
 commons-io = "commons-io:commons-io:2.15.0"
 
+commons-codec = "commons-codec:commons-codec:_"
+commons-text = "org.apache.commons:commons-text:_"
+
 pdfbox = "org.apache.pdfbox:pdfbox:_"
 
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
@@ -145,6 +152,7 @@ kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", vers
 json = "org.json:json:20231013"
 
 spring-context = "org.springframework:spring-context:6.0.13"
+spring-test = "org.springframework:spring-test:6.0.13"
 
 spring-boot = "org.springframework.boot:spring-boot:3.1.5"
 
@@ -165,3 +173,4 @@ spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
 springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:_"
 jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:_"
 flyway = "org.flywaydb:flyway-core:_"
+freemarker = "org.freemarker:freemarker:_"

@@ -87,9 +87,8 @@ export default defineComponent({
       try {
         this.waitingForData = true;
         if (this.companyId !== undefined) {
-          const companyDataControllerApi = await new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)(),
-          ).getCompanyDataControllerApi();
+          const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
+            .backendClients.companyDataController;
           this.companyInformation = (await companyDataControllerApi.getCompanyInfo(this.companyId)).data;
           this.waitingForData = false;
           this.$emit("fetchedCompanyInformation", this.companyInformation);
