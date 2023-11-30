@@ -50,7 +50,8 @@ function getSpecifiedDataPointGetterFactory(
  * @param displayValue value of the field which is checked
  * @returns boolean to trigger the shouldDisplay condition
  */
-function setShowIf(displayValue: string): boolean {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function setShowIf(displayValue: any): boolean {
   return !!(displayValue && displayValue != "No data provided");
 }
 
