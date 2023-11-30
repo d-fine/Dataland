@@ -21,7 +21,7 @@ class DatalandRepositoryGradleInterface(val repository: DatalandRepository) {
 
     /**
      * Execute a list of gradle tasks
-     * @param force if true, fore re-execution even if the task is up-to-date
+     * @param force if true, force re-execution even if the task is up-to-date
      */
     @Suppress("SpreadOperator")
     fun executeGradleTasks(tasks: List<String>, force: Boolean = false) {
