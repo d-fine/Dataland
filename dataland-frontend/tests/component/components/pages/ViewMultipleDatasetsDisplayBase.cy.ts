@@ -32,6 +32,8 @@ describe("This describes a component test for the view Page", () => {
     cy.intercept(`/api/metadata?companyId=mock-company-id`, [mockedData.metaInfo]);
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       props: {
         companyId: mockedData.metaInfo.companyId,
         dataType: DataTypeEnum.Lksg,
