@@ -85,5 +85,5 @@ export function getDataModelFieldCellConfig(path: string, field: Field): MLDTCel
  * @returns boolean to set hidden to true or false
  */
 function shouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDisplayComponentName]): boolean {
-  return !!(value && value != NO_DATA_PROVIDED && value != "");
+  return !!(value && value != NO_DATA_PROVIDED);
 }
