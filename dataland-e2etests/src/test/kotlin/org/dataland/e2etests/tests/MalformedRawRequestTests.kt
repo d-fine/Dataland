@@ -51,7 +51,7 @@ class MalformedRawRequestTests {
 
         val response = client.newCall(request).execute()
         val responseBodyString = response.body!!.string()
-        assertTrue(responseBodyString.contains("Parameter specified as non-null is null"))
+        assertTrue(responseBodyString.contains("which is a non-nullable type"))
         assertEquals(400, response.code)
     }
 
