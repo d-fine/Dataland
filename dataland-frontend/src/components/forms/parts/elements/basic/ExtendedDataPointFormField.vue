@@ -102,6 +102,10 @@ export default defineComponent({
       from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
       default: {} as ObjectType,
     },
+    injectlistOfFilledKpis: {
+      from: "listOfFilledKpis",
+      default: [] as Array<string>,
+    },
   },
   computed: {
     isDataValueProvided(): boolean {
@@ -129,7 +133,7 @@ export default defineComponent({
   },
   data() {
     return {
-      dataPointIsAvailable: false,
+      dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
       qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
         label: qualityOption,
         value: qualityOption,
