@@ -2,58 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Lake Danielle",
-			"headquartersPostalCode": "79108",
-			"sector": null,
+			"headquarters": "Lake Hermanfort",
+			"headquartersPostalCode": "54339-3348",
+			"sector": "synergies",
 			"identifiers": {
-				"Lei": [
-					"uHRI9K5uIjoPrVFrmLYF"
-				],
+				"Lei": [],
 				"Isin": [
-					"09CmpSlLAt0W"
+					"cvqxgA4PQdgX",
+					"1kUbW4j42s93"
 				],
-				"PermId": [
-					"KEKtBsxfiy"
-				],
-				"Ticker": [
-					"4WQvejv"
-				],
+				"PermId": [],
+				"Ticker": [],
 				"Duns": [
-					"9kk4VHmmx"
+					"PjsAUYggi"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"BgRhIfSl8OU4qJJ"
-				]
+				"VatNumber": [
+					"W1NBqXHmN"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KE",
-			"companyAlternativeNames": [
-				"Hackett LLC",
-				"Lueilwitz, Heathcote and O'Reilly"
-			],
-			"companyLegalForm": "Sole Trader",
-			"website": null,
+			"countryCode": "NA",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://constant-ladle.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"05.1",
-						"23.62",
-						"25.93",
-						"30.1",
-						"69.10"
+						"03.11",
+						"32.3",
+						"36",
+						"81.29",
+						"87.1"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Trantow Land 50834",
-						"postalCode": "38890-0409",
-						"city": "Beierchester",
-						"state": null,
-						"country": "LY"
+						"streetAndHouseNumber": "Schinner Gardens 68721",
+						"postalCode": null,
+						"city": "South Nikki",
+						"state": "Illinois",
+						"country": "BS"
 					},
-					"numberOfEmployees": 4803,
-					"fiscalYearStart": "2024-04-29"
+					"numberOfEmployees": 6448,
+					"fiscalYearStart": "2024-09-03"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -66,16 +58,7 @@
 					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Handcrafted Frozen Shirt",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Electronic Concrete Keyboard",
-							"shareOfTotalRevenueInPercent": 9.9931
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
@@ -83,18 +66,23 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 69,
+					"powerConsumptionInMWh": 670,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 44,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"energyConsumptionHeatingAndHotWaterInMWh": 466,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 39443916,
-					"naturalHazardsCovered": null
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 23945041,
+					"naturalHazardsCovered": [
+						"Snow",
+						"Hail",
+						"Wind",
+						"EarthQuake"
+					]
 				}
 			}
 		},
@@ -103,42 +91,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fort Gabe",
-			"headquartersPostalCode": "55642",
-			"sector": "relationships",
+			"headquarters": "Port Shannymouth",
+			"headquartersPostalCode": "65105-5073",
+			"sector": "interfaces",
 			"identifiers": {
 				"Lei": [
-					"6zWR93nY1oXOR7oO7EOc"
+					"4tjH9YWxC4VTN8RaVX6M"
 				],
 				"Isin": [
-					"7MMHvTv4WZM7",
-					"WlpXlnV57Dqh"
+					"f0Ib52EDN6bZ"
 				],
-				"PermId": [],
-				"Ticker": [
-					"kRKjbCo"
+				"PermId": [
+					"srJn9b4Ndr"
 				],
+				"Ticker": [],
 				"Duns": [
-					"EQAt5mzDZ"
+					"9gUeusQtx"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"DNH5VnEz09evSIY"
+				]
 			},
-			"countryCode": "IE",
+			"countryCode": "BR",
 			"companyAlternativeNames": [
-				"Heaney - Simonis",
-				"Hoeger and Sons",
-				"Stiedemann - Considine"
+				"Legros Inc",
+				"O'Connell Group",
+				"Von Group"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://imperturbable-oyster.org",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://profitable-salmon.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"86.21"
+						"85.31"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -147,44 +136,45 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 9313,
-					"fiscalYearStart": "2024-04-29"
+					"numberOfEmployees": 550,
+					"fiscalYearStart": "2024-03-25"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 82028874,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 57483359
+					"revenueInEUR": 58322978,
+					"operatingCostInEUR": 44904865,
+					"capitalAssetsInEUR": 27976084
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": []
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 448,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 47,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMWh": 753,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 81,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 15555391,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Avalanche",
 						"Hail",
-						"EarthQuake",
-						"Snow"
+						"Snow",
+						"Avalanche",
+						"Flooding",
+						"Wind"
 					]
 				}
 			}
@@ -194,36 +184,42 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Kamrynbury",
-			"headquartersPostalCode": "06169-7324",
-			"sector": null,
+			"headquarters": "Doyleport",
+			"headquartersPostalCode": null,
+			"sector": "content",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"iiiB7CSfwa3gdymT2uX4"
+				],
 				"Isin": [
-					"pLz6YmjRCy4U",
-					"E9iPyTzmEUdL"
+					"CYRfB7dHGkzl"
 				],
 				"PermId": [
-					"KRoLTsv1v8"
+					"JOv795GaEG"
 				],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"ACvFbys0U"
+				"Duns": [
+					"6pzDRei1y"
 				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"5U7nw1cJnLFqVrg"
+				]
 			},
-			"countryCode": "BI",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://extra-small-ray.name",
+			"countryCode": "PT",
+			"companyAlternativeNames": [
+				"Lindgren - Kilback",
+				"Terry - Bashirian"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://worrisome-suspect.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"71"
+						"61.90"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -232,54 +228,75 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 8684,
-					"fiscalYearStart": "2024-03-21"
+					"numberOfEmployees": 8826,
+					"fiscalYearStart": "2023-12-16"
 				},
 				"companyFinancials": {
-					"revenueInEUR": null,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 51253567
+					"revenueInEUR": 65428694,
+					"operatingCostInEUR": 58627570,
+					"capitalAssetsInEUR": 62056020
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Blick - Goldner",
+							"nameOfProductionSite": "Dicki - Parker",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Alma Street 85339",
+								"postalCode": "61985",
+								"city": "Spring Valley",
+								"state": "Wisconsin",
+								"country": "ZW"
+							},
+							"shareOfTotalRevenueInPercent": 58.4017
+						},
+						{
+							"nameOfProductionSite": "Mante - Smith",
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": null,
-								"postalCode": null,
-								"city": "Funkville",
-								"state": null,
-								"country": "SZ"
+								"postalCode": "17939-2501",
+								"city": "Lake Krista",
+								"state": "Connecticut",
+								"country": "MN"
 							},
-							"shareOfTotalRevenueInPercent": 97.4859
+							"shareOfTotalRevenueInPercent": 55.6839
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Rustic Concrete Car",
+							"shareOfTotalRevenueInPercent": 75.6367
+						},
+						{
+							"name": "Practical Wooden Ball",
+							"shareOfTotalRevenueInPercent": 67.5231
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
+					"powerConsumptionInMWh": 784,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 351,
 					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 6432376,
 					"naturalHazardsCovered": [
-						"Wind",
-						"Flooding"
+						"Snow",
+						"EarthQuake",
+						"Avalanche"
 					]
 				}
 			}
