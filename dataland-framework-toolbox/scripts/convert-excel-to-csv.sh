@@ -3,7 +3,7 @@ set -euxo pipefail
 
 ## Note: This script only works when LibreOffice is available in the PATH. This especially does not hold on
 # windows machines. If you still want to use this script you have to locally replace "libreoffice"
-# by the path to the libreoffice executable on your machine.
+# by the path to the libreoffice executable on your machine (e.g. "/c/Program Files/LibreOffice/program"/scalc.exe).
 
 ## PARAMETER REFERENCE (https://help.libreoffice.org/latest/en-GB/text/shared/guide/csv_params.html)
 # 44 - Use ',' to seperate fields
