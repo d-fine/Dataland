@@ -17,7 +17,7 @@ export interface FrameworkDefinition<FrameworkDataType> {
 
   getFrameworkViewConfiguration(): FrameworkViewConfiguration<FrameworkDataType>;
   getFrameworkApiClient(
-    configuration: Configuration | undefined,
-    axiosInstance: AxiosInstance | undefined,
+    configuration?: Configuration,
+    axiosInstance?: AxiosInstance,
   ): FrameworkDataApi<FrameworkDataType>;
 }
