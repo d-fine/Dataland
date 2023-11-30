@@ -1,20 +1,20 @@
 {
 	"eutaxonomy-financials": {
-		"numberOfProvidedReportingPeriods": 3
+		"numberOfProvidedReportingPeriods": 24
 	},
 	"eutaxonomy-non-financials": {
 		"numberOfProvidedReportingPeriods": 2
 	},
 	"lksg": {
-		"numberOfProvidedReportingPeriods": 17
+		"numberOfProvidedReportingPeriods": 1
 	},
 	"p2p": {
-		"numberOfProvidedReportingPeriods": 14
+		"numberOfProvidedReportingPeriods": 27
 	},
 	"sfdr": {
-		"numberOfProvidedReportingPeriods": 13
+		"numberOfProvidedReportingPeriods": 1
 	},
 	"sme": {
-		"numberOfProvidedReportingPeriods": 9
+		"numberOfProvidedReportingPeriods": 4
 	}
 }
