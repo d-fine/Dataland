@@ -7,7 +7,7 @@
     <DataPointWrapperDisplayComponent :content="content">
       <MultiLayerDataTableCell
         :content="content.displayValue.innerContents"
-        v-if="content.displayValue.innerContents != MLDTDisplayObjectForEmptyString"
+        v-if="!hasBlankInnerContents"
       />
       <template v-else>No data provided</template>
     </DataPointWrapperDisplayComponent>
@@ -37,6 +37,16 @@ export default defineComponent({
     MLDTDisplayComponents() {
       return MLDTDisplayComponentName;
     },
+    hasBlankInnerContents(): boolean {
+      if (this.content.displayComponentName == MLDTDisplayComponentName.DataPointWrapperDisplayComponent) {
+        const innerContents = this.content.displayValue.innerContents
+        if (innerContents.displayComponentName == MLDTDisplayComponentName.StringDisplayComponent) {
+          const innerLength = innerContents.displayValue?.length ?? 0
+          return innerLength <= 0;
+        }
+      }
+      return false
+    }
   },
   components: {
     DataPointWrapperDisplayComponent,
