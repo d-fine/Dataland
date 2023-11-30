@@ -56,11 +56,13 @@ export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(assuranceRep
   cy.get(`[data-message-type="validation"]`).should("exist").should("contain", "at least 0");
   cy.get('input[name="page"]').eq(0).clear().type("1");
   cy.get('div[name="revenue"]').within(() => {
+    cy.get('[data-test="dataPointToggleButton"]').click();
     cy.get('input[name="value"]').type("250700");
     cy.get('select[data-test="datapoint-currency"]').select(1);
     cy.get('select[name="quality"]').select(1);
   });
   cy.get('div[name="capex"]').within(() => {
+    cy.get('[data-test="dataPointToggleButton"]').click();
     cy.get('input[name="value"]').type("450700");
     cy.get('select[data-test="datapoint-currency"]').select(10);
     cy.get('select[name="quality"]').select(1);
