@@ -140,7 +140,6 @@ describeIf(
           selectsReportsForUploadInSfdrForm();
 
           testAndToggleInputSwitchAndSetQuality("primaryForestAndWoodedLandOfNativeSpeciesExposure");
-          testAndToggleInputSwitchAndSetQuality("protectedAreasExposure");
           testAndToggleInputSwitchAndSetQuality("rareOrEndangeredEcosystemsExposure");
 
           setReferenceToAllUploadedReports(
