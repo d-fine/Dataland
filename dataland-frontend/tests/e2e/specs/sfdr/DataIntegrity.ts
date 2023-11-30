@@ -105,7 +105,6 @@ describeIf(
       cy.get('[data-test="primaryForestAndWoodedLandOfNativeSpeciesExposure"]')
         .find('select[name="quality"]')
         .select(3);
-      // cy.get('[data-test="protectedAreasExposure"]').find('select[name="quality"]').select(3);
       cy.get('[data-test="rareOrEndangeredEcosystemsExposure"]').find('select[name="quality"]').select(3);
     }
 
