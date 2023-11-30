@@ -9,6 +9,7 @@ before(function () {
     const mockDataSearchResponse = jsonContent as Array<DataSearchStoredCompany>;
     const customCompanyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
     modifiedMockDataSearchResponse = [...mockDataSearchResponse.slice(0, 4)];
+    modifiedMockDataSearchResponse[0].dataRegisteredByDataland[0].qaStatus = "Accepted";
     modifiedMockDataSearchResponse[0] = {
       ...modifiedMockDataSearchResponse[0],
       companyName: customCompanyName,
@@ -26,6 +27,8 @@ describe("Component tests for the search bar on the company search page", () => 
       keycloak: minimalKeycloakMock({}),
     });
     cy.intercept("**/api/companies*", modifiedMockDataSearchResponse).as("searchCompany");
+    cy.log(modifiedMockDataSearchResponse[0].companyName)
+    cy.log(modifiedMockDataSearchResponse[0].companyInformation.companyName)
     cy.get("input[id=framework_data_search_bar_standard]").click({ force: true }).type(highlightedSubString);
     cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
     cy.get(".p-autocomplete-item")
