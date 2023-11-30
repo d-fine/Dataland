@@ -168,6 +168,7 @@ import CurrencyDataPointFormField from "@/components/forms/parts/fields/Currency
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
+import { getFilledKpis } from "@/utils/DataPoint";
 export default defineComponent({
   setup() {
     return {
@@ -233,6 +234,7 @@ export default defineComponent({
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       reportingPeriod: undefined as undefined | Date,
       editMode: false,
+      listOfFilledKpis: [] as Array<string>,
     };
   },
   computed: {
@@ -281,6 +283,7 @@ export default defineComponent({
 
       const dataResponse = await euTaxonomyForNonFinancialsDataControllerApi.getFrameworkData(dataId);
       const euTaxonomyForNonFinancialsResponseData = dataResponse.data;
+      this.listOfFilledKpis = getFilledKpis(euTaxonomyForNonFinancialsResponseData);
       if (euTaxonomyForNonFinancialsResponseData?.reportingPeriod) {
         this.reportingPeriod = new Date(euTaxonomyForNonFinancialsResponseData.reportingPeriod);
       }
@@ -347,6 +350,9 @@ export default defineComponent({
       }),
       referencedReportsForPrefill: computed(() => {
         return this.referencedReportsForPrefill;
+      }),
+      listOfFilledKpis: computed(() => {
+        return this.listOfFilledKpis;
       }),
     };
   },

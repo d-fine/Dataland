@@ -138,6 +138,7 @@ import CurrencyDataPointFormField from "@/components/forms/parts/fields/Currency
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
+import { getFilledKpis } from "@/utils/DataPoint";
 
 export default defineComponent({
   setup() {
@@ -201,6 +202,7 @@ export default defineComponent({
       documents: new Map() as Map<string, DocumentToUpload>,
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       climateSectorsForPrefill: [] as Array<string>,
+      listOfFilledKpis: [] as Array<string>,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
     };
   },
@@ -254,6 +256,7 @@ export default defineComponent({
 
       const dataResponse = await sfdrDataControllerApi.getFrameworkData(dataId);
       const sfdrResponseData = dataResponse.data;
+      this.listOfFilledKpis = getFilledKpis(sfdrResponseData.data);
       this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};
       this.climateSectorsForPrefill = sfdrResponseData?.data?.environmental?.energyPerformance
         ?.applicableHighImpactClimateSectors
@@ -284,6 +287,7 @@ export default defineComponent({
         const sfdrDataControllerApi = await new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.Sfdr);
+        // console.log('companyAssociatedSfdrData', this.companyAssociatedSfdrData)
         await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;
@@ -325,6 +329,9 @@ export default defineComponent({
       }),
       climateSectorsForPrefill: computed(() => {
         return this.climateSectorsForPrefill;
+      }),
+      listOfFilledKpis: computed(() => {
+        return this.listOfFilledKpis;
       }),
     };
   },
