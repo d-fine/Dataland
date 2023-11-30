@@ -9,14 +9,16 @@ import org.dataland.datalandbackend.model.sfdr.categories.social.subcategories.S
 /**
  * --- API model ---
  * Fields of the category "Social" of the sfdr framework.
- */
+*/
 data class SfdrSocial(
     @field:Valid
     val socialAndEmployeeMatters: SfdrSocialSocialAndEmployeeMatters? = null,
 
     val greenSecurities: SfdrSocialGreenSecurities? = null,
+
     @field:Valid
     val humanRights: SfdrSocialHumanRights? = null,
+
     @field:Valid
     val antiCorruptionAndAntiBribery: SfdrSocialAntiCorruptionAndAntiBribery? = null,
 )

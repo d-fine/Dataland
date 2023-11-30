@@ -10,13 +10,13 @@ import org.dataland.datalandbackend.model.sfdr.categories.social.SfdrSocial
 /**
  * --- API model ---
  * Fields of the sfdr framework.
- */
-
+*/
 @DataType("sfdr")
 data class SfdrData(
     @field:JsonProperty(required = true)
     val general: SfdrGeneral,
 
+    @field:Valid
     val environmental: SfdrEnvironmental? = null,
 
     @field:Valid
