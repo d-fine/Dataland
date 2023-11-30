@@ -35,6 +35,7 @@ describe("This describes a component test for the view Page", () => {
       props: {
         companyId: mockedData.metaInfo.companyId,
         dataType: DataTypeEnum.Lksg,
+        dataId: mockedData.metaInfo.dataId,
         reportingPeriod: mockedData.metaInfo.reportingPeriod,
         viewInPreviewMode: false,
       },
