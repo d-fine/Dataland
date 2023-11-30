@@ -99,14 +99,19 @@ describeIf(
     }
 
     /**
-     * Set the quality for the sfdr test dataset
+     * Tests whether the toggle switch exists, is switched off, swicthes it on and fills in the quality value of that field
+     * @param key the name of the key to be tested
      */
-    function setQualityInSfdrUploadForm(): void {
-      cy.get('[data-test="primaryForestAndWoodedLandOfNativeSpeciesExposure"]')
-        .find('select[name="quality"]')
-        .select(3);
-      cy.get('[data-test="protectedAreasExposure"]').find('select[name="quality"]').select(3);
-      cy.get('[data-test="rareOrEndangeredEcosystemsExposure"]').find('select[name="quality"]').select(3);
+    function testAndToggleInputSwitchAndSetQuality(key: string): void {
+      cy.get(`[data-test="${key}"`)
+        .find('[data-test="dataPointToggleButton"]')
+        .should("exist")
+        .get("input#dataPointIsAvailableSwitch")
+        .invoke("attr", "aria-checked")
+        .should("eq", "false");
+
+      cy.get(`[data-test="${key}"`).find('[data-test="dataPointToggleButton"]').click();
+      cy.get(`[data-test="${key}"`).find('select[name="quality"]').select(3);
     }
 
     it("Create a company and a SFDR dataset via the api, then edit the SFDR dataset and re-upload it via the form", () => {
@@ -133,7 +138,11 @@ describeIf(
           cy.wait("@fetchDataForPrefill", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           cy.get("h1").should("contain", companyName);
           selectsReportsForUploadInSfdrForm();
-          setQualityInSfdrUploadForm();
+
+          testAndToggleInputSwitchAndSetQuality("primaryForestAndWoodedLandOfNativeSpeciesExposure");
+          testAndToggleInputSwitchAndSetQuality("protectedAreasExposure");
+          testAndToggleInputSwitchAndSetQuality("rareOrEndangeredEcosystemsExposure");
+
           setReferenceToAllUploadedReports(
             Object.keys(testSfdrCompany.t.general.general.referencedReports as ObjectType),
           );
