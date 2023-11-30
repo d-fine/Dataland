@@ -218,25 +218,6 @@ onUnmounted(() => {
   }
 }
 
-// @media (max-width: $extra-large) {
-//   .howitworks {
-//     &__slides {
-//       max-width: 1273px;
-//       justify-content: flex-start;
-//     }
-//     &__slide {
-//       cursor: grab;
-//     }
-
-//     &__arrows {
-//       visibility: visible;
-//       width: 100%;
-//       max-width: 1273px;
-//       justify-content: flex-start;
-//     }
-//   }
-// }
-
 @media only screen and (max-width: $extra-large) {
   .howitworks {
     padding: 120px 0 64px;
@@ -244,10 +225,6 @@ onUnmounted(() => {
     &__wrapper {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
-      // gap: 56px 22px;
-      // max-width: 1440px;
-      // width: 100%;
-      // padding: 0 22px;
       padding-left: calc((100% - 900px) / 2 + 22px);
     }
 
