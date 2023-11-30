@@ -6,7 +6,7 @@ import {
   MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
-import { type BaseDocumentReference, type ExtendedDocumentReference } from "@clients/backend";
+import {type BaseDocumentReference, type ExtendedDocumentReference, QualityOptions} from "@clients/backend";
 
 /**
  * Checks if a given data point has a valid reference set
@@ -49,6 +49,15 @@ export function getDataPointGetterFactory<
     }
     const dataPointAsExtendedDataPoint = dataPoint as unknown as ExtendedDataPoint<V>;
     if (
+        dataPointAsExtendedDataPoint.quality == QualityOptions.Na && !dataPointAsExtendedDataPoint.comment &&
+        (!dataPointAsExtendedDataPoint.dataSource || dataPointAsExtendedDataPoint.dataSource?.fileReference == "")
+    ) {
+      return {
+        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+        displayValue: displayValue,
+      };
+    }
+    if(
       dataPointAsExtendedDataPoint.quality ||
       dataPointAsExtendedDataPoint.comment?.length ||
       dataPointAsExtendedDataPoint.dataSource?.page != null
