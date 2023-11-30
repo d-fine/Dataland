@@ -47,17 +47,17 @@ import {
   type EuTaxonomyDataForFinancials,
   type EuTaxonomyDataForNonFinancials,
 } from "@clients/backend";
-import type Keycloak from "keycloak-js";
-import { ApiClientProvider } from "@/services/ApiClients";
+import { type ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
 import { getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type FrameworkDefinition } from "@/frameworks/FrameworkDefinition";
+import { FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
+const apiClientProvider = inject<ApiClientProvider>("apiClientProvider");
 
 const props = defineProps<{
   companyId: string;
@@ -140,16 +140,16 @@ async function loadDataForDisplay(
   companyId: string,
   singleDataMetaInfoToDisplay?: DataMetaInformation,
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
-  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+  const guaranteedApiClientProvider = assertDefined(apiClientProvider);
 
   const frameworkDefinition = getFrameworkDefinition(
     props.frameworkIdentifier,
   ) as FrameworkDefinition<FrameworkDataType>;
   let dataControllerApi: FrameworkDataApi<FrameworkDataType>;
   if (frameworkDefinition) {
-    dataControllerApi = frameworkDefinition.getFrameworkApiClient(await apiClientProvider.getConfiguration());
+    dataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, guaranteedApiClientProvider.axiosInstance);
   } else {
-    dataControllerApi = await apiClientProvider.getUnifiedFrameworkDataController(props.frameworkIdentifier);
+    dataControllerApi = apiClientProvider.getUnifiedFrameworkDataController(props.frameworkIdentifier);
   }
 
   if (singleDataMetaInfoToDisplay) {

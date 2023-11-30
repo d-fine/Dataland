@@ -106,7 +106,7 @@ export default defineComponent({
       try {
         let fetchedData: DataAndMetaInformationEuTaxonomyDataForNonFinancials[];
         this.waitingForData = true;
-        const euTaxonomyForNonFinancialsDataControllerApi = await new ApiClientProvider(
+        const euTaxonomyForNonFinancialsDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyNonFinancials);
         if (this.singleDataMetaInfoToDisplay) {

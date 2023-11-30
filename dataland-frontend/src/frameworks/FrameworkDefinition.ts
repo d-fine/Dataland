@@ -1,6 +1,7 @@
 import { type Configuration, type DataTypeEnum } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type AxiosInstance } from "axios";
 
 interface MLDTConfigViewConfiguration<FrameworkDataType> {
   type: "MultiLayerDataTable";
@@ -15,5 +16,8 @@ export interface FrameworkDefinition<FrameworkDataType> {
   readonly explanation: string;
 
   getFrameworkViewConfiguration(): FrameworkViewConfiguration<FrameworkDataType>;
-  getFrameworkApiClient(configuration: Configuration | undefined): FrameworkDataApi<FrameworkDataType>;
+  getFrameworkApiClient(
+    configuration: Configuration | undefined,
+    axiosInstance: AxiosInstance | undefined,
+  ): FrameworkDataApi<FrameworkDataType>;
 }
