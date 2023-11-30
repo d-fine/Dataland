@@ -25,8 +25,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa")
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_17
-
 dependencies {
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.log4j)

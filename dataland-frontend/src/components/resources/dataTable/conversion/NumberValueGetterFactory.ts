@@ -19,16 +19,29 @@ export function numberValueGetterFactory(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const formattedFieldValue = formatNumberToReadableFormat(
-      getFieldValueFromFrameworkDataset(path, dataset) as number,
-    );
-    if (formattedFieldValue === "") {
-      return MLDTDisplayObjectForEmptyString;
-    }
+    const fieldValue = getFieldValueFromFrameworkDataset(path, dataset) as number;
     const displayedUnit = field.unit ?? "";
-    return {
-      displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-      displayValue: `${formattedFieldValue} ${displayedUnit}`.trim(),
-    };
+
+    return formatNumberForDatatable(fieldValue, displayedUnit);
+  };
+}
+
+/**
+ * Formats the provided string as a number in a human-readable format with the unit appended to it
+ * @param numberContent the number to display
+ * @param unit the unit of the number
+ * @returns the value formatted for display
+ */
+export function formatNumberForDatatable(
+  numberContent: number | undefined | null,
+  unit: string,
+): AvailableMLDTDisplayObjectTypes {
+  const numberForDisplay = formatNumberToReadableFormat(numberContent);
+  if (numberForDisplay === "") {
+    return MLDTDisplayObjectForEmptyString;
+  }
+  return {
+    displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+    displayValue: `${numberForDisplay} ${unit}`.trim(),
   };
 }

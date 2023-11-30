@@ -10,7 +10,7 @@ import {
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
-import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
+import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/DataPoints";
 import { type ExtendedDataPoint } from "@/utils/DataPoint";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";

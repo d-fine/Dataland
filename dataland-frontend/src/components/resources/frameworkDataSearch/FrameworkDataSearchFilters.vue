@@ -69,6 +69,8 @@ import {
   type FrameworkSelectableItem,
   type SelectableItem,
 } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
+import { getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
+
 export default defineComponent({
   name: "FrameworkDataSearchFilters",
   components: { FrameworkDataSearchDropdownFilter },
@@ -193,9 +195,15 @@ export default defineComponent({
      */
     retrieveAvailableFrameworks() {
       this.availableFrameworks = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+        let displayName = humanizeStringOrNumber(dataTypeEnum);
+        const frameworkDefinition = getFrameworkDefinition(dataTypeEnum);
+        if (frameworkDefinition) {
+          displayName = frameworkDefinition.label;
+        }
+
         return {
           frameworkDataType: dataTypeEnum,
-          displayName: humanizeStringOrNumber(dataTypeEnum),
+          displayName: displayName,
           disabled: false,
         };
       });

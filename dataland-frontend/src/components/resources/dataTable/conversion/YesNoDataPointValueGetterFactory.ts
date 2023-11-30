@@ -1,9 +1,9 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type YesNoNa } from "@clients/backend";
-import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
 import { type ExtendedDataPoint } from "@/utils/DataPoint";
 import { HumanizedYesNoNa } from "@/utils/YesNoNa";
+import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/DataPoints";
 
 const certificateHumanReadableYesNoMap: { [key in YesNoNa]: string } = {
   Yes: "Certified",
