@@ -39,10 +39,11 @@ describe("This describes a component test for the view Page", () => {
         viewInPreviewMode: false,
       },
     });
+    checkToggleEmptyFieldsSwitch("Number of Employees");
     cy.get('tr[data-section-label="Social"]').click();
     cy.get('tr[data-section-label="Child labor"]').click();
     cy.get('td[data-cell-label="Employee(s) Under 15"]').should("not.exist");
-    checkToggleEmptyFieldsSwitch("Number of Employees");
+    checkToggleEmptyFieldsSwitch("Employee(s) Under 15");
   });
 });
 
@@ -73,7 +74,6 @@ function constructCompanyApiResponseForLksg(baseDataset: LksgData): DataAndMetaI
 
 /**
  * This function opens a given dataset with its Multi Layer Data Table and checks wether a specific field can be hidden using the input switch.
- * @param datasetIdentifier Identifies a dataset on the "my dataset" Page. The function will open the corresponding dataset.
  * @param toggledFieldName Name of a field which is toggled by the input switch
  */
 export function checkToggleEmptyFieldsSwitch(toggledFieldName: string): void {
