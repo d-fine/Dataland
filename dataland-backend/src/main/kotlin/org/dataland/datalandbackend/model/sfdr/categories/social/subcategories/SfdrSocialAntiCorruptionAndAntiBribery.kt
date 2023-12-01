@@ -4,7 +4,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.validator.CurrencyDataPointValidation
-import org.dataland.datalandbackend.validator.ExtendedNumberDataPointValidation
+import org.dataland.datalandbackend.validator.NonNegativeExtendedDataPoint
 
 /**
  * --- API model ---
@@ -12,11 +12,11 @@ import org.dataland.datalandbackend.validator.ExtendedNumberDataPointValidation
  * to the category "Social" of the sfdr framework.
 */
 data class SfdrSocialAntiCorruptionAndAntiBribery(
-    @field:ExtendedNumberDataPointValidation
+    @field:NonNegativeExtendedDataPoint
     @field:Valid
     val casesOfInsufficientActionAgainstBriberyAndCorruption: ExtendedDataPoint<Long>? = null,
 
-    @field:ExtendedNumberDataPointValidation
+    @field:NonNegativeExtendedDataPoint
     @field:Valid
     val reportedConvictionsOfBriberyAndCorruption: ExtendedDataPoint<Long>? = null,
 

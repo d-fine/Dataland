@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
  */
 @Target(AnnotationTarget.FIELD)
 @Constraint(validatedBy = [ExtendedNumberDataPointValidator::class])
-annotation class ExtendedNumberDataPointValidation(
+annotation class NonNegativeExtendedDataPoint(
     val negative: Boolean = false,
     val message: String = "An extended data point holding a number has failed to pass the validation!",
     val groups: Array<KClass<*>> = [],
@@ -25,11 +25,11 @@ annotation class ExtendedNumberDataPointValidation(
 /**
  * Class holding the validation logic for an ExtendedDataPoint<*> featuring a number
  */
-class ExtendedNumberDataPointValidator : ConstraintValidator<ExtendedNumberDataPointValidation, ExtendedDataPoint<*>> {
+class ExtendedNumberDataPointValidator : ConstraintValidator<NonNegativeExtendedDataPoint, ExtendedDataPoint<*>> {
 
     private var negative by Delegates.notNull<Boolean>()
 
-    override fun initialize(constraintAnnotation: ExtendedNumberDataPointValidation) {
+    override fun initialize(constraintAnnotation: NonNegativeExtendedDataPoint) {
         this.negative = constraintAnnotation.negative
     }
 

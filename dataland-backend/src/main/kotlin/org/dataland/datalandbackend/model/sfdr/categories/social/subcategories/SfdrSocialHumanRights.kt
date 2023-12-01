@@ -4,7 +4,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.validator.ExtendedNumberDataPointValidation
+import org.dataland.datalandbackend.validator.NonNegativeExtendedDataPoint
 
 /**
  * --- API model ---
@@ -26,7 +26,7 @@ data class SfdrSocialHumanRights(
     @field:Valid
     val reportedForcedOrCompulsoryLabourIncidents: ExtendedDataPoint<YesNo>? = null,
 
-    @field:ExtendedNumberDataPointValidation
+    @field:NonNegativeExtendedDataPoint
     @field:Valid
     val numberOfReportedIncidentsOfHumanRightsViolations: ExtendedDataPoint<Long>? = null,
 )

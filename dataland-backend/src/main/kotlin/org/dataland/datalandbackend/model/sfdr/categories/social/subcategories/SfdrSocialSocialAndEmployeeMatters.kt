@@ -5,8 +5,7 @@ import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.validator.CurrencyDataPointValidation
-import org.dataland.datalandbackend.validator.ExtendedNumberDataPointValidation
+import org.dataland.datalandbackend.validator.NonNegativeExtendedDataPoint
 import org.dataland.datalandbackend.validator.PercentageDataPointValidation
 import java.math.BigDecimal
 
@@ -66,11 +65,11 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNo>? = null,
 
-    @field:CurrencyDataPointValidation
+    @field:NonNegativeExtendedDataPoint
     @field:Valid
     val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
 
-    @field:CurrencyDataPointValidation
+    @field:NonNegativeExtendedDataPoint
     @field:Valid
     val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
@@ -78,11 +77,11 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid
     val unadjustedGenderPayGapInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:ExtendedNumberDataPointValidation
+    @field:NonNegativeExtendedDataPoint
     @field:Valid
     val femaleBoardMembers: ExtendedDataPoint<Long>? = null,
 
-    @field:ExtendedNumberDataPointValidation
+    @field:NonNegativeExtendedDataPoint
     @field:Valid
     val maleBoardMembers: ExtendedDataPoint<Long>? = null,
 
@@ -100,7 +99,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid
     val rateOfAccidentsInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:ExtendedNumberDataPointValidation
+    @field:NonNegativeExtendedDataPoint
     @field:Valid
     val workdaysLostInDays: ExtendedDataPoint<BigDecimal>? = null,
 
@@ -113,15 +112,15 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid
     val whistleblowerProtectionPolicy: BaseDataPoint<YesNo>? = null,
 
-    @field:ExtendedNumberDataPointValidation
+    @field:NonNegativeExtendedDataPoint
     @field:Valid
     val reportedIncidentsOfDiscrimination: ExtendedDataPoint<Long>? = null,
 
-    @field:ExtendedNumberDataPointValidation
+    @field:NonNegativeExtendedDataPoint
     @field:Valid
     val sanctionedIncidentsOfDiscrimination: ExtendedDataPoint<Long>? = null,
 
-    @field:ExtendedNumberDataPointValidation
+    @field:NonNegativeExtendedDataPoint
     @field:Valid
     val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal>? = null,
 
