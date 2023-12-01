@@ -253,9 +253,8 @@ export default defineComponent({
      */
     async getMetaDataForDataId(dataId: string) {
       try {
-        const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getMetaDataControllerApi();
+        const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
+        const metaDataControllerApi = backendClients.metaDataController;
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
         const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
         if (

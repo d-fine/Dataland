@@ -485,34 +485,31 @@ export default defineComponent({
      */
     fetchTemplateData(dataId: string): void {
       this.waitingForData = true;
+
       new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
         .getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials)
-        .then((euTaxonomyDataForFinancialsControllerApiInterface) =>
-          euTaxonomyDataForFinancialsControllerApiInterface
-            .getFrameworkData(dataId)
-            .then((resolvedPromise) => {
-              const companyAssociatedEuTaxonomyData = resolvedPromise.data;
-              if (companyAssociatedEuTaxonomyData?.reportingPeriod) {
-                this.reportingPeriod = new Date(companyAssociatedEuTaxonomyData.reportingPeriod);
-              }
-              if (companyAssociatedEuTaxonomyData.data?.fiscalYearEnd) {
-                this.fiscalYearEndAsDate = new Date(companyAssociatedEuTaxonomyData.data.fiscalYearEnd);
-              }
-              this.templateDataset = companyAssociatedEuTaxonomyData.data;
+        .getFrameworkData(dataId)
+        .then((resolvedPromise) => {
+          const companyAssociatedEuTaxonomyData = resolvedPromise.data;
+          if (companyAssociatedEuTaxonomyData?.reportingPeriod) {
+            this.reportingPeriod = new Date(companyAssociatedEuTaxonomyData.reportingPeriod);
+          }
+          if (companyAssociatedEuTaxonomyData.data?.fiscalYearEnd) {
+            this.fiscalYearEndAsDate = new Date(companyAssociatedEuTaxonomyData.data.fiscalYearEnd);
+          }
+          this.templateDataset = companyAssociatedEuTaxonomyData.data;
 
-              this.extractFinancialServiceTypes(companyAssociatedEuTaxonomyData.data);
+          this.extractFinancialServiceTypes(companyAssociatedEuTaxonomyData.data);
 
-              (companyAssociatedEuTaxonomyData.data as ObjectType).kpiSections = this.extractKpis(
-                companyAssociatedEuTaxonomyData.data as ObjectType,
-              );
-              this.waitingForData = false;
+          (companyAssociatedEuTaxonomyData.data as ObjectType).kpiSections = this.extractKpis(
+            companyAssociatedEuTaxonomyData.data as ObjectType,
+          );
+          this.waitingForData = false;
 
-              nextTick()
-                .then(() => updateObject(this.formInputsModel as ObjectType, companyAssociatedEuTaxonomyData))
-                .catch((e) => console.log(e));
-            })
-            .catch((e) => console.log(e)),
-        )
+          nextTick()
+            .then(() => updateObject(this.formInputsModel as ObjectType, companyAssociatedEuTaxonomyData))
+            .catch((e) => console.log(e));
+        })
         .catch((e) => console.log(e));
     },
 
@@ -639,7 +636,7 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise),
         );
 
-        const euTaxonomyDataForFinancialsControllerApi = await new ApiClientProvider(
+        const euTaxonomyDataForFinancialsControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
         this.postEuTaxonomyDataForFinancialsResponse = await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(

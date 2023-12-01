@@ -300,9 +300,8 @@ export default defineComponent({
       try {
         this.submittingInProgress = true;
         const bulkDataRequestObject = this.collectDataToSend();
-        const requestDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getRequestDataControllerApi();
+        const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+          .requestController;
         const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
 
         this.messageCounter++;
