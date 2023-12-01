@@ -16,15 +16,6 @@ import { NO_DATA_PROVIDED } from "@/utils/Constants";
 
 export default defineComponent({
   name: "DataPointDisplayComponent",
-  methods: {
-    /**
-     * Builds the no data provided string
-     * @returns the no data provided string
-     */
-    NO_DATA_PROVIDED() {
-      return NO_DATA_PROVIDED;
-    },
-  },
   props: {
     content: {
       type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>,
@@ -34,6 +25,7 @@ export default defineComponent({
   data() {
     return {
       DataPointDataTable,
+      NO_DATA_PROVIDED: NO_DATA_PROVIDED,
     };
   },
   computed: {
