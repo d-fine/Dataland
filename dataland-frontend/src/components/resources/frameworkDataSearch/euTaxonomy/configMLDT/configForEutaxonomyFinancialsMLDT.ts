@@ -53,7 +53,7 @@ function getSpecifiedDataPointGetterFactory(
  * @param yesNoValue value of the field which is checked
  * @returns boolean to trigger the shouldDisplay condition
  */
-function setShowIfForYesNo(yesNoValue: YesNo | YesNoNa): boolean {
+function setShowIfForYesNo(yesNoValue: YesNo | YesNoNa | undefined | null): boolean {
   return !!yesNoValue;
 }
 
