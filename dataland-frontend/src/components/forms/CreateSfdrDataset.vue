@@ -250,7 +250,7 @@ export default defineComponent({
      */
     async loadSfdrData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const sfdrDataControllerApi = await new ApiClientProvider(
+      const sfdrDataControllerApi = new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
       ).getUnifiedFrameworkDataController(DataTypeEnum.Sfdr);
 
@@ -284,7 +284,7 @@ export default defineComponent({
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
 
-        const sfdrDataControllerApi = await new ApiClientProvider(
+        const sfdrDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.Sfdr);
         // console.log('companyAssociatedSfdrData', this.companyAssociatedSfdrData)

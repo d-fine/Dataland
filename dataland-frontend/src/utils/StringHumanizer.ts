@@ -3,6 +3,7 @@
  */
 
 import { HumanizedYesNoNa } from "@/utils/YesNoNa";
+import { getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
 
 /**
  * convert camel case string to sentence case string using regex
@@ -66,6 +67,9 @@ export function humanizeStringOrNumber(rawInput: string | number | null | undefi
   if (!rawInput) {
     return "";
   }
+
+  const frameworkLabel = getFrameworkDefinition(rawInput)?.label;
+  if (frameworkLabel) return frameworkLabel;
   const resultOfCustomMappingHumanisation = humanizeViaMapping(rawInput);
   return resultOfCustomMappingHumanisation == ""
     ? convertCamelCaseToSentenceCase(rawInput)

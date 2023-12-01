@@ -24,7 +24,7 @@ export async function uploadFiles(
   files: DocumentToUpload[],
   getKeycloakPromise: () => Promise<Keycloak>,
 ): Promise<void> {
-  const documentControllerApi = await new ApiClientProvider(getKeycloakPromise()).getDocumentControllerApi();
+  const documentControllerApi = new ApiClientProvider(getKeycloakPromise()).apiClients.documentController;
   for (const fileToUpload of files) {
     let fileIsAlreadyInStorage: boolean;
     try {

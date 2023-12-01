@@ -31,3 +31,4 @@ reports
 
 # auto generated code
 mock-server
+*.tsbuildinfo

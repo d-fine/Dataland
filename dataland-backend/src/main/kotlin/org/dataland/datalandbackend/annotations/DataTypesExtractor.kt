@@ -17,7 +17,7 @@ class DataTypesExtractor {
     fun getAllDataTypes(): List<String> {
         val provider = ClassPathScanningCandidateComponentProvider(false)
         provider.addIncludeFilter(AnnotationTypeFilter(DataType::class.java))
-        val modelBeans = provider.findCandidateComponents("org.dataland.datalandbackend.model")
+        val modelBeans = provider.findCandidateComponents("org.dataland.datalandbackend")
         val dataTypes = modelBeans.map { Class.forName(it.beanClassName).getAnnotation(DataType::class.java).name }
         logger.info("Searching for known Datatypes. Datatypes found: $dataTypes")
         return dataTypes

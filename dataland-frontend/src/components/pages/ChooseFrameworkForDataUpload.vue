@@ -222,9 +222,8 @@ export default defineComponent({
      */
     async getMetaInfoAboutAllDataSetsForCurrentCompany() {
       try {
-        const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getMetaDataControllerApi();
+        const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
+        const metaDataControllerApi = backendClients.metaDataController;
         const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, undefined, false);
         const listOfAllDataMetaInfo = response.data;
         this.mapOfDataTypeToListOfDataMetaInfo = listOfAllDataMetaInfo.reduce((groups, dataMetaInfo) => {
