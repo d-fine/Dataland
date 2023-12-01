@@ -7,6 +7,8 @@ import {
   type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   type ExtendedDataPointBigDecimal,
+  type YesNo,
+  type YesNoNa,
 } from "@clients/backend";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
@@ -17,7 +19,6 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { numberValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
-import { NO_DATA_PROVIDED } from "@/utils/Constants";
 
 const sampleField: Field = {
   showIf: () => true,
@@ -48,13 +49,12 @@ function getSpecifiedDataPointGetterFactory(
 }
 
 /**
- * The function defines the trigger for the shouldDisplay property
- * @param displayValue value of the field which is checked
+ * The function defines the trigger for the shouldDisplay property for YesNoFields
+ * @param yesNoValue value of the field which is checked
  * @returns boolean to trigger the shouldDisplay condition
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function setShowIf(displayValue: any): boolean {
-  return !!(displayValue && displayValue != NO_DATA_PROVIDED);
+function setShowIfForYesNo(yesNoValue: YesNo | YesNoNa): boolean {
+  return !!yesNoValue;
 }
 
 /**
@@ -106,14 +106,14 @@ export const configForEuTaxonomyFinancialsMLDT = [
         type: "cell",
         label: euTaxonomyKpiNameMappings.scopeOfEntities,
         explanation: euTaxonomyKpiInfoMappings.scopeOfEntities,
-        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => setShowIf(dataset.scopeOfEntities),
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => setShowIfForYesNo(dataset.scopeOfEntities),
         valueGetter: yesNoValueGetterFactory("scopeOfEntities"),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.nfrdMandatory,
         explanation: euTaxonomyKpiInfoMappings.nfrdMandatory,
-        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => setShowIf(dataset.nfrdMandatory),
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => setShowIfForYesNo(dataset.nfrdMandatory),
         valueGetter: yesNoValueGetterFactory("nfrdMandatory"),
       },
       {
@@ -121,7 +121,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting,
         explanation: euTaxonomyKpiInfoMappings.euTaxonomyActivityLevelReporting,
         shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
-          setShowIf(dataset.euTaxonomyActivityLevelReporting),
+          setShowIfForYesNo(dataset.euTaxonomyActivityLevelReporting),
         valueGetter: yesNoValueGetterFactory("euTaxonomyActivityLevelReporting"),
       },
       {
