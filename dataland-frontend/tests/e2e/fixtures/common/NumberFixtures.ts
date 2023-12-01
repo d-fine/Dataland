@@ -24,29 +24,11 @@ export function generateCurrencyValue(min = 0, max = 1e10, precision = 1e-2): nu
 
 /**
  * Generates a random percentage value, by default in the standard range [0,100]
- * @param largerThan100 boolean to indicate whether values larger than 100 are permitted
- * @param negative boolean to indicate whether negative values are permitted
- * @param precision the precision of the percentage value
+ * @param min is the minimum value
+ * @param max is the maximum value
  * @returns a random percentage value generated according to the specifications
  */
-export function generatePercentageValue(largerThan100 = false, negative = false, precision = 1e-4): number {
-  let min: number;
-  let max: number;
-  if (largerThan100 || negative) {
-    if (largerThan100 && negative) {
-      min = -precision;
-      max = precision;
-    } else if (largerThan100 && !negative) {
-      min = 0;
-      max = 1e4;
-    } else {
-      min = -100;
-      max = 100;
-    }
-  } else {
-    min = 0;
-    max = 100;
-  }
+export function generatePercentageValue(min = 0, max = 100): number {
   return generateFloat(min, max);
 }
 
