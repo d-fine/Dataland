@@ -51,7 +51,9 @@ import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter";
+import { getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { type FrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 
 type ViewPanelStates = "LoadingDatasets" | "DisplayingDatasets" | "Error";
 
@@ -138,11 +140,17 @@ async function loadDataForDisplay(
   companyId: string,
   singleDataMetaInfoToDisplay?: DataMetaInformation,
 ): Promise<DataAndMetaInformation<FrameworkDataType>[]> {
-  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)()); // TODO Emanuel: why not injected?
+  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
-  const dataControllerApi = apiClientProvider.getUnifiedFrameworkDataController(
+  const frameworkDefinition = getFrameworkDefinition(
     props.frameworkIdentifier,
-  ) as FrameworkDataApi<FrameworkDataType>;
+  ) as FrameworkDefinition<FrameworkDataType>;
+  let dataControllerApi: FrameworkDataApi<FrameworkDataType>;
+  if (frameworkDefinition) {
+    dataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+  } else {
+    dataControllerApi = apiClientProvider.getUnifiedFrameworkDataController(props.frameworkIdentifier);
+  }
 
   if (singleDataMetaInfoToDisplay) {
     const singleDataset = (await dataControllerApi.getFrameworkData(singleDataMetaInfoToDisplay.dataId)).data.data;

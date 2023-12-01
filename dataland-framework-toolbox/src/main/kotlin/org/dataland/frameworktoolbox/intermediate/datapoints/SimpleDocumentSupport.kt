@@ -44,7 +44,7 @@ data object SimpleDocumentSupport : DocumentSupport {
             imports = innerLambda.imports +
                 "import { wrapDisplayValueWithDatapointInformation } " +
                 "from \"@/components/resources/dataTable/conversion/DataPoints\";",
-        )
+        ) // TODO EmanueL: Ich glaube wir brauchend iese Funktion nicht
     }
 
     override fun getDataAccessor(dataPointAccessor: String, nullable: Boolean): String {

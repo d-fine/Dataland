@@ -46,6 +46,8 @@ junit-jupiter = "5.10.1"
 
 [libraries]
 
+gradle-tooling = "org.gradle:gradle-tooling-api:7.1.1"
+
 detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:_"
 
 kotlin-compiler-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-compiler-embeddable", version.ref = "kotlin" }

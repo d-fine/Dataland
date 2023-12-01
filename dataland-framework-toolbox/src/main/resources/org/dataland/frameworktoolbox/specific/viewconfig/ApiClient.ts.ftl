@@ -1,4 +1,4 @@
-import { type AxiosPromise, type AxiosRequestConfig } from "axios";
+import { type AxiosPromise, type AxiosRequestConfig, type AxiosInstance } from "axios";
 import { type CompanyAssociatedData } from "@/api-models/CompanyAssociatedData";
 import {
   type Configuration,
@@ -12,8 +12,8 @@ import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation
 export class ${frameworkIdentifier?cap_first}ApiClient implements FrameworkDataApi<${frameworkIdentifier?cap_first}Data> {
   private readonly openApiDataController: ${frameworkIdentifier?cap_first}DataControllerApi;
 
-  constructor(configuration: Configuration | undefined) {
-    this.openApiDataController = new ${frameworkIdentifier?cap_first}DataControllerApi(configuration);
+  constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {
+    this.openApiDataController = new ${frameworkIdentifier?cap_first}DataControllerApi(configuration, undefined, axiosInstance);
   }
 
   getAllCompanyData(

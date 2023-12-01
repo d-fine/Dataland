@@ -56,7 +56,7 @@ sealed interface DocumentSupport {
         innerLambda: org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda,
         fieldLabel: String?,
         dataPointAccessor: String,
-    ): FrameworkDisplayValueLambdaUpload
+    ): FrameworkDisplayValueLambdaUpload // TODO Emanuel: Ich glaube diese Funktion ist nicht nötig
 
     /**
      * Calculate a TS-Accessor for getting the value of a datapoint with the current DocumentSupport requirements

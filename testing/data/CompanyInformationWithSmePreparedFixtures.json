@@ -2,56 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "East Webster",
-			"headquartersPostalCode": null,
-			"sector": "networks",
+			"headquarters": "Fort Billytown",
+			"headquartersPostalCode": "15054",
+			"sector": "metrics",
 			"identifiers": {
 				"Lei": [
-					"Tn89v8gDxkN3DhFHcM1W"
+					"m7KURWXO3DEKUw71zipo"
 				],
 				"Isin": [
-					"TwvQt9On70Rc"
+					"ZJlGhxAFK0GQ"
 				],
-				"PermId": [],
-				"Ticker": [
-					"6VUwv20"
+				"PermId": [
+					"J7adT0E1lt"
 				],
-				"Duns": [
-					"kjOQ7RvW2"
-				],
-				"VatNumber": [
-					"m2UTEvvbU"
-				],
-				"CompanyRegistrationNumber": []
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"EANxC2uunnCFdyg"
+				]
 			},
-			"countryCode": "JM",
+			"countryCode": "GR",
 			"companyAlternativeNames": [
-				"Homenick - Hamill",
-				"Konopelski Group"
+				"Zemlak Group"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://showy-fish.info",
+			"companyLegalForm": "GmbH",
+			"website": "https://monumental-environment.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"02.20",
-						"06.2",
-						"22.29",
-						"78.30",
-						"G"
+						"01.63",
+						"T"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Greyson Fords 2344",
-						"postalCode": "42244-9180",
-						"city": "Muncie",
-						"state": "Kansas",
-						"country": "KZ"
+						"streetAndHouseNumber": "Samson Landing 7364",
+						"postalCode": "10311",
+						"city": "Maggioshire",
+						"state": "Iowa",
+						"country": "MK"
 					},
-					"numberOfEmployees": 7535,
-					"fiscalYearStart": "2024-10-04"
+					"numberOfEmployees": 8055,
+					"fiscalYearStart": "2024-05-03"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -61,40 +55,21 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Altenwerth, Osinski and Barrows",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Jayson Radial 164",
-								"postalCode": "61397-3086",
-								"city": "Burke",
-								"state": null,
-								"country": "QA"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Schiller Inc",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Bath Street 40437",
-								"postalCode": "42429-9023",
-								"city": "Layton",
-								"state": "Missouri",
-								"country": "GS"
-							},
-							"shareOfTotalRevenueInPercent": 93.5455
-						}
-					]
+					"listOfProductionSites": []
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Rustic Metal Table",
-							"shareOfTotalRevenueInPercent": 63.8031
+							"name": "Fantastic Frozen Pizza",
+							"shareOfTotalRevenueInPercent": 94.6956
 						},
 						{
-							"name": "Fantastic Cotton Shoes",
-							"shareOfTotalRevenueInPercent": 70.1988
+							"name": "Awesome Rubber Fish",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Modern Concrete Pizza",
+							"shareOfTotalRevenueInPercent": 68.7122
 						}
 					]
 				}
@@ -104,18 +79,25 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1776,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 450,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMWh": 1069,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 43,
+					"primaryEnergySourceForHeatingAndHotWater": null,
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 11193519,
-					"naturalHazardsCovered": null
+					"amountCoveredByInsuranceAgainstNaturalHazards": 23006533,
+					"naturalHazardsCovered": [
+						"Avalanche",
+						"Flooding",
+						"Snow",
+						"Wind",
+						"EarthQuake",
+						"Hail"
+					]
 				}
 			}
 		},
@@ -124,39 +106,41 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "South Luigi",
-			"headquartersPostalCode": "37137",
-			"sector": "architectures",
+			"headquarters": "Hagenesbury",
+			"headquartersPostalCode": "61910-8396",
+			"sector": "communities",
 			"identifiers": {
 				"Lei": [
-					"wZz6Il96MlRtnNuz5Gbu"
+					"v5yEcW23W1QWJdn5Qwaw"
 				],
 				"Isin": [
-					"5QqpDVxfW5Zh"
+					"eqYvZQ6QTARp",
+					"q2Jwhjqiou8E"
 				],
 				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"w1VDkU7"
+				],
 				"Duns": [
-					"cUHZ9AxCe"
+					"7OOXHQLn1"
 				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "FK",
+			"countryCode": "GW",
 			"companyAlternativeNames": [
-				"Aufderhar - Dicki",
-				"Gorczany Inc",
-				"Moen - Volkman"
+				"Beatty and Sons",
+				"McDermott - Welch"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://unconscious-adviser.net",
+			"companyLegalForm": null,
+			"website": "https://overlooked-squash.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"42.12"
+						"47.25"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -165,175 +149,13 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 8808,
-					"fiscalYearStart": "2024-05-06"
+					"numberOfEmployees": 5137,
+					"fiscalYearStart": "2024-10-31"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 76982572,
-					"operatingCostInEUR": 44457142,
-					"capitalAssetsInEUR": 59369556
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Nikolaus - Russel",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "St Andrews Close 25171",
-								"postalCode": "19401",
-								"city": "Pine Hills",
-								"state": "Ohio",
-								"country": "VC"
-							},
-							"shareOfTotalRevenueInPercent": 26.4151
-						},
-						{
-							"nameOfProductionSite": "Zboncak - Barrows",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "85849",
-								"city": "Lake Loricester",
-								"state": "New Mexico",
-								"country": "VU"
-							},
-							"shareOfTotalRevenueInPercent": 98.2704
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kellen Loaf 89638",
-								"postalCode": null,
-								"city": "Bashirianfurt",
-								"state": "Texas",
-								"country": "SN"
-							},
-							"shareOfTotalRevenueInPercent": 9.6242
-						},
-						{
-							"nameOfProductionSite": "Terry Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Freddy Bridge 642",
-								"postalCode": null,
-								"city": "Port Annetta",
-								"state": "Michigan",
-								"country": "KE"
-							},
-							"shareOfTotalRevenueInPercent": 67.6163
-						},
-						{
-							"nameOfProductionSite": "Bartell LLC",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Nathanael Forks 6856",
-								"postalCode": null,
-								"city": "Cambridge",
-								"state": "South Dakota",
-								"country": "TJ"
-							},
-							"shareOfTotalRevenueInPercent": 96.627
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Practical Granite Bacon",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Generic Steel Chair",
-							"shareOfTotalRevenueInPercent": 75.9949
-						},
-						{
-							"name": "Licensed Rubber Chips",
-							"shareOfTotalRevenueInPercent": 77.5918
-						},
-						{
-							"name": "Licensed Concrete Mouse",
-							"shareOfTotalRevenueInPercent": 28.2266
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
-				},
-				"consumption": {
-					"powerConsumptionInMWh": 97,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 665,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 24258420,
-					"naturalHazardsCovered": [
-						"Flooding",
-						"Hail",
-						"Snow",
-						"EarthQuake"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-minimum-address",
-			"headquarters": "North Tara",
-			"headquartersPostalCode": "13140",
-			"sector": "niches",
-			"identifiers": {
-				"Lei": [
-					"vymkQQ4GJvjlIzmtJeWg"
-				],
-				"Isin": [
-					"uQqHgUzQqcoN"
-				],
-				"PermId": [
-					"IWskI7nBg3"
-				],
-				"Ticker": [
-					"MpPlzgx"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "BD",
-			"companyAlternativeNames": [
-				"Daniel, Bergstrom and Koelpin",
-				"Hamill Group"
-			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://delectable-incubation.net",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"95.22"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": null,
-						"city": "City 17",
-						"state": null,
-						"country": "Uninspired"
-					},
-					"numberOfEmployees": 1201,
-					"fiscalYearStart": "2024-06-09"
-				},
-				"companyFinancials": {
-					"revenueInEUR": 96793398,
-					"operatingCostInEUR": 25048653,
-					"capitalAssetsInEUR": 46514724
+					"revenueInEUR": 46017457,
+					"operatingCostInEUR": 5959919,
+					"capitalAssetsInEUR": null
 				}
 			},
 			"production": {
@@ -343,33 +165,194 @@
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Luxurious Rubber Hat",
-							"shareOfTotalRevenueInPercent": 20.3337
+							"name": "Elegant Soft Fish",
+							"shareOfTotalRevenueInPercent": 2.8186
 						},
 						{
-							"name": "Incredible Frozen Keyboard",
-							"shareOfTotalRevenueInPercent": 77.7605
+							"name": "Bespoke Soft Pants",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Elegant Rubber Towels",
+							"shareOfTotalRevenueInPercent": 87.7296
+						},
+						{
+							"name": "Sleek Cotton Cheese",
+							"shareOfTotalRevenueInPercent": 67.1598
+						},
+						{
+							"name": "Gorgeous Rubber Shoes",
+							"shareOfTotalRevenueInPercent": 1.6732
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 526,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 546,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 23931005,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 19331720,
 					"naturalHazardsCovered": [
+						"Flooding",
+						"Avalanche",
+						"EarthQuake",
+						"Snow",
+						"Hail"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-minimum-address",
+			"headquarters": "Port Ellsworth",
+			"headquartersPostalCode": null,
+			"sector": "interfaces",
+			"identifiers": {
+				"Lei": [
+					"lAkPilFQYt92fH9BjUrB"
+				],
+				"Isin": [
+					"bubISAcHKpTa",
+					"Ykhs8CKpW4Bz"
+				],
+				"PermId": [
+					"FiN0dkO4c4"
+				],
+				"Ticker": [
+					"1QvyFTE"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"5n6LOMTCfNyGQhR"
+				]
+			},
+			"countryCode": "AS",
+			"companyAlternativeNames": [
+				"Bogan LLC",
+				"Yost LLC"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"17.22"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": null,
+						"postalCode": null,
+						"city": "City 17",
+						"state": null,
+						"country": "Uninspired"
+					},
+					"numberOfEmployees": 4310,
+					"fiscalYearStart": "2024-04-03"
+				},
+				"companyFinancials": {
+					"revenueInEUR": 83297052,
+					"operatingCostInEUR": null,
+					"capitalAssetsInEUR": 11496907
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Walker Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Silver Street 5711",
+								"postalCode": "30700",
+								"city": "Lehnerfield",
+								"state": "Michigan",
+								"country": "AL"
+							},
+							"shareOfTotalRevenueInPercent": 36.6851
+						},
+						{
+							"nameOfProductionSite": "Dickinson Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Dickinson Land 2083",
+								"postalCode": "34239",
+								"city": "Littelside",
+								"state": null,
+								"country": "AG"
+							},
+							"shareOfTotalRevenueInPercent": 0.6435
+						},
+						{
+							"nameOfProductionSite": "Swift - Considine",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Cross Lane 296",
+								"postalCode": null,
+								"city": "East Isobel",
+								"state": null,
+								"country": "AM"
+							},
+							"shareOfTotalRevenueInPercent": 7.3752
+						},
+						{
+							"nameOfProductionSite": "Brekke, Stark and Christiansen",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Willow Grove 670",
+								"postalCode": "03327",
+								"city": "Myrticestead",
+								"state": "Delaware",
+								"country": "GU"
+							},
+							"shareOfTotalRevenueInPercent": 16.2473
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Practical Concrete Car",
+							"shareOfTotalRevenueInPercent": 3.2815
+						},
+						{
+							"name": "Sleek Fresh Ball",
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+				},
+				"consumption": {
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 445,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 21426064,
+					"naturalHazardsCovered": [
+						"Snow",
+						"Wind",
 						"Hail"
 					]
 				}

@@ -48,7 +48,7 @@ abstract class InDevelopmentPavedRoadFramework(
                 utils: ComponentGenerationUtils,
                 componentGroup: ComponentGroupApi,
             ): ComponentBase? {
-                println("No-one wants to generate components for ${row.component}")
+                logger.warn("No-one wants to generate components for ${row.component} (Row $row)")
                 return null
             }
 
