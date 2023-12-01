@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class ExtendedNumberDataPointValidationTest {
-    val numberDataPointValidator = ExtendedNumberDataPointValidator()
+    val numberDataPointValidator = DataPointMinimumValidator()
     val dataPointWrongType = ExtendedDataPoint<Double>(12.1, QualityOptions.Reported)
 
     @Test
@@ -17,7 +17,7 @@ class ExtendedNumberDataPointValidationTest {
         }
         Assertions.assertTrue(
             errorThrown.message!!.contains(
-                "inside ExtendedDataPoint is not handled by number validator",
+                "inside BaseDataPoint is not handled by number validator",
             ),
         )
     }

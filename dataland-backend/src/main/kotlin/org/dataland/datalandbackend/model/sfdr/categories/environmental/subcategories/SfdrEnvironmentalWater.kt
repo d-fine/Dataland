@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcate
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.validator.NonNegativeExtendedDataPoint
+import org.dataland.datalandbackend.validator.DataPointMinimumValue
 import java.math.BigDecimal
 
 /**
@@ -11,19 +11,19 @@ import java.math.BigDecimal
  * Fields of the subcategory "Water" belonging to the category "Environmental" of the sfdr framework.
 */
 data class SfdrEnvironmentalWater(
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val emissionsToWaterInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val waterConsumptionInCubicMeters: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val waterReusedInCubicMeters: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val relativeWaterUsageInCubicMetersPerMillionEURRevenue: ExtendedDataPoint<BigDecimal>? = null,
 

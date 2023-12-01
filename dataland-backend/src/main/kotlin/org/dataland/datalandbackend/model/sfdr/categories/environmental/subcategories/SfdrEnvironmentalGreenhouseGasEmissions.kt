@@ -4,8 +4,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.validator.CurrencyDataPointValidation
-import org.dataland.datalandbackend.validator.NonNegativeExtendedDataPoint
+import org.dataland.datalandbackend.validator.DataPointMinimumValue
 import java.math.BigDecimal
 
 /**
@@ -14,55 +13,55 @@ import java.math.BigDecimal
  * belonging to the category "Environmental" of the sfdr framework.
 */
 data class SfdrEnvironmentalGreenhouseGasEmissions(
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val scope1GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val scope2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val scope2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val scope2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val scope1And2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val scope1And2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val scope1And2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val scope3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val scope1And2And3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:CurrencyDataPointValidation
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val enterpriseValue: CurrencyDataPoint? = null,
 
-    @field:CurrencyDataPointValidation
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val totalRevenue: CurrencyDataPoint? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val carbonFootprintInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:NonNegativeExtendedDataPoint
+    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
     val ghgIntensityInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal>? = null,
 
