@@ -1,5 +1,6 @@
 package org.dataland.datalandbatchmanager.service
 
+import org.apache.commons.io.FileUtils
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.slf4j.LoggerFactory
@@ -134,7 +135,7 @@ class GleifGoldenCopyIngestor(
             logger.info("\tNumber of keys: ${deltaMapping.keys.size}")
             logger.info("\tNumber of flattened values: ${deltaMapping.values.flatten().size}")
             val newPersistentFile = File("${savedIsinMappingFile.parent}/newIsinMapping.csv")
-            newMappingFile.copyTo(newPersistentFile)
+            FileUtils.copyFile(newMappingFile, newPersistentFile)
             if (!newMappingFile.delete()) {
                 logger.error("failed to delete temporary mapping file $newMappingFile")
             }

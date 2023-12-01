@@ -5,7 +5,10 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
-import org.dataland.datalandbackend.openApiClient.model.*
+import org.dataland.datalandbackend.openApiClient.model.CompanyId
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
+import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
@@ -54,7 +57,8 @@ class CompanyUploaderTest {
         deltaMap["1000"] = setOf("1111", "1112", "1113")
         // deltaMap["3000"] = setOf("3333")
 
-        // `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.lei, "1000")).thenReturn("testCompanyId" as CompanyId)
+        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.lei, "1000"))
+            .thenReturn(CompanyId("testCompanyId"))
 
         companyUploader.updateIsins(deltaMap)
 
@@ -64,7 +68,7 @@ class CompanyUploaderTest {
         val compPatch = CompanyInformationPatch(
             companyName = null, companyAlternativeNames = null, companyLegalForm = null,
             headquarters = null, headquartersPostalCode = null, sector = null, compIdentifiers, countryCode = null,
-            website = null, teaserCompany = null, isTeaserCompany = null,
+            website = null, isTeaserCompany = null,
         )
 
         verify(mockCompanyDataControllerApi, times(1)).getCompanyIdByIdentifier(IdentifierType.lei, "1000")

@@ -1,6 +1,7 @@
 package org.dataland.batchmanager.service
 
 import com.fasterxml.jackson.databind.MappingIterator
+import org.apache.commons.io.FileUtils
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
@@ -110,6 +111,7 @@ class GleifGoldenCopyIngestorTest {
     fun `test ingestion performs successfully if a file is provided`() {
         val (emptyBufferedReader, mockStaticFile) = commonMock()
         `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
+        mockStatic(FileUtils::class.java)
         companyIngestor.processFullGoldenCopyFileIfEnabled()
         mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(2))
         verify(mockGleifCsvParser, times(1)).readGleifDataFromBufferedReader(any() ?: emptyBufferedReader)
