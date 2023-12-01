@@ -9,7 +9,7 @@ import {
 } from "@clients/backend";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 
-describe("This describes a component test for the view Page", () => {
+describe("Component test for the view multiple dataset display base component", () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
 
   before(function () {
@@ -21,7 +21,6 @@ describe("This describes a component test for the view Page", () => {
   it("Checks, if the toggle of hidden fields works for empty and conditional fields", () => {
     const preparedFixture = getPreparedFixture("lksg-with-nulls-and-child-labor-under-18", preparedFixtures);
     const mockedData = constructCompanyApiResponseForLksg(preparedFixture.t);
-    console.log("abc:", mockedData);
     const companyInformationObject = preparedFixture.companyInformation;
     cy.intercept(`/api/companies/mock-company-id/info`, companyInformationObject);
     cy.intercept(`/api/data/lksg/dataset-a`, {
@@ -75,7 +74,7 @@ function constructCompanyApiResponseForLksg(baseDataset: LksgData): DataAndMetaI
 }
 
 /**
- * This function opens a given dataset with its Multi Layer Data Table and checks wether a specific field can be hidden using the input switch.
+ * This function toggles the hide data button and checks whether a specific field is hidden or displayed.
  * @param toggledFieldName Name of a field which is toggled by the input switch
  */
 export function checkToggleEmptyFieldsSwitch(toggledFieldName: string): void {
