@@ -34,8 +34,8 @@ export function generatePercentageValue(largerThan100 = false, negative = false,
   let max: number;
   if (largerThan100 || negative) {
     if (largerThan100 && negative) {
-      min = -1e4;
-      max = 1e4;
+      min = -precision;
+      max = precision;
     } else if (largerThan100 && !negative) {
       min = 0;
       max = 1e4;
