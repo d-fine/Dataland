@@ -33,7 +33,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
   preparedFixtures.push(manipulateFixtureForInvalidCurrencyInput(generateSfdrFixtures(1, 0)[0]));
   preparedFixtures.push(manipulateFixtureForInvalidBigDecimalDataPointInput(generateSfdrFixtures(1, 0)[0]));
   preparedFixtures.push(manipulateFixtureForInvalidLongDataPointInput(generateSfdrFixtures(1, 0)[0]));
-
+  preparedFixtures.push(manipulateFixtureForEmptyStringDocumentReference(generateSfdrFixtures(1, 0)[0]));
   preparedFixtures.push(manipulateFixtureForInvalidPercentageInput(generateSfdrFixtures(1, 0)[0]));
 
   return preparedFixtures;
@@ -84,6 +84,18 @@ function manipulateFixtureForInvalidLongDataPointInput(input: FixtureData<SfdrDa
 function manipulateFixtureForInvalidPercentageInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = "Sfdr-dataset-with-invalid-percentage-input";
   input.t.social!.socialAndEmployeeMatters!.rateOfAccidentsInPercent!.value = 120;
+  return input;
+}
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * sets a document reference to empty string
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForEmptyStringDocumentReference(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-empty-string-document-reference";
+  input.t.social!.socialAndEmployeeMatters!.maleBoardMembers!.dataSource!.fileReference = "";
   return input;
 }
 

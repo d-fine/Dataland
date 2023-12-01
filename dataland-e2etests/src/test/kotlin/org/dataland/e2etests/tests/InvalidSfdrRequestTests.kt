@@ -96,10 +96,12 @@ class InvalidSfdrRequestTests {
         )
     }
 
-    @Test // TODO write this exception test
-    fun `post a company with assertion on the wrong datatype`() {
+    @Test
+    fun `post a company with empty string document reference`() {
         val oneInvalidSfdrDataset = apiAccessor.testDataProviderForSfdrData
-            .getSpecificCompanyByNameFromPreparedFixtures("Sfdr-dataset-with-invalid-percentage-input")
+            .getSpecificCompanyByNameFromPreparedFixtures(
+                "Sfdr-dataset-with-empty-string-document-reference",
+            )
         Assertions.assertNotNull(oneInvalidSfdrDataset)
         val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
         val errorForInvalidInput = assertThrows<ServerException> {
@@ -109,11 +111,5 @@ class InvalidSfdrRequestTests {
             )
         }
         Assertions.assertTrue(errorForInvalidInput.message!!.contains("Server error : 500 "))
-        Assertions.assertTrue(
-            errorForInvalidInput.message!!.contains(
-                "MethodArgumentNotValidException: " +
-                    "Validation failed for argument",
-            ),
-        )
     }
 }
