@@ -2,49 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Ivafield",
-			"headquartersPostalCode": "44981",
-			"sector": "e-commerce",
+			"headquarters": "Shanahanton",
+			"headquartersPostalCode": "40613",
+			"sector": null,
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"eamSvRZuRDqPCOywWXJM"
+				],
 				"Isin": [
-					"EiFKG8BaSQaG"
+					"lAuA2MPkca9L"
 				],
 				"PermId": [],
-				"Ticker": [
-					"dJ7iJT6"
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"2Zx34KowC"
 				],
-				"Duns": [
-					"NjdKLyqFE"
-				],
-				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MT",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "GmbH",
-			"website": null,
+			"countryCode": "KN",
+			"companyAlternativeNames": [
+				"Bednar Group",
+				"Hahn and Sons",
+				"Kuhlman Inc"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://rusty-bachelor.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01",
-						"05",
-						"10.82",
-						"22.29",
-						"77.1"
+						"29.2",
+						"47.61"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Eddie Court 5144",
-						"postalCode": "72409",
-						"city": "Kamronmouth",
-						"state": "Washington",
-						"country": "SS"
+						"streetAndHouseNumber": "Kurt Manor 489",
+						"postalCode": "62216",
+						"city": "Lake Della",
+						"state": "Kansas",
+						"country": "KI"
 					},
-					"numberOfEmployees": 8847,
-					"fiscalYearStart": "2024-08-23"
+					"numberOfEmployees": 6038,
+					"fiscalYearStart": "2024-11-13"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -56,72 +57,23 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Christiansen, Ward and Treutel",
+							"nameOfProductionSite": "Bode, Ward and Wiza",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Moen Spring 396",
-								"postalCode": "26644-7066",
-								"city": "North Marian",
-								"state": "Connecticut",
-								"country": "RE"
+								"streetAndHouseNumber": "Herman Fields 57133",
+								"postalCode": "48438",
+								"city": "Turcotteview",
+								"state": "North Dakota",
+								"country": "NF"
 							},
-							"shareOfTotalRevenueInPercent": 65.5488
-						},
-						{
-							"nameOfProductionSite": "Gusikowski Inc",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "James Street 455",
-								"postalCode": "08151-1535",
-								"city": "East Maybelleshire",
-								"state": null,
-								"country": "CD"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Russel and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Carey Road 44325",
-								"postalCode": "55248",
-								"city": "West Phoebe",
-								"state": null,
-								"country": "NP"
-							},
-							"shareOfTotalRevenueInPercent": 65.5027
-						},
-						{
-							"nameOfProductionSite": "Terry - Cummings",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Malika Pines 9835",
-								"postalCode": "69197-9956",
-								"city": "Virginia Beach",
-								"state": "New Jersey",
-								"country": "DK"
-							},
-							"shareOfTotalRevenueInPercent": 6.9853
+							"shareOfTotalRevenueInPercent": 95.8117
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Unbranded Granite Bike",
-							"shareOfTotalRevenueInPercent": 18.713
-						},
-						{
-							"name": "Generic Wooden Chicken",
-							"shareOfTotalRevenueInPercent": 3.7777
-						},
-						{
-							"name": "Electronic Granite Chicken",
-							"shareOfTotalRevenueInPercent": 25.0141
-						},
-						{
-							"name": "Gorgeous Rubber Sausages",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Handcrafted Frozen Chips",
-							"shareOfTotalRevenueInPercent": 5.9246
+							"name": "Handcrafted Cotton Pants",
+							"shareOfTotalRevenueInPercent": 25.3561
 						}
 					]
 				}
@@ -131,21 +83,20 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1747,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 178,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 730,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 9972133,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Snow",
-						"Wind",
-						"Flooding"
+						"Flooding",
+						"Snow"
 					]
 				}
 			}
@@ -155,37 +106,42 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Orlandoberg",
-			"headquartersPostalCode": "54947-2978",
-			"sector": "paradigms",
+			"headquarters": "Kingsport",
+			"headquartersPostalCode": "91715",
+			"sector": "systems",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"4X69l0vYfOvCv0FhGobV"
+				],
 				"Isin": [
-					"So9qnWSpru7K"
+					"kZX3ZcnHh6Q6",
+					"t6xk7f1MGSzH"
 				],
 				"PermId": [
-					"abLWTndiI6"
+					"oSIolcORTw"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"yWRIAzz"
+				],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"WKED7ZPQg"
+				],
+				"CompanyRegistrationNumber": [
+					"QUJJH944gzrnkEI"
+				]
 			},
-			"countryCode": "AS",
-			"companyAlternativeNames": [
-				"Koss and Sons",
-				"Stiedemann - Dach",
-				"Wuckert, Turcotte and Ortiz"
-			],
-			"companyLegalForm": "GmbH",
-			"website": null,
+			"countryCode": "KP",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://stunning-lighting.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"51.22"
+						"09.1"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -194,72 +150,55 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 1689,
-					"fiscalYearStart": "2024-04-11"
+					"numberOfEmployees": 9574,
+					"fiscalYearStart": "2024-05-09"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 88474689,
-					"operatingCostInEUR": 2219940,
-					"capitalAssetsInEUR": 36097039
+					"revenueInEUR": 6016472,
+					"operatingCostInEUR": 56763543,
+					"capitalAssetsInEUR": null
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": null,
+							"nameOfProductionSite": "Smith, Schneider and Heller",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "17170-9008",
-								"city": "Verniceshire",
-								"state": "Wyoming",
-								"country": "JM"
+								"streetAndHouseNumber": "Springfield Close 7742",
+								"postalCode": "81330",
+								"city": "Kyliestad",
+								"state": "New Hampshire",
+								"country": "IL"
 							},
-							"shareOfTotalRevenueInPercent": 37.8708
-						},
-						{
-							"nameOfProductionSite": "Stroman Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "67778",
-								"city": "Marionworth",
-								"state": "Oklahoma",
-								"country": "PF"
-							},
-							"shareOfTotalRevenueInPercent": 24.6827
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Elegant Rubber Salad",
-							"shareOfTotalRevenueInPercent": 87.9643
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 289,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 507,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"powerConsumptionInMWh": 1322,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 259,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 42484073,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 16067453,
 					"naturalHazardsCovered": [
 						"Avalanche",
-						"Flooding",
-						"Hail",
-						"EarthQuake"
+						"Wind",
+						"Hail"
 					]
 				}
 			}
@@ -269,45 +208,42 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Keanuville",
-			"headquartersPostalCode": "20448",
-			"sector": "functionalities",
+			"headquarters": "Port Alverta",
+			"headquartersPostalCode": "60217-1830",
+			"sector": "users",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"anGJv0C2cu6KyEoryCKK"
+				],
 				"Isin": [
-					"qAynM0C4oiSp",
-					"MrdZszc7YAEv"
+					"smE3bn3oMkfK"
 				],
-				"PermId": [
-					"DvWF2Y0iDl"
-				],
+				"PermId": [],
 				"Ticker": [
-					"xtwWfMr"
+					"41j1cEW"
 				],
 				"Duns": [
-					"5ERPw1rrY"
+					"oKyXvW54T"
 				],
-				"VatNumber": [
-					"IiUmxbY03"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"hH9DkOGDpdIFdrz"
+					"cT2YVD2VNhCa2J8"
 				]
 			},
-			"countryCode": "TW",
+			"countryCode": "DO",
 			"companyAlternativeNames": [
-				"Greenfelder, Hilll and Jacobi",
-				"Metz - Stamm"
+				"Cartwright LLC",
+				"Prosacco - Kunze"
 			],
-			"companyLegalForm": null,
-			"website": "https://clean-ornament.net",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://wide-eyed-grace.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"42.22"
+						"82.19"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -316,114 +252,45 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 5790,
-					"fiscalYearStart": "2024-10-10"
+					"numberOfEmployees": 5359,
+					"fiscalYearStart": "2024-05-19"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 66118581,
-					"operatingCostInEUR": 7811797,
-					"capitalAssetsInEUR": 16143232
+					"revenueInEUR": 72687729,
+					"operatingCostInEUR": 41955590,
+					"capitalAssetsInEUR": 50015237
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Lemke Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Sandy Lane 5645",
-								"postalCode": "60539",
-								"city": "New Ricoborough",
-								"state": "Arizona",
-								"country": "US"
-							},
-							"shareOfTotalRevenueInPercent": 90.1708
-						},
-						{
-							"nameOfProductionSite": "Harber, Towne and Muller",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "38762",
-								"city": "East Elenorahaven",
-								"state": null,
-								"country": "PA"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Purdy - Haley",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Alena Ranch 438",
-								"postalCode": "51848",
-								"city": "Lefflerhaven",
-								"state": null,
-								"country": "GN"
-							},
-							"shareOfTotalRevenueInPercent": 97.5044
-						},
-						{
-							"nameOfProductionSite": "Veum - Roberts",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Senger Glens 50537",
-								"postalCode": null,
-								"city": "Lake Waylon",
-								"state": "Tennessee",
-								"country": "LK"
-							},
-							"shareOfTotalRevenueInPercent": 28.0338
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Willow Grove 298",
-								"postalCode": "84796",
-								"city": "Collierside",
-								"state": null,
-								"country": "CG"
-							},
-							"shareOfTotalRevenueInPercent": 54.2327
-						}
-					]
+					"listOfProductionSites": []
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Incredible Granite Bike",
-							"shareOfTotalRevenueInPercent": 70.8558
-						},
-						{
-							"name": "Electronic Steel Chicken",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Small Soft Mouse",
-							"shareOfTotalRevenueInPercent": 5.6556
+							"name": "Elegant Bronze Soap",
+							"shareOfTotalRevenueInPercent": 31.4653
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1844,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 453,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 513,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 31133430,
-					"naturalHazardsCovered": [
-						"Wind",
-						"Snow",
-						"Flooding",
-						"EarthQuake"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 9166560,
+					"naturalHazardsCovered": null
 				}
 			}
 		},

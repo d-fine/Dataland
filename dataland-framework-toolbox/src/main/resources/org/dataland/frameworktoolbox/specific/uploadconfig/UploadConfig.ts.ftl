@@ -4,7 +4,7 @@
 export const ${frameworkIdentifier}DataModel = [<@mldtconfig uploadConfig/>];
 
 <#macro mldtsection sectionConfig>{
-    name: "insertNameHere",
+    name: "${sectionConfig.name?js_string}",
     label: "${sectionConfig.label?js_string}",
     showIf: <@frameworklambda sectionConfig.shouldDisplay/>,
     subcategories: [<@mldtconfig sectionConfig.children/>],

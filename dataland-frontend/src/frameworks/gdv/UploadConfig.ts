@@ -1,9 +1,9 @@
 export const gdvDataModel = [    {
-        name: "insertNameHere",
+        name: "general",
         label: "General",
         showIf: ():boolean => true,
         subcategories: [    {
-            name: "insertNameHere",
+            name: "masterData",
             label: "Master Data",
             showIf: ():boolean => true,
             subcategories: [    {
@@ -21,7 +21,7 @@ export const gdvDataModel = [    {
         ],
         },
     {
-        name: "insertNameHere",
+        name: "allgemein",
         label: "Allgemein",
         showIf: ():boolean => true,
         subcategories: [    {
