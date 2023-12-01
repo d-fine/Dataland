@@ -1,6 +1,6 @@
 <template>
   <a @click="$dialog.open(DataPointDataTable, modalOptions)" class="link"
-    >{{ content.displayValue?.value ?? NO_DATA_PROVIDED() }}
+    >{{ content.displayValue?.value ?? NO_DATA_PROVIDED }}
     <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
   </a>
 </template>
@@ -16,15 +16,6 @@ import { NO_DATA_PROVIDED } from "@/utils/Constants";
 
 export default defineComponent({
   name: "DataPointDisplayComponent",
-  methods: {
-    /**
-     * Builds the no data provided string
-     * @returns the no data provided string
-     */
-    NO_DATA_PROVIDED() {
-      return NO_DATA_PROVIDED;
-    },
-  },
   props: {
     content: {
       type: Object as () => MLDTDisplayObject<MLDTDisplayComponentName.DataPointDisplayComponent>,
@@ -34,6 +25,7 @@ export default defineComponent({
   data() {
     return {
       DataPointDataTable,
+      NO_DATA_PROVIDED,
     };
   },
   computed: {

@@ -1,7 +1,12 @@
 <template>
   <template v-for="(cellOrSectionConfig, idx) in config" :key="idx">
     <template v-if="isCellOrSectionVisible(cellOrSectionConfig, mldtDatasets)">
-      <tr v-if="cellOrSectionConfig.type == 'cell'" v-show="isVisible" :data-cell-label="cellOrSectionConfig.label">
+      <tr
+        v-if="cellOrSectionConfig.type == 'cell'"
+        v-show="isVisible"
+        :data-cell-label="cellOrSectionConfig.label"
+        :class="cellOrSectionConfig.class ?? null"
+      >
         <td class="headers-bg pl-4" :data-cell-label="cellOrSectionConfig.label" data-row-header="true">
           <span class="table-left-label">{{ cellOrSectionConfig.label }}</span>
           <em
