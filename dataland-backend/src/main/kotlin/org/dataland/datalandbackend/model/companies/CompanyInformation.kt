@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.model.companies
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
-import jakarta.validation.constraints.NotBlank
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
 
 /**
@@ -32,7 +31,6 @@ data class CompanyInformation(
 
     val headquartersPostalCode: String?,
 
-    @field:NotBlank(message = "This field can't be empty.")
     val sector: String?,
 
     @field:JsonProperty(required = true)

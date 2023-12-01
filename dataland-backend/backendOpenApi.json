@@ -2445,8 +2445,7 @@
           "companyName",
           "countryCode",
           "headquarters",
-          "identifiers",
-          "sector"
+          "identifiers"
         ],
         "type": "object",
         "properties": {
@@ -2472,7 +2471,8 @@
             "nullable": true
           },
           "sector": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "identifiers": {
             "type": "object",
