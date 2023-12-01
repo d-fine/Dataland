@@ -135,6 +135,7 @@ class CompanyUploader(
     fun updateIsins(
         leiIsinMapping: Map<String, Set<String>>,
     ) {
+        @Suppress("unused")
         for ((lei, newIsins) in leiIsinMapping) {
             retryOnCommonApiErrors {
                 logger.info("Searching for company with LEI: $lei")

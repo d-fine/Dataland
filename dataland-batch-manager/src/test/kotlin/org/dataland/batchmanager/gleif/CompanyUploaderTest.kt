@@ -52,10 +52,9 @@ class CompanyUploaderTest {
     }
 
     @Test
-    fun `check that the upload of LEI-ISIN mappings makes the intended calls`() {
+    fun `check that the upload of LEI ISIN mappings makes the intended calls`() {
         val deltaMap = mutableMapOf<String, Set<String>>()
         deltaMap["1000"] = setOf("1111", "1112", "1113")
-        // deltaMap["3000"] = setOf("3333")
 
         `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.lei, "1000"))
             .thenReturn(CompanyId("testCompanyId"))
@@ -72,7 +71,6 @@ class CompanyUploaderTest {
         )
 
         verify(mockCompanyDataControllerApi, times(1)).getCompanyIdByIdentifier(IdentifierType.lei, "1000")
-        // verify(mockCompanyDataControllerApi, times(1)).getCompaniesBySearchString("3000")
         verify(mockCompanyDataControllerApi, times(1)).patchCompanyById("testCompanyId", compPatch)
     }
 
