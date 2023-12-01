@@ -2,50 +2,56 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Shanahanton",
-			"headquartersPostalCode": "40613",
-			"sector": null,
+			"headquarters": "East Webster",
+			"headquartersPostalCode": null,
+			"sector": "networks",
 			"identifiers": {
 				"Lei": [
-					"eamSvRZuRDqPCOywWXJM"
+					"Tn89v8gDxkN3DhFHcM1W"
 				],
 				"Isin": [
-					"lAuA2MPkca9L"
+					"TwvQt9On70Rc"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
+				"Ticker": [
+					"6VUwv20"
+				],
+				"Duns": [
+					"kjOQ7RvW2"
+				],
 				"VatNumber": [
-					"2Zx34KowC"
+					"m2UTEvvbU"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KN",
+			"countryCode": "JM",
 			"companyAlternativeNames": [
-				"Bednar Group",
-				"Hahn and Sons",
-				"Kuhlman Inc"
+				"Homenick - Hamill",
+				"Konopelski Group"
 			],
 			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://rusty-bachelor.info",
+			"website": "https://showy-fish.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"29.2",
-						"47.61"
+						"02.20",
+						"06.2",
+						"22.29",
+						"78.30",
+						"G"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Kurt Manor 489",
-						"postalCode": "62216",
-						"city": "Lake Della",
+						"streetAndHouseNumber": "Greyson Fords 2344",
+						"postalCode": "42244-9180",
+						"city": "Muncie",
 						"state": "Kansas",
-						"country": "KI"
+						"country": "KZ"
 					},
-					"numberOfEmployees": 6038,
-					"fiscalYearStart": "2024-11-13"
+					"numberOfEmployees": 7535,
+					"fiscalYearStart": "2024-10-04"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -57,23 +63,38 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Bode, Ward and Wiza",
+							"nameOfProductionSite": "Altenwerth, Osinski and Barrows",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Herman Fields 57133",
-								"postalCode": "48438",
-								"city": "Turcotteview",
-								"state": "North Dakota",
-								"country": "NF"
+								"streetAndHouseNumber": "Jayson Radial 164",
+								"postalCode": "61397-3086",
+								"city": "Burke",
+								"state": null,
+								"country": "QA"
 							},
-							"shareOfTotalRevenueInPercent": 95.8117
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Schiller Inc",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Bath Street 40437",
+								"postalCode": "42429-9023",
+								"city": "Layton",
+								"state": "Missouri",
+								"country": "GS"
+							},
+							"shareOfTotalRevenueInPercent": 93.5455
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Handcrafted Cotton Pants",
-							"shareOfTotalRevenueInPercent": 25.3561
+							"name": "Rustic Metal Table",
+							"shareOfTotalRevenueInPercent": 63.8031
+						},
+						{
+							"name": "Fantastic Cotton Shoes",
+							"shareOfTotalRevenueInPercent": 70.1988
 						}
 					]
 				}
@@ -83,21 +104,18 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 730,
+					"powerConsumptionInMWh": 1776,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 450,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
-					"naturalHazardsCovered": [
-						"Flooding",
-						"Snow"
-					]
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 11193519,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -106,42 +124,39 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Kingsport",
-			"headquartersPostalCode": "91715",
-			"sector": "systems",
+			"headquarters": "South Luigi",
+			"headquartersPostalCode": "37137",
+			"sector": "architectures",
 			"identifiers": {
 				"Lei": [
-					"4X69l0vYfOvCv0FhGobV"
+					"wZz6Il96MlRtnNuz5Gbu"
 				],
 				"Isin": [
-					"kZX3ZcnHh6Q6",
-					"t6xk7f1MGSzH"
+					"5QqpDVxfW5Zh"
 				],
-				"PermId": [
-					"oSIolcORTw"
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"cUHZ9AxCe"
 				],
-				"Ticker": [
-					"yWRIAzz"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"WKED7ZPQg"
-				],
-				"CompanyRegistrationNumber": [
-					"QUJJH944gzrnkEI"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KP",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://stunning-lighting.info",
+			"countryCode": "FK",
+			"companyAlternativeNames": [
+				"Aufderhar - Dicki",
+				"Gorczany Inc",
+				"Moen - Volkman"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://unconscious-adviser.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"09.1"
+						"42.12"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -150,55 +165,117 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 9574,
-					"fiscalYearStart": "2024-05-09"
+					"numberOfEmployees": 8808,
+					"fiscalYearStart": "2024-05-06"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 6016472,
-					"operatingCostInEUR": 56763543,
-					"capitalAssetsInEUR": null
+					"revenueInEUR": 76982572,
+					"operatingCostInEUR": 44457142,
+					"capitalAssetsInEUR": 59369556
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Smith, Schneider and Heller",
+							"nameOfProductionSite": "Nikolaus - Russel",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Springfield Close 7742",
-								"postalCode": "81330",
-								"city": "Kyliestad",
-								"state": "New Hampshire",
-								"country": "IL"
+								"streetAndHouseNumber": "St Andrews Close 25171",
+								"postalCode": "19401",
+								"city": "Pine Hills",
+								"state": "Ohio",
+								"country": "VC"
 							},
-							"shareOfTotalRevenueInPercent": null
+							"shareOfTotalRevenueInPercent": 26.4151
+						},
+						{
+							"nameOfProductionSite": "Zboncak - Barrows",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "85849",
+								"city": "Lake Loricester",
+								"state": "New Mexico",
+								"country": "VU"
+							},
+							"shareOfTotalRevenueInPercent": 98.2704
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kellen Loaf 89638",
+								"postalCode": null,
+								"city": "Bashirianfurt",
+								"state": "Texas",
+								"country": "SN"
+							},
+							"shareOfTotalRevenueInPercent": 9.6242
+						},
+						{
+							"nameOfProductionSite": "Terry Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Freddy Bridge 642",
+								"postalCode": null,
+								"city": "Port Annetta",
+								"state": "Michigan",
+								"country": "KE"
+							},
+							"shareOfTotalRevenueInPercent": 67.6163
+						},
+						{
+							"nameOfProductionSite": "Bartell LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Nathanael Forks 6856",
+								"postalCode": null,
+								"city": "Cambridge",
+								"state": "South Dakota",
+								"country": "TJ"
+							},
+							"shareOfTotalRevenueInPercent": 96.627
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Practical Granite Bacon",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Generic Steel Chair",
+							"shareOfTotalRevenueInPercent": 75.9949
+						},
+						{
+							"name": "Licensed Rubber Chips",
+							"shareOfTotalRevenueInPercent": 77.5918
+						},
+						{
+							"name": "Licensed Concrete Mouse",
+							"shareOfTotalRevenueInPercent": 28.2266
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1322,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 259,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerConsumptionInMWh": 97,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 665,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 16067453,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 24258420,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Wind",
-						"Hail"
+						"Flooding",
+						"Hail",
+						"Snow",
+						"EarthQuake"
 					]
 				}
 			}
@@ -208,42 +285,40 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Port Alverta",
-			"headquartersPostalCode": "60217-1830",
-			"sector": "users",
+			"headquarters": "North Tara",
+			"headquartersPostalCode": "13140",
+			"sector": "niches",
 			"identifiers": {
 				"Lei": [
-					"anGJv0C2cu6KyEoryCKK"
+					"vymkQQ4GJvjlIzmtJeWg"
 				],
 				"Isin": [
-					"smE3bn3oMkfK"
+					"uQqHgUzQqcoN"
 				],
-				"PermId": [],
+				"PermId": [
+					"IWskI7nBg3"
+				],
 				"Ticker": [
-					"41j1cEW"
+					"MpPlzgx"
 				],
-				"Duns": [
-					"oKyXvW54T"
-				],
+				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"cT2YVD2VNhCa2J8"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "DO",
+			"countryCode": "BD",
 			"companyAlternativeNames": [
-				"Cartwright LLC",
-				"Prosacco - Kunze"
+				"Daniel, Bergstrom and Koelpin",
+				"Hamill Group"
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://wide-eyed-grace.com",
+			"website": "https://delectable-incubation.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"82.19"
+						"95.22"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -252,45 +327,51 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 5359,
-					"fiscalYearStart": "2024-05-19"
+					"numberOfEmployees": 1201,
+					"fiscalYearStart": "2024-06-09"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 72687729,
-					"operatingCostInEUR": 41955590,
-					"capitalAssetsInEUR": 50015237
+					"revenueInEUR": 96793398,
+					"operatingCostInEUR": 25048653,
+					"capitalAssetsInEUR": 46514724
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": null
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Elegant Bronze Soap",
-							"shareOfTotalRevenueInPercent": 31.4653
+							"name": "Luxurious Rubber Hat",
+							"shareOfTotalRevenueInPercent": 20.3337
+						},
+						{
+							"name": "Incredible Frozen Keyboard",
+							"shareOfTotalRevenueInPercent": 77.7605
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
+					"powerConsumptionInMWh": 526,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 513,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 9166560,
-					"naturalHazardsCovered": null
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 23931005,
+					"naturalHazardsCovered": [
+						"Hail"
+					]
 				}
 			}
 		},

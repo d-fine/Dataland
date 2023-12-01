@@ -1,16 +1,18 @@
 export const gdvDataModel = [    {
         name: "general",
         label: "General",
+        color: " ", 
         showIf: ():boolean => true,
         subcategories: [    {
             name: "masterData",
             label: "Master Data",
+            color: " ", 
             showIf: ():boolean => true,
             subcategories: [    {
-                name: "cell",
+                name: "berichts-pflicht",
                 label: "Berichts-Pflicht",
                 description: "Ist das Unternehmen berichtspflichtig?",
-                unit: "",
+                unit: "kg",
                 component: "",
                 required: "",
                 showIf: ():boolean => true,
@@ -23,42 +25,43 @@ export const gdvDataModel = [    {
     {
         name: "allgemein",
         label: "Allgemein",
+        color: " ", 
         showIf: ():boolean => true,
         subcategories: [    {
-            name: "cell",
+            name: "esg-ziele",
             label: "ESG-Ziele",
             description: "Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
-            unit: "",
+    
             component: "",
             required: "",
             showIf: ():boolean => true,
             validation: "",
             },
         {
-            name: "cell",
+            name: "ziele",
             label: "Ziele",
             description: "Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.",
-            unit: "",
+    
             component: "",
             required: "",
             showIf: ():boolean => true,
             validation: "",
             },
         {
-            name: "cell",
+            name: "investitionen",
             label: "Investitionen",
             description: "Bitte geben Sie an wieviele Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele zugewiesen wurden.",
-            unit: "",
+    
             component: "",
             required: "",
             showIf: ():boolean => true,
             validation: "",
             },
         {
-            name: "cell",
+            name: "sektorMitHohenKlimaauswirkungen",
             label: "Sektor mit hohen Klimaauswirkungen",
             description: "Kann das Unternehmen einem oder mehreren Sektoren mit hohen Klimaauswirkungen zugeordnet werden?",
-            unit: "",
+    
             component: "",
             required: "",
             showIf: ():boolean => true,

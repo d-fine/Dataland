@@ -6,16 +6,17 @@ export const ${frameworkIdentifier}DataModel = [<@mldtconfig uploadConfig/>];
 <#macro mldtsection sectionConfig>{
     name: "${sectionConfig.name?js_string}",
     label: "${sectionConfig.label?js_string}",
+    color: " ", <#-- not necessary at this point -->
     showIf: <@frameworklambda sectionConfig.shouldDisplay/>,
     subcategories: [<@mldtconfig sectionConfig.children/>],
     },
 </#macro>
 
 <#macro mldtcell cellConfig>{
-    name: "cell",
+    name: "${cellConfig.name?js_string}",
     label: "${cellConfig.label?js_string}",
     <#if cellConfig.explanation??>description: "${cellConfig.explanation?js_string}",</#if>
-    unit: "",
+    <#if cellConfig.unit??>unit: "${cellConfig.unit?js_string}",</#if>
     component: "",
     required: "",
     showIf: <@frameworklambda cellConfig.shouldDisplay/>,

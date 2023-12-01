@@ -54,10 +54,13 @@ data class SectionUploadConfigBuilder(
         explanation: String?,
         shouldDisplay: FrameworkBooleanLambda,
         valueGetter: FrameworkDisplayValueLambda,
+        unit: String?,
     ): CellConfigBuilder {
         val newCell = CellConfigBuilder(
             parentSection = this,
             label = label,
+            name = camelCaseSify(label),
+            unit = unit,
             explanation = explanation,
             shouldDisplay = shouldDisplay,
             valueGetter = valueGetter,
@@ -76,3 +79,4 @@ data class SectionUploadConfigBuilder(
         return camelCasedList.joinToString("")
     }
 }
+// todo 3 categories to add, not only these 2

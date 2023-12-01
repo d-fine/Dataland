@@ -3,26 +3,26 @@
 		[
 			"2015",
 			{
-				"dataId": "c750bf24-2ba5-4da7-820a-d2ee514f503a",
-				"companyId": "9c524850-f9b5-4312-8967-71cdd361ed47",
+				"dataId": "8e8a7a75-4d07-4cc3-a463-6d38a4164bf5",
+				"companyId": "3bdf3055-2527-4289-b81d-6459672e5626",
 				"dataType": "eutaxonomy-financials",
 				"reportingPeriod": "2015",
 				"currentlyActive": true,
 				"qaStatus": "Accepted",
-				"uploadTime": 6892,
+				"uploadTime": 4171,
 				"uploaderUserId": null
 			}
 		],
 		[
 			"2016",
 			{
-				"dataId": "dc83865b-483f-4c79-bc8a-20f2b74bdc61",
-				"companyId": "9c524850-f9b5-4312-8967-71cdd361ed47",
+				"dataId": "2deaca55-9a9f-4e3d-81da-8d7dd466d282",
+				"companyId": "3bdf3055-2527-4289-b81d-6459672e5626",
 				"dataType": "eutaxonomy-financials",
 				"reportingPeriod": "2016",
 				"currentlyActive": true,
 				"qaStatus": "Accepted",
-				"uploadTime": 3001,
+				"uploadTime": 9023,
 				"uploaderUserId": null
 			}
 		]
@@ -31,26 +31,26 @@
 		[
 			"2021",
 			{
-				"dataId": "c42206cf-9b92-4034-89be-7d2264d4a108",
-				"companyId": "9c524850-f9b5-4312-8967-71cdd361ed47",
+				"dataId": "8d873173-c3ad-47c5-ad04-05608b0dfc69",
+				"companyId": "3bdf3055-2527-4289-b81d-6459672e5626",
 				"dataType": "lksg",
 				"reportingPeriod": "2021",
 				"currentlyActive": true,
 				"qaStatus": "Accepted",
-				"uploadTime": 7894,
+				"uploadTime": 4182,
 				"uploaderUserId": null
 			}
 		],
 		[
 			"2022",
 			{
-				"dataId": "3c88ce81-f87c-432d-a3bc-cfceb106baa5",
-				"companyId": "9c524850-f9b5-4312-8967-71cdd361ed47",
+				"dataId": "78274c17-9191-4242-89c4-baa3e32fd9e3",
+				"companyId": "3bdf3055-2527-4289-b81d-6459672e5626",
 				"dataType": "lksg",
 				"reportingPeriod": "2022",
 				"currentlyActive": true,
 				"qaStatus": "Accepted",
-				"uploadTime": 8677,
+				"uploadTime": 7061,
 				"uploaderUserId": null
 			}
 		]

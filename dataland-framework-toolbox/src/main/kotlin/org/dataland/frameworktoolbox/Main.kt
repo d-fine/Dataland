@@ -10,7 +10,7 @@ import java.nio.file.Path
  */
 fun main(args: Array<String>) {
     val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
-    val allPavedRoadFrameworks = context.getBeansOfType<InDevelopmentPavedRoadFramework>().values.toList() // todo ???
+    val allPavedRoadFrameworks = context.getBeansOfType<InDevelopmentPavedRoadFramework>().values.toList()
     val datalandProject = DatalandRepository(Path.of("./"))
 
     require(args.size == 1) {

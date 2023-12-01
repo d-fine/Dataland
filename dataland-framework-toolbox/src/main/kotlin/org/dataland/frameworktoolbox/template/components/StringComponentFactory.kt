@@ -22,7 +22,7 @@ class StringComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnost
         componentGroup: ComponentGroupApi,
     ): ComponentBase {
         templateDiagnostic.optionsNotUsed(row)
-        templateDiagnostic.unitNotUsed(row)
+//        templateDiagnostic.unitNotUsed(row)
 
         return componentGroup.create<StringComponent>(
             utils.generateFieldIdentifierFromRow(row),
