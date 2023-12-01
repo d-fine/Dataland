@@ -19,7 +19,7 @@ describe("Component test for the view multiple dataset display base component", 
   });
 
   it("Checks, if the toggle of hidden fields works for empty and conditional fields", () => {
-    const preparedFixture = getPreparedFixture("lksg-with-nulls-and-child-labor-under-18", preparedFixtures);
+    const preparedFixture = getPreparedFixture("lksg-with-nulls-and-no-child-labor-under-18", preparedFixtures);
     const mockedData = constructCompanyApiResponseForLksg(preparedFixture.t);
     const companyInformationObject = preparedFixture.companyInformation;
     cy.intercept(`/api/companies/mock-company-id/info`, companyInformationObject);
