@@ -1,7 +1,7 @@
 <template>
-  <div class="p-datatable p-component">
+  <div v-if="dataPointDisplay && isDataCorrect" class="p-datatable p-component">
     <div class="p-datatable-wrapper overflow-auto">
-      <table v-if="dataPointDisplay && isDataCorrect" class="p-datatable-table" aria-label="Data point content">
+      <table class="p-datatable-table" aria-label="Data point content">
         <tbody class="p-datatable-body">
           <tr>
             <th class="headers-bg">Value</th>
@@ -28,9 +28,9 @@
           </tr>
         </tbody>
       </table>
-      <template v-else>No data provided</template>
     </div>
   </div>
+  <template v-else>No data provided</template>
 </template>
 
 <script lang="ts">
