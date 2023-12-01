@@ -27,7 +27,7 @@
           name="currency"
           placeholder="Currency"
           :options="getDataset(DropdownDatasetIdentifier.CurrencyCodes)"
-          outer-class="short"
+          outer-class="long"
           data-test="datapoint-currency"
         />
       </div>

@@ -49,7 +49,10 @@ export default defineComponent({
   },
   computed: {
     isDataCorrect() {
-      return !!this.dataPointDisplay?.value && this.dataPointDisplay?.value !== "No data provided";
+      return (
+        (!!this.dataPointDisplay?.value && this.dataPointDisplay?.value !== "No data provided") ||
+        (!!this.dataPointDisplay?.comment && this.dataPointDisplay?.comment !== "")
+      );
     },
     dataSourceLabel() {
       return this.dataPointDisplay?.dataSource?.page
