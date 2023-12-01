@@ -1,4 +1,4 @@
-import { type BaseDocumentReference } from "@clients/backend";
+import { type BaseDocumentReference, type ExtendedDocumentReference } from "@clients/backend";
 import { type DynamicDialogOptions } from "primevue/dynamicdialogoptions";
 import { type DataPointDisplay } from "@/utils/DataPoint";
 
@@ -8,6 +8,7 @@ export enum MLDTDisplayComponentName {
   ModalLinkDisplayComponent = "ModalLinkDisplayComponent",
   HighlightHiddenCellDisplay = "HighlightHiddenCellDisplay",
   DataPointDisplayComponent = "DataPointDisplayComponent",
+  DataPointWrapperDisplayComponent = "DataPointWrapperDisplayComponent",
 }
 
 export type MLDTDisplayComponentTypes = {
@@ -25,6 +26,13 @@ export type MLDTDisplayComponentTypes = {
   };
   [MLDTDisplayComponentName.HighlightHiddenCellDisplay]: {
     innerContents: AvailableMLDTDisplayObjectTypes;
+  };
+  [MLDTDisplayComponentName.DataPointWrapperDisplayComponent]: {
+    innerContents: AvailableMLDTDisplayObjectTypes;
+    fieldLabel: string;
+    quality?: string;
+    dataSource?: ExtendedDocumentReference | BaseDocumentReference | null;
+    comment?: string;
   };
 };
 

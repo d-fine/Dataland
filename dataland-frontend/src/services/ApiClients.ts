@@ -1,53 +1,99 @@
-import { Configuration } from "@clients/backend/configuration";
-import {
-  CompanyDataControllerApi,
-  type CompanyDataControllerApiInterface,
-  MetaDataControllerApi,
-  type MetaDataControllerApiInterface,
-} from "@clients/backend/api";
+import { type Configuration } from "@clients/backend/configuration";
 import { DocumentControllerApi } from "@clients/documentmanager";
 import { QaControllerApi } from "@clients/qaservice";
 import type Keycloak from "keycloak-js";
-import { ApiKeyControllerApi, type ApiKeyControllerApiInterface } from "@clients/apikeymanager";
+import { ApiKeyControllerApi } from "@clients/apikeymanager";
 import { RequestControllerApi, type RequestControllerApiInterface } from "@clients/communitymanager";
+import axios, { type AxiosInstance } from "axios";
 import { updateTokenAndItsExpiryTimestampAndStoreBoth } from "@/utils/SessionTimeoutUtils";
 import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
+import * as backendApis from "@clients/backend/api";
+
+interface ApiBackendClients {
+  actuator: backendApis.ActuatorApiInterface;
+  companyDataController: backendApis.CompanyDataControllerApiInterface;
+  metaDataController: backendApis.MetaDataControllerApiInterface;
+}
+
+interface ApiClients {
+  apiKeyController: ApiKeyControllerApi;
+  documentController: DocumentControllerApi;
+  requestController: RequestControllerApiInterface;
+  qaController: QaControllerApi;
+}
+
+type ApiClientConstructor<T> = new (
+  configuration: Configuration | undefined,
+  basePath: string,
+  axios: AxiosInstance,
+) => T;
+type ApiClientFactory = <T>(constructor: ApiClientConstructor<T>) => T;
+
 export class ApiClientProvider {
-  keycloakPromise: Promise<Keycloak>;
+  private readonly keycloakPromise: Promise<Keycloak>;
+  readonly axiosInstance: AxiosInstance;
+
+  readonly backendClients: ApiBackendClients;
+  readonly apiClients: ApiClients;
 
   constructor(keycloakPromise: Promise<Keycloak>) {
     this.keycloakPromise = keycloakPromise;
+    this.axiosInstance = axios.create({});
+    this.registerAutoAuthenticatingAxiosInterceptor();
+
+    this.backendClients = this.constructBackendClients();
+    this.apiClients = this.constructApiClients();
   }
 
-  async getConfiguration(): Promise<Configuration | undefined> {
+  private registerAutoAuthenticatingAxiosInterceptor(): void {
+    this.axiosInstance.interceptors.request.use(
+      async (config) => {
+        const bearerToken = await this.getBearerToken();
+        if (bearerToken) {
+          config.headers["Authorization"] = `Bearer ${bearerToken}`;
+        }
+        return config;
+      },
+      (error) => Promise.reject(error),
+    );
+  }
+
+  private constructBackendClients(): ApiBackendClients {
+    const backendClientFactory = this.getClientFactory("/api");
+    return {
+      actuator: backendClientFactory(backendApis.ActuatorApi),
+      companyDataController: backendClientFactory(backendApis.CompanyDataControllerApi),
+      metaDataController: backendClientFactory(
+        backendApis.MetaDataControllerApi,
+      ) as backendApis.MetaDataControllerApiInterface,
+    };
+  }
+
+  private constructApiClients(): ApiClients {
+    return {
+      apiKeyController: this.getClientFactory("/api-keys")(ApiKeyControllerApi),
+      documentController: this.getClientFactory("/documents")(DocumentControllerApi),
+      requestController: this.getClientFactory("/community")(RequestControllerApi),
+      qaController: this.getClientFactory("/qa")(QaControllerApi),
+    };
+  }
+
+  private async getBearerToken(): Promise<string | undefined> {
     const keycloak = await this.keycloakPromise;
     if (keycloak.authenticated) {
-      updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
-      return new Configuration({ accessToken: keycloak.token });
+      await updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
+      return keycloak.token;
     } else {
       return undefined;
     }
   }
 
-  async getConstructedApi<T>(
-    constructor: new (configuration: Configuration | undefined, basePath: string) => T,
-    basePath = "/api",
-  ): Promise<T> {
-    const configuration = await this.getConfiguration();
-    return new constructor(configuration, basePath);
-  }
-
-  async getConstructedDocumentManager<T>(
-    constructor: new (configuration: Configuration | undefined, basePath: string) => T,
-  ): Promise<T> {
-    const configuration = await this.getConfiguration();
-    return new constructor(configuration, "/documents");
-  }
-
-  async getCompanyDataControllerApi(): Promise<CompanyDataControllerApiInterface> {
-    return this.getConstructedApi(CompanyDataControllerApi);
+  private getClientFactory(basePath: string): ApiClientFactory {
+    return (constructor) => {
+      return new constructor(undefined, basePath, this.axiosInstance);
+    };
   }
 
   /**
@@ -56,30 +102,9 @@ export class ApiClientProvider {
    * @param framework The identified of the framework
    * @returns the unified API client
    */
-  async getUnifiedFrameworkDataController<K extends keyof FrameworkDataTypes>(
+  getUnifiedFrameworkDataController<K extends keyof FrameworkDataTypes>(
     framework: K,
-  ): Promise<FrameworkDataApi<FrameworkDataTypes[K]["data"]>> {
-    const configuration = await this.getConfiguration();
-    return getUnifiedFrameworkDataControllerFromConfiguration(framework, configuration);
-  }
-
-  async getMetaDataControllerApi(): Promise<MetaDataControllerApiInterface> {
-    return this.getConstructedApi(MetaDataControllerApi);
-  }
-
-  async getApiKeyManagerController(): Promise<ApiKeyControllerApiInterface> {
-    return this.getConstructedApi(ApiKeyControllerApi, "/api-keys");
-  }
-
-  async getRequestDataControllerApi(): Promise<RequestControllerApiInterface> {
-    return this.getConstructedApi(RequestControllerApi, "/community");
-  }
-
-  async getDocumentControllerApi(): Promise<DocumentControllerApi> {
-    return this.getConstructedDocumentManager(DocumentControllerApi);
-  }
-
-  async getQaControllerApi(): Promise<QaControllerApi> {
-    return this.getConstructedApi(QaControllerApi, "/qa");
+  ): FrameworkDataApi<FrameworkDataTypes[K]["data"]> {
+    return getUnifiedFrameworkDataControllerFromConfiguration(framework, undefined, this.axiosInstance);
   }
 }

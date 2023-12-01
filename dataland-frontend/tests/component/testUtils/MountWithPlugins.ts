@@ -10,6 +10,7 @@ import { type DefineComponent, defineComponent, h } from "vue";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import DynamicDialog from "primevue/dynamicdialog";
+import { ApiClientProvider } from "@/services/ApiClients";
 
 /*
   This file defines a alternative mounting function that also includes many creature comforts
@@ -66,45 +67,46 @@ declare global {
  * A slightly modified version of the vue mount function that automatically initiates plugins used in dataland
  * like PrimeVue, Pinia or the Router and also allows for simple authentication injection
  * @param component the component you want to mount
- * @param mountingOptions the mountingOptions for mounting said component
+ * @param options the mountingOptions for mounting said component
  * @returns a cypress chainable for the mounted wrapper and the Vue component
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   component: T,
-  mountingOptions: ComponentMountingOptions<T>,
+  options: ComponentMountingOptions<T>,
 ): Cypress.Chainable<{
   wrapper: VueWrapper<InstanceType<T>>;
   component: VueWrapper<InstanceType<T>>["vm"];
 }> {
-  mountingOptions.global = mountingOptions.global ?? {};
-  mountingOptions.global.plugins = mountingOptions.global.plugins ?? [];
-  mountingOptions.global.plugins.push(createPinia());
-  mountingOptions.global.plugins.push(PrimeVue);
-  mountingOptions.global.plugins.push(DialogService);
-  mountingOptions.global.provide = mountingOptions.global.provide ?? {};
+  options.global = options.global ?? {};
+  options.global.plugins = options.global.plugins ?? [];
+  options.global.plugins.push(createPinia());
+  options.global.plugins.push(PrimeVue);
+  options.global.plugins.push(DialogService);
+  options.global.provide = options.global.provide ?? {};
 
-  if (!mountingOptions.router) {
-    mountingOptions.router = createRouter({
+  if (!options.router) {
+    options.router = createRouter({
       routes: routes,
       history: createMemoryHistory(),
     });
   }
 
-  if (mountingOptions.keycloak) {
-    mountingOptions.global.provide.getKeycloakPromise = (): Promise<Keycloak> => {
-      return Promise.resolve(mountingOptions.keycloak as Keycloak);
+  if (options.keycloak) {
+    options.global.provide.apiClientProvider = new ApiClientProvider(Promise.resolve(options.keycloak));
+    options.global.provide.getKeycloakPromise = (): Promise<Keycloak> => {
+      return Promise.resolve(options.keycloak as Keycloak);
     };
-    mountingOptions.global.provide.authenticated = true;
+    options.global.provide.authenticated = true;
   }
 
-  mountingOptions.global.plugins.push({
+  options.global.plugins.push({
     install(app) {
-      app.use(assertDefined(mountingOptions.router));
+      app.use(assertDefined(options.router));
     },
   });
 
-  mountingOptions.global.plugins.push({
+  options.global.plugins.push({
     install(app) {
       app.use(plugin, defaultConfig);
     },
@@ -118,7 +120,7 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
    */
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  return mount(component, mountingOptions);
+  return mount(component, options);
 }
 
 /**

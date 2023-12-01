@@ -4,8 +4,8 @@ import {
   type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type BaseDocumentReference, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
-import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/Utils";
 import { type BaseDataPoint, type ExtendedDataPoint } from "@/utils/DataPoint";
+import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/DataPoints";
 
 /**
  * Some formatting function for testing
