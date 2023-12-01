@@ -49,12 +49,11 @@ LEI,ISIN
         deltaMap["4000"] = setOf("4440")
         deltaMap["5000"] = setOf("5555")
 
-//        create file oldFile
         oldFile = File("oldFile.csv")
         var printWriter = PrintWriter(oldFile)
         printWriter.println(oldContent)
         printWriter.close()
-//        create file newFile
+
         newFile = File("newFile.csv")
         printWriter = PrintWriter(newFile)
         printWriter.println(newContent)
@@ -72,24 +71,4 @@ LEI,ISIN
         val isinDeltaBuilder = IsinDeltaBuilder()
         assert(isinDeltaBuilder.createDeltaOfMappingFile(newFile, oldFile) == (deltaMap))
     }
-
-//    @Test
-//    fun `test creation of delta file with incomplete input`() {
-//        val newContent = """
-//            LEI,ISIN
-//            2000,2222
-//            3000,3333
-//            4000,
-//            5000,5555
-//            6000,6666
-//            6000,6667
-//        """.trimIndent()
-//        deltaMap.remove("1000")
-//        newFile = File("newFile.csv")
-//        val printWriter = PrintWriter(newFile)
-//        printWriter.println(newContent)
-//        printWriter.close()
-//        val isinDeltaBuilder = IsinDeltaBuilder()
-//        assert(isinDeltaBuilder.createDeltaOfMappingFile(newFile, oldFile).equals(deltaMap))
-//    }
 }

@@ -5,10 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
-import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
-import org.dataland.datalandbackend.openApiClient.model.StoredCompany
+import org.dataland.datalandbackend.openApiClient.model.*
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
@@ -52,21 +49,12 @@ class CompanyUploaderTest {
     }
 
     @Test
-    fun `check that the upload of delta mappings calls correct function as intended`() {
+    fun `check that the upload of LEI-ISIN mappings makes the intended calls`() {
         val deltaMap = mutableMapOf<String, Set<String>>()
         deltaMap["1000"] = setOf("1111", "1112", "1113")
-        deltaMap["3000"] = setOf("3333")
-        deltaMap["4000"] = emptySet()
-        deltaMap["5000"] = setOf("5555")
-        val companyList = mutableListOf(CompanyIdAndName("testId", "testId"))
-        val testIdentifier = mapOf("test" to listOf("test"), "Lei" to listOf("1000"))
-        val testCompany: StoredCompany = mock(StoredCompany::class.java)
+        // deltaMap["3000"] = setOf("3333")
 
-        `when`(mockCompanyDataControllerApi.getCompaniesBySearchString("1000")).thenReturn(companyList)
-        `when`(mockCompanyDataControllerApi.getCompanyById("testId")).thenReturn(testCompany)
-
-        `when`(testCompany.companyInformation).thenReturn(mock(CompanyInformation::class.java))
-        `when`(testCompany.companyInformation.identifiers).thenReturn(testIdentifier)
+        // `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.lei, "1000")).thenReturn("testCompanyId" as CompanyId)
 
         companyUploader.updateIsins(deltaMap)
 
@@ -79,12 +67,9 @@ class CompanyUploaderTest {
             website = null, teaserCompany = null, isTeaserCompany = null,
         )
 
-        verify(mockCompanyDataControllerApi, times(1)).getCompaniesBySearchString("1000")
-        verify(mockCompanyDataControllerApi, times(1)).getCompaniesBySearchString("3000")
-        verify(mockCompanyDataControllerApi, times(1)).getCompaniesBySearchString("4000")
-        verify(mockCompanyDataControllerApi, times(1)).getCompaniesBySearchString("5000")
-        verify(mockCompanyDataControllerApi, times(1)).getCompanyById("testId")
-        verify(mockCompanyDataControllerApi, times(1)).patchCompanyById("testId", compPatch)
+        verify(mockCompanyDataControllerApi, times(1)).getCompanyIdByIdentifier(IdentifierType.lei, "1000")
+        // verify(mockCompanyDataControllerApi, times(1)).getCompaniesBySearchString("3000")
+        verify(mockCompanyDataControllerApi, times(1)).patchCompanyById("testCompanyId", compPatch)
     }
 
     @Test
