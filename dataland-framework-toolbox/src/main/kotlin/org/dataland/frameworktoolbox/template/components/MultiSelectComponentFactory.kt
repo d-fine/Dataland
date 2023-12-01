@@ -1,7 +1,7 @@
 package org.dataland.frameworktoolbox.template.components
 
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
-import org.dataland.frameworktoolbox.intermediate.components.NaceCodeSelectComponent
+import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.template.TemplateDiagnostic
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component
  * Generates StringComponents from rows with the component "String"
  */
 @Component
-class NaceCodeSelectComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Nace-Code-Selector"
+class MultiSelectComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
+    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Multi-Select Dropdown"
 
     override fun generateComponent(
         row: TemplateRow,
@@ -24,10 +24,11 @@ class NaceCodeSelectComponentFactory(@Autowired val templateDiagnostic: Template
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<NaceCodeSelectComponent>(
+        return componentGroup.create<MultiSelectComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)
+            this.options = utils.getSelectionOptionsFromOptionColumn(row)
         }
     }
 

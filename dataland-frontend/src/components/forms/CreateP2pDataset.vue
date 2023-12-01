@@ -223,7 +223,7 @@ export default defineComponent({
      */
     async loadP2pData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const p2pDataControllerApi = await new ApiClientProvider(
+      const p2pDataControllerApi = new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)(),
       ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
 
@@ -243,7 +243,7 @@ export default defineComponent({
     async postP2pData(): Promise<void> {
       this.messageCounter++;
       try {
-        const p2pDataControllerApi = await new ApiClientProvider(
+        const p2pDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
         await p2pDataControllerApi.postFrameworkData(this.companyAssociatedP2pData);

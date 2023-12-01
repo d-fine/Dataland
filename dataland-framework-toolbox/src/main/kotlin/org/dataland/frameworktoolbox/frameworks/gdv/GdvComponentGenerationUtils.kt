@@ -1,13 +1,12 @@
 package org.dataland.frameworktoolbox.frameworks.gdv
 
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
-import org.dataland.frameworktoolbox.template.ExcelTemplate
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.dataland.frameworktoolbox.utils.Naming
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
-class GdvComponentGenerationUtils(private val excelTemplate: ExcelTemplate) : ComponentGenerationUtils() {
+class GdvComponentGenerationUtils() : ComponentGenerationUtils() {
     private fun getFieldNameFromGermanString(technicalFieldName: String): String {
         return Naming.getNameFromLabel(
             technicalFieldName

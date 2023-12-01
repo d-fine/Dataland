@@ -44,9 +44,8 @@ export default defineComponent({
       const fileReference: string = this.fileReference;
       try {
         const docUrl = document.createElement("a");
-        const documentControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getDocumentControllerApi();
+        const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+          .documentController;
         await documentControllerApi
           .getDocument(fileReference, {
             headers: { accept: "application/pdf" },

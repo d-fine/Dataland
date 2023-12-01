@@ -74,19 +74,18 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.getAggregatedFrameworkDataSummary();
+    void this.getAggregatedFrameworkDataSummary();
   },
   methods: {
     /**
      * Retrieves the aggregated framework data summary
      */
-    async getAggregatedFrameworkDataSummary(): void {
-      const companyDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
-      ).getCompanyDataControllerApi();
+    async getAggregatedFrameworkDataSummary(): Promise<void> {
+      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
+        .companyDataController;
       this.aggregatedFrameworkDataSummary = (
         await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
-      ).data;
+      ).data as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary } | undefined;
     },
   },
 });
