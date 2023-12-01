@@ -1,5 +1,4 @@
-import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
-import { FrameworkGenerator } from "@e2e/utils/FrameworkFakeFixtureUtils";
+import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { generateFloat, generateInt, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { type SfdrData, type SfdrHighImpactClimateSectorEnergyConsumption } from "@clients/backend";
 import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
@@ -170,7 +169,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
   };
 }
 
-class SfdrGenerator extends FrameworkGenerator {
+class SfdrGenerator extends Generator {
   /**
    * Generates a random map of procurement categories
    * @returns random map of procurement categories
