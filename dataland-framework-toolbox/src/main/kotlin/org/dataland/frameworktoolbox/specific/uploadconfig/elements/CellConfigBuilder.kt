@@ -13,9 +13,11 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkD
 class CellConfigBuilder(
     override val parentSection: SectionUploadConfigBuilder?,
     var label: String,
+    var name: String,
     var explanation: String?,
     var shouldDisplay: FrameworkBooleanLambda,
     var valueGetter: FrameworkDisplayValueLambda,
+        var unit: String?,
 ) : UploadConfigElement {
     override val imports: Set<String>
         get() = valueGetter.imports

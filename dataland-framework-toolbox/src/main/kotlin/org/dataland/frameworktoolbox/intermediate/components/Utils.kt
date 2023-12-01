@@ -28,7 +28,7 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
  * Add a cell to the section with configuration shared between components
  * and a component-specific value-getter
  */
-fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
+fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory( //todo to addField und anpassen
     component: ComponentBase,
     valueGetter: FrameworkDisplayValueLambdaUpload,
 ) {
@@ -37,6 +37,7 @@ fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
             "You must specify a label for ${component.identifier} to generate a view configuration",
         ),
         explanation = component.explanation,
+            unit = component.unit,
         shouldDisplay = component.availableIfUpload.toFrameworkBooleanLambdaUpload(),
         valueGetter = valueGetter,
     )

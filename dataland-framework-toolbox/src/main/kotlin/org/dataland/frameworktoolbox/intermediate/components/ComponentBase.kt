@@ -35,6 +35,11 @@ open class ComponentBase(
     var explanation: String? = null
 
     /**
+     * The unit of a string component
+     */
+    var unit: String? = null
+
+    /**
      * The dataModelGenerator allows users to overwrite the DataClass generation of this specific component instance
      */
     var dataModelGenerator: ((dataClassBuilder: DataClassBuilder) -> Unit)? = null

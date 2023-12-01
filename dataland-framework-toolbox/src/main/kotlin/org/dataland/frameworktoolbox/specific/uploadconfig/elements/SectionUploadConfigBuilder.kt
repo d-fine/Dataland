@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.capitalizeEn
 
 /**
  * An In-Memory representation of a MLDTSectionConfig
@@ -12,12 +13,13 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkD
  * @param labelBadgeColor the color of the badge in which the label is contained
  */
 data class SectionUploadConfigBuilder(
-    override val parentSection: SectionUploadConfigBuilder?,
-    var label: String,
-    var expandOnPageLoad: Boolean,
-    var shouldDisplay: FrameworkBooleanLambda,
-    var children: MutableList<UploadConfigElement> = mutableListOf(),
-    var labelBadgeColor: LabelBadgeColor? = null,
+        override val parentSection: SectionUploadConfigBuilder?,
+        val name: String,
+        var label: String,
+        var expandOnPageLoad: Boolean,
+        var shouldDisplay: FrameworkBooleanLambda,
+        var children: MutableList<UploadConfigElement> = mutableListOf(),
+        var labelBadgeColor: LabelBadgeColor? = null,
 ) : UploadConfigElement {
 
     override val imports: Set<String>
@@ -34,6 +36,7 @@ data class SectionUploadConfigBuilder(
     ): SectionUploadConfigBuilder {
         val newSection = SectionUploadConfigBuilder(
             parentSection = this,
+            name = camelCaseSify(label),
             label = label,
             labelBadgeColor = labelBadgeColor,
             expandOnPageLoad = expandOnPageLoad,
@@ -51,10 +54,13 @@ data class SectionUploadConfigBuilder(
         explanation: String?,
         shouldDisplay: FrameworkBooleanLambda,
         valueGetter: FrameworkDisplayValueLambda,
+        unit: String?,
     ): CellConfigBuilder {
         val newCell = CellConfigBuilder(
             parentSection = this,
             label = label,
+            name = camelCaseSify(label),
+            unit = unit,
             explanation = explanation,
             shouldDisplay = shouldDisplay,
             valueGetter = valueGetter,
@@ -62,4 +68,15 @@ data class SectionUploadConfigBuilder(
         children.add(newCell)
         return newCell
     }
+
+    private fun camelCaseSify(sentence : String): String {
+        val words  = sentence.trim().split(" ")
+        val camelCasedList = mutableListOf(words[0].toLowerCase())
+        val wordsReduced = words.subList(1,words.size)
+        wordsReduced.forEach {entry ->
+            run { camelCasedList.add(entry.capitalizeEn()) }
+        }
+        return camelCasedList.joinToString("")
+    }
 }
+// todo 3 categories to add, not only these 2

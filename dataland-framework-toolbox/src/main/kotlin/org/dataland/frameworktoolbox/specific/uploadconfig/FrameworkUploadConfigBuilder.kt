@@ -26,10 +26,11 @@ class FrameworkUploadConfigBuilder(
     private val logger by LoggerDelegate()
 
     val rootSectionConfigBuilder = SectionUploadConfigBuilder(
-        parentSection = null,
-        label = "root-section",
-        expandOnPageLoad = false,
-        shouldDisplay = FrameworkBooleanLambda.TRUE,
+            parentSection = null,
+            label = "root-section",
+            expandOnPageLoad = false,
+            shouldDisplay = FrameworkBooleanLambda.TRUE,
+            name = "???",
     )
 
     private fun buildUploadConfig(uploadConfigTsPath: Path) {
