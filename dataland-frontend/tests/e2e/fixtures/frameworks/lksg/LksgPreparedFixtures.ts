@@ -45,7 +45,9 @@ function manipulateFixtureToNotBeAManufacturingCompany(input: FixtureData<LksgDa
  * @param input Fixture data to be manipulated
  * @returns the manipulated fixture data
  */
-function manipulateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15(input: FixtureData<LksgData>): FixtureData<LksgData> {
+function manipulateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15(
+  input: FixtureData<LksgData>,
+): FixtureData<LksgData> {
   input.companyInformation.companyName = "lksg-with-nulls-and-no-child-labor-under-18";
   input.t.social!.childLabor!.employeeSUnder18 = YesNo.No;
   input.t.social!.childLabor!.employeeSUnder15 = YesNo.Yes;
