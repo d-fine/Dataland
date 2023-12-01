@@ -50,9 +50,8 @@ export function getDataPointGetterFactory<
     }
     const dataPointAsExtendedDataPoint = dataPoint as unknown as ExtendedDataPoint<V>;
     if (
-      (dataPointAsExtendedDataPoint.quality == QualityOptions.Na ||
-        dataPointAsExtendedDataPoint.quality == undefined) &&
-      !dataPointAsExtendedDataPoint.comment &&
+      (dataPointAsExtendedDataPoint.quality == QualityOptions.Na || dataPointAsExtendedDataPoint.quality == null) &&
+      !dataPointAsExtendedDataPoint.comment?.length &&
       (!dataPointAsExtendedDataPoint.dataSource || dataPointAsExtendedDataPoint.dataSource?.fileReference == "")
     ) {
       return {
