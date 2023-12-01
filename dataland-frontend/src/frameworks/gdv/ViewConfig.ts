@@ -3,6 +3,7 @@ import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
+import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 export const GdvViewConfiguration: MLDTConfig<GdvData> = [
@@ -598,8 +599,10 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatListOfStringsForDatatable(
-                dataset.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten,
-                "EU Taxonomie Kompass Aktivitäten",
+                dataset.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten?.map((it) => {
+                  return activityApiNameToHumanizedName(it);
+                }),
+                "EU Taxonomie Kompass Aktivit\u00E4ten",
               ),
           },
         ],

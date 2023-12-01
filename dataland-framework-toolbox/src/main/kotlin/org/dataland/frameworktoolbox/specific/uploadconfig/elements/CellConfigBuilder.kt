@@ -17,7 +17,7 @@ class CellConfigBuilder(
     var explanation: String?,
     var shouldDisplay: FrameworkBooleanLambda,
     var valueGetter: FrameworkDisplayValueLambda,
-        var unit: String?,
+    var unit: String?,
 ) : UploadConfigElement {
     override val imports: Set<String>
         get() = valueGetter.imports

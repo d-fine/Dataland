@@ -13,13 +13,13 @@ import org.dataland.frameworktoolbox.utils.capitalizeEn
  * @param labelBadgeColor the color of the badge in which the label is contained
  */
 data class SectionUploadConfigBuilder(
-        override val parentSection: SectionUploadConfigBuilder?,
-        val name: String,
-        var label: String,
-        var expandOnPageLoad: Boolean,
-        var shouldDisplay: FrameworkBooleanLambda,
-        var children: MutableList<UploadConfigElement> = mutableListOf(),
-        var labelBadgeColor: LabelBadgeColor? = null,
+    override val parentSection: SectionUploadConfigBuilder?,
+    val name: String,
+    var label: String,
+    var expandOnPageLoad: Boolean,
+    var shouldDisplay: FrameworkBooleanLambda,
+    var children: MutableList<UploadConfigElement> = mutableListOf(),
+    var labelBadgeColor: LabelBadgeColor? = null,
 ) : UploadConfigElement {
 
     override val imports: Set<String>
@@ -69,11 +69,11 @@ data class SectionUploadConfigBuilder(
         return newCell
     }
 
-    private fun camelCaseSify(sentence : String): String {
-        val words  = sentence.trim().split(" ")
+    private fun camelCaseSify(sentence: String): String {
+        val words = sentence.trim().split(" ")
         val camelCasedList = mutableListOf(words[0].toLowerCase())
-        val wordsReduced = words.subList(1,words.size)
-        wordsReduced.forEach {entry ->
+        val wordsReduced = words.subList(1, words.size)
+        wordsReduced.forEach { entry ->
             run { camelCasedList.add(entry.capitalizeEn()) }
         }
         return camelCasedList.joinToString("")

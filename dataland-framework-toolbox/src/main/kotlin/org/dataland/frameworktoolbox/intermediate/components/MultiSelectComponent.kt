@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
+import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
@@ -33,7 +34,7 @@ open class MultiSelectComponent(
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
-                "formatListOfStringsForDatatable(${getTypescriptFieldAccessor()}, '$label')",
+                "formatListOfStringsForDatatable(${getTypescriptFieldAccessor()}, '${escapeEcmaScript(label)}')",
                 setOf(
                     "import { formatListOfStringsForDatatable } from " +
                         "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
@@ -43,34 +44,17 @@ open class MultiSelectComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        if (options.size == 1 && options.single().label.contains("\$File")) {
-            val expressionToParse = options.single().label
-            val fileName = expressionToParse.substringAfter("\$File ").substringBefore(",").trim()
-            val importStatement = expressionToParse.substringAfter(", ")
-            sectionBuilder.addAtomicExpression(
-                identifier,
-                documentSupport.getFixtureExpression(
-                    fixtureExpression = "pickSubsetOfElements(Object.values($fileName))",
-                    nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values($fileName)))",
-                    nullable = isNullable,
-                ),
-                imports = setOf(
-                    "$importStatement;",
-                ),
-            )
-        } else {
-            val formattedString = "[" + options.joinToString { "\"${it.label}\"" } + "]"
-            sectionBuilder.addAtomicExpression(
-                identifier,
-                documentSupport.getFixtureExpression(
-                    fixtureExpression = "pickSubsetOfElements($formattedString)",
-                    nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements($formattedString))",
-                    nullable = isNullable,
-                ),
-                imports = setOf(
-                    "import { pickSubsetOfElements } from \"@e2e/fixtures/FixtureUtils\";",
-                ),
-            )
-        }
+        val formattedString = "[" + options.joinToString { "\"${escapeEcmaScript(it.label)}\"" } + "]"
+        sectionBuilder.addAtomicExpression(
+            identifier,
+            documentSupport.getFixtureExpression(
+                fixtureExpression = "pickSubsetOfElements($formattedString)",
+                nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements($formattedString))",
+                nullable = isNullable,
+            ),
+            imports = setOf(
+                "import { pickSubsetOfElements } from \"@e2e/fixtures/FixtureUtils\";",
+            ),
+        )
     }
 }

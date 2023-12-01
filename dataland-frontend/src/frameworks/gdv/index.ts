@@ -1,3 +1,4 @@
+import { type AxiosInstance } from "axios";
 import { type FrameworkDefinition, type FrameworkViewConfiguration } from "@/frameworks/FrameworkDefinition";
 import { type Configuration, type GdvData } from "@clients/backend";
 import { GdvViewConfiguration } from "@/frameworks/gdv/ViewConfig";
@@ -14,8 +15,8 @@ const GdvFrameworkDefinition: FrameworkDefinition<GdvData> = {
       configuration: GdvViewConfiguration,
     };
   },
-  getFrameworkApiClient(configuration: Configuration | undefined): FrameworkDataApi<GdvData> {
-    return new GdvApiClient(configuration);
+  getFrameworkApiClient(configuration?: Configuration, axiosInstance?: AxiosInstance): FrameworkDataApi<GdvData> {
+    return new GdvApiClient(configuration, axiosInstance);
   },
 };
 

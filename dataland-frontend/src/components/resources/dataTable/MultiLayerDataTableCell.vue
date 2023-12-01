@@ -16,7 +16,6 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
-  MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DocumentLinkDisplayComponent from "@/components/resources/dataTable/cells/DocumentLinkDisplayComponent.vue";
 import StringDisplayComponent from "@/components/resources/dataTable/cells/StringDisplayComponent.vue";
