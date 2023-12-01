@@ -40,11 +40,10 @@ data class SfdrEnvironmentalEnergyPerformance(
     val relativeNonRenewableEnergyConsumptionInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
     @field:Schema(
-        implementation = Map::class,
         example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE,
     )
-    val applicableHighImpactClimateSectors: Map<HighImpactClimateSector,
-        SfdrHighImpactClimateSectorEnergyConsumption,>? = null,
+    val applicableHighImpactClimateSectors:
+    Map<HighImpactClimateSector, SfdrHighImpactClimateSectorEnergyConsumption>? = null,
 
     @field:NonNegativeExtendedDataPoint
     @field:Valid
