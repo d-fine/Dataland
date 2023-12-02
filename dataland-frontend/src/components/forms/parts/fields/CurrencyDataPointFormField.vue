@@ -12,7 +12,7 @@
       <div class="col-12">
         <UploadFormHeader :label="label" :description="description ?? ''" :is-required="required" />
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <NumberFormField
           :name="'value'"
           :validation-label="validationLabel"
@@ -27,7 +27,7 @@
           name="currency"
           placeholder="Currency"
           :options="getDataset(DropdownDatasetIdentifier.CurrencyCodes)"
-          outer-class="short"
+          outer-class="long"
           data-test="datapoint-currency"
         />
       </div>

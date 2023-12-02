@@ -3389,7 +3389,7 @@
               }
             ]
           },
-          "nonRenewableEnergyProductionInPercent": {
+          "relativeNonRenewableEnergyProductionInPercent": {
             "nullable": true,
             "allOf": [
               {
@@ -3405,7 +3405,7 @@
               }
             ]
           },
-          "nonRenewableEnergyConsumptionInPercent": {
+          "relativeNonRenewableEnergyConsumptionInPercent": {
             "nullable": true,
             "allOf": [
               {
