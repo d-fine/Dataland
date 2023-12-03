@@ -6,7 +6,7 @@
       :validation="validation"
       :validation-label="validationLabel ?? label"
       :options="HumanizedYesNo"
-      :data-test="radioButtonsDataTest"
+      @update:currentValue="emitUpdateCurrentValue"
     />
   </div>
 </template>
@@ -33,6 +33,15 @@ export default defineComponent({
       type: String,
       default: "form-field",
     },
+  },
+  methods: {
+    /**
+     * Emits an event when the currentValue has been changed
+     */
+    emitUpdateCurrentValue(currentValue: string) {
+      this.$emit("update:currentValue", currentValue);
+    },
+
   },
 });
 </script>

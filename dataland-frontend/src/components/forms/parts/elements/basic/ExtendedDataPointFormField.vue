@@ -16,7 +16,6 @@
           <slot />
           <div
             class="grid align-content-end"
-            v-if="showDataPointFieldsWithoutValue || (dataPoint?.value && dataPoint?.value !== 'No')"
           >
             <FormKit type="group" name="dataSource">
               <div class="col-8">
@@ -52,7 +51,6 @@
           <div
             class="md:col-8 col-12 p-0 mb-4"
             data-test="dataQuality"
-            v-if="showDataPointFieldsWithoutValue || (dataPoint?.value && dataPoint?.value !== 'No')"
           >
             <UploadFormHeader
               :label="`${label} Quality`"
@@ -155,10 +153,6 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
-    showDataPointFieldsWithoutValue: {
-      type: Boolean,
-      default: true,
-    },
   },
   watch: {
     isDataValueProvided(isDataValueProvided) {
@@ -177,8 +171,8 @@ export default defineComponent({
      * Handle blur event on value input.
      * @param isDataValueProvided boolean which gives information whether data is provided or not
      */
-    handleBlurValue(isDataValueProvided) {
-      if (isDataValueProvided === false) {
+    handleBlurValue(isDataValueProvided: boolean) {
+      if (!isDataValueProvided) {
         this.qualityValue = QualityOptions.Na;
       } else if (this.qualityValue === QualityOptions.Na) {
         this.qualityValue = "";
