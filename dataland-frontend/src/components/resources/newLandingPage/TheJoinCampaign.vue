@@ -122,9 +122,9 @@ const getInTouchSection = findSection("Get in touch");
     display: flex;
     gap: 16px;
     flex-direction: column;
-    padding: 32px 40px;
+    padding: 46px 32px;
     text-align: left;
-    min-width: 232px;
+    min-width: 228px;
   }
   &__cell {
     color: var(--grey-tones-900);
