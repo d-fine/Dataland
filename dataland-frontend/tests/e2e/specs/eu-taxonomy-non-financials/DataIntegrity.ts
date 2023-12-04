@@ -122,8 +122,6 @@ describeIf(
                         reuploadedDatasetFromBackend as Record<string, object>,
                       );
                       cy.get('div[data-test="hideEmptyDataToggle"]').should("not.exist"); //this line can be removed once MLDT has been integrated
-                      //next line can be used once the MLDT has been implemented for this framework
-                      //checkToggleEmptyFieldsSwitch("Company-Created-In-Eu-Taxo-Non-Financials-Blanket-Test-1701084313533","Scope Of Entities");
                       validateSomeValuesForTheReuploadedDataset(
                         storedCompany,
                         dataMetaInformationOfReuploadedDataset.dataId,
