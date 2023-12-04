@@ -40,8 +40,6 @@ open class SingleSelectComponent(
             documentSupport.getFrameworkDisplayValueLambda(
                 FrameworkDisplayValueLambda(
                     "formatStringForDatatable(${getTypescriptFieldAccessor(true)})",
-                    // TODO Problem: The ts-version of the enum does only contain the "identifier" of the original enum, not the "value" (which is the label to display)
-
                     setOf(
                         "import { formatStringForDatatable } from " +
                             "\"@/components/resources/dataTable/conversion/PlainStringValueGetterFactory\";",
