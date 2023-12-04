@@ -121,7 +121,7 @@ describeIf(
                         dataSetFromPrefillRequest as Record<string, object>,
                         reuploadedDatasetFromBackend as Record<string, object>,
                       );
-                      cy.get('div[data-test="hideEmptyDataToggle"]').should("not.exist"); //this line can be removed once MLDT has been integrated
+                      cy.get('span[data-test="hideEmptyDataToggle"]').should("not.exist"); //this line can be removed once MLDT has been integrated
                       validateSomeValuesForTheReuploadedDataset(
                         storedCompany,
                         dataMetaInformationOfReuploadedDataset.dataId,

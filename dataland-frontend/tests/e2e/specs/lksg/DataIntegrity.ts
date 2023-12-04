@@ -111,7 +111,6 @@ describeIf(
         cy.ensureLoggedIn(admin_name, admin_pw);
         const uniqueCompanyMarker = Date.now().toString();
         const testCompanyName = "Company-Created-In-Lksg-Minimal-Blanket-Test" + uniqueCompanyMarker;
-        console.log(lksgFixtureWithMinimalFields);
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
             return uploadFrameworkData(
