@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests
 
-import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -8,6 +9,8 @@ import org.junit.jupiter.api.assertThrows
 
 class InvalidSfdrRequestTests {
     private val apiAccessor = ApiAccessor()
+    val errorCode400 = "Client error : 400"
+    val errorMessage = "Input failed the input validation"
 
     @Test
     fun `post a company with invalid Sfdr currency data`() {
@@ -15,18 +18,16 @@ class InvalidSfdrRequestTests {
             .getSpecificCompanyByNameFromPreparedFixtures("Sfdr-dataset-with-invalid-currency-input")
         Assertions.assertNotNull(oneInvalidSfdrDataset)
         val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
-        val errorForInvalidInput = assertThrows<ServerException> {
+        val errorForInvalidInput = assertThrows<ClientException> {
             apiAccessor.sfdrUploaderFunction(
                 companyInformation.actualStoredCompany.companyId, oneInvalidSfdrDataset!!.t,
                 "",
             )
         }
-        Assertions.assertTrue(errorForInvalidInput.message!!.contains("Server error : 500 "))
+        Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
         Assertions.assertTrue(
-            errorForInvalidInput.message!!.contains(
-                "MethodArgumentNotValidException: " +
-                    "Validation failed for argument",
-            ),
+            (errorForInvalidInput.response as ClientError<*>).body!!.toString()
+                .contains(errorMessage),
         )
     }
 
@@ -39,18 +40,16 @@ class InvalidSfdrRequestTests {
             )
         Assertions.assertNotNull(oneInvalidSfdrDataset)
         val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
-        val errorForInvalidInput = assertThrows<ServerException> {
+        val errorForInvalidInput = assertThrows<ClientException> {
             apiAccessor.sfdrUploaderFunction(
                 companyInformation.actualStoredCompany.companyId, oneInvalidSfdrDataset!!.t,
                 "",
             )
         }
-        Assertions.assertTrue(errorForInvalidInput.message!!.contains("Server error : 500 "))
+        Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
         Assertions.assertTrue(
-            errorForInvalidInput.message!!.contains(
-                "MethodArgumentNotValidException: " +
-                    "Validation failed for argument",
-            ),
+            (errorForInvalidInput.response as ClientError<*>).body!!.toString()
+                .contains(errorMessage),
         )
     }
 
@@ -60,18 +59,16 @@ class InvalidSfdrRequestTests {
             .getSpecificCompanyByNameFromPreparedFixtures("Sfdr-dataset-with-invalid-negative-long-input")
         Assertions.assertNotNull(oneInvalidSfdrDataset)
         val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
-        val errorForInvalidInput = assertThrows<ServerException> {
+        val errorForInvalidInput = assertThrows<ClientException> {
             apiAccessor.sfdrUploaderFunction(
                 companyInformation.actualStoredCompany.companyId, oneInvalidSfdrDataset!!.t,
                 "",
             )
         }
-        Assertions.assertTrue(errorForInvalidInput.message!!.contains("Server error : 500 "))
+        Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
         Assertions.assertTrue(
-            errorForInvalidInput.message!!.contains(
-                "MethodArgumentNotValidException: " +
-                    "Validation failed for argument",
-            ),
+            (errorForInvalidInput.response as ClientError<*>).body!!.toString()
+                .contains(errorMessage),
         )
     }
 
@@ -81,18 +78,16 @@ class InvalidSfdrRequestTests {
             .getSpecificCompanyByNameFromPreparedFixtures("Sfdr-dataset-with-invalid-percentage-input")
         Assertions.assertNotNull(oneInvalidSfdrDataset)
         val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
-        val errorForInvalidInput = assertThrows<ServerException> {
+        val errorForInvalidInput = assertThrows<ClientException> {
             apiAccessor.sfdrUploaderFunction(
                 companyInformation.actualStoredCompany.companyId, oneInvalidSfdrDataset!!.t,
                 "",
             )
         }
-        Assertions.assertTrue(errorForInvalidInput.message!!.contains("Server error : 500 "))
+        Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
         Assertions.assertTrue(
-            errorForInvalidInput.message!!.contains(
-                "MethodArgumentNotValidException: " +
-                    "Validation failed for argument",
-            ),
+            (errorForInvalidInput.response as ClientError<*>).body!!.toString()
+                .contains(errorMessage),
         )
     }
 
@@ -104,12 +99,12 @@ class InvalidSfdrRequestTests {
             )
         Assertions.assertNotNull(oneInvalidSfdrDataset)
         val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
-        val errorForInvalidInput = assertThrows<ServerException> {
+        val errorForInvalidInput = assertThrows<ClientException> {
             apiAccessor.sfdrUploaderFunction(
                 companyInformation.actualStoredCompany.companyId, oneInvalidSfdrDataset!!.t,
                 "",
             )
         }
-        Assertions.assertTrue(errorForInvalidInput.message!!.contains("Server error : 500 "))
+        Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
     }
 }

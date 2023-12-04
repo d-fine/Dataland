@@ -12,6 +12,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.HttpRequestMethodNotSupportedException
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.NoHandlerFoundException
@@ -116,5 +117,22 @@ class KnownErrorControllerAdvice(
             logger.error("A server-side error occurred: $errorResponse", ex)
         }
         return prepareResponse(ex.getErrorResponse(), ex)
+    }
+
+    /**
+     * Handles HttpRequestMethodNotSupportedException errors. These occur whenever someone calls an endpoint
+     * with a non-implemented HTTP-Method
+     */
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleMethodNotSupportException(ex: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
+        return prepareResponse(
+            ErrorDetails(
+                errorType = "bad-input",
+                summary = "Invalid input",
+                message = "Input failed the input validation",
+                httpStatus = HttpStatus.BAD_REQUEST,
+            ),
+            ex,
+        )
     }
 }
