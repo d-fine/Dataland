@@ -50,17 +50,7 @@ export function getDataPointGetterFactory<
     }
     const dataPointAsExtendedDataPoint = dataPoint as unknown as ExtendedDataPoint<V>;
     if (
-      (dataPointAsExtendedDataPoint.quality == QualityOptions.Na || dataPointAsExtendedDataPoint.quality == null) &&
-      !dataPointAsExtendedDataPoint.comment?.length &&
-      (!dataPointAsExtendedDataPoint.dataSource || dataPointAsExtendedDataPoint.dataSource?.fileReference == "")
-    ) {
-      return {
-        displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-        displayValue: displayValue,
-      };
-    }
-    if (
-      dataPointAsExtendedDataPoint.quality ||
+        (dataPointAsExtendedDataPoint.quality != QualityOptions.Na && dataPointAsExtendedDataPoint.quality != null) ||
       dataPointAsExtendedDataPoint.comment?.length ||
       dataPointAsExtendedDataPoint.dataSource?.page != null
     ) {
