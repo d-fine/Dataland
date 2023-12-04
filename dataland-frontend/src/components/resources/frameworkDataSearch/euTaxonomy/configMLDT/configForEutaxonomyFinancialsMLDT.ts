@@ -7,6 +7,7 @@ import {
   type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   type ExtendedDataPointBigDecimal,
+  QualityOptions,
   type YesNo,
   type YesNoNa,
 } from "@clients/backend";
@@ -63,7 +64,11 @@ function shouldValueBeDisplayedForYesNo(yesNoValue: YesNo | YesNoNa | undefined 
  * @returns boolean value for showIf
  */
 function shouldValueBeDisplayedForDataPoint(dataPoint: ExtendedDataPointBigDecimal | null | undefined): boolean {
-  return !!(dataPoint?.value != null || dataPoint?.comment?.length);
+  return !!(
+    dataPoint?.value != null ||
+    dataPoint?.comment?.length ||
+    (dataPoint?.quality != QualityOptions.Na && dataPoint?.dataSource?.fileReference.length)
+  );
 }
 
 export const configForEuTaxonomyFinancialsMLDT = [
