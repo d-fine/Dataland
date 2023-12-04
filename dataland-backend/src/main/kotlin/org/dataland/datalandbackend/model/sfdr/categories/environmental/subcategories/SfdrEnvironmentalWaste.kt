@@ -12,8 +12,8 @@ import java.math.BigDecimal
  * Fields of the subcategory "Waste" belonging to the category "Environmental" of the sfdr framework.
 */
 data class SfdrEnvironmentalWaste(
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val hazardousAndRadioactiveWasteInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
     @field:Valid
@@ -28,8 +28,8 @@ data class SfdrEnvironmentalWaste(
     @field:Valid
     val sustainableOceansAndSeasPolicy: BaseDataPoint<YesNo>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val nonRecycledWasteInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
     @field:Valid
