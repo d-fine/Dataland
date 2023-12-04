@@ -6,7 +6,7 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { uploadAllDocuments } from "@e2e/utils/DocumentUpload";
 import { type ApiClientConstructor, uploadGenericFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { frameworkFixtureMap } from "@e2e/utils/FixtureMap";
-import { getAllFrameworkIdentifiers, getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
+import { getAllFrameworkIdentifiers, getBaseFrameworkDefinition } from "@/frameworks/BaseFrameworkRegistry";
 import { type DataTypeEnum } from "@clients/backend";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
 
@@ -103,7 +103,7 @@ describe(
     for (const framework of getAllFrameworkIdentifiers()) {
       registerFrameworkFakeFixtureUpload(
         framework as DataTypeEnum,
-        (config) => getFrameworkDefinition(framework)!.getFrameworkApiClient(config),
+        (config) => getBaseFrameworkDefinition(framework)!.getFrameworkApiClient(config),
         `CompanyInformationWith${framework.charAt(0).toUpperCase() + framework.slice(1)}Data`,
       );
     }

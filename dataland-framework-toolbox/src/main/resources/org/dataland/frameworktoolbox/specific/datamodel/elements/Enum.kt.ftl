@@ -7,10 +7,10 @@ import io.swagger.v3.oas.annotations.media.Schema
 </#list>
  */
 @Schema(
-enumAsRef = true,
+    enumAsRef = true,
 )
-enum class ${enumName}(val value: String) {
+enum class ${enumName} {
 <#list options as option>
-    ${option.identifier}("${option.label}"),
+    ${option.identifier},
 </#list>
 }

@@ -1,67 +1,67 @@
 <template>
-  <FormKit type="group" :name="name" v-model="dataPoint">
-    <slot />
-    <div>
-      <FormKit type="group" name="dataSource">
-        <div class="next-to-each-other">
-          <div class="flex-1">
-            <UploadFormHeader
-              :label="`${label} Report`"
-              description="Select a report as a reference for this data point."
-            />
-            <FormKit
-              type="select"
-              name="fileName"
-              v-model="currentReportValue"
-              placeholder="Select a report"
-              :options="['None...', ...reportsName]"
-            />
-            <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
-          </div>
-          <div>
-            <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
-            <FormKit
-              outer-class="w-100"
-              type="number"
-              name="page"
-              placeholder="Page"
-              validation-label="Page"
-              step="1"
-              min="0"
-              validation="min:0"
-            />
-          </div>
+  <div class="grid">
+    <FormKit type="group" :name="name" v-model="dataPoint">
+      <div class="col-12">
+        <slot />
+        <div class="grid align-content-end">
+          <FormKit type="group" name="dataSource">
+            <div class="col-8">
+              <UploadFormHeader
+                :label="`${label} Report`"
+                description="Select a report as a reference for this data point."
+              />
+              <FormKit
+                type="select"
+                name="fileName"
+                v-model="currentReportValue"
+                placeholder="Select a report"
+                :options="['None...', ...reportsName]"
+              />
+              <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
+            </div>
+            <div class="col-4">
+              <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
+              <FormKit
+                outer-class="w-100"
+                type="number"
+                name="page"
+                placeholder="Page"
+                validation-label="Page"
+                step="1"
+                min="0"
+                validation="min:0"
+              />
+            </div>
+          </FormKit>
         </div>
-      </FormKit>
-    </div>
 
-    <!-- Data quality -->
-    <div class="mb-4" data-test="dataQuality">
-      <UploadFormHeader
-        :label="`${label} Quality`"
-        description="The level of confidence associated to the value."
-        :is-required="isDataQualityRequired"
-      />
-      <div class="md:col-6 col-12 p-0">
-        <FormKit
-          type="select"
-          v-model="qualityValue"
-          name="quality"
-          :validation="isDataQualityRequired ? 'required' : ''"
-          validation-label="Data quality"
-          placeholder="Data quality"
-          :options="computeQualityOption"
-        />
+        <!-- Data quality -->
+        <div class="md:col-8 col-12 p-0 mb-4" data-test="dataQuality">
+          <UploadFormHeader
+            :label="`${label} Quality`"
+            description="The level of confidence associated to the value."
+            :is-required="isDataQualityRequired"
+          />
+          <FormKit
+            type="select"
+            v-model="qualityValue"
+            name="quality"
+            :validation="isDataQualityRequired ? 'required' : ''"
+            validation-label="Data quality"
+            placeholder="Data quality"
+            :options="computeQualityOption"
+          />
+        </div>
+        <div class="form-field">
+          <FormKit
+            type="textarea"
+            name="comment"
+            placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
+          />
+        </div>
       </div>
-    </div>
-    <div class="form-field">
-      <FormKit
-        type="textarea"
-        name="comment"
-        placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
-      />
-    </div>
-  </FormKit>
+    </FormKit>
+  </div>
 </template>
 
 <script lang="ts">
