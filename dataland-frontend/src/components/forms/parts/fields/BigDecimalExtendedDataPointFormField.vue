@@ -7,7 +7,7 @@
     :required="required"
     :input-class="inputClass"
     :check-value-validity="hasDataPointProperValue"
-    :shouldBeToggle="shouldBeToggle"
+    :isDataPointToggleable="isDataPointToggleable"
   >
     <div class="mb-2">
       <NumberFormField
@@ -36,7 +36,7 @@ export default defineComponent({
     unit: {
       type: String,
     },
-    shouldBeToggle: {
+    isDataPointToggleable: {
       type: Boolean,
       default: true,
     },

@@ -7,7 +7,7 @@
       :required="required"
       :input-class="inputClass"
       :check-value-validity="hasDataPointProperValue"
-      :shouldBeToggle="shouldBeToggle"
+      :isDataPointToggleable="isDataPointToggleable"
     >
       <YesNoFormField
         name="value"
@@ -37,7 +37,7 @@ export default defineComponent({
   props: {
     ...BaseFormFieldProps,
     dataTest: String,
-    shouldBeToggle: {
+    isDataPointToggleable: {
       type: Boolean,
       default: true,
     },

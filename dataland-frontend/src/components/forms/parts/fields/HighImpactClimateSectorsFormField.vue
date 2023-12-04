@@ -33,7 +33,7 @@
                     :placeholder="`Sector ${selection} Energy Consumption`"
                     validation-label="Energy Consumption"
                     inputClass="col-8"
-                    :shouldBeToggle="false"
+                    :isDataPointToggleable="false"
                   />
                 </div>
                 <div>
@@ -46,7 +46,7 @@
                     :placeholder="`Sector ${selection} Relative Energy Consumption`"
                     validation-label="Relative Energy Consumption"
                     inputClass="col-8"
-                    :shouldBeToggle="false"
+                    :isDataPointToggleable="false"
                   />
                 </div>
               </FormKit>

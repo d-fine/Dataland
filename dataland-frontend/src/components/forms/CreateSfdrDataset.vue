@@ -287,7 +287,6 @@ export default defineComponent({
         const sfdrDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.Sfdr);
-        // console.log('companyAssociatedSfdrData', this.companyAssociatedSfdrData)
         await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;

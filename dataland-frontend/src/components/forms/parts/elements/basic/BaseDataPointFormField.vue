@@ -1,6 +1,6 @@
 <template>
   <div class="mb-3 p-0 -ml-2" :class="dataPointIsAvailable ? 'bordered-box' : ''">
-    <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="shouldBeToggle">
+    <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="isDataPointToggleable">
       <InputSwitch
         data-test="dataPointToggleButton"
         inputId="dataPointIsAvailableSwitch"
@@ -48,7 +48,7 @@ export default defineComponent({
   props: {
     ...BaseFormFieldProps,
 
-    shouldBeToggle: {
+    isDataPointToggleable: {
       type: Boolean,
       default: true,
     },
@@ -82,11 +82,6 @@ export default defineComponent({
     this.isMounted = true;
   },
   watch: {
-    baseDataPoint(newValue: BaseDataPoint<unknown>, oldValue: BaseDataPoint<unknown>) {
-      if (newValue.value === "No" && oldValue.value === "Yes") {
-        // (this.$refs.uploadDocumentsForm.removeAllDocuments as () => void)();
-      }
-    },
     documentName() {
       if (this.isMounted) {
         this.updateFileUploadFiles();

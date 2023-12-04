@@ -1,6 +1,6 @@
 <template>
   <div class="mb-3 p-0 -ml-2" :class="dataPointIsAvailable ? 'bordered-box' : ''">
-    <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="shouldBeToggle">
+    <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="isDataPointToggleable">
       <InputSwitch
         data-test="dataPointToggleButton"
         inputId="dataPointIsAvailableSwitch"
@@ -12,7 +12,12 @@
     <div class="p-2" v-if="showDataPointFields">
       <FormKit type="group" :name="name" v-model="dataPoint">
         <div class="col-12">
-          <UploadFormHeader v-if="!shouldBeToggle" :label="label" :description="description" :is-required="required" />
+          <UploadFormHeader
+            v-if="!isDataPointToggleable"
+            :label="label"
+            :description="description"
+            :is-required="required"
+          />
           <slot />
           <div class="grid align-content-end">
             <FormKit type="group" name="dataSource">
@@ -121,7 +126,7 @@ export default defineComponent({
       return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences);
     },
     showDataPointFields(): boolean {
-      return !this.shouldBeToggle || this.dataPointIsAvailable;
+      return !this.isDataPointToggleable || this.dataPointIsAvailable;
     },
   },
   data() {
@@ -133,8 +138,8 @@ export default defineComponent({
       })),
       qualityValue: "NA",
       currentReportValue: "",
-      dataPoint: {} as unknown,
-      dataPointValuesBeforeDataPointWasDisabled: {} as unknown,
+      dataPoint: {},
+      dataPointValuesBeforeDataPointWasDisabled: {},
     };
   },
 
@@ -144,7 +149,7 @@ export default defineComponent({
       type: Function as unknown as () => (dataPoint: unknown) => boolean,
       default: (): boolean => false,
     },
-    shouldBeToggle: {
+    isDataPointToggleable: {
       type: Boolean,
       default: true,
     },
