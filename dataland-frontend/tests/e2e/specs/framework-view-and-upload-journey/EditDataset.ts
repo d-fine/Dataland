@@ -5,7 +5,6 @@ import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { describeIf } from "@e2e/support/TestUtility";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { type UploadIds } from "@e2e/utils/GeneralApiUtils";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 
 describeIf(
@@ -53,40 +52,29 @@ describeIf(
         lksgFixture.companyInformation.companyName,
       );
       submitButton.buttonAppearsEnabled();
-      cy.get('[data-test="smetaSocialAuditConcept"] [data-test="dataPointToggleButton"]').click();
-      cy.get("button[data-test=files-to-upload-remove]")
+
+      cy.get("button[data-test='files-to-upload-remove']")
         .first()
-        .parents(".form-field:first")
-        .invoke("attr", "data-test")
-        .then((dataTest) => {
-          cy.get(`div[data-test=${assertDefined(dataTest)}]`)
+        .parents('[data-test^="BaseDataPointFormField"]')
+        .first()
+        .then(($parent) => {
+          cy.wrap($parent)
             .find("input.p-radiobutton")
             .eq(1)
-            .click();
-          cy.get(`div[data-test=${assertDefined(dataTest)}]`)
-            .find(`button[data-test=files-to-upload-remove]`)
+            .click()
+            .find("button[data-test='files-to-upload-remove']")
             .should("not.exist");
-        });
-      cy.get("button[data-test=files-to-upload-remove]")
-        .first()
-        .parents(".form-field:first")
-        .invoke("attr", "data-test")
-        .then((dataTest) => {
-          cy.get(`div[data-test=${assertDefined(dataTest)}]`)
-            .find(`div[class=upload-files-button]`)
-            .should("not.exist");
-          cy.get(`div[data-test=${assertDefined(dataTest)}] button[data-test=files-to-upload-remove]`)
-            .should("be.visible")
-            .click();
-          cy.get(
-            `div[data-test=${assertDefined(dataTest)}] button[data-test=upload-files-button-${assertDefined(
-              dataTest,
-            )}]`,
-          ).should("be.visible");
-          cy.get(`div[data-test=${assertDefined(dataTest)}]`)
+
+          cy.wrap($parent).find("input.p-radiobutton").eq(0).click();
+
+          cy.wrap($parent).find("button[data-test='files-to-upload-remove']").click();
+
+          cy.wrap($parent).find('button[data-test^="upload-files-button"]').should("be.visible");
+          cy.wrap($parent)
             .find("input[type=file]")
             .selectFile(`../testing/data/documents/test-report.pdf`, { force: true, log: true });
         });
+
       submitButton.exists();
       submitButton.buttonAppearsEnabled();
       submitButton.clickButton();
