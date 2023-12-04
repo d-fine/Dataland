@@ -1,0 +1,18 @@
+import { type FrontendFrameworkDefinition, type FrameworkViewConfiguration } from "@/frameworks/FrameworkDefinition";
+import { GdvViewConfiguration } from "@/frameworks/gdv/ViewConfig";
+import { BaseGdvFrameworkDefinition } from "@/frameworks/gdv/BaseFrameworkDefinition";
+import { type GdvData } from "@clients/backend";
+
+export class FrontendGdvFrameworkDefinition
+  extends BaseGdvFrameworkDefinition
+  implements FrontendFrameworkDefinition<GdvData>
+{
+  getFrameworkViewConfiguration(): FrameworkViewConfiguration<GdvData> {
+    return {
+      type: "MultiLayerDataTable",
+      configuration: GdvViewConfiguration,
+    };
+  }
+}
+
+export default new FrontendGdvFrameworkDefinition();
