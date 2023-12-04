@@ -1,23 +1,21 @@
 <template>
-  <div class="mb-3">
-    <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <div class="next-to-each-other">
-      <FormKit
-        type="text"
-        :name="name"
-        :unit="unit"
-        :value="currentValue"
-        :validation-label="validationLabel ?? label"
-        :validation="`number|${validation}`"
-        :placeholder="unit ? `Value in ${unit}` : 'Value'"
-        :validationMessages="{ integer: `${validationLabel ?? label} must be an integer.` }"
-        :validationRules="{ integer }"
-        :outer-class="inputClass"
-        @input="$emit('update:currentValue', $event)"
-      />
-      <div v-if="unit" class="form-field-label pb-3">
-        <span>{{ unit }}</span>
-      </div>
+  <UploadFormHeader v-if="label" :label="label" :description="description" :is-required="required" />
+  <div class="grid" :data-test="name">
+    <FormKit
+      type="text"
+      :name="name"
+      :unit="unit"
+      :value="currentValue"
+      :validation-label="validationLabel ?? label"
+      :validation="`number|${validation}`"
+      :placeholder="unit ? `Value in ${unit}` : 'Value'"
+      :validationMessages="{ integer: `${validationLabel ?? label} must be an integer.` }"
+      :validationRules="{ integer }"
+      :outer-class="inputClass"
+      @input="$emit('update:currentValue', $event)"
+    />
+    <div v-if="unit" class="form-field-label pb-4 col-4">
+      <span>{{ unit }}</span>
     </div>
   </div>
 </template>

@@ -49,9 +49,13 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
+    val unadjustedGenderPayGapInPercent: ExtendedDataPoint<BigDecimal>? = null,
+
     val femaleBoardMembers: ExtendedDataPoint<Long>? = null,
 
     val maleBoardMembers: ExtendedDataPoint<Long>? = null,
+
+    val boardGenderDiversityInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
     val controversialWeaponsExposure: ExtendedDataPoint<YesNo>? = null,
 
@@ -67,9 +71,11 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val whistleblowerProtectionPolicy: BaseDataPoint<YesNo>? = null,
 
-    val reportedIncidentsOfDiscrimination: ExtendedDataPoint<BigDecimal>? = null,
+    val reportedIncidentsOfDiscrimination: ExtendedDataPoint<Long>? = null,
 
     val sanctionedIncidentsOfDiscrimination: ExtendedDataPoint<Long>? = null,
 
     val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal>? = null,
+
+    val excessiveCeoPayRatioInPercent: ExtendedDataPoint<BigDecimal>? = null,
 )

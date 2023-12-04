@@ -15,6 +15,8 @@ data class SfdrEnvironmentalWater(
 
     val waterReusedInCubicMeters: ExtendedDataPoint<BigDecimal>? = null,
 
+    val relativeWaterUsageInCubicMetersPerMillionEURRevenue: ExtendedDataPoint<BigDecimal>? = null,
+
     val waterManagementPolicy: ExtendedDataPoint<YesNo>? = null,
 
     val highWaterStressAreaExposure: ExtendedDataPoint<YesNo>? = null,

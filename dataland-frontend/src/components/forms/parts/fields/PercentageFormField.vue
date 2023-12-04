@@ -1,7 +1,7 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :label="`${label} (%)`" :description="description" :is-required="required" />
-    <div class="next-to-each-other">
+    <div class="grid">
       <FormKit
         type="text"
         :name="name"
