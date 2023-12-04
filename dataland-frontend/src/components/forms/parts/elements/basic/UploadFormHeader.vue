@@ -9,8 +9,9 @@
         aria-hidden="true"
         :title="label"
         v-tooltip.top="{ value: description }"
-        >info</em
       >
+        info
+      </em>
     </div>
   </div>
 </template>
