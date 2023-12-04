@@ -50,7 +50,7 @@ export function getDataPointGetterFactory<
     }
     const dataPointAsExtendedDataPoint = dataPoint as unknown as ExtendedDataPoint<V>;
     if (
-        (dataPointAsExtendedDataPoint.quality != QualityOptions.Na && dataPointAsExtendedDataPoint.quality != null) ||
+      (dataPointAsExtendedDataPoint.quality != QualityOptions.Na && dataPointAsExtendedDataPoint.quality != null) ||
       dataPointAsExtendedDataPoint.comment?.length ||
       dataPointAsExtendedDataPoint.dataSource?.page != null
     ) {

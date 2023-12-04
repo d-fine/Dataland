@@ -8,8 +8,6 @@ import {
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
   type ExtendedDataPointBigDecimal,
   QualityOptions,
-  type YesNo,
-  type YesNoNa,
 } from "@clients/backend";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
@@ -50,18 +48,18 @@ function getSpecifiedDataPointGetterFactory(
 }
 
 /**
- * The function defines the trigger for the shouldDisplay property for YesNoFields
- * @param yesNoValue value of the field which is checked
+ * The function defines the trigger for the shouldDisplay property for field values
+ * @param fieldValue value of the field which is checked
  * @returns boolean to trigger the shouldDisplay condition
  */
-function shouldValueBeDisplayedForYesNo(yesNoValue: YesNo | YesNoNa | undefined | null): boolean {
-  return !!yesNoValue;
+function shouldValueBeDisplayedForSimpleFields(fieldValue: undefined | null | string | number): boolean {
+  return !!fieldValue || fieldValue === 0;
 }
 
 /**
- * Returns a boolean for the showIf function. Determines from the backend dataset if the value should be shown on the MLDT
+ * Returns a boolean for the shouldDisplay function. Determines from the backend dataset if the value should be shown on the MLDT
  * @param dataPoint dataPoint from backend response
- * @returns boolean value for showIf
+ * @returns boolean value for shouldDisplay
  */
 function shouldValueBeDisplayedForDataPoint(dataPoint: ExtendedDataPointBigDecimal | null | undefined): boolean {
   return !!(
@@ -97,14 +95,16 @@ export const configForEuTaxonomyFinancialsMLDT = [
         type: "cell",
         label: euTaxonomyKpiNameMappings.fiscalYearDeviation,
         explanation: euTaxonomyKpiInfoMappings.fiscalYearDeviation,
-        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => !!dataset.fiscalYearDeviation,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+          shouldValueBeDisplayedForSimpleFields(dataset.fiscalYearDeviation),
         valueGetter: plainStringValueGetterFactory("fiscalYearDeviation"),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.fiscalYearEnd,
         explanation: euTaxonomyKpiInfoMappings.fiscalYearEnd,
-        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => !!dataset.fiscalYearEnd,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+          shouldValueBeDisplayedForSimpleFields(dataset.fiscalYearEnd),
         valueGetter: plainStringValueGetterFactory("fiscalYearEnd"),
       },
       {
@@ -112,7 +112,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.scopeOfEntities,
         explanation: euTaxonomyKpiInfoMappings.scopeOfEntities,
         shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
-          shouldValueBeDisplayedForYesNo(dataset.scopeOfEntities),
+          shouldValueBeDisplayedForSimpleFields(dataset.scopeOfEntities),
         valueGetter: yesNoValueGetterFactory("scopeOfEntities"),
       },
       {
@@ -120,7 +120,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.nfrdMandatory,
         explanation: euTaxonomyKpiInfoMappings.nfrdMandatory,
         shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
-          shouldValueBeDisplayedForYesNo(dataset.nfrdMandatory),
+          shouldValueBeDisplayedForSimpleFields(dataset.nfrdMandatory),
         valueGetter: yesNoValueGetterFactory("nfrdMandatory"),
       },
       {
@@ -128,14 +128,15 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: euTaxonomyKpiNameMappings.euTaxonomyActivityLevelReporting,
         explanation: euTaxonomyKpiInfoMappings.euTaxonomyActivityLevelReporting,
         shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
-          shouldValueBeDisplayedForYesNo(dataset.euTaxonomyActivityLevelReporting),
+          shouldValueBeDisplayedForSimpleFields(dataset.euTaxonomyActivityLevelReporting),
         valueGetter: yesNoValueGetterFactory("euTaxonomyActivityLevelReporting"),
       },
       {
         type: "cell",
         label: euTaxonomyKpiNameMappings.numberOfEmployees,
         explanation: euTaxonomyKpiInfoMappings.numberOfEmployees,
-        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => !!dataset.numberOfEmployees,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+          shouldValueBeDisplayedForSimpleFields(dataset.numberOfEmployees),
         valueGetter: numberValueGetterFactory("numberOfEmployees", sampleField),
       },
     ],
@@ -151,14 +152,16 @@ export const configForEuTaxonomyFinancialsMLDT = [
         label: "Level of Assurance",
         explanation: euTaxonomyKpiInfoMappings.assurance,
         type: "cell",
-        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => !!dataset.assurance?.value,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+          shouldValueBeDisplayedForSimpleFields(dataset.assurance?.value),
         valueGetter: plainStringValueGetterFactory("assurance.value"),
       },
       {
         label: euTaxonomyKpiNameMappings.provider,
         explanation: euTaxonomyKpiInfoMappings.provider,
         type: "cell",
-        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean => !!dataset.assurance?.provider,
+        shouldDisplay: (dataset: EuTaxonomyDataForFinancials): boolean =>
+          shouldValueBeDisplayedForSimpleFields(dataset.assurance?.provider),
         valueGetter: plainStringValueGetterFactory("assurance.provider"),
       },
     ],
