@@ -7,6 +7,7 @@ import {
 import { YesNoNa } from "@clients/backend";
 import type { BaseDataPointYesNoNa } from "@clients/backend";
 import { yesNoDataPointValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoDataPointValueGetterFactory";
+import { NO_DATA_PROVIDED } from "@/utils/Constants";
 
 describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
   describe("Tests when the data provides a simple data source", () => {
@@ -42,7 +43,7 @@ describe("Unit test for the YesNoDataPointValueGetterFactory", () => {
       const value = yesNoDataPointValueGetterFactory("data", baseFieldCertificate)(dataset);
       expect(value).to.deep.equal(<MLDTDisplayObject<MLDTDisplayComponentName.StringDisplayComponent>>{
         displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-        displayValue: "No data provided",
+        displayValue: NO_DATA_PROVIDED,
       });
     });
 

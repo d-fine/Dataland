@@ -6,7 +6,8 @@ import {
   MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
-import { type BaseDocumentReference, type ExtendedDocumentReference } from "@clients/backend";
+import { type BaseDocumentReference, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
+import { NO_DATA_PROVIDED } from "@/utils/Constants";
 
 /**
  * Checks if a given data point has a valid reference set
@@ -43,13 +44,13 @@ export function getDataPointGetterFactory<
     const formattedValue = formatter(dataPoint);
     let displayValue: string;
     if (formattedValue == undefined || formattedValue == "") {
-      displayValue = "No data provided";
+      displayValue = NO_DATA_PROVIDED;
     } else {
       displayValue = formattedValue;
     }
     const dataPointAsExtendedDataPoint = dataPoint as unknown as ExtendedDataPoint<V>;
     if (
-      dataPointAsExtendedDataPoint.quality ||
+      (dataPointAsExtendedDataPoint.quality != QualityOptions.Na && dataPointAsExtendedDataPoint.quality != null) ||
       dataPointAsExtendedDataPoint.comment?.length ||
       dataPointAsExtendedDataPoint.dataSource?.page != null
     ) {

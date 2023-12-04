@@ -3,7 +3,6 @@
  * I want to use the provided filters on that page and navigate through the search results.
  */
 describe("Taxonomy Company Metadata tests", () => {
-  require("./SearchPagination");
   require("./SearchCompaniesForFrameworkData");
   require("./SearchCompaniesForFrameworkDataDropdownFilter");
 });

@@ -4,8 +4,8 @@
       <tr
         v-if="cellOrSectionConfig.type == 'cell'"
         v-show="isVisible"
-        :class="cellOrSectionConfig.class ?? null"
         :data-cell-label="cellOrSectionConfig.label"
+        :class="cellOrSectionConfig.class ?? null"
       >
         <td class="headers-bg pl-4" :data-cell-label="cellOrSectionConfig.label" data-row-header="true">
           <span class="table-left-label">{{ cellOrSectionConfig.label }}</span>
@@ -23,7 +23,6 @@
         <td
           v-for="(mldtDataset, idx) in mldtDatasets"
           :key="idx"
-          :data-test="cellOrSectionConfig.name ?? null"
           :data-cell-label="cellOrSectionConfig.label"
           :data-dataset-index="idx"
         >
@@ -37,7 +36,6 @@
               ? ['p-rowgroup-header', 'p-topmost-header', 'border-bottom-table']
               : ['p-rowgroup-header', 'border-bottom-table']
           "
-          :data-test="cellOrSectionConfig.name ?? null"
           :data-section-label="cellOrSectionConfig.label"
           :data-section-expanded="expandedSections.has(idx)"
           @click="toggleSection(idx)"

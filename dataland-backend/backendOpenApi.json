@@ -3033,13 +3033,15 @@
         ]
       },
       "BaseDataPointYesNo": {
-        "required": [
-          "value"
-        ],
         "type": "object",
         "properties": {
           "value": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "dataSource": {
             "nullable": true,
@@ -5744,13 +5746,15 @@
         }
       },
       "BaseDataPointYesNoNa": {
-        "required": [
-          "value"
-        ],
         "type": "object",
         "properties": {
           "value": {
-            "$ref": "#/components/schemas/YesNoNa"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
           },
           "dataSource": {
             "nullable": true,

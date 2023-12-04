@@ -20,6 +20,7 @@ export function generateLksgPreparedFixtures(): Array<FixtureData<LksgData>> {
   preparedFixtures.push(manipulateFixtureForLksgDatasetWithLotsOfNulls(generateOneLksgFixtureWithManyNulls()));
   preparedFixtures.push(manipulateFixtureToContainProcurementCategories(generateLksgFixtures(1, 0)[0]));
   preparedFixtures.push(manipulateFixtureToNotBeAManufacturingCompany(generateLksgFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15(generateLksgFixtures(1, 0)[0]));
   return preparedFixtures;
 }
 
@@ -36,6 +37,21 @@ function manipulateFixtureToNotBeAManufacturingCompany(input: FixtureData<LksgDa
   input.t.general.productionSpecific!.productionSites = YesNo.No;
   input.t.general.productionSpecific!.listOfProductionSites = twoProductionSites;
 
+  return input;
+}
+
+/**
+ * Ensures that the fixture contains child labor under 18
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureToHaveNoChildLaborUnder18AndChildLaborUnder15(
+  input: FixtureData<LksgData>,
+): FixtureData<LksgData> {
+  input.companyInformation.companyName = "lksg-with-nulls-and-no-child-labor-under-18";
+  input.t.social!.childLabor!.employeeSUnder18 = YesNo.No;
+  input.t.social!.childLabor!.employeeSUnder15 = YesNo.Yes;
+  input.t.general.masterData.numberOfEmployees = null;
   return input;
 }
 

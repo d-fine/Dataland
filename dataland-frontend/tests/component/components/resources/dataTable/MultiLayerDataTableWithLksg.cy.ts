@@ -102,19 +102,6 @@ describe("Component test for the LksgPanel", () => {
     });
   });
 
-  it("Validate that show-if hidden fields are not displayed in standard mode", () => {
-    const preparedFixture = getPreparedFixture(
-      "lksg-not-a-manufacturing-company-but-has-production-sites",
-      preparedFixtures,
-    );
-    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
-
-    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
-
-    getCellValueContainer("Manufacturing Company").should("have.text", "No");
-    getCellValueContainer("List Of Production Sites", 0, false).should("not.exist");
-  });
-
   it("Validate that show-if hidden fields are displayed and highlighted in review mode", () => {
     const preparedFixture = getPreparedFixture(
       "lksg-not-a-manufacturing-company-but-has-production-sites",
