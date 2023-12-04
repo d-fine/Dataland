@@ -15,7 +15,10 @@ const GdvFrameworkDefinition: FrameworkDefinition<GdvData> = {
       configuration: GdvViewConfiguration,
     };
   },
-  getFrameworkApiClient(configuration?: Configuration, axiosInstance?: AxiosInstance): FrameworkDataApi<GdvData> {
+  getFrameworkApiClient(
+    configuration?: Configuration,
+    axiosInstance?: AxiosInstance,
+  ): FrameworkDataApi<GdvData> {
     return new GdvApiClient(configuration, axiosInstance);
   },
 };

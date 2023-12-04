@@ -1,6 +1,6 @@
 Field Identifier,Category,Sub-Category,Field Name,Tooltip,Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory Field
-0,General,Master Data,Berichts-Pflicht,Ist das Unternehmen berichtspflichtig?,Yes/No,,kg,,,,
-2,Allgemein,,ESG-Ziele,"Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",Yes/No,,,,,Yes,
+0,General,Master Data,Berichts-Pflicht,Ist das Unternehmen berichtspflichtig?,Yes/No,,m,,,,Yes
+2,Allgemein,,ESG-Ziele,"Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",Yes/No,,,,,Yes,No
 2.1,Allgemein,,Ziele,Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.,String,,,,,Yes,
 2.2,Allgemein,,Investitionen,Bitte geben Sie an wieviele Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele zugewiesen wurden.,String,,,,,Yes,
 3,Allgemein,,Sektor mit hohen Klimaauswirkungen,Kann das Unternehmen einem oder mehreren Sektoren mit hohen Klimaauswirkungen zugeordnet werden?,Yes/No,,,,,Yes,

@@ -55,6 +55,8 @@ data class SectionUploadConfigBuilder(
         shouldDisplay: FrameworkBooleanLambda,
         valueGetter: FrameworkDisplayValueLambda,
         unit: String?,
+        isNullable: Boolean,
+        required: Boolean?,
     ): CellConfigBuilder {
         val newCell = CellConfigBuilder(
             parentSection = this,
@@ -64,6 +66,8 @@ data class SectionUploadConfigBuilder(
             explanation = explanation,
             shouldDisplay = shouldDisplay,
             valueGetter = valueGetter,
+            isNullable = isNullable,
+            required = required,
         )
         children.add(newCell)
         return newCell

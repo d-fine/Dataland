@@ -2,50 +2,51 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Fort Billytown",
-			"headquartersPostalCode": "15054",
-			"sector": "metrics",
+			"headquarters": "West Verdie",
+			"headquartersPostalCode": "30584",
+			"sector": "partnerships",
 			"identifiers": {
-				"Lei": [
-					"m7KURWXO3DEKUw71zipo"
-				],
+				"Lei": [],
 				"Isin": [
-					"ZJlGhxAFK0GQ"
+					"8KX2eOIAfm3E"
 				],
-				"PermId": [
-					"J7adT0E1lt"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
+				"VatNumber": [
+					"d32owurGQ"
+				],
 				"CompanyRegistrationNumber": [
-					"EANxC2uunnCFdyg"
+					"ZmxDZhcO4X06XYW"
 				]
 			},
-			"countryCode": "GR",
+			"countryCode": "AL",
 			"companyAlternativeNames": [
-				"Zemlak Group"
+				"Wolff Group"
 			],
 			"companyLegalForm": "GmbH",
-			"website": "https://monumental-environment.org/",
+			"website": "https://noted-crewmember.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.63",
-						"T"
+						"10.31",
+						"13.93",
+						"28.2",
+						"64.2",
+						"91.04"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Samson Landing 7364",
-						"postalCode": "10311",
-						"city": "Maggioshire",
-						"state": "Iowa",
-						"country": "MK"
+						"streetAndHouseNumber": "Rice Manor 660",
+						"postalCode": "94202-7504",
+						"city": "New Caesar",
+						"state": null,
+						"country": "GM"
 					},
-					"numberOfEmployees": 8055,
-					"fiscalYearStart": "2024-05-03"
+					"numberOfEmployees": 9823,
+					"fiscalYearStart": "2024-04-15"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -55,23 +56,33 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
-				},
-				"products": {
-					"listOfProducts": [
+					"listOfProductionSites": [
 						{
-							"name": "Fantastic Frozen Pizza",
-							"shareOfTotalRevenueInPercent": 94.6956
+							"nameOfProductionSite": "Veum Inc",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "S Jackson Street 499",
+								"postalCode": null,
+								"city": "East Kobestad",
+								"state": "Illinois",
+								"country": "SJ"
+							},
+							"shareOfTotalRevenueInPercent": 81.1905
 						},
 						{
-							"name": "Awesome Rubber Fish",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Modern Concrete Pizza",
-							"shareOfTotalRevenueInPercent": 68.7122
+							"nameOfProductionSite": "Donnelly - Pfannerstill",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Elmo Shoal 9223",
+								"postalCode": "20252",
+								"city": "Bodecester",
+								"state": "Florida",
+								"country": "MA"
+							},
+							"shareOfTotalRevenueInPercent": 68.7337
 						}
 					]
+				},
+				"products": {
+					"listOfProducts": []
 				}
 			},
 			"power": {
@@ -79,25 +90,18 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1069,
+					"powerConsumptionInMWh": 282,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 43,
+					"energyConsumptionHeatingAndHotWaterInMWh": 642,
 					"primaryEnergySourceForHeatingAndHotWater": null,
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 23006533,
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"Flooding",
-						"Snow",
-						"Wind",
-						"EarthQuake",
-						"Hail"
-					]
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 23042820,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -106,41 +110,39 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Hagenesbury",
-			"headquartersPostalCode": "61910-8396",
-			"sector": "communities",
+			"headquarters": "East Emieville",
+			"headquartersPostalCode": "31499-0566",
+			"sector": "eyeballs",
 			"identifiers": {
 				"Lei": [
-					"v5yEcW23W1QWJdn5Qwaw"
+					"OLgnU45aeRWAr9dUQoIu"
 				],
 				"Isin": [
-					"eqYvZQ6QTARp",
-					"q2Jwhjqiou8E"
+					"nSQOxC3peCsR"
 				],
-				"PermId": [],
-				"Ticker": [
-					"w1VDkU7"
+				"PermId": [
+					"b7vMTnOuDJ"
 				],
-				"Duns": [
-					"7OOXHQLn1"
-				],
+				"Ticker": [],
+				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"R3LfQA2EvxDRK5D"
+				]
 			},
-			"countryCode": "GW",
+			"countryCode": "TM",
 			"companyAlternativeNames": [
-				"Beatty and Sons",
-				"McDermott - Welch"
+				"Botsford - Heathcote"
 			],
-			"companyLegalForm": null,
-			"website": "https://overlooked-squash.org/",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://heavenly-calibre.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"47.25"
+						"78.10"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -149,40 +151,177 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 5137,
-					"fiscalYearStart": "2024-10-31"
+					"numberOfEmployees": 4597,
+					"fiscalYearStart": "2024-03-03"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 46017457,
-					"operatingCostInEUR": 5959919,
-					"capitalAssetsInEUR": null
+					"revenueInEUR": null,
+					"operatingCostInEUR": 10759060,
+					"capitalAssetsInEUR": 30281808
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Volkman - Will",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Laurence Keys 88200",
+								"postalCode": "36466",
+								"city": "Port Hans",
+								"state": "New York",
+								"country": "CI"
+							},
+							"shareOfTotalRevenueInPercent": 75.9001
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Main Avenue 962",
+								"postalCode": "61830",
+								"city": "Balistrerimouth",
+								"state": "Arizona",
+								"country": "JM"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Harber, Murphy and Runolfsson",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kay Motorway 29466",
+								"postalCode": "99679-0652",
+								"city": "Lake Modestaborough",
+								"state": "Nebraska",
+								"country": "PW"
+							},
+							"shareOfTotalRevenueInPercent": 29.0579
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Elegant Soft Fish",
-							"shareOfTotalRevenueInPercent": 2.8186
+							"name": "Refined Granite Soap",
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+				},
+				"consumption": {
+					"powerConsumptionInMWh": 1440,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 7934569,
+					"naturalHazardsCovered": null
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-minimum-address",
+			"headquarters": "South Abrahamworth",
+			"headquartersPostalCode": "33761",
+			"sector": "lifetime value",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"eJUKzhc81XAn"
+				],
+				"PermId": [
+					"X2MjUKr5uS"
+				],
+				"Ticker": [],
+				"Duns": [
+					"xKwlTyzyx"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "VI",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://lighthearted-carboxyl.com/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"81.21"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": null,
+						"postalCode": null,
+						"city": "City 17",
+						"state": null,
+						"country": "Uninspired"
+					},
+					"numberOfEmployees": 5742,
+					"fiscalYearStart": "2024-01-03"
+				},
+				"companyFinancials": {
+					"revenueInEUR": null,
+					"operatingCostInEUR": 14554814,
+					"capitalAssetsInEUR": 35747670
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "D'Amore - Schulist",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Roscoe Run 9170",
+								"postalCode": "69172-2649",
+								"city": "Missouristad",
+								"state": "Indiana",
+								"country": "AG"
+							},
+							"shareOfTotalRevenueInPercent": 1.1877
 						},
 						{
-							"name": "Bespoke Soft Pants",
+							"nameOfProductionSite": "Russel Inc",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Market Square 4446",
+								"postalCode": "06429",
+								"city": "New Brunswick",
+								"state": null,
+								"country": "MM"
+							},
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Unbranded Bronze Shirt",
+							"shareOfTotalRevenueInPercent": 84.5515
+						},
+						{
+							"name": "Sleek Rubber Car",
 							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Elegant Rubber Towels",
-							"shareOfTotalRevenueInPercent": 87.7296
+							"name": "Luxurious Granite Car",
+							"shareOfTotalRevenueInPercent": 29.7597
 						},
 						{
-							"name": "Sleek Cotton Cheese",
-							"shareOfTotalRevenueInPercent": 67.1598
-						},
-						{
-							"name": "Gorgeous Rubber Shoes",
-							"shareOfTotalRevenueInPercent": 1.6732
+							"name": "Rustic Plastic Chips",
+							"shareOfTotalRevenueInPercent": 61.3872
 						}
 					]
 				}
@@ -192,169 +331,18 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 546,
-					"primaryEnergySourceForHeatingAndHotWater": null,
+					"powerConsumptionInMWh": 745,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 805,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 19331720,
-					"naturalHazardsCovered": [
-						"Flooding",
-						"Avalanche",
-						"EarthQuake",
-						"Snow",
-						"Hail"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-minimum-address",
-			"headquarters": "Port Ellsworth",
-			"headquartersPostalCode": null,
-			"sector": "interfaces",
-			"identifiers": {
-				"Lei": [
-					"lAkPilFQYt92fH9BjUrB"
-				],
-				"Isin": [
-					"bubISAcHKpTa",
-					"Ykhs8CKpW4Bz"
-				],
-				"PermId": [
-					"FiN0dkO4c4"
-				],
-				"Ticker": [
-					"1QvyFTE"
-				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"5n6LOMTCfNyGQhR"
-				]
-			},
-			"countryCode": "AS",
-			"companyAlternativeNames": [
-				"Bogan LLC",
-				"Yost LLC"
-			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": null,
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"17.22"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": null,
-						"city": "City 17",
-						"state": null,
-						"country": "Uninspired"
-					},
-					"numberOfEmployees": 4310,
-					"fiscalYearStart": "2024-04-03"
-				},
-				"companyFinancials": {
-					"revenueInEUR": 83297052,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 11496907
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Walker Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Silver Street 5711",
-								"postalCode": "30700",
-								"city": "Lehnerfield",
-								"state": "Michigan",
-								"country": "AL"
-							},
-							"shareOfTotalRevenueInPercent": 36.6851
-						},
-						{
-							"nameOfProductionSite": "Dickinson Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Dickinson Land 2083",
-								"postalCode": "34239",
-								"city": "Littelside",
-								"state": null,
-								"country": "AG"
-							},
-							"shareOfTotalRevenueInPercent": 0.6435
-						},
-						{
-							"nameOfProductionSite": "Swift - Considine",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Cross Lane 296",
-								"postalCode": null,
-								"city": "East Isobel",
-								"state": null,
-								"country": "AM"
-							},
-							"shareOfTotalRevenueInPercent": 7.3752
-						},
-						{
-							"nameOfProductionSite": "Brekke, Stark and Christiansen",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Willow Grove 670",
-								"postalCode": "03327",
-								"city": "Myrticestead",
-								"state": "Delaware",
-								"country": "GU"
-							},
-							"shareOfTotalRevenueInPercent": 16.2473
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Practical Concrete Car",
-							"shareOfTotalRevenueInPercent": 3.2815
-						},
-						{
-							"name": "Sleek Fresh Ball",
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
-				},
-				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 445,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 21426064,
-					"naturalHazardsCovered": [
-						"Snow",
-						"Wind",
-						"Hail"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
