@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcate
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.sfdr.HighImpactClimateSector
+import org.dataland.datalandbackend.model.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.math.BigDecimal
 
@@ -17,13 +18,19 @@ data class SfdrEnvironmentalEnergyPerformance(
 
     val nonRenewableEnergyProductionInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
+    val relativeNonRenewableEnergyProductionInPercent: ExtendedDataPoint<BigDecimal>? = null,
+
     val nonRenewableEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
+    val relativeNonRenewableEnergyConsumptionInPercent: ExtendedDataPoint<BigDecimal>? = null,
+
     @field:Schema(
-        implementation = Map::class,
         example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE,
     )
-    val applicableHighImpactClimateSectors: Map<HighImpactClimateSector, ExtendedDataPoint<BigDecimal>>? = null,
+    val applicableHighImpactClimateSectors:
+    Map<HighImpactClimateSector, SfdrHighImpactClimateSectorEnergyConsumption>? = null,
+
+    val totalHighImpactClimateSectorEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal>? = null,
 
     val nonRenewableEnergyConsumptionFossilFuelsInGWh: ExtendedDataPoint<BigDecimal>? = null,
 

@@ -14,6 +14,9 @@
           <ul v-if="Array.isArray(data[keyOfColumn])">
             <li :key="el" v-for="el in data[keyOfColumn]">{{ el }}</li>
           </ul>
+          <div v-else-if="data[keyOfColumn].quality">
+            <DataPointDataTableInModal :dataPointDisplay="data[keyOfColumn]" />
+          </div>
           <div v-else-if="typeof data[keyOfColumn] === 'object'">
             <p :key="key" v-for="[key, value] in Object.entries(data[keyOfColumn])" style="margin: 0; padding: 0">
               {{ value }}
@@ -32,11 +35,12 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import DataPointDataTableInModal from "@/components/general/DataPointDataTableInModal.vue";
 
 export default defineComponent({
   inject: ["dialogRef"],
   name: "DetailsCompanyDataTable",
-  components: { DataTable, Column },
+  components: { DataPointDataTableInModal, DataTable, Column },
   data() {
     return {
       listOfRowContents: [] as Array<object | string>,
