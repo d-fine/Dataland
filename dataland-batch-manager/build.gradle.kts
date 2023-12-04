@@ -21,8 +21,6 @@ plugins {
     kotlin("kapt")
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_17
-
 dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.jackson.dataformat.csv)

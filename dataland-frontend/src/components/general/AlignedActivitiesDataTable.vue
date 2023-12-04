@@ -311,13 +311,13 @@ export default defineComponent({
 function createRevenueGroupData(activity: EuTaxonomyAlignedActivity): ActivityFieldValueObject[] {
   return [
     {
-      activity: activity.activityName as Activity,
+      activity: activity.activityName,
       group: "_revenue",
       field: "revenue",
       content: formatAmountWithCurrency(activity.share?.absoluteShare),
     },
     {
-      activity: activity.activityName as Activity,
+      activity: activity.activityName,
       group: "_revenue",
       field: "revenuePercent",
       content: formatPercentageNumberAsString(activity.share?.relativeShareInPercent),

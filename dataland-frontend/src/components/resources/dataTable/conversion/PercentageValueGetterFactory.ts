@@ -12,8 +12,17 @@ import { formatPercentageNumberAsString } from "@/utils/Formatter";
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function percentageValueGetterFactory(path: string): (dataset: any) => AvailableMLDTDisplayObjectTypes {
-  return (dataset) => ({
+  return (dataset) => formatPercentageForDatatable(getFieldValueFromFrameworkDataset(path, dataset) as number);
+}
+
+/**
+ * Formats the provided string as a percentage in a human-readable format
+ * @param percentage the number to display
+ * @returns the value formatted for display
+ */
+export function formatPercentageForDatatable(percentage: number | undefined | null): AvailableMLDTDisplayObjectTypes {
+  return {
     displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-    displayValue: formatPercentageNumberAsString(getFieldValueFromFrameworkDataset(path, dataset) as number),
-  });
+    displayValue: formatPercentageNumberAsString(percentage),
+  };
 }
