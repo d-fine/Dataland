@@ -62,7 +62,6 @@ export default defineComponent({
   data() {
     return {
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
-      baseDataPointValuesBeforeDataPointWasDisabled: {} as BaseDataPoint<unknown>,
       baseDataPoint: {} as BaseDataPoint<unknown>,
       referencedDocument: undefined as DocumentToUpload | undefined,
       documentName: "",
@@ -85,13 +84,6 @@ export default defineComponent({
     documentName() {
       if (this.isMounted) {
         this.updateFileUploadFiles();
-      }
-    },
-    dataPointIsAvailable(newValue: string | undefined) {
-      if (!newValue) {
-        this.baseDataPointValuesBeforeDataPointWasDisabled = this.baseDataPoint;
-      } else {
-        this.baseDataPoint = this.baseDataPointValuesBeforeDataPointWasDisabled;
       }
     },
   },

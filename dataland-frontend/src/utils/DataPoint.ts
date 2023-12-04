@@ -36,12 +36,12 @@ export function hasDataPointProperValue(dataPoint: { value: unknown }): boolean 
  * @returns array of Kpis names that have some value
  */
 export function getFilledKpis(dataResponseData: object): string[] {
-  const flattenKpis = (dataResponseData: object): Array<string> => {
+  const listOfFilledKpis = (dataResponseData: object): Array<string> => {
     return Object.values(dataResponseData).flatMap((category) =>
       Object.values(category as ObjectType).flatMap((subCategory) =>
         Object.keys(subCategory).filter((kpi) => subCategory[kpi as keyof typeof subCategory]),
       ),
     );
   };
-  return flattenKpis(dataResponseData);
+  return listOfFilledKpis(dataResponseData);
 }
