@@ -17,7 +17,6 @@
 </template>
 
 <script lang="ts">
-
 import Tooltip from "primevue/tooltip";
 import { defineComponent } from "vue";
 
