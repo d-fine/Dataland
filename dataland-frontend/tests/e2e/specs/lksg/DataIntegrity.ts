@@ -96,6 +96,7 @@ describeIf(
           dataMetaInformation.dataId,
       );
       cy.wait("@getCompanyInformation", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+
       cy.get("h1").should("contain", testCompanyName);
       cy.intercept({
         url: `**/api/data/${DataTypeEnum.Lksg}`,
