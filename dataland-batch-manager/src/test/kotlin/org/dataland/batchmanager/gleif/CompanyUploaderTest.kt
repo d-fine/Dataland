@@ -5,6 +5,10 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
+import org.dataland.datalandbackend.openApiClient.model.CompanyId
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
+import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CompanyUploader.Companion.UNAUTHORIZED_CODE
@@ -22,6 +26,7 @@ import java.net.SocketTimeoutException
 class CompanyUploaderTest {
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
     private lateinit var companyUploader: CompanyUploader
+    private lateinit var mockStoredCompany: StoredCompany
 
     private val dummyCompanyInformation1 = GleifCompanyInformation(
         companyName = "CompanyName1",
@@ -43,6 +48,30 @@ class CompanyUploaderTest {
     fun setup() {
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         companyUploader = CompanyUploader(mockCompanyDataControllerApi, jacksonObjectMapper())
+        mockStoredCompany = mock()
+    }
+
+    @Test
+    fun `check that the upload of LEI ISIN mappings makes the intended calls`() {
+        val deltaMap = mutableMapOf<String, Set<String>>()
+        deltaMap["1000"] = setOf("1111", "1112", "1113")
+
+        `when`(mockCompanyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.lei, "1000"))
+            .thenReturn(CompanyId("testCompanyId"))
+
+        companyUploader.updateIsins(deltaMap)
+
+        val compIdentifiers = mapOf(
+            "Isin" to listOf("1111", "1112", "1113"),
+        )
+        val compPatch = CompanyInformationPatch(
+            companyName = null, companyAlternativeNames = null, companyLegalForm = null,
+            headquarters = null, headquartersPostalCode = null, sector = null, compIdentifiers, countryCode = null,
+            website = null, isTeaserCompany = null,
+        )
+
+        verify(mockCompanyDataControllerApi, times(1)).getCompanyIdByIdentifier(IdentifierType.lei, "1000")
+        verify(mockCompanyDataControllerApi, times(1)).patchCompanyById("testCompanyId", compPatch)
     }
 
     @Test
