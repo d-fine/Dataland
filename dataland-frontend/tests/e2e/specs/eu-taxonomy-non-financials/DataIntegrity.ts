@@ -15,8 +15,8 @@ import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { roundNumber } from "@/utils/NumberConversionUtils";
 import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
+import { roundNumber } from "@/utils/NumberConversionUtils";
 
 let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForNonFinancials>;
 before(function () {
@@ -121,6 +121,7 @@ describeIf(
                         dataSetFromPrefillRequest as Record<string, object>,
                         reuploadedDatasetFromBackend as Record<string, object>,
                       );
+                      cy.get('span[data-test="hideEmptyDataToggle"]').should("not.exist"); //this line can be removed once MLDT has been integrated
                       validateSomeValuesForTheReuploadedDataset(
                         storedCompany,
                         dataMetaInformationOfReuploadedDataset.dataId,
