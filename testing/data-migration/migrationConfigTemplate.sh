@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-#Configuration for the migrateData.sh script
+#Configuration for the migrateData.sh script. In order to use, copy this file to migrationConfig.sh and fill in the values.
+#The file migrationConfig.sh is ignored by git to avoid accidental committing of API-keys.
 
 export SOURCE=dataland.com
 export SOURCE_TOKEN=
