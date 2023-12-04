@@ -12,10 +12,9 @@ class InvalidSfdrRequestTests {
     val errorCode400 = "Client error : 400"
     val errorMessage = "Input failed the input validation"
 
-    @Test
-    fun `post a company with invalid Sfdr currency data`() {
+    fun getErrorFromApi(companyName: String): ClientException {
         val oneInvalidSfdrDataset = apiAccessor.testDataProviderForSfdrData
-            .getSpecificCompanyByNameFromPreparedFixtures("Sfdr-dataset-with-invalid-currency-input")
+            .getSpecificCompanyByNameFromPreparedFixtures(companyName)
         Assertions.assertNotNull(oneInvalidSfdrDataset)
         val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
         val errorForInvalidInput = assertThrows<ClientException> {
@@ -24,6 +23,12 @@ class InvalidSfdrRequestTests {
                 "",
             )
         }
+        return errorForInvalidInput
+    }
+
+    @Test
+    fun `post a company with invalid Sfdr currency data`() {
+        val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-invalid-currency-input")
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
         Assertions.assertTrue(
             (errorForInvalidInput.response as ClientError<*>).body!!.toString()
@@ -33,19 +38,10 @@ class InvalidSfdrRequestTests {
 
     @Test
     fun `post a company with invalid negative extended data point BigDecimal`() {
-        val oneInvalidSfdrDataset = apiAccessor.testDataProviderForSfdrData
-            .getSpecificCompanyByNameFromPreparedFixtures(
-                "Sfdr-dataset-with-invalid" +
-                    "-negative-big-decimal-input",
-            )
-        Assertions.assertNotNull(oneInvalidSfdrDataset)
-        val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
-        val errorForInvalidInput = assertThrows<ClientException> {
-            apiAccessor.sfdrUploaderFunction(
-                companyInformation.actualStoredCompany.companyId, oneInvalidSfdrDataset!!.t,
-                "",
-            )
-        }
+        val errorForInvalidInput = getErrorFromApi(
+            "Sfdr-dataset-with-invalid" +
+                "-negative-big-decimal-input",
+        )
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
         Assertions.assertTrue(
             (errorForInvalidInput.response as ClientError<*>).body!!.toString()
@@ -55,16 +51,7 @@ class InvalidSfdrRequestTests {
 
     @Test
     fun `post a company with invalid negative extended data point long`() {
-        val oneInvalidSfdrDataset = apiAccessor.testDataProviderForSfdrData
-            .getSpecificCompanyByNameFromPreparedFixtures("Sfdr-dataset-with-invalid-negative-long-input")
-        Assertions.assertNotNull(oneInvalidSfdrDataset)
-        val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
-        val errorForInvalidInput = assertThrows<ClientException> {
-            apiAccessor.sfdrUploaderFunction(
-                companyInformation.actualStoredCompany.companyId, oneInvalidSfdrDataset!!.t,
-                "",
-            )
-        }
+        val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-invalid-negative-long-input")
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
         Assertions.assertTrue(
             (errorForInvalidInput.response as ClientError<*>).body!!.toString()
@@ -74,16 +61,7 @@ class InvalidSfdrRequestTests {
 
     @Test
     fun `post a company with invalid percentage value`() {
-        val oneInvalidSfdrDataset = apiAccessor.testDataProviderForSfdrData
-            .getSpecificCompanyByNameFromPreparedFixtures("Sfdr-dataset-with-invalid-percentage-input")
-        Assertions.assertNotNull(oneInvalidSfdrDataset)
-        val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
-        val errorForInvalidInput = assertThrows<ClientException> {
-            apiAccessor.sfdrUploaderFunction(
-                companyInformation.actualStoredCompany.companyId, oneInvalidSfdrDataset!!.t,
-                "",
-            )
-        }
+        val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-invalid-percentage-input")
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
         Assertions.assertTrue(
             (errorForInvalidInput.response as ClientError<*>).body!!.toString()
@@ -93,18 +71,7 @@ class InvalidSfdrRequestTests {
 
     @Test
     fun `post a company with empty string document reference`() {
-        val oneInvalidSfdrDataset = apiAccessor.testDataProviderForSfdrData
-            .getSpecificCompanyByNameFromPreparedFixtures(
-                "Sfdr-dataset-with-empty-string-document-reference",
-            )
-        Assertions.assertNotNull(oneInvalidSfdrDataset)
-        val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
-        val errorForInvalidInput = assertThrows<ClientException> {
-            apiAccessor.sfdrUploaderFunction(
-                companyInformation.actualStoredCompany.companyId, oneInvalidSfdrDataset!!.t,
-                "",
-            )
-        }
+        val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-empty-string-document-reference")
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
     }
 }
