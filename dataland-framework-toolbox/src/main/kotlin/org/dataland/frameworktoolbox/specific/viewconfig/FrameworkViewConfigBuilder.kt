@@ -62,19 +62,32 @@ class FrameworkViewConfigBuilder(
         writer.close()
     }
 
-    private fun buildIndexTs(indexTsPath: Path) {
+    private fun buildFrameworkDefinitionTs(baseDirectoryPath: Path) {
         val freeMarkerContext = mapOf(
             "frameworkIdentifier" to framework.identifier,
             "frameworkLabel" to framework.label,
             "frameworkExplanation" to framework.explanation,
         )
 
-        val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/viewconfig/index.ts.ftl")
+        val outputJobs = listOf(
+            Pair(
+                "/specific/viewconfig/BaseFrameworkDefinition.ts.ftl",
+                baseDirectoryPath / "BaseFrameworkDefinition.ts",
+            ),
+            Pair(
+                "/specific/viewconfig/FrontendFrameworkDefinition.ts.ftl",
+                baseDirectoryPath / "FrontendFrameworkDefinition.ts",
+            ),
+        )
 
-        val writer = FileWriter(indexTsPath.toFile())
-        freemarkerTemplate.process(freeMarkerContext, writer)
-        writer.close()
+        for ((template, outputPath) in outputJobs) {
+            val freemarkerTemplate = FreeMarker.configuration
+                .getTemplate(template)
+
+            val writer = FileWriter(outputPath.toFile())
+            freemarkerTemplate.process(freeMarkerContext, writer)
+            writer.close()
+        }
     }
 
     /**
@@ -93,7 +106,7 @@ class FrameworkViewConfigBuilder(
 
         buildViewConfig(viewConfigTsPath)
         buildApiClient(frameworkConfigDir / "ApiClient.ts")
-        buildIndexTs(frameworkConfigDir / "index.ts")
+        buildFrameworkDefinitionTs(frameworkConfigDir)
 
         into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_checkfrontendcompilation"))
 

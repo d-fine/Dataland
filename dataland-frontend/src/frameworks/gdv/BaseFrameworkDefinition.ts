@@ -1,0 +1,16 @@
+import { type BaseFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
+import { type Configuration, type GdvData } from "@clients/backend";
+import { type AxiosInstance } from "axios";
+import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { GdvApiClient } from "@/frameworks/gdv/ApiClient";
+
+export class BaseGdvFrameworkDefinition implements BaseFrameworkDefinition<GdvData> {
+  readonly identifier = "gdv";
+  readonly explanation = "Das GDV/VÖB Framework";
+  readonly label = "GDV/VÖB";
+  getFrameworkApiClient(configuration?: Configuration, axiosInstance?: AxiosInstance): FrameworkDataApi<GdvData> {
+    return new GdvApiClient(configuration, axiosInstance);
+  }
+}
+
+export default new BaseGdvFrameworkDefinition();

@@ -17,18 +17,30 @@ class FrameworkRegistryImportsUpdater {
 
         val allRegisteredFrameworks = pathToFrameworkDirectory.toFile().listFiles {
                 file ->
-            file.isDirectory
+            file.isDirectory && file.listFiles()?.any { it.name == "BaseFrameworkDefinition.ts" } ?: false
         }!!
 
         val freeMarkerContext = mapOf(
             "frameworks" to allRegisteredFrameworks.map { it.name },
         )
 
-        val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/frameworkregistryimports/FrameworkRegistryImports.ts.ftl")
+        val jobs = listOf(
+            Pair(
+                "/specific/frameworkregistryimports/BaseFrameworkRegistryImports.ts.ftl",
+                pathToFrameworkDirectory / "BaseFrameworkRegistryImports.ts",
+            ),
+            Pair(
+                "/specific/frameworkregistryimports/FrontendFrameworkRegistryImports.ts.ftl",
+                pathToFrameworkDirectory / "FrontendFrameworkRegistryImports.ts",
+            ),
+        )
 
-        val writer = FileWriter((pathToFrameworkDirectory / "FrameworkRegistryImports.ts").toFile())
-        freemarkerTemplate.process(freeMarkerContext, writer)
-        writer.close()
+        for ((templateName, outputPath) in jobs) {
+            val template = FreeMarker.configuration
+                .getTemplate(templateName)
+            val writer = FileWriter(outputPath.toFile())
+            template.process(freeMarkerContext, writer)
+            writer.close()
+        }
     }
 }
