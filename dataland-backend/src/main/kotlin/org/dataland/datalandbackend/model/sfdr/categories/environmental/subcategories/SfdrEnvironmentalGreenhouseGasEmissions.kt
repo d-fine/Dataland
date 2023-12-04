@@ -15,11 +15,27 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
 
     val scope2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
+    val scope2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal>? = null,
+
+    val scope2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal>? = null,
+
+    val scope1And2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
+
+    val scope1And2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal>? = null,
+
+    val scope1And2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal>? = null,
+
     val scope3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
+
+    val scope1And2And3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
     val enterpriseValue: CurrencyDataPoint? = null,
 
     val totalRevenue: CurrencyDataPoint? = null,
+
+    val carbonFootprintInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal>? = null,
+
+    val ghgIntensityInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal>? = null,
 
     val fossilFuelSectorExposure: ExtendedDataPoint<YesNo>? = null,
 )
