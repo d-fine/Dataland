@@ -96,7 +96,7 @@ function testSubmittedDatasetIsInReviewListAndAcceptIt(storedCompany: StoredComp
   cy.get('[data-test="qaRejectButton"').should("exist");
   cy.get('span[data-test="hideEmptyDataToggleCaption"]').should("exist");
   cy.get("span[class=p-inputswitch-slider]").should("exist");
-  cy.get('div[data-test="hideEmptyDataPointToggleButton"]').should("not.have.class", "p-inputswitch-checked");
+  cy.get('div[data-test="hideEmptyDataToggleButton"]').should("not.have.class", "p-inputswitch-checked");
 
   cy.get('[data-test="qaApproveButton"').should("exist").click();
 

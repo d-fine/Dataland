@@ -30,8 +30,8 @@
             >
               <InputSwitch
                 class="form-field vertical-middle"
-                data-test="hideEmptyDataPointToggleButton"
-                inputId="dataPointIsAvailableSwitch"
+                data-test="hideEmptyDataToggleButton"
+                inputId="hideEmptyDataToggleButton"
                 v-model="hideEmptyFields"
               />
               <span data-test="hideEmptyDataToggleCaption" class="ml-2 font-semibold" style="font-size: 14px">

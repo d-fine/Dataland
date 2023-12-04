@@ -81,10 +81,10 @@ export function checkToggleEmptyFieldsSwitch(toggledFieldName: string): void {
   cy.wait(100);
   cy.get("span").contains(toggledFieldName).should("not.exist");
   cy.get('span[data-test="hideEmptyDataToggleCaption"]').should("exist");
-  cy.get('div[data-test="hideEmptyDataPointToggleButton"]').should("have.class", "p-inputswitch-checked").click();
-  cy.get('div[data-test="hideEmptyDataPointToggleButton"]').should("not.have.class", "p-inputswitch-checked");
+  cy.get('div[data-test="hideEmptyDataToggleButton"]').should("have.class", "p-inputswitch-checked").click();
+  cy.get('div[data-test="hideEmptyDataToggleButton"]').should("not.have.class", "p-inputswitch-checked");
   cy.get("span").contains(toggledFieldName).should("exist");
-  cy.get('div[data-test="hideEmptyDataPointToggleButton"]').click();
-  cy.get('div[data-test="hideEmptyDataPointToggleButton"]').should("have.class", "p-inputswitch-checked");
+  cy.get('div[data-test="hideEmptyDataToggleButton"]').click();
+  cy.get('div[data-test="hideEmptyDataToggleButton"]').should("have.class", "p-inputswitch-checked");
   cy.get("span").contains(toggledFieldName).should("not.exist");
 }
