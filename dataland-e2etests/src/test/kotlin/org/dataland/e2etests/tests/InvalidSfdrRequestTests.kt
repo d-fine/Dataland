@@ -5,10 +5,11 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.slf4j.LoggerFactory
 
 class InvalidSfdrRequestTests {
     private val apiAccessor = ApiAccessor()
-
+    private val logger = LoggerFactory.getLogger(javaClass)
     val errorCode500 = "Server error : 500 "
     val exceptionText = "MethodArgumentNotValidException: Validation failed for argument"
 
@@ -25,7 +26,7 @@ class InvalidSfdrRequestTests {
             )
         }
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode500))
-        println(errorForInvalidInput.message)
+        logger.info(errorForInvalidInput.message)
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(exceptionText))
     }
 
@@ -45,7 +46,7 @@ class InvalidSfdrRequestTests {
             )
         }
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode500))
-        println(errorForInvalidInput.message)
+        logger.info(errorForInvalidInput.message)
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(exceptionText))
     }
 
@@ -62,7 +63,7 @@ class InvalidSfdrRequestTests {
             )
         }
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode500))
-        println(errorForInvalidInput.message)
+        logger.info(errorForInvalidInput.message)
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(exceptionText))
     }
 
@@ -79,7 +80,7 @@ class InvalidSfdrRequestTests {
             )
         }
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode500))
-        println(errorForInvalidInput.message)
+        logger.info(errorForInvalidInput.message)
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(exceptionText))
     }
 
