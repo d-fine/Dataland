@@ -134,6 +134,7 @@ import CurrencyDataPointFormField from "@/components/forms/parts/fields/Currency
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
+import { getFilledKpis } from "@/utils/DataPoint";
 
 export default defineComponent({
   setup() {
@@ -190,6 +191,7 @@ export default defineComponent({
       messageCounter: 0,
       checkCustomInputs,
       documents: new Map() as Map<string, DocumentToUpload>,
+      listOfFilledKpis: [] as Array<string>,
     };
   },
   computed: {
@@ -237,6 +239,7 @@ export default defineComponent({
       ).getUnifiedFrameworkDataController(DataTypeEnum.Lksg);
 
       const lksgDataset = (await lkSGDataControllerApi.getFrameworkData(dataId)).data;
+      this.listOfFilledKpis = getFilledKpis(lksgDataset.data);
       const dataDateFromDataset = lksgDataset.data?.general?.masterData?.dataDate;
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
@@ -293,6 +296,9 @@ export default defineComponent({
       productsServicesCategoriesPurchased: computed(() => {
         return this.companyAssociatedLksgData.data?.general?.productionSpecificOwnOperations
           ?.productsServicesCategoriesPurchased;
+      }),
+      listOfFilledKpis: computed(() => {
+        return this.listOfFilledKpis;
       }),
     };
   },

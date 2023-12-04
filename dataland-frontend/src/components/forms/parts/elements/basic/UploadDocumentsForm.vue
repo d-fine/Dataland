@@ -143,7 +143,7 @@ export default defineComponent({
       indexesOfFilesToRemove.sort((a, b) => b - a);
       const sortedIndexes = [...indexesOfFilesToRemove];
       [...new Set(sortedIndexes)].forEach((indexOfFileToRemove) => {
-        ((this.$refs.fileUpload as FileUpload).remove as (index: number) => void)(indexOfFileToRemove);
+        ((this.$refs.fileUpload as FileUpload)?.remove as (index: number) => void)(indexOfFileToRemove);
         this.documentsToUpload.splice(indexOfFileToRemove, 1);
       });
       this.emitUpdatedDocumentsSelectionEvent();
@@ -168,9 +168,9 @@ export default defineComponent({
     prefillFileUpload() {
       if (this.fileNamesForPrefill) {
         this.fileNamesForPrefill.forEach((name) => {
-          const dummyFile = new File([] as BlobPart[], name);
+          const dummyFile = new File([] as BlobPart[], name as string);
 
-          ((this.$refs.fileUpload as FileUpload).files as File[]).push(dummyFile);
+          ((this.$refs.fileUpload as FileUpload)?.files as File[])?.push(dummyFile);
         });
       }
     },

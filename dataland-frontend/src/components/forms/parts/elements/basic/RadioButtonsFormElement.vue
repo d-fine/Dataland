@@ -17,6 +17,7 @@
     }"
     :id="fieldName + name"
     :value="currentValue"
+    :data-test="dataTest"
     @input="$emit('update:currentValue', $event)"
   />
 </template>
@@ -50,6 +51,9 @@ export default defineComponent({
       default: "",
     },
     currentValue: {
+      type: String,
+    },
+    dataTest: {
       type: String,
     },
   },

@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-3" :data-test="name">
+  <div class="mb-3" :data-test="`BaseDataPointFormField${name}`">
     <BaseDataPointFormField
       :name="name"
       :description="description"
