@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
-import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -31,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController
  */
 
 @RestController
-@Validated
 class CompanyDataController(
     @Autowired private val companyAlterationManager: CompanyAlterationManager,
     @Autowired private val companyQueryManager: CompanyQueryManager,
