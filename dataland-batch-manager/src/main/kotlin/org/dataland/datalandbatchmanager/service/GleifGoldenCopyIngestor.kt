@@ -66,12 +66,12 @@ class GleifGoldenCopyIngestor(
                 }
             }
 
-            if (savedIsinMappingFile.exists() && (!savedIsinMappingFile.delete())) {
-                throw FileSystemException(
-                    file = savedIsinMappingFile,
-                    reason = "Unable to delete ISIN mapping file $savedIsinMappingFile",
-                )
-            }
+//            if (savedIsinMappingFile.exists() && (!savedIsinMappingFile.delete())) {
+//                throw FileSystemException(
+//                    file = savedIsinMappingFile,
+//                    reason = "Unable to delete ISIN mapping file $savedIsinMappingFile",
+//                )
+//            }
 
             waitForBackend()
            /* logger.info("Retrieving all company data available via GLEIF.")
