@@ -9,13 +9,13 @@ import io.swagger.v3.oas.annotations.media.Schema
     enumAsRef = true,
 )
 enum class HighImpactClimateSector {
-    NaceCodeAInGWh,
-    NaceCodeBInGWh,
-    NaceCodeCInGWh,
-    NaceCodeDInGWh,
-    NaceCodeEInGWh,
-    NaceCodeFInGWh,
-    NaceCodeGInGWh,
-    NaceCodeHInGWh,
-    NaceCodeLInGWh,
+    NaceCodeA,
+    NaceCodeB,
+    NaceCodeC,
+    NaceCodeD,
+    NaceCodeE,
+    NaceCodeF,
+    NaceCodeG,
+    NaceCodeH,
+    NaceCodeL,
 }

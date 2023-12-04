@@ -36,12 +36,15 @@ class V5__MigrateToNewEuTaxonomyForNonFinancialsTest {
 
     @Test
     fun `test that eu taxonomy for non financials migration script works as expected for migrating old data`() {
+        val dataType = "eutaxonomy-non-financials"
         TestUtils().testMigrationOfSingleDataset(
+            dataType,
             "V5/oldOriginalDatabaseEntry.json",
             "V5/oldExpectedTransformedDatabaseEntry.json",
             V5__MigrateToNewEuTaxonomyForNonFinancials()::migrateEuTaxonomyData,
         )
         TestUtils().testMigrationOfSingleDataset(
+            dataType,
             "V5/oldOriginalDatabaseEntry2.json",
             "V5/oldExpectedTransformedDatabaseEntry2.json",
             V5__MigrateToNewEuTaxonomyForNonFinancials()::migrateEuTaxonomyData,

@@ -8,7 +8,7 @@
     :input-class="inputClass"
     :check-value-validity="hasDataPointProperValue"
   >
-    <div class="mb-3">
+    <div class="mb-2">
       <UploadFormHeader :label="label" :description="description" :is-required="required" />
       <NumberFormField
         :name="'value'"
