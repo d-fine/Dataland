@@ -69,20 +69,13 @@ internal class CompanyDataControllerTest(
 
     @Test
     fun `check that the company id by identifier endpoint works as expected`() {
+        mockSecurityContext()
         val companyController = CompanyDataController(
             companyAlterationManager,
             companyQueryManager,
             companyIdentifierRepositoryInterface,
         )
         val testLei = "testLei"
-        val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
-            "mocked_uploader",
-            "dummy-id",
-            setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER),
-        )
-        val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        SecurityContextHolder.setContext(mockSecurityContext)
         val expectedCompanyId = companyController.postCompany(
             CompanyInformation(
                 companyName = "Test Company",
@@ -107,4 +100,14 @@ internal class CompanyDataControllerTest(
             companyController.getCompanyIdByIdentifier(IdentifierType.Lei, "nonExistingLei")
         }
     }
+
+    private fun mockSecurityContext() {
+        val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
+            "mocked_uploader",
+            "dummy-id",
+            setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER),
+        )
+        val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
+        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
+        SecurityContextHolder.setContext(mockSecurityContext) }
 }

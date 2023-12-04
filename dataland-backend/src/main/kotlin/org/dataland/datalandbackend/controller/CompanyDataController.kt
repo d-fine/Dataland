@@ -104,17 +104,9 @@ class CompanyDataController(
         try {
             val companyId = companyIdentifierRepositoryInterface
                 .getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
-                .company?.companyId
-            if (companyId != null) {
-                logger.info("Retrieved company ID: $companyId")
-                return ResponseEntity.ok(CompanyId(companyId))
-            } else {
-                logger.info(companyNotFoundMessage)
-                throw ResourceNotFoundApiException(
-                    companyNotFoundSummary,
-                    companyNotFoundMessage,
-                )
-            }
+                .company!!.companyId
+            logger.info("Retrieved company ID: $companyId")
+            return ResponseEntity.ok(CompanyId(companyId))
         } catch (e: JpaObjectRetrievalFailureException) {
             logger.info(companyNotFoundMessage)
             throw ResourceNotFoundApiException(
