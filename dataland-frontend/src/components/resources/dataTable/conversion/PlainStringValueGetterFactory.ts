@@ -12,8 +12,17 @@ import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTa
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function plainStringValueGetterFactory(path: string): (dataset: any) => AvailableMLDTDisplayObjectTypes {
-  return (dataset) => ({
+  return (dataset) => formatStringForDatatable(getFieldValueFromFrameworkDataset(path, dataset) as string | undefined);
+}
+
+/**
+ * Formats the provided string as a raw string cell for the datatable
+ * @param input the input to display
+ * @returns the value formatted for display
+ */
+export function formatStringForDatatable(input: string | null | undefined): AvailableMLDTDisplayObjectTypes {
+  return {
     displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-    displayValue: (getFieldValueFromFrameworkDataset(path, dataset) || "") as string,
-  });
+    displayValue: input ?? "",
+  };
 }

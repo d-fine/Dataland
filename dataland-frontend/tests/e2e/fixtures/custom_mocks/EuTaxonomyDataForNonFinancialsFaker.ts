@@ -1,19 +1,17 @@
 import {
-  type CurrencyDataPoint,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
   type EuTaxonomyDataForNonFinancials,
   type EuTaxonomyDetailsPerCashFlowType,
 } from "@clients/backend";
 import { DataMetaInformationGenerator } from "@e2e/fixtures/data_meta_information/DataMetaInformationFixtures";
-import { EuNonFinancialsGenerator } from "@e2e/fixtures/eutaxonomy/non-financials/EuTaxonomyDataForNonFinancialsFixtures";
+import { EuNonFinancialsGenerator } from "@e2e/fixtures/frameworks/eutaxonomy-non-financials/EuTaxonomyDataForNonFinancialsFixtures";
 import { generateCurrencyValue, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
-import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy/EuTaxonomySharedValuesFixtures";
+import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy-shared/EuTaxonomySharedValuesFixtures";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { generateArray } from "@e2e/fixtures/FixtureUtils";
 import { range } from "@/utils/ArrayUtils";
-import { DataPointGenerator } from "@e2e/fixtures/common/DataPointFixtures";
 
 /**
  * This class is a generator for prepared fixtures
@@ -31,11 +29,10 @@ class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
 
   generateMinimumAcceptedDetailsPerCashFlowType(): EuTaxonomyDetailsPerCashFlowType {
     return {
-      totalAmount: this.dataPointGenerator.generateDataPoint(
+      totalAmount: this.generateCurrencyExtendedDataPoint(
         this.valueOrNull(generateCurrencyValue()),
-        this.reports,
         generateCurrencyCode(),
-      ) as CurrencyDataPoint,
+      ),
       nonEligibleShare: this.generateFinancialShare(),
       eligibleShare: this.generateFinancialShare(),
       nonAlignedShare: this.generateFinancialShare(),
@@ -70,7 +67,7 @@ export function generateEuTaxonomyForNonFinancials(): DataAndMetaInformationEuTa
     };
   });
   let data = generatedDataAndMetaInfo[0].data;
-  data.general!.referencedReports = new DataPointGenerator().generateReferencedReports(["IntegratedReport"]);
+  data.general!.referencedReports = dataGenerator.generateReferencedReports(["IntegratedReport"]);
   data.revenue!.totalAmount!.value = 0;
   data.revenue!.alignedActivities![0].share ??= {};
   data.revenue!.alignedActivities![0].share.relativeShareInPercent = generatePercentageValue();

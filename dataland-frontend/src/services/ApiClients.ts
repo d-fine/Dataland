@@ -33,7 +33,7 @@ type ApiClientFactory = <T>(constructor: ApiClientConstructor<T>) => T;
 
 export class ApiClientProvider {
   private readonly keycloakPromise: Promise<Keycloak>;
-  private readonly axiosInstance: AxiosInstance;
+  readonly axiosInstance: AxiosInstance;
 
   readonly backendClients: ApiBackendClients;
   readonly apiClients: ApiClients;

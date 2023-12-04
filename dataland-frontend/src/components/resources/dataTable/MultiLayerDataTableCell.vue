@@ -3,6 +3,12 @@
     <i class="pi pi-eye-slash pr-1 text-red-500" aria-hidden="true" data-test="hidden-icon" />
     <MultiLayerDataTableCell :content="content.displayValue.innerContents" />
   </div>
+  <div v-if="content.displayComponentName == MLDTDisplayComponents.DataPointWrapperDisplayComponent">
+    <DataPointWrapperDisplayComponent :content="content">
+      <MultiLayerDataTableCell :content="content.displayValue.innerContents" v-if="!hasBlankInnerContents" />
+      <template v-else>No data provided</template>
+    </DataPointWrapperDisplayComponent>
+  </div>
   <component v-else :is="content.displayComponentName" :content="content" />
 </template>
 
@@ -16,6 +22,7 @@ import StringDisplayComponent from "@/components/resources/dataTable/cells/Strin
 import { defineComponent } from "vue";
 import ModalLinkDisplayComponent from "@/components/resources/dataTable/cells/ModalLinkDisplayComponent.vue";
 import DataPointDisplayComponent from "@/components/resources/dataTable/cells/DataPointDisplayComponent.vue";
+import DataPointWrapperDisplayComponent from "@/components/resources/dataTable/cells/DataPointWrapperDisplayComponent.vue";
 
 export default defineComponent({
   name: "MultiLayerDataTableCell",
@@ -23,8 +30,19 @@ export default defineComponent({
     MLDTDisplayComponents() {
       return MLDTDisplayComponentName;
     },
+    hasBlankInnerContents(): boolean {
+      if (this.content.displayComponentName == MLDTDisplayComponentName.DataPointWrapperDisplayComponent) {
+        const innerContents = this.content.displayValue.innerContents;
+        if (innerContents.displayComponentName == MLDTDisplayComponentName.StringDisplayComponent) {
+          const innerLength = innerContents.displayValue?.length ?? 0;
+          return innerLength <= 0;
+        }
+      }
+      return false;
+    },
   },
   components: {
+    DataPointWrapperDisplayComponent,
     StringDisplayComponent,
     DocumentLinkDisplayComponent,
     ModalLinkDisplayComponent,

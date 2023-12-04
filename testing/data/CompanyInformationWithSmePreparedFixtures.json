@@ -2,58 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Lake Danielle",
-			"headquartersPostalCode": "79108",
-			"sector": null,
+			"headquarters": "Fort Billytown",
+			"headquartersPostalCode": "15054",
+			"sector": "metrics",
 			"identifiers": {
 				"Lei": [
-					"uHRI9K5uIjoPrVFrmLYF"
+					"m7KURWXO3DEKUw71zipo"
 				],
 				"Isin": [
-					"09CmpSlLAt0W"
+					"ZJlGhxAFK0GQ"
 				],
 				"PermId": [
-					"KEKtBsxfiy"
+					"J7adT0E1lt"
 				],
-				"Ticker": [
-					"4WQvejv"
-				],
-				"Duns": [
-					"9kk4VHmmx"
-				],
+				"Ticker": [],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"BgRhIfSl8OU4qJJ"
+					"EANxC2uunnCFdyg"
 				]
 			},
-			"countryCode": "KE",
+			"countryCode": "GR",
 			"companyAlternativeNames": [
-				"Hackett LLC",
-				"Lueilwitz, Heathcote and O'Reilly"
+				"Zemlak Group"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": null,
+			"companyLegalForm": "GmbH",
+			"website": "https://monumental-environment.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"05.1",
-						"23.62",
-						"25.93",
-						"30.1",
-						"69.10"
+						"01.63",
+						"T"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Trantow Land 50834",
-						"postalCode": "38890-0409",
-						"city": "Beierchester",
-						"state": null,
-						"country": "LY"
+						"streetAndHouseNumber": "Samson Landing 7364",
+						"postalCode": "10311",
+						"city": "Maggioshire",
+						"state": "Iowa",
+						"country": "MK"
 					},
-					"numberOfEmployees": 4803,
-					"fiscalYearStart": "2024-04-29"
+					"numberOfEmployees": 8055,
+					"fiscalYearStart": "2024-05-03"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -63,17 +55,21 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": []
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Handcrafted Frozen Shirt",
+							"name": "Fantastic Frozen Pizza",
+							"shareOfTotalRevenueInPercent": 94.6956
+						},
+						{
+							"name": "Awesome Rubber Fish",
 							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Electronic Concrete Keyboard",
-							"shareOfTotalRevenueInPercent": 9.9931
+							"name": "Modern Concrete Pizza",
+							"shareOfTotalRevenueInPercent": 68.7122
 						}
 					]
 				}
@@ -83,18 +79,25 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 69,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 44,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMWh": 1069,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 43,
+					"primaryEnergySourceForHeatingAndHotWater": null,
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 39443916,
-					"naturalHazardsCovered": null
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 23006533,
+					"naturalHazardsCovered": [
+						"Avalanche",
+						"Flooding",
+						"Snow",
+						"Wind",
+						"EarthQuake",
+						"Hail"
+					]
 				}
 			}
 		},
@@ -103,42 +106,41 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fort Gabe",
-			"headquartersPostalCode": "55642",
-			"sector": "relationships",
+			"headquarters": "Hagenesbury",
+			"headquartersPostalCode": "61910-8396",
+			"sector": "communities",
 			"identifiers": {
 				"Lei": [
-					"6zWR93nY1oXOR7oO7EOc"
+					"v5yEcW23W1QWJdn5Qwaw"
 				],
 				"Isin": [
-					"7MMHvTv4WZM7",
-					"WlpXlnV57Dqh"
+					"eqYvZQ6QTARp",
+					"q2Jwhjqiou8E"
 				],
 				"PermId": [],
 				"Ticker": [
-					"kRKjbCo"
+					"w1VDkU7"
 				],
 				"Duns": [
-					"EQAt5mzDZ"
+					"7OOXHQLn1"
 				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "IE",
+			"countryCode": "GW",
 			"companyAlternativeNames": [
-				"Heaney - Simonis",
-				"Hoeger and Sons",
-				"Stiedemann - Considine"
+				"Beatty and Sons",
+				"McDermott - Welch"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://imperturbable-oyster.org",
+			"companyLegalForm": null,
+			"website": "https://overlooked-squash.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"86.21"
+						"47.25"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -147,13 +149,13 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 9313,
-					"fiscalYearStart": "2024-04-29"
+					"numberOfEmployees": 5137,
+					"fiscalYearStart": "2024-10-31"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 82028874,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 57483359
+					"revenueInEUR": 46017457,
+					"operatingCostInEUR": 5959919,
+					"capitalAssetsInEUR": null
 				}
 			},
 			"production": {
@@ -161,30 +163,52 @@
 					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Elegant Soft Fish",
+							"shareOfTotalRevenueInPercent": 2.8186
+						},
+						{
+							"name": "Bespoke Soft Pants",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Elegant Rubber Towels",
+							"shareOfTotalRevenueInPercent": 87.7296
+						},
+						{
+							"name": "Sleek Cotton Cheese",
+							"shareOfTotalRevenueInPercent": 67.1598
+						},
+						{
+							"name": "Gorgeous Rubber Shoes",
+							"shareOfTotalRevenueInPercent": 1.6732
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 448,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 47,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 546,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 15555391,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 19331720,
 					"naturalHazardsCovered": [
+						"Flooding",
 						"Avalanche",
-						"Hail",
 						"EarthQuake",
-						"Snow"
+						"Snow",
+						"Hail"
 					]
 				}
 			}
@@ -194,36 +218,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Kamrynbury",
-			"headquartersPostalCode": "06169-7324",
-			"sector": null,
+			"headquarters": "Port Ellsworth",
+			"headquartersPostalCode": null,
+			"sector": "interfaces",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"lAkPilFQYt92fH9BjUrB"
+				],
 				"Isin": [
-					"pLz6YmjRCy4U",
-					"E9iPyTzmEUdL"
+					"bubISAcHKpTa",
+					"Ykhs8CKpW4Bz"
 				],
 				"PermId": [
-					"KRoLTsv1v8"
+					"FiN0dkO4c4"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"1QvyFTE"
+				],
 				"Duns": [],
-				"VatNumber": [
-					"ACvFbys0U"
-				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"5n6LOMTCfNyGQhR"
+				]
 			},
-			"countryCode": "BI",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://extra-small-ray.name",
+			"countryCode": "AS",
+			"companyAlternativeNames": [
+				"Bogan LLC",
+				"Yost LLC"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"71"
+						"17.22"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -232,33 +263,75 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 8684,
-					"fiscalYearStart": "2024-03-21"
+					"numberOfEmployees": 4310,
+					"fiscalYearStart": "2024-04-03"
 				},
 				"companyFinancials": {
-					"revenueInEUR": null,
+					"revenueInEUR": 83297052,
 					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 51253567
+					"capitalAssetsInEUR": 11496907
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Blick - Goldner",
+							"nameOfProductionSite": "Walker Group",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": null,
-								"city": "Funkville",
-								"state": null,
-								"country": "SZ"
+								"streetAndHouseNumber": "Silver Street 5711",
+								"postalCode": "30700",
+								"city": "Lehnerfield",
+								"state": "Michigan",
+								"country": "AL"
 							},
-							"shareOfTotalRevenueInPercent": 97.4859
+							"shareOfTotalRevenueInPercent": 36.6851
+						},
+						{
+							"nameOfProductionSite": "Dickinson Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Dickinson Land 2083",
+								"postalCode": "34239",
+								"city": "Littelside",
+								"state": null,
+								"country": "AG"
+							},
+							"shareOfTotalRevenueInPercent": 0.6435
+						},
+						{
+							"nameOfProductionSite": "Swift - Considine",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Cross Lane 296",
+								"postalCode": null,
+								"city": "East Isobel",
+								"state": null,
+								"country": "AM"
+							},
+							"shareOfTotalRevenueInPercent": 7.3752
+						},
+						{
+							"nameOfProductionSite": "Brekke, Stark and Christiansen",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Willow Grove 670",
+								"postalCode": "03327",
+								"city": "Myrticestead",
+								"state": "Delaware",
+								"country": "GU"
+							},
+							"shareOfTotalRevenueInPercent": 16.2473
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Practical Concrete Car",
+							"shareOfTotalRevenueInPercent": 3.2815
+						},
+						{
+							"name": "Sleek Fresh Ball",
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
 				}
 			},
 			"power": {
@@ -267,19 +340,20 @@
 				},
 				"consumption": {
 					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 445,
+					"primaryEnergySourceForHeatingAndHotWater": null,
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 21426064,
 					"naturalHazardsCovered": [
+						"Snow",
 						"Wind",
-						"Flooding"
+						"Hail"
 					]
 				}
 			}

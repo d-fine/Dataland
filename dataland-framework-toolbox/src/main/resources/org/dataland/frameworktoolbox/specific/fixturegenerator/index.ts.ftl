@@ -1,0 +1,22 @@
+import fs from "fs";
+import { generate${frameworkIdentifier?cap_first}Fixtures } from "@e2e/fixtures/frameworks/${frameworkIdentifier}/${frameworkIdentifier?cap_first}DataFixtures";
+import { generate${frameworkIdentifier?cap_first}PreparedFixtures } from "@e2e/fixtures/frameworks/${frameworkIdentifier}/${frameworkIdentifier?cap_first}PreparedFixtures";
+import { FAKE_FIXTURES_PER_FRAMEWORK } from "@e2e/fixtures/GenerateFakeFixtures";
+
+/**
+ * Generates and exports fake fixtures for the ${frameworkIdentifier} framework
+ */
+function exportFixtures${frameworkIdentifier?cap_first}(): void {
+  const companyInformationWith${frameworkIdentifier?cap_first}Data = generate${frameworkIdentifier?cap_first}Fixtures(FAKE_FIXTURES_PER_FRAMEWORK);
+  fs.writeFileSync(
+    "../testing/data/CompanyInformationWith${frameworkIdentifier?cap_first}Data.json",
+    JSON.stringify(companyInformationWith${frameworkIdentifier?cap_first}Data, null, "\t"),
+  );
+  const preparedFixture${frameworkIdentifier?cap_first}DataForFinancials = generate${frameworkIdentifier?cap_first}PreparedFixtures();
+  fs.writeFileSync(
+    "../testing/data/CompanyInformationWith${frameworkIdentifier?cap_first}PreparedFixtures.json",
+    JSON.stringify(preparedFixture${frameworkIdentifier?cap_first}DataForFinancials, null, "\t"),
+  );
+}
+
+export default exportFixtures${frameworkIdentifier?cap_first};
