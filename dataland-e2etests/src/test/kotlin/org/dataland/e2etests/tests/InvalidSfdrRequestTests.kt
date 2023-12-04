@@ -25,6 +25,7 @@ class InvalidSfdrRequestTests {
             )
         }
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode500))
+        println(errorForInvalidInput.message)
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(exceptionText))
     }
 
@@ -44,6 +45,7 @@ class InvalidSfdrRequestTests {
             )
         }
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode500))
+        println(errorForInvalidInput.message)
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(exceptionText))
     }
 
@@ -60,6 +62,7 @@ class InvalidSfdrRequestTests {
             )
         }
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode500))
+        println(errorForInvalidInput.message)
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(exceptionText))
     }
 
@@ -76,6 +79,7 @@ class InvalidSfdrRequestTests {
             )
         }
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode500))
+        println(errorForInvalidInput.message)
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(exceptionText))
     }
 
