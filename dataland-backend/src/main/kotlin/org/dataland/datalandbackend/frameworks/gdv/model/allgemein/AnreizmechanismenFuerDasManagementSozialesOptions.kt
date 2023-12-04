@@ -8,9 +8,9 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(
     enumAsRef = true,
 )
-enum class AnreizmechanismenFuerDasManagementSozialesOptions(val value: String) {
-    Nein("Nein"),
-    JaAufsichtsrat("Ja, Aufsichtsrat"),
-    JaGeschaeftsleitung("Ja, Geschäftsleitung"),
-    JaAufsichtsratUndGeschaeftsleitung("Ja, Aufsichtsrat und Geschäftsleitung"),
+enum class AnreizmechanismenFuerDasManagementSozialesOptions {
+    Nein,
+    JaAufsichtsrat,
+    JaGeschaeftsleitung,
+    JaAufsichtsratUndGeschaeftsleitung,
 }

@@ -8,9 +8,9 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(
     enumAsRef = true,
 )
-enum class FrequenzDerBerichterstattungOptions(val value: String) {
-    Jaehrlich("jährlich"),
-    Halbjaehrlich("halbjährlich"),
-    Vierteljaehrlich("vierteljährlich"),
-    Monatlich("monatlich"),
+enum class FrequenzDerBerichterstattungOptions {
+    Jaehrlich,
+    Halbjaehrlich,
+    Vierteljaehrlich,
+    Monatlich,
 }

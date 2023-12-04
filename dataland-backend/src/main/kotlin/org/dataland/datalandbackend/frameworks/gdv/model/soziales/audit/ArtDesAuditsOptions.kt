@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(
     enumAsRef = true,
 )
-enum class ArtDesAuditsOptions(val value: String) {
-    InterneAnhoerung("Interne Anhörung"),
-    PruefungDurchDritte("Prüfung durch Dritte"),
-    SowohlInternAlsAuchVonDrittanbietern("Sowohl intern als auch von Drittanbietern"),
+enum class ArtDesAuditsOptions {
+    InterneAnhoerung,
+    PruefungDurchDritte,
+    SowohlInternAlsAuchVonDrittanbietern,
 }
