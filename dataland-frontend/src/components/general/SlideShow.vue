@@ -22,7 +22,7 @@ const props = withDefaults(
     rightArrowClasses: string;
     slideCount: number;
     initialCenterSlide?: number;
-    scrollScreenWidthLimit: number;
+    scrollScreenWidthLimit?: number;
     slideWidth: number;
   }>(),
   {
@@ -94,7 +94,9 @@ const move = (direction: number): void => {
 };
 
 const dragStart = (e: PointerEvent | TouchEvent): void => {
-  if (scrollScreenWidthLimit.value && window.innerWidth > scrollScreenWidthLimit.value) return;
+  if (scrollScreenWidthLimit?.value && window.innerWidth > scrollScreenWidthLimit.value) {
+    return;
+  }
   state.isDragging = true;
   state.startPos = "touches" in e ? e.touches[0].pageX : e.pageX;
   state.prevTranslate = state.currentTranslate;

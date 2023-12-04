@@ -51,10 +51,9 @@ const getInTouchSection = findSection("Get in touch");
 
   &__wrapper {
     display: grid;
-    grid-template-columns: repeat(16, 1fr);
+    grid-template-columns: repeat(10, 1fr);
     gap: 61px 32px;
-    max-width: 1440px;
-    width: 100%;
+    max-width: 900px;
     padding: 0 32px;
   }
 
@@ -66,7 +65,7 @@ const getInTouchSection = findSection("Get in touch");
     letter-spacing: 0.25px;
     text-align: left;
     margin: 0;
-    grid-column: 4 / 14;
+    grid-column: 1 / -1;
     transition:
       font-size 0.4s ease,
       line-height 0.4s ease;
@@ -81,7 +80,7 @@ const getInTouchSection = findSection("Get in touch");
     font-weight: 600;
     line-height: 48px; /* 120% */
     letter-spacing: 0.25px;
-    grid-column: 4 / 14;
+    grid-column: 1 / -1;
     text-align: left;
     margin: 0;
   }
@@ -98,7 +97,7 @@ const getInTouchSection = findSection("Get in touch");
     text-transform: uppercase;
     border: 2px solid var(--primary-orange);
     cursor: pointer;
-    grid-column: 4/10;
+    grid-column: 1 / -1;
     width: fit-content;
     &:hover {
       background-color: var(--default-neutral-white);
@@ -111,8 +110,9 @@ const getInTouchSection = findSection("Get in touch");
     grid-template-columns: repeat(4, 1fr);
     align-self: flex-end;
     gap: 32px;
-    grid-column: 3 / 15;
+    grid-column: 1 / -1;
     margin-top: 79px;
+    justify-content: center;
   }
   &__row {
     border-radius: 16px;
@@ -122,9 +122,9 @@ const getInTouchSection = findSection("Get in touch");
     display: flex;
     gap: 16px;
     flex-direction: column;
-    padding: 32px 40px;
+    padding: 46px 32px;
     text-align: left;
-    min-width: 232px;
+    min-width: 228px;
   }
   &__cell {
     color: var(--grey-tones-900);
@@ -155,45 +155,27 @@ const getInTouchSection = findSection("Get in touch");
   }
 }
 
-@media only screen and (max-width: $large) {
-  .joincampaign {
-    &__wrapper {
-      grid-template-columns: repeat(12, 1fr);
-      gap: 61px 22px;
-      padding: 0 22px;
-    }
-    &__title {
-      grid-column: 2 / 12;
-      max-width: 929px;
-    }
-    &__paragraph {
-      grid-column: 2 / 12;
-    }
-    &__button {
-      grid-column: 2 / -1;
-    }
-    &__grid {
-      grid-template-columns: repeat(2, 2fr);
-      gap: 61px 22px;
-      grid-column: 2 / 12;
-      margin-top: 0;
-    }
-    &__row {
-      padding: 46px 40px;
-      min-height: 340px;
-    }
-  }
-}
 @media only screen and (max-width: $medium) {
   .joincampaign {
     padding: 80px 0;
+    &__wrapper {
+      grid-template-columns: repeat(12, 1fr);
+    }
     &__title {
       font-size: 64px;
       line-height: 72px;
       max-width: 551px;
     }
+    &__grid {
+      grid-template-columns: repeat(2, 2fr);
+      gap: 61px 22px;
+      grid-column: 1 / -1;
+      margin-top: 0;
+    }
     &__row {
       gap: 24px;
+      padding: 46px 40px;
+      min-height: 340px;
     }
   }
 }
