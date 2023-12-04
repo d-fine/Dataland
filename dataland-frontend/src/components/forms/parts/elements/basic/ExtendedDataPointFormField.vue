@@ -14,9 +14,7 @@
         <div class="col-12">
           <UploadFormHeader v-if="!shouldBeToggle" :label="label" :description="description" :is-required="required" />
           <slot />
-          <div
-            class="grid align-content-end"
-          >
+          <div class="grid align-content-end">
             <FormKit type="group" name="dataSource">
               <div class="col-8">
                 <UploadFormHeader
@@ -48,10 +46,7 @@
             </FormKit>
           </div>
           <!-- Data quality -->
-          <div
-            class="md:col-8 col-12 p-0 mb-4"
-            data-test="dataQuality"
-          >
+          <div class="md:col-8 col-12 p-0 mb-4" data-test="dataQuality">
             <UploadFormHeader
               :label="`${label} Quality`"
               description="The level of confidence associated to the value."
@@ -155,7 +150,7 @@ export default defineComponent({
     },
   },
   watch: {
-    isDataValueProvided(isDataValueProvided) {
+    isDataValueProvided(isDataValueProvided: boolean) {
       this.handleBlurValue(isDataValueProvided);
     },
     dataPointIsAvailable(newValue: boolean) {

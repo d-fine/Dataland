@@ -53,6 +53,7 @@ describeIf(
         lksgFixture.companyInformation.companyName,
       );
       submitButton.buttonAppearsEnabled();
+      cy.get('[data-test="smetaSocialAuditConcept"] [data-test="dataPointToggleButton"]').click();
       cy.get("button[data-test=files-to-upload-remove]")
         .first()
         .parents(".form-field:first")

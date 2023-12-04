@@ -37,11 +37,11 @@ export default defineComponent({
   methods: {
     /**
      * Emits an event when the currentValue has been changed
+     * @param currentValue current value
      */
     emitUpdateCurrentValue(currentValue: string) {
       this.$emit("update:currentValue", currentValue);
     },
-
   },
 });
 </script>
