@@ -2,51 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "West Verdie",
-			"headquartersPostalCode": "30584",
-			"sector": "partnerships",
+			"headquarters": "Bernadetteview",
+			"headquartersPostalCode": null,
+			"sector": "blockchains",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"TxXv4BmiK0vmOtZ54ZNa"
+				],
 				"Isin": [
-					"8KX2eOIAfm3E"
+					"l6wRR4TEgBZD",
+					"kMZliBlDtWql"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"d32owurGQ"
+				"Ticker": [
+					"xuj96b8"
 				],
-				"CompanyRegistrationNumber": [
-					"ZmxDZhcO4X06XYW"
-				]
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "AL",
+			"countryCode": "EC",
 			"companyAlternativeNames": [
-				"Wolff Group"
+				"Rutherford Inc"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://noted-crewmember.info/",
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://unfortunate-dungeon.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"10.31",
-						"13.93",
-						"28.2",
-						"64.2",
-						"91.04"
+						"01.44",
+						"33.2",
+						"77.12"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Rice Manor 660",
-						"postalCode": "94202-7504",
-						"city": "New Caesar",
-						"state": null,
-						"country": "GM"
+						"streetAndHouseNumber": "Watery Lane 6970",
+						"postalCode": "04350-1945",
+						"city": "South Lucie",
+						"state": "Rhode Island",
+						"country": "PL"
 					},
-					"numberOfEmployees": 9823,
-					"fiscalYearStart": "2024-04-15"
+					"numberOfEmployees": 9440,
+					"fiscalYearStart": "2024-02-26"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -58,31 +57,81 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Veum Inc",
+							"nameOfProductionSite": "Bahringer - Blick",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "S Jackson Street 499",
-								"postalCode": null,
-								"city": "East Kobestad",
-								"state": "Illinois",
-								"country": "SJ"
+								"streetAndHouseNumber": null,
+								"postalCode": "94703-0223",
+								"city": "Boyerstad",
+								"state": "Iowa",
+								"country": "MP"
 							},
-							"shareOfTotalRevenueInPercent": 81.1905
+							"shareOfTotalRevenueInPercent": 54.7641
 						},
 						{
-							"nameOfProductionSite": "Donnelly - Pfannerstill",
+							"nameOfProductionSite": "Stroman, Klocko and Durgan",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Elmo Shoal 9223",
-								"postalCode": "20252",
-								"city": "Bodecester",
-								"state": "Florida",
-								"country": "MA"
+								"streetAndHouseNumber": null,
+								"postalCode": null,
+								"city": "Sylvesterberg",
+								"state": "Washington",
+								"country": "MF"
 							},
-							"shareOfTotalRevenueInPercent": 68.7337
+							"shareOfTotalRevenueInPercent": 72.6458
+						},
+						{
+							"nameOfProductionSite": "Paucek Inc",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "McLaughlin Plains 763",
+								"postalCode": "64694-2704",
+								"city": "Jeremieville",
+								"state": "Kansas",
+								"country": "GE"
+							},
+							"shareOfTotalRevenueInPercent": 57.889
+						},
+						{
+							"nameOfProductionSite": "Conn, Schultz and Tremblay",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "S Lincoln Street 8442",
+								"postalCode": "61337-8442",
+								"city": "New Hattie",
+								"state": "Virginia",
+								"country": "KP"
+							},
+							"shareOfTotalRevenueInPercent": 31.9723
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Mill Road 841",
+								"postalCode": "53362-9118",
+								"city": "Clovis",
+								"state": "New Jersey",
+								"country": "LU"
+							},
+							"shareOfTotalRevenueInPercent": 54.348
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Sleek Bronze Sausages",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Recycled Wooden Car",
+							"shareOfTotalRevenueInPercent": 87.1126
+						},
+						{
+							"name": "Licensed Metal Shoes",
+							"shareOfTotalRevenueInPercent": 56.3223
+						},
+						{
+							"name": "Ergonomic Steel Table",
+							"shareOfTotalRevenueInPercent": 33.5059
+						}
+					]
 				}
 			},
 			"power": {
@@ -90,250 +139,9 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 282,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 642,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 23042820,
-					"naturalHazardsCovered": null
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-maximum-address",
-			"headquarters": "East Emieville",
-			"headquartersPostalCode": "31499-0566",
-			"sector": "eyeballs",
-			"identifiers": {
-				"Lei": [
-					"OLgnU45aeRWAr9dUQoIu"
-				],
-				"Isin": [
-					"nSQOxC3peCsR"
-				],
-				"PermId": [
-					"b7vMTnOuDJ"
-				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"R3LfQA2EvxDRK5D"
-				]
-			},
-			"countryCode": "TM",
-			"companyAlternativeNames": [
-				"Botsford - Heathcote"
-			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://heavenly-calibre.com",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"78.10"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Main Street 12",
-						"postalCode": "12345",
-						"city": "Nonexistingen",
-						"state": "Fiction",
-						"country": "Imagination"
-					},
-					"numberOfEmployees": 4597,
-					"fiscalYearStart": "2024-03-03"
-				},
-				"companyFinancials": {
-					"revenueInEUR": null,
-					"operatingCostInEUR": 10759060,
-					"capitalAssetsInEUR": 30281808
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Volkman - Will",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Laurence Keys 88200",
-								"postalCode": "36466",
-								"city": "Port Hans",
-								"state": "New York",
-								"country": "CI"
-							},
-							"shareOfTotalRevenueInPercent": 75.9001
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Main Avenue 962",
-								"postalCode": "61830",
-								"city": "Balistrerimouth",
-								"state": "Arizona",
-								"country": "JM"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Harber, Murphy and Runolfsson",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kay Motorway 29466",
-								"postalCode": "99679-0652",
-								"city": "Lake Modestaborough",
-								"state": "Nebraska",
-								"country": "PW"
-							},
-							"shareOfTotalRevenueInPercent": 29.0579
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Refined Granite Soap",
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
-				},
-				"consumption": {
-					"powerConsumptionInMWh": 1440,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazards": 7934569,
-					"naturalHazardsCovered": null
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-minimum-address",
-			"headquarters": "South Abrahamworth",
-			"headquartersPostalCode": "33761",
-			"sector": "lifetime value",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"eJUKzhc81XAn"
-				],
-				"PermId": [
-					"X2MjUKr5uS"
-				],
-				"Ticker": [],
-				"Duns": [
-					"xKwlTyzyx"
-				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "VI",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://lighthearted-carboxyl.com/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"81.21"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": null,
-						"city": "City 17",
-						"state": null,
-						"country": "Uninspired"
-					},
-					"numberOfEmployees": 5742,
-					"fiscalYearStart": "2024-01-03"
-				},
-				"companyFinancials": {
-					"revenueInEUR": null,
-					"operatingCostInEUR": 14554814,
-					"capitalAssetsInEUR": 35747670
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "D'Amore - Schulist",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Roscoe Run 9170",
-								"postalCode": "69172-2649",
-								"city": "Missouristad",
-								"state": "Indiana",
-								"country": "AG"
-							},
-							"shareOfTotalRevenueInPercent": 1.1877
-						},
-						{
-							"nameOfProductionSite": "Russel Inc",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Market Square 4446",
-								"postalCode": "06429",
-								"city": "New Brunswick",
-								"state": null,
-								"country": "MM"
-							},
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Unbranded Bronze Shirt",
-							"shareOfTotalRevenueInPercent": 84.5515
-						},
-						{
-							"name": "Sleek Rubber Car",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Luxurious Granite Car",
-							"shareOfTotalRevenueInPercent": 29.7597
-						},
-						{
-							"name": "Rustic Plastic Chips",
-							"shareOfTotalRevenueInPercent": 61.3872
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
-				},
-				"consumption": {
-					"powerConsumptionInMWh": 745,
+					"powerConsumptionInMWh": null,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 805,
+					"energyConsumptionHeatingAndHotWaterInMWh": 856,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
@@ -343,6 +151,224 @@
 					"insuranceAgainstNaturalHazards": "Yes",
 					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": null
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-maximum-address",
+			"headquarters": "Adamscester",
+			"headquartersPostalCode": "80592-4026",
+			"sector": "markets",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"cXNoeRhKIsOX",
+					"weojw5phIdV6"
+				],
+				"PermId": [
+					"ud57Q8LxAm"
+				],
+				"Ticker": [],
+				"Duns": [
+					"Glo1DnNEC"
+				],
+				"VatNumber": [
+					"NbbcFrDQc"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MD",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH",
+			"website": "https://substantial-whelp.biz/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"84.12"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": "Main Street 12",
+						"postalCode": "12345",
+						"city": "Nonexistingen",
+						"state": "Fiction",
+						"country": "Imagination"
+					},
+					"numberOfEmployees": 2754,
+					"fiscalYearStart": "2024-11-03"
+				},
+				"companyFinancials": {
+					"revenueInEUR": 88925560,
+					"operatingCostInEUR": 36544806,
+					"capitalAssetsInEUR": null
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": null
+				},
+				"products": {
+					"listOfProducts": null
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+				},
+				"consumption": {
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 90,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 25172996,
+					"naturalHazardsCovered": [
+						"Flooding",
+						"Avalanche"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-minimum-address",
+			"headquarters": "Port Gerard",
+			"headquartersPostalCode": "44832-8088",
+			"sector": "action-items",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"4pl7xovqef7N"
+				],
+				"PermId": [
+					"D1GKk5IeBx"
+				],
+				"Ticker": [],
+				"Duns": [
+					"ax5KPDaVX"
+				],
+				"VatNumber": [
+					"KUuTmV1k6"
+				],
+				"CompanyRegistrationNumber": [
+					"Qsmlj4md6EQE0AV"
+				]
+			},
+			"countryCode": "SJ",
+			"companyAlternativeNames": [
+				"D'Amore and Sons",
+				"Spencer and Sons"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://shallow-artery.info/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"42"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": null,
+						"postalCode": null,
+						"city": "City 17",
+						"state": null,
+						"country": "Uninspired"
+					},
+					"numberOfEmployees": 8204,
+					"fiscalYearStart": "2024-01-08"
+				},
+				"companyFinancials": {
+					"revenueInEUR": 31677234,
+					"operatingCostInEUR": 13712965,
+					"capitalAssetsInEUR": 42665368
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Mosciski, Davis and Emard",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Odie Villages 6520",
+								"postalCode": "13905-5418",
+								"city": "South Sonnycester",
+								"state": null,
+								"country": "GB"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Cronin LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "N 9th Street 603",
+								"postalCode": "76569-9985",
+								"city": "Beattyworth",
+								"state": null,
+								"country": "SO"
+							},
+							"shareOfTotalRevenueInPercent": 3.8089
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Jefferson Street 29820",
+								"postalCode": "16119-8969",
+								"city": "West Edward",
+								"state": "New Hampshire",
+								"country": "BM"
+							},
+							"shareOfTotalRevenueInPercent": 25.3584
+						},
+						{
+							"nameOfProductionSite": "Kunde and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Annamarie Villages 9404",
+								"postalCode": "55103",
+								"city": "Carmel",
+								"state": null,
+								"country": "SX"
+							},
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": null
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+				},
+				"consumption": {
+					"powerConsumptionInMWh": 642,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 450,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"naturalHazardsCovered": [
+						"EarthQuake"
+					]
 				}
 			}
 		},

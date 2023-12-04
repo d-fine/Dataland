@@ -2,33 +2,41 @@
 	{
 		"companyInformation": {
 			"companyName": "Gdv-dataset-with-no-null-fields",
-			"headquarters": "Curtshire",
-			"headquartersPostalCode": null,
-			"sector": null,
+			"headquarters": "Pagacton",
+			"headquartersPostalCode": "10089-2075",
+			"sector": "systems",
 			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"bKYTaLMwQtzG"
+				"Lei": [
+					"jzaqBccxCo04RLmHwWGh"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
+				"Isin": [
+					"Zjb3OMg7RB9x"
+				],
+				"PermId": [
+					"f3ylX6GSct"
+				],
+				"Ticker": [
+					"EyLFZGr"
+				],
+				"Duns": [
+					"3dxiwsa57"
+				],
 				"VatNumber": [
-					"bFYxQUjAh"
+					"x5cDvldh6"
 				],
 				"CompanyRegistrationNumber": [
-					"c49JJDe8lbfqdlJ"
+					"E72diwnvc8aLYD4"
 				]
 			},
-			"countryCode": "GA",
+			"countryCode": "UZ",
 			"companyAlternativeNames": [
-				"Harris Inc",
-				"Ondricka, Leannon and Kiehn",
-				"Thiel - Rice",
-				"Volkman Inc"
+				"Braun and Sons",
+				"Dach - King",
+				"Hauck, Gerhold and Bashirian",
+				"Schaefer - Krajcik"
 			],
 			"companyLegalForm": null,
-			"website": "https://putrid-drain.com",
+			"website": "https://gracious-inhabitant.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -38,9 +46,9 @@
 				}
 			},
 			"allgemein": {
-				"esgZiele": "No",
-				"ziele": "blockchains",
-				"investitionen": "networks",
+				"esgZiele": "Yes",
+				"ziele": "niches",
+				"investitionen": "infrastructures",
 				"sektorMitHohenKlimaauswirkungen": "Yes"
 			}
 		},

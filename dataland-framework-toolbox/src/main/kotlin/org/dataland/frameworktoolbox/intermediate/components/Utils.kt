@@ -29,6 +29,7 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
  * and a component-specific value-getter
  */
 fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory( // todo to addField und anpassen
+    uploadComponentName: String?,
     component: ComponentBase,
     valueGetter: FrameworkDisplayValueLambdaUpload,
 ) {
@@ -42,5 +43,6 @@ fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory( // todo to
         isNullable = component.isNullable,
         shouldDisplay = component.availableIfUpload.toFrameworkBooleanLambdaUpload(),
         valueGetter = valueGetter,
+        uploadComponentName = uploadComponentName,
     )
 }

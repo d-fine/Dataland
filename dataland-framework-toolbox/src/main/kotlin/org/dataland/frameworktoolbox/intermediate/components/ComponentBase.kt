@@ -42,6 +42,11 @@ open class ComponentBase(
     /**
      * The unit of a string component
      */
+    var uploadComponentName: String? = null
+
+    /**
+     * The unit of a string component
+     */
     var required: Boolean? = null
 
     /**
