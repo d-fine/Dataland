@@ -67,6 +67,22 @@ internal class CompanyDataControllerTest(
             )
     }
 
+    val testLei = "testLei"
+    val companyWithTestLei = CompanyInformation(
+        companyName = "Test Company",
+        companyAlternativeNames = null,
+        companyLegalForm = null,
+        countryCode = "DE",
+        headquarters = "Berlin",
+        headquartersPostalCode = "8",
+        sector = null,
+        website = null,
+        isTeaserCompany = null,
+        identifiers = mapOf(
+            IdentifierType.Lei to listOf(testLei),
+        ),
+    )
+
     @Test
     fun `check that the company id by identifier endpoint works as expected`() {
         mockSecurityContext()
@@ -75,22 +91,8 @@ internal class CompanyDataControllerTest(
             companyQueryManager,
             companyIdentifierRepositoryInterface,
         )
-        val testLei = "testLei"
         val expectedCompanyId = companyController.postCompany(
-            CompanyInformation(
-                companyName = "Test Company",
-                companyAlternativeNames = null,
-                companyLegalForm = null,
-                countryCode = "DE",
-                headquarters = "Berlin",
-                headquartersPostalCode = "8",
-                sector = null,
-                website = null,
-                isTeaserCompany = null,
-                identifiers = mapOf(
-                    IdentifierType.Lei to listOf(testLei),
-                ),
-            ),
+            companyWithTestLei,
         ).body!!.companyId
         Assertions.assertEquals(
             expectedCompanyId,
@@ -109,5 +111,6 @@ internal class CompanyDataControllerTest(
         )
         val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
         `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        SecurityContextHolder.setContext(mockSecurityContext) }
+        SecurityContextHolder.setContext(mockSecurityContext)
+    }
 }
