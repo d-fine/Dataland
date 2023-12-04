@@ -46,7 +46,7 @@ const getInTouchSection = computed(() => {
   align-items: center;
   display: flex;
   flex-direction: column;
-  background-color: var(--basic-dark);
+  background-color: #1f1f1f;
 
   &__wrapper {
     display: grid;

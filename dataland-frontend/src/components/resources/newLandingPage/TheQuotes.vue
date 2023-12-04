@@ -9,7 +9,6 @@
       :slide-count="cards.length"
       :initial-center-slide="initialCenterSlide"
       @update:currentSlide="updateCurrentSlide"
-      :scroll-screen-width-limit="1800"
       :slide-width="slideWidth"
     >
       <div v-if="cards.length % 2 === 0" role="listitem" class="quotes__slide">
@@ -27,9 +26,11 @@
             class="quotes__slide-thumbnail-overlay cookieconsent-optin-marketing"
             :style="{ backgroundImage: `url(https://img.youtube.com/vi/${card.icon}/maxresdefault.jpg)` }"
             v-show="currentSlide === index - initialCenterSlide + 1 ? showThumbnail : true"
-            @click="toggleThumbnailAndPlayVideo(index - initialCenterSlide + 1, card.icon)"
           >
-            <div class="quotes__play-icon">
+            <div
+              class="quotes__play-icon"
+              @click="toggleThumbnailAndPlayVideo(index - initialCenterSlide + 1, card.icon)"
+            >
               <div class="quotes__play-arrow"></div>
             </div>
           </div>
@@ -309,6 +310,7 @@ const register = (): void => {
     background-color: rgba(0, 0, 0, 0.6);
     border-radius: 50%;
     transform: translate(-50%, -50%);
+    cursor: pointer;
   }
 
   &__play-arrow {

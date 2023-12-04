@@ -105,6 +105,7 @@ const introSection = computed(() => {
 @media only screen and (max-width: $small) {
   .intro {
     margin: 64px auto;
+    padding-inline: 16px;
     &__img {
       width: 54px;
       margin-bottom: 48px;
@@ -126,7 +127,6 @@ const introSection = computed(() => {
 .search {
   position: relative;
   margin: 80px auto 0;
-  max-width: 701px;
   height: 80px;
   padding: 28px 24px;
   border-radius: 16px;
@@ -163,9 +163,10 @@ const introSection = computed(() => {
     pointer-events: none; // Let click events pass through to the input
   }
 }
-@media only screen and (max-width: 1440px) {
+@media only screen and (max-width: $large) {
   .search {
     margin-top: 31px;
+    max-width: 701px;
   }
 }
 </style>

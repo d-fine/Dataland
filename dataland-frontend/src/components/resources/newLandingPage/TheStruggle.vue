@@ -35,14 +35,14 @@ const struggleSection = computed(() => {
   gap: 68px;
   &__wrapper {
     display: grid;
-    grid-template-columns: repeat(16, 1fr);
+    grid-template-columns: repeat(10, 1fr);
     gap: 32px;
-    max-width: 1440px;
+    max-width: 900px;
     width: 100%;
     padding: 0 32px;
   }
   h2 {
-    grid-column: 4 / 14;
+    grid-column: 1 / -1;
     font-size: 100px;
     font-style: normal;
     font-weight: 700;
@@ -63,7 +63,7 @@ const struggleSection = computed(() => {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 48px 32px;
-    grid-column: 4 / 14;
+    grid-column: 1 / -1;
   }
 
   &__cell {
@@ -101,45 +101,30 @@ const struggleSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: $large) {
-  .struggle {
-    &__wrapper {
-      grid-template-columns: repeat(12, 1fr);
-      gap: 22px;
-      padding: 0 22px;
-    }
-    h2 {
-      grid-column: 2 / 10;
-    }
-    &__grid {
-      grid-column: 2 / 12;
-      gap: 80px 22px;
-    }
-    &__cell {
-      padding-right: calc((100% - 4 * 22px) / 2);
-      &__icon {
-        width: 40px;
-        height: 40px;
-      }
-    }
-  }
-}
 @media only screen and (max-width: $medium) {
   .struggle {
     &__wrapper {
+      grid-template-columns: repeat(12, 1fr);
+      padding: 0 22px;
       gap: 40px 22px;
     }
     h2 {
+      grid-column: 2 / 10;
       font-size: 64px;
       line-height: 72px;
       letter-spacing: 0.25px;
       margin: 0;
     }
     &__grid {
-      row-gap: 40px;
+      grid-column: 2 / 12;
+      gap: 40px 22px;
     }
     &__cell {
       padding-right: 0;
+      &__icon {
+        width: 40px;
+        height: 40px;
+      }
     }
   }
 }
