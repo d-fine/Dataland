@@ -130,10 +130,6 @@ class GleifGoldenCopyIngestor(
                 } else {
                     isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedIsinMappingFile)
                 }
-            logger.info("Size of delta mapping:")
-            logger.info("\tSize: ${deltaMapping.size}")
-            logger.info("\tNumber of keys: ${deltaMapping.keys.size}")
-            logger.info("\tNumber of flattened values: ${deltaMapping.values.flatten().size}")
             val newPersistentFile = File("${savedIsinMappingFile.parent}/newIsinMapping.csv")
             FileUtils.copyFile(newMappingFile, newPersistentFile)
             if (!newMappingFile.delete()) {
