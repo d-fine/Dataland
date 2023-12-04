@@ -13,56 +13,56 @@ import java.math.BigDecimal
  * belonging to the category "Environmental" of the sfdr framework.
 */
 data class SfdrEnvironmentalGreenhouseGasEmissions(
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = -10000000000)
     val scope1GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = -10000000000)
     val scope2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = -10000000000)
     val scope2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = -10000000000)
     val scope2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = -10000000000)
     val scope1And2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = -10000000000)
     val scope1And2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = -10000000000)
     val scope1And2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = -10000000000)
     val scope3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = -10000000000)
     val scope1And2And3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = -10000000000)
     val enterpriseValue: CurrencyDataPoint? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = -10000000000)
     val totalRevenue: CurrencyDataPoint? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = -10000000000)
     val carbonFootprintInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = -10000000000)
     val ghgIntensityInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal>? = null,
 
     @field:Valid

@@ -26,7 +26,7 @@ data class SfdrSocialHumanRights(
     @field:Valid
     val reportedForcedOrCompulsoryLabourIncidents: ExtendedDataPoint<YesNo>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val numberOfReportedIncidentsOfHumanRightsViolations: ExtendedDataPoint<Long>? = null,
 )

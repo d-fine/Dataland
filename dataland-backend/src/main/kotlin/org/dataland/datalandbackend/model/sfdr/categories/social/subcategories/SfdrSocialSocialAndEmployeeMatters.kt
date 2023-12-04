@@ -65,30 +65,30 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNo>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
-    @field:DataPointMaximumValue(maximumValue = 100)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = -100)
+    @field:DataPointMaximumValue(maximumValue = 100)
     val unadjustedGenderPayGapInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val femaleBoardMembers: ExtendedDataPoint<Long>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val maleBoardMembers: ExtendedDataPoint<Long>? = null,
 
+    @field:Valid
     @field:DataPointMinimumValue(minimumValue = 0)
     @field:DataPointMaximumValue(maximumValue = 100)
-    @field:Valid
     val boardGenderDiversityInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
     @field:Valid
@@ -97,13 +97,13 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid
     val workplaceAccidentPreventionPolicy: BaseDataPoint<YesNo>? = null,
 
+    @field:Valid
     @field:DataPointMinimumValue(minimumValue = 0)
     @field:DataPointMaximumValue(maximumValue = 100)
-    @field:Valid
     val rateOfAccidentsInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val workdaysLostInDays: ExtendedDataPoint<BigDecimal>? = null,
 
     @field:Valid
@@ -115,20 +115,20 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid
     val whistleblowerProtectionPolicy: BaseDataPoint<YesNo>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val reportedIncidentsOfDiscrimination: ExtendedDataPoint<Long>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val sanctionedIncidentsOfDiscrimination: ExtendedDataPoint<Long>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
-    @field:DataPointMaximumValue(maximumValue = 100)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
+    @field:DataPointMaximumValue(maximumValue = 10000)
     val excessiveCeoPayRatioInPercent: ExtendedDataPoint<BigDecimal>? = null,
 )

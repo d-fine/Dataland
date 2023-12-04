@@ -11,15 +11,15 @@ import org.dataland.datalandbackend.validator.DataPointMinimumValue
  * belonging to the category "Social" of the sfdr framework.
 */
 data class SfdrSocialAntiCorruptionAndAntiBribery(
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val casesOfInsufficientActionAgainstBriberyAndCorruption: ExtendedDataPoint<Long>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val reportedConvictionsOfBriberyAndCorruption: ExtendedDataPoint<Long>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val totalAmountOfReportedFinesOfBriberyAndCorruption: CurrencyDataPoint? = null,
 )
