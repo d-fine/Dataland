@@ -111,11 +111,12 @@ class GleifGoldenCopyIngestorTest {
     fun `test ingestion performs successfully if a file is provided`() {
         val (emptyBufferedReader, mockStaticFile) = commonMock()
         `when`(File.createTempFile(anyString(), anyString())).thenReturn(mock(File::class.java))
-        mockStatic(FileUtils::class.java)
+        val mockFileUtils = mockStatic(FileUtils::class.java)
         companyIngestor.processFullGoldenCopyFileIfEnabled()
         mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(2))
         verify(mockGleifCsvParser, times(1)).readGleifDataFromBufferedReader(any() ?: emptyBufferedReader)
         mockStaticFile.close()
+        mockFileUtils.close()
     }
 
     @Test

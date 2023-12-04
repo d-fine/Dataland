@@ -7,6 +7,7 @@ import okhttp3.Response
 import okhttp3.ResponseBody
 import org.apache.commons.io.FileUtils
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
@@ -43,6 +44,11 @@ class GleifApiAccessorTest {
     fun setupTest() {
         reset(FileUtils::class.java)
         reset(mockHttpClient)
+    }
+
+    @AfterAll
+    fun cleanup() {
+        mockFileUtils.close()
     }
 
     @Test
