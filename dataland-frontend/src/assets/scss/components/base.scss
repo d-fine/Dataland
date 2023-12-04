@@ -306,11 +306,32 @@ ul.unstyled-ul-list {
   place-self: center;
 }
 
-.grid2 {
+.grid-2-form-cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  > div:nth-child(even) {
+    border-left:1px solid $table-border;
+    padding: 0 0 0 20px;
+  }
+  > div:nth-child(odd) {
+    border: 0 none;
+    padding: 0 20px 0 0;
+  }
+  .formkit-outer:last-child {
+    margin: 0;
+  }
   @media screen and (max-width: 1200px) {
     grid-template-columns: 1fr;
+    > div:nth-child(even) {
+      border: 0 none;
+      padding: 0;
+    }
+    > div:nth-child(odd) {
+      padding: 0;
+    }
+    > div {
+      margin-bottom: 1rem;
+    }
   }
   grid-gap: 10px;
 }
