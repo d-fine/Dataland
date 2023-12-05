@@ -118,10 +118,7 @@ import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/S
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
-import {
-  type FrontendFrameworkDefinition,
-  type FrameworkViewConfiguration,
-} from "@/frameworks/FrameworkDefinition";
+import { type FrontendFrameworkDefinition, type FrameworkViewConfiguration } from "@/frameworks/FrameworkDefinition";
 import { configForEuTaxonomyFinancialsMLDT } from "@/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/configForEutaxonomyFinancialsMLDT";
 
 export default defineComponent({

@@ -55,6 +55,21 @@ class FrameworkFixtureGeneratorBuilder(
         }
     }
 
+    private fun buildFrameworkGeneratorsTs(frameworkGeneratorTsPath: Path) {
+        val freeMarkerContext = mapOf(
+            "frameworkIdentifier" to framework.identifier,
+        )
+
+        val freemarkerTemplate = FreeMarker.configuration
+            .getTemplate("/specific/fixturegenerator/FrameworkGenerator.ts.ftl")
+
+        if (frameworkGeneratorTsPath.notExists()) {
+            val writer = FileWriter(frameworkGeneratorTsPath.toFile())
+            freemarkerTemplate.process(freeMarkerContext, writer)
+            writer.close()
+        }
+    }
+
     private fun buildDataFixtures(dataFixturesTsPath: Path) {
         val freeMarkerContext = mapOf(
             "frameworkIdentifier" to framework.identifier,
@@ -87,6 +102,7 @@ class FrameworkFixtureGeneratorBuilder(
             frameworkConfigDir /
                 "${framework.identifier.capitalizeEn()}PreparedFixtures.ts",
         )
+        buildFrameworkGeneratorsTs(frameworkConfigDir / "${framework.identifier.capitalizeEn()}Generator.ts")
 
         into.gradleInterface.executeGradleTasks(
             listOf(
