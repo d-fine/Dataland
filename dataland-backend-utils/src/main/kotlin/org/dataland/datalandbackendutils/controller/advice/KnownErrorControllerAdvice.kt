@@ -128,16 +128,16 @@ class KnownErrorControllerAdvice(
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMethodNotSupportException(ex: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
         val errors = (ex.bindingResult.fieldErrors as List<FieldError>)
-        val stringbuilder = StringBuilder()
-        stringbuilder.append("Input validation failed.  \n")
+        val stringBuilder = StringBuilder()
+        stringBuilder.append("Input validation failed. ")
         for (er in errors) {
-            stringbuilder.append("On field ${er.field}: ${er.defaultMessage}\n")
+            stringBuilder.append("On field ${er.field}: ${er.defaultMessage} ")
         }
         return prepareResponse(
             ErrorDetails(
                 errorType = "bad-input",
                 summary = "Invalid input",
-                message = stringbuilder.toString(),
+                message = stringBuilder.toString(),
                 httpStatus = HttpStatus.BAD_REQUEST,
             ),
             ex,

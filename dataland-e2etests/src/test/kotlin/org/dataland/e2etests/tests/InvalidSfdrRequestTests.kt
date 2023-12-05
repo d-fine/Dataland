@@ -10,7 +10,7 @@ import org.junit.jupiter.api.assertThrows
 class InvalidSfdrRequestTests {
     private val apiAccessor = ApiAccessor()
     val errorCode400 = "Client error : 400"
-    val errorMessage = "Input failed the input validation"
+    val errorMessage = "Input validation failed."
 
     fun getErrorFromApi(companyName: String): ClientException {
         val oneInvalidSfdrDataset = apiAccessor.testDataProviderForSfdrData
