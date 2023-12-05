@@ -3,6 +3,7 @@ import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
   type MLDTDisplayObject,
+  MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
 import MultiSelectModal from "@/components/resources/dataTable/modals/MultiSelectModal.vue";
@@ -36,10 +37,7 @@ export function formatListOfStringsForDatatable(
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
   if (!input || input.length == 0) {
-    return {
-      displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
-      displayValue: "",
-    };
+    return MLDTDisplayObjectForEmptyString;
   } else {
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
