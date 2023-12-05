@@ -40,6 +40,16 @@ open class ComponentBase(
     var unit: String? = null
 
     /**
+     * The unit of a string component
+     */
+    var uploadComponentName: String? = null
+
+    /**
+     * The unit of a string component
+     */
+    var required: Boolean? = null
+
+    /**
      * The dataModelGenerator allows users to overwrite the DataClass generation of this specific component instance
      */
     var dataModelGenerator: ((dataClassBuilder: DataClassBuilder) -> Unit)? = null

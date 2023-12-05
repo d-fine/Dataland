@@ -16,10 +16,10 @@ export const ${frameworkIdentifier}DataModel = [<@mldtconfig uploadConfig/>];
     name: "${cellConfig.name?js_string}",
     label: "${cellConfig.label?js_string}",
     <#if cellConfig.explanation??>description: "${cellConfig.explanation?js_string}",</#if>
-    <#if cellConfig.unit??>unit: "${cellConfig.unit?js_string}",</#if>
-    component: "",
-    required: "",
-    showIf: <@frameworklambda cellConfig.shouldDisplay/>,
+    unit: "<#if cellConfig.unit??>${cellConfig.unit?js_string}</#if>",
+    uploadComponentName: "${cellConfig.uploadComponentName?js_string}",
+    required: <#if cellConfig.required??>true<#else>false</#if>,
+    showIf: <@frameworklambda cellConfig.shouldDisplay/>, <#--is this even needed for upload?-->
     validation: "",
     },
 </#macro>

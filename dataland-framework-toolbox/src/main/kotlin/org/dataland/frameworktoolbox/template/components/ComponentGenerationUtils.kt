@@ -48,6 +48,8 @@ open class ComponentGenerationUtils {
         component.isNullable = row.mandatoryField == TemplateYesNo.No
         component.documentSupport = DocumentSupport.fromTemplate(row.documentSupport)
         component.unit = if (row.unit.isNotBlank()) row.unit else null
+        component.required = if (component.isNullable == false) true else null
+        component.uploadComponentName = row.component
     }
 
     /**

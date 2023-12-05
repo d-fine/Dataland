@@ -55,15 +55,21 @@ data class SectionUploadConfigBuilder(
         shouldDisplay: FrameworkBooleanLambda,
         valueGetter: FrameworkDisplayValueLambda,
         unit: String?,
+        isNullable: Boolean,
+        required: Boolean?,
+        uploadComponentName: String?,
     ): CellConfigBuilder {
         val newCell = CellConfigBuilder(
-            parentSection = this,
-            label = label,
-            name = camelCaseSify(label),
-            unit = unit,
-            explanation = explanation,
-            shouldDisplay = shouldDisplay,
-            valueGetter = valueGetter,
+                parentSection = this,
+                label = label,
+                name = camelCaseSify(label),
+                explanation = explanation,
+                shouldDisplay = shouldDisplay,
+                valueGetter = valueGetter,
+                unit = unit,
+                isNullable = isNullable,
+                required = required,
+                uploadComponentName = uploadComponentName,
         )
         children.add(newCell)
         return newCell
