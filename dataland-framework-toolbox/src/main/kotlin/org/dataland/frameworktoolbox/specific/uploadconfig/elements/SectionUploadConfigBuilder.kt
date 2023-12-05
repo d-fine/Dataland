@@ -60,16 +60,16 @@ data class SectionUploadConfigBuilder(
         uploadComponentName: String?,
     ): CellConfigBuilder {
         val newCell = CellConfigBuilder(
-                parentSection = this,
-                label = label,
-                name = camelCaseSify(label),
-                explanation = explanation,
-                shouldDisplay = shouldDisplay,
-                valueGetter = valueGetter,
-                unit = unit,
-                isNullable = isNullable,
-                required = required,
-                uploadComponentName = uploadComponentName,
+            parentSection = this,
+            label = label,
+            name = camelCaseSify(label),
+            explanation = explanation,
+            shouldDisplay = shouldDisplay,
+            valueGetter = valueGetter,
+            unit = unit,
+            isNullable = isNullable,
+            required = required,
+            uploadComponentName = uploadComponentName,
         )
         children.add(newCell)
         return newCell
