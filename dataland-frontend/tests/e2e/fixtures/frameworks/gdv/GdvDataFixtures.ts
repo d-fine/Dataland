@@ -1,7 +1,8 @@
-import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type GdvData } from "@clients/backend";
+import { GdvGenerator } from "@e2e/fixtures/frameworks/gdv/GdvGenerator";
 import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { ArtDesAuditsOptions } from "@clients/backend";
 import { Activity } from "@clients/backend";
@@ -84,6 +85,7 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       nachhaltigkeitsbezogenenAnleihen: dataGenerator.randomYesNo(),
       wichtigsteESUndGRisikenUndBewertung: dataGenerator.randomShortString(),
       hindernisseBeimUmgangMitEsgBedenken: dataGenerator.randomShortString(),
+      testingData: dataGenerator.randomDecimalYearlyTimeseriesData(["scope1", "scope2", "scope3"]),
     },
     umwelt: {
       treibhausgasemissionen: {
@@ -152,5 +154,3 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
     },
   };
 }
-
-export class GdvGenerator extends Generator {}

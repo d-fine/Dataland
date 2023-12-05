@@ -2,10 +2,12 @@ package org.dataland.frameworktoolbox.frameworks.gdv
 
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvYearlyDecimalTimeseriesData
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
+import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.dataland.frameworktoolbox.intermediate.group.getOrNull
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -70,6 +72,18 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 }
             }
         }
+
+        // TODO: Remove this. this is just a POC for showing how to create a GdvYearlyDecimalTimeseriesData.
+//        framework.root.edit<ComponentGroup>("allgemein") {
+//            create<GdvYearlyDecimalTimeseriesData>("testingData") {
+//                label = "Data, for Testing!"
+//                decimalRows = mutableListOf(
+//                    GdvYearlyDecimalTimeseriesData.TimeseriesRow("scope1", "Scope 1", "tCO2-Äquiv."),
+//                    GdvYearlyDecimalTimeseriesData.TimeseriesRow("scope2", "Scope 2", "tCO2-Äquiv."),
+//                    GdvYearlyDecimalTimeseriesData.TimeseriesRow("scope3", "Scope 3", "tCO2-Äquiv."),
+//                )
+//            }
+//        }
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {

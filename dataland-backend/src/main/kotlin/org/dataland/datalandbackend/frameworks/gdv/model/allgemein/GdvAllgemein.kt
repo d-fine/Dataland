@@ -2,6 +2,13 @@ package org.dataland.datalandbackend.frameworks.gdv.model.allgemein
 
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.FrequenzDerBerichterstattungOptions
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.AnreizmechanismenFuerDasManagementUmweltOptions
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.AnreizmechanismenFuerDasManagementSozialesOptions
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.StatusZuEOptions
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.StatusZuSOptions
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.StatusZuGOptions
+import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 
 /**
  * The data-model for the Allgemein section

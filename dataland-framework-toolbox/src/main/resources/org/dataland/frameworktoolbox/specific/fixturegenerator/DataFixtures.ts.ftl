@@ -7,6 +7,7 @@ import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type ${frameworkIdentifier?cap_first}Data } from "@clients/backend";
+import { ${frameworkIdentifier?cap_first}Generator} from "@e2e/fixtures/frameworks/${frameworkIdentifier}/${frameworkIdentifier?cap_first}Generator";
 <#list imports as import>${import}
 </#list>
 
@@ -35,8 +36,4 @@ export function generate${frameworkIdentifier?cap_first}Fixtures(
 export function generate${frameworkIdentifier?cap_first}Data(nullProbability = DEFAULT_PROBABILITY): ${frameworkIdentifier?cap_first}Data {
   const dataGenerator = new ${frameworkIdentifier?cap_first}Generator(nullProbability);
   return <@dataFixtureSection rootSection/>
-}
-
-export class ${frameworkIdentifier?cap_first}Generator extends Generator {
-
 }
