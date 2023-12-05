@@ -98,6 +98,10 @@ const yearsForDisplay = computed<YearsForDisplay | undefined>(() => {
     }
   }
 
+  if (data.allYearsSorted.indexOf(data.reportingYear) == -1) {
+    data.allYearsSorted.push(data.reportingYear);
+  }
+
   data.allYearsSorted = data.allYearsSorted.sort((a, b) => a - b);
 
   return data;
