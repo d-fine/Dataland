@@ -6,9 +6,14 @@ import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOp
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.getTypescriptFieldAccessor
+as getTypescriptFieldAccessorUpload
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda
+as FrameworkDisplayValueLambdaUpload
 
 /**
  * A MultiSelectComponent represents a selection of valid NACE codes
@@ -35,6 +40,20 @@ open class MultiSelectComponent(
             this,
             FrameworkDisplayValueLambda(
                 "formatListOfStringsForDatatable(${getTypescriptFieldAccessor()}, '${escapeEcmaScript(label)}')",
+                setOf(
+                    "import { formatListOfStringsForDatatable } from " +
+                        "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
+                ),
+            ),
+        )
+    }
+
+    override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
+        sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
+                uploadComponentName = "MultiSelectFormField",
+                this,
+                FrameworkDisplayValueLambdaUpload(
+                "formatListOfStringsForDatatable(${getTypescriptFieldAccessorUpload()}, '${escapeEcmaScript(label)}')",
                 setOf(
                     "import { formatListOfStringsForDatatable } from " +
                         "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",

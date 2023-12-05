@@ -7800,6 +7800,15 @@
           }
         }
       },
+      "FrequenzDerBerichterstattungOptions": {
+        "type": "string",
+        "enum": [
+          "Jaehrlich",
+          "Halbjaehrlich",
+          "Vierteljaehrlich",
+          "Monatlich"
+        ]
+      },
       "GdvAllgemein": {
         "type": "object",
         "properties": {
@@ -7824,6 +7833,29 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "sektor": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "nachhaltigkeitsbericht": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "frequenzDerBerichterstattung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FrequenzDerBerichterstattungOptions"
               }
             ]
           }
@@ -7864,13 +7896,20 @@
         }
       },
       "GdvGeneralMasterData": {
-        "required": [
-          "berichtsPflicht"
-        ],
         "type": "object",
         "properties": {
           "berichtsPflicht": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "gueltigkeitsDatum": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -8943,10 +8982,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

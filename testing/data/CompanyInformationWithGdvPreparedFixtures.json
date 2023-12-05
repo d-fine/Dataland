@@ -2,56 +2,59 @@
 	{
 		"companyInformation": {
 			"companyName": "Gdv-dataset-with-no-null-fields",
-			"headquarters": "Pagacton",
-			"headquartersPostalCode": "10089-2075",
-			"sector": "systems",
+			"headquarters": "Janesville",
+			"headquartersPostalCode": "93180",
+			"sector": null,
 			"identifiers": {
-				"Lei": [
-					"jzaqBccxCo04RLmHwWGh"
-				],
+				"Lei": [],
 				"Isin": [
-					"Zjb3OMg7RB9x"
+					"iQ4mxiCo44vg"
 				],
 				"PermId": [
-					"f3ylX6GSct"
+					"VJBOG4imvW"
 				],
 				"Ticker": [
-					"EyLFZGr"
+					"Fkrovzh"
 				],
-				"Duns": [
-					"3dxiwsa57"
-				],
-				"VatNumber": [
-					"x5cDvldh6"
-				],
+				"Duns": [],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"E72diwnvc8aLYD4"
+					"HIorFgsRYjzxFE4"
 				]
 			},
-			"countryCode": "UZ",
+			"countryCode": "JM",
 			"companyAlternativeNames": [
-				"Braun and Sons",
-				"Dach - King",
-				"Hauck, Gerhold and Bashirian",
-				"Schaefer - Krajcik"
+				"Lindgren and Sons",
+				"McKenzie, Bergstrom and Ankunding",
+				"O'Conner and Sons"
 			],
-			"companyLegalForm": null,
-			"website": "https://gracious-inhabitant.info/",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://hungry-cranberry.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"masterData": {
-					"berichtsPflicht": "Yes"
+					"berichtsPflicht": "Yes",
+					"gueltigkeitsDatum": "2024-05-03"
 				}
 			},
 			"allgemein": {
-				"esgZiele": "Yes",
-				"ziele": "niches",
-				"investitionen": "infrastructures",
-				"sektorMitHohenKlimaauswirkungen": "Yes"
+				"esgZiele": "No",
+				"ziele": "partnerships",
+				"investitionen": "systems",
+				"sektorMitHohenKlimaauswirkungen": "Yes",
+				"sektor": [
+					"E",
+					"C",
+					"B",
+					"D",
+					"G"
+				],
+				"nachhaltigkeitsbericht": "Yes",
+				"frequenzDerBerichterstattung": "Monatlich"
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2023"
 	}
 ]
