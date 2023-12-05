@@ -1,6 +1,11 @@
 import { type AxiosPromise, type AxiosRequestConfig, type AxiosInstance } from "axios";
 import { type CompanyAssociatedData } from "@/api-models/CompanyAssociatedData";
-import { type Configuration, type DataMetaInformation, type GdvData, GdvDataControllerApi } from "@clients/backend";
+import {
+  type Configuration,
+  type DataMetaInformation,
+  type GdvData,
+  GdvDataControllerApi,
+} from "@clients/backend";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
