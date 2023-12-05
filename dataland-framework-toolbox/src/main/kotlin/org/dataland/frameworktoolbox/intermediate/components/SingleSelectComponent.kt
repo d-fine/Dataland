@@ -18,10 +18,11 @@ open class SingleSelectComponent(
 ) : ComponentBase(identifier, parent) {
 
     var options: MutableSet<SelectionOption> = mutableSetOf()
+    val enumName = "${identifier.capitalizeEn()}Options"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val enum = dataClassBuilder.parentPackage.addEnum(
-            name = "${this.identifier.capitalizeEn()}Options",
+            name = this.enumName,
             options = this.options,
             comment = "Enum class for the field ${this.identifier}",
         )
@@ -39,7 +40,11 @@ open class SingleSelectComponent(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
                 FrameworkDisplayValueLambda(
-                    "formatStringForDatatable(${getTypescriptFieldAccessor(true)})",
+                    "{\n" +
+                        generateMappingObject() +
+                        generateMapperFunction() +
+                        generateReturnStatement() +
+                        "}",
                     setOf(
                         "import { formatStringForDatatable } from " +
                             "\"@/components/resources/dataTable/conversion/PlainStringValueGetterFactory\";",
@@ -51,18 +56,53 @@ open class SingleSelectComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        val enumName = "${this.identifier.capitalizeEn()}Options"
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
-                fixtureExpression = "pickOneElement(Object.values($enumName))",
-                nullableFixtureExpression = "dataGenerator.valueOrNull(pickOneElement(Object.values($enumName)))",
+                fixtureExpression = "pickOneElement(Object.values(${this.enumName}))",
+                nullableFixtureExpression = "dataGenerator.valueOrNull(pickOneElement(Object.values(${this.enumName})))",
                 nullable = isNullable,
             ),
             imports = setOf(
                 "import { pickOneElement } from \"@e2e/fixtures/FixtureUtils\";",
-                "import { $enumName } from \"@clients/backend\";",
+                "import { ${this.enumName} } from \"@clients/backend\";",
             ),
         )
+    }
+
+    private fun generateMappingObject(): String {
+        val codeBuilder = StringBuilder()
+        codeBuilder.append("const mappings = {\n")
+
+        for (option in this.options) {
+            val escapedLabel = option.label.replace("\"", "\\\"") // TODO use ecma?
+            codeBuilder.append("    ${option.identifier}: \"$escapedLabel\",\n")
+        }
+
+        codeBuilder.append("}\n")
+
+        return codeBuilder.toString()
+    }
+
+    private fun generateMapperFunction(): String {
+        val jsDoc =
+            "/**\n" +
+                "* Maps the technical name of a select option to the respective original name\n" + // TODO
+                "* @param technicalName of a select option \n" +
+                "* @param mappingObject that contains the mappings\n" +
+                "* @returns original name that matches the technical name\n" +
+                "*/\n"
+        val functionBody =
+            "function getOriginalNameFromTechnicalName<T extends string>(technicalName: T, mappingObject: {[key in T]:string}): string{\n" +
+                "   return mappingObject[technicalName]\n" +
+                "}\n"
+        return jsDoc + functionBody
+    }
+
+    private fun generateReturnStatement(): String {
+        return "return formatStringForDatatable(\n" +
+            "${getTypescriptFieldAccessor()} ? " +
+            "getOriginalNameFromTechnicalName(${getTypescriptFieldAccessor()}, mappings) : \"\"\n" +
+            ")\n"
     }
 }

@@ -11,16 +11,16 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkD
  * @param valueGetter a lambda deciding the content of this cell based on the framework dataset
  */
 class CellConfigBuilder(
-        override val parentSection: SectionUploadConfigBuilder?,
-        var label: String,
-        var name: String,
-        var explanation: String?,
-        var shouldDisplay: FrameworkBooleanLambda,
-        var valueGetter: FrameworkDisplayValueLambda,
-        var unit: String?,
-        var isNullable: Boolean,
-        var required: Boolean?,
-        var uploadComponentName: String?
+    override val parentSection: SectionUploadConfigBuilder?,
+    var label: String,
+    var name: String,
+    var explanation: String?,
+    var shouldDisplay: FrameworkBooleanLambda,
+    var valueGetter: FrameworkDisplayValueLambda,
+    var unit: String?,
+    var isNullable: Boolean,
+    var required: Boolean?,
+    var uploadComponentName: String?,
 ) : UploadConfigElement {
     override val imports: Set<String>
         get() = valueGetter.imports
