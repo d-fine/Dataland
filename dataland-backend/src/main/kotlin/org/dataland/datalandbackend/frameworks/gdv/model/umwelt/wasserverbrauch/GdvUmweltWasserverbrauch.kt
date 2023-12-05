@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.frameworks.gdv.model.umwelt.wasserverbrauch
 
-
 /**
  * The data-model for the Wasserverbrauch section
  */

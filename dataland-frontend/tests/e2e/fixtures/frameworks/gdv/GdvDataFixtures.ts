@@ -85,7 +85,6 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       nachhaltigkeitsbezogenenAnleihen: dataGenerator.randomYesNo(),
       wichtigsteESUndGRisikenUndBewertung: dataGenerator.randomShortString(),
       hindernisseBeimUmgangMitEsgBedenken: dataGenerator.randomShortString(),
-      testingData: dataGenerator.randomDecimalYearlyTimeseriesData(["scope1", "scope2", "scope3"]),
     },
     umwelt: {
       treibhausgasemissionen: {

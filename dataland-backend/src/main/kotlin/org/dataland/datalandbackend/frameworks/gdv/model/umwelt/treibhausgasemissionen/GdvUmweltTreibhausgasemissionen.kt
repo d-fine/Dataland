@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.frameworks.gdv.model.umwelt.treibhausgasemissionen
 
-
 /**
  * The data-model for the Treibhausgasemissionen section
  */

@@ -1,15 +1,15 @@
 package org.dataland.datalandbackend.frameworks.gdv.model.umwelt
 
-import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.treibhausgasemissionen.GdvUmweltTreibhausgasemissionen
-import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.energieverbrauch.GdvUmweltEnergieverbrauch
-import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.energieeffizienzImmobilienanlagen.GdvUmweltEnergieeffizienzImmobilienanlagen
-import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.wasserverbrauch.GdvUmweltWasserverbrauch
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.abfallproduktion.GdvUmweltAbfallproduktion
-import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.gefaehrlicheAbfaelle.GdvUmweltGefaehrlicheAbfaelle
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.biodiversitaet.GdvUmweltBiodiversitaet
+import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.energieeffizienzImmobilienanlagen.GdvUmweltEnergieeffizienzImmobilienanlagen
+import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.energieverbrauch.GdvUmweltEnergieverbrauch
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.fossileBrennstoffe.GdvUmweltFossileBrennstoffe
+import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.gefaehrlicheAbfaelle.GdvUmweltGefaehrlicheAbfaelle
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.taxonomie.GdvUmweltTaxonomie
+import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.treibhausgasemissionen.GdvUmweltTreibhausgasemissionen
+import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.wasserverbrauch.GdvUmweltWasserverbrauch
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * The data-model for the Umwelt section
