@@ -17,6 +17,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.NoHandlerFoundException
+import java.lang.StringBuilder
 
 /**
  * This class contains error handlers for commonly thrown errors
@@ -127,15 +128,16 @@ class KnownErrorControllerAdvice(
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMethodNotSupportException(ex: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
         val errors = (ex.bindingResult.fieldErrors as List<FieldError>)
-        val errorMessage = "Input validation failed. \n"
+        val stringbuilder = StringBuilder()
+        stringbuilder.append("Input validation failed.  \n")
         for (er in errors) {
-            errorMessage.plus("On field ${er.field}: ${er.defaultMessage}\n")
+            stringbuilder.append("On field ${er.field}: ${er.defaultMessage}\n")
         }
         return prepareResponse(
             ErrorDetails(
                 errorType = "bad-input",
                 summary = "Invalid input",
-                message = errorMessage,
+                message = stringbuilder.toString(),
                 httpStatus = HttpStatus.BAD_REQUEST,
             ),
             ex,
