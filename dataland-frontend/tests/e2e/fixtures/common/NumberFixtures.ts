@@ -26,10 +26,11 @@ export function generateCurrencyValue(min = 0, max = 1e10, precision = 1e-2): nu
  * Generates a random percentage value, by default in the standard range [0,100]
  * @param min is the minimum value
  * @param max is the maximum value
+ * @param precision the precision of the decimal value
  * @returns a random percentage value generated according to the specifications
  */
-export function generatePercentageValue(min = 0, max = 100): number {
-  return generateFloat(min, max);
+export function generatePercentageValue(min = 0, max = 100, precision = 1e-4): number {
+  return generateFloat(min, max, precision);
 }
 
 /**

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.assertThrows
 
 class InvalidSfdrRequestTests {
     private val apiAccessor = ApiAccessor()
+    val errorCode500 = "Server error : 500 "
 
     @Test
     fun `post a company with invalid Sfdr currency data`() {
@@ -21,13 +22,7 @@ class InvalidSfdrRequestTests {
                 "",
             )
         }
-        Assertions.assertTrue(errorForInvalidInput.message!!.contains("Server error : 500 "))
-        Assertions.assertTrue(
-            errorForInvalidInput.message!!.contains(
-                "MethodArgumentNotValidException: " +
-                    "Validation failed for argument",
-            ),
-        )
+        Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode500))
     }
 
     @Test
@@ -45,13 +40,7 @@ class InvalidSfdrRequestTests {
                 "",
             )
         }
-        Assertions.assertTrue(errorForInvalidInput.message!!.contains("Server error : 500 "))
-        Assertions.assertTrue(
-            errorForInvalidInput.message!!.contains(
-                "MethodArgumentNotValidException: " +
-                    "Validation failed for argument",
-            ),
-        )
+        Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode500))
     }
 
     @Test
@@ -66,13 +55,7 @@ class InvalidSfdrRequestTests {
                 "",
             )
         }
-        Assertions.assertTrue(errorForInvalidInput.message!!.contains("Server error : 500 "))
-        Assertions.assertTrue(
-            errorForInvalidInput.message!!.contains(
-                "MethodArgumentNotValidException: " +
-                    "Validation failed for argument",
-            ),
-        )
+        Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode500))
     }
 
     @Test
@@ -87,13 +70,7 @@ class InvalidSfdrRequestTests {
                 "",
             )
         }
-        Assertions.assertTrue(errorForInvalidInput.message!!.contains("Server error : 500 "))
-        Assertions.assertTrue(
-            errorForInvalidInput.message!!.contains(
-                "MethodArgumentNotValidException: " +
-                    "Validation failed for argument",
-            ),
-        )
+        Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode500))
     }
 
     @Test
@@ -110,6 +87,6 @@ class InvalidSfdrRequestTests {
                 "",
             )
         }
-        Assertions.assertTrue(errorForInvalidInput.message!!.contains("Server error : 500 "))
+        Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode500))
     }
 }

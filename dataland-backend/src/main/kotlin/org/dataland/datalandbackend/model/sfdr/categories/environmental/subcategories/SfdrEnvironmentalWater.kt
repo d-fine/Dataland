@@ -11,20 +11,20 @@ import java.math.BigDecimal
  * Fields of the subcategory "Water" belonging to the category "Environmental" of the sfdr framework.
 */
 data class SfdrEnvironmentalWater(
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val emissionsToWaterInTonnes: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val waterConsumptionInCubicMeters: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val waterReusedInCubicMeters: ExtendedDataPoint<BigDecimal>? = null,
 
-    @field:DataPointMinimumValue(minimumValue = 0)
     @field:Valid
+    @field:DataPointMinimumValue(minimumValue = 0)
     val relativeWaterUsageInCubicMetersPerMillionEURRevenue: ExtendedDataPoint<BigDecimal>? = null,
 
     @field:Valid
