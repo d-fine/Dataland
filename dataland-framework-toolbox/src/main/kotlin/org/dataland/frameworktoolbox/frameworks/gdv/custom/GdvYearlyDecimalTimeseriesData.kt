@@ -14,6 +14,10 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptF
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
+/**
+ * A GdvYearlyDecimalTimeseriesData is an in-memory representation of a generic field
+ * that encodes several values across a span of multi years. It is displayed / upload in a matrix
+ */
 class GdvYearlyDecimalTimeseriesData(
     identifier: String,
     parent: FieldNodeParent,
@@ -58,25 +62,25 @@ class GdvYearlyDecimalTimeseriesData(
         for (row in decimalRows) {
             configurationObject[row.identifier] = mapOf(
                 "label" to row.label,
-                "unitSuffix" to row.unitSuffix
+                "unitSuffix" to row.unitSuffix,
             )
         }
 
         val objectMapper = jacksonObjectMapper()
-        objectMapper.disable(JsonWriteFeature.QUOTE_FIELD_NAMES.mappedFeature());
+        objectMapper.disable(JsonWriteFeature.QUOTE_FIELD_NAMES.mappedFeature())
         val configurationObjectString = objectMapper.writeValueAsString(configurationObject)
-
 
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
                 "formatGdvYearlyDecimalTimeseriesDataForTable(" +
-                        "${getTypescriptFieldAccessor(true)}, " +
-                        "$configurationObjectString, " +
-                        "'${StringEscapeUtils.escapeEcmaScript(label)}')",
+                    "${getTypescriptFieldAccessor(true)}, " +
+                    "$configurationObjectString, " +
+                    "'${StringEscapeUtils.escapeEcmaScript(label)}')",
                 setOf(
                     "import { formatGdvYearlyDecimalTimeseriesDataForTable } from " +
-                            "\"@/components/resources/dataTable/conversion/gdv/GdvYearlyDecimalTimeseriesDataGetterFactory\";",
+                        "\"@/components/resources/dataTable/conversion/gdv" +
+                        "/GdvYearlyDecimalTimeseriesDataGetterFactory\";",
                 ),
             ),
         )

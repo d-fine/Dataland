@@ -110,8 +110,11 @@ class FrameworkViewConfigBuilder(
 
         into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_checkfrontendcompilation"))
 
-        val npxCommand = if (System.getProperty("os.name").contains("windows", true)) "npx.cmd"
-        else "npx"
+        val npxCommand = if (System.getProperty("os.name").contains("windows", true)) {
+            "npx.cmd"
+        } else {
+            "npx"
+        }
 
         ProcessBuilder(npxCommand, "eslint", "--fix", viewConfigTsPath.toAbsolutePath().toString())
             .directory((into.path / "dataland-frontend").toFile())
