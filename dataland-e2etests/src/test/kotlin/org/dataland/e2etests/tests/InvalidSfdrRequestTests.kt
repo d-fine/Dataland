@@ -70,6 +70,24 @@ class InvalidSfdrRequestTests {
     }
 
     @Test
+    fun `post a company with itwo invalid inputs`() {
+        val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-two-invalid-inputs")
+        Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
+        Assertions.assertTrue(
+            (errorForInvalidInput.response as ClientError<*>).body!!.toString()
+                .contains(errorMessage),
+        )
+        Assertions.assertTrue(
+            (errorForInvalidInput.response as ClientError<*>).body!!.toString()
+                .contains("rateOfAccidentsInPercent"),
+        )
+        Assertions.assertTrue(
+            (errorForInvalidInput.response as ClientError<*>).body!!.toString()
+                .contains("reportedConvictionsOfBriberyAndCorruption"),
+        )
+    }
+
+    @Test
     fun `post a company with empty string document reference`() {
         val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-empty-string-document-reference")
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))

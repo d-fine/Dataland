@@ -35,6 +35,7 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
   preparedFixtures.push(manipulateFixtureForInvalidLongDataPointInput(generateSfdrFixtures(1, 0)[0]));
   preparedFixtures.push(manipulateFixtureForEmptyStringDocumentReference(generateSfdrFixtures(1, 0)[0]));
   preparedFixtures.push(manipulateFixtureForInvalidPercentageInput(generateSfdrFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForTwoInvalidInputs(generateSfdrFixtures(1, 0)[0]));
 
   return preparedFixtures;
 }
@@ -84,6 +85,19 @@ function manipulateFixtureForInvalidLongDataPointInput(input: FixtureData<SfdrDa
 function manipulateFixtureForInvalidPercentageInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = "Sfdr-dataset-with-invalid-percentage-input";
   input.t.social!.socialAndEmployeeMatters!.rateOfAccidentsInPercent!.value = 120;
+  return input;
+}
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * sets a percentage to an invalid value > 100 AND a number to -1
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForTwoInvalidInputs(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-two-invalid-inputs";
+  input.t.social!.socialAndEmployeeMatters!.rateOfAccidentsInPercent!.value = 120;
+  input.t.social!.antiCorruptionAndAntiBribery!.reportedConvictionsOfBriberyAndCorruption!.value = -1;
   return input;
 }
 
