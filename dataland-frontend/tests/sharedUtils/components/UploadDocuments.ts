@@ -1,4 +1,5 @@
 import { TEST_PDF_FILE_BASEPATH } from "@sharedUtils/ConstantsForPdfs";
+// import {calculateSha256HashFromFile} from "@/utils/FileUploadUtils";
 
 export const uploadDocuments = {
   selectFile(filename: string, fieldName = "UploadReports"): void {
@@ -15,7 +16,7 @@ export const uploadDocuments = {
   },
   selectDummyFile(filename: string, contentSize: number, fieldName = "UploadReports"): void {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
-    cy.get("input[type=file]").selectFile(
+    cy.get(`button[data-test='upload-files-button-${fieldName}']`).parent().parent().siblings("input[type=file]").selectFile(
       {
         contents: new Cypress.Buffer(contentSize),
         fileName: `${filename}.pdf`,
@@ -23,6 +24,13 @@ export const uploadDocuments = {
       },
       { force: true },
     );
+    // calculateSha256HashFromFile({ // todo remove this
+    //   async arrayBuffer(): Promise<ArrayBuffer> {
+    //       return new Cypress.Buffer(contentSize)
+    //   }
+    // } as File).then((sha) => {
+    //   console.log(contentSize, sha)
+    // })
   },
   selectDummyFileOfType(filename: string, fileType: string, contentSize: number, fieldName = "UploadReports"): void {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();

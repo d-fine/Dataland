@@ -203,7 +203,7 @@ export default defineComponent({
       postSfdrDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
-      documents: new Map() as Map<string, DocumentToUpload>,
+      referenceableDocuments: new Map() as Map<string, DocumentToUpload>,
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       climateSectorsForPrefill: [] as Array<string>,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
@@ -284,29 +284,25 @@ export default defineComponent({
     async postSfdrData(): Promise<void> {
       this.messageCounter++;
       try {
-        if (this.documents.size > 0) {
+        if (this.referenceableDocuments.size > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
-            this.companyAssociatedSfdrData.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset,
+              this.companyAssociatedSfdrData.data as ObjectType,
+              this.namesOfAllCompanyReportsForTheDataset,
           );
-          const reportsToUpload: DocumentToUpload[] = Array.from(this.documents.values());
-          const fieldSpecificDocumentsAsArray = Array.from(this.fieldSpecificDocuments.values()).filter(
-            (documents) => documents != undefined,
-          ) as DocumentToUpload[];
-          const fieldSpecificDocumentsToUpload = fieldSpecificDocumentsAsArray
-            .filter(
-              (document: DocumentToUpload, index) =>
-                !fieldSpecificDocumentsAsArray.filter(
-                  (other, otherIndex) => document.fileReference == other.fileReference && otherIndex < index,
-                ).length,
-            )
-            .filter(
-              (document: DocumentToUpload) =>
-                !reportsToUpload.some((report: DocumentToUpload) => report.fileReference == document.fileReference),
-            );
-          const documentsToUpload: DocumentToUpload[] = reportsToUpload.concat(...fieldSpecificDocumentsToUpload);
-          await uploadFiles(documentsToUpload, assertDefined(this.getKeycloakPromise));
         }
+        console.log("START upload documents")
+        const reportsToUpload: DocumentToUpload[] = Array.from(this.referenceableDocuments.values());
+        Array.from(this.fieldSpecificDocuments.entries()).forEach((e) => {
+          console.log(1, e[0], e[1])
+        })
+        const fieldSpecificDocumentsAsArray = Array.from(this.fieldSpecificDocuments.values()).filter(
+          (documents) => documents != undefined,
+        ) as DocumentToUpload[];
+        console.log(fieldSpecificDocumentsAsArray.length)
+        const documentsToUpload: DocumentToUpload[] = reportsToUpload.concat(...fieldSpecificDocumentsAsArray);
+        console.log(reportsToUpload.length, fieldSpecificDocumentsAsArray.length)
+        await uploadFiles(documentsToUpload, assertDefined(this.getKeycloakPromise));
+        console.log("END upload documents")
 
         const sfdrDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
@@ -336,9 +332,9 @@ export default defineComponent({
      */
     updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
       this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
-      this.documents = new Map();
+      this.referenceableDocuments = new Map();
       if (reportsToUpload?.length) {
-        reportsToUpload.forEach((document) => this.documents.set(document.file.name, document));
+        reportsToUpload.forEach((document) => this.referenceableDocuments.set(document.file.name, document));
       }
     },
     /**
@@ -347,7 +343,9 @@ export default defineComponent({
      * @param referencedDocument the documen that is referenced
      */
     updateDocumentsOnField(fieldId: string, referencedDocument: DocumentToUpload | undefined) {
+      console.log("C", fieldId, referencedDocument)
       this.fieldSpecificDocuments.set(fieldId, referencedDocument);
+      console.log(this.fieldSpecificDocuments)
     },
   },
   provide() {
