@@ -14,7 +14,7 @@ import { uploadDocumentViaApi } from "@e2e/utils/DocumentUpload";
 import { fillAndValidateEuTaxonomyForNonFinancialsUploadForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from "@e2e/utils/GeneralUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
+import { UploadDocuments } from "@sharedUtils/components/UploadDocuments";
 
 describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new eu-taxonomy dataset for a non-financial company",
@@ -24,6 +24,7 @@ describeIf(
   function () {
     let frontendDocumentHash = "";
     let testData: FixtureData<EuTaxonomyDataForNonFinancials>;
+    const uploadDocuments = new UploadDocuments("referencedReports");
     before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (
         jsonContent: FixtureData<EuTaxonomyDataForNonFinancials>[],
@@ -121,8 +122,8 @@ describeIf(
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
             );
-            uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
-            uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`, "referencedReports");
+            uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
+            uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`);
             uploadDocuments.fillAllFormsOfReportsSelectedForUpload(2);
             fillAndValidateEuTaxonomyForNonFinancialsUploadForm(`${TEST_PDF_FILE_NAME}2`);
             cy.get('div[name="revenue"]').within(() => {

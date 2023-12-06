@@ -7,7 +7,7 @@ import {
 } from "@clients/backend";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { admin_name, admin_pw } from "@e2e/utils/Cypress";
-import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
+import { UploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { getKeycloakToken } from "@e2e/utils/Auth";
@@ -22,6 +22,7 @@ describeIf(
   },
   function () {
     let euTaxoFinancialsFixture: FixtureData<EuTaxonomyDataForFinancials>;
+    const uploadDocuments = new UploadDocuments();
 
     before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForFinancialsPreparedFixtures").then(function (jsonContent) {

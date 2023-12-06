@@ -1,12 +1,13 @@
 import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEuTaxonomyForNonFinancials.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
-import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
+import { UploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { type CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 
 describe("Component tests for the Eu Taxonomy for non financials that test dependent fields", () => {
+  const uploadDocuments = new UploadDocuments("referencedReports");
   /**
    * On the eu taxonomy for non-financial services edit page, this method checks that there can not be a file uploaded
    * whose name equals the one of a file selected before
@@ -14,9 +15,9 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
   function checkFileWithExistingFilenameIsNotBeingAdded(): void {
     const reportThatCanBeUploaded = "test-report";
     const reportThatAlreadyExists = TEST_PDF_FILE_NAME;
-    uploadDocuments.selectFile(reportThatCanBeUploaded, "referencedReports");
+    uploadDocuments.selectFile(reportThatCanBeUploaded);
     uploadDocuments.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportThatCanBeUploaded);
-    uploadDocuments.selectFile(reportThatAlreadyExists, "referencedReports");
+    uploadDocuments.selectFile(reportThatAlreadyExists);
     uploadDocuments.validateReportIsListedAsAlreadyUploaded(reportThatAlreadyExists);
     uploadDocuments.validateReportIsNotInFileSelectorAndHasNoInfoForm(reportThatAlreadyExists);
     uploadDocuments.validateNumberOfReportsSelectedForUpload(1);
@@ -27,7 +28,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    * whose name equals the one of a file selected before
    */
   function checkFileWithExistingFilenameOpensDialogWithWarning(): void {
-    uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
+    uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
     cy.get(`button[data-test='upload-files-button-referencedReports']`).click();
     cy.get("input[type=file]").selectFile(
       `../${TEST_PDF_FILE_BASEPATH}/more-pdfs-in-seperate-directory/${TEST_PDF_FILE_NAME}.pdf`,
@@ -43,7 +44,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    * whose name contains an illegal character
    */
   function checkFileWithIllegalCharacterOpensDialogWithWarning(): void {
-    uploadDocuments.selectDummyFile("Invalid:Filename", 400, "referencedReports");
+    uploadDocuments.selectDummyFile("Invalid:Filename", 400);
     cy.get(".p-dialog-content").should("contain.text", "File names containing illegal characters");
     cy.get(".p-dialog-header-close").click();
     cy.get(`[data-test="Invalid:FilenameToUploadContainer"]`).should("not.exist");
@@ -56,7 +57,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
   function checkExistingFilenameDialogDidNotBreakSubsequentSelection(): void {
     const reportNameA = TEST_PDF_FILE_NAME;
     const reportNameB = `${TEST_PDF_FILE_NAME}2`;
-    uploadDocuments.selectFile(reportNameB, "referencedReports");
+    uploadDocuments.selectFile(reportNameB);
 
     cy.get(".p-dialog-content").should("not.exist");
     uploadDocuments.validateReportToUploadIsListedInFileSelectorAndHasInfoForm(reportNameA);
@@ -316,7 +317,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
         };
       },
     }).then(() => {
-      uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
+      uploadDocuments.selectFile(TEST_PDF_FILE_NAME);
       fillAndValidateGeneralSection([TEST_PDF_FILE_NAME]);
       fillAndValidateOtherSections([TEST_PDF_FILE_NAME]);
     });

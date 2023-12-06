@@ -2,7 +2,7 @@ import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { DataTypeEnum } from "@clients/backend";
-import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
+import { UploadDocuments } from "@sharedUtils/components/UploadDocuments";
 
 const createSfdrDataset = {
   fillRequiredFields(): void {
@@ -51,15 +51,15 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
     }).then(() => {
       createSfdrDataset.fillRequiredFields();
 
-      uploadDocuments.selectDummyFile("first", 1, "referencedReports");
+      new UploadDocuments("referencedReports").selectDummyFile("first", 1);
       cy.get("div[data-test='scope1GhgEmissionsInTonnes'] select[name='fileName']").select("first");
 
       cy.get('[data-test="sustainableAgriculturePolicy"] input[type="radio"][name="value"][value="Yes"]').check();
-      uploadDocuments.selectDummyFile("second", 2, "sustainableAgriculturePolicy");
+      new UploadDocuments("sustainableAgriculturePolicy").selectDummyFile("second", 2);
       cy.get('[data-test="sustainableOceansAndSeasPolicy"] input[type="radio"][name="value"][value="Yes"]').check();
-      uploadDocuments.selectDummyFile("third", 3, "sustainableOceansAndSeasPolicy");
+      new UploadDocuments("sustainableOceansAndSeasPolicy").selectDummyFile("third", 3);
       cy.get('[data-test="environmentalPolicy"] input[type="radio"][name="value"][value="Yes"]').check();
-      uploadDocuments.selectDummyFile("fourth", 1, "environmentalPolicy");
+      new UploadDocuments("environmentalPolicy").selectDummyFile("fourth", 1);
 
       cy.wait(100);
       submitButton.buttonAppearsEnabled();
@@ -98,12 +98,12 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
       createSfdrDataset.fillRequiredFields();
 
       cy.get('[data-test="sustainableAgriculturePolicy"] input[type="radio"][name="value"][value="Yes"]').check();
-      uploadDocuments.selectDummyFile("second", 1, "sustainableAgriculturePolicy");
+      new UploadDocuments("sustainableAgriculturePolicy").selectDummyFile("second", 1);
       cy.wait(100);
       cy.get('div[data-test="sustainableAgriculturePolicy"] button .pi-times').click();
-      uploadDocuments.selectDummyFile("third", 2, "sustainableAgriculturePolicy");
+      new UploadDocuments("sustainableAgriculturePolicy").selectDummyFile("third", 2);
       cy.get('[data-test="environmentalPolicy"] input[type="radio"][name="value"][value="Yes"]').check();
-      uploadDocuments.selectDummyFile("fourth", 3, "environmentalPolicy");
+      new UploadDocuments("environmentalPolicy").selectDummyFile("fourth", 3);
       cy.wait(100);
       cy.get('div[data-test="environmentalPolicy"] button .pi-times').click();
 

@@ -3,7 +3,8 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type CompanyAssociatedDataPathwaysToParisData, DataTypeEnum } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
-import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
+import { UploadDocuments } from "@sharedUtils/components/UploadDocuments";
+
 describe("Component tests for the CreateP2pDataset that test dependent fields", () => {
   /**
    * Picks the 13th day of the next month in the datepicker
@@ -152,9 +153,9 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       clickOnSectorInSectorsDropdown("Livestock Farming");
 
       cy.get('[data-test="upstreamSupplierProcurementPolicy"] input[type="radio"][name="value"][value="Yes"]').check();
-      uploadDocuments.selectDummyFile("first", 1, "upstreamSupplierProcurementPolicy");
+      new UploadDocuments("upstreamSupplierProcurementPolicy").selectDummyFile("first", 1);
       cy.get('[data-test="externalFeedCertification"] input[type="radio"][name="value"][value="Yes"]').check();
-      uploadDocuments.selectDummyFile("second", 2, "externalFeedCertification");
+      new UploadDocuments("externalFeedCertification").selectDummyFile("second", 2);
 
       cy.wait(100);
       submitButton.buttonAppearsEnabled();
@@ -195,9 +196,9 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       clickOnSectorInSectorsDropdown("Livestock Farming");
 
       cy.get('[data-test="upstreamSupplierProcurementPolicy"] input[type="radio"][name="value"][value="Yes"]').check();
-      uploadDocuments.selectDummyFile("first", 1, "upstreamSupplierProcurementPolicy");
+      new UploadDocuments("upstreamSupplierProcurementPolicy").selectDummyFile("first", 1);
       cy.get('[data-test="externalFeedCertification"] input[type="radio"][name="value"][value="Yes"]').check();
-      uploadDocuments.selectDummyFile("second", 2, "externalFeedCertification");
+      new UploadDocuments("externalFeedCertification").selectDummyFile("second", 2);
       clickOnSectorInSectorsDropdown("Livestock Farming");
 
       cy.wait(100);
