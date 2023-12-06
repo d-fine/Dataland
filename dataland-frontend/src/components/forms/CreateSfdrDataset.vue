@@ -211,11 +211,6 @@ export default defineComponent({
       fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
     };
   },
-  watch: {
-    namesAndReferencesOfAllCompanyReportsForTheDataset(newValue) {
-      console.log(newValue);
-    },
-  },
   computed: {
     yearOfDataDate: {
       get(): string {
@@ -291,17 +286,8 @@ export default defineComponent({
             this.namesOfAllCompanyReportsForTheDataset,
           );
         }
-        console.log("START upload documents");
-        Array.from(this.fieldSpecificDocuments.entries()).forEach((e) => {
-          console.log("new entry");
-          e[1].forEach((document) => {
-            console.log(1, e[0], document);
-          });
-        });
         const documentsToUpload = Array.from(this.fieldSpecificDocuments.values()).flat();
-        console.log(documentsToUpload.length);
         await uploadFiles(documentsToUpload, assertDefined(this.getKeycloakPromise));
-        console.log("END upload documents");
 
         const sfdrDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
@@ -343,13 +329,11 @@ export default defineComponent({
      * @param referencedDocument the documen that is referenced
      */
     updateDocumentsOnField(fieldId: string, referencedDocument: DocumentToUpload | undefined) {
-      console.log("C", fieldId, referencedDocument);
       if (referencedDocument) {
         this.fieldSpecificDocuments.set(fieldId, [referencedDocument]);
       } else {
         this.fieldSpecificDocuments.delete(fieldId);
       }
-      console.log(this.fieldSpecificDocuments);
     },
   },
   provide() {
