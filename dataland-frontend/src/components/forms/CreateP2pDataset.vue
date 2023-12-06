@@ -53,6 +53,9 @@
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
                           :ref="field.name"
+                          @field-specific-documents-updated="
+                            updateDocumentList(`${category.name}.${subcategory.name}.${field.name}`, $event)
+                          "
                         />
                       </FormKit>
                     </div>
@@ -127,6 +130,7 @@ import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.v
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
+import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {
@@ -176,6 +180,7 @@ export default defineComponent({
       postP2pDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
+      fieldSpecificDocuments: new Map() as Map<string, DocumentToUpload>,
     };
   },
   computed: {
@@ -243,6 +248,9 @@ export default defineComponent({
     async postP2pData(): Promise<void> {
       this.messageCounter++;
       try {
+        if (this.fieldSpecificDocuments.size > 0) {
+          await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
+        }
         const p2pDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
@@ -262,6 +270,19 @@ export default defineComponent({
         this.uploadSucceded = false;
       } finally {
         this.postP2pDataProcessed = true;
+      }
+    },
+
+    /**
+     * updates the list of certificates that were uploaded in the corresponding formfields on change
+     * @param fieldName the name of the formfield as a key
+     * @param document the certificate as combined object of reference id and file content
+     */
+    updateDocumentList(fieldName: string, document: DocumentToUpload) {
+      if (document) {
+        this.fieldSpecificDocuments.set(fieldName, document);
+      } else {
+        this.fieldSpecificDocuments.delete(fieldName);
       }
     },
   },
