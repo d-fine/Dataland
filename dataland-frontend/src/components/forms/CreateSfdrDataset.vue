@@ -143,6 +143,8 @@ import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBa
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
 
+const referenceableReportsFieldId = "referenceableReports";
+
 export default defineComponent({
   setup() {
     return {
@@ -203,11 +205,10 @@ export default defineComponent({
       postSfdrDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
-      referenceableDocuments: new Map() as Map<string, DocumentToUpload>,
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       climateSectorsForPrefill: [] as Array<string>,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
-      fieldSpecificDocuments: new Map<string, DocumentToUpload>(),
+      fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
     };
   },
   watch: {
@@ -284,21 +285,21 @@ export default defineComponent({
     async postSfdrData(): Promise<void> {
       this.messageCounter++;
       try {
-        if (this.referenceableDocuments.size > 0) {
+        if (this.fieldSpecificDocuments.get(referenceableReportsFieldId)?.length) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedSfdrData.data as ObjectType,
             this.namesOfAllCompanyReportsForTheDataset,
           );
         }
         console.log("START upload documents");
-        const reportsToUpload: DocumentToUpload[] = Array.from(this.referenceableDocuments.values());
         Array.from(this.fieldSpecificDocuments.entries()).forEach((e) => {
-          console.log(1, e[0], e[1]);
+          console.log("new entry")
+          e[1].forEach((document) => {
+            console.log(1, e[0], document);
+          });
         });
-        const fieldSpecificDocumentsAsArray = Array.from(this.fieldSpecificDocuments.values());
-        console.log(fieldSpecificDocumentsAsArray.length);
-        const documentsToUpload: DocumentToUpload[] = reportsToUpload.concat(...fieldSpecificDocumentsAsArray);
-        console.log(reportsToUpload.length, fieldSpecificDocumentsAsArray.length);
+        const documentsToUpload = Array.from(this.fieldSpecificDocuments.values()).flat();
+        console.log(documentsToUpload.length);
         await uploadFiles(documentsToUpload, assertDefined(this.getKeycloakPromise));
         console.log("END upload documents");
 
@@ -330,9 +331,10 @@ export default defineComponent({
      */
     updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
       this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
-      this.referenceableDocuments = new Map();
-      if (reportsToUpload?.length) {
-        reportsToUpload.forEach((document) => this.referenceableDocuments.set(document.file.name, document));
+      if (reportsToUpload.length) {
+        this.fieldSpecificDocuments.set(referenceableReportsFieldId, reportsToUpload);
+      } else {
+        this.fieldSpecificDocuments.delete(referenceableReportsFieldId);
       }
     },
     /**
@@ -343,7 +345,7 @@ export default defineComponent({
     updateDocumentsOnField(fieldId: string, referencedDocument: DocumentToUpload | undefined) {
       console.log("C", fieldId, referencedDocument);
       if (referencedDocument) {
-        this.fieldSpecificDocuments.set(fieldId, referencedDocument);
+        this.fieldSpecificDocuments.set(fieldId, [referencedDocument]);
       } else {
         this.fieldSpecificDocuments.delete(fieldId);
       }
