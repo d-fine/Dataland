@@ -52,7 +52,7 @@ class StringComponent(
             uploadComponentName = "InputTextFormField",
             options = null,
             this,
-            valueGetter =  documentSupport.getFrameworkDisplayValueLambdaUpload(
+            valueGetter = documentSupport.getFrameworkDisplayValueLambdaUpload(
                 FrameworkDisplayValueLambdaUpload(
                     "formatStringForDatatable(${getTypescriptFieldAccessorUpload(true)})",
                     setOf(

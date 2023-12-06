@@ -57,10 +57,10 @@ open class MultiSelectComponent(
 
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
         sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
-                uploadComponentName = "MultiSelectFormField",
-                options = this.options,
-                component = this,
-                FrameworkDisplayValueLambdaUpload(
+            uploadComponentName = "MultiSelectFormField",
+            options = this.options,
+            component = this,
+            FrameworkDisplayValueLambdaUpload(
                 "formatListOfStringsForDatatable(${getTypescriptFieldAccessorUpload()}, '${escapeEcmaScript(label)}')",
                 setOf(
                     "import { formatListOfStringsForDatatable } from " +

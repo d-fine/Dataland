@@ -52,7 +52,7 @@ class YesNoComponent(
             uploadComponentName = "YesNoFormField",
             options = null,
             component = this,
-            valueGetter =  documentSupport.getFrameworkDisplayValueLambdaUpload(
+            valueGetter = documentSupport.getFrameworkDisplayValueLambdaUpload(
                 FrameworkDisplayValueLambdaUpload(
                     "formatYesNoValueForDatatable(${getTypescriptFieldAccessorUpload(true)})",
                     setOf(
