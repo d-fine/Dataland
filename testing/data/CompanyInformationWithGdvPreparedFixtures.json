@@ -2,119 +2,125 @@
 	{
 		"companyInformation": {
 			"companyName": "Gdv-dataset-with-no-null-fields",
-			"headquarters": "Orlando",
-			"headquartersPostalCode": "22630",
-			"sector": "mindshare",
+			"headquarters": "Mohrstad",
+			"headquartersPostalCode": null,
+			"sector": "synergies",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"7xTSYPL2Vnaf"
+					"INkmjXXUtooZ",
+					"yuIMy9RqEkh8"
 				],
-				"PermId": [],
-				"Ticker": [
-					"lFX29tv"
+				"PermId": [
+					"IKWIkLOers"
 				],
+				"Ticker": [],
 				"Duns": [
-					"FHjnaELN2"
+					"9xOEB7oKg"
 				],
 				"VatNumber": [
-					"lEfrxsytX"
+					"pjDSekyVF"
 				],
-				"CompanyRegistrationNumber": [
-					"yhCDlRDeuL8aeeR"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "TR",
+			"countryCode": "GI",
 			"companyAlternativeNames": [
-				"Schaefer Group"
+				"Hagenes - Pouros",
+				"Hettinger Group",
+				"Rau - Rutherford"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://grandiose-family.info",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"masterData": {
 					"berichtsPflicht": "Yes",
-					"gueltigkeitsDatum": "2024-09-28"
+					"gueltigkeitsDatum": "2024-06-28"
 				}
 			},
 			"allgemein": {
 				"esgZiele": "Yes",
-				"ziele": "eyeballs",
-				"investitionen": "solutions",
+				"ziele": "technologies",
+				"investitionen": "users",
 				"sektorMitHohenKlimaauswirkungen": "Yes",
 				"sektor": [
-					"E",
+					"B",
+					"G",
+					"D",
+					"C",
 					"L",
+					"A",
+					"E",
 					"F",
-					"B"
+					"H"
 				],
-				"nachhaltigkeitsbericht": "No",
-				"frequenzDerBerichterstattung": "Monatlich",
-				"mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze": "No",
+				"nachhaltigkeitsbericht": "Yes",
+				"frequenzDerBerichterstattung": "Vierteljaehrlich",
+				"mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze": "Yes",
 				"uncgPrinzipien": "Yes",
-				"erklaerungUngc": "channels",
+				"erklaerungUngc": "supply-chains",
 				"oecdLeitsaetze": "Yes",
-				"erklaerungOecd": "interfaces",
-				"ausrichtungAufDieUnSdgsUndAktivesVerfolgen": "action-items",
+				"erklaerungOecd": "platforms",
+				"ausrichtungAufDieUnSdgsUndAktivesVerfolgen": "content",
 				"ausschlusslistenAufBasisVonEsgKriterien": "Yes",
-				"ausschlusslisten": "systems",
+				"ausschlusslisten": "solutions",
 				"oekologischeSozialeFuehrungsstandardsOderPrinzipien": "Yes",
 				"anreizmechanismenFuerDasManagementUmwelt": "JaAufsichtsrat",
-				"anreizmechanismenFuerDasManagementSoziales": "JaAufsichtsratUndGeschaeftsleitung",
+				"anreizmechanismenFuerDasManagementSoziales": "Nein",
 				"esgBezogeneRechtsstreitigkeiten": "Yes",
 				"rechtsstreitigkeitenMitBezugZuE": "Yes",
 				"statusZuE": "Offen",
-				"einzelheitenZuDenRechtsstreitigkeitenZuE": "methodologies",
+				"einzelheitenZuDenRechtsstreitigkeitenZuE": "schemas",
 				"rechtsstreitigkeitenMitBezugZuS": "Yes",
-				"statusZuS": "Geklaert",
-				"einzelheitenZuDenRechtsstreitigkeitenZuS": "experiences",
-				"rechtsstreitigkeitenMitBezugZuG": "No",
-				"statusZuG": "Offen",
-				"einzelheitenZuDenRechtsstreitigkeitenZuG": "supply-chains",
-				"esgRating": "No",
-				"agentur": "niches",
+				"statusZuS": "Offen",
+				"einzelheitenZuDenRechtsstreitigkeitenZuS": "systems",
+				"rechtsstreitigkeitenMitBezugZuG": "Yes",
+				"statusZuG": "Geklaert",
+				"einzelheitenZuDenRechtsstreitigkeitenZuG": "portals",
+				"esgRating": "Yes",
+				"agentur": "infrastructures",
 				"ergebnis": {
-					"value": "solutions",
+					"value": "functionalities",
 					"dataSource": {
-						"fileName": "Policy",
+						"fileName": "Certification",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 					}
 				},
-				"kritischePunkte": "networks",
+				"kritischePunkte": "schemas",
 				"nachhaltigkeitsbezogenenAnleihen": "Yes",
-				"wichtigsteESUndGRisikenUndBewertung": "platforms",
-				"hindernisseBeimUmgangMitEsgBedenken": "channels"
+				"wichtigsteESUndGRisikenUndBewertung": "blockchains",
+				"hindernisseBeimUmgangMitEsgBedenken": "architectures"
 			},
 			"umwelt": {
 				"treibhausgasemissionen": {
-					"treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird": "e-business",
-					"strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": "communities"
+					"treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird": "schemas",
+					"strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": "users"
 				},
-				"produkteZurVerringerungDerUmweltbelastung": "No",
-				"verringerungenDerUmweltbelastung": "niches",
-				"oekologischerMindestStandardFuerProduktionsprozesse": "No",
+				"produkteZurVerringerungDerUmweltbelastung": "Yes",
+				"verringerungenDerUmweltbelastung": "lifetime value",
+				"oekologischerMindestStandardFuerProduktionsprozesse": "Yes",
 				"energieverbrauch": {
-					"unternehmensGruppenStrategieBzglEnergieverbrauch": "action-items"
+					"unternehmensGruppenStrategieBzglEnergieverbrauch": "interfaces"
 				},
 				"energieeffizienzImmobilienanlagen": {
-					"unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": "channels"
+					"unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": "functionalities"
 				},
 				"wasserverbrauch": {
-					"unternehmensGruppenStrategieBzglWasserverbrauch": "e-business"
+					"unternehmensGruppenStrategieBzglWasserverbrauch": "initiatives"
 				},
 				"abfallproduktion": {
-					"unternehmensGruppenStrategieBzglAbfallproduktion": "paradigms"
+					"unternehmensGruppenStrategieBzglAbfallproduktion": "markets"
 				},
 				"gefaehrlicheAbfaelle": {
-					"gefaehrlicherAbfall": "communities"
+					"gefaehrlicherAbfall": "paradigms"
 				},
 				"biodiversitaet": {
-					"negativeAktivitaetenFuerDieBiologischeVielfalt": "No",
-					"negativeMassnahmenFuerDieBiologischeVielfalt": "markets",
+					"negativeAktivitaetenFuerDieBiologischeVielfalt": "Yes",
+					"negativeMassnahmenFuerDieBiologischeVielfalt": "initiatives",
 					"positiveAktivitaetenFuerDieBiologischeVielfalt": "Yes",
-					"positiveMassnahmenFuerDieBiologischeVielfalt": "schemas"
+					"positiveMassnahmenFuerDieBiologischeVielfalt": "infrastructures"
 				},
 				"fossileBrennstoffe": {
 					"einnahmenAusFossilenBrennstoffen": "Yes"
@@ -122,116 +128,62 @@
 				"taxonomie": {
 					"taxonomieBerichterstattung": "Nfrd",
 					"euTaxonomieKompassAktivitaeten": [
-						"ManufactureOfAnhydrousAmmonia",
-						"TransmissionAndDistributionNetworksForRenewableAndLowCarbonGases",
-						"ManufactureOfSodaAsh",
-						"ElectricityGenerationFromWindPower",
-						"ManufactureOfCement",
-						"InfrastructureForPersonalMobilityCycleLogistics",
-						"FreightTransportServicesByRoad",
-						"ConservationForestry",
-						"ManufactureOfBiogasAndBiofuelsForUseInTransportAndOfBioliquids",
-						"InfrastructureEnablingRoadTransportAndPublicTransport",
-						"ElectricityGenerationFromBioenergy",
-						"PassengerInterurbanRailTransport",
-						"RenewalOfWasteWaterCollectionAndTreatment",
-						"ManufactureOfEquipmentForTheProductionAndUseOfHydrogen",
-						"CogenerationOfHeatCoolAndPowerFromGeothermalEnergy",
-						"PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
-						"TransportByMotorbikesPassengerCarsAndLightCommercialVehicles",
-						"InfrastructureEnablingLowCarbonWaterTransport",
-						"CloseToMarketResearchDevelopmentAndInnovation",
-						"ManufactureOfChlorine",
-						"ManufactureOfCarbonBlack",
-						"ConstructionExtensionAndOperationOfWaterCollectionTreatmentAndSupplySystems",
-						"ElectricityGenerationFromRenewableNonFossilGaseousAndLiquidFuels",
-						"RestorationOfWetlands",
-						"StorageOfThermalEnergy",
-						"CogenerationOfHeatCoolAndPowerFromSolarEnergy",
-						"RenewalOfWaterCollectionTreatmentAndSupplySystems",
-						"InstallationAndOperationOfElectricHeatPumps",
-						"ElectricityGenerationFromHydropower",
-						"ResearchDevelopmentAndInnovationForDirectAirCaptureOfCo2",
-						"UndergroundPermanentGeologicalStorageOfCo2",
-						"ProductionOfHeatCoolFromSolarThermalHeating",
-						"CreativeArtsAndEntertainmentActivities",
-						"ProductionOfHeatCoolUsingWasteHeat",
-						"ProductionOfHeatCoolFromGeothermalEnergy",
-						"ElectricityGenerationFromNuclearEnergyInExistingInstallations",
-						"RenovationOfExistingBuildings",
-						"ElectricityGenerationUsingConcentratedSolarPowerCspTechnology",
-						"DataDrivenSolutionsForGhgEmissionsReductions",
-						"ForestManagement",
-						"RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent",
-						"CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
-						"HighEfficiencyCoGenerationOfHeatCoolAndPowerFromFossilGaseousFuels",
-						"ManufactureOfLowCarbonTechnologiesForTransport",
-						"ComputerProgrammingConsultancyAndRelatedActivities",
-						"CompostingOfBioWaste",
-						"SeaAndCoastalFreightWaterTransportVesselsForPortOperationsAndAuxiliaryActivities",
-						"AnaerobicDigestionOfSewageSludge",
-						"InfrastructureForWaterTransport",
-						"ManufactureOfHydrogen",
-						"InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
-						"MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities",
-						"TransportOfCo2",
-						"ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies",
-						"ManufactureOfAluminium",
-						"StorageOfHydrogen",
-						"LandfillGasCaptureAndUtilisation",
-						"Reinsurance",
-						"ConstructionExtensionAndOperationOfWasteWaterCollectionAndTreatment",
-						"LibrariesArchivesMuseumsAndCulturalActivities",
-						"NonLifeInsuranceUnderwritingOfClimateRelatedPerils",
-						"InfrastructureForRailTransport",
-						"ProfessionalServicesRelatedToEnergyPerformanceOfBuildings",
-						"InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
-						"RetrofittingOfSeaAndCoastalFreightAndPassengerWaterTransport",
-						"LowCarbonAirportInfrastructure",
-						"ElectricityGenerationFromGeothermalEnergy",
-						"EngineeringActivitiesAndRelatedTechnicalConsultancyDedicatedToAdaptationToClimateChange",
-						"ManufactureOfOrganicBasicChemicals",
-						"AirportInfrastructure",
-						"ElectricityGenerationFromFossilGaseousFuels",
-						"CogenerationOfHeatCoolAndPowerFromRenewableNonFossilGaseousAndLiquidFuels",
-						"ElectricityGenerationFromOceanEnergyTechnologies",
 						"MaterialRecoveryFromNonHazardousWaste",
-						"FreightRailTransport",
-						"ManufactureOfOtherLowCarbonTechnologies",
-						"ProductionOfHeatCoolFromRenewableNonFossilGaseousAndLiquidFuels",
-						"ProductionOfHeatCoolFromFossilGaseousFuelsInAnEfficientDistrictHeatingAndCoolingSystem",
+						"ComputerProgrammingConsultancyAndRelatedActivities",
+						"ElectricityGenerationFromOceanEnergyTechnologies",
+						"CogenerationOfHeatCoolAndPowerFromSolarEnergy",
+						"ElectricityGenerationFromNuclearEnergyInExistingInstallations",
+						"InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
+						"ProgrammingAndBroadcastingActivities",
 						"OperationOfPersonalMobilityDevicesCycleLogistics",
-						"TransmissionAndDistributionOfElectricity"
+						"ManufactureOfPlasticsInPrimaryForm",
+						"ManufactureOfCement",
+						"ManufactureOfAnhydrousAmmonia",
+						"ManufactureOfNitricAcid",
+						"ManufactureOfEnergyEfficiencyEquipmentForBuildings",
+						"ManufactureOfHydrogen",
+						"ProductionOfHeatCoolFromFossilGaseousFuelsInAnEfficientDistrictHeatingAndCoolingSystem",
+						"RetrofittingOfInlandWaterPassengerAndFreightTransport",
+						"ManufactureOfCarbonBlack",
+						"RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent",
+						"ElectricityGenerationUsingConcentratedSolarPowerCspTechnology",
+						"CreativeArtsAndEntertainmentActivities",
+						"Reinsurance",
+						"LandfillGasCaptureAndUtilisation",
+						"FreightRailTransport",
+						"InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
+						"ElectricityGenerationFromWindPower",
+						"ManufactureOfLowCarbonTechnologiesForTransport"
 					]
 				}
 			},
 			"soziales": {
 				"aenderungenUnternehmensstruktur": "Yes",
-				"sicherheitsmassnahmenFuerMitarbeiter": "paradigms",
+				"sicherheitsmassnahmenFuerMitarbeiter": "architectures",
 				"einkommensgleichheit": {
-					"massnahmenZurVerbesserungDerEinkommensungleichheit": "methodologies"
+					"massnahmenZurVerbesserungDerEinkommensungleichheit": "lifetime value"
 				},
 				"geschlechterdiversitaet": {
-					"definitionTopManagement": "mindshare",
-					"einhaltungRechtlicherVorgaben": "users"
+					"definitionTopManagement": "models",
+					"einhaltungRechtlicherVorgaben": "deliverables"
 				},
 				"audit": {
-					"auditsZurEinhaltungVonArbeitsstandards": "No",
+					"auditsZurEinhaltungVonArbeitsstandards": "Yes",
 					"artDesAudits": "SowohlInternAlsAuchVonDrittanbietern",
-					"auditErgebnisse": "e-business"
+					"auditErgebnisse": "systems"
 				}
 			},
 			"unternehmensfuehrungGovernance": {
-				"wirtschaftspruefer": "schemas",
-				"ceoVorsitzender": "No",
-				"amtszeit": "functionalities",
+				"wirtschaftspruefer": "interfaces",
+				"ceoVorsitzender": "Yes",
+				"amtszeit": "communities",
 				"einbeziehungVonStakeholdern": "Yes",
-				"prozessDerEinbeziehungVonStakeholdern": "mindshare",
+				"prozessDerEinbeziehungVonStakeholdern": "users",
 				"mechanismenZurAusrichtungAufStakeholder": "blockchains",
 				"esgKriterienUndUeberwachungDerLieferanten": "Yes",
-				"auswahlkriterien": "applications"
+				"auswahlkriterien": "users"
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2022"
 	}
 ]
