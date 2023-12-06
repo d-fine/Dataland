@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
+import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
@@ -58,6 +59,7 @@ data class SectionUploadConfigBuilder(
         isNullable: Boolean,
         required: Boolean?,
         uploadComponentName: String?,
+        options: MutableSet<SelectionOption>?,
     ): CellConfigBuilder {
         val newCell = CellConfigBuilder(
             parentSection = this,
@@ -70,6 +72,7 @@ data class SectionUploadConfigBuilder(
             isNullable = isNullable,
             required = required,
             uploadComponentName = uploadComponentName,
+            options = options,
         )
         children.add(newCell)
         return newCell

@@ -50,8 +50,9 @@ class StringComponent(
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
         sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
             uploadComponentName = "InputTextFormField",
+            options = null,
             this,
-            documentSupport.getFrameworkDisplayValueLambdaUpload(
+            valueGetter =  documentSupport.getFrameworkDisplayValueLambdaUpload(
                 FrameworkDisplayValueLambdaUpload(
                     "formatStringForDatatable(${getTypescriptFieldAccessorUpload(true)})",
                     setOf(
