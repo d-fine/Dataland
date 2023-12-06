@@ -43,6 +43,8 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
     });
     cy.mountWithPlugins(CreateSfdrDataset, {
       keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       props: {
         companyID: companyId,
       },
@@ -87,6 +89,8 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
     });
     cy.mountWithPlugins(CreateSfdrDataset, {
       keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       props: {
         companyID: companyId,
       },
