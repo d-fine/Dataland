@@ -112,6 +112,7 @@ spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-star
 
 mailjet-client = "com.mailjet:mailjet-client:5.2.5"
 
+flyway = "org.flywaydb:flyway-database-postgresql:_"
 flyway-core = "org.flywaydb:flyway-core:_"
 
 kotlin-serialization-compiler-plugin-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-serialization-compiler-plugin-embeddable", version.ref = "kotlin" }
@@ -174,5 +175,4 @@ spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
 
 springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:_"
 jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:_"
-flyway = "org.flywaydb:flyway-core:_"
 freemarker = "org.freemarker:freemarker:_"

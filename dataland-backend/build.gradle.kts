@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.mailjet.client)
     implementation(project(":dataland-message-queue-utils"))
     implementation(libs.flyway)
+    implementation(libs.flyway.core)
 }
 
 openApi {
