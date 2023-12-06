@@ -1,21 +1,23 @@
 <template>
   <div class="grid">
+    <h1>Ignore: {{ shouldIgnore() }}</h1>
     <FormKit type="group" :name="name" v-model="dataPoint">
       <div class="col-12">
         <slot />
         <div class="grid align-content-end">
-          <FormKit type="group" name="dataSource">
+          <FormKit type="group" name="dataSource" :key="currentReportValue" :ignore="shouldIgnore()">
             <div class="col-8">
               <UploadFormHeader
                 :label="`${label} Report`"
                 description="Select a report as a reference for this data point."
               />
+              {{ currentReportValue }}
               <FormKit
                 type="select"
                 name="fileName"
                 v-model="currentReportValue"
                 placeholder="Select a report"
-                :options="['None...', ...reportsName]"
+                :options="[noReportLabel, ...reportsName]"
               />
               <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
             </div>
@@ -113,6 +115,7 @@ export default defineComponent({
       qualityValue: "NA",
       currentReportValue: "",
       dataPoint: {} as unknown,
+      noReportLabel: "None...",
     };
   },
 
@@ -139,6 +142,13 @@ export default defineComponent({
       } else if (this.qualityValue === QualityOptions.Na) {
         this.qualityValue = "";
       }
+    },
+    /**
+     * Determines whether a report is selected and dataSource should be ignored
+     * @returns boolean true if report is not selected or the selected option is "None..."
+     */
+    shouldIgnore(): boolean {
+      return !(this.currentReportValue?.length > 0 && this.currentReportValue !== this.noReportLabel);
     },
   },
 });
