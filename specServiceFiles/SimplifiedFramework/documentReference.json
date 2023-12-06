@@ -1,9 +1,10 @@
 {
-  "$id": "https://dataland.com/documentReference.json",
+  "$id": "https://dataland.com/SimplifiedFramework/documentReference.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Document Reference",
   "description": "The structure and content of a document reference.",
   "type": "object",
+  "$uniqueIdentifier": "simple_1",
   "properties": {
     "documentName": {
       "type": "string"
@@ -12,6 +13,5 @@
       "type": "string"
     }
   },
-  "$uniqueIdentifier": "6",
   "additionalProperties": false
 }

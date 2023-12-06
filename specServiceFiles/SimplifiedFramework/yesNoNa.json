@@ -1,10 +1,10 @@
 {
-  "$id": "https://dataland.com/yesNoNa.json",
+  "$id": "https://dataland.com/SimplifiedFramework/yesNoNa.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "YesNoNa field",
   "description": "The possible values of a Yes/No/NA field.",
   "type": "string",
   "enum": ["Yes","No","NA"],
-  "$uniqueIdentifier": "2",
+  "$uniqueIdentifier": "simple_2",
   "additionalProperties": false
 }

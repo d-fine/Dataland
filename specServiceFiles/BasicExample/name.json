@@ -4,7 +4,7 @@
   "title": "CEO name",
   "description": "The legal name of the natural person serving as CEO.",
   "type": "object",
-  "$uniqueIdentifier": "2",
+  "$uniqueIdentifier": "basic_2",
   "properties": {
     "firstName": {
       "type": "string",
@@ -18,5 +18,5 @@
   "required": [
     "lastName"
   ],
-  "additionalProperties": false
+  "unevaluatedProperties": false
 }
