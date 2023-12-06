@@ -37,7 +37,6 @@ export default defineComponent({
     ...BaseFormFieldProps,
     dataTest: String,
   },
-  emits: ["reportsUpdated"],
   methods: {
     hasDataPointProperValue,
   },

@@ -52,7 +52,7 @@
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
                           :shouldDisableCheckboxes="true"
-                          @reportsUpdated="updateDocumentList"
+                          @field-specific-documents-updated="updateDocumentList(`${category.name}.${subcategory.name}.${field.name}`, $event)"
                           :ref="field.name"
                         />
                       </FormKit>
@@ -189,7 +189,7 @@ export default defineComponent({
       postLkSGDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
-      documents: new Map() as Map<string, DocumentToUpload>,
+      fieldSpecificDocuments: new Map() as Map<string, DocumentToUpload>,
     };
   },
   computed: {
@@ -250,8 +250,8 @@ export default defineComponent({
     async postLkSGData(): Promise<void> {
       this.messageCounter++;
       try {
-        if (this.documents.size > 0) {
-          await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
+        if (this.fieldSpecificDocuments.size > 0) {
+          await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
         const lkSGDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
@@ -282,9 +282,9 @@ export default defineComponent({
      */
     updateDocumentList(fieldName: string, document: DocumentToUpload) {
       if (document) {
-        this.documents.set(fieldName, document);
+        this.fieldSpecificDocuments.set(fieldName, document);
       } else {
-        this.documents.delete(fieldName);
+        this.fieldSpecificDocuments.delete(fieldName);
       }
     },
   },

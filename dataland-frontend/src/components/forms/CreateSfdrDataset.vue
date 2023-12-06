@@ -207,7 +207,7 @@ export default defineComponent({
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       climateSectorsForPrefill: [] as Array<string>,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
-      fieldSpecificDocuments: new Map<string, DocumentToUpload | undefined>(),
+      fieldSpecificDocuments: new Map<string, DocumentToUpload>(),
     };
   },
   watch: {
@@ -295,9 +295,7 @@ export default defineComponent({
         Array.from(this.fieldSpecificDocuments.entries()).forEach((e) => {
           console.log(1, e[0], e[1])
         })
-        const fieldSpecificDocumentsAsArray = Array.from(this.fieldSpecificDocuments.values()).filter(
-          (documents) => documents != undefined,
-        ) as DocumentToUpload[];
+        const fieldSpecificDocumentsAsArray = Array.from(this.fieldSpecificDocuments.values());
         console.log(fieldSpecificDocumentsAsArray.length)
         const documentsToUpload: DocumentToUpload[] = reportsToUpload.concat(...fieldSpecificDocumentsAsArray);
         console.log(reportsToUpload.length, fieldSpecificDocumentsAsArray.length)
@@ -344,7 +342,11 @@ export default defineComponent({
      */
     updateDocumentsOnField(fieldId: string, referencedDocument: DocumentToUpload | undefined) {
       console.log("C", fieldId, referencedDocument)
-      this.fieldSpecificDocuments.set(fieldId, referencedDocument);
+      if(referencedDocument) {
+        this.fieldSpecificDocuments.set(fieldId, referencedDocument);
+      } else {
+        this.fieldSpecificDocuments.delete(fieldId);
+      }
       console.log(this.fieldSpecificDocuments)
     },
   },
