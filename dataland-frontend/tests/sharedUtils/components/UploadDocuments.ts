@@ -12,14 +12,16 @@ export const uploadDocuments = {
   selectMultipleFilesAtOnce(filenames: string[], fieldName = "UploadReports"): void {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
     const filenamePaths = filenames.map((filename) => `../testing/data/documents/${filename}.pdf`);
-    cy.get("input[type=file]").selectFile(filenamePaths, { force: true });
+    cy.get(`button[data-test='upload-files-button-${fieldName}']`)
+      .parents(".p-fileupload")
+      .find("input[type=file]")
+      .selectFile(filenamePaths, { force: true });
   },
   selectDummyFile(filename: string, contentSize: number, fieldName = "UploadReports"): void {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
     cy.get(`button[data-test='upload-files-button-${fieldName}']`)
-      .parent()
-      .parent()
-      .siblings("input[type=file]")
+      .parents(".p-fileupload")
+      .find("input[type=file]")
       .selectFile(
         {
           contents: new Cypress.Buffer(contentSize),
@@ -31,14 +33,17 @@ export const uploadDocuments = {
   },
   selectDummyFileOfType(filename: string, fileType: string, contentSize: number, fieldName = "UploadReports"): void {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
-    cy.get("input[type=file]").selectFile(
-      {
-        contents: new Cypress.Buffer(contentSize),
-        fileName: `${filename}.${fileType}`,
-        mimeType: "application/pdf",
-      },
-      { force: true },
-    );
+    cy.get(`button[data-test='upload-files-button-${fieldName}']`)
+      .parents(".p-fileupload")
+      .find("input[type=file]")
+      .selectFile(
+        {
+          contents: new Cypress.Buffer(contentSize),
+          fileName: `${filename}.${fileType}`,
+          mimeType: "application/pdf",
+        },
+        { force: true },
+      );
   },
 
   fillAllFormsOfReportsSelectedForUpload(expectedNumberOfReportsToUpload?: number): void {
