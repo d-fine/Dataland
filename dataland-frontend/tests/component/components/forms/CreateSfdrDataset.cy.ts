@@ -1,22 +1,22 @@
 import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
-import {minimalKeycloakMock} from "@ct/testUtils/Keycloak";
-import {submitButton} from "@sharedUtils/components/SubmitButton";
-import {DataTypeEnum} from "@clients/backend";
-import {uploadDocuments} from "@sharedUtils/components/UploadDocuments";
+import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
+import { DataTypeEnum } from "@clients/backend";
+import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 
 const createSfdrDataset = {
-  fillRequiredFields() : void {
-    this.fillDateFieldWithFutureDate("dataDate")
+  fillRequiredFields(): void {
+    this.fillDateFieldWithFutureDate("dataDate");
     cy.get('input[name="fiscalYearDeviation"][value="Deviation"]').click();
-    this.fillDateFieldWithFutureDate("fiscalYearEnd")
+    this.fillDateFieldWithFutureDate("fiscalYearEnd");
   },
   fillDateFieldWithFutureDate(fieldName: string): void {
     cy.get(`[data-test="${fieldName}"] button`).should("have.class", "p-datepicker-trigger").click();
     cy.get(`input[name="${fieldName}"]`).should("not.be.visible");
     cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
     cy.get("div.p-datepicker").find('span:contains("11")').click();
-  }
-}
+  },
+};
 
 describe("Component tests for the CreateSfdrDataset that test report uploading", () => {
   const hashForFileWithOneByteSize = "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d";
@@ -25,24 +25,19 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
 
   it("Check if the document uploads do not interfere", () => {
     const companyId = "company-id";
-    console.log(hashForFileWithOneByteSize)
+    console.log(hashForFileWithOneByteSize);
     const setOfHashesThatShouldBeCheckedForExistence = new Set([
       hashForFileWithOneByteSize,
-    hashForFileWithTwoBytesSize,
-    hashForFileWithThreeBytesSize,
-    ])
+      hashForFileWithTwoBytesSize,
+      hashForFileWithThreeBytesSize,
+    ]);
     setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
       console.log(hash);
-      cy.intercept({
-          method: "HEAD",
-          url: `**/documents/${hash}`,
-        }, {
-          statusCode: 200,
-        },
-        (interception) => { console.log(interception.url) }
-      ).as(`documentExists-${hash}`);
+      cy.intercept("HEAD", "**/documents/" + hash, (request) => {
+        request.reply(200, {});
+      }).as(`documentExists-${hash}`);
     });
-    cy.intercept(`/documents/*`, cy.spy().as("documentExists"))
+    cy.intercept(`/documents/*`, cy.spy().as("documentExists"));
     cy.intercept("POST", `/api/data/${DataTypeEnum.Sfdr}`, {
       statusCode: 200,
     });
@@ -76,25 +71,17 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
     });
   });
 
-
   it("Check if the document uploads do not interfere", () => {
     const companyId = "company-id";
-    console.log(hashForFileWithOneByteSize)
-    const setOfHashesThatShouldBeCheckedForExistence = new Set([
-      hashForFileWithTwoBytesSize,
-    ])
+    console.log(hashForFileWithOneByteSize);
+    const setOfHashesThatShouldBeCheckedForExistence = new Set([hashForFileWithTwoBytesSize]);
     setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
       console.log(hash);
-      cy.intercept({
-          method: "HEAD",
-          url: `**/documents/${hash}`,
-        }, {
-          statusCode: 200,
-        },
-        (interception) => { console.log(interception.url) }
-      ).as(`documentExists-${hash}`);
+      cy.intercept("HEAD", "**/documents/" + hash, (request) => {
+        request.reply(200, {});
+      }).as(`documentExists-${hash}`);
     });
-    cy.intercept(`**/documents/*`, cy.spy().as("documentExists"))
+    cy.intercept(`**/documents/*`, cy.spy().as("documentExists"));
     cy.intercept("POST", `/api/data/${DataTypeEnum.Sfdr}`, {
       statusCode: 200,
     });
@@ -109,12 +96,12 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
       cy.get('[data-test="sustainableAgriculturePolicy"] input[type="radio"][name="value"][value="Yes"]').check();
       uploadDocuments.selectDummyFile("second", 1, "sustainableAgriculturePolicy");
       cy.wait(100);
-      cy.get('div[data-test="sustainableAgriculturePolicy"] button .pi-times').click()
+      cy.get('div[data-test="sustainableAgriculturePolicy"] button .pi-times').click();
       uploadDocuments.selectDummyFile("third", 2, "sustainableAgriculturePolicy");
       cy.get('[data-test="environmentalPolicy"] input[type="radio"][name="value"][value="Yes"]').check();
       uploadDocuments.selectDummyFile("fourth", 3, "environmentalPolicy");
       cy.wait(100);
-      cy.get('div[data-test="environmentalPolicy"] button .pi-times').click()
+      cy.get('div[data-test="environmentalPolicy"] button .pi-times').click();
 
       cy.wait(100);
       submitButton.buttonAppearsEnabled();
@@ -127,5 +114,4 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
       cy.get("@documentExists").should("have.been.calledOnce");
     });
   });
-
 });
