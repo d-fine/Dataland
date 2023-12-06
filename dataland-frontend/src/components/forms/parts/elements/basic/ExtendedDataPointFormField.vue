@@ -1,6 +1,5 @@
 <template>
   <div class="grid">
-    <h1>Ignore: {{ shouldIgnore() }}</h1>
     <FormKit type="group" :name="name" v-model="dataPoint">
       <div class="col-12">
         <slot />
@@ -11,7 +10,6 @@
                 :label="`${label} Report`"
                 description="Select a report as a reference for this data point."
               />
-              {{ currentReportValue }}
               <FormKit
                 type="select"
                 name="fileName"
