@@ -1,0 +1,11 @@
+{
+  "$id": "https://dataland.com/ceo.shoe-size.json",
+  "$schema": "http://localhost:8081/datalandSchema.json",
+  "title": "CEO shoe size",
+  "description": "The shoe size of the natural person serving as CEO according to ISO 19407:2023.",
+  "$uniqueIdentifier": "3",
+  "type": "integer",
+  "minimum": 20,
+  "maximum": 60,
+  "additionalProperties": false
+}

@@ -1,0 +1,10 @@
+{
+  "$id": "https://dataland.com/car.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CEO car",
+  "description": "The favorite car brand of the CEO.",
+  "type": "string",
+  "enum": ["BMW", "VW", "Mercedes"],
+  "$uniqueIdentifier": "8",
+  "additionalProperties": false
+}

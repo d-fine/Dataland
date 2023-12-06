@@ -1,0 +1,18 @@
+{
+  "$id": "http://localhost:8081/ceo.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CEO framework",
+  "description": "The CEO framework describing the CEO of a company.",
+  "properties": {
+    "name": {
+      "$ref": "http://localhost:8081/name.json"
+    },
+    "age": {
+      "$ref": "http://localhost:8081/age.json"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "additionalProperties": false
+}

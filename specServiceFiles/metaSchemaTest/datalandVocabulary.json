@@ -1,0 +1,13 @@
+{
+  "$schema": "http://localhost:8081/datalandSchema.json",
+  "$id": "http://localhost:8081/datalandVocabulary.json",
+  "$dynamicAnchor": "meta",
+
+  "title": "Additional Dataland vocabulary meta-schema",
+  "type": ["object"],
+  "properties": {
+    "$uniqueIdentifier": {
+      "type": "string"
+    }
+  }
+}

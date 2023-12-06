@@ -1,0 +1,17 @@
+{
+  "$id": "https://dataland.com/documentReference.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Document Reference",
+  "description": "The structure and content of a document reference.",
+  "type": "object",
+  "properties": {
+    "documentName": {
+      "type": "string"
+    },
+    "documentIdentifier": {
+      "type": "string"
+    }
+  },
+  "$uniqueIdentifier": "6",
+  "additionalProperties": false
+}
