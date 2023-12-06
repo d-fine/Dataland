@@ -42,7 +42,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         identifier,
                         documentSupport.getFixtureExpression(
                             fixtureExpression = "pickSubsetOfElements(Object.values(Activity))",
-                            nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
+                            nullableFixtureExpression =
+                            "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
                             nullable = isNullable,
                         ),
                         imports = setOf(
@@ -71,14 +72,14 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             }
         }
 
-        // TODO: Remove this. this is just a POC for showing how to create a GdvYearlyDecimalTimeseriesData.
+        // TODO: Remove this. this is just a POC for showing how to create a GdvYearlyDecimalTimeseriesDataComponent.
 //        framework.root.edit<ComponentGroup>("allgemein") {
-//            create<GdvYearlyDecimalTimeseriesData>("testingData") {
+//            create<GdvYearlyDecimalTimeseriesDataComponent>("testingData") {
 //                label = "Data, for Testing!"
 //                decimalRows = mutableListOf(
-//                    GdvYearlyDecimalTimeseriesData.TimeseriesRow("scope1", "Scope 1", "tCO2-Äquiv."),
-//                    GdvYearlyDecimalTimeseriesData.TimeseriesRow("scope2", "Scope 2", "tCO2-Äquiv."),
-//                    GdvYearlyDecimalTimeseriesData.TimeseriesRow("scope3", "Scope 3", "tCO2-Äquiv."),
+//                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope1", "Scope 1", "tCO2-Äquiv."),
+//                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope2", "Scope 2", "tCO2-Äquiv."),
+//                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope3", "Scope 3", "tCO2-Äquiv."),
 //                )
 //            }
 //        }

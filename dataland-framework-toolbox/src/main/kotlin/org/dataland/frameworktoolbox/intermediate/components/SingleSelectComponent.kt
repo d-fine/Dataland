@@ -43,7 +43,8 @@ open class SingleSelectComponent(
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
-            documentSupport.getFrameworkDisplayValueLambda( // TODO Emannuel: Discuss document support in general with Marc.
+            documentSupport.getFrameworkDisplayValueLambda(
+                // TODO Emannuel: Discuss document support in general with Marc.
                 FrameworkDisplayValueLambda(
                     "{\n" +
                         generateMappingObject() +
@@ -116,7 +117,8 @@ open class SingleSelectComponent(
                 "* @returns original name that matches the technical name\n" +
                 "*/\n"
         val functionBody =
-            "function getOriginalNameFromTechnicalName<T extends string>(technicalName: T, mappingObject: {[key in T]:string}): string{\n" +
+            "function getOriginalNameFromTechnicalName<T extends string>" +
+                "(technicalName: T, mappingObject: {[key in T]:string}): string{\n" +
                 "   return mappingObject[technicalName]\n" +
                 "}\n"
         return jsDoc + functionBody

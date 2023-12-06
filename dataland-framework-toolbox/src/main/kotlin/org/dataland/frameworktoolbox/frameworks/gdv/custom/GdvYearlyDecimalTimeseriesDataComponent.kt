@@ -15,21 +15,24 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
 /**
- * A GdvYearlyDecimalTimeseriesData is an in-memory representation of a generic field
+ * A GdvYearlyDecimalTimeseriesDataComponent is an in-memory representation of a generic field
  * that encodes several values across a span of multi years. It is displayed / upload in a matrix
  */
-class GdvYearlyDecimalTimeseriesData(
+class GdvYearlyDecimalTimeseriesDataComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
+    /**
+     * TODO
+     */
     data class TimeseriesRow(val identifier: String, val label: String, val unitSuffix: String)
 
     var decimalRows: MutableList<TimeseriesRow> = mutableListOf()
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         require(decimalRows.isNotEmpty()) {
-            "Please add at least one decimal row to this GdvYearlyDecimalTimeseriesData " +
-                "component to receive useful output."
+            "Please add at least one decimal row to this GdvYearlyDecimalTimeseriesDataComponent " +
+                "to receive useful output."
         }
 
         val fieldDataClass = dataClassBuilder.parentPackage.addClass(
@@ -88,7 +91,7 @@ class GdvYearlyDecimalTimeseriesData(
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         require(decimalRows.isNotEmpty()) {
-            "Please add at least one decimal row to this GdvYearlyDecimalTimeseriesData " +
+            "Please add at least one decimal row to this GdvYearlyDecimalTimeseriesDataComponent " +
                 "component to receive useful output."
         }
         val jsIdentifierArray = "[${decimalRows.joinToString(", ")

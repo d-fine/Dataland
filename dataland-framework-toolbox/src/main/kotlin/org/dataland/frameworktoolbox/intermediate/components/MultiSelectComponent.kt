@@ -85,7 +85,8 @@ open class MultiSelectComponent(
         )
     }
 
-    private fun generateMappingObject(): String { // TODO Emanuel: this is a duplicate to SingleSelectComponent; centralize where?
+    private fun generateMappingObject(): String {
+        // TODO Emanuel: this is a duplicate to SingleSelectComponent; centralize where?
         val codeBuilder = StringBuilder()
         codeBuilder.append("const mappings = {\n")
 
@@ -99,7 +100,8 @@ open class MultiSelectComponent(
         return codeBuilder.toString()
     }
 
-    private fun generateMapperFunction(): String { // TODO Emanuel: this is a duplicate to SingleSelectComponent; centralize where?
+    private fun generateMapperFunction(): String {
+        // TODO Emanuel: this is a duplicate to SingleSelectComponent; centralize where?
         val jsDoc =
             "/**\n" +
                 "* Maps the technical name of a select option to the respective original name\n" +
@@ -108,7 +110,8 @@ open class MultiSelectComponent(
                 "* @returns original name that matches the technical name\n" +
                 "*/\n"
         val functionBody =
-            "function getOriginalNameFromTechnicalName<T extends string>(technicalName: T, mappingObject: {[key in T]:string}): string{\n" +
+            "function getOriginalNameFromTechnicalName<T extends string>" +
+                "(technicalName: T, mappingObject: {[key in T]:string}): string{\n" +
                 "   return mappingObject[technicalName]\n" +
                 "}\n"
         return jsDoc + functionBody
