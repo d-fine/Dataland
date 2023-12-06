@@ -3,8 +3,10 @@
     <TheHeader />
     <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
       <TheContent>
-        <BackButton id="backButton" label="BACK" />
-        <CompanyInformation :companyId="companyID" />
+        <MarginWrapper class="mb-2">
+          <BackButton id="backButton" label="BACK" />
+          <CompanyInformation :companyId="companyID" />
+        </MarginWrapper>
         <Card class="col-12 text-left page-wrapper-card">
           <template #title> New Dataset - Framework </template>
           <template #content>
@@ -91,10 +93,12 @@ import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue"
 import TheFooter from "@/components/generics/TheFooter.vue";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 
 export default defineComponent({
   name: "ChooseFramework",
   components: {
+    MarginWrapper,
     TheFooter,
     AuthorizationWrapper,
     CompanyInformation,
@@ -218,9 +222,8 @@ export default defineComponent({
      */
     async getMetaInfoAboutAllDataSetsForCurrentCompany() {
       try {
-        const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getMetaDataControllerApi();
+        const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
+        const metaDataControllerApi = backendClients.metaDataController;
         const response = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID, undefined, false);
         const listOfAllDataMetaInfo = response.data;
         this.mapOfDataTypeToListOfDataMetaInfo = listOfAllDataMetaInfo.reduce((groups, dataMetaInfo) => {

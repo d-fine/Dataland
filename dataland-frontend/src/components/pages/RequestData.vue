@@ -207,7 +207,7 @@ import { FormKit } from "@formkit/vue";
 import PrimeButton from "primevue/button";
 import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
-import { type DataTypeEnum, type ErrorDetails, type ErrorResponse } from "@clients/backend";
+import { type DataTypeEnum, type ErrorResponse } from "@clients/backend";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
@@ -300,9 +300,8 @@ export default defineComponent({
       try {
         this.submittingInProgress = true;
         const bulkDataRequestObject = this.collectDataToSend();
-        const requestDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getRequestDataControllerApi();
+        const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+          .requestController;
         const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
 
         this.messageCounter++;
@@ -314,9 +313,9 @@ export default defineComponent({
         this.messageCounter++;
         console.error(error);
         if (error instanceof AxiosError) {
-          const responseMessages = (error.response?.data as ErrorResponse)?.errors as ErrorDetails[];
-          this.message = (responseMessages ? responseMessages[0].message : error.message) as string;
-          this.summary = responseMessages[0].summary as string;
+          const responseMessages = (error.response?.data as ErrorResponse)?.errors;
+          this.message = responseMessages ? responseMessages[0].message : error.message;
+          this.summary = responseMessages[0].summary;
         } else {
           this.message =
             "An unexpected error occurred. Please try again or contact the support team if the issue persists.";

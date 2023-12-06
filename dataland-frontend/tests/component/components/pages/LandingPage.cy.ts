@@ -49,6 +49,7 @@ function validateIntroSection(): void {
   );
   cy.get("h1").should("contain.text", "Liberate Data");
   cy.get("h1").should("contain.text", "Empower Autonomy");
+  cy.get("input#company_search_bar_standard").should("exist");
 }
 
 /**
@@ -56,7 +57,7 @@ function validateIntroSection(): void {
  */
 function validateBrandsSection(): void {
   const images = getLandingPageSection("Brands").image;
-  expect(images?.length).to.eq(10);
+  expect(images?.length).to.eq(13);
   images!.forEach((image, index) => {
     const filename = image.split("/").slice(-1)[0];
     checkImage(`Brand ${index + 1}`, filename);
@@ -68,6 +69,7 @@ function validateBrandsSection(): void {
  */
 function checkNewFooter(): void {
   cy.get("footer").should("exist");
+
   checkImage("Copyright ©   Dataland", getSingleImageNameInSection("Footer"));
   cy.get(".footer__copyright").should("contain.text", `Copyright © ${new Date().getFullYear()} Dataland`);
 
@@ -141,7 +143,7 @@ function validateStruggleSection(): void {
  */
 function validateQuotesSection(): void {
   cy.get("section.quotes").should("exist");
-  cy.get(".quotes__slide").should("have.length", 5);
+  cy.get(".quotes__slide").should("have.length", 7);
 }
 
 /**

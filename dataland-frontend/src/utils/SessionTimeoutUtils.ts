@@ -16,22 +16,23 @@ const minRequiredRemainingValidityTimeOfRefreshTokenDuringCheck = TIME_DISTANCE_
  * @param keycloak is the keycloak adaptor used to actually update the token
  * @param forceStoringValues forces storing the refresh token and its expiry timestamp in the shared storage, even if
  * the updateToken() has not done an update itself because of the minValidity value
+ * @returns a generic resolved Promise
  */
-export function updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak: Keycloak, forceStoringValues = false): void {
-  keycloak
-    .updateToken(60)
-    .then((hasTokenBeenUpdated) => {
-      if (hasTokenBeenUpdated || forceStoringValues) {
-        const refreshTokenExpiryTime = keycloak.refreshTokenParsed?.exp;
-        if (refreshTokenExpiryTime) {
-          useSharedSessionStateStore().refreshToken = keycloak.refreshToken;
-          useSharedSessionStateStore().refreshTokenExpiryTimestampInMs = refreshTokenExpiryTime * 1000;
-        }
-      }
-    })
-    .catch(() => {
-      console.log(`Could not refresh token`);
-    });
+export async function updateTokenAndItsExpiryTimestampAndStoreBoth(
+  keycloak: Keycloak,
+  forceStoringValues = false,
+): Promise<void> {
+  const hasTokenBeenUpdated = await keycloak.updateToken(60);
+
+  if (hasTokenBeenUpdated || forceStoringValues) {
+    const refreshTokenExpiryTime = keycloak.refreshTokenParsed?.exp;
+    if (refreshTokenExpiryTime) {
+      useSharedSessionStateStore().refreshToken = keycloak.refreshToken;
+      useSharedSessionStateStore().refreshTokenExpiryTimestampInMs = refreshTokenExpiryTime * 1000;
+    }
+  }
+
+  return Promise.resolve();
 }
 
 /**
@@ -46,7 +47,7 @@ export function startSessionSetIntervalFunctionAndReturnItsId(
   keycloak: Keycloak,
   onSurpassingExpiredSessionTimestampCallback: () => void,
 ): number {
-  const functionIdOfSetInterval = setInterval(() => {
+  const functionIdOfSetInterval = window.setInterval(() => {
     const currentTimestampInMs = new Date().getTime();
     const sessionWarningTimestamp = useSharedSessionStateStore().sessionWarningTimestampInMs as number;
     if (!sessionWarningTimestamp) {
@@ -95,6 +96,6 @@ export function tryToRefreshSession(keycloak: Keycloak): void {
   if (isRefreshTokenExpiryTimestampInSharedStoreReached()) {
     loginAndRedirectToSearchPage(keycloak);
   } else {
-    updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
+    void updateTokenAndItsExpiryTimestampAndStoreBoth(keycloak);
   }
 }

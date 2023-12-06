@@ -94,7 +94,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - api-key-manager-db
-    image: postgres:15.3
+    image: postgres:15.4
     volumes:
       - api_key_manager_data:/var/lib/postgresql/data
     environment:
@@ -127,7 +127,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - document-manager-db
-    image: postgres:15.3
+    image: postgres:15.4
     volumes:
       - document_manager_data:/var/lib/postgresql/data
     environment:
@@ -161,7 +161,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - backend-db
-    image: postgres:15.3
+    image: postgres:15.4
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -209,8 +209,8 @@ services:
     # don't work anymore after a certain amount of requests
     # https://github.com/docker/for-win/issues/8861
     restart: always
-    profiles: [ "development" ]
-    image: node:20.8.1
+    profiles: ["development"]
+    image: node:20.9.0
     networks:
       internal:
         aliases:
@@ -251,7 +251,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal-storage-db
-    image: postgres:15.3
+    image: postgres:15.4
     volumes:
       - internal_storage_data:/var/lib/postgresql/data
     environment:
@@ -268,7 +268,7 @@ services:
     profiles: [ "production", "testing", "development", "init" ]
     networks:
       - keycloak-db
-    image: postgres:15.3
+    image: postgres:15.4
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
@@ -399,7 +399,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - qa-service-db
-    image: postgres:15.3
+    image: postgres:15.4
     volumes:
       - qa_service_data:/var/lib/postgresql/data
     environment:
@@ -423,6 +423,7 @@ services:
       DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${DATALAND_BATCH_MANAGER_CLIENT_SECRET}
     volumes:
       - ./dataland-batch-manager/config:/config
+      - batch_manager_data:/deltafiles
     extra_hosts:
       - "host.docker.internal:host-gateway"
   community-manager:
@@ -448,7 +449,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - community-manager-db
-    image: postgres:15.3
+    image: postgres:15.4
     volumes:
       - community_manager_data:/var/lib/postgresql/data
     environment:
@@ -492,4 +493,6 @@ volumes:
   qa_service_data:
     driver: local
   community_manager_data:
+    driver: local
+  batch_manager_data:
     driver: local

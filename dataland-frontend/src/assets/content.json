@@ -43,16 +43,34 @@
                             "date": "\"Dataland is the only platform we know that is open to everyone and based on a non-profit business model.\""
                         },
                         {
-                            "icon": "jj9mEYW9McQ",
+                            "icon": "eOsUGR6KafI",
                             "title": "Daniel Sailer,",
                             "text": " Head of Sustainable Investment Office\n at Metzler Asset Management GmbH",
                             "date": "\"The Pathways to Paris PoC can be a simple way to make sure Dataland becomes the data platform you need.\""
                         },
                         {
-                            "icon": "wjiR2exsHCs",
+                            "icon": "nNf1Ui9Keug",
+                            "title": "Matthias Kopp,",
+                            "text": " Director of Sustainable Finance at WWF Germany",
+                            "date": "\"Test whether Dataland can be one or the solution to [...] make data available at the scale, the quality and the ease of use that we need.\""
+                        },
+                        {
+                            "icon": "NMaN0Autdok",
+                            "title": "Fabian Klose,",
+                            "text": "Cloud Services Sales\n at T-Systems International",
+                            "date": "\"Have a look at Dataland and look at what benefits you can get out of it for your business. Join the community!\""
+                        },
+                        {
+                            "icon": "UpEYtR_v5ws",
+                            "title": "Ingo Speich,",
+                            "text": "Head of Sustainability & Corporate Governance\n at Deka Investment",
+                            "date": "\"We appeal to both investors and companies to make sustainability data available in a timely and cost-efficient manner.\""
+                        },
+                        {
+                            "icon": "1CArXxrcsvg",
                             "title": "Christoph Benner,",
                             "text": " CEO of Chom Capital",
-                            "date": "\"Join Dataland: it doesn't cost anything, it's open source and an entrusted structure.\""
+                            "date": "\"Our partnership with Dataland is instrumental in progressively addressing and bridging data gaps.\""
                         },
                         {
                             "icon": "9T9Bga8oojA",
@@ -75,10 +93,13 @@
                         "/static/logos/img_dydon_ai.png",
                         "/static/logos/img_envoria.png",
                         "/static/logos/img_Experience_One.png",
+                        "/static/logos/img_impact_cubed.png",
+                        "/static/logos/img_lyt.png",
                         "/static/logos/img_pwc.png",
                         "/static/logos/img_t_systems.png",
                         "/static/logos/img_value_balancing_alliance.png",
-                        "/static/logos/img_voeb.png"
+                        "/static/logos/img_voeb.png",
+                        "/static/logos/img_Atlas_Metrics.png"
                     ]
                 },
                 {

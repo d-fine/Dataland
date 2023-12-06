@@ -8,7 +8,7 @@ import { roundNumber } from "@/utils/NumberConversionUtils";
  * @param precision is the precision for the rounding of the percentage number
  * @returns the resulting string
  */
-export function formatPercentageNumberAsString(percentageNumber?: number, precision = 2): string {
+export function formatPercentageNumberAsString(percentageNumber?: number | null, precision = 2): string {
   if (percentageNumber == undefined) {
     return "";
   }

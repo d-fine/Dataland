@@ -1,8 +1,13 @@
 <template>
   <template v-for="(cellOrSectionConfig, idx) in config" :key="idx">
     <template v-if="isCellOrSectionVisible(cellOrSectionConfig, mldtDatasets)">
-      <tr v-if="cellOrSectionConfig.type == 'cell'" v-show="isVisible" :data-cell-label="cellOrSectionConfig.label">
-        <td class="headers-bg" :data-cell-label="cellOrSectionConfig.label" data-row-header="true">
+      <tr
+        v-if="cellOrSectionConfig.type == 'cell'"
+        v-show="isVisible"
+        :data-cell-label="cellOrSectionConfig.label"
+        :class="cellOrSectionConfig.class ?? null"
+      >
+        <td class="headers-bg pl-4" :data-cell-label="cellOrSectionConfig.label" data-row-header="true">
           <span class="table-left-label">{{ cellOrSectionConfig.label }}</span>
           <em
             v-if="cellOrSectionConfig.explanation"
@@ -36,12 +41,11 @@
           @click="toggleSection(idx)"
           v-show="isVisible"
         >
-          <td :colspan="mldtDatasets.length + 1">
+          <td :colspan="mldtDatasets.length + 1" :class="isTopLevel ? 'pl-2' : null">
             <ChevronDownIcon v-if="expandedSections.has(idx)" class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
             <ChevronLeftIcon v-else class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
             <i
               v-if="shouldAddCrossedEyeSymbolToSectionLabel(cellOrSectionConfig)"
-              i
               class="pi pi-eye-slash pr-1 text-red-500"
               aria-hidden="true"
               data-test="hidden-icon"

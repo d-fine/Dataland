@@ -1,30 +1,11 @@
 <template>
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
   <TheContent class="paper-section min-h-screen">
-    <MarginWrapper class="text-left surface-0" style="margin-right: 0">
-      <BackButton />
-      <FrameworkDataSearchBar
-        v-if="!viewInPreviewMode && !isReviewableByCurrentUser"
-        :companyIdIfOnViewPage="companyID"
-        class="mt-2"
-        ref="frameworkDataSearchBar"
-        @search-confirmed="handleSearchConfirm"
-      />
-    </MarginWrapper>
-    <MarginWrapper class="surface-0" style="margin-right: 0">
-      <div class="grid align-items-end">
-        <div class="col-9">
-          <CompanyInformationBanner
-            :companyId="companyID"
-            @fetchedCompanyInformation="handleFetchedCompanyInformation"
-          />
-        </div>
-      </div>
-    </MarginWrapper>
+    <CompanyInfoSheet :company-id="companyID" @fetched-company-information="handleFetchedCompanyInformation" />
     <div v-if="isDataProcessedSuccesfully">
       <MarginWrapper
         class="text-left surface-0 dataland-toolbar"
-        style="margin-right: 0"
+        style="box-shadow: 0 4px 4px 0 #00000005; margin-right: 0"
         :class="[pageScrolled ? ['fixed w-100'] : '']"
       >
         <div class="flex justify-content-between align-items-center d-search-filters-panel">
@@ -43,7 +24,22 @@
               @change="handleChangeFrameworkEvent"
             />
             <slot name="reportingPeriodDropdown" />
+            <div
+              class="flex align-content-start align-items-center pl-3"
+              v-if="dataType != DataTypeEnum.EutaxonomyNonFinancials && dataType !== DataTypeEnum.Sme"
+            >
+              <InputSwitch
+                class="form-field vertical-middle"
+                data-test="hideEmptyDataToggleButton"
+                inputId="hideEmptyDataToggleButton"
+                v-model="hideEmptyFields"
+              />
+              <span data-test="hideEmptyDataToggleCaption" class="ml-2 font-semibold" style="font-size: 14px">
+                Hide empty fields
+              </span>
+            </div>
           </div>
+
           <div class="flex align-content-end align-items-center">
             <QualityAssuranceButtons
               v-if="isReviewableByCurrentUser"
@@ -91,44 +87,43 @@
 </template>
 
 <script lang="ts">
-import BackButton from "@/components/general/BackButton.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
-import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
-import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 import Dropdown, { type DropdownChangeEvent } from "primevue/dropdown";
-import { defineComponent, inject, ref } from "vue";
+import { computed, defineComponent, inject, ref } from "vue";
 
 import TheFooter from "@/components/generics/TheFooter.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from "@/utils/KeycloakUtils";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
-import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } from "@clients/backend";
+import { type DataMetaInformation, type CompanyInformation, DataTypeEnum } from "@clients/backend";
 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import OverlayPanel from "primevue/overlaypanel";
 import QualityAssuranceButtons from "@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue";
+import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
+import type FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
+import InputSwitch from "primevue/inputswitch";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
   components: {
+    CompanyInfoSheet,
     TheContent,
     TheHeader,
-    BackButton,
     MarginWrapper,
-    FrameworkDataSearchBar,
     Dropdown,
-    CompanyInformationBanner,
     TheFooter,
     PrimeButton,
     OverlayPanel,
     SelectReportingPeriodDialog,
     QualityAssuranceButtons,
+    InputSwitch,
   },
   emits: ["updateActiveDataMetaInfoForChosenFramework"],
   props: {
@@ -157,7 +152,6 @@ export default defineComponent({
   data() {
     return {
       fetchedCompanyInformation: {} as CompanyInformation,
-
       chosenDataTypeInDropdown: "",
       dataTypesInDropdown: [] as { label: string; value: string }[],
       humanizeStringOrNumber,
@@ -171,9 +165,20 @@ export default defineComponent({
       isDataProcessedSuccesfully: true,
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
+      hideEmptyFields: !this.hasUserReviewerRights,
+    };
+  },
+  provide() {
+    return {
+      hideEmptyFields: computed(() => {
+        return this.hideEmptyFields;
+      }),
     };
   },
   computed: {
+    DataTypeEnum() {
+      return DataTypeEnum;
+    },
     isReviewableByCurrentUser() {
       return this.hasUserReviewerRights && this.singleDataMetaInfoToDisplay?.qaStatus === "Pending";
     },
@@ -279,17 +284,6 @@ export default defineComponent({
         void this.$router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
       }
     },
-    /**
-     * Handles the "search-confirmed" event of the search bar by visiting the search page with the query param set to
-     * the search term provided by the event.
-     * @param searchTerm The search term provided by the "search-confirmed" event of the search bar
-     */
-    async handleSearchConfirm(searchTerm: string) {
-      await this.$router.push({
-        name: "Search Companies for Framework Data",
-        query: { input: searchTerm },
-      });
-    },
 
     /**
      * Uses a list of data meta info to derive all distinct frameworks that occur in that list. Only if those distinct
@@ -343,9 +337,8 @@ export default defineComponent({
      */
     async getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit() {
       try {
-        const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getMetaDataControllerApi();
+        const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
+        const metaDataControllerApi = backendClients.metaDataController;
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
         this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
@@ -365,6 +358,9 @@ export default defineComponent({
   watch: {
     companyID() {
       void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
+    },
+    isReviewableByCurrentUser() {
+      this.hideEmptyFields = !this.hasUserReviewerRights;
     },
     dataType(newDataType: string) {
       this.chosenDataTypeInDropdown = newDataType;

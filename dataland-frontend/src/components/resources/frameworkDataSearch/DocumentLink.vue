@@ -1,13 +1,6 @@
 <template>
-  <span
-    @click="downloadDocument()"
-    class="text-primary cursor-pointer"
-    :class="fontStyle"
-    :data-test="'Report-Download-' + downloadName"
-  >
-    <span class="underline pl-1">
-      {{ label ?? downloadName }}
-    </span>
+  <span @click="downloadDocument()" class="text-primary cursor-pointer" :class="fontStyle">
+    <span class="underline pl-1" :data-test="'Report-Download-' + downloadName">{{ label ?? downloadName }}</span>
     <i
       v-if="showIcon"
       class="pi pi-download pl-1"
@@ -49,9 +42,8 @@ export default defineComponent({
       const fileReference: string = this.fileReference;
       try {
         const docUrl = document.createElement("a");
-        const documentControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getDocumentControllerApi();
+        const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+          .documentController;
         await documentControllerApi
           .getDocument(fileReference, {
             headers: { accept: "application/pdf" },

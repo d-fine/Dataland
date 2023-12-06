@@ -15,6 +15,7 @@
             :is-required="false"
             v-model:percentageFieldValueBind="driveMixPerFleetSegmentInPercent"
             name="driveMixPerFleetSegmentInPercent"
+            validation="between:0,100"
           />
         </div>
 

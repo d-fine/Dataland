@@ -10,6 +10,7 @@ import { type DefineComponent, defineComponent, h } from "vue";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import DynamicDialog from "primevue/dynamicdialog";
+import { ApiClientProvider } from "@/services/ApiClients";
 
 /*
   This file defines a alternative mounting function that also includes many creature comforts
@@ -66,7 +67,7 @@ declare global {
  * A slightly modified version of the vue mount function that automatically initiates plugins used in dataland
  * like PrimeVue, Pinia or the Router and also allows for simple authentication injection
  * @param component the component you want to mount
- * @param options the options for mounting said component
+ * @param options the mountingOptions for mounting said component
  * @returns a cypress chainable for the mounted wrapper and the Vue component
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -92,6 +93,7 @@ function mountWithPlugins<T extends DefineComponent<any, any, any, any, any>>(
   }
 
   if (options.keycloak) {
+    options.global.provide.apiClientProvider = new ApiClientProvider(Promise.resolve(options.keycloak));
     options.global.provide.getKeycloakPromise = (): Promise<Keycloak> => {
       return Promise.resolve(options.keycloak as Keycloak);
     };

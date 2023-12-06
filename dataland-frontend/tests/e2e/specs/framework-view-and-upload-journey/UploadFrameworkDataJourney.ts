@@ -8,7 +8,7 @@ import {
   type LksgData,
   type StoredCompany,
 } from "@clients/backend";
-import { verifySearchResultTable } from "@e2e/utils/VerifyingElements";
+import { verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { describeIf } from "@e2e/support/TestUtility";
 import { generateReportingPeriod } from "@e2e/fixtures/common//ReportingPeriodFixtures";
@@ -104,7 +104,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
 
       it("Go through the whole dataset creation process for a newly created company and verify pages and elements", function () {
         cy.visitAndCheckAppMount("/companies");
-        verifySearchResultTable();
+        verifySearchResultTableExists();
 
         cy.get("button")
           .contains("New Dataset")
@@ -223,7 +223,7 @@ describe("As a user, I expect the dataset upload process to behave as I expect",
           " and verify pages and elements.",
         function () {
           cy.visitAndCheckAppMount("/companies");
-          verifySearchResultTable();
+          verifySearchResultTableExists();
           cy.get("button").contains("New Dataset").click({ force: true });
           cy.get("input[id=company_search_bar_standard]")
             .should("exist")

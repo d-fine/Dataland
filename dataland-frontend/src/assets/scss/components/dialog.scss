@@ -28,14 +28,13 @@
       border: 0 none;
       background: transparent;
       transition: background-color .2s, color .2s, box-shadow .2s;
-      margin-right: .5rem;
+      margin-left: .5rem;
       &:enabled:hover {
         color: #1b1b1b;
       }
       &:focus {
         outline: 0 none;
         outline-offset: 0;
-        box-shadow: 0 0 0 .2rem #bfd1f6;
       }
       &:last-child {
         margin-right: 0;
@@ -44,6 +43,9 @@
   }
   .p-dialog-content {
     padding: 1.5rem;
+    .p-datatable-table {
+      min-width: 100%;
+    }
   }
   .p-dialog-footer {
     padding: 1.5rem;

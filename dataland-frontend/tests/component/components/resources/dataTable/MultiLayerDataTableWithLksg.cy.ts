@@ -4,6 +4,7 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type LksgData,
+  type LksgProductionSite,
   QaStatus,
 } from "@clients/backend";
 import { type ReportingPeriodOfDataSetWithId, sortReportingPeriodsToDisplayAsColumns } from "@/utils/DataTableDisplay";
@@ -68,14 +69,20 @@ describe("Component test for the LksgPanel", () => {
     getCellValueContainer("SA8000 Certification").find("i[data-test=download-icon]").should("be.visible");
   });
 
-  it("Validate that the list of production sites is displayed", () => {
+  it("Validate that the list of production sites is displayed modal is displayed correctly", () => {
     const preparedFixture = getPreparedFixture("one-lksg-data-set-with-two-production-sites", preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
     const lksgData = preparedFixture.t;
 
     cy.get(`span.p-column-title`).should("contain.text", lksgData.general.masterData.dataDate.substring(0, 4));
     getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
-    getCellValueContainer("List Of Production Sites").contains("a").should("be.visible");
+    getCellValueContainer("List Of Production Sites").contains("a").should("be.visible").click();
+    lksgData.general.productionSpecific!.listOfProductionSites!.forEach((productionSite: LksgProductionSite) => {
+      if (productionSite.addressOfProductionSite?.streetAndHouseNumber) {
+        cy.get("tbody.p-datatable-tbody p").contains(productionSite.addressOfProductionSite.streetAndHouseNumber);
+      }
+    });
+    cy.get("div.p-dialog-mask").click({ force: true });
   });
 
   it("Validate that the procurement category modal is displayed and contains the correct headers", () => {
@@ -93,19 +100,6 @@ describe("Component test for the LksgPanel", () => {
       cy.get("th").eq(2).should("have.text", "Number of Direct Suppliers and Countries");
       cy.get("th").eq(3).should("have.text", "Order Volume");
     });
-  });
-
-  it("Validate that show-if hidden fields are not displayed in standard mode", () => {
-    const preparedFixture = getPreparedFixture(
-      "lksg-not-a-manufacturing-company-but-has-production-sites",
-      preparedFixtures,
-    );
-    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Lksg, lksgDisplayConfiguration, [preparedFixture]);
-
-    getSectionHead("Production-specific").should("have.attr", "data-section-expanded", "false").click();
-
-    getCellValueContainer("Manufacturing Company").should("have.text", "No");
-    getCellValueContainer("List Of Production Sites", 0, false).should("not.exist");
   });
 
   it("Validate that show-if hidden fields are displayed and highlighted in review mode", () => {

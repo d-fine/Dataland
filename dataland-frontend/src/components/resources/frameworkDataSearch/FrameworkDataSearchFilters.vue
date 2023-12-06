@@ -57,8 +57,7 @@
 
 <script lang="ts">
 import { defineComponent, inject, ref } from "vue";
-import type Keycloak from "keycloak-js";
-import { ApiClientProvider } from "@/services/ApiClients";
+import { type ApiClientProvider } from "@/services/ApiClients";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
 import { type DataTypeEnum } from "@clients/backend";
@@ -70,6 +69,7 @@ import {
   type FrameworkSelectableItem,
   type SelectableItem,
 } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
+import { getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
 
 export default defineComponent({
   name: "FrameworkDataSearchFilters",
@@ -80,7 +80,7 @@ export default defineComponent({
       sectorFilter: ref(),
       countryFilter: ref(),
       frameworkFilter: ref(),
-      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      apiClientProvider: inject<ApiClientProvider>("apiClientProvider"),
     };
   },
   props: {
@@ -176,15 +176,13 @@ export default defineComponent({
      * availableCountries and availableSectors elements in the format expected by the dropdown filters
      */
     async retrieveCountryAndSectorFilterOptions() {
-      const companyDataControllerApi = await new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
-      ).getCompanyDataControllerApi();
+      const companyDataControllerApi = assertDefined(this.apiClientProvider).backendClients.companyDataController;
 
       const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();
       this.availableCountries = [...(availableSearchFilters.data.countryCodes ?? [])].map((countryCode) => {
         return {
           countryCode: countryCode,
-          displayName: getCountryNameFromCountryCode(countryCode),
+          displayName: getCountryNameFromCountryCode(countryCode) as string,
           disabled: false,
         };
       });
@@ -197,9 +195,15 @@ export default defineComponent({
      */
     retrieveAvailableFrameworks() {
       this.availableFrameworks = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+        let displayName = humanizeStringOrNumber(dataTypeEnum);
+        const frameworkDefinition = getFrameworkDefinition(dataTypeEnum);
+        if (frameworkDefinition) {
+          displayName = frameworkDefinition.label;
+        }
+
         return {
           frameworkDataType: dataTypeEnum,
-          displayName: humanizeStringOrNumber(dataTypeEnum),
+          displayName: displayName,
           disabled: false,
         };
       });

@@ -6,4 +6,4 @@ shopt -s extglob
          ./dataland-frontend/!(tests*) ./dataland-backend/backendOpenApi.json ./dataland-document-manager/documentManagerOpenApi.json \
          ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-qa-service/qaServiceOpenApi.json \
          ./dataland-community-manager/communityManagerOpenApi.json \
-         ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./environments/.env.uncritical
+         ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./environments/.env.uncritical ./versions.properties

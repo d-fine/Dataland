@@ -5,7 +5,9 @@ import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
+import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
 import org.dataland.datalandbackend.model.companies.CompanyAvailableDistinctValues
+import org.dataland.datalandbackend.model.companies.CompanyId
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -23,7 +25,9 @@ import org.springframework.web.bind.annotation.RestController
 
 /**
  * Controller for the company data endpoints
- * @param companyManager the company manager service to handle company information
+ * @param companyAlterationManager the company manager service to handle company alteration
+ * @param companyQueryManager the company manager service to handle company database queries
+ * @param companyIdentifierRepositoryInterface the company identifier repository
  */
 
 @RestController
@@ -92,6 +96,27 @@ class CompanyDataController(
         }
     }
 
+    override fun getCompanyIdByIdentifier(identifierType: IdentifierType, identifier: String):
+        ResponseEntity<CompanyId> {
+        val companyNotFoundSummary = "Company identifier does not exist"
+        val companyNotFoundMessage = "Company identifier $identifier of type $identifierType does not exist"
+        logger.info("Trying to retrieve company for $identifierType: $identifier")
+        try {
+            val companyId = companyIdentifierRepositoryInterface
+                .getReferenceById(CompanyIdentifierEntityId(identifier, identifierType))
+                .company!!.companyId
+            logger.info("Retrieved company ID: $companyId")
+            return ResponseEntity.ok(CompanyId(companyId))
+        } catch (e: JpaObjectRetrievalFailureException) {
+            logger.info(companyNotFoundMessage)
+            throw ResourceNotFoundApiException(
+                companyNotFoundSummary,
+                companyNotFoundMessage,
+                e,
+            )
+        }
+    }
+
     override fun getAvailableCompanySearchFilters(): ResponseEntity<CompanyAvailableDistinctValues> {
         return ResponseEntity.ok(
             CompanyAvailableDistinctValues(
@@ -132,5 +157,22 @@ class CompanyDataController(
 
     override fun getTeaserCompanies(): List<String> {
         return companyQueryManager.getTeaserCompanyIds()
+    }
+
+    override fun getAggregatedFrameworkDataSummary(
+        companyId: String,
+    ): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> {
+        return ResponseEntity.ok(
+            DataType.values.associateWith {
+                AggregatedFrameworkDataSummary(companyQueryManager.countActiveDatasets(companyId, it))
+            },
+        )
+    }
+
+    override fun getCompanyInfo(companyId: String): ResponseEntity<CompanyInformation> {
+        return ResponseEntity.ok(
+            companyQueryManager
+                .getCompanyApiModelById(companyId, DatalandAuthentication.fromContextOrNull()).companyInformation,
+        )
     }
 }

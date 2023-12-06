@@ -61,7 +61,7 @@ describe("Component test for P2pPanel", () => {
 
     getSectionHead("Livestock farming").click();
     getSectionHead("Animal feed").click();
-    cy.get("span[data-test=Report-Download-Policy]").find("i[data-test=download-icon]").should("be.visible");
+    cy.get("span[data-test=Report-Download-Policy]").next("i[data-test=download-icon]").should("be.visible");
 
     getSectionHead("Cement").click();
     getSectionHead("Material").click();

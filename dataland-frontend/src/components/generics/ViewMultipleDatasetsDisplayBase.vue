@@ -27,6 +27,14 @@
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
             />
             <MultiLayerDataTableFrameworkPanel
+              v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
+              :frameworkIdentifier="DataTypeEnum.EutaxonomyFinancials"
+              :companyId="companyId"
+              :display-configuration="configForEuTaxonomyFinancialsMLDT"
+              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
+              :inReviewMode="slotProps.inReviewMode"
+            />
+            <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.Lksg"
               :frameworkIdentifier="DataTypeEnum.Lksg"
               :companyId="companyId"
@@ -47,6 +55,14 @@
               :frameworkIdentifier="DataTypeEnum.P2p"
               :companyId="companyId"
               :display-configuration="convertDataModelToMLDTConfig(p2pDataModel)"
+              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
+              :inReviewMode="slotProps.inReviewMode"
+            />
+            <MultiLayerDataTableFrameworkPanel
+              v-if="frameworkViewConfiguration?.type == 'MultiLayerDataTable'"
+              :frameworkIdentifier="dataType"
+              :companyId="companyId"
+              :displayConfiguration="frameworkViewConfiguration!!.configuration"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               :inReviewMode="slotProps.inReviewMode"
             />
@@ -101,6 +117,9 @@ import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/c
 import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
+import { getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
+import { type FrameworkDefinition, type FrameworkViewConfiguration } from "@/frameworks/FrameworkDefinition";
+import { configForEuTaxonomyFinancialsMLDT } from "@/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/configForEutaxonomyFinancialsMLDT";
 
 export default defineComponent({
   name: "ViewMultipleDatasetsDisplayBase",
@@ -113,6 +132,15 @@ export default defineComponent({
     },
     p2pDataModel() {
       return p2pDataModel;
+    },
+    frameworkConfiguration(): FrameworkDefinition<unknown> | undefined {
+      return this.dataType ? getFrameworkDefinition(this.dataType) : undefined;
+    },
+    frameworkViewConfiguration(): FrameworkViewConfiguration<unknown> | undefined {
+      return this.frameworkConfiguration?.getFrameworkViewConfiguration();
+    },
+    configForEuTaxonomyFinancialsMLDT() {
+      return configForEuTaxonomyFinancialsMLDT;
     },
   },
   components: {
@@ -241,9 +269,8 @@ export default defineComponent({
      */
     async getMetaDataForDataId(dataId: string) {
       try {
-        const metaDataControllerApi = await new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getMetaDataControllerApi();
+        const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
+        const metaDataControllerApi = backendClients.metaDataController;
         const apiResponse = await metaDataControllerApi.getDataMetaInfo(dataId);
         const dataMetaInfoForDataSetWithDataIdFromUrl = apiResponse.data;
         if (

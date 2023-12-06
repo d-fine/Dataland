@@ -3,9 +3,9 @@
     <div class="p-datatable-wrapper overflow-auto">
       <table v-if="dataPointDisplay" class="p-datatable-table" aria-label="Data point content">
         <tbody class="p-datatable-body">
-          <tr>
+          <tr v-if="dataPointDisplay.value">
             <th class="headers-bg width-auto"><span class="table-left-label">Value</span></th>
-            <td>{{ dataPointDisplay.value ?? "" }}</td>
+            <td>{{ dataPointDisplay.value }}</td>
           </tr>
           <tr v-if="dataPointDisplay.quality">
             <th class="headers-bg width-auto"><span class="table-left-label">Quality</span></th>
@@ -52,7 +52,6 @@ export default defineComponent({
     const dialogRefData = dialogRefToDisplay.data as {
       dataPointDisplay: DataPointDisplay;
     };
-    console.log(dialogRefData.dataPointDisplay);
     this.dataPointDisplay = dialogRefData.dataPointDisplay;
   },
   computed: {

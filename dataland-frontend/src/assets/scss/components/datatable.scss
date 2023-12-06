@@ -189,3 +189,9 @@
 .border-bottom-table {
   border-bottom: 1px solid $table-border;
 }
+
+.indentation {
+  span {
+    padding-left: 1rem;
+  }
+}

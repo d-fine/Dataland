@@ -37,7 +37,7 @@ describeIf(
         "assure that the re-uploaded dataset equals the pre-uploaded one",
       () => {
         const uniqueCompanyMarker = Date.now().toString();
-        const testCompanyName = "Company-Created-In-DataJourney-Form-" + uniqueCompanyMarker;
+        const testCompanyName = "Company-Created-In-P2p-Blanket-Test-" + uniqueCompanyMarker;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
             return uploadFrameworkData(
@@ -47,7 +47,7 @@ describeIf(
               "2021",
               p2pFixtureForTest.t,
             ).then((dataMetaInformation) => {
-              cy.intercept("**/api/companies/" + storedCompany.companyId).as("getCompanyInformation");
+              cy.intercept("**/api/companies/" + storedCompany.companyId + "/info").as("getCompanyInformation");
               cy.visitAndCheckAppMount(
                 "/companies/" +
                   storedCompany.companyId +
