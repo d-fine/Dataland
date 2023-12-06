@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
+import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda
 
@@ -21,6 +22,7 @@ class CellConfigBuilder(
     var isNullable: Boolean,
     var required: Boolean?,
     var uploadComponentName: String?,
+    var options: MutableSet<SelectionOption>?,
 ) : UploadConfigElement {
     override val imports: Set<String>
         get() = valueGetter.imports

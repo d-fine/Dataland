@@ -50,8 +50,9 @@ class YesNoComponent(
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
         sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
             uploadComponentName = "YesNoFormField",
-            this,
-            documentSupport.getFrameworkDisplayValueLambdaUpload(
+            options = null,
+            component = this,
+            valueGetter =  documentSupport.getFrameworkDisplayValueLambdaUpload(
                 FrameworkDisplayValueLambdaUpload(
                     "formatYesNoValueForDatatable(${getTypescriptFieldAccessorUpload(true)})",
                     setOf(

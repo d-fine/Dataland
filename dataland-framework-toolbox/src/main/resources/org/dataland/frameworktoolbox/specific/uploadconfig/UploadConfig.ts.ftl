@@ -16,6 +16,15 @@ export const ${frameworkIdentifier}DataModel = [<@mldtconfig uploadConfig/>];
     name: "${cellConfig.name?js_string}",
     label: "${cellConfig.label?js_string}",
     <#if cellConfig.explanation??>description: "${cellConfig.explanation?js_string}",</#if>
+    <#if cellConfig.options??>options: [
+        <#list cellConfig.options?sequence as entry>
+            {
+                identifier: "${entry.identifier}",
+                label: "${entry.identifier}",
+            },
+        </#list>
+        ],
+    </#if>
     unit: "<#if cellConfig.unit??>${cellConfig.unit?js_string}</#if>",
     uploadComponentName: "${cellConfig.uploadComponentName?js_string}",
     required: <#if cellConfig.required??>true<#else>false</#if>,

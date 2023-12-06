@@ -2,31 +2,33 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "North Jadynstad",
-			"headquartersPostalCode": "79783",
-			"sector": "e-markets",
+			"headquarters": "Joplin",
+			"headquartersPostalCode": "57642-4284",
+			"sector": "systems",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"9dFkBP971JOqGo0N0nfQ"
+				],
 				"Isin": [
-					"135I0gMKz6RT"
+					"lprNejejRM07",
+					"68a924Yrtk35"
 				],
-				"PermId": [
-					"TPzcux2kIr"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"jYxiWcVTu"
+					"XiG7UEG4S"
 				],
-				"VatNumber": [
-					"sdPLyHeWZ"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"KqxwcwwPfj6Y6sc"
+					"VoNpP2YyZcbUKPr"
 				]
 			},
-			"countryCode": "EH",
-			"companyAlternativeNames": [],
-			"companyLegalForm": null,
+			"countryCode": "OM",
+			"companyAlternativeNames": [
+				"Boyle, Heller and Raynor",
+				"Waelchi Inc"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
 			"website": null,
 			"isTeaserCompany": false
 		},
@@ -34,21 +36,21 @@
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"13.3",
-						"38.31",
-						"58.12",
-						"78.10",
-						"79"
+						"05.1",
+						"27.33",
+						"66.29",
+						"80.3",
+						"82.11"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "VonRueden Mount 37740",
-						"postalCode": "65911-2169",
-						"city": "North Katlyncester",
-						"state": "Delaware",
-						"country": "UM"
+						"streetAndHouseNumber": "Douglas Road 396",
+						"postalCode": null,
+						"city": "Beavercreek",
+						"state": "Texas",
+						"country": "PK"
 					},
-					"numberOfEmployees": 6361,
-					"fiscalYearStart": "2024-03-05"
+					"numberOfEmployees": 6777,
+					"fiscalYearStart": "2024-11-09"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -58,21 +60,77 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Rodriguez, Lueilwitz and Altenwerth",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Lang Meadows 15923",
+								"postalCode": "88532-8908",
+								"city": "West Sigridboro",
+								"state": "Nebraska",
+								"country": "CU"
+							},
+							"shareOfTotalRevenueInPercent": 62.5033
+						},
+						{
+							"nameOfProductionSite": "Dickens, Torp and Wilderman",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Labadie Road 63170",
+								"postalCode": "87399-8279",
+								"city": "Farmington",
+								"state": "South Carolina",
+								"country": "SC"
+							},
+							"shareOfTotalRevenueInPercent": 87.0895
+						},
+						{
+							"nameOfProductionSite": "Mueller, Huels and Kozey",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "78921",
+								"city": "North Yvonnecester",
+								"state": "Kentucky",
+								"country": "SO"
+							},
+							"shareOfTotalRevenueInPercent": 93.0883
+						},
+						{
+							"nameOfProductionSite": "Hansen, Leuschke and Kuhlman",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Schuster Pine 110",
+								"postalCode": "66800",
+								"city": "Augusta-Richmond County",
+								"state": null,
+								"country": "SJ"
+							},
+							"shareOfTotalRevenueInPercent": 33.7783
+						},
+						{
+							"nameOfProductionSite": "Dach - DuBuque",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Pinfold Lane 366",
+								"postalCode": "60029",
+								"city": "Fort Javon",
+								"state": null,
+								"country": "GG"
+							},
+							"shareOfTotalRevenueInPercent": 29.4758
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Gorgeous Soft Cheese",
-							"shareOfTotalRevenueInPercent": 42.7927
+							"name": "Gorgeous Soft Salad",
+							"shareOfTotalRevenueInPercent": 20.914
 						},
 						{
-							"name": "Practical Concrete Ball",
-							"shareOfTotalRevenueInPercent": 68.4848
+							"name": "Ergonomic Soft Sausages",
+							"shareOfTotalRevenueInPercent": 99.4885
 						},
 						{
-							"name": "Oriental Plastic Keyboard",
-							"shareOfTotalRevenueInPercent": 44.955
+							"name": "Ergonomic Granite Keyboard",
+							"shareOfTotalRevenueInPercent": 86.5621
 						}
 					]
 				}
@@ -83,8 +141,8 @@
 				},
 				"consumption": {
 					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 890,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
@@ -92,12 +150,13 @@
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 5381167,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 39041619,
 					"naturalHazardsCovered": [
-						"Snow",
-						"Flooding",
+						"EarthQuake",
+						"Hail",
+						"Wind",
 						"Avalanche",
-						"Wind"
+						"Snow"
 					]
 				}
 			}
@@ -107,43 +166,39 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Elinoreshire",
-			"headquartersPostalCode": null,
-			"sector": "action-items",
+			"headquarters": "Fredericboro",
+			"headquartersPostalCode": "73500",
+			"sector": "channels",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"uzbDJqkMAXta",
-					"SDB2nvUpBKjq"
+					"am4zgVzLepRX",
+					"zW8vNZvH6fYJ"
 				],
 				"PermId": [],
 				"Ticker": [
-					"M6ERI7m"
+					"BVNlSMZ"
 				],
 				"Duns": [],
 				"VatNumber": [
-					"NnVUHtdkp"
+					"26fAN0BVL"
 				],
-				"CompanyRegistrationNumber": [
-					"oK7YZLvTZgGsTw8"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "LU",
+			"countryCode": "ZM",
 			"companyAlternativeNames": [
-				"Abernathy and Sons",
-				"Donnelly, Schroeder and Gutkowski",
-				"Hahn - Brekke",
-				"Mitchell, Mraz and Bernier"
+				"Cassin LLC",
+				"Luettgen, Dicki and Leannon"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://probable-selection.net/",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://confused-wampum.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"11.02"
+						"65.30"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -152,13 +207,13 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3446,
-					"fiscalYearStart": "2024-06-11"
+					"numberOfEmployees": 3516,
+					"fiscalYearStart": "2024-07-14"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 47336770,
-					"operatingCostInEUR": 39360050,
-					"capitalAssetsInEUR": 43864600
+					"revenueInEUR": 29186707,
+					"operatingCostInEUR": null,
+					"capitalAssetsInEUR": 14206116
 				}
 			},
 			"production": {
@@ -168,36 +223,45 @@
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Rustic Plastic Shirt",
-							"shareOfTotalRevenueInPercent": 11.3729
+							"name": "Elegant Granite Pants",
+							"shareOfTotalRevenueInPercent": 65.4695
 						},
 						{
-							"name": "Rustic Concrete Ball",
-							"shareOfTotalRevenueInPercent": 70.4803
+							"name": "Electronic Fresh Tuna",
+							"shareOfTotalRevenueInPercent": 86.3346
+						},
+						{
+							"name": "Modern Frozen Car",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Small Steel Fish",
+							"shareOfTotalRevenueInPercent": 89.3896
+						},
+						{
+							"name": "Incredible Fresh Cheese",
+							"shareOfTotalRevenueInPercent": 27.9836
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 846,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 573,
+					"powerConsumptionInMWh": 643,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 341,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 34500034,
-					"naturalHazardsCovered": [
-						"Hail",
-						"EarthQuake"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -206,43 +270,40 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Erikfurt",
-			"headquartersPostalCode": "05334",
-			"sector": "models",
+			"headquarters": "North Cieloton",
+			"headquartersPostalCode": null,
+			"sector": "infrastructures",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"tJJZItwnlJcg"
+					"29wKkj3xn4IF"
 				],
 				"PermId": [],
 				"Ticker": [
-					"3Dwwp4K"
+					"j74Vq1x"
 				],
 				"Duns": [
-					"Uz9VMkCAT"
+					"9ca8uhf8Q"
 				],
 				"VatNumber": [
-					"BHw04dccx"
+					"kbaxkADtd"
 				],
-				"CompanyRegistrationNumber": [
-					"GvS6En56n2Ttfjy"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PF",
+			"countryCode": "EG",
 			"companyAlternativeNames": [
-				"Keebler, Little and Nikolaus",
-				"Klocko, Mertz and Bahringer",
-				"Raynor Group"
+				"Doyle - Kessler",
+				"Emmerich - Jones"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://unsightly-chainstay.info",
+			"companyLegalForm": null,
+			"website": "https://blaring-indicator.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"32.4"
+						"70.1"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -251,66 +312,58 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 3929,
-					"fiscalYearStart": "2024-09-02"
+					"numberOfEmployees": 276,
+					"fiscalYearStart": "2024-05-23"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 38273833,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 53635566
+					"revenueInEUR": 9581981,
+					"operatingCostInEUR": 47680558,
+					"capitalAssetsInEUR": 12342294
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Shea Dam 2218",
-								"postalCode": "31206",
-								"city": "Reedport",
-								"state": "Georgia",
-								"country": "TT"
-							},
-							"shareOfTotalRevenueInPercent": 31.8638
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Johnson Street 3335",
-								"postalCode": "15119",
-								"city": "Jerdeland",
-								"state": "Texas",
-								"country": "PF"
-							},
-							"shareOfTotalRevenueInPercent": 90.5134
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Oriental Concrete Sausages",
+							"shareOfTotalRevenueInPercent": 92.6933
+						},
+						{
+							"name": "Oriental Soft Shirt",
+							"shareOfTotalRevenueInPercent": 66.0542
+						},
+						{
+							"name": "Recycled Granite Salad",
+							"shareOfTotalRevenueInPercent": 50.2811
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1183,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 768,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerConsumptionInMWh": 241,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 920,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 2900938,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 21882613,
 					"naturalHazardsCovered": [
-						"Wind",
+						"EarthQuake",
 						"Hail",
-						"Snow"
+						"Snow",
+						"Avalanche",
+						"Flooding"
 					]
 				}
 			}

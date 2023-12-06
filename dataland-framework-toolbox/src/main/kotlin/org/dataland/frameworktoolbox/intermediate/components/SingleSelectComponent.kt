@@ -60,8 +60,9 @@ open class SingleSelectComponent(
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
         sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
                 uploadComponentName = "SingleSelectFormField",
-                this,
-            documentSupport.getFrameworkDisplayValueLambdaUpload(
+                component = this,
+                options = this.options,
+            valueGetter =  documentSupport.getFrameworkDisplayValueLambdaUpload(
                     FrameworkDisplayValueLambdaUpload(
                             "formatStringForDatatable(${getTypescriptFieldAccessorUpload(true)})",
                             setOf(

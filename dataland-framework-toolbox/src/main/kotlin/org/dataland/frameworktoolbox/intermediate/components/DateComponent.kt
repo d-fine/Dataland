@@ -50,8 +50,9 @@ class DateComponent(
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
         sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
                 uploadComponentName = "DateFormField",
-                this,
-            documentSupport.getFrameworkDisplayValueLambdaUpload(
+                options = null,
+                component = this,
+            valueGetter = documentSupport.getFrameworkDisplayValueLambdaUpload(
                 FrameworkDisplayValueLambdaUpload(
                     "formatStringForDatatable(${getTypescriptFieldAccessorUpload(true)})",
                     setOf(
