@@ -28,13 +28,6 @@ export const uploadDocuments = {
         },
         { force: true },
       );
-    // calculateSha256HashFromFile({ // todo remove this
-    //   async arrayBuffer(): Promise<ArrayBuffer> {
-    //       return new Cypress.Buffer(contentSize)
-    //   }
-    // } as File).then((sha) => {
-    //   console.log(contentSize, sha)
-    // })
   },
   selectDummyFileOfType(filename: string, fileType: string, contentSize: number, fieldName = "UploadReports"): void {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
