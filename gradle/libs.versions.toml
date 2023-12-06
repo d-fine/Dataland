@@ -35,6 +35,8 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.9.1
 [versions]
 
 kotlin = "1.9.10"
+##  ⬆ = "1.9.20"
+##  ⬆ = "1.9.21"
 
 okhttp3 = "4.12.0"
 
@@ -46,7 +48,7 @@ junit-jupiter = "5.10.1"
 
 [libraries]
 
-gradle-tooling = "org.gradle:gradle-tooling-api:7.1.1"
+gradle-tooling = "org.gradle:gradle-tooling-api:8.5"
 
 detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:_"
 
@@ -60,17 +62,17 @@ springdoc-openapi-starter-webmvc-ui = "org.springdoc:springdoc-openapi-starter-w
 
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3" }
 
-log4j = "org.apache.logging.log4j:log4j:2.21.1"
-log4j-core = "org.apache.logging.log4j:log4j-core:2.21.1"
-log4j-slf4j2-impl = "org.apache.logging.log4j:log4j-slf4j2-impl:2.21.1"
+log4j = "org.apache.logging.log4j:log4j:_"
+log4j-core = "org.apache.logging.log4j:log4j-core:_"
+log4j-slf4j2-impl = "org.apache.logging.log4j:log4j-slf4j2-impl:_"
 
-log4j-api = "org.apache.logging.log4j:log4j-api:2.21.1"
+log4j-api = "org.apache.logging.log4j:log4j-api:_"
 
-log4j-to-slf4j = "org.apache.logging.log4j:log4j-to-slf4j:2.21.1"
+log4j-to-slf4j = "org.apache.logging.log4j:log4j-to-slf4j:_"
 
-logback-classic = "ch.qos.logback:logback-classic:1.4.11"
+logback-classic = "ch.qos.logback:logback-classic:_"
 
-logback-core = "ch.qos.logback:logback-core:1.4.11"
+logback-core = "ch.qos.logback:logback-core:_"
 
 slf4j-api = "org.slf4j:slf4j-api:_"
 
@@ -84,7 +86,7 @@ spring-boot-starter-validation = { module = "org.springframework.boot:spring-boo
 
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
 
-postgresql = "org.postgresql:postgresql:42.6.0"
+postgresql = "org.postgresql:postgresql:_"
 
 h2 = "com.h2database:h2:2.2.224"
 
@@ -118,9 +120,9 @@ mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mo
 
 spring-security-test = { module = "org.springframework.security:spring-security-test" }
 
-spring-security-crypto = "org.springframework.security:spring-security-crypto:6.1.5"
+spring-security-crypto = "org.springframework.security:spring-security-crypto:_"
 
-spring-security-web = "org.springframework.security:spring-security-web:6.1.5"
+spring-security-web = "org.springframework.security:spring-security-web:_"
 
 jakarta-servlet-api = "jakarta.servlet:jakarta.servlet-api:6.0.0"
 
@@ -128,11 +130,11 @@ bcpkix-jdk15on = "org.bouncycastle:bcpkix-jdk15on:1.70"
 
 bcprov-jdk15on = "org.bouncycastle:bcprov-jdk15on:1.70"
 
-jackson-dataformat-csv = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.15.3"
+jackson-dataformat-csv = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:_"
 
-jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2"
+jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:_"
 
-commons-io = "commons-io:commons-io:2.15.0"
+commons-io = "commons-io:commons-io:_"
 
 commons-codec = "commons-codec:commons-codec:_"
 commons-text = "org.apache.commons:commons-text:_"
@@ -141,7 +143,7 @@ pdfbox = "org.apache.pdfbox:pdfbox:_"
 
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
 
-mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:5.1.0"
+mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:_"
 
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
 
@@ -151,12 +153,12 @@ kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", vers
 
 json = "org.json:json:20231013"
 
-spring-context = "org.springframework:spring-context:6.0.13"
-spring-test = "org.springframework:spring-test:6.0.13"
+spring-context = "org.springframework:spring-context:_"
+spring-test = "org.springframework:spring-test:_"
 
-spring-boot = "org.springframework.boot:spring-boot:3.1.5"
+spring-boot = "org.springframework.boot:spring-boot:_"
 
-spring-rabbit = "org.springframework.amqp:spring-rabbit:3.0.10"
+spring-rabbit = "org.springframework.amqp:spring-rabbit:_"
 
 cloudevents-api = "io.cloudevents:cloudevents-api:2.5.0"
 
@@ -166,7 +168,7 @@ cloudevents-core = "io.cloudevents:cloudevents-core:2.5.0"
 
 spring-cloud-function-context = "org.springframework.cloud:spring-cloud-function-context:4.0.5"
 
-spring-amqp = "org.springframework.amqp:spring-amqp:3.0.10"
+spring-amqp = "org.springframework.amqp:spring-amqp:_"
 
 spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
 
