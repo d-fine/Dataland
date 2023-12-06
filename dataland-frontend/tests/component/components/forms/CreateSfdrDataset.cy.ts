@@ -73,7 +73,7 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
     });
   });
 
-  it("Check if the document uploads do not interfere", () => {
+  it("Check if the document uploads still work properly if some document got removed or replaced", () => {
     const companyId = "company-id";
     console.log(hashForFileWithOneByteSize);
     const setOfHashesThatShouldBeCheckedForExistence = new Set([hashForFileWithTwoBytesSize]);
