@@ -293,7 +293,7 @@ export default defineComponent({
         }
         console.log("START upload documents");
         Array.from(this.fieldSpecificDocuments.entries()).forEach((e) => {
-          console.log("new entry")
+          console.log("new entry");
           e[1].forEach((document) => {
             console.log(1, e[0], document);
           });
