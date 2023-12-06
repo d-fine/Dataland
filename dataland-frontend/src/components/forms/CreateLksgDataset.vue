@@ -52,7 +52,9 @@
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
                           :shouldDisableCheckboxes="true"
-                          @field-specific-documents-updated="updateDocumentList(`${category.name}.${subcategory.name}.${field.name}`, $event)"
+                          @field-specific-documents-updated="
+                            updateDocumentList(`${category.name}.${subcategory.name}.${field.name}`, $event)
+                          "
                           :ref="field.name"
                         />
                       </FormKit>

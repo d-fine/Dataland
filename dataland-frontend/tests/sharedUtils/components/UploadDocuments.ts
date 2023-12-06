@@ -16,14 +16,18 @@ export const uploadDocuments = {
   },
   selectDummyFile(filename: string, contentSize: number, fieldName = "UploadReports"): void {
     cy.get(`button[data-test='upload-files-button-${fieldName}']`).click();
-    cy.get(`button[data-test='upload-files-button-${fieldName}']`).parent().parent().siblings("input[type=file]").selectFile(
-      {
-        contents: new Cypress.Buffer(contentSize),
-        fileName: `${filename}.pdf`,
-        mimeType: "application/pdf",
-      },
-      { force: true },
-    );
+    cy.get(`button[data-test='upload-files-button-${fieldName}']`)
+      .parent()
+      .parent()
+      .siblings("input[type=file]")
+      .selectFile(
+        {
+          contents: new Cypress.Buffer(contentSize),
+          fileName: `${filename}.pdf`,
+          mimeType: "application/pdf",
+        },
+        { force: true },
+      );
     // calculateSha256HashFromFile({ // todo remove this
     //   async arrayBuffer(): Promise<ArrayBuffer> {
     //       return new Cypress.Buffer(contentSize)

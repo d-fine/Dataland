@@ -53,7 +53,9 @@
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
                           :ref="field.name"
-                          @field-specific-documents-updated="updateDocumentList(`${category.name}.${subcategory.name}.${field.name}`, $event)"
+                          @field-specific-documents-updated="
+                            updateDocumentList(`${category.name}.${subcategory.name}.${field.name}`, $event)
+                          "
                         />
                       </FormKit>
                     </div>
@@ -128,7 +130,7 @@ import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.v
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
-import {DocumentToUpload, uploadFiles} from "@/utils/FileUploadUtils";
+import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   setup() {

@@ -286,21 +286,21 @@ export default defineComponent({
       try {
         if (this.referenceableDocuments.size > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
-              this.companyAssociatedSfdrData.data as ObjectType,
-              this.namesOfAllCompanyReportsForTheDataset,
+            this.companyAssociatedSfdrData.data as ObjectType,
+            this.namesOfAllCompanyReportsForTheDataset,
           );
         }
-        console.log("START upload documents")
+        console.log("START upload documents");
         const reportsToUpload: DocumentToUpload[] = Array.from(this.referenceableDocuments.values());
         Array.from(this.fieldSpecificDocuments.entries()).forEach((e) => {
-          console.log(1, e[0], e[1])
-        })
+          console.log(1, e[0], e[1]);
+        });
         const fieldSpecificDocumentsAsArray = Array.from(this.fieldSpecificDocuments.values());
-        console.log(fieldSpecificDocumentsAsArray.length)
+        console.log(fieldSpecificDocumentsAsArray.length);
         const documentsToUpload: DocumentToUpload[] = reportsToUpload.concat(...fieldSpecificDocumentsAsArray);
-        console.log(reportsToUpload.length, fieldSpecificDocumentsAsArray.length)
+        console.log(reportsToUpload.length, fieldSpecificDocumentsAsArray.length);
         await uploadFiles(documentsToUpload, assertDefined(this.getKeycloakPromise));
-        console.log("END upload documents")
+        console.log("END upload documents");
 
         const sfdrDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
@@ -341,13 +341,13 @@ export default defineComponent({
      * @param referencedDocument the documen that is referenced
      */
     updateDocumentsOnField(fieldId: string, referencedDocument: DocumentToUpload | undefined) {
-      console.log("C", fieldId, referencedDocument)
-      if(referencedDocument) {
+      console.log("C", fieldId, referencedDocument);
+      if (referencedDocument) {
         this.fieldSpecificDocuments.set(fieldId, referencedDocument);
       } else {
         this.fieldSpecificDocuments.delete(fieldId);
       }
-      console.log(this.fieldSpecificDocuments)
+      console.log(this.fieldSpecificDocuments);
     },
   },
   provide() {
