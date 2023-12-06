@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.mailjet.client)
     implementation(project(":dataland-message-queue-utils"))
     implementation(libs.flyway)
+    implementation("com.networknt:json-schema-validator:1.0.87")
 }
 
 openApi {

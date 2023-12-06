@@ -1,0 +1,10 @@
+{
+  "$id": "https://dataland.com/BasicExample/age.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CEO age",
+  "description": "The age of the natural person serving as CEO as integer.",
+  "type": "integer",
+  "minimum": 0,
+  "$uniqueIdentifier": "1",
+  "additionalProperties": false
+}

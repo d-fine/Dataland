@@ -1,0 +1,25 @@
+{
+  "$id": "https://dataland.com/Frameworks/ceoExtended.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CEO framework",
+  "description": "The CEO framework describing the CEO of a company.",
+  "properties": {
+    "general": {
+      "name": {
+        "$ref": "http://localhost:8081/BasicExample/name.json"
+      },
+      "age": {
+        "$ref": "http://localhost:8081/BasicExample/age.json"
+      }
+    },
+    "special": {
+      "shoeSize": {
+        "$ref": "http://localhost:8081/BasicExample/shoeSize.json"
+      }
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "additionalProperties": false
+}

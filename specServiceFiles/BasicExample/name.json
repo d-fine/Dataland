@@ -1,0 +1,22 @@
+{
+  "$id": "https://dataland.com/BasicExample/name.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CEO name",
+  "description": "The legal name of the natural person serving as CEO.",
+  "type": "object",
+  "$uniqueIdentifier": "2",
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "description": "The person's first name."
+    },
+    "lastName": {
+      "type": "string",
+      "description": "The person's last name."
+    }
+  },
+  "required": [
+    "lastName"
+  ],
+  "additionalProperties": false
+}
