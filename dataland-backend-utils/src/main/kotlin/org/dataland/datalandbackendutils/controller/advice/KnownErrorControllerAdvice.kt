@@ -11,11 +11,13 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.validation.FieldError
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.NoHandlerFoundException
+import java.lang.StringBuilder
 
 /**
  * This class contains error handlers for commonly thrown errors
@@ -125,11 +127,17 @@ class KnownErrorControllerAdvice(
      */
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMethodNotSupportException(ex: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
+        val errors = (ex.bindingResult.fieldErrors as List<FieldError>)
+        val stringBuilder = StringBuilder()
+        stringBuilder.append("Input validation failed. ")
+        for (er in errors) {
+            stringBuilder.append("On field ${er.field}: ${er.defaultMessage} ")
+        }
         return prepareResponse(
             ErrorDetails(
                 errorType = "bad-input",
                 summary = "Invalid input",
-                message = "Input failed the input validation",
+                message = stringBuilder.toString(),
                 httpStatus = HttpStatus.BAD_REQUEST,
             ),
             ex,

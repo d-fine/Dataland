@@ -17,7 +17,8 @@ import kotlin.reflect.KClass
 @Constraint(validatedBy = [DataPointMinimumValidator::class])
 annotation class DataPointMinimumValue(
     val minimumValue: Long = 0,
-    val message: String = "Input validation failed: A base data point holding a number is smaller than the set minimum",
+    val message: String = "Input validation failed: A base data point holding a number" +
+        " is smaller than the set minimum.",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )

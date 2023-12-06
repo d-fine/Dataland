@@ -17,7 +17,7 @@ import kotlin.reflect.KClass
 @Constraint(validatedBy = [DataPointMaximumValidator::class])
 annotation class DataPointMaximumValue(
     val maximumValue: Long = 100,
-    val message: String = "Input validation failed: A base data point holding a number is larger than the set maximum",
+    val message: String = "Input validation failed: A base data point holding a number is larger than the set maximum.",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )

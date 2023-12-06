@@ -13,7 +13,7 @@ function upload_data_set () {
   response_file="$framework_output/$data_id.response"
   curl -X POST "https://$TARGET/api/data/$framework?bypassQa=true" -H 'accept: application/json' -H "Authorization: Bearer $TARGET_TOKEN" \
   -H 'Content-Type: application/json' -d @"$data_set_file" | python -m json.tool --sort-keys > "$framework_output/$data_id.response"
-  new_data_id=$(grep "dataId" "$response_file" | cut -d'"' -f4)
+  new_data_id=$(grep "dataId" "$response_file" | cut -d'"' -f4) || echo "Unable to identify new data id of $data_id for upload."
   echo "$data_id,$new_data_id" >> "$data_mapping_file"
 }
 
@@ -78,22 +78,22 @@ for framework in ${FRAMEWORKS//,/ }; do
   curl -X GET "https://$SOURCE/api/metadata?dataType=$framework&showOnlyActive=true" -H 'accept: application/json' -H "Authorization: Bearer $SOURCE_TOKEN" |  python -m json.tool --sort-keys > "$active_meta_file"
   grep "dataId" "$active_meta_file" | cut -d'"' -f4 > "$active_data_file"
 
-  if [[ $ONLY_ACTIVE == false ]]; then
-    while read -r data_id; do
-      echo "Processing data set wit ID $data_id."
-      data_set_file=$framework_output/$data_id.json
-      curl -X GET "https://$SOURCE/api/data/$framework/$data_id" -H 'accept: application/json' -H "Authorization: Bearer $SOURCE_TOKEN" | python -m json.tool --sort-keys > "$data_set_file"
-      old_company_id=$(grep "companyId" "$data_set_file" | cut -d'"' -f4)
-      new_company_id=$(grep "$old_company_id" "$company_mapping_file" | cut -d',' -f2)
-      sed -i "s/$old_company_id/$new_company_id/g" "$data_set_file"
+  while read -r data_id; do
+    echo "Processing data set wit ID $data_id."
+    data_set_file=$framework_output/$data_id.json
+    curl -X GET "https://$SOURCE/api/data/$framework/$data_id" -H 'accept: application/json' -H "Authorization: Bearer $SOURCE_TOKEN" | python -m json.tool --sort-keys > "$data_set_file"
+    old_company_id=$(grep "companyId" "$data_set_file" | cut -d'"' -f4)
+    new_company_id=$(grep "$old_company_id" "$company_mapping_file" | cut -d',' -f2)
+    sed -i "s/$old_company_id/$new_company_id/g" "$data_set_file"
 
+    if [[ $ONLY_ACTIVE == false ]]; then
       if grep -q "$data_id" "$active_data_file"; then
         echo "Skipping upload of active data set $data_id to upload last."
         continue
       fi
       upload_data_set
-    done < "$all_data_file"
-  fi
+    fi
+  done < "$all_data_file"
 
   while read -r data_id; do
     upload_data_set
