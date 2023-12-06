@@ -1,8 +1,9 @@
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { type CompanyAssociatedDataPathwaysToParisData } from "@clients/backend";
+import { type CompanyAssociatedDataPathwaysToParisData, DataTypeEnum } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
+import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 describe("Component tests for the CreateP2pDataset that test dependent fields", () => {
   /**
    * Picks the 13th day of the next month in the datepicker
@@ -116,6 +117,98 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       cy.get('[name="totalAmountOfVehicles"]').type("5000");
       cy.get('div[data-test="dataPointToggleButton"]').eq(1).click();
       cy.get('div[data-test="dataPointToggleButton"]').eq(1).click();
+    });
+  });
+
+  const hashForFileWithOneByteSize = "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d";
+  const hashForFileWithTwoBytesSize = "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7";
+
+  it("Check if the document uploads work as expected", () => {
+    const companyId = "company-id";
+    console.log(hashForFileWithOneByteSize);
+    const setOfHashesThatShouldBeCheckedForExistence = new Set([
+      hashForFileWithOneByteSize,
+      hashForFileWithTwoBytesSize,
+    ]);
+    setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
+      console.log(hash);
+      cy.intercept("HEAD", "**/documents/" + hash, (request) => {
+        request.reply(200, {});
+      }).as(`documentExists-${hash}`);
+    });
+    cy.intercept(`/documents/*`, cy.spy().as("documentExists"));
+    cy.intercept("POST", `/api/data/${DataTypeEnum.P2p}`, {
+      statusCode: 200,
+    });
+    cy.mountWithPlugins(CreateP2pDataset, {
+      keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {
+        companyID: companyId,
+      },
+    }).then(() => {
+      pickDate();
+      clickOnSectorInSectorsDropdown("Livestock Farming");
+
+      cy.get('[data-test="upstreamSupplierProcurementPolicy"] input[type="radio"][name="value"][value="Yes"]').check();
+      uploadDocuments.selectDummyFile("first", 1, "upstreamSupplierProcurementPolicy");
+      cy.get('[data-test="externalFeedCertification"] input[type="radio"][name="value"][value="Yes"]').check();
+      uploadDocuments.selectDummyFile("second", 2, "externalFeedCertification");
+
+      cy.wait(100);
+      submitButton.buttonAppearsEnabled();
+      submitButton.clickButton();
+
+      setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
+        cy.wait(`@documentExists-${hash}`);
+      });
+      cy.wait(100);
+      cy.get("@documentExists").should("have.been.calledTwice");
+    });
+  });
+
+  it("Check if the document uploads work as expected if the livestock farming sector gets removed", () => {
+    const companyId = "company-id";
+    console.log(hashForFileWithOneByteSize);
+    const setOfHashesThatShouldBeCheckedForExistence = new Set([hashForFileWithOneByteSize]);
+    setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
+      console.log(hash);
+      cy.intercept("HEAD", "**/documents/" + hash, (request) => {
+        request.reply(200, {});
+      }).as(`documentExists-${hash}`);
+    });
+    cy.intercept(`/documents/*`, cy.spy().as("documentExists"));
+    cy.intercept("POST", `/api/data/${DataTypeEnum.P2p}`, {
+      statusCode: 200,
+    });
+    cy.mountWithPlugins(CreateP2pDataset, {
+      keycloak: minimalKeycloakMock({}),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      props: {
+        companyID: companyId,
+      },
+    }).then(() => {
+      pickDate();
+      clickOnSectorInSectorsDropdown("Freight Transport by Road");
+      clickOnSectorInSectorsDropdown("Livestock Farming");
+
+      cy.get('[data-test="upstreamSupplierProcurementPolicy"] input[type="radio"][name="value"][value="Yes"]').check();
+      uploadDocuments.selectDummyFile("first", 1, "upstreamSupplierProcurementPolicy");
+      cy.get('[data-test="externalFeedCertification"] input[type="radio"][name="value"][value="Yes"]').check();
+      uploadDocuments.selectDummyFile("second", 2, "externalFeedCertification");
+      clickOnSectorInSectorsDropdown("Livestock Farming");
+
+      cy.wait(100);
+      submitButton.buttonAppearsEnabled();
+      submitButton.clickButton();
+
+      setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
+        cy.wait(`@documentExists-${hash}`);
+      });
+      cy.wait(100);
+      cy.get("@documentExists").should("have.been.calledOnce");
     });
   });
 });
