@@ -85,8 +85,35 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         explanation:
           "Bitte geben Sie an, zu welchen Sektoren (mit hohen Klimaauswirkungen) das Unternehmen zugeordnet werden kann.",
         shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.sektorMitHohenKlimaauswirkungen == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatListOfStringsForDatatable(dataset.allgemein?.sektor, "Sektor"),
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+          const mappings = {
+            A: "A",
+            B: "B",
+            C: "C",
+            D: "D",
+            E: "E",
+            F: "F",
+            G: "G",
+            H: "H",
+            L: "L",
+          };
+          /**
+           * Maps the technical name of a select option to the respective original name
+           * @param technicalName of a select option
+           * @param mappingObject that contains the mappings
+           * @returns original name that matches the technical name
+           */
+          function getOriginalNameFromTechnicalName<T extends string>(
+            technicalName: T,
+            mappingObject: { [key in T]: string },
+          ): string {
+            return mappingObject[technicalName];
+          }
+          return formatListOfStringsForDatatable(
+            dataset.allgemein?.sektor?.map((it) => getOriginalNameFromTechnicalName(it, mappings)),
+            "Sektor",
+          );
+        },
       },
       {
         type: "cell",

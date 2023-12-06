@@ -71,7 +71,7 @@ class ApiKeyManager(
         return when (daysValid) {
             null -> null
             else -> {
-                val daysValid = daysValid.toLong()
+                val daysValid = daysValid.toLong() // TODO Emanuel: Variable shadowing is happening here. Let's avoid! Do at the end...
                 val millisecondsValid = (daysValid * milliSecondsInADay)
                 millisecondsValid + Instant.now().toEpochMilli()
             }

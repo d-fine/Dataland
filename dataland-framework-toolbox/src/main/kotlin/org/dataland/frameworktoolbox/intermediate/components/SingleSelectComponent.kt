@@ -22,12 +22,12 @@ open class SingleSelectComponent(
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val enum = dataClassBuilder.parentPackage.addEnum(
-            name = this.enumName,
-            options = this.options,
-            comment = "Enum class for the field ${this.identifier}",
+            name = enumName,
+            options = options,
+            comment = "Enum class for the field $identifier",
         )
         dataClassBuilder.addProperty(
-            this.identifier,
+            identifier,
             documentSupport.getJvmTypeReference(
                 enum.getTypeReference(isNullable),
                 isNullable,
@@ -38,7 +38,7 @@ open class SingleSelectComponent(
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
-            documentSupport.getFrameworkDisplayValueLambda(
+            documentSupport.getFrameworkDisplayValueLambda( // TODO Emannuel: Discuss document support in general with Marc.
                 FrameworkDisplayValueLambda(
                     "{\n" +
                         generateMappingObject() +
@@ -59,13 +59,13 @@ open class SingleSelectComponent(
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
-                fixtureExpression = "pickOneElement(Object.values(${this.enumName}))",
-                nullableFixtureExpression = "dataGenerator.valueOrNull(pickOneElement(Object.values(${this.enumName})))",
+                fixtureExpression = "pickOneElement(Object.values($enumName))",
+                nullableFixtureExpression = "dataGenerator.valueOrNull(pickOneElement(Object.values($enumName)))",
                 nullable = isNullable,
             ),
             imports = setOf(
                 "import { pickOneElement } from \"@e2e/fixtures/FixtureUtils\";",
-                "import { ${this.enumName} } from \"@clients/backend\";",
+                "import { $enumName } from \"@clients/backend\";",
             ),
         )
     }
@@ -74,8 +74,8 @@ open class SingleSelectComponent(
         val codeBuilder = StringBuilder()
         codeBuilder.append("const mappings = {\n")
 
-        for (option in this.options) {
-            val escapedLabel = option.label.replace("\"", "\\\"") // TODO use ecma?
+        for (option in options) {
+            val escapedLabel = option.label.replace("\"", "\\\"")
             codeBuilder.append("    ${option.identifier}: \"$escapedLabel\",\n")
         }
 
@@ -87,7 +87,7 @@ open class SingleSelectComponent(
     private fun generateMapperFunction(): String {
         val jsDoc =
             "/**\n" +
-                "* Maps the technical name of a select option to the respective original name\n" + // TODO
+                "* Maps the technical name of a select option to the respective original name\n" +
                 "* @param technicalName of a select option \n" +
                 "* @param mappingObject that contains the mappings\n" +
                 "* @returns original name that matches the technical name\n" +
@@ -106,3 +106,6 @@ open class SingleSelectComponent(
             ")\n"
     }
 }
+
+// TODO Emanuel: Discuss EcmaString usage with Marc and where to use it.
+// TODO Emanuel: Discuss the document support with Marc.

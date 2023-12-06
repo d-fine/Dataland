@@ -5,6 +5,6 @@ import ${framework} from "@/frameworks/${framework}/BaseFrameworkDefinition";
 
 export const FrameworkDefinitions: Record<string, BaseFrameworkDefinition<object>> = {
   <#list frameworks as framework>
-    "${framework?js_string}": ${framework},
+    ${framework?js_string}: ${framework},
   </#list>
 };

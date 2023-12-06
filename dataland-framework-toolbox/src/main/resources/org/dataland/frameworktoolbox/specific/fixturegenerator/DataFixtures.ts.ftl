@@ -3,11 +3,11 @@
 <@indent>${element.identifier}: <#if element.isSection()><@dataFixtureSection element/><#elseif element.isAtomicExpression()>${element.typescriptExpression}</#if></@indent>,
 </#list>
 }</#macro>
-import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
+import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type ${frameworkIdentifier?cap_first}Data } from "@clients/backend";
-import { ${frameworkIdentifier?cap_first}Generator} from "@e2e/fixtures/frameworks/${frameworkIdentifier}/${frameworkIdentifier?cap_first}Generator";
+import { ${frameworkIdentifier?cap_first}Generator } from "@e2e/fixtures/frameworks/${frameworkIdentifier}/${frameworkIdentifier?cap_first}Generator";
 <#list imports as import>${import}
 </#list>
 
