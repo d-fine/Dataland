@@ -1,7 +1,7 @@
 import { DataTypeEnum } from "@clients/backend";
-import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
+import { UploadReports } from "@sharedUtils/components/UploadReports";
 
 /**
  * Uploads a single eutaxonomy-non-financials data entry for a company via the Dataland upload form
@@ -11,9 +11,10 @@ export function uploadEuTaxonomyDataForNonFinancialsViaForm(companyId: string): 
   cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`);
   submitButton.buttonIsAddDataButton();
   submitButton.buttonAppearsDisabled();
-  uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
-  uploadDocuments.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
-  uploadDocuments.fillAllFormsOfReportsSelectedForUpload(1);
+  const uploadReports = new UploadReports("referencedReports");
+  uploadReports.selectFile(TEST_PDF_FILE_NAME);
+  uploadReports.validateReportToUploadHasContainerInTheFileSelector(TEST_PDF_FILE_NAME);
+  uploadReports.fillAllFormsOfReportsSelectedForUpload(1);
 
   fillAndValidateEuTaxonomyForNonFinancialsUploadForm(TEST_PDF_FILE_NAME);
   submitButton.buttonAppearsEnabled();
