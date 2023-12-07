@@ -1,24 +1,47 @@
 <template>
-  <div class="mb-3 p-0 -ml-2" :class="dataPointIsAvailable ? 'bordered-box' : ''">
-    <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="isDataPointToggleable">
-      <RadioButtonsFormElement @update:currentValue="emitUpdateCurrentValue" :options="HumanizedYesNo" />
-      <p>------->{{ dataPointIsAvailable }}</p>
+  <div class="form-field">
+    <div class="">
       <UploadFormHeader :label="label" :description="description" :is-required="required" />
+      <FormKit
+          type="checkbox"
+          name="name"
+          v-model="checkboxValue"
+          :options="options"
+          :outer-class="{
+          'yes-no-radio': true,
+        }"
+          :inner-class="{
+          'formkit-inner': false,
+        }"
+          :input-class="{
+          'formkit-input': false,
+          'p-radiobutton': true,
+        }"
+          :ignore="true"
+          :plugins="[disabledOnMoreThanOne]"
+          @input="updateCurrentValue($event)"
+      />
     </div>
 
-    <div class="p-2" v-if="showDataPointFields">
+    <div v-if="showDataPointFields">
       <FormKit v-model="baseDataPoint" type="group" :name="name">
-        <div class="col-12">
-          <slot />
+        <FormKit
+            type="text"
+            name="value"
+            v-model="currentValue"
+            :validation="validation"
+            :validation-label="validationLabel"
+            :outer-class="{ 'hidden-input': true, 'formkit-outer': false, }"
+        />
+        <div class="col-12" v-if="baseDataPoint.value === 'Yes'">
           <UploadDocumentsForm
-            v-show="baseDataPoint.value === 'Yes'"
             @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
             ref="uploadDocumentsForm"
             :name="name"
             :more-than-one-document-allowed="false"
             :file-names-for-prefill="fileNamesForPrefill"
           />
-          <FormKit v-if="baseDataPoint.value === 'Yes'" type="group" name="dataSource">
+          <FormKit type="group" name="dataSource">
             <FormKit type="hidden" name="fileName" v-model="documentName" />
             <FormKit type="hidden" name="fileReference" v-model="documentReference" />
           </FormKit>
@@ -38,6 +61,7 @@ import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { type BaseDataPoint } from "@/utils/DataPoint";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { HumanizedYesNo } from "@/utils/YesNoNa";
+import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
 
 export default defineComponent({
   name: "BaseDataPointFormField",
@@ -45,10 +69,9 @@ export default defineComponent({
   inheritAttrs: false,
   props: {
     ...BaseFormFieldProps,
-
-    isDataPointToggleable: {
-      type: Boolean,
-      default: true,
+    options: {
+      type: Object,
+      require: true,
     },
   },
   inject: {
@@ -66,6 +89,11 @@ export default defineComponent({
       documentReference: "",
       fileNamesForPrefill: [] as string[],
       isMounted: false,
+
+      key: 0,
+      shouldBeIgnored: false,
+      currentValue: "",
+      checkboxValue: [],
     };
   },
   computed: {
@@ -78,6 +106,7 @@ export default defineComponent({
   },
   emits: ["reportsUpdated"],
   mounted() {
+
     this.updateFileUploadFiles();
     this.isMounted = true;
   },
@@ -87,8 +116,20 @@ export default defineComponent({
         this.updateFileUploadFiles();
       }
     },
+    currentValue(newVal) {
+      this.setCheckboxValue(newVal)
+    },
   },
   methods: {
+    disabledOnMoreThanOne,
+
+    setCheckboxValue(newCheckboxValue) {
+      console.log('newCheckboxValue', newCheckboxValue)
+      if (this.currentValue && this.currentValue !== "") {
+        this.checkboxValue = [this.currentValue];
+      }
+    },
+
     /**
      * Emits event that selected document changed
      * @param updatedDocuments the updated documents that are currently selected (only one in this case)
@@ -98,12 +139,6 @@ export default defineComponent({
       this.documentName = this.referencedDocument?.fileNameWithoutSuffix ?? "";
       this.documentReference = this.referencedDocument?.fileReference ?? "";
       this.$emit("reportsUpdated", this.documentName, this.referencedDocument);
-    },
-    /**
-     * Toggle dataPointIsAvailable variable value
-     */
-    dataPointAvailableToggle(): void {
-      this.dataPointIsAvailable = !this.dataPointIsAvailable;
     },
 
     /**
@@ -116,15 +151,16 @@ export default defineComponent({
       }
     },
     /**
-     * Emits an event when the currentValue has been changed
-     * @param currentValue current value
+     * updateCurrentValue
+     * @param checkboxValue checkboxValue
      */
-    emitUpdateCurrentValue(currentValue: string) {
-      if (currentValue && currentValue !== "") {
-        console.log("!!!!!!!!!!currentValue", currentValue);
+    updateCurrentValue(checkboxValue: [string]) {
+      console.log("checkboxValue BaseDataPointFormField", checkboxValue[0]);
+      if (checkboxValue[0]) {
         this.dataPointIsAvailable = true;
+        this.baseDataPoint.value = checkboxValue[0].toString();
+        console.log("this.baseDataPoint.value +++", this.baseDataPoint.value);
       } else {
-        console.log("---------currentValue", currentValue);
         this.dataPointIsAvailable = false;
       }
     },

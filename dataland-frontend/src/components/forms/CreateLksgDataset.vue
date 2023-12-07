@@ -259,6 +259,7 @@ export default defineComponent({
         const lkSGDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.Lksg);
+        // console.log("LKSG this.companyAssociatedLksgData", this.companyAssociatedLksgData)
         await lkSGDataControllerApi.postFrameworkData(this.companyAssociatedLksgData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;

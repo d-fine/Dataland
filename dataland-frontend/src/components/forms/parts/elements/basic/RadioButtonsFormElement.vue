@@ -1,6 +1,7 @@
 <template>
   <FormKit
     type="checkbox"
+    :key="key"
     name="name"
     v-model="checkboxValue"
     :options="options"
@@ -28,6 +29,7 @@
     :validation-label="validationLabel"
     :ignore="shouldBeIgnored"
     :key="key"
+    :outer-class="{ 'hidden-input': true, 'formkit-outer': false, }"
   />
 </template>
 
@@ -43,7 +45,7 @@ export default defineComponent({
     return {
       key: 0,
       shouldBeIgnored: false,
-      currentValue: "",
+      currentValue: null,
       checkboxValue: [],
     };
   },
@@ -54,7 +56,7 @@ export default defineComponent({
      * @param checkboxValue current value
      */
     emitUpdateCurrentValue(checkboxValue: [string]) {
-      console.log("checkboxValue", checkboxValue);
+      console.log("checkboxValue RadioButtonsFormElement.vue", checkboxValue);
       if (checkboxValue[0]) {
         this.shouldBeIgnored = false;
         this.key++;
@@ -66,33 +68,25 @@ export default defineComponent({
         this.$emit("update:currentValue", null);
       }
     },
-    setIgnoreToFields() {
+    setIgnoreToFields(newVal, oldVal) {
+      console.log('Wewnetrzny 11 currentValue', newVal, oldVal)
       if (this.currentValue && this.currentValue !== "") {
+        console.log('jeeeeeeee', this.currentValue)
         this.shouldBeIgnored = false;
         this.key++;
         this.checkboxValue = [this.currentValue];
+        console.log('Wewnetrzny checkboxValue', this.checkboxValue)
       } else {
         this.shouldBeIgnored = true;
         this.key++;
       }
     },
   },
-  mounted() {
-    void this.setIgnoreToFields();
+  watch: {
+    currentValue(newVal) {
+      this.setIgnoreToFields(newVal)
+    },
   },
-  // watch: {
-  //   currentValue(newValue) {
-  //     console.log('newValue', newValue)
-  //     if (newValue && newValue !== "") {
-  //       this.shouldBeIgnored = false
-  //       this.key++;
-  //       this.checkboxValue = [newValue]
-  //     } else {
-  //       this.shouldBeIgnored = true
-  //       this.key++;
-  //     }
-  //   },
-  // },
   props: {
     name: {
       type: String,

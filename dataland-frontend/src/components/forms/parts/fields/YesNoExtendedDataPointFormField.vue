@@ -6,20 +6,10 @@
       :label="label"
       :required="required"
       :input-class="inputClass"
+      :options="HumanizedYesNo"
       :check-value-validity="hasDataPointProperValue"
-      :isDataPointToggleable="isDataPointToggleable"
-    >
-      <YesNoFormField
-        name="value"
-        :label="label"
-        :description="description"
-        :is-required="required"
-        :validation="validation"
-        :validation-label="validationLabel ?? label"
-        :radio-buttons-data-test="dataTest"
-        classes=""
-      />
-    </ExtendedDataPointFormField>
+      :isDataPointToggleable="false"
+    />
   </div>
 </template>
 
@@ -29,11 +19,19 @@ import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldPro
 import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue";
 import { hasDataPointProperValue } from "@/utils/DataPoint";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
+import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
+
+import { HumanizedYesNo } from "@/utils/YesNoNa";
 
 export default defineComponent({
   name: "YesNoExtendedDataPointFormField",
-  components: { YesNoFormField, ExtendedDataPointFormField },
+  components: { BaseDataPointFormField, YesNoFormField, ExtendedDataPointFormField },
   inheritAttrs: false,
+  data() {
+    return {
+      HumanizedYesNo,
+    }
+  },
   props: {
     ...BaseFormFieldProps,
     dataTest: String,

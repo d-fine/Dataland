@@ -5,19 +5,9 @@
       :description="description"
       :label="label"
       :required="required"
+      :options="HumanizedYesNo"
       @reports-updated="reportsUpdated"
-    >
-      <YesNoFormField
-        name="value"
-        :label="label"
-        :description="description"
-        :is-required="required"
-        :validation="validation"
-        :validation-label="validationLabel ?? label"
-        :radio-buttons-data-test="dataTest"
-        classes=""
-      />
-    </BaseDataPointFormField>
+    />
   </div>
 </template>
 
@@ -28,10 +18,17 @@ import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 
+import { HumanizedYesNo } from "@/utils/YesNoNa";
+
 export default defineComponent({
   name: "YesNoBaseDataPointFormField",
   components: { YesNoFormField, BaseDataPointFormField },
   inheritAttrs: false,
+  data() {
+    return {
+      HumanizedYesNo,
+    }
+  },
   props: {
     ...BaseFormFieldProps,
     dataTest: String,

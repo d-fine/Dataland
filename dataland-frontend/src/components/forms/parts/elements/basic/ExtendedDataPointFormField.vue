@@ -9,9 +9,43 @@
       />
       <UploadFormHeader :label="label" :description="description" :is-required="required" />
     </div>
-    <div class="p-2" v-if="showDataPointFields">
+
+
+    <div class="" v-if="Object.keys(options).length">
+      <UploadFormHeader :label="label" :description="description" :is-required="required" />
+      <FormKit
+          type="checkbox"
+          name="name"
+          v-model="checkboxValue"
+          :options="options"
+          :outer-class="{
+          'yes-no-radio': true,
+        }"
+          :inner-class="{
+          'formkit-inner': false,
+        }"
+          :input-class="{
+          'formkit-input': false,
+          'p-radiobutton': true,
+        }"
+          :ignore="true"
+          :plugins="[disabledOnMoreThanOne]"
+          @input="updateCurrentValue($event)"
+      />
+    </div>
+
+    <div class="p-2">
       <FormKit type="group" :name="name" v-model="dataPoint">
-        <div class="col-12">
+        <FormKit
+            type="text"
+            name="value"
+            v-model="currentValue"
+            :validation="validation"
+            :validation-label="validationLabel"
+            :outer-class="{ 'hidden-input': true, 'formkit-outer': false, }"
+            v-if="Object.keys(options).length"
+        />
+        <div class="col-12"  v-if="dataPoint.value === 'Yes'">
           <UploadFormHeader
             v-if="!isDataPointToggleable"
             :label="label"
@@ -91,6 +125,8 @@ import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldPro
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
+import {ExtendedDataPoint} from "@/utils/DataPoint";
 
 export default defineComponent({
   name: "ExtendedDataPointFormField",
@@ -138,8 +174,10 @@ export default defineComponent({
       })),
       qualityValue: "NA",
       currentReportValue: "",
-      dataPoint: {},
+      dataPoint: {} as ExtendedDataPoint<unknown>,
       dataPointValuesBeforeDataPointWasDisabled: {},
+      currentValue: "",
+      checkboxValue: [],
     };
   },
 
@@ -152,6 +190,10 @@ export default defineComponent({
     isDataPointToggleable: {
       type: Boolean,
       default: true,
+    },
+    options: {
+      type: Object,
+      default: () => ({}),
     },
   },
   watch: {
@@ -167,6 +209,7 @@ export default defineComponent({
     },
   },
   methods: {
+    disabledOnMoreThanOne,
     /**
      * Handle blur event on value input.
      * @param isDataValueProvided boolean which gives information whether data is provided or not
@@ -183,6 +226,20 @@ export default defineComponent({
      */
     dataPointAvailableToggle(): void {
       this.dataPointIsAvailable = !this.dataPointIsAvailable;
+    },
+    /**
+     * updateCurrentValue
+     * @param checkboxValue checkboxValue
+     */
+    updateCurrentValue(checkboxValue: [string]) {
+      console.log("checkboxValue BaseDataPointFormField", checkboxValue[0]);
+      if (checkboxValue[0]) {
+        this.dataPointIsAvailable = true;
+        this.dataPoint.value = checkboxValue[0].toString();
+        console.log("this.baseDataPoint.value +++", this.dataPoint.value);
+      } else {
+        this.dataPointIsAvailable = false;
+      }
     },
   },
 });
