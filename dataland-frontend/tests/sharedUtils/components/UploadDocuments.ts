@@ -6,8 +6,8 @@ export class UploadDocuments {
   private addButtonSelector: string;
   constructor(name: string = "UploadReports") {
     this.name = name;
-    this.selector = `div[data-test='upload-files-button-${name}']`;
-    this.addButtonSelector = `button[data-test='upload-documents-${name}']`;
+    this.selector = `div[data-test='upload-documents-${name}']`;
+    this.addButtonSelector = `button[data-test='upload-files-button-${name}']`;
   }
 
   selectFile(filename: string): void {
