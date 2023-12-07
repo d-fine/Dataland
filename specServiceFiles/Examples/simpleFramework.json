@@ -1,0 +1,19 @@
+{
+  "general": {
+    "fiscalYearEnd": "2022-12-31"
+  },
+  "governance": {
+    "underAgeWorker": {
+      "value": "Yes"
+    }
+  },
+  "environmental": {
+    "scopeOneEmissions": {
+      "value": 100.5,
+      "documentReference": {
+        "documentName": "MyReport.pdf",
+        "documentIdentifier": "someHash123"
+      }
+    }
+  }
+}

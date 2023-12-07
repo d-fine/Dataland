@@ -5,6 +5,6 @@
   "description": "The possible values of a Yes/No/NA field.",
   "type": "string",
   "enum": ["Yes","No","NA"],
-  "$uniqueIdentifier": "simple_2",
-  "additionalProperties": false
+  "$uniqueIdentifier": "simple_6",
+  "unevaluatedProperties": false
 }

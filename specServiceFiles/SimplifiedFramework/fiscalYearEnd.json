@@ -1,0 +1,10 @@
+{
+  "$id": "https://dataland.com/SimplifiedFramework/fiscalYearEnd.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "The end of the fiscal year field",
+  "description": "The date of the end of the fiscal year in format YYYY-MM-DD.",
+  "type": "string",
+  "pattern": "^[0-9]{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$",
+  "$uniqueIdentifier": "simple_2",
+  "unevaluatedProperties": false
+}

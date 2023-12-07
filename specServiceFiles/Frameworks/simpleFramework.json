@@ -1,0 +1,38 @@
+{
+  "$id": "https://dataland.com/Frameworks/simpleFramework.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Simple dataland-like framework",
+  "description": "The minimal example for a dataland-style framework.",
+  "properties": {
+    "general": {
+      "type": "object",
+      "description": "General information about the data set.",
+      "properties": {
+        "fiscalYearEnd": {
+          "$ref": "http://localhost:8081/simplifiedFramework/fiscalYearEnd.json"
+        }
+      },
+      "required": ["fiscalYearEnd"]
+    },
+    "governance": {
+      "type": "object",
+      "description": "Questions regarding the governance.",
+      "properties": {
+        "underAgeWorker": {
+          "$ref": "http://localhost:8081/simplifiedFramework/underAgeWorker.json"
+        }
+      }
+    },
+    "environmental": {
+      "type": "object",
+      "description": "Questions regarding the environment.",
+      "properties": {
+        "scopeOneEmissions": {
+          "$ref": "http://localhost:8081/simplifiedFramework/scopeOneEmissions.json"
+        }
+      }
+    }
+  },
+  "required": ["general"],
+  "unevaluatedProperties": false
+}

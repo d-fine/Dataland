@@ -1,13 +1,14 @@
 {
   "$id": "https://dataland.com/SimplifiedFramework/yesNoNaDatapoint.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "YesNoNa Datapoint field",
-  "description": "The possible values of a Yes/No/NA Datapoint field.",
+  "title": "Numeric Datapoint field",
+  "description": "The possible values of a numeric Datapoint field.",
   "type": "object",
-  "$uniqueIdentifier": "simple_7",
+  "$uniqueIdentifier": "simple_3",
   "properties": {
     "value": {
-      "$ref": "http://localhost:8081/SimplifiedFramework/yesNoNa.json"
+      "description": "The numeric value of the provided Datapoint field.",
+      "type": "number"
     },
     "documentReference": {
       "$ref": "http://localhost:8081/SimplifiedFramework/documentReference.json"
