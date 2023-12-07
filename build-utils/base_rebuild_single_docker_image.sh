@@ -21,7 +21,7 @@ echo Rebuilding docker image. Parameters: "$@"
 
 input_sha=$( \
   find "$0" "$@" -type f | awk '{print "\042" $1 "\042"}' | \
-  grep -v '/node_modules/\|/dist/\|coverage\|/\.gradle/\|/\.git/\|/build/\|package-lock\.json\|\.log\|/local/\|/\.nyc_output/\|/cypress/' | \
+  grep -v '/node_modules/\|/dist/\|coverage\|/\.gradle/\|/\.git/\|/build/\|package-lock\.json\|\.log\|/local/\|/\.nyc_output/\|/cypress/\|/venv/' | \
   sort -u | \
   xargs shasum | \
   shasum | \

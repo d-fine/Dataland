@@ -34,3 +34,5 @@ local
 
 gitinfo
 .envrc
+
+/dataland-automated-qa-service/venv/
