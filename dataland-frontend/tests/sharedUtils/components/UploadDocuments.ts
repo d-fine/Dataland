@@ -49,14 +49,6 @@ export class UploadDocuments {
       );
   }
 
-  validateReportToUploadHasContainerInTheFileSelector(reportName: string): void {
-    cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("exist");
-  }
-
-  validateReportIsNotInFileSelector(reportName: string): void {
-    cy.get(`[data-test="${reportName}FileUploadContainer"]`).should("not.exist");
-  }
-
   errorMessage(): Cypress.Chainable {
     return cy.get(`${this.selector} .p-fileupload .p-message-error`);
   }
