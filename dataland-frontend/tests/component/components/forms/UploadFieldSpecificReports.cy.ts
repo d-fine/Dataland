@@ -79,11 +79,9 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
     if (framework == "sfdr") {
       dataType = DataTypeEnum.Sfdr;
       createDataset = CreateSfdrDataset;
-    } else if (framework == "p2p") {
+    } else {
       dataType = DataTypeEnum.P2p;
       createDataset = CreateP2pDataset;
-    } else {
-      throw exception;
     }
 
     cy.intercept(`**/documents/*`, cy.spy().as("documentExists"));
