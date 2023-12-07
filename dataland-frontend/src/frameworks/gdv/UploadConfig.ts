@@ -6,9 +6,8 @@ export const gdvDataModel = [    {
         subcategories: [    {
             name: "masterData",
             label: "Master Data",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
+            fields: [
+                 {
                 name: "berichts-pflicht",
                 label: "Berichts-Pflicht",
                 description: "Ist das Unternehmen berichtspflichtig?",
@@ -28,6 +27,28 @@ export const gdvDataModel = [    {
                 showIf: ():boolean => true, 
                 validation: "",
                 },
+     
+            ],
+            },
+        {
+            name: "masterData",
+            label: "Master Data",
+            color: " ", 
+            showIf: ():boolean => true,
+            subcategories: [    {
+                name: "berichts-pflicht",
+                label: "Berichts-Pflicht",
+                fields: [
+    
+                ],
+                },
+            {
+                name: "(gültigkeits)Datum",
+                label: "(Gültigkeits) Datum",
+                fields: [
+    
+                ],
+                },
             ],
             },
         ],
@@ -40,474 +61,247 @@ export const gdvDataModel = [    {
         subcategories: [    {
             name: "esg-ziele",
             label: "ESG-Ziele",
-            description: "Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "ziele",
             label: "Ziele",
-            description: "Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "investitionen",
             label: "Investitionen",
-            description: "Bitte geben Sie an wieviele Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele zugewiesen wurden.",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "sektorMitHohenKlimaauswirkungen",
             label: "Sektor mit hohen Klimaauswirkungen",
-            description: "Kann das Unternehmen einem oder mehreren Sektoren mit hohen Klimaauswirkungen zugeordnet werden?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "sektor",
             label: "Sektor",
-            description: "Bitte geben Sie an, zu welchen Sektoren (mit hohen Klimaauswirkungen) das Unternehmen zugeordnet werden kann.",
-            options: [
-                    {
-                        identifier: "A",
-                        label: "A",
-                    },
-                    {
-                        identifier: "B",
-                        label: "B",
-                    },
-                    {
-                        identifier: "C",
-                        label: "C",
-                    },
-                    {
-                        identifier: "D",
-                        label: "D",
-                    },
-                    {
-                        identifier: "E",
-                        label: "E",
-                    },
-                    {
-                        identifier: "F",
-                        label: "F",
-                    },
-                    {
-                        identifier: "G",
-                        label: "G",
-                    },
-                    {
-                        identifier: "H",
-                        label: "H",
-                    },
-                    {
-                        identifier: "L",
-                        label: "L",
-                    },
-                ],
-            unit: "",
-            uploadComponentName: "MultiSelectFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "nachhaltigkeitsbericht",
             label: "Nachhaltigkeitsbericht",
-            description: "Erstellt das Unternehmen Nachhaltigkeits- oder ESG-Berichte?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "frequenzDerBerichterstattung",
             label: "Frequenz der Berichterstattung",
+            fields: [
     
-            options: [
-                    {
-                        identifier: "Jaehrlich",
-                        label: "Jaehrlich",
-                    },
-                    {
-                        identifier: "Halbjaehrlich",
-                        label: "Halbjaehrlich",
-                    },
-                    {
-                        identifier: "Vierteljaehrlich",
-                        label: "Vierteljaehrlich",
-                    },
-                    {
-                        identifier: "Monatlich",
-                        label: "Monatlich",
-                    },
-                ],
-            unit: "",
-            uploadComponentName: "SingleSelectFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            ],
             },
         {
             name: "mechanismenZurÜberwachungDerEinhaltungUNGlobalCompactPrinzipienUnd/oderOECDLeitsätze",
             label: "Mechanismen zur Überwachung der Einhaltung UN Global Compact Prinzipien und/oder OECD Leitsätze",
-            description: "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der Prinzipien des UN Global Compact und/oder der OECD-Leitsätze für multinationale Unternehmen (OECD MNE-Leitsätze) zu überwachen?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "uncgPrinzipien",
             label: "UNCG Prinzipien",
-            description: "Hat das Unternehmen Überwachungsmechanismen für die UNGC Prinzipien eingerichtet ?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "erklärungUNGC",
             label: "Erklärung UNGC",
-            description: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "oecdLeitsätze",
             label: "OECD Leitsätze",
-            description: "Hat das Unternehmen Überwachungsmechanismen für die OECD Leitsätze eingerichtet ?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "erklärungOECD",
             label: "Erklärung OECD",
-            description: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "ausrichtungAufDieUNSDGsUndAktivesVerfolgen",
             label: "Ausrichtung auf die UN SDGs und aktives Verfolgen",
-            description: "Wie steht das Unternehmen in Einklang mit den 17 UN-Zielen für nachhaltige Entwicklung? Welche dieser Ziele verfolgt das Unternehmen aktiv, entweder durch ihre Geschäftstätigkeit oder durch die Unternehmensführung?",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "ausschlusslistenAufBasisVonESGKriterien",
             label: "Ausschlusslisten auf Basis von ESG Kriterien",
-            description: "Führt das Unternehmen Ausschlusslisten? Von besonderem Interesse sind Listen die Ausschlusskriterien, die einen Bezug zu den Bereichen E, S oder G haben.",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "ausschlusslisten",
             label: "Ausschlusslisten",
-            description: "Bitte nennen Sie die Ausschlusslisten auf Basis von ESG Kriterien.",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "ökologische/sozialeFührungsstandardsOder-prinzipien",
             label: "Ökologische/soziale Führungsstandards oder -prinzipien",
-            description: "Hat sich das Unternehmen zu ökologischen/sozialen Führungsstandards oder Prinzipien verpflichtet?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "anreizmechanismenFürDasManagement(Umwelt)",
             label: "Anreizmechanismen für das Management (Umwelt)",
-            description: "Wie spiegeln sich die Anreizmechanismen für den Bereich Umwelt in der jährlichen Zielsetzung für das Management wieder? Bitte geben Sie die aktuellen Verpflichtungen an.",
-            options: [
-                    {
-                        identifier: "Nein",
-                        label: "Nein",
-                    },
-                    {
-                        identifier: "JaAufsichtsrat",
-                        label: "JaAufsichtsrat",
-                    },
-                    {
-                        identifier: "JaGeschaeftsleitung",
-                        label: "JaGeschaeftsleitung",
-                    },
-                    {
-                        identifier: "JaAufsichtsratUndGeschaeftsleitung",
-                        label: "JaAufsichtsratUndGeschaeftsleitung",
-                    },
-                ],
-            unit: "",
-            uploadComponentName: "SingleSelectFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "anreizmechanismenFürDasManagement(Soziales)",
             label: "Anreizmechanismen für das Management (Soziales)",
-            description: "Wie spiegeln sich die Anreizmechanismen für den Bereich Soziales in der jährlichen Zielsetzung für das Management wieder? Bitte geben Sie die aktuellen Verpflichtungen an.",
-            options: [
-                    {
-                        identifier: "Nein",
-                        label: "Nein",
-                    },
-                    {
-                        identifier: "JaAufsichtsrat",
-                        label: "JaAufsichtsrat",
-                    },
-                    {
-                        identifier: "JaGeschaeftsleitung",
-                        label: "JaGeschaeftsleitung",
-                    },
-                    {
-                        identifier: "JaAufsichtsratUndGeschaeftsleitung",
-                        label: "JaAufsichtsratUndGeschaeftsleitung",
-                    },
-                ],
-            unit: "",
-            uploadComponentName: "SingleSelectFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "esg-bezogeneRechtsstreitigkeiten",
             label: "ESG-bezogene Rechtsstreitigkeiten",
-            description: "Ist das Unternehmen in laufende bzw. war das Unternehmen in den letzten 3 Jahren in abgeschlossenen Rechtsstreitigkeiten im Zusammenhang mit ESG involviert?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "rechtsstreitigkeitenMitBezugZuE",
             label: "Rechtsstreitigkeiten mit Bezug zu E",
-            description: "Haben bzw. hatten die Rechtsstreitigkeiten Bezug zu \"E\"",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "statusZuE",
             label: "Status zu E",
-            description: "Sind die Rechtsstreitigkeiten mit Bezug zu \"E\" noch offen oder bereits geklärt?",
-            options: [
-                    {
-                        identifier: "Offen",
-                        label: "Offen",
-                    },
-                    {
-                        identifier: "Geklaert",
-                        label: "Geklaert",
-                    },
-                ],
-            unit: "",
-            uploadComponentName: "SingleSelectFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "einzelheitenZuDenRechtsstreitigkeitenZuE",
             label: "Einzelheiten zu den Rechtsstreitigkeiten zu E",
-            description: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "rechtsstreitigkeitenMitBezugZuS",
             label: "Rechtsstreitigkeiten mit Bezug zu S",
-            description: "Haben bzw. hatten die Rechtsstreitigkeiten Bezug zu \"S\"",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "statusZuS",
             label: "Status zu S",
-            description: "Sind die Rechtsstreitigkeiten mit Bezug zu \"S\" noch offen oder bereits geklärt?",
-            options: [
-                    {
-                        identifier: "Offen",
-                        label: "Offen",
-                    },
-                    {
-                        identifier: "Geklaert",
-                        label: "Geklaert",
-                    },
-                ],
-            unit: "",
-            uploadComponentName: "SingleSelectFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "einzelheitenZuDenRechtsstreitigkeitenZuS",
             label: "Einzelheiten zu den Rechtsstreitigkeiten zu S",
-            description: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "rechtsstreitigkeitenMitBezugZuG",
             label: "Rechtsstreitigkeiten mit Bezug zu G",
-            description: "Haben bzw. hatten die Rechtsstreitigkeiten Bezug zu \"G\"",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "statusZuG",
             label: "Status zu G",
-            description: "Sind die Rechtsstreitigkeiten mit Bezug zu \"G\" noch offen oder bereits geklärt?",
-            options: [
-                    {
-                        identifier: "Offen",
-                        label: "Offen",
-                    },
-                    {
-                        identifier: "Geklaert",
-                        label: "Geklaert",
-                    },
-                ],
-            unit: "",
-            uploadComponentName: "SingleSelectFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "einzelheitenZuDenRechtsstreitigkeitenZuG",
             label: "Einzelheiten zu den Rechtsstreitigkeiten zu G",
-            description: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "esg-rating",
             label: "ESG-Rating",
-            description: "Hat das Unternehmen bereits ein ESG-Rating einer anerkannten Ratingagentur?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "agentur",
             label: "Agentur",
-            description: "Welche Rating Agentur hat das Rating durchgeführt?",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "ergebnis",
             label: "Ergebnis",
-            description: "Wie lautet das Rating (Ratingbericht bitte anfügen)?",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "kritischePunkte",
             label: "Kritische Punkte",
-            description: "Was waren die kritischen Punkte beim ESG-Rating?",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "nachhaltigkeitsbezogenenAnleihen",
             label: "Nachhaltigkeitsbezogenen Anleihen",
-            description: "Hat das Unternehmen „grüne“, „soziale“ und/oder „nachhaltige“ Schuldtitel begeben oder Sustainability Linked Debt („SLD“) emittiert?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "wichtigsteE-,S-UndG-RisikenUndBewertung",
             label: "Wichtigste E-, S- und G-Risiken und Bewertung",
-            description: "Welches sind die wichtigsten von der Gruppe identifizierten E-, S- und G-Risiken? Bitte geben Sie die Details / Bewertung der identifizierten Risiken an.",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "hindernisseBeimUmgangMitESG-Bedenken",
             label: "Hindernisse beim Umgang mit ESG-Bedenken",
-            description: "Welche grundsätzlichen Hindernisse bestehen für das Unternehmen bei der Berücksichtigung von ESG-Belangen?",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         ],
         },
@@ -519,9 +313,8 @@ export const gdvDataModel = [    {
         subcategories: [    {
             name: "treibhausgasemissionen",
             label: "Treibhausgasemissionen",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
+            fields: [
+                 {
                 name: "treibhausgas-emissionsintensitätDerUnternehmen,InDieInvestriertWird",
                 label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investriert wird",
                 description: "THG-Emissionsintensität der Unternehmen, in die investiert wird. Scope 1 + Scope 2 Treibhausgasemissionen ./. Umsatz in Millionen EUR Scope 1 + Scope 2 Treibhausgasemissionen ./. Unternehmensgröße in Mio. EUR",
@@ -541,44 +334,56 @@ export const gdvDataModel = [    {
                 showIf: ():boolean => true, 
                 validation: "",
                 },
+     
+            ],
+            },
+        {
+            name: "treibhausgasemissionen",
+            label: "Treibhausgasemissionen",
+            color: " ", 
+            showIf: ():boolean => true,
+            subcategories: [    {
+                name: "treibhausgas-emissionsintensitätDerUnternehmen,InDieInvestriertWird",
+                label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investriert wird",
+                fields: [
+    
+                ],
+                },
+            {
+                name: "strategieUndZieleZurReduzierungVonTreibhausgas-Emissionen",
+                label: "Strategie und Ziele zur Reduzierung von Treibhausgas-Emissionen",
+                fields: [
+    
+                ],
+                },
             ],
             },
         {
             name: "produkteZurVerringerungDerUmweltbelastung",
             label: "Produkte zur Verringerung der Umweltbelastung",
-            description: "Entwickelt, produziert oder vertreibt das Unternehmen Produkte, die die Umweltbelastung verringern?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "verringerungenDerUmweltbelastung",
             label: "Verringerungen der Umweltbelastung",
-            description: "Bitte beschreiben Sie möglichst genau, wie die Produkte die Umweltbelastung reduzieren.",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "ökologischerMindest-StandardFürProduktionsprozesse",
             label: "Ökologischer Mindest-Standard für Produktionsprozesse",
-            description: "Verfügt das Unternehmen über interne Richtlinien, die einen Mindestumweltstandard im Produktionsprozess sicherstellen?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "energieverbrauch",
             label: "Energieverbrauch",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
+            fields: [
+                 {
                 name: "unternehmens/gruppenStrategieBzglEnergieverbrauch",
                 label: "Unternehmens/Gruppen Strategie bzgl Energieverbrauch",
                 description: "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
@@ -588,6 +393,38 @@ export const gdvDataModel = [    {
                 showIf: ():boolean => true, 
                 validation: "",
                 },
+     
+            ],
+            },
+        {
+            name: "energieverbrauch",
+            label: "Energieverbrauch",
+            color: " ", 
+            showIf: ():boolean => true,
+            subcategories: [    {
+                name: "unternehmens/gruppenStrategieBzglEnergieverbrauch",
+                label: "Unternehmens/Gruppen Strategie bzgl Energieverbrauch",
+                fields: [
+    
+                ],
+                },
+            ],
+            },
+        {
+            name: "energieeffizienzImmobilienanlagen",
+            label: "Energieeffizienz Immobilienanlagen",
+            fields: [
+                 {
+                name: "unternehmens/gruppenStrategieBzglEnergieeffizientenImmobilienanlagen",
+                label: "Unternehmens/Gruppen Strategie bzgl energieeffizienten Immobilienanlagen",
+                description: "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+                    unit: "",
+                uploadComponentName: "InputTextFormField",
+                required: false,
+                showIf: ():boolean => true, 
+                validation: "",
+                },
+     
             ],
             },
         {
@@ -598,6 +435,19 @@ export const gdvDataModel = [    {
             subcategories: [    {
                 name: "unternehmens/gruppenStrategieBzglEnergieeffizientenImmobilienanlagen",
                 label: "Unternehmens/Gruppen Strategie bzgl energieeffizienten Immobilienanlagen",
+                fields: [
+    
+                ],
+                },
+            ],
+            },
+        {
+            name: "wasserverbrauch",
+            label: "Wasserverbrauch",
+            fields: [
+                 {
+                name: "unternehmens/gruppenStrategieBzglWasserverbrauch",
+                label: "Unternehmens/Gruppen Strategie bzgl Wasserverbrauch",
                 description: "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
                     unit: "",
                 uploadComponentName: "InputTextFormField",
@@ -605,6 +455,7 @@ export const gdvDataModel = [    {
                 showIf: ():boolean => true, 
                 validation: "",
                 },
+     
             ],
             },
         {
@@ -615,6 +466,19 @@ export const gdvDataModel = [    {
             subcategories: [    {
                 name: "unternehmens/gruppenStrategieBzglWasserverbrauch",
                 label: "Unternehmens/Gruppen Strategie bzgl Wasserverbrauch",
+                fields: [
+    
+                ],
+                },
+            ],
+            },
+        {
+            name: "abfallproduktion",
+            label: "Abfallproduktion",
+            fields: [
+                 {
+                name: "unternehmens/gruppenStrategieBzglAbfallproduktion",
+                label: "Unternehmens/Gruppen Strategie bzgl Abfallproduktion",
                 description: "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
                     unit: "",
                 uploadComponentName: "InputTextFormField",
@@ -622,6 +486,7 @@ export const gdvDataModel = [    {
                 showIf: ():boolean => true, 
                 validation: "",
                 },
+     
             ],
             },
         {
@@ -632,13 +497,27 @@ export const gdvDataModel = [    {
             subcategories: [    {
                 name: "unternehmens/gruppenStrategieBzglAbfallproduktion",
                 label: "Unternehmens/Gruppen Strategie bzgl Abfallproduktion",
-                description: "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+                fields: [
+    
+                ],
+                },
+            ],
+            },
+        {
+            name: "gefährlicheAbfälle",
+            label: "Gefährliche Abfälle",
+            fields: [
+                 {
+                name: "gefährlicherAbfall",
+                label: "Gefährlicher Abfall",
+                description: "Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?",
                     unit: "",
                 uploadComponentName: "InputTextFormField",
                 required: false,
                 showIf: ():boolean => true, 
                 validation: "",
                 },
+     
             ],
             },
         {
@@ -649,21 +528,17 @@ export const gdvDataModel = [    {
             subcategories: [    {
                 name: "gefährlicherAbfall",
                 label: "Gefährlicher Abfall",
-                description: "Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?",
-                    unit: "",
-                uploadComponentName: "InputTextFormField",
-                required: false,
-                showIf: ():boolean => true, 
-                validation: "",
+                fields: [
+    
+                ],
                 },
             ],
             },
         {
             name: "biodiversität",
             label: "Biodiversität",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
+            fields: [
+                 {
                 name: "negativeAktivitätenFürDieBiologischeVielfalt",
                 label: "Negative Aktivitäten für die biologische Vielfalt",
                 description: "Hat das Unternehmen Standorte / Betriebe in oder in der Nähe von biodiversitätssensiblen Gebieten, in denen sich die Aktivitäten des Unternehmens negativ auf diese Gebiete auswirken?",
@@ -703,6 +578,59 @@ export const gdvDataModel = [    {
                 showIf: ():boolean => true, 
                 validation: "",
                 },
+     
+            ],
+            },
+        {
+            name: "biodiversität",
+            label: "Biodiversität",
+            color: " ", 
+            showIf: ():boolean => true,
+            subcategories: [    {
+                name: "negativeAktivitätenFürDieBiologischeVielfalt",
+                label: "Negative Aktivitäten für die biologische Vielfalt",
+                fields: [
+    
+                ],
+                },
+            {
+                name: "negativeMaßnahmenFürDieBiologischeVielfalt",
+                label: "Negative Maßnahmen für die biologische Vielfalt",
+                fields: [
+    
+                ],
+                },
+            {
+                name: "positiveAktivitätenFürDieBiologischeVielfalt",
+                label: "Positive Aktivitäten für die biologische Vielfalt",
+                fields: [
+    
+                ],
+                },
+            {
+                name: "positiveMaßnahmenFürDieBiologischeVielfalt",
+                label: "Positive Maßnahmen für die biologische Vielfalt",
+                fields: [
+    
+                ],
+                },
+            ],
+            },
+        {
+            name: "fossileBrennstoffe",
+            label: "Fossile Brennstoffe",
+            fields: [
+                 {
+                name: "einnahmenAusFossilenBrennstoffen",
+                label: "Einnahmen aus fossilen Brennstoffen",
+                description: "Erzielt das Unternehmen einen Teil seiner Einnahmen aus Aktivitäten im Bereich fossiler Brennstoffe und/oder besitzt das Unternehmen Immobilien, die an der Gewinnung, Lagerung, dem Transport oder der Herstellung fossiler Brennstoffe beteiligt sind?",
+                    unit: "",
+                uploadComponentName: "YesNoFormField",
+                required: false,
+                showIf: ():boolean => true, 
+                validation: "",
+                },
+     
             ],
             },
         {
@@ -713,21 +641,17 @@ export const gdvDataModel = [    {
             subcategories: [    {
                 name: "einnahmenAusFossilenBrennstoffen",
                 label: "Einnahmen aus fossilen Brennstoffen",
-                description: "Erzielt das Unternehmen einen Teil seiner Einnahmen aus Aktivitäten im Bereich fossiler Brennstoffe und/oder besitzt das Unternehmen Immobilien, die an der Gewinnung, Lagerung, dem Transport oder der Herstellung fossiler Brennstoffe beteiligt sind?",
-                    unit: "",
-                uploadComponentName: "YesNoFormField",
-                required: false,
-                showIf: ():boolean => true, 
-                validation: "",
+                fields: [
+    
+                ],
                 },
             ],
             },
         {
             name: "taxonomie",
             label: "Taxonomie",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
+            fields: [
+                 {
                 name: "taxonomieBerichterstattung",
                 label: "Taxonomie Berichterstattung",
                 description: "Wird der EU-Taxonomie Bericht auf Basis NFRD oder auf Basis CSRD erstellt?",
@@ -763,6 +687,28 @@ export const gdvDataModel = [    {
                 showIf: ():boolean => true, 
                 validation: "",
                 },
+     
+            ],
+            },
+        {
+            name: "taxonomie",
+            label: "Taxonomie",
+            color: " ", 
+            showIf: ():boolean => true,
+            subcategories: [    {
+                name: "taxonomieBerichterstattung",
+                label: "Taxonomie Berichterstattung",
+                fields: [
+    
+                ],
+                },
+            {
+                name: "euTaxonomieKompassAktivitäten",
+                label: "EU Taxonomie Kompass Aktivitäten",
+                fields: [
+    
+                ],
+                },
             ],
             },
         ],
@@ -775,29 +721,22 @@ export const gdvDataModel = [    {
         subcategories: [    {
             name: "änderungenUnternehmensstruktur",
             label: "Änderungen Unternehmensstruktur",
-            description: "Gab es kürzlich eine Veränderung im Unternehmen / in der Gruppe (Umstrukturierung, Verkauf oder Übernahme)?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "sicherheitsmaßnahmenFürMitarbeiter",
             label: "Sicherheitsmaßnahmen für Mitarbeiter",
-            description: "Welche Maßnahmen werden ergriffen, um die Gesundheit und Sicherheit der Mitarbeiter des Unternehmens zu verbessern?",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "einkommensgleichheit",
             label: "Einkommensgleichheit",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
+            fields: [
+                 {
                 name: "maßnahmenZurVerbesserungDerEinkommensungleichheit",
                 label: "Maßnahmen zur Verbesserung der Einkommensungleichheit",
                 description: "Wie überwacht das Unternehmen die Einkommens(un)gleichheit und welche Maßnahmen wurden ergriffen, um die Einkommensungleichheit abzustellen?",
@@ -807,14 +746,28 @@ export const gdvDataModel = [    {
                 showIf: ():boolean => true, 
                 validation: "",
                 },
+     
+            ],
+            },
+        {
+            name: "einkommensgleichheit",
+            label: "Einkommensgleichheit",
+            color: " ", 
+            showIf: ():boolean => true,
+            subcategories: [    {
+                name: "maßnahmenZurVerbesserungDerEinkommensungleichheit",
+                label: "Maßnahmen zur Verbesserung der Einkommensungleichheit",
+                fields: [
+    
+                ],
+                },
             ],
             },
         {
             name: "geschlechterdiversität",
             label: "Geschlechterdiversität",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
+            fields: [
+                 {
                 name: "definitionTop-Management",
                 label: "Definition Top-Management",
                 description: "Bitte geben Sie Ihre Definition von \"Top-Management\".",
@@ -834,14 +787,35 @@ export const gdvDataModel = [    {
                 showIf: ():boolean => true, 
                 validation: "",
                 },
+     
+            ],
+            },
+        {
+            name: "geschlechterdiversität",
+            label: "Geschlechterdiversität",
+            color: " ", 
+            showIf: ():boolean => true,
+            subcategories: [    {
+                name: "definitionTop-Management",
+                label: "Definition Top-Management",
+                fields: [
+    
+                ],
+                },
+            {
+                name: "einhaltungRechtlicherVorgaben",
+                label: "Einhaltung rechtlicher Vorgaben",
+                fields: [
+    
+                ],
+                },
             ],
             },
         {
             name: "audit",
             label: "Audit",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
+            fields: [
+                 {
                 name: "auditsZurEinhaltungVonArbeitsstandards",
                 label: "Audits zur Einhaltung von Arbeitsstandards",
                 description: "Führt das Unternehmen interne oder externe Audits durch, um die Einhaltung der Arbeitsnormen durch das Unternehmen zu bewerten?",
@@ -885,6 +859,35 @@ export const gdvDataModel = [    {
                 showIf: ():boolean => true, 
                 validation: "",
                 },
+     
+            ],
+            },
+        {
+            name: "audit",
+            label: "Audit",
+            color: " ", 
+            showIf: ():boolean => true,
+            subcategories: [    {
+                name: "auditsZurEinhaltungVonArbeitsstandards",
+                label: "Audits zur Einhaltung von Arbeitsstandards",
+                fields: [
+    
+                ],
+                },
+            {
+                name: "artDesAudits",
+                label: "Art des Audits",
+                fields: [
+    
+                ],
+                },
+            {
+                name: "auditErgebnisse",
+                label: "Audit Ergebnisse",
+                fields: [
+    
+                ],
+                },
             ],
             },
         ],
@@ -897,82 +900,58 @@ export const gdvDataModel = [    {
         subcategories: [    {
             name: "wirtschaftsprüfer",
             label: "Wirtschaftsprüfer",
+            fields: [
     
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            ],
             },
         {
             name: "ceo/vorsitzender",
             label: "CEO/Vorsitzender",
-            description: "Hat sich das Unternehmen im aktuellen Jahr der Berichterstattung von CEO/Vorsitzenden getrennt?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "amtszeit",
             label: "Amtszeit",
-            description: "Wieviele Jahre war der/die CEO/Vorsitzende(r) im Amt?",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "einbeziehungVonStakeholdern",
             label: "Einbeziehung von Stakeholdern",
-            description: "Gibt es einen kontinuierlichen Prozess des Dialogs mit den Stakeholdern des Unternehmens? Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "prozessDerEinbeziehungVonStakeholdern",
             label: "Prozess der Einbeziehung von Stakeholdern",
-            description: "Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "mechanismenZurAusrichtungAufStakeholder",
             label: "Mechanismen zur Ausrichtung auf Stakeholder",
-            description: "Welche Mechanismen gibt es derzeit, um sicherzustellen, dass die Stakeholder im besten Interesse des Unternehmens handeln? Bitte erläutern Sie (falls zutreffend) die Beteiligungsmechanismen, verschiedene Anreizsysteme usw.",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "esg-kriterienUndÜberwachungDerLieferanten",
             label: "ESG-Kriterien und Überwachung der Lieferanten",
-            description: "Wendet das Unternehmen ESG-Kriterien bei der Auswahl seiner Lieferanten an, einschließlich einer Bestandsaufnahme der Lieferkette?",
-                unit: "",
-            uploadComponentName: "YesNoFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         {
             name: "auswahlkriterien",
             label: "Auswahlkriterien",
-            description: "Bitte nennen Sie die Auswahlkriterien und erläutern Sie, wie diese Kriterien im Laufe der Zeit überwacht/geprüft werden. Bezieht das Unternehmen beispielsweise Rohstoffe aus Gebieten, in denen umstrittene Abholzungsaktivitäten stattfinden (z.B. Soja, Palmöl, Tropenholz, Holz oder industrielle Viehzucht)?",
-                unit: "",
-            uploadComponentName: "InputTextFormField",
-            required: false,
-            showIf: ():boolean => true, 
-            validation: "",
+            fields: [
+    
+            ],
             },
         ],
         },

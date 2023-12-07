@@ -16,4 +16,12 @@ sealed interface UploadConfigElement {
      * Returns true iff this is an instance of a cell (required for FreeMarker)
      */
     fun isCell() = this is CellConfigBuilder
+
+    /**
+     * Returns true iff this is subcategory (required for FreeMarker)
+     */
+    fun isSubcategory(): Boolean {
+        return parentSection?.subcategory ?: false
+    }
+
 }

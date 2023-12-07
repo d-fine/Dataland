@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.frameworks.gdv.model.soziales
 
-import org.dataland.datalandbackend.frameworks.gdv.model.soziales.audit.GdvSozialesAudit
+import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.frameworks.gdv.model.soziales.einkommensgleichheit.GdvSozialesEinkommensgleichheit
 import org.dataland.datalandbackend.frameworks.gdv.model.soziales.geschlechterdiversitaet.GdvSozialesGeschlechterdiversitaet
-import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.frameworks.gdv.model.soziales.audit.GdvSozialesAudit
 
 /**
  * The data-model for the Soziales section

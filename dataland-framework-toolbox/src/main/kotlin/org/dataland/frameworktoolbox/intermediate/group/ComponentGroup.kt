@@ -84,6 +84,7 @@ class ComponentGroup(
             labelBadgeColor = uploadPageLabelBadgeColor,
             expandOnPageLoad = viewPageExpandOnPageLoad,
             shouldDisplay = org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkBooleanLambda.TRUE,
+                subcategory = true,
         )
 
         children.forEach {

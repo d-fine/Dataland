@@ -2,33 +2,34 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Joplin",
-			"headquartersPostalCode": "57642-4284",
-			"sector": "systems",
+			"headquarters": "Lake Gonzalofurt",
+			"headquartersPostalCode": "19963-6160",
+			"sector": "communities",
 			"identifiers": {
-				"Lei": [
-					"9dFkBP971JOqGo0N0nfQ"
-				],
+				"Lei": [],
 				"Isin": [
-					"lprNejejRM07",
-					"68a924Yrtk35"
+					"pNqnZNdOa2eb"
 				],
-				"PermId": [],
+				"PermId": [
+					"yp0pFnQdLQ"
+				],
 				"Ticker": [],
 				"Duns": [
-					"XiG7UEG4S"
+					"oOdcPP8jC"
 				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"VoNpP2YyZcbUKPr"
+					"UCEe2t2PxRK29rs"
 				]
 			},
-			"countryCode": "OM",
+			"countryCode": "MO",
 			"companyAlternativeNames": [
-				"Boyle, Heller and Raynor",
-				"Waelchi Inc"
+				"Flatley - Hilpert",
+				"Heaney Inc",
+				"Macejkovic - Hauck",
+				"Stamm Group"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
+			"companyLegalForm": null,
 			"website": null,
 			"isTeaserCompany": false
 		},
@@ -36,21 +37,21 @@
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"05.1",
-						"27.33",
-						"66.29",
-						"80.3",
-						"82.11"
+						"38.2",
+						"49.39",
+						"65",
+						"84.24",
+						"95.12"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Douglas Road 396",
-						"postalCode": null,
-						"city": "Beavercreek",
-						"state": "Texas",
-						"country": "PK"
+						"streetAndHouseNumber": "Main Street W 5252",
+						"postalCode": "65328",
+						"city": "Brookeborough",
+						"state": "Tennessee",
+						"country": "ST"
 					},
-					"numberOfEmployees": 6777,
-					"fiscalYearStart": "2024-11-09"
+					"numberOfEmployees": 8344,
+					"fiscalYearStart": "2024-04-03"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -62,75 +63,42 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Rodriguez, Lueilwitz and Altenwerth",
+							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Lang Meadows 15923",
-								"postalCode": "88532-8908",
-								"city": "West Sigridboro",
-								"state": "Nebraska",
-								"country": "CU"
+								"streetAndHouseNumber": "Brookside 76373",
+								"postalCode": null,
+								"city": "Colebury",
+								"state": "New Mexico",
+								"country": "ZM"
 							},
-							"shareOfTotalRevenueInPercent": 62.5033
+							"shareOfTotalRevenueInPercent": 46.9233
 						},
 						{
-							"nameOfProductionSite": "Dickens, Torp and Wilderman",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Labadie Road 63170",
-								"postalCode": "87399-8279",
-								"city": "Farmington",
-								"state": "South Carolina",
-								"country": "SC"
-							},
-							"shareOfTotalRevenueInPercent": 87.0895
-						},
-						{
-							"nameOfProductionSite": "Mueller, Huels and Kozey",
+							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": null,
-								"postalCode": "78921",
-								"city": "North Yvonnecester",
-								"state": "Kentucky",
-								"country": "SO"
+								"postalCode": "73973-5111",
+								"city": "South Salmaburgh",
+								"state": "Nebraska",
+								"country": "BS"
 							},
-							"shareOfTotalRevenueInPercent": 93.0883
-						},
-						{
-							"nameOfProductionSite": "Hansen, Leuschke and Kuhlman",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Schuster Pine 110",
-								"postalCode": "66800",
-								"city": "Augusta-Richmond County",
-								"state": null,
-								"country": "SJ"
-							},
-							"shareOfTotalRevenueInPercent": 33.7783
-						},
-						{
-							"nameOfProductionSite": "Dach - DuBuque",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Pinfold Lane 366",
-								"postalCode": "60029",
-								"city": "Fort Javon",
-								"state": null,
-								"country": "GG"
-							},
-							"shareOfTotalRevenueInPercent": 29.4758
+							"shareOfTotalRevenueInPercent": 62.5181
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Gorgeous Soft Salad",
-							"shareOfTotalRevenueInPercent": 20.914
+							"name": "Licensed Concrete Gloves",
+							"shareOfTotalRevenueInPercent": 88.717
 						},
 						{
-							"name": "Ergonomic Soft Sausages",
-							"shareOfTotalRevenueInPercent": 99.4885
+							"name": "Luxurious Bronze Fish",
+							"shareOfTotalRevenueInPercent": 73.3308
 						},
 						{
-							"name": "Ergonomic Granite Keyboard",
-							"shareOfTotalRevenueInPercent": 86.5621
+							"name": "Licensed Bronze Chips",
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
 				}
@@ -140,21 +108,18 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMWh": 1239,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 602,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 39041619,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 16683966,
 					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Hail",
-						"Wind",
 						"Avalanche",
 						"Snow"
 					]
@@ -166,39 +131,44 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fredericboro",
-			"headquartersPostalCode": "73500",
-			"sector": "channels",
+			"headquarters": "Lake Kelsieboro",
+			"headquartersPostalCode": "42039",
+			"sector": null,
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"am4zgVzLepRX",
-					"zW8vNZvH6fYJ"
+					"MfBZ1jM8FvSw",
+					"gykycWXuypoV"
 				],
-				"PermId": [],
+				"PermId": [
+					"Cgw4ySjKJp"
+				],
 				"Ticker": [
-					"BVNlSMZ"
+					"3YfY8A3"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"26fAN0BVL"
+				"Duns": [
+					"rqvc5sdnW"
 				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"8DT6BqDwST0oUa6"
+				]
 			},
-			"countryCode": "ZM",
+			"countryCode": "VN",
 			"companyAlternativeNames": [
-				"Cassin LLC",
-				"Luettgen, Dicki and Leannon"
+				"Cruickshank - Olson",
+				"Hermann - Weimann",
+				"West, Goldner and Schowalter"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://confused-wampum.org/",
+			"companyLegalForm": "AG",
+			"website": "https://striped-jodhpurs.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"65.30"
+						"86.22"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -207,118 +177,13 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3516,
-					"fiscalYearStart": "2024-07-14"
+					"numberOfEmployees": 9287,
+					"fiscalYearStart": "2024-02-16"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 29186707,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 14206116
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": []
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Elegant Granite Pants",
-							"shareOfTotalRevenueInPercent": 65.4695
-						},
-						{
-							"name": "Electronic Fresh Tuna",
-							"shareOfTotalRevenueInPercent": 86.3346
-						},
-						{
-							"name": "Modern Frozen Car",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Small Steel Fish",
-							"shareOfTotalRevenueInPercent": 89.3896
-						},
-						{
-							"name": "Incredible Fresh Cheese",
-							"shareOfTotalRevenueInPercent": 27.9836
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
-				},
-				"consumption": {
-					"powerConsumptionInMWh": 643,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 341,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
-					"naturalHazardsCovered": null
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-minimum-address",
-			"headquarters": "North Cieloton",
-			"headquartersPostalCode": null,
-			"sector": "infrastructures",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"29wKkj3xn4IF"
-				],
-				"PermId": [],
-				"Ticker": [
-					"j74Vq1x"
-				],
-				"Duns": [
-					"9ca8uhf8Q"
-				],
-				"VatNumber": [
-					"kbaxkADtd"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "EG",
-			"companyAlternativeNames": [
-				"Doyle - Kessler",
-				"Emmerich - Jones"
-			],
-			"companyLegalForm": null,
-			"website": "https://blaring-indicator.org",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"70.1"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": null,
-						"city": "City 17",
-						"state": null,
-						"country": "Uninspired"
-					},
-					"numberOfEmployees": 276,
-					"fiscalYearStart": "2024-05-23"
-				},
-				"companyFinancials": {
-					"revenueInEUR": 9581981,
-					"operatingCostInEUR": 47680558,
-					"capitalAssetsInEUR": 12342294
+					"revenueInEUR": 49481975,
+					"operatingCostInEUR": 47182738,
+					"capitalAssetsInEUR": 51385081
 				}
 			},
 			"production": {
@@ -328,40 +193,156 @@
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Oriental Concrete Sausages",
-							"shareOfTotalRevenueInPercent": 92.6933
+							"name": "Unbranded Cotton Ball",
+							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Oriental Soft Shirt",
-							"shareOfTotalRevenueInPercent": 66.0542
+							"name": "Sleek Fresh Shoes",
+							"shareOfTotalRevenueInPercent": 81.2328
 						},
 						{
-							"name": "Recycled Granite Salad",
-							"shareOfTotalRevenueInPercent": 50.2811
+							"name": "Refined Soft Shoes",
+							"shareOfTotalRevenueInPercent": 4.9167
+						},
+						{
+							"name": "Modern Concrete Shoes",
+							"shareOfTotalRevenueInPercent": 22.2169
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 241,
+					"powerConsumptionInMWh": 1897,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 920,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 21882613,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 20702246,
 					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Hail",
-						"Snow",
+						"Wind"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-minimum-address",
+			"headquarters": "Fort Fanny",
+			"headquartersPostalCode": null,
+			"sector": "platforms",
+			"identifiers": {
+				"Lei": [
+					"MF7j0AwAlL7FGMy4tcIi"
+				],
+				"Isin": [
+					"R4n3x2ioavmm",
+					"5Qd7gfpGje2R"
+				],
+				"PermId": [
+					"ENZDNOJg2h"
+				],
+				"Ticker": [
+					"hMSoJqp"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"6k1tUAJz4WPqCSC"
+				]
+			},
+			"countryCode": "EC",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://medical-duty.info",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"73.11"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": null,
+						"postalCode": null,
+						"city": "City 17",
+						"state": null,
+						"country": "Uninspired"
+					},
+					"numberOfEmployees": 5929,
+					"fiscalYearStart": "2024-06-27"
+				},
+				"companyFinancials": {
+					"revenueInEUR": 67381853,
+					"operatingCostInEUR": 55916150,
+					"capitalAssetsInEUR": 5680568
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Quigley, Tromp and Swaniawski",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Stan Forest 702",
+								"postalCode": "22462",
+								"city": "Gutkowskicester",
+								"state": null,
+								"country": "PA"
+							},
+							"shareOfTotalRevenueInPercent": 32.3499
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": [
+						{
+							"name": "Oriental Cotton Pizza",
+							"shareOfTotalRevenueInPercent": 23.0216
+						},
+						{
+							"name": "Bespoke Cotton Car",
+							"shareOfTotalRevenueInPercent": 4.6462
+						},
+						{
+							"name": "Recycled Steel Fish",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Licensed Frozen Car",
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
+				},
+				"consumption": {
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 216,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 46918793,
+					"naturalHazardsCovered": [
 						"Avalanche",
 						"Flooding"
 					]
