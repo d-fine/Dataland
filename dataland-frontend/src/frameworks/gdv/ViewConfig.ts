@@ -126,7 +126,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
       {
         type: "cell",
         label: "Frequenz der Berichterstattung",
-
+        explanation: "In welchen Zeitabständen werden die Berichte erstellt?",
         shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.nachhaltigkeitsbericht == "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
           const mappings = {
@@ -215,26 +215,17 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
       },
       {
         type: "cell",
-        label: "UNCG Prinzipien",
-        explanation: "Hat das Unternehmen Überwachungsmechanismen für die UNGC Prinzipien eingerichtet ?",
-        shouldDisplay: (dataset: GdvData): boolean =>
-          dataset.allgemein?.mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze ==
-          "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(dataset.allgemein?.uncgPrinzipien),
-      },
-      {
-        type: "cell",
         label: "Erklärung UNGC",
         explanation: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.uncgPrinzipien == "Yes",
+        shouldDisplay: (): boolean => true,
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
           formatStringForDatatable(dataset.allgemein?.erklaerungUngc),
       },
       {
         type: "cell",
         label: "OECD Leitsätze",
-        explanation: "Hat das Unternehmen Überwachungsmechanismen für die OECD Leitsätze eingerichtet ?",
+        explanation:
+          "Hat das Unternehmen Überwachungsmechanismen für die OECD Leitsätze eingerichtet ? Wenn ja, bitte teilen Sie die Richtlinien mit uns, die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der OECD Leitsätze überwacht.",
         shouldDisplay: (dataset: GdvData): boolean =>
           dataset.allgemein?.mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze ==
           "Yes",

@@ -7936,15 +7936,14 @@
               }
             ]
           },
-          "mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze": {
+          "weitereAkkreditierungen": {
+            "type": "array",
             "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           },
-          "uncgPrinzipien": {
+          "mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze": {
             "nullable": true,
             "allOf": [
               {

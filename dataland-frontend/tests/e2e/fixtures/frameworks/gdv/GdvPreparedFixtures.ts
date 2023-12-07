@@ -39,9 +39,6 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
     newFixture.t.allgemein.mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze =
       YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.uncgPrinzipien) {
-    newFixture.t.allgemein.uncgPrinzipien = YesNo.Yes;
-  }
   if (newFixture.t.allgemein?.oecdLeitsaetze) {
     newFixture.t.allgemein.oecdLeitsaetze = YesNo.Yes;
   }

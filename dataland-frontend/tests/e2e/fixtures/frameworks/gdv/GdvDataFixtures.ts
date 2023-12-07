@@ -13,6 +13,7 @@ import { StatusZuSOptions } from "@clients/backend";
 import { StatusZuEOptions } from "@clients/backend";
 import { AnreizmechanismenFuerDasManagementSozialesOptions } from "@clients/backend";
 import { AnreizmechanismenFuerDasManagementUmweltOptions } from "@clients/backend";
+import { generateArray } from "@e2e/fixtures/FixtureUtils";
 import { FrequenzDerBerichterstattungOptions } from "@clients/backend";
 
 /**
@@ -56,9 +57,11 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       iso45001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
       iso27001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
       iso50001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+      weitereAkkreditierungen: dataGenerator.valueOrNull(
+        generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0),
+      ),
       mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze:
         dataGenerator.randomYesNo(),
-      uncgPrinzipien: dataGenerator.randomYesNo(),
       erklaerungUngc: dataGenerator.randomShortString(),
       oecdLeitsaetze: dataGenerator.randomYesNo(),
       erklaerungOecd: dataGenerator.randomShortString(),

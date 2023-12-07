@@ -2,10 +2,12 @@ package org.dataland.frameworktoolbox.frameworks.gdv
 
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvListOfBaseDataPoint
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
+import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.dataland.frameworktoolbox.intermediate.group.getOrNull
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -82,6 +84,12 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
 //                )
 //            }
 //        }
+
+        framework.root.edit<ComponentGroup>("allgemein") {
+            create<GdvListOfBaseDataPoint>("weitereAkkreditierungen", "iso50001") {
+                label = "Weitere Akkreditierungen"
+            }
+        }
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {

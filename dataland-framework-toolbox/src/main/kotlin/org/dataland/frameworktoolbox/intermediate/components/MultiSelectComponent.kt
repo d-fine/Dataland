@@ -102,6 +102,7 @@ open class MultiSelectComponent(
 
     private fun generateMapperFunction(): String {
         // TODO Emanuel: this is a duplicate to SingleSelectComponent; centralize where?
+        // TODO Emanuel: Why not writing this function in a utils file in the frontend code, and just import and use it? It is always the same for all fields.
         val jsDoc =
             "/**\n" +
                 "* Maps the technical name of a select option to the respective original name\n" +
