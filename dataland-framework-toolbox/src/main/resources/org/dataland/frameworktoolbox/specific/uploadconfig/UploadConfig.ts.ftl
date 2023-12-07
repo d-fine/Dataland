@@ -1,37 +1,35 @@
 <#--import { type Category } from "@/utils/GenericFrameworkTypes";-->
 
-<#--export const ${frameworkIdentifier}DataModel : Category[] = [<@mldtconfig uploadConfig/>];  Category[] incompatible-->
-export const ${frameworkIdentifier}DataModel = [<@mldtconfig uploadConfig/>];
+export const ${frameworkIdentifier}DataModel = [<@loopCategories uploadConfig/>];
 
-<#macro mldtconfig items>
+<#macro loopCategories items>
     <@indent>
-        <#list items as element><#if element.isSection()><@mldtsection element/></#if>
-<#--        <#list items as element><#if element.isCell()><@mldtcell element/></#if><#if element.isSubcategory()><@mldtisSubcategory element/></#if><#if element.isSection()><@mldtsection element/></#if>-->
+        <#list items as element><#if element.isSection()><@mldtCategory element/></#if>
         </#list>
     </@indent>
 </#macro>
 
-<#macro mldtconfig2 items>
+<#macro loopSubcategories items>
     <@indent>
                 <#list items as element><#if element.isSubcategory()><@mldtisSubcategory element/></#if>
         </#list>
     </@indent>
 </#macro>
 
-<#macro mldtconfig3 items>
+<#macro loopFields items>
     <@indent>
-                <#list items as element><#if element.isCell()><@mldtcell element/></#if>
+                <#list items as element><#if element.isCell()><@mldtField element/></#if>
         </#list>
     </@indent>
 </#macro>
 
 
-<#macro mldtsection sectionConfig>{
-    name: "${sectionConfig.name?js_string}",
-    label: "${sectionConfig.label?js_string}",
+<#macro mldtCategory categoryConfig>{
+    name: "${categoryConfig.name?js_string}",
+    label: "${categoryConfig.label?js_string}",
     color: " ", <#-- not necessary at this point -->
-    showIf: <@frameworklambda sectionConfig.shouldDisplay/>,
-    subcategories: [<@mldtconfig2 sectionConfig.children/>],
+    showIf: <@frameworklambda categoryConfig.shouldDisplay/>,
+    subcategories: [<@loopSubcategories categoryConfig.children/>],
     },
 </#macro>
 
@@ -39,17 +37,17 @@ export const ${frameworkIdentifier}DataModel = [<@mldtconfig uploadConfig/>];
     name: "${subcategoryConfig.name?js_string}",
     label: "${subcategoryConfig.label?js_string}",
     fields: [
-    <#if subcategoryConfig.children??> <@mldtconfig3 subcategoryConfig.children/> </#if>
+    <#if subcategoryConfig.children??> <@loopFields subcategoryConfig.children/> </#if>
     ],
     },
 </#macro>
 
-<#macro mldtcell cellConfig>{
-    name: "${cellConfig.name?js_string}",
-    label: "${cellConfig.label?js_string}",
-    <#if cellConfig.explanation??>description: "${cellConfig.explanation?js_string}",</#if>
-    <#if cellConfig.options??>options: [
-        <#list cellConfig.options?sequence as entry>
+<#macro mldtField fieldConfig>{
+    name: "${fieldConfig.name?js_string}",
+    label: "${fieldConfig.label?js_string}",
+    <#if fieldConfig.explanation??>description: "${fieldConfig.explanation?js_string}",</#if>
+    <#if fieldConfig.options??>options: [
+        <#list fieldConfig.options?sequence as entry>
             {
                 identifier: "${entry.identifier}",
                 label: "${entry.identifier}",
@@ -57,10 +55,10 @@ export const ${frameworkIdentifier}DataModel = [<@mldtconfig uploadConfig/>];
         </#list>
         ],
     </#if>
-    unit: "<#if cellConfig.unit??>${cellConfig.unit?js_string}</#if>",
-    uploadComponentName: "${cellConfig.uploadComponentName?js_string}",
-    required: <#if cellConfig.required??>true<#else>false</#if>,
-    showIf: <@frameworklambda cellConfig.shouldDisplay/>, <#--is this even needed for upload?-->
+    unit: "<#if fieldConfig.unit??>${fieldConfig.unit?js_string}</#if>",
+    uploadComponentName: "${fieldConfig.uploadComponentName?js_string}",
+    required: <#if fieldConfig.required??>true<#else>false</#if>,
+    showIf: <@frameworklambda fieldConfig.shouldDisplay/>, <#--is this even needed for upload?-->
     validation: "",
     },
 </#macro>

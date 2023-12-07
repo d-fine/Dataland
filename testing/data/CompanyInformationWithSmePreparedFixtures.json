@@ -2,50 +2,59 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "West Bulah",
-			"headquartersPostalCode": "67539",
+			"headquarters": "Lake Moriah",
+			"headquartersPostalCode": null,
 			"sector": "communities",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"mlh2F6EQkkvID69ijUN8"
+				],
 				"Isin": [
-					"zrSUq7HyeK9t"
+					"XxurDaiSzewk"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
+				"Ticker": [
+					"7SZqTHQ"
+				],
+				"Duns": [
+					"TbMuDJufd"
+				],
 				"VatNumber": [
-					"yZ5tKpnzY"
+					"W3uL8wJpa"
 				],
 				"CompanyRegistrationNumber": [
-					"qbA3ZNXLsZqmkKN"
+					"OvzjpNspWLXZIzl"
 				]
 			},
-			"countryCode": "IT",
+			"countryCode": "LA",
 			"companyAlternativeNames": [
-				"Raynor Inc",
-				"Schoen - Jacobson",
-				"Waelchi - Tromp"
+				"Adams - Schneider",
+				"Effertz, Christiansen and Macejkovic",
+				"Kutch LLC"
 			],
-			"companyLegalForm": null,
-			"website": null,
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://serpentine-fork.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"20.6",
-						"46.24"
+						"13.93",
+						"25.99",
+						"26.3",
+						"28.21",
+						"93.12"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Marvin Manor 463",
-						"postalCode": "26729",
-						"city": "New Mikelstead",
-						"state": "Mississippi",
-						"country": "HK"
+						"streetAndHouseNumber": "Murl Estate 7684",
+						"postalCode": "57232",
+						"city": "Sydnifort",
+						"state": "Michigan",
+						"country": "MR"
 					},
-					"numberOfEmployees": 1775,
-					"fiscalYearStart": "2024-11-01"
+					"numberOfEmployees": 3426,
+					"fiscalYearStart": "2024-07-20"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -57,42 +66,29 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Schaefer - Nitzsche",
+							"nameOfProductionSite": "Kutch, Harvey and Jast",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Cremin Knoll 569",
-								"postalCode": "76481-2577",
-								"city": "Lake Louvenia",
-								"state": null,
-								"country": "SC"
+								"streetAndHouseNumber": "Crescent Road 618",
+								"postalCode": "97748",
+								"city": "Mullerport",
+								"state": "Louisiana",
+								"country": "TM"
 							},
-							"shareOfTotalRevenueInPercent": 65.581
-						},
-						{
-							"nameOfProductionSite": "Haley - Krajcik",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Deckow Passage 674",
-								"postalCode": "79597-6742",
-								"city": "Fort Kellieberg",
-								"state": "Arizona",
-								"country": "MS"
-							},
-							"shareOfTotalRevenueInPercent": 70.2935
-						},
-						{
-							"nameOfProductionSite": "Rosenbaum - Lesch",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Princes Street 53226",
-								"postalCode": "61493",
-								"city": "Morgan Hill",
-								"state": "Delaware",
-								"country": "CV"
-							},
-							"shareOfTotalRevenueInPercent": 65.6694
+							"shareOfTotalRevenueInPercent": 12.4043
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Oriental Rubber Towels",
+							"shareOfTotalRevenueInPercent": 57.162
+						},
+						{
+							"name": "Luxurious Bronze Towels",
+							"shareOfTotalRevenueInPercent": 61.6988
+						}
+					]
 				}
 			},
 			"power": {
@@ -100,23 +96,23 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1839,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 584,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMWh": 1022,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 744,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 38107911,
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 30027484,
 					"naturalHazardsCovered": [
-						"Snow",
 						"EarthQuake",
-						"Avalanche",
 						"Flooding",
-						"Wind"
+						"Snow",
+						"Hail",
+						"Avalanche"
 					]
 				}
 			}
@@ -126,32 +122,31 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Wisokyboro",
-			"headquartersPostalCode": "88681",
-			"sector": "communities",
+			"headquarters": "New Lauren",
+			"headquartersPostalCode": "45880",
+			"sector": "methodologies",
 			"identifiers": {
 				"Lei": [
-					"98pUTb7QUf7HyJx48mEl"
+					"HBJri8IjLrd0mGXobJrk"
 				],
 				"Isin": [
-					"Vt8u9xlXdOsD",
-					"IJiPfM4eBbIB"
+					"4DU1hQd8uLKW"
 				],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"PaZJQZ0tA"
+				"Duns": [
+					"KPrOZBfzj"
 				],
-				"CompanyRegistrationNumber": [
-					"Fh6wnCmofbApYyT"
-				]
+				"VatNumber": [
+					"x9VJmSD63"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PA",
+			"countryCode": "ST",
 			"companyAlternativeNames": [
-				"Dickinson Inc"
+				"King - Schowalter"
 			],
-			"companyLegalForm": "GmbH",
+			"companyLegalForm": "Sole Trader",
 			"website": null,
 			"isTeaserCompany": false
 		},
@@ -159,7 +154,7 @@
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"35.21"
+						"14.12"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -168,46 +163,97 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 9367,
-					"fiscalYearStart": "2024-02-02"
+					"numberOfEmployees": 4486,
+					"fiscalYearStart": "2024-05-30"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 53766115,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": null
+					"revenueInEUR": 75477575,
+					"operatingCostInEUR": 56376473,
+					"capitalAssetsInEUR": 49741813
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Berge Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Lavinia Fort 88616",
+								"postalCode": "29648-3751",
+								"city": "South Gerda",
+								"state": "Delaware",
+								"country": "BY"
+							},
+							"shareOfTotalRevenueInPercent": 49.6214
+						},
+						{
+							"nameOfProductionSite": "Lueilwitz, Franecki and Abernathy",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "19326-9944",
+								"city": "South Marcelinohaven",
+								"state": "Vermont",
+								"country": "MD"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Skiles, Cremin and Hettinger",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Hillside 762",
+								"postalCode": "64584-8321",
+								"city": "Prosaccofort",
+								"state": "North Carolina",
+								"country": "BS"
+							},
+							"shareOfTotalRevenueInPercent": 88.7345
+						}
+					]
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Small Concrete Pizza",
+							"shareOfTotalRevenueInPercent": 67.5412
+						},
+						{
+							"name": "Tasty Soft Keyboard",
+							"shareOfTotalRevenueInPercent": 94.2716
+						},
+						{
+							"name": "Incredible Bronze Ball",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Oriental Fresh Towels",
+							"shareOfTotalRevenueInPercent": 59.7097
+						},
+						{
+							"name": "Small Soft Hat",
+							"shareOfTotalRevenueInPercent": 93.1554
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1769,
+					"powerConsumptionInMWh": 1764,
 					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 774,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionHeatingAndHotWaterInMWh": 317,
+					"primaryEnergySourceForHeatingAndHotWater": null,
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 32589572,
 					"naturalHazardsCovered": [
 						"Hail",
-						"Avalanche",
-						"Snow",
-						"Wind",
-						"EarthQuake",
-						"Flooding"
+						"Snow"
 					]
 				}
 			}
@@ -217,47 +263,39 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Leuschkemouth",
-			"headquartersPostalCode": "98919-5121",
-			"sector": "ROI",
+			"headquarters": "Port Charlotte",
+			"headquartersPostalCode": "89447-5737",
+			"sector": "bandwidth",
 			"identifiers": {
-				"Lei": [
-					"QVz50gnFAoyMhWT94O8l"
-				],
+				"Lei": [],
 				"Isin": [
-					"HQsqWlBEpEE0",
-					"33a7y7O0M8xu"
+					"G31YWvEL82iX"
 				],
 				"PermId": [
-					"WkE6sdCfzd"
+					"nfU9N89Y2v"
 				],
 				"Ticker": [],
 				"Duns": [
-					"5q2jGIUHh"
+					"mHVuASWCK"
 				],
-				"VatNumber": [
-					"wdUE5nYiN"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"GBhTZqGGc4xQiNJ"
+					"SZCqRWtGG3SbWRW"
 				]
 			},
-			"countryCode": "MH",
+			"countryCode": "GG",
 			"companyAlternativeNames": [
-				"Rodriguez - Connelly",
-				"Schaefer, Berge and Rippin",
-				"Spencer - Ankunding",
-				"Wiegand, Auer and Torp"
+				"Gerlach - Huels"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://imperturbable-flavor.net",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://disgusting-avenue.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"93.19"
+						"16"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -266,92 +304,80 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 4869,
-					"fiscalYearStart": "2024-03-04"
+					"numberOfEmployees": 5280,
+					"fiscalYearStart": "2024-06-25"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 3833117,
-					"operatingCostInEUR": 43323770,
-					"capitalAssetsInEUR": 30135810
+					"revenueInEUR": 74635301,
+					"operatingCostInEUR": 70011139,
+					"capitalAssetsInEUR": 35909820
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": null,
+							"nameOfProductionSite": "Hirthe and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "E 6th Street 657",
+								"postalCode": "14775-4691",
+								"city": "East Annetteville",
+								"state": "South Carolina",
+								"country": "NR"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Huel LLC",
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": null,
-								"postalCode": "10932",
-								"city": "Schillerchester",
-								"state": "Rhode Island",
-								"country": "BR"
+								"postalCode": "86200",
+								"city": "New Finnmouth",
+								"state": "New York",
+								"country": "BT"
 							},
-							"shareOfTotalRevenueInPercent": 98.0226
+							"shareOfTotalRevenueInPercent": 68.0895
 						},
 						{
-							"nameOfProductionSite": "Flatley Group",
+							"nameOfProductionSite": "Harris, Koelpin and Lindgren",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Well Lane 55601",
-								"postalCode": null,
-								"city": "Redwood City",
-								"state": null,
-								"country": "AT"
+								"streetAndHouseNumber": "3rd Avenue 1415",
+								"postalCode": "13246",
+								"city": "West Jairo",
+								"state": "West Virginia",
+								"country": "LK"
 							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "S Central Avenue 66712",
-								"postalCode": "97487-3436",
-								"city": "Lake Olen",
-								"state": "Delaware",
-								"country": "KW"
-							},
-							"shareOfTotalRevenueInPercent": null
+							"shareOfTotalRevenueInPercent": 79.8363
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Handmade Bronze Towels",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Modern Wooden Pizza",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Sleek Bronze Chair",
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1736,
+					"powerConsumptionInMWh": 1566,
 					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 431,
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 29201913,
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Avalanche",
-						"Hail",
-						"Flooding",
+						"EarthQuake",
 						"Snow",
-						"EarthQuake"
+						"Hail",
+						"Wind",
+						"Flooding",
+						"Avalanche"
 					]
 				}
 			}
