@@ -160,6 +160,9 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
     mountPluginAndInterceptUploads("p2p");
     createP2pDataset.fillRequiredFields();
     uploadFieldSpecificDocuments("first", 1, "upstreamSupplierProcurementPolicy");
+    createP2pDataset.selectSector("Livestock Farming");
+    uploadFieldSpecificDocuments("second", 2, "externalFeedCertification");
+    createP2pDataset.selectSector("Livestock Farming");
     cy.wait(100);
     submitButton.buttonAppearsEnabled();
     submitButton.clickButton();
