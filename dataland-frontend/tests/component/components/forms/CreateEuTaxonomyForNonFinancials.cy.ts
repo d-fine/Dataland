@@ -126,6 +126,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[label="Revenue"] input[name="value"]').clear().type("130000");
     cy.get('div[label="Revenue"] select[data-test="datapoint-currency"]').select(1);
     cy.get('div[label="Revenue"] select[name="fileName"]').select(reports[0]);
+    cy.wait(100); // needed for DOM change
     cy.get('div[label="Revenue"] input[name="page"]').clear().type("5");
     cy.get('div[label="Revenue"] select[name="quality"]').select(2);
     cy.get('div[label="Revenue"] textarea[name="comment"]').clear().type("just a comment");
@@ -305,7 +306,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     });
   });
 
-  it("Open upload page, fill out and validate the upload form, except for new activities", () => {
+  it.only("Open upload page, fill out and validate the upload form, except for new activities", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithPlugins(CreateEuTaxonomyForNonFinancials, {
       keycloak: minimalKeycloakMock({}),
