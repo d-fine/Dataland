@@ -23,5 +23,4 @@ sealed interface UploadConfigElement {
     fun isSubcategory(): Boolean {
         return parentSection?.subcategory ?: false
     }
-
 }

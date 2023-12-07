@@ -30,27 +30,6 @@ export const gdvDataModel = [    {
      
             ],
             },
-        {
-            name: "masterData",
-            label: "Master Data",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
-                name: "berichts-pflicht",
-                label: "Berichts-Pflicht",
-                fields: [
-    
-                ],
-                },
-            {
-                name: "(gültigkeits)Datum",
-                label: "(Gültigkeits) Datum",
-                fields: [
-    
-                ],
-                },
-            ],
-            },
         ],
         },
     {
@@ -338,27 +317,6 @@ export const gdvDataModel = [    {
             ],
             },
         {
-            name: "treibhausgasemissionen",
-            label: "Treibhausgasemissionen",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
-                name: "treibhausgas-emissionsintensitätDerUnternehmen,InDieInvestriertWird",
-                label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investriert wird",
-                fields: [
-    
-                ],
-                },
-            {
-                name: "strategieUndZieleZurReduzierungVonTreibhausgas-Emissionen",
-                label: "Strategie und Ziele zur Reduzierung von Treibhausgas-Emissionen",
-                fields: [
-    
-                ],
-                },
-            ],
-            },
-        {
             name: "produkteZurVerringerungDerUmweltbelastung",
             label: "Produkte zur Verringerung der Umweltbelastung",
             fields: [
@@ -397,20 +355,6 @@ export const gdvDataModel = [    {
             ],
             },
         {
-            name: "energieverbrauch",
-            label: "Energieverbrauch",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
-                name: "unternehmens/gruppenStrategieBzglEnergieverbrauch",
-                label: "Unternehmens/Gruppen Strategie bzgl Energieverbrauch",
-                fields: [
-    
-                ],
-                },
-            ],
-            },
-        {
             name: "energieeffizienzImmobilienanlagen",
             label: "Energieeffizienz Immobilienanlagen",
             fields: [
@@ -425,20 +369,6 @@ export const gdvDataModel = [    {
                 validation: "",
                 },
      
-            ],
-            },
-        {
-            name: "energieeffizienzImmobilienanlagen",
-            label: "Energieeffizienz Immobilienanlagen",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
-                name: "unternehmens/gruppenStrategieBzglEnergieeffizientenImmobilienanlagen",
-                label: "Unternehmens/Gruppen Strategie bzgl energieeffizienten Immobilienanlagen",
-                fields: [
-    
-                ],
-                },
             ],
             },
         {
@@ -459,20 +389,6 @@ export const gdvDataModel = [    {
             ],
             },
         {
-            name: "wasserverbrauch",
-            label: "Wasserverbrauch",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
-                name: "unternehmens/gruppenStrategieBzglWasserverbrauch",
-                label: "Unternehmens/Gruppen Strategie bzgl Wasserverbrauch",
-                fields: [
-    
-                ],
-                },
-            ],
-            },
-        {
             name: "abfallproduktion",
             label: "Abfallproduktion",
             fields: [
@@ -487,20 +403,6 @@ export const gdvDataModel = [    {
                 validation: "",
                 },
      
-            ],
-            },
-        {
-            name: "abfallproduktion",
-            label: "Abfallproduktion",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
-                name: "unternehmens/gruppenStrategieBzglAbfallproduktion",
-                label: "Unternehmens/Gruppen Strategie bzgl Abfallproduktion",
-                fields: [
-    
-                ],
-                },
             ],
             },
         {
@@ -518,20 +420,6 @@ export const gdvDataModel = [    {
                 validation: "",
                 },
      
-            ],
-            },
-        {
-            name: "gefährlicheAbfälle",
-            label: "Gefährliche Abfälle",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
-                name: "gefährlicherAbfall",
-                label: "Gefährlicher Abfall",
-                fields: [
-    
-                ],
-                },
             ],
             },
         {
@@ -582,41 +470,6 @@ export const gdvDataModel = [    {
             ],
             },
         {
-            name: "biodiversität",
-            label: "Biodiversität",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
-                name: "negativeAktivitätenFürDieBiologischeVielfalt",
-                label: "Negative Aktivitäten für die biologische Vielfalt",
-                fields: [
-    
-                ],
-                },
-            {
-                name: "negativeMaßnahmenFürDieBiologischeVielfalt",
-                label: "Negative Maßnahmen für die biologische Vielfalt",
-                fields: [
-    
-                ],
-                },
-            {
-                name: "positiveAktivitätenFürDieBiologischeVielfalt",
-                label: "Positive Aktivitäten für die biologische Vielfalt",
-                fields: [
-    
-                ],
-                },
-            {
-                name: "positiveMaßnahmenFürDieBiologischeVielfalt",
-                label: "Positive Maßnahmen für die biologische Vielfalt",
-                fields: [
-    
-                ],
-                },
-            ],
-            },
-        {
             name: "fossileBrennstoffe",
             label: "Fossile Brennstoffe",
             fields: [
@@ -631,20 +484,6 @@ export const gdvDataModel = [    {
                 validation: "",
                 },
      
-            ],
-            },
-        {
-            name: "fossileBrennstoffe",
-            label: "Fossile Brennstoffe",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
-                name: "einnahmenAusFossilenBrennstoffen",
-                label: "Einnahmen aus fossilen Brennstoffen",
-                fields: [
-    
-                ],
-                },
             ],
             },
         {
@@ -690,27 +529,6 @@ export const gdvDataModel = [    {
      
             ],
             },
-        {
-            name: "taxonomie",
-            label: "Taxonomie",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
-                name: "taxonomieBerichterstattung",
-                label: "Taxonomie Berichterstattung",
-                fields: [
-    
-                ],
-                },
-            {
-                name: "euTaxonomieKompassAktivitäten",
-                label: "EU Taxonomie Kompass Aktivitäten",
-                fields: [
-    
-                ],
-                },
-            ],
-            },
         ],
         },
     {
@@ -750,20 +568,6 @@ export const gdvDataModel = [    {
             ],
             },
         {
-            name: "einkommensgleichheit",
-            label: "Einkommensgleichheit",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
-                name: "maßnahmenZurVerbesserungDerEinkommensungleichheit",
-                label: "Maßnahmen zur Verbesserung der Einkommensungleichheit",
-                fields: [
-    
-                ],
-                },
-            ],
-            },
-        {
             name: "geschlechterdiversität",
             label: "Geschlechterdiversität",
             fields: [
@@ -788,27 +592,6 @@ export const gdvDataModel = [    {
                 validation: "",
                 },
      
-            ],
-            },
-        {
-            name: "geschlechterdiversität",
-            label: "Geschlechterdiversität",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
-                name: "definitionTop-Management",
-                label: "Definition Top-Management",
-                fields: [
-    
-                ],
-                },
-            {
-                name: "einhaltungRechtlicherVorgaben",
-                label: "Einhaltung rechtlicher Vorgaben",
-                fields: [
-    
-                ],
-                },
             ],
             },
         {
@@ -860,34 +643,6 @@ export const gdvDataModel = [    {
                 validation: "",
                 },
      
-            ],
-            },
-        {
-            name: "audit",
-            label: "Audit",
-            color: " ", 
-            showIf: ():boolean => true,
-            subcategories: [    {
-                name: "auditsZurEinhaltungVonArbeitsstandards",
-                label: "Audits zur Einhaltung von Arbeitsstandards",
-                fields: [
-    
-                ],
-                },
-            {
-                name: "artDesAudits",
-                label: "Art des Audits",
-                fields: [
-    
-                ],
-                },
-            {
-                name: "auditErgebnisse",
-                label: "Audit Ergebnisse",
-                fields: [
-    
-                ],
-                },
             ],
             },
         ],

@@ -31,7 +31,7 @@ class FrameworkUploadConfigBuilder(
         expandOnPageLoad = false,
         shouldDisplay = FrameworkBooleanLambda.TRUE,
         name = "???",
-            subcategory = false
+        subcategory = false,
     )
 
     private fun buildUploadConfig(uploadConfigTsPath: Path) {

@@ -2,32 +2,29 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Lake Gonzalofurt",
-			"headquartersPostalCode": "19963-6160",
+			"headquarters": "West Bulah",
+			"headquartersPostalCode": "67539",
 			"sector": "communities",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"pNqnZNdOa2eb"
+					"zrSUq7HyeK9t"
 				],
-				"PermId": [
-					"yp0pFnQdLQ"
-				],
+				"PermId": [],
 				"Ticker": [],
-				"Duns": [
-					"oOdcPP8jC"
+				"Duns": [],
+				"VatNumber": [
+					"yZ5tKpnzY"
 				],
-				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"UCEe2t2PxRK29rs"
+					"qbA3ZNXLsZqmkKN"
 				]
 			},
-			"countryCode": "MO",
+			"countryCode": "IT",
 			"companyAlternativeNames": [
-				"Flatley - Hilpert",
-				"Heaney Inc",
-				"Macejkovic - Hauck",
-				"Stamm Group"
+				"Raynor Inc",
+				"Schoen - Jacobson",
+				"Waelchi - Tromp"
 			],
 			"companyLegalForm": null,
 			"website": null,
@@ -37,21 +34,18 @@
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"38.2",
-						"49.39",
-						"65",
-						"84.24",
-						"95.12"
+						"20.6",
+						"46.24"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Main Street W 5252",
-						"postalCode": "65328",
-						"city": "Brookeborough",
-						"state": "Tennessee",
-						"country": "ST"
+						"streetAndHouseNumber": "Marvin Manor 463",
+						"postalCode": "26729",
+						"city": "New Mikelstead",
+						"state": "Mississippi",
+						"country": "HK"
 					},
-					"numberOfEmployees": 8344,
-					"fiscalYearStart": "2024-04-03"
+					"numberOfEmployees": 1775,
+					"fiscalYearStart": "2024-11-01"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -63,44 +57,42 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": null,
+							"nameOfProductionSite": "Schaefer - Nitzsche",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Brookside 76373",
-								"postalCode": null,
-								"city": "Colebury",
-								"state": "New Mexico",
-								"country": "ZM"
+								"streetAndHouseNumber": "Cremin Knoll 569",
+								"postalCode": "76481-2577",
+								"city": "Lake Louvenia",
+								"state": null,
+								"country": "SC"
 							},
-							"shareOfTotalRevenueInPercent": 46.9233
+							"shareOfTotalRevenueInPercent": 65.581
 						},
 						{
-							"nameOfProductionSite": null,
+							"nameOfProductionSite": "Haley - Krajcik",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "73973-5111",
-								"city": "South Salmaburgh",
-								"state": "Nebraska",
-								"country": "BS"
+								"streetAndHouseNumber": "Deckow Passage 674",
+								"postalCode": "79597-6742",
+								"city": "Fort Kellieberg",
+								"state": "Arizona",
+								"country": "MS"
 							},
-							"shareOfTotalRevenueInPercent": 62.5181
+							"shareOfTotalRevenueInPercent": 70.2935
+						},
+						{
+							"nameOfProductionSite": "Rosenbaum - Lesch",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Princes Street 53226",
+								"postalCode": "61493",
+								"city": "Morgan Hill",
+								"state": "Delaware",
+								"country": "CV"
+							},
+							"shareOfTotalRevenueInPercent": 65.6694
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Licensed Concrete Gloves",
-							"shareOfTotalRevenueInPercent": 88.717
-						},
-						{
-							"name": "Luxurious Bronze Fish",
-							"shareOfTotalRevenueInPercent": 73.3308
-						},
-						{
-							"name": "Licensed Bronze Chips",
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
@@ -108,20 +100,23 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1239,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 602,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMWh": 1839,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 584,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 16683966,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 38107911,
 					"naturalHazardsCovered": [
+						"Snow",
+						"EarthQuake",
 						"Avalanche",
-						"Snow"
+						"Flooding",
+						"Wind"
 					]
 				}
 			}
@@ -131,44 +126,40 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Lake Kelsieboro",
-			"headquartersPostalCode": "42039",
-			"sector": null,
+			"headquarters": "Wisokyboro",
+			"headquartersPostalCode": "88681",
+			"sector": "communities",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"98pUTb7QUf7HyJx48mEl"
+				],
 				"Isin": [
-					"MfBZ1jM8FvSw",
-					"gykycWXuypoV"
+					"Vt8u9xlXdOsD",
+					"IJiPfM4eBbIB"
 				],
-				"PermId": [
-					"Cgw4ySjKJp"
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"PaZJQZ0tA"
 				],
-				"Ticker": [
-					"3YfY8A3"
-				],
-				"Duns": [
-					"rqvc5sdnW"
-				],
-				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"8DT6BqDwST0oUa6"
+					"Fh6wnCmofbApYyT"
 				]
 			},
-			"countryCode": "VN",
+			"countryCode": "PA",
 			"companyAlternativeNames": [
-				"Cruickshank - Olson",
-				"Hermann - Weimann",
-				"West, Goldner and Schowalter"
+				"Dickinson Inc"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://striped-jodhpurs.biz/",
+			"companyLegalForm": "GmbH",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"86.22"
+						"35.21"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -177,58 +168,46 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 9287,
-					"fiscalYearStart": "2024-02-16"
+					"numberOfEmployees": 9367,
+					"fiscalYearStart": "2024-02-02"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 49481975,
-					"operatingCostInEUR": 47182738,
-					"capitalAssetsInEUR": 51385081
+					"revenueInEUR": 53766115,
+					"operatingCostInEUR": null,
+					"capitalAssetsInEUR": null
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": []
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Unbranded Cotton Ball",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Sleek Fresh Shoes",
-							"shareOfTotalRevenueInPercent": 81.2328
-						},
-						{
-							"name": "Refined Soft Shoes",
-							"shareOfTotalRevenueInPercent": 4.9167
-						},
-						{
-							"name": "Modern Concrete Shoes",
-							"shareOfTotalRevenueInPercent": 22.2169
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1897,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerConsumptionInMWh": 1769,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 774,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 20702246,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Wind"
+						"Hail",
+						"Avalanche",
+						"Snow",
+						"Wind",
+						"EarthQuake",
+						"Flooding"
 					]
 				}
 			}
@@ -238,40 +217,47 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Fort Fanny",
-			"headquartersPostalCode": null,
-			"sector": "platforms",
+			"headquarters": "Leuschkemouth",
+			"headquartersPostalCode": "98919-5121",
+			"sector": "ROI",
 			"identifiers": {
 				"Lei": [
-					"MF7j0AwAlL7FGMy4tcIi"
+					"QVz50gnFAoyMhWT94O8l"
 				],
 				"Isin": [
-					"R4n3x2ioavmm",
-					"5Qd7gfpGje2R"
+					"HQsqWlBEpEE0",
+					"33a7y7O0M8xu"
 				],
 				"PermId": [
-					"ENZDNOJg2h"
+					"WkE6sdCfzd"
 				],
-				"Ticker": [
-					"hMSoJqp"
+				"Ticker": [],
+				"Duns": [
+					"5q2jGIUHh"
 				],
-				"Duns": [],
-				"VatNumber": [],
+				"VatNumber": [
+					"wdUE5nYiN"
+				],
 				"CompanyRegistrationNumber": [
-					"6k1tUAJz4WPqCSC"
+					"GBhTZqGGc4xQiNJ"
 				]
 			},
-			"countryCode": "EC",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://medical-duty.info",
+			"countryCode": "MH",
+			"companyAlternativeNames": [
+				"Rodriguez - Connelly",
+				"Schaefer, Berge and Rippin",
+				"Spencer - Ankunding",
+				"Wiegand, Auer and Torp"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://imperturbable-flavor.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"73.11"
+						"93.19"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -280,47 +266,65 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 5929,
-					"fiscalYearStart": "2024-06-27"
+					"numberOfEmployees": 4869,
+					"fiscalYearStart": "2024-03-04"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 67381853,
-					"operatingCostInEUR": 55916150,
-					"capitalAssetsInEUR": 5680568
+					"revenueInEUR": 3833117,
+					"operatingCostInEUR": 43323770,
+					"capitalAssetsInEUR": 30135810
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Quigley, Tromp and Swaniawski",
+							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Stan Forest 702",
-								"postalCode": "22462",
-								"city": "Gutkowskicester",
-								"state": null,
-								"country": "PA"
+								"streetAndHouseNumber": null,
+								"postalCode": "10932",
+								"city": "Schillerchester",
+								"state": "Rhode Island",
+								"country": "BR"
 							},
-							"shareOfTotalRevenueInPercent": 32.3499
+							"shareOfTotalRevenueInPercent": 98.0226
+						},
+						{
+							"nameOfProductionSite": "Flatley Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Well Lane 55601",
+								"postalCode": null,
+								"city": "Redwood City",
+								"state": null,
+								"country": "AT"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "S Central Avenue 66712",
+								"postalCode": "97487-3436",
+								"city": "Lake Olen",
+								"state": "Delaware",
+								"country": "KW"
+							},
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Oriental Cotton Pizza",
-							"shareOfTotalRevenueInPercent": 23.0216
-						},
-						{
-							"name": "Bespoke Cotton Car",
-							"shareOfTotalRevenueInPercent": 4.6462
-						},
-						{
-							"name": "Recycled Steel Fish",
+							"name": "Handmade Bronze Towels",
 							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Licensed Frozen Car",
+							"name": "Modern Wooden Pizza",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Sleek Bronze Chair",
 							"shareOfTotalRevenueInPercent": null
 						}
 					]
@@ -331,20 +335,23 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 216,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"powerConsumptionInMWh": 1736,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 46918793,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 29201913,
 					"naturalHazardsCovered": [
 						"Avalanche",
-						"Flooding"
+						"Hail",
+						"Flooding",
+						"Snow",
+						"EarthQuake"
 					]
 				}
 			}

@@ -14,14 +14,14 @@ import org.dataland.frameworktoolbox.utils.capitalizeEn
  * @param labelBadgeColor the color of the badge in which the label is contained
  */
 data class SectionUploadConfigBuilder(
-        override val parentSection: SectionUploadConfigBuilder?,
-        val name: String,
-        var label: String,
-        var expandOnPageLoad: Boolean,
-        var shouldDisplay: FrameworkBooleanLambda,
-        var children: MutableList<UploadConfigElement> = mutableListOf(),
-        var labelBadgeColor: LabelBadgeColor? = null,
-        val subcategory: Boolean,
+    override val parentSection: SectionUploadConfigBuilder?,
+    val name: String,
+    var label: String,
+    var expandOnPageLoad: Boolean,
+    var shouldDisplay: FrameworkBooleanLambda,
+    var children: MutableList<UploadConfigElement> = mutableListOf(),
+    var labelBadgeColor: LabelBadgeColor? = null,
+    val subcategory: Boolean,
 ) : UploadConfigElement {
 
     override val imports: Set<String>

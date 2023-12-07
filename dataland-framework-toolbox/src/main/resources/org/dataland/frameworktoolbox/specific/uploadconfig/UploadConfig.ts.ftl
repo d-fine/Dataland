@@ -5,25 +5,33 @@ export const ${frameworkIdentifier}DataModel = [<@mldtconfig uploadConfig/>];
 
 <#macro mldtconfig items>
     <@indent>
+        <#list items as element><#if element.isSection()><@mldtsection element/></#if>
 <#--        <#list items as element><#if element.isCell()><@mldtcell element/></#if><#if element.isSubcategory()><@mldtisSubcategory element/></#if><#if element.isSection()><@mldtsection element/></#if>-->
-        <#list items as element><#if element.isSubcategory()><@mldtisSubcategory element/></#if><#if element.isSection()><@mldtsection element/></#if>
         </#list>
     </@indent>
 </#macro>
 
 <#macro mldtconfig2 items>
     <@indent>
-        <#list items as element><#if element.isCell()><@mldtcell element/></#if>
+                <#list items as element><#if element.isSubcategory()><@mldtisSubcategory element/></#if>
         </#list>
     </@indent>
 </#macro>
+
+<#macro mldtconfig3 items>
+    <@indent>
+                <#list items as element><#if element.isCell()><@mldtcell element/></#if>
+        </#list>
+    </@indent>
+</#macro>
+
 
 <#macro mldtsection sectionConfig>{
     name: "${sectionConfig.name?js_string}",
     label: "${sectionConfig.label?js_string}",
     color: " ", <#-- not necessary at this point -->
     showIf: <@frameworklambda sectionConfig.shouldDisplay/>,
-    subcategories: [<@mldtconfig sectionConfig.children/>],
+    subcategories: [<@mldtconfig2 sectionConfig.children/>],
     },
 </#macro>
 
@@ -31,7 +39,7 @@ export const ${frameworkIdentifier}DataModel = [<@mldtconfig uploadConfig/>];
     name: "${subcategoryConfig.name?js_string}",
     label: "${subcategoryConfig.label?js_string}",
     fields: [
-    <#if subcategoryConfig.children??> <@mldtconfig2 subcategoryConfig.children/> </#if>
+    <#if subcategoryConfig.children??> <@mldtconfig3 subcategoryConfig.children/> </#if>
     ],
     },
 </#macro>
