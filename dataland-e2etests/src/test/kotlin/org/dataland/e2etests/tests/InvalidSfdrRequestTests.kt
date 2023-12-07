@@ -10,8 +10,8 @@ import org.junit.jupiter.api.assertThrows
 
 class InvalidSfdrRequestTests {
     private val apiAccessor = ApiAccessor()
-    val errorCode400 = "Client error : 400"
-    val errorMessage = "Input validation failed."
+    private val errorCode400 = "Client error : 400"
+    private val errorMessage = "Input validation failed."
 
     fun getErrorFromApi(companyName: String): ClientException {
         val oneInvalidSfdrDataset = apiAccessor.testDataProviderForSfdrData
@@ -60,7 +60,6 @@ class InvalidSfdrRequestTests {
         )
     }
 
-    @Disabled // enable once the @field:NotBlank annotation is back in the document reference file
     @Test
     fun `post a company with invalid percentage value`() {
         val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-invalid-percentage-input")
@@ -87,5 +86,12 @@ class InvalidSfdrRequestTests {
             (errorForInvalidInput.response as ClientError<*>).body!!.toString()
                 .contains("reportedConvictionsOfBriberyAndCorruption"),
         )
+    }
+
+    @Disabled // enable once the @field:NotBlank annotation is back in the document reference file
+    @Test
+    fun `post a company with empty string document reference`() {
+        val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-empty-string-document-reference")
+        Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
     }
 }

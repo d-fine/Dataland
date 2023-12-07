@@ -122,11 +122,10 @@ class KnownErrorControllerAdvice(
     }
 
     /**
-     * Handles HttpRequestMethodNotSupportedException errors. These occur whenever someone calls an endpoint
-     * with a non-implemented HTTP-Method
+     * Handles Invalid Input exceptions. These occur whenever the validators reject input in the sfdr forms
      */
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleMethodNotSupportException(ex: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
+    fun handleInvalidInputException(ex: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
         val errors = (ex.bindingResult.fieldErrors as List<FieldError>)
         val stringBuilder = StringBuilder()
         stringBuilder.append("Input validation failed. ")

@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class ExtendedNumberDataPointValidationTest {
-    val numberDataPointValidator = DataPointMinimumValidator()
-    val dataPointWrongType = ExtendedDataPoint<Double>(12.1, QualityOptions.Reported)
+    private val numberDataPointValidator = DataPointMinimumValidator()
+    private val dataPointWrongType = ExtendedDataPoint<Double>(12.1, QualityOptions.Reported)
 
     @Test
     fun testIfExceptionIsThrownForWrongDatatype() {
