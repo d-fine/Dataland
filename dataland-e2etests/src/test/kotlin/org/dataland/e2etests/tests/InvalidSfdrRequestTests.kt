@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -88,7 +87,6 @@ class InvalidSfdrRequestTests {
         )
     }
 
-    @Disabled // enable once the @field:NotBlank annotation is back in the document reference file
     @Test
     fun `post a company with empty string document reference`() {
         val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-empty-string-document-reference")
