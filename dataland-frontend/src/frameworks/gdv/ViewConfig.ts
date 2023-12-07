@@ -3,8 +3,8 @@ import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
+import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 export const GdvViewConfiguration: MLDTConfig<GdvData> = [
   {
@@ -153,6 +153,54 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
               : "",
           );
         },
+      },
+      {
+        type: "cell",
+        label: "ISO 14001",
+        explanation: "Haben Sie eine ISO 14001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.allgemein?.iso14001?.value),
+            "ISO 14001",
+            dataset.allgemein?.iso14001,
+          ),
+      },
+      {
+        type: "cell",
+        label: "ISO 45001",
+        explanation: "Haben Sie eine ISO 45001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.allgemein?.iso45001?.value),
+            "ISO 45001",
+            dataset.allgemein?.iso45001,
+          ),
+      },
+      {
+        type: "cell",
+        label: "ISO 27001",
+        explanation: "Haben Sie eine ISO 27001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.allgemein?.iso27001?.value),
+            "ISO 27001",
+            dataset.allgemein?.iso27001,
+          ),
+      },
+      {
+        type: "cell",
+        label: "ISO 50001",
+        explanation: "Haben Sie eine ISO 50001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatYesNoValueForDatatable(dataset.allgemein?.iso50001?.value),
+            "ISO 50001",
+            dataset.allgemein?.iso50001,
+          ),
       },
       {
         type: "cell",
@@ -977,6 +1025,47 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           dataset.unternehmensfuehrungGovernance?.einbeziehungVonStakeholdern == "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
           formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.mechanismenZurAusrichtungAufStakeholder),
+      },
+      {
+        type: "cell",
+        label: "Veröffentlichte Unternehmensrichtlinien",
+        explanation:
+          "Welche Richtlinien sind im Unternehmen veröffentlicht? Bitte nennen Sie weitere wichtige Richtlinien, falls diese nicht angegeben sind.",
+        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+          const mappings = {
+            AntiKorruption: "Anti-Korruption",
+            Verhaltenskodex: "Verhaltenskodex",
+            Interessenkonflikte: "Interessenkonflikte",
+            Datenschutz: "Datenschutz",
+            DiversitaetAndInklusion: "Diversität & Inklusion",
+            FaireBehandlungVonKunden: "Faire Behandlung von Kunden",
+            Zwangsarbeit: "Zwangsarbeit",
+            GesundheitUndSicherheit: "Gesundheit und Sicherheit",
+            MgtVonUmweltgefahren: "Mgt von Umweltgefahren",
+            VerantwortungsvollesMarketing: "Verantwortungsvolles Marketing",
+            Whistleblowing: "Whistleblowing",
+            Other: "other",
+          };
+          /**
+           * Maps the technical name of a select option to the respective original name
+           * @param technicalName of a select option
+           * @param mappingObject that contains the mappings
+           * @returns original name that matches the technical name
+           */
+          function getOriginalNameFromTechnicalName<T extends string>(
+            technicalName: T,
+            mappingObject: { [key in T]: string },
+          ): string {
+            return mappingObject[technicalName];
+          }
+          return formatListOfStringsForDatatable(
+            dataset.unternehmensfuehrungGovernance?.veroeffentlichteUnternehmensrichtlinien?.map((it) =>
+              getOriginalNameFromTechnicalName(it, mappings),
+            ),
+            "Ver\u00F6ffentlichte Unternehmensrichtlinien",
+          );
+        },
       },
       {
         type: "cell",

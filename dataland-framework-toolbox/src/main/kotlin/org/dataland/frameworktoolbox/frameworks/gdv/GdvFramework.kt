@@ -31,46 +31,45 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             viewPageExpandOnPageLoad = true
         }
 
-        val componentGroupTaxonomie: ComponentGroup? = framework.root
+        framework.root
             .getOrNull<ComponentGroup>("umwelt")
             ?.getOrNull<ComponentGroup>("taxonomie")
-
-        componentGroupTaxonomie?.edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
-            if (options.size == 1 && options.single().label == "EuTaxonomyActivityOptions") {
-                this.fixtureGeneratorGenerator = { sectionConfigBuilder: FixtureSectionBuilder ->
-                    sectionConfigBuilder.addAtomicExpression(
-                        identifier,
-                        documentSupport.getFixtureExpression(
-                            fixtureExpression = "pickSubsetOfElements(Object.values(Activity))",
-                            nullableFixtureExpression =
-                            "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
-                            nullable = isNullable,
-                        ),
-                        imports = setOf(
-                            "import { Activity } from \"@clients/backend\";",
-                        ),
-                    )
-                }
-                this.viewConfigGenerator = { sectionConfigBuilder ->
-                    sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-                        this,
-                        FrameworkDisplayValueLambda(
-                            "formatListOfStringsForDatatable(" +
-                                "${getTypescriptFieldAccessor()}?.map(it => {\n" +
-                                "                  return activityApiNameToHumanizedName(it)}), " +
-                                "'${escapeEcmaScript(label)}'" +
-                                ")",
-                            setOf(
-                                "import {activityApiNameToHumanizedName} from " +
-                                    "\"@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName\";",
-                                "import { formatListOfStringsForDatatable } from " +
-                                    "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
+            ?.edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
+                if (options.size == 1 && options.single().label == "EuTaxonomyActivityOptions") {
+                    this.fixtureGeneratorGenerator = { sectionConfigBuilder: FixtureSectionBuilder ->
+                        sectionConfigBuilder.addAtomicExpression(
+                            identifier,
+                            documentSupport.getFixtureExpression(
+                                fixtureExpression = "pickSubsetOfElements(Object.values(Activity))",
+                                nullableFixtureExpression =
+                                "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
+                                nullable = isNullable,
                             ),
-                        ),
-                    )
+                            imports = setOf(
+                                "import { Activity } from \"@clients/backend\";",
+                            ),
+                        )
+                    }
+                    this.viewConfigGenerator = { sectionConfigBuilder ->
+                        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+                            this,
+                            FrameworkDisplayValueLambda(
+                                "formatListOfStringsForDatatable(" +
+                                    "${getTypescriptFieldAccessor()}?.map(it => {\n" +
+                                    "                  return activityApiNameToHumanizedName(it)}), " +
+                                    "'${escapeEcmaScript(label)}'" +
+                                    ")",
+                                setOf(
+                                    "import {activityApiNameToHumanizedName} from " +
+                                        "\"@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName\";",
+                                    "import { formatListOfStringsForDatatable } from " +
+                                        "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
+                                ),
+                            ),
+                        )
+                    }
                 }
             }
-        }
 
         // TODO: Remove this. this is just a POC for showing how to create a GdvYearlyDecimalTimeseriesDataComponent.
 //        framework.root.edit<ComponentGroup>("allgemein") {

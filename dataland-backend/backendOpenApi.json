@@ -7904,6 +7904,38 @@
               }
             ]
           },
+          "iso14001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso45001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso27001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso50001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
           "mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze": {
             "nullable": true,
             "allOf": [
@@ -8501,6 +8533,13 @@
           "mechanismenZurAusrichtungAufStakeholder": {
             "type": "string",
             "nullable": true
+          },
+          "veroeffentlichteUnternehmensrichtlinien": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
           },
           "esgKriterienUndUeberwachungDerLieferanten": {
             "nullable": true,
