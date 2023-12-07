@@ -9,7 +9,7 @@
       "description": "General information about the data set.",
       "properties": {
         "fiscalYearEnd": {
-          "$ref": "http://localhost:8081/simplifiedFramework/fiscalYearEnd.json"
+          "$ref": "http://localhost:8081/simplifiedFramework/datapoints/fiscalYearEnd.json"
         }
       },
       "required": ["fiscalYearEnd"]
@@ -19,7 +19,7 @@
       "description": "Questions regarding the governance.",
       "properties": {
         "underAgeWorker": {
-          "$ref": "http://localhost:8081/simplifiedFramework/underAgeWorker.json"
+          "$ref": "http://localhost:8081/simplifiedFramework/datapoints/underAgeWorker.json"
         }
       }
     },
@@ -28,7 +28,7 @@
       "description": "Questions regarding the environment.",
       "properties": {
         "scopeOneEmissions": {
-          "$ref": "http://localhost:8081/simplifiedFramework/scopeOneEmissions.json"
+          "$ref": "http://localhost:8081/simplifiedFramework/datapoints/scopeOneEmissions.json"
         }
       }
     }

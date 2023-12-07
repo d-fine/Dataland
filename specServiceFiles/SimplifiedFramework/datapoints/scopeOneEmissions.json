@@ -1,10 +1,10 @@
 {
-  "$id": "https://dataland.com/SimplifiedFramework/underAgeWorker.json",
+  "$id": "https://dataland.com/SimplifiedFramework/datapoints/scopeOneEmission.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "The end of the fiscal year field",
   "description": "How many tons of CO2 equivalent were emitted in the reported year?",
   "type": "object",
-  "$ref": "http://localhost:8081/simplifiedFramework/numericDatapoint.json",
+  "$ref": "http://localhost:8081/simplifiedFramework/components/numericDatapoint.json",
   "$uniqueIdentifier": "simple_4",
   "unevaluatedProperties": false
 }

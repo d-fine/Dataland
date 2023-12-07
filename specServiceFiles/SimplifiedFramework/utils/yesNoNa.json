@@ -1,5 +1,5 @@
 {
-  "$id": "https://dataland.com/SimplifiedFramework/yesNoNa.json",
+  "$id": "https://dataland.com/SimplifiedFramework/utils/yesNoNa.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "YesNoNa field",
   "description": "The possible values of a Yes/No/NA field.",

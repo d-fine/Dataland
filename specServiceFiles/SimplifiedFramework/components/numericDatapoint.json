@@ -1,5 +1,5 @@
 {
-  "$id": "https://dataland.com/SimplifiedFramework/yesNoNaDatapoint.json",
+  "$id": "https://dataland.com/SimplifiedFramework/components/yesNoNaDatapoint.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Numeric Datapoint field",
   "description": "The possible values of a numeric Datapoint field.",
@@ -11,7 +11,7 @@
       "type": "number"
     },
     "documentReference": {
-      "$ref": "http://localhost:8081/SimplifiedFramework/documentReference.json"
+      "$ref": "http://localhost:8081/SimplifiedFramework/utils/documentReference.json"
     }
 
   },

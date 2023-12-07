@@ -1,5 +1,5 @@
 {
-  "$id": "https://dataland.com/SimplifiedFramework/fiscalYearEnd.json",
+  "$id": "https://dataland.com/SimplifiedFramework/datapoints/fiscalYearEnd.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "The end of the fiscal year field",
   "description": "The date of the end of the fiscal year in format YYYY-MM-DD.",

@@ -1,5 +1,5 @@
 {
-  "$id": "https://dataland.com/SimplifiedFramework/yesNoNaDatapoint.json",
+  "$id": "https://dataland.com/SimplifiedFramework/components/yesNoNaDatapoint.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "YesNoNa Datapoint field",
   "description": "The possible values of a Yes/No/NA Datapoint field.",
@@ -7,10 +7,10 @@
   "$uniqueIdentifier": "simple_7",
   "properties": {
     "value": {
-      "$ref": "http://localhost:8081/SimplifiedFramework/yesNoNa.json"
+      "$ref": "http://localhost:8081/SimplifiedFramework/utils/yesNoNa.json"
     },
     "documentReference": {
-      "$ref": "http://localhost:8081/SimplifiedFramework/documentReference.json"
+      "$ref": "http://localhost:8081/SimplifiedFramework/utils/documentReference.json"
     }
 
   },

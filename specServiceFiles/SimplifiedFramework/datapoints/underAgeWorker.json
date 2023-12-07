@@ -1,10 +1,10 @@
 {
-  "$id": "https://dataland.com/SimplifiedFramework/underAgeWorker.json",
+  "$id": "https://dataland.com/SimplifiedFramework/datapoints/underAgeWorker.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "The end of the fiscal year field",
   "description": "Does the company employ underage employees?",
   "type": "object",
-  "$ref": "http://localhost:8081/simplifiedFramework/yesNoNaDatapoint.json",
+  "$ref": "http://localhost:8081/simplifiedFramework/components/yesNoNaDatapoint.json",
   "$uniqueIdentifier": "simple_5",
   "unevaluatedProperties": false
 }

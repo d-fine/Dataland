@@ -1,5 +1,5 @@
 {
-  "$id": "https://dataland.com/SimplifiedFramework/documentReference.json",
+  "$id": "https://dataland.com/SimplifiedFramework/utils/documentReference.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Document Reference",
   "description": "The structure and content of a document reference.",
