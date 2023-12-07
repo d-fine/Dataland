@@ -3,7 +3,7 @@ import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { DataTypeEnum } from "@clients/backend";
-import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
+import { UploadDocuments } from "@sharedUtils/components/UploadDocuments";
 
 const createSfdrDataset = {
   fillRequiredFields(): void {
@@ -19,6 +19,18 @@ const createSfdrDataset = {
   },
 };
 
+const createP2pDataset = {
+  fillRequiredFields(): void {
+    createSfdrDataset.fillDateFieldWithFutureDate("dataDate");
+    this.selectSector("Automotive");
+  },
+  selectSector(sector: string): void {
+    cy.get('div[data-test="sectors"] div.p-multiselect').should("exist").click();
+    cy.contains("span", sector).should("exist").click();
+    cy.get('div[data-test="sectors"] div.p-multiselect').should("exist").click();
+  },
+};
+
 describe("Component tests for the CreateSfdrDataset that test report uploading", () => {
   const hashForFileWithOneByteSize = "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d";
   const hashForFileWithTwoBytesSize = "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7";
@@ -30,7 +42,7 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
    * @param contentSize number of bytes in dummy file
    */
   function uploadAndReferenceSfdrReferencedReport(fileName: string, contentSize: number): void {
-    uploadDocuments.selectDummyFile(fileName, contentSize, "referencedReports");
+    new UploadDocuments("referencedReports").selectDummyFile(fileName, contentSize);
     cy.get("div[data-test='scope1GhgEmissionsInTonnes'] select[name='fileName']").select(fileName);
   }
 
@@ -42,7 +54,7 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
    */
   function uploadFieldSpecificDocuments(fileName: string, contentSize: number, fieldName: string): void {
     cy.get(`[data-test=${fieldName}] input[type="radio"][name="value"][value="Yes"]`).check();
-    uploadDocuments.selectDummyFile(fileName, contentSize, fieldName);
+    new UploadDocuments(fieldName).selectDummyFile(fileName, contentSize);
   }
 
   /**
@@ -50,7 +62,7 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
    * @param hash hash of the report to be uploaded
    */
   function interceptEachUpload(hash: string): void {
-    console.log(hash);
+    console.log(hash, "XAA");
     cy.intercept("HEAD", "**/documents/" + hash, (request) => {
       request.reply(200, {});
     }).as(`documentExists-${hash}`);
@@ -142,20 +154,14 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
   });
 
   it("Check if the document uploads in P2p upload page work", () => {
-    console.log(hashForFileWithOneByteSize);
-    const setOfHashesThatShouldBeCheckedForExistence = new Set([hashForFileWithTwoBytesSize]);
+    console.log(hashForFileWithOneByteSize, "EXPECTED");
+    const setOfHashesThatShouldBeCheckedForExistence = new Set([hashForFileWithOneByteSize]);
     setOfHashesThatShouldBeCheckedForExistence.forEach((hash) => {
       interceptEachUpload(hash);
     });
-    mountPluginAndInterceptUploads("sfdr");
-    createSfdrDataset.fillRequiredFields();
-    uploadFieldSpecificDocuments("first", 1, "sustainableAgriculturePolicy");
-    cy.wait(100);
-    cy.get('div[data-test="sustainableAgriculturePolicy"] button .pi-times').click();
-    uploadFieldSpecificDocuments("second", 2, "sustainableAgriculturePolicy");
-    uploadFieldSpecificDocuments("fourth", 3, "environmentalPolicy");
-    cy.wait(100);
-    cy.get('div[data-test="environmentalPolicy"] button .pi-times').click();
+    mountPluginAndInterceptUploads("p2p");
+    createP2pDataset.fillRequiredFields();
+    uploadFieldSpecificDocuments("first", 1, "upstreamSupplierProcurementPolicy");
     cy.wait(100);
     submitButton.buttonAppearsEnabled();
     submitButton.clickButton();
