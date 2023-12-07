@@ -1,5 +1,6 @@
 package org.dataland.datalandbatchmanager.service
 
+import org.apache.commons.io.FileUtils
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.slf4j.LoggerFactory
@@ -15,26 +16,28 @@ import java.time.Instant
 import java.util.*
 import java.util.concurrent.ForkJoinPool
 import java.util.stream.StreamSupport
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
+import kotlin.time.Duration
+import kotlin.time.measureTime
 
 /**
  * Class to execute scheduled tasks, like the import of the GLEIF golden copy files
  * @param gleifApiAccessor downloads the golden copy files from GLEIF
  * @param gleifParser reads in the csv file from GLEIF and creates GleifCompanyInformation objects
- * @param keycloakTokenManager manages the access tokens for authenticating against the backend API
  */
+@Suppress("LongParameterList")
 @Component
 class GleifGoldenCopyIngestor(
     @Autowired private val gleifApiAccessor: GleifApiAccessor,
     @Autowired private val gleifParser: GleifCsvParser,
     @Autowired private val companyUploader: CompanyUploader,
     @Autowired private val actuatorApi: ActuatorApi,
+    @Autowired private val isinDeltaBuilder: IsinDeltaBuilder,
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.force:false}")
     private val allCompaniesForceIngest: Boolean,
-
     @Value("\${dataland.dataland-batch-managet.get-all-gleif-companies.flag-file:#{null}}")
     private val allCompaniesIngestFlagFilePath: String?,
+    @Value("\${dataland.dataland-batch-manager.isin-mapping-file}")
+    private val savedIsinMappingFile: File,
 ) {
     companion object {
         const val MS_PER_S = 1000L
@@ -63,9 +66,18 @@ class GleifGoldenCopyIngestor(
                 }
             }
 
+            if (savedIsinMappingFile.exists() && (!savedIsinMappingFile.delete())) {
+                throw FileSystemException(
+                    file = savedIsinMappingFile,
+                    reason = "Unable to delete ISIN mapping file $savedIsinMappingFile",
+                )
+            }
+
+            waitForBackend()
             logger.info("Retrieving all company data available via GLEIF.")
-            val tempFile = File.createTempFile("gleif_golden_copy", ".csv")
-            processFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
+            val tempFile = File.createTempFile("gleif_golden_copy", ".zip")
+            processGleifFile(tempFile, gleifApiAccessor::getFullGoldenCopy)
+            processIsinMappingFile()
         } else {
             logger.info("Flag file not present & no force update variable set => Not performing any download")
         }
@@ -73,25 +85,60 @@ class GleifGoldenCopyIngestor(
 
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
     @Scheduled(cron = "0 0 3 * * SUN")
-    private fun processDeltaFile() {
-        logger.info("Starting update cycle for latest delta file.")
-        val tempFile = File.createTempFile("gleif_update_delta", ".csv")
-        processFile(tempFile, gleifApiAccessor::getLastMonthGoldenCopyDelta)
+    private fun processUpdates() {
+        waitForBackend()
+        prepareGleifDeltaFile()
+        processIsinMappingFile()
+    }
+
+    /**
+     * Starting point for GLEIF delta file handling
+     */
+    fun prepareGleifDeltaFile() {
+        logger.info("Starting Gleif company update cycle for latest delta file.")
+        val tempFile = File.createTempFile("gleif_update_delta", ".zip")
+        processGleifFile(tempFile, gleifApiAccessor::getLastMonthGoldenCopyDelta)
     }
 
     @Synchronized
-    private fun processFile(csvFile: File, downloadFile: (file: File) -> Unit) {
-        waitForBackend()
-        val start = System.nanoTime()
-        try {
-            downloadFile(csvFile)
-            uploadCompanies(csvFile)
-        } finally {
-            if (!csvFile.delete()) {
-                logger.error("Unable to delete temporary file $csvFile")
+    private fun processGleifFile(zipFile: File, downloadFile: (file: File) -> Unit) {
+        val duration = measureTime {
+            try {
+                downloadFile(zipFile)
+                uploadCompanies(zipFile)
+            } finally {
+                if (!zipFile.delete()) {
+                    logger.error("Unable to delete temporary file $zipFile")
+                }
             }
         }
-        logger.info("Finished processing of file $csvFile in ${getExecutionTime(start)}.")
+        logger.info("Finished processing of file $zipFile in ${formatExecutionTime(duration)}.")
+    }
+
+    /**
+     * Starting point for ISIN mapping file handling
+     */
+    @Synchronized
+    private fun processIsinMappingFile() {
+        logger.info("Starting LEI-ISIN mapping update cycle for latest file.")
+        val newMappingFile = File.createTempFile("gleif_mapping_update", ".csv")
+        val duration = measureTime {
+            gleifApiAccessor.getFullIsinMappingFile(newMappingFile)
+            val deltaMapping: Map<String, Set<String>> =
+                if (!savedIsinMappingFile.exists() || savedIsinMappingFile.length() == 0L) {
+                    isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, null)
+                } else {
+                    isinDeltaBuilder.createDeltaOfMappingFile(newMappingFile, savedIsinMappingFile)
+                }
+            val newPersistentFile = File("${savedIsinMappingFile.parent}/newIsinMapping.csv")
+            FileUtils.copyFile(newMappingFile, newPersistentFile)
+            if (!newMappingFile.delete()) {
+                logger.error("failed to delete temporary mapping file $newMappingFile")
+            }
+            companyUploader.updateIsins(deltaMapping)
+            replaceOldMappingFile(File("${savedIsinMappingFile.parent}/newIsinMapping.csv"))
+        }
+        logger.info("Finished processing of file $newMappingFile in ${formatExecutionTime(duration)}.")
     }
 
     private fun waitForBackend() {
@@ -110,8 +157,8 @@ class GleifGoldenCopyIngestor(
         }
     }
 
-    private fun uploadCompanies(csvFile: File) {
-        val gleifDataStream = gleifParser.getCsvStreamFromZip(csvFile)
+    private fun uploadCompanies(zipFile: File) {
+        val gleifDataStream = gleifParser.getCsvStreamFromZip(zipFile)
         val gleifIterator = gleifParser.readGleifDataFromBufferedReader(gleifDataStream)
         val gleifIterable = Iterable<GleifCompanyInformation> { gleifIterator }
 
@@ -126,13 +173,27 @@ class GleifGoldenCopyIngestor(
         }
     }
 
-    private fun getExecutionTime(startTime: Long): String {
-        return (System.nanoTime() - startTime)
-            .toDuration(DurationUnit.NANOSECONDS)
+    private fun formatExecutionTime(duration: Duration): String {
+        return duration
             .toComponents { hours, minutes, seconds, _ ->
                 String.format(
                     Locale.getDefault(), "%02dh %02dm %02ds", hours, minutes, seconds,
                 )
             }
+    }
+
+    /**
+     * Replaces the locally saved old mapping file with the recently downloaded one after creating delta is done
+     * @param newMappingFile latest version of the LEI-ISIN mapping file
+     */
+    fun replaceOldMappingFile(newMappingFile: File) {
+        try {
+            newMappingFile.copyTo(savedIsinMappingFile, true)
+            if (!newMappingFile.delete()) {
+                logger.error("failed to delete file $newMappingFile")
+            }
+        } catch (e: FileSystemException) {
+            logger.error("Error while replacing the old mapping file: ${e.message}")
+        }
     }
 }
