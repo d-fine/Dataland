@@ -5,6 +5,6 @@
   "description": "The favorite car brand of the CEO.",
   "type": "string",
   "enum": ["BMW", "VW", "Mercedes"],
-  "$uniqueIdentifier": "8",
+  "$uniqueIdentifier": "design_1",
   "additionalProperties": false
 }
