@@ -287,8 +287,9 @@ export default defineComponent({
         const sfdrDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.Sfdr);
-        await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData);
-        this.$emit("datasetCreated");
+        console.log("companyAssociatedSfdrData", this.companyAssociatedSfdrData);
+        // await sfdrDataControllerApi.postFrameworkData(this.companyAssociatedSfdrData);
+        // this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;

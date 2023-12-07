@@ -1,12 +1,8 @@
 <template>
   <div class="mb-3 p-0 -ml-2" :class="dataPointIsAvailable ? 'bordered-box' : ''">
     <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="isDataPointToggleable">
-      <InputSwitch
-        data-test="dataPointToggleButton"
-        inputId="dataPointIsAvailableSwitch"
-        @click="dataPointAvailableToggle"
-        v-model="dataPointIsAvailable"
-      />
+      <RadioButtonsFormElement @update:currentValue="emitUpdateCurrentValue" :options="HumanizedYesNo" />
+      <p>------->{{ dataPointIsAvailable }}</p>
       <UploadFormHeader :label="label" :description="description" :is-required="required" />
     </div>
 
@@ -35,15 +31,17 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
 import InputSwitch from "primevue/inputswitch";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { type BaseDataPoint } from "@/utils/DataPoint";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
+import { HumanizedYesNo } from "@/utils/YesNoNa";
 
 export default defineComponent({
   name: "BaseDataPointFormField",
-  components: { UploadFormHeader, UploadDocumentsForm, InputSwitch },
+  components: { UploadFormHeader, UploadDocumentsForm, InputSwitch, RadioButtonsFormElement },
   inheritAttrs: false,
   props: {
     ...BaseFormFieldProps,
@@ -73,6 +71,9 @@ export default defineComponent({
   computed: {
     showDataPointFields(): boolean {
       return this.dataPointIsAvailable;
+    },
+    HumanizedYesNo() {
+      return HumanizedYesNo;
     },
   },
   emits: ["reportsUpdated"],
@@ -112,6 +113,19 @@ export default defineComponent({
     updateFileUploadFiles() {
       if (this.documentName !== "" && this.referencedDocument === undefined) {
         this.fileNamesForPrefill = [this.documentName];
+      }
+    },
+    /**
+     * Emits an event when the currentValue has been changed
+     * @param currentValue current value
+     */
+    emitUpdateCurrentValue(currentValue: string) {
+      if (currentValue && currentValue !== "") {
+        console.log("!!!!!!!!!!currentValue", currentValue);
+        this.dataPointIsAvailable = true;
+      } else {
+        console.log("---------currentValue", currentValue);
+        this.dataPointIsAvailable = false;
       }
     },
   },

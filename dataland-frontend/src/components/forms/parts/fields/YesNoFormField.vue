@@ -6,7 +6,6 @@
       :validation="validation"
       :validation-label="validationLabel ?? label"
       :options="HumanizedYesNo"
-      :data-test="radioButtonsDataTest"
       @update:currentValue="emitUpdateCurrentValue"
     />
   </div>
