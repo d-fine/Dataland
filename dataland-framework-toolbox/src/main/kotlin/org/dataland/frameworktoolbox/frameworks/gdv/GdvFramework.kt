@@ -71,18 +71,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 }
             }
         }
-
-        // TODO: Remove this. this is just a POC for showing how to create a GdvYearlyDecimalTimeseriesDataComponent.
-//        framework.root.edit<ComponentGroup>("allgemein") {
-//            create<GdvYearlyDecimalTimeseriesDataComponent>("testingData") {
-//                label = "Data, for Testing!"
-//                decimalRows = mutableListOf(
-//                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope1", "Scope 1", "tCO2-Äquiv."),
-//                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope2", "Scope 2", "tCO2-Äquiv."),
-//                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope3", "Scope 3", "tCO2-Äquiv."),
-//                )
-//            }
-//        }
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {

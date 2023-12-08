@@ -1,6 +1,6 @@
-<#--import { type Category } from "@/utils/GenericFrameworkTypes";-->
+import { type Category } from "@/utils/GenericFrameworkTypes";
 
-export const ${frameworkIdentifier}DataModel = [<@loopCategories uploadConfig/>];
+export const ${frameworkIdentifier}DataModel : Category[] = [<@loopCategories uploadConfig/>];
 
 <#macro loopCategories items>
     <@indent>
@@ -49,12 +49,11 @@ export const ${frameworkIdentifier}DataModel = [<@loopCategories uploadConfig/>]
     <#if fieldConfig.options??>options: [
         <#list fieldConfig.options?sequence as entry>
             {
-                identifier: "${entry.identifier}",
                 label: "${entry.identifier}",
+                value: "${entry.identifier}",
             },
         </#list>
-        ],
-    </#if>
+        ],</#if>
     unit: "<#if fieldConfig.unit??>${fieldConfig.unit?js_string}</#if>",
     uploadComponentName: "${fieldConfig.uploadComponentName?js_string}",
     required: <#if fieldConfig.required??>true<#else>false</#if>,

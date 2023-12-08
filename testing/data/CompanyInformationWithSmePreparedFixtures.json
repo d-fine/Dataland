@@ -2,54 +2,55 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Dinohaven",
-			"headquartersPostalCode": "06804",
-			"sector": "functionalities",
+			"headquarters": "South Giaview",
+			"headquartersPostalCode": "24526",
+			"sector": "deliverables",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"DreyN2Xl3cHW",
-					"fUHxwbWxNaJt"
+					"nqQ6SJ4Gg9eQ"
 				],
-				"PermId": [],
-				"Ticker": [],
+				"PermId": [
+					"i5gLXVRXn1"
+				],
+				"Ticker": [
+					"1B5OYit"
+				],
 				"Duns": [
-					"hTRkF833M"
+					"QAhBv7ocy"
 				],
-				"VatNumber": [
-					"NZbl908m2"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "BI",
+			"countryCode": "CH",
 			"companyAlternativeNames": [
-				"Blick - O'Keefe",
-				"Mante and Sons",
-				"Rath, Keebler and Beatty"
+				"Dibbert, Veum and Moen",
+				"Fritsch - Hartmann",
+				"Kessler, Rutherford and Hyatt",
+				"Smith Group"
 			],
-			"companyLegalForm": null,
-			"website": null,
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://giving-decency.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"20.20",
-						"35.30",
-						"42.22",
-						"90",
-						"93.29"
+						"01.21",
+						"25.11",
+						"56.1",
+						"64.3"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Eulalia Shore 626",
-						"postalCode": "22075-3636",
-						"city": "Zboncakville",
-						"state": "South Carolina",
-						"country": "ZW"
+						"streetAndHouseNumber": null,
+						"postalCode": "05884",
+						"city": "Milliestad",
+						"state": null,
+						"country": "CO"
 					},
-					"numberOfEmployees": 2495,
-					"fiscalYearStart": "2024-05-03"
+					"numberOfEmployees": 2396,
+					"fiscalYearStart": "2024-10-05"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -59,10 +60,23 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": []
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Tasty Frozen Chicken",
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"name": "Bespoke Frozen Towels",
+							"shareOfTotalRevenueInPercent": 3.8642
+						},
+						{
+							"name": "Modern Granite Towels",
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
 				}
 			},
 			"power": {
@@ -70,23 +84,24 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
+					"powerConsumptionInMWh": 1933,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"energyConsumptionHeatingAndHotWaterInMWh": 171,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 49602111,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 28513560,
 					"naturalHazardsCovered": [
-						"Flooding",
-						"Wind",
+						"Hail",
+						"Snow",
 						"EarthQuake",
 						"Avalanche",
-						"Hail"
+						"Flooding",
+						"Wind"
 					]
 				}
 			}
@@ -96,42 +111,44 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "St. Louis Park",
-			"headquartersPostalCode": "04698-0649",
-			"sector": null,
+			"headquarters": "Lake Daphne",
+			"headquartersPostalCode": "44225",
+			"sector": "convergence",
 			"identifiers": {
 				"Lei": [
-					"EmKvvL9coqX8VKclFRb1"
+					"R3d5qdQmlgWvUJ8jIYxs"
 				],
 				"Isin": [
-					"XqeilnbHaDSC",
-					"2OCgatLs6dx8"
+					"adV8Aa5w0PuD",
+					"nMgbZplD6TOw"
 				],
-				"PermId": [],
-				"Ticker": [
-					"sseVnmt"
+				"PermId": [
+					"G962d3OL4n"
 				],
+				"Ticker": [],
 				"Duns": [
-					"F7qGJWoes"
+					"aHFoNhrDI"
 				],
-				"VatNumber": [
-					"M7lPaE4uy"
-				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"QWBiABZUnLXa4cn"
+				]
 			},
-			"countryCode": "KR",
+			"countryCode": "PN",
 			"companyAlternativeNames": [
-				"Harvey - Hodkiewicz"
+				"Collier, Mills and Ratke",
+				"Koepp, Daugherty and West",
+				"Lowe - Parisian"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://cooked-plough.info/",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"47.59"
+						"47.41"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -140,109 +157,50 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 337,
-					"fiscalYearStart": "2024-07-04"
+					"numberOfEmployees": 5008,
+					"fiscalYearStart": "2024-09-18"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 8147063,
-					"operatingCostInEUR": 4446406,
-					"capitalAssetsInEUR": 35249165
+					"revenueInEUR": 76334391,
+					"operatingCostInEUR": 41553529,
+					"capitalAssetsInEUR": 24502934
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Connelly - Wiza",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "71225",
-								"city": "Port Delphiafort",
-								"state": "Idaho",
-								"country": "ZW"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "DuBuque, Schoen and Keeling",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Roosevelt Spring 9135",
-								"postalCode": null,
-								"city": "West Novellabury",
-								"state": "Arkansas",
-								"country": "BT"
-							},
-							"shareOfTotalRevenueInPercent": 0.3888
-						},
-						{
-							"nameOfProductionSite": "Upton LLC",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "24550",
-								"city": "East Giovanna",
-								"state": "California",
-								"country": "LI"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Luettgen - Gutmann",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Carroll Prairie 187",
-								"postalCode": "02566-2754",
-								"city": "Fort Johnny",
-								"state": "Vermont",
-								"country": "GW"
-							},
-							"shareOfTotalRevenueInPercent": 40.6152
-						}
-					]
+					"listOfProductionSites": []
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Rustic Rubber Chips",
-							"shareOfTotalRevenueInPercent": 50.0368
+							"name": "Ergonomic Steel Car",
+							"shareOfTotalRevenueInPercent": 82.406
 						},
 						{
-							"name": "Licensed Steel Tuna",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Rustic Fresh Cheese",
-							"shareOfTotalRevenueInPercent": 49.0074
-						},
-						{
-							"name": "Licensed Soft Soap",
-							"shareOfTotalRevenueInPercent": 37.2825
-						},
-						{
-							"name": "Generic Steel Ball",
-							"shareOfTotalRevenueInPercent": 49.8863
+							"name": "Modern Concrete Shirt",
+							"shareOfTotalRevenueInPercent": 47.2784
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1650,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 5,
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 540,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 13229323,
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 22801945,
 					"naturalHazardsCovered": [
-						"Wind",
-						"EarthQuake",
-						"Avalanche"
+						"Flooding"
 					]
 				}
 			}
@@ -252,41 +210,42 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Daughertycester",
-			"headquartersPostalCode": "72360",
-			"sector": "eyeballs",
+			"headquarters": "West Nils",
+			"headquartersPostalCode": "35221",
+			"sector": "web services",
 			"identifiers": {
 				"Lei": [
-					"ZgUqKMuLs9UkeSt2VZJH"
+					"eIIX3ZNTvv0q0Pr7N5Dr"
 				],
 				"Isin": [
-					"mAc4r4lmFyKq",
-					"cRJsN9bcWdxa"
+					"l5ejN7PKGN0R"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"8NnAS9fV9"
+				"Ticker": [
+					"TNS9WrY"
 				],
+				"Duns": [
+					"KGiOPfBWd"
+				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KG",
+			"countryCode": "PM",
 			"companyAlternativeNames": [
-				"McLaughlin LLC",
-				"Murray - Parker",
-				"Parisian and Sons",
-				"Tromp, Veum and Kuvalis"
+				"Blick, Ritchie and Schamberger",
+				"Jacobs Inc",
+				"Okuneva, Donnelly and Simonis",
+				"Schiller Inc"
 			],
-			"companyLegalForm": null,
-			"website": null,
+			"companyLegalForm": "GmbH",
+			"website": "https://excitable-complex.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"58.1"
+						"14.20"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -295,68 +254,99 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 734,
-					"fiscalYearStart": "2024-01-08"
+					"numberOfEmployees": 6700,
+					"fiscalYearStart": "2024-05-03"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 64816172,
-					"operatingCostInEUR": 27582908,
-					"capitalAssetsInEUR": null
+					"revenueInEUR": 91558872,
+					"operatingCostInEUR": 39135766,
+					"capitalAssetsInEUR": 23192521
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Schmitt, Roob and Altenwerth",
+							"nameOfProductionSite": "Cremin Group",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Green Pine 9247",
-								"postalCode": "30313",
-								"city": "Lake Eribertoview",
-								"state": "Louisiana",
-								"country": "SA"
+								"streetAndHouseNumber": "Satterfield Crest 934",
+								"postalCode": "47052",
+								"city": "Bahringerborough",
+								"state": "New Hampshire",
+								"country": "PA"
 							},
-							"shareOfTotalRevenueInPercent": 58.8493
+							"shareOfTotalRevenueInPercent": 15.5497
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Lucile Shoals 54130",
+								"postalCode": "63715",
+								"city": "South Marianna",
+								"state": "West Virginia",
+								"country": "VC"
+							},
+							"shareOfTotalRevenueInPercent": 81.8601
+						},
+						{
+							"nameOfProductionSite": "Huels, Davis and Hahn",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Agnes View 6223",
+								"postalCode": "77310-9646",
+								"city": "East Madge",
+								"state": "Louisiana",
+								"country": "BM"
+							},
+							"shareOfTotalRevenueInPercent": 32.6953
+						},
+						{
+							"nameOfProductionSite": "Lemke, Langosh and Smitham",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Schumm Crossroad 8252",
+								"postalCode": "00757",
+								"city": "East Kayleeborough",
+								"state": null,
+								"country": "MF"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Heaney and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "89807-4759",
+								"city": "East Maciehaven",
+								"state": "Mississippi",
+								"country": "DJ"
+							},
+							"shareOfTotalRevenueInPercent": 6.3978
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Awesome Frozen Pants",
-							"shareOfTotalRevenueInPercent": 46.0288
-						},
-						{
-							"name": "Tasty Metal Chips",
-							"shareOfTotalRevenueInPercent": 98.7982
-						},
-						{
-							"name": "Awesome Metal Mouse",
-							"shareOfTotalRevenueInPercent": 41.995
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 4,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerConsumptionInMWh": 1842,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazards": 9333340,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 33709329,
 					"naturalHazardsCovered": [
+						"Avalanche",
 						"Hail",
-						"Flooding",
-						"Avalanche"
+						"Snow"
 					]
 				}
 			}
