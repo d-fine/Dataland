@@ -3,8 +3,8 @@ import { UploadReports } from "@sharedUtils/components/UploadReports";
 
 /**
  * Adds reports to the dataset via the Sfdr upload form for the given dataset
- * @param uploadReportsName
- * @param filename
+ * @param uploadReportsName the name of the vue component
+ * @param filename the file to be uploaded
  */
 export function selectSingleReportAndFillWithData(
   uploadReportsName: string = "referencedReports",
