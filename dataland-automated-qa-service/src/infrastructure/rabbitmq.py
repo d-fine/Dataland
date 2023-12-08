@@ -14,7 +14,6 @@ class RabbitMq:
     def tutorial_send(self):
         connection = pika.BlockingConnection(self.connection_parameters)
         channel = connection.channel()
-        channel.queue_declare(queue="hello")
         channel.basic_publish(
             exchange="dieter",
             routing_key="hello",
