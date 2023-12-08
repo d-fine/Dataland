@@ -4,8 +4,6 @@ import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOp
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
-import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda
-as FrameworkDisplayValueLambdaUpload
 
 /**
  * Add a cell to the section with configuration shared between components
@@ -29,11 +27,10 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
  * Add a cell to the section with configuration shared between components
  * and a component-specific value-getter
  */
-fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory( // todo to addField und anpassen
+fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
     uploadComponentName: String?,
     options: MutableSet<SelectionOption>?,
     component: ComponentBase,
-    valueGetter: FrameworkDisplayValueLambdaUpload,
 ) {
     addCell(
         label = component.label ?: throw IllegalStateException(
@@ -44,7 +41,6 @@ fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory( // todo to
         required = component.required,
         isNullable = component.isNullable,
         shouldDisplay = component.availableIfUpload.toFrameworkBooleanLambdaUpload(),
-        valueGetter = valueGetter,
         uploadComponentName = uploadComponentName,
         options = options,
     )

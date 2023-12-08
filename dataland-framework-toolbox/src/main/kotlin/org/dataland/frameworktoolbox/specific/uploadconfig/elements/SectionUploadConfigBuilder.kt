@@ -2,7 +2,6 @@ package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkBooleanLambda
-import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
 /**
@@ -13,6 +12,8 @@ import org.dataland.frameworktoolbox.utils.capitalizeEn
  * @param children the elements contained in this section
  * @param labelBadgeColor the color of the badge in which the label is contained
  */
+
+@Suppress("LongParameterList")
 data class SectionUploadConfigBuilder(
     override val parentSection: SectionUploadConfigBuilder?,
     val name: String,
@@ -23,9 +24,6 @@ data class SectionUploadConfigBuilder(
     var labelBadgeColor: LabelBadgeColor? = null,
     val subcategory: Boolean,
 ) : UploadConfigElement {
-
-    override val imports: Set<String>
-        get() = children.foldRight(setOf()) { it, acc -> acc + it.imports }
 
     /**
      * Adds a new subsection to this section
@@ -57,7 +55,6 @@ data class SectionUploadConfigBuilder(
         label: String,
         explanation: String?,
         shouldDisplay: FrameworkBooleanLambda,
-        valueGetter: FrameworkDisplayValueLambda,
         unit: String?,
         isNullable: Boolean,
         required: Boolean?,
@@ -70,7 +67,6 @@ data class SectionUploadConfigBuilder(
             name = camelCaseSify(label),
             explanation = explanation,
             shouldDisplay = shouldDisplay,
-            valueGetter = valueGetter,
             unit = unit,
             isNullable = isNullable,
             required = required,
@@ -91,4 +87,3 @@ data class SectionUploadConfigBuilder(
         return camelCasedList.joinToString("")
     }
 }
-// todo 3 categories to add, not only these 2

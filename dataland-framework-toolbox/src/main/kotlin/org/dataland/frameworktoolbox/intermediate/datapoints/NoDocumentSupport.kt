@@ -19,14 +19,6 @@ data object NoDocumentSupport : DocumentSupport {
         return innerLambda
     }
 
-    override fun getFrameworkDisplayValueLambdaUpload(
-        innerLambda: org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda,
-        fieldLabel: String?,
-        dataPointAccessor: String,
-    ): org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda {
-        return innerLambda
-    } // TODO Emanuel: Glaube das ist nicht nötig
-
     override fun getDataAccessor(dataPointAccessor: String, nullable: Boolean): String {
         return dataPointAccessor
     }

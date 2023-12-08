@@ -9,10 +9,6 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigB
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.getTypescriptFieldAccessor
-as getTypescriptFieldAccessorUpload
-import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda
-as FrameworkDisplayValueLambdaUpload
 
 /**
  * A SingleSelectComponent represents a choice between pre-defined values
@@ -66,16 +62,6 @@ open class SingleSelectComponent(
             uploadComponentName = "SingleSelectFormField",
             component = this,
             options = options,
-            valueGetter = documentSupport.getFrameworkDisplayValueLambdaUpload(
-                FrameworkDisplayValueLambdaUpload(
-                    "formatStringForDatatable(${getTypescriptFieldAccessorUpload(true)})",
-                    setOf(
-                        "import { formatStringForDatatable } from " +
-                            "\"@/components/resources/dataTable/conversion/PlainStringValueGetterFactory\";",
-                    ),
-                ),
-                label, getTypescriptFieldAccessorUpload(),
-            ),
         )
     }
 

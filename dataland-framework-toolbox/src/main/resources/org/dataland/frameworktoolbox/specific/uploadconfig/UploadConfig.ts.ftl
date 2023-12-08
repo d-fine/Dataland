@@ -11,14 +11,14 @@ export const ${frameworkIdentifier}DataModel = [<@loopCategories uploadConfig/>]
 
 <#macro loopSubcategories items>
     <@indent>
-                <#list items as element><#if element.isSubcategory()><@mldtisSubcategory element/></#if>
+        <#list items as element><#if element.isSubcategory()><@mldtisSubcategory element/></#if>
         </#list>
     </@indent>
 </#macro>
 
 <#macro loopFields items>
     <@indent>
-                <#list items as element><#if element.isCell()><@mldtField element/></#if>
+        <#list items as element><#if element.isCell()><@mldtField element/></#if>
         </#list>
     </@indent>
 </#macro>

@@ -5,7 +5,6 @@ package org.dataland.frameworktoolbox.specific.uploadconfig.elements
  */
 sealed interface UploadConfigElement {
     val parentSection: SectionUploadConfigBuilder?
-    val imports: Set<String>
 
     /**
      * Returns true iff this is an instance of a section (required for FreeMarker)

@@ -23,14 +23,6 @@ data object ExtendedDocumentSupport : DocumentSupport {
         return SimpleDocumentSupport.getFrameworkDisplayValueLambda(innerLambda, fieldLabel, dataPointAccessor)
     }
 
-    override fun getFrameworkDisplayValueLambdaUpload(
-        innerLambda: org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda,
-        fieldLabel: String?,
-        dataPointAccessor: String,
-    ): org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda {
-        return SimpleDocumentSupport.getFrameworkDisplayValueLambdaUpload(innerLambda, fieldLabel, dataPointAccessor)
-    } // TODO EManuel: Ich denke diese Funtkion macht für die upload config keinen Sinn
-
     override fun getDataAccessor(dataPointAccessor: String, nullable: Boolean): String {
         return SimpleDocumentSupport.getDataAccessor(dataPointAccessor, nullable)
     }

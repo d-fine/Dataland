@@ -39,7 +39,6 @@ class FrameworkUploadConfigBuilder(
             "uploadConfig" to rootSectionConfigBuilder.children,
             "frameworkDataType" to "${framework.identifier.capitalizeEn()}Data",
             "frameworkIdentifier" to framework.identifier,
-            "imports" to rootSectionConfigBuilder.imports,
         )
 
         val freemarkerTemplate = FreeMarker.configuration
