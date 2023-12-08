@@ -147,4 +147,31 @@ class QaService(
             )
         }
     }
+
+    /**
+     * Method for testing stuff out
+     * @param body the body of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value = Queue(
+                    "hello",
+                    arguments = [
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                        Argument(name = "defaultRequeueRejected", value = "false"),
+                    ],
+                ),
+                exchange = Exchange("dieter", declare = "false"),
+                key = ["hello"],
+            ),
+        ],
+    )
+    fun tutorial(
+        @Payload body: String,
+    ) {
+        println("it worked")
+        println("the message is \"$body\"")
+    }
 }

@@ -29,10 +29,9 @@ hs_err_pid*
 **/build/
 **/bin/
 **/node_modules/
+**/venv/
 
 local
 
 gitinfo
 .envrc
-
-/dataland-automated-qa-service/venv/

@@ -1,6 +1,9 @@
+import rabbitmq as mq
+
 
 def main():
-    print("Hello, world!")
+    mq.tutorial()
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     main()
