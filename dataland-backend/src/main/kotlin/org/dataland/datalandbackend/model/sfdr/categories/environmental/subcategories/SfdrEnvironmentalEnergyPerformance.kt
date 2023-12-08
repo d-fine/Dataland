@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.sfdr.HighImpactClimateSector
 import org.dataland.datalandbackend.model.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
-import org.dataland.datalandbackend.validator.DataPointMaximumValue
 import org.dataland.datalandbackend.validator.DataPointMinimumValue
 import java.math.BigDecimal
 
@@ -29,7 +28,6 @@ data class SfdrEnvironmentalEnergyPerformance(
 
     @field:Valid
     @field:DataPointMinimumValue(minimumValue = 0)
-    @field:DataPointMaximumValue(maximumValue = 10000)
     val relativeNonRenewableEnergyProductionInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
     @field:Valid
@@ -38,7 +36,6 @@ data class SfdrEnvironmentalEnergyPerformance(
 
     @field:Valid
     @field:DataPointMinimumValue(minimumValue = 0)
-    @field:DataPointMaximumValue(maximumValue = 10000)
     val relativeNonRenewableEnergyConsumptionInPercent: ExtendedDataPoint<BigDecimal>? = null,
 
     @field:Schema(
