@@ -112,7 +112,6 @@ import {
   type CompanyAssociatedDataPathwaysToParisData,
   DataTypeEnum,
   type P2pDriveMix,
-  P2pSector,
 } from "@clients/backend";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
@@ -136,20 +135,6 @@ import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBa
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
-
-const P2pSectorToCamelCase = new Map([
-  [P2pSector.Ammonia, "ammonia"],
-  [P2pSector.Automotive, "automotive"],
-  [P2pSector.Cement, "cement"],
-  [P2pSector.CommercialRealEstate, "commercialRealEstate"],
-  [P2pSector.ElectricityGeneration, "electricityGeneration"],
-  [P2pSector.FreightTransportByRoad, "freightTransportByRoad"],
-  [P2pSector.HvcPlastics, "hvcPlastics"],
-  [P2pSector.LivestockFarming, "livestockFarming"],
-  [P2pSector.ResidentialRealEstate, "residentialRealEstate"],
-  [P2pSector.Steel, "steel"],
-  [P2pSector.Other, "other"],
-]);
 
 export default defineComponent({
   setup() {
@@ -297,12 +282,12 @@ export default defineComponent({
      * Filters the field specific documents for documents that belong to fields that are not enabled
      */
     filterFieldSpecificDocumentsByEnabledFieldOwnership() {
-      Array.from(this.fieldSpecificDocuments.keys()).forEach((key) => {
+      (Array.from(this.fieldSpecificDocuments.keys()) as string[]).forEach((key) => {
         const categoryName = key.split(".")[0];
         const allowedCategories = this.companyAssociatedP2pData.data.general.general.sectors
-          .map((sector) => assertDefined(P2pSectorToCamelCase.get(sector)))
+          .map((sector) => sector.toString().toLowerCase())
           .concat("general");
-        if (!allowedCategories.includes(categoryName)) {
+        if (!allowedCategories.includes(categoryName.toLowerCase())) {
           this.fieldSpecificDocuments.delete(key);
         }
       });
