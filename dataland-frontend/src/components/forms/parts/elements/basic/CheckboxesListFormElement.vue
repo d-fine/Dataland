@@ -2,7 +2,7 @@
   <FormKit
     type="checkbox"
     :key="key"
-    name="name"
+    :name="name"
     v-model="checkboxValue"
     :options="options"
     :validation="validation"
@@ -29,7 +29,7 @@
     :validation-label="validationLabel"
     :ignore="shouldBeIgnored"
     :key="key"
-    :outer-class="{ 'hidden-input': true, 'formkit-outer': false, }"
+    :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
   />
 </template>
 
@@ -39,14 +39,14 @@ import { FormKit } from "@formkit/vue";
 import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
 
 export default defineComponent({
-  name: "RadioButtonsFormElement",
+  name: "CheckboxesListFormElement",
   components: { FormKit },
   data() {
     return {
       key: 0,
       shouldBeIgnored: false,
-      currentValue: null,
-      checkboxValue: [],
+      currentValue: "",
+      checkboxValue: [] as Array<string>,
     };
   },
   methods: {
@@ -56,7 +56,6 @@ export default defineComponent({
      * @param checkboxValue current value
      */
     emitUpdateCurrentValue(checkboxValue: [string]) {
-      console.log("checkboxValue RadioButtonsFormElement.vue", checkboxValue);
       if (checkboxValue[0]) {
         this.shouldBeIgnored = false;
         this.key++;
@@ -68,14 +67,15 @@ export default defineComponent({
         this.$emit("update:currentValue", null);
       }
     },
-    setIgnoreToFields(newVal, oldVal) {
-      console.log('Wewnetrzny 11 currentValue', newVal, oldVal)
-      if (this.currentValue && this.currentValue !== "") {
-        console.log('jeeeeeeee', this.currentValue)
+    /**
+     * Function that sets whether value should be ignored or not
+     * @param currentValue current value
+     */
+    setIgnoreToFields(currentValue: string) {
+      if (currentValue && currentValue !== "") {
         this.shouldBeIgnored = false;
         this.key++;
-        this.checkboxValue = [this.currentValue];
-        console.log('Wewnetrzny checkboxValue', this.checkboxValue)
+        this.checkboxValue = [currentValue];
       } else {
         this.shouldBeIgnored = true;
         this.key++;
@@ -83,8 +83,8 @@ export default defineComponent({
     },
   },
   watch: {
-    currentValue(newVal) {
-      this.setIgnoreToFields(newVal)
+    currentValue(newVal: string) {
+      this.setIgnoreToFields(newVal);
     },
   },
   props: {

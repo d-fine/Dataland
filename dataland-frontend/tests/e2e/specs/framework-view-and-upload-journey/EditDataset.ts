@@ -67,8 +67,6 @@ describeIf(
 
           cy.wrap($parent).find("input.p-radiobutton").eq(0).click();
 
-          cy.wrap($parent).find("button[data-test='files-to-upload-remove']").click();
-
           cy.wrap($parent).find('button[data-test^="upload-files-button"]').should("be.visible");
           cy.wrap($parent)
             .find("input[type=file]")

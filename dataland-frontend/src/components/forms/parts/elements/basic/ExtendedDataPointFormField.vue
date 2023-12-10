@@ -1,58 +1,62 @@
 <template>
-  <div class="mb-3 p-0 -ml-2" :class="dataPointIsAvailable ? 'bordered-box' : ''">
-    <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="isDataPointToggleable">
-      <InputSwitch
-        data-test="dataPointToggleButton"
-        inputId="dataPointIsAvailableSwitch"
-        @click="dataPointAvailableToggle"
-        v-model="dataPointIsAvailable"
-      />
-      <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    </div>
-
-
-    <div class="" v-if="Object.keys(options).length">
-      <UploadFormHeader :label="label" :description="description" :is-required="required" />
-      <FormKit
+  <div>
+    <p>Value: {{ JSON.stringify(dataPoint.value) }}</p>
+    <p>Current: {{ JSON.stringify(currentValue) }}</p>
+  </div>
+  <div class="mb-3 p-0 -ml-2" :class="showDataPointFields ? 'bordered-box' : ''">
+    <div data-test="toggleDataPointWrapper">
+      <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="isDataPointToggleable && !isYesNoVariant">
+        <InputSwitch
+          data-test="dataPointToggleButton"
+          inputId="dataPointIsAvailableSwitch"
+          @click="dataPointAvailableToggle"
+          v-model="dataPointIsAvailable"
+        />
+        <UploadFormHeader :label="label" :description="description" :is-required="required" />
+      </div>
+      <div class="px-2 pt-3" v-if="isYesNoVariant">
+        <UploadFormHeader :label="label" :description="description" :is-required="required" />
+        <FormKit
           type="checkbox"
           name="name"
           v-model="checkboxValue"
           :options="options"
           :outer-class="{
-          'yes-no-radio': true,
-        }"
+            'yes-no-radio': true,
+          }"
           :inner-class="{
-          'formkit-inner': false,
-        }"
+            'formkit-inner': false,
+          }"
           :input-class="{
-          'formkit-input': false,
-          'p-radiobutton': true,
-        }"
+            'formkit-input': false,
+            'p-radiobutton': true,
+          }"
           :ignore="true"
           :plugins="[disabledOnMoreThanOne]"
           @input="updateCurrentValue($event)"
-      />
+        />
+      </div>
     </div>
 
-    <div class="p-2">
+    <div v-if="showDataPointFields">
       <FormKit type="group" :name="name" v-model="dataPoint">
         <FormKit
-            type="text"
-            name="value"
-            v-model="currentValue"
-            :validation="validation"
-            :validation-label="validationLabel"
-            :outer-class="{ 'hidden-input': true, 'formkit-outer': false, }"
-            v-if="Object.keys(options).length"
+          type="text"
+          name="value"
+          v-model="currentValue"
+          :validation="validation"
+          :validation-label="validationLabel"
+          :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
+          v-if="isYesNoVariant"
         />
-        <div class="col-12"  v-if="dataPoint.value === 'Yes'">
+        <div class="col-12" v-if="dataPoint.value === 'Yes' || (showDataPointFields && !isYesNoVariant)">
           <UploadFormHeader
-            v-if="!isDataPointToggleable"
+            v-if="!isDataPointToggleable && !isYesNoVariant"
             :label="label"
             :description="description"
             :is-required="required"
           />
-          <slot />
+          <slot v-if="!isYesNoVariant" />
           <div class="grid align-content-end">
             <FormKit type="group" name="dataSource">
               <div class="col-8">
@@ -102,6 +106,8 @@
               :options="computeQualityOption"
             />
           </div>
+        </div>
+        <div class="col-12">
           <div class="form-field">
             <FormKit
               type="textarea"
@@ -126,7 +132,7 @@ import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
-import {ExtendedDataPoint} from "@/utils/DataPoint";
+import { type ExtendedDataPoint } from "@/utils/DataPoint";
 
 export default defineComponent({
   name: "ExtendedDataPointFormField",
@@ -141,7 +147,26 @@ export default defineComponent({
       default: [] as Array<string>,
     },
   },
+  data() {
+    return {
+      dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
+      qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
+        label: qualityOption,
+        value: qualityOption,
+      })),
+      qualityValue: "NA",
+      currentReportValue: "",
+      dataPoint: {} as ExtendedDataPoint<unknown>,
+      dataPointValuesBeforeDataPointWasDisabled: {},
+      currentValue: "",
+      checkboxValue: [] as Array<string>,
+      firstAssignmentWhileEditModeWasDone: false,
+    };
+  },
   computed: {
+    showDataPointFields(): boolean {
+      return this.dataPointIsAvailable || (!this.isDataPointToggleable && !this.isYesNoVariant);
+    },
     isDataValueProvided(): boolean {
       return (assertDefined(this.checkValueValidity) as (dataPoint: unknown) => boolean)(this.dataPoint);
     },
@@ -161,24 +186,9 @@ export default defineComponent({
     fileReferenceAccordingToName(): string {
       return getFileReferenceByFileName(this.currentReportValue, this.injectReportsNameAndReferences);
     },
-    showDataPointFields(): boolean {
-      return !this.isDataPointToggleable || this.dataPointIsAvailable;
+    isYesNoVariant() {
+      return Object.keys(this.options).length;
     },
-  },
-  data() {
-    return {
-      dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
-      qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
-        label: qualityOption,
-        value: qualityOption,
-      })),
-      qualityValue: "NA",
-      currentReportValue: "",
-      dataPoint: {} as ExtendedDataPoint<unknown>,
-      dataPointValuesBeforeDataPointWasDisabled: {},
-      currentValue: "",
-      checkboxValue: [],
-    };
   },
 
   props: {
@@ -200,16 +210,35 @@ export default defineComponent({
     isDataValueProvided(isDataValueProvided: boolean) {
       this.handleBlurValue(isDataValueProvided);
     },
-    dataPointIsAvailable(newValue: boolean) {
-      if (!newValue) {
-        this.dataPointValuesBeforeDataPointWasDisabled = this.dataPoint;
+    // dataPointIsAvailable(newValue: boolean) {
+    //   if (!newValue) {
+    //     this.dataPointValuesBeforeDataPointWasDisabled = this.dataPoint;
+    //   } else {
+    //     this.dataPoint = this.dataPointValuesBeforeDataPointWasDisabled;
+    //   }
+    // },
+    currentValue(newVal) {
+      if (!this.firstAssignmentWhileEditModeWasDone) {
+        console.log("FIRST");
+        this.setCheckboxValue(newVal);
+        this.firstAssignmentWhileEditModeWasDone = true;
       } else {
-        this.dataPoint = this.dataPointValuesBeforeDataPointWasDisabled;
+        return;
       }
     },
   },
   methods: {
     disabledOnMoreThanOne,
+
+    /**
+     * A function that rewrite value to select the appropriate checkbox
+     * @param newCheckboxValue value after changing value that must be reflected in checkboxes
+     */
+    setCheckboxValue(newCheckboxValue: string) {
+      if (newCheckboxValue && newCheckboxValue !== "") {
+        this.checkboxValue = [newCheckboxValue];
+      }
+    },
     /**
      * Handle blur event on value input.
      * @param isDataValueProvided boolean which gives information whether data is provided or not
@@ -232,13 +261,18 @@ export default defineComponent({
      * @param checkboxValue checkboxValue
      */
     updateCurrentValue(checkboxValue: [string]) {
-      console.log("checkboxValue BaseDataPointFormField", checkboxValue[0]);
+      console.log("checkboxValue BaseDataPointFormField 1", checkboxValue[0]);
       if (checkboxValue[0]) {
         this.dataPointIsAvailable = true;
-        this.dataPoint.value = checkboxValue[0].toString();
-        console.log("this.baseDataPoint.value +++", this.dataPoint.value);
+        this.currentValue = checkboxValue[0].toString();
+        console.log("this.currentValue.value +++ 1.1", this.currentValue);
+        console.log("this.baseDataPoint.value +++ 1.1", this.dataPoint.value);
       } else {
         this.dataPointIsAvailable = false;
+        this.currentValue = "";
+        this.dataPoint = {};
+        console.log("wylacz 1.2", this.dataPoint.value);
+        console.log("wylacz currentValue 1.2", this.currentValue);
       }
     },
   },

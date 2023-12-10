@@ -3,35 +3,35 @@
     <div class="">
       <UploadFormHeader :label="label" :description="description" :is-required="required" />
       <FormKit
-          type="checkbox"
-          name="name"
-          v-model="checkboxValue"
-          :options="options"
-          :outer-class="{
+        type="checkbox"
+        name="name"
+        v-model="checkboxValue"
+        :options="options"
+        :outer-class="{
           'yes-no-radio': true,
         }"
-          :inner-class="{
+        :inner-class="{
           'formkit-inner': false,
         }"
-          :input-class="{
+        :input-class="{
           'formkit-input': false,
           'p-radiobutton': true,
         }"
-          :ignore="true"
-          :plugins="[disabledOnMoreThanOne]"
-          @input="updateCurrentValue($event)"
+        :ignore="true"
+        :plugins="[disabledOnMoreThanOne]"
+        @input="updateCurrentValue($event)"
       />
     </div>
 
     <div v-if="showDataPointFields">
       <FormKit v-model="baseDataPoint" type="group" :name="name">
         <FormKit
-            type="text"
-            name="value"
-            v-model="currentValue"
-            :validation="validation"
-            :validation-label="validationLabel"
-            :outer-class="{ 'hidden-input': true, 'formkit-outer': false, }"
+          type="text"
+          name="value"
+          v-model="currentValue"
+          :validation="validation"
+          :validation-label="validationLabel"
+          :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
         />
         <div class="col-12" v-if="baseDataPoint.value === 'Yes'">
           <UploadDocumentsForm
@@ -54,18 +54,15 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import RadioButtonsFormElement from "@/components/forms/parts/elements/basic/RadioButtonsFormElement.vue";
-import InputSwitch from "primevue/inputswitch";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { type BaseDataPoint } from "@/utils/DataPoint";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { HumanizedYesNo } from "@/utils/YesNoNa";
 import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
 
 export default defineComponent({
   name: "BaseDataPointFormField",
-  components: { UploadFormHeader, UploadDocumentsForm, InputSwitch, RadioButtonsFormElement },
+  components: { UploadFormHeader, UploadDocumentsForm },
   inheritAttrs: false,
   props: {
     ...BaseFormFieldProps,
@@ -90,23 +87,17 @@ export default defineComponent({
       fileNamesForPrefill: [] as string[],
       isMounted: false,
 
-      key: 0,
-      shouldBeIgnored: false,
       currentValue: "",
-      checkboxValue: [],
+      checkboxValue: [] as Array<string>,
     };
   },
   computed: {
     showDataPointFields(): boolean {
       return this.dataPointIsAvailable;
     },
-    HumanizedYesNo() {
-      return HumanizedYesNo;
-    },
   },
   emits: ["reportsUpdated"],
   mounted() {
-
     this.updateFileUploadFiles();
     this.isMounted = true;
   },
@@ -117,16 +108,18 @@ export default defineComponent({
       }
     },
     currentValue(newVal) {
-      this.setCheckboxValue(newVal)
+      this.setCheckboxValue(newVal);
     },
   },
   methods: {
     disabledOnMoreThanOne,
-
-    setCheckboxValue(newCheckboxValue) {
-      console.log('newCheckboxValue', newCheckboxValue)
-      if (this.currentValue && this.currentValue !== "") {
-        this.checkboxValue = [this.currentValue];
+    /**
+     * A function that rewrite value to select the appropriate checkbox
+     * @param newCheckboxValue value after changing value that must be reflected in checkboxes
+     */
+    setCheckboxValue(newCheckboxValue: string) {
+      if (newCheckboxValue && newCheckboxValue !== "") {
+        this.checkboxValue = [newCheckboxValue];
       }
     },
 

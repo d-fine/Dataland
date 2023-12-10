@@ -28,7 +28,7 @@ export const BaseFormFieldProps = {
   },
   inputClass: {
     type: String,
-    default: "short",
+    default: "col-4",
   },
 };
 
