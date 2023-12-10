@@ -50,6 +50,5 @@ export function getFilledKpis(dataResponseData: object): string[] {
       });
     }
   });
-  console.log('listOfFilledKpis', listOfFilledKpis)
   return listOfFilledKpis;
 }

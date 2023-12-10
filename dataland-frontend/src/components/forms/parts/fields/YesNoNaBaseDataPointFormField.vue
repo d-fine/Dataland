@@ -38,7 +38,7 @@ export default defineComponent({
   data() {
     return {
       HumanizedYesNoNa,
-    }
+    };
   },
   methods: {
     /**

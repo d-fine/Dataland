@@ -27,10 +27,9 @@
                   <BigDecimalExtendedDataPointFormField
                     :label="`Sector ${selection} Energy Consumption`"
                     :description="`Total energy consumption for high impact climate sector ${selection}`"
-                    :is-required="false"
+                    :required="false"
                     unit="GWh"
                     name="highImpactClimateSectorEnergyConsumptionInGWh"
-                    :placeholder="`Sector ${selection} Energy Consumption`"
                     validation-label="Energy Consumption"
                     inputClass="col-8"
                     :isDataPointToggleable="false"
@@ -40,10 +39,9 @@
                   <BigDecimalExtendedDataPointFormField
                     :label="`Sector ${selection} Relative Energy Consumption`"
                     :description="`Energy consumption for high impact climate sector ${selection} per revenue`"
-                    :is-required="false"
+                    :required="false"
                     unit="GWh / €M revenue"
                     name="highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue"
-                    :placeholder="`Sector ${selection} Relative Energy Consumption`"
                     validation-label="Relative Energy Consumption"
                     inputClass="col-8"
                     :isDataPointToggleable="false"

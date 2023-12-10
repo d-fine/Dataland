@@ -87,7 +87,7 @@ export default defineComponent({
       fileNamesForPrefill: [] as string[],
       isMounted: false,
 
-      currentValue: "",
+      currentValue: null,
       checkboxValue: [] as Array<string>,
     };
   },
@@ -107,7 +107,7 @@ export default defineComponent({
         this.updateFileUploadFiles();
       }
     },
-    currentValue(newVal) {
+    currentValue(newVal: string) {
       this.setCheckboxValue(newVal);
     },
   },
@@ -148,11 +148,9 @@ export default defineComponent({
      * @param checkboxValue checkboxValue
      */
     updateCurrentValue(checkboxValue: [string]) {
-      console.log("checkboxValue BaseDataPointFormField", checkboxValue[0]);
       if (checkboxValue[0]) {
         this.dataPointIsAvailable = true;
         this.baseDataPoint.value = checkboxValue[0].toString();
-        console.log("this.baseDataPoint.value +++", this.baseDataPoint.value);
       } else {
         this.dataPointIsAvailable = false;
       }

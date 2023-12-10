@@ -3,7 +3,7 @@
     <p>Value: {{ JSON.stringify(dataPoint.value) }}</p>
     <p>Current: {{ JSON.stringify(currentValue) }}</p>
   </div>
-  <div class="mb-3 p-0 -ml-2" :class="showDataPointFields ? 'bordered-box' : ''">
+  <div :data-test="dataTest" class="mb-3 p-0 -ml-2" :class="showDataPointFields ? 'bordered-box' : ''">
     <div data-test="toggleDataPointWrapper">
       <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="isDataPointToggleable && !isYesNoVariant">
         <InputSwitch
@@ -44,6 +44,7 @@
           type="text"
           name="value"
           v-model="currentValue"
+          :placeholder="placeholder"
           :validation="validation"
           :validation-label="validationLabel"
           :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
@@ -127,7 +128,7 @@ import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
 import { QualityOptions } from "@clients/backend";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -157,8 +158,7 @@ export default defineComponent({
       qualityValue: "NA",
       currentReportValue: "",
       dataPoint: {} as ExtendedDataPoint<unknown>,
-      dataPointValuesBeforeDataPointWasDisabled: {},
-      currentValue: "",
+      currentValue: null,
       checkboxValue: [] as Array<string>,
       firstAssignmentWhileEditModeWasDone: false,
     };
@@ -192,7 +192,7 @@ export default defineComponent({
   },
 
   props: {
-    ...BaseFormFieldProps,
+    ...FormFieldPropsWithPlaceholder,
     checkValueValidity: {
       type: Function as unknown as () => (dataPoint: unknown) => boolean,
       default: (): boolean => false,
@@ -205,21 +205,17 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
+    dataTest: {
+      type: String,
+      default: "",
+    },
   },
   watch: {
     isDataValueProvided(isDataValueProvided: boolean) {
       this.handleBlurValue(isDataValueProvided);
     },
-    // dataPointIsAvailable(newValue: boolean) {
-    //   if (!newValue) {
-    //     this.dataPointValuesBeforeDataPointWasDisabled = this.dataPoint;
-    //   } else {
-    //     this.dataPoint = this.dataPointValuesBeforeDataPointWasDisabled;
-    //   }
-    // },
-    currentValue(newVal) {
+    currentValue(newVal: string) {
       if (!this.firstAssignmentWhileEditModeWasDone) {
-        console.log("FIRST");
         this.setCheckboxValue(newVal);
         this.firstAssignmentWhileEditModeWasDone = true;
       } else {
@@ -261,18 +257,13 @@ export default defineComponent({
      * @param checkboxValue checkboxValue
      */
     updateCurrentValue(checkboxValue: [string]) {
-      console.log("checkboxValue BaseDataPointFormField 1", checkboxValue[0]);
       if (checkboxValue[0]) {
         this.dataPointIsAvailable = true;
         this.currentValue = checkboxValue[0].toString();
-        console.log("this.currentValue.value +++ 1.1", this.currentValue);
-        console.log("this.baseDataPoint.value +++ 1.1", this.dataPoint.value);
       } else {
         this.dataPointIsAvailable = false;
-        this.currentValue = "";
+        this.currentValue = null;
         this.dataPoint = {};
-        console.log("wylacz 1.2", this.dataPoint.value);
-        console.log("wylacz currentValue 1.2", this.currentValue);
       }
     },
   },

@@ -28,7 +28,6 @@ export default defineComponent({
   components: { CheckboxesListFormElement, UploadFormHeader },
   props: {
     ...BaseFormFieldProps,
-    radioButtonsDataTest: String,
     classes: {
       type: String,
       default: "form-field",

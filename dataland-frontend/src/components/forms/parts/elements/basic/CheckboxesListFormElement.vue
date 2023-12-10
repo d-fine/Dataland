@@ -45,7 +45,7 @@ export default defineComponent({
     return {
       key: 0,
       shouldBeIgnored: false,
-      currentValue: "",
+      currentValue: null,
       checkboxValue: [] as Array<string>,
     };
   },
