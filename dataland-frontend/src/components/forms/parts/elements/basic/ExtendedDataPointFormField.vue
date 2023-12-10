@@ -1,8 +1,4 @@
 <template>
-  <div>
-    <p>Value: {{ JSON.stringify(dataPoint.value) }}</p>
-    <p>Current: {{ JSON.stringify(currentValue) }}</p>
-  </div>
   <div :data-test="dataTest" class="mb-3 p-0 -ml-2" :class="showDataPointFields ? 'bordered-box' : ''">
     <div data-test="toggleDataPointWrapper">
       <div class="px-2 py-3 next-to-each-other vertical-middle" v-if="isDataPointToggleable && !isYesNoVariant">
