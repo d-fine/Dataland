@@ -19,6 +19,7 @@ data class SfdrEnvironmental(
     @field:Valid
     val energyPerformance: SfdrEnvironmentalEnergyPerformance? = null,
 
+    @field:Valid
     val biodiversity: SfdrEnvironmentalBiodiversity? = null,
 
     @field:Valid

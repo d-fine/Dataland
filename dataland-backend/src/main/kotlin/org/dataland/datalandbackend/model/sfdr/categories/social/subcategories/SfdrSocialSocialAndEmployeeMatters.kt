@@ -129,6 +129,5 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     @field:Valid
     @field:DataPointMinimumValue(minimumValue = 0)
-    @field:DataPointMaximumValue(maximumValue = 10000)
     val excessiveCeoPayRatioInPercent: ExtendedDataPoint<BigDecimal>? = null,
 )
