@@ -43,7 +43,7 @@ export function formatListOfStringsForDatatable(
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${input.length} value${input.length > 1 ? "s" : ""}`,
-        modalComponent: MultiSelectModal, // TODO Emanuel: This leads to an import error when you run prepopulation!
+        modalComponent: MultiSelectModal,
         modalOptions: {
           props: {
             header: fieldLabel,

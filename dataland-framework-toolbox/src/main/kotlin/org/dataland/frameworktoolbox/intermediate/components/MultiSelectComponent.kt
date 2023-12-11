@@ -10,6 +10,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploa
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
 
 /**
  * A MultiSelectComponent represents a selection of valid NACE codes
@@ -37,13 +38,14 @@ open class MultiSelectComponent(
             documentSupport.getFrameworkDisplayValueLambda(
                 FrameworkDisplayValueLambda(
                     "{\n" +
-                        generateMappingObject() +
-                        generateMapperFunction() +
+                        generateTsCodeForSelectOptionsMappingObject(options) +
                         generateReturnStatement() +
                         "}",
                     setOf(
                         "import { formatListOfStringsForDatatable } from " +
                             "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
+                        "import { getOriginalNameFromTechnicalName } from " +
+                            "\"@/components/resources/dataTable/conversion/Utils\";"
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
@@ -72,38 +74,6 @@ open class MultiSelectComponent(
                 "import { pickSubsetOfElements } from \"@e2e/fixtures/FixtureUtils\";",
             ),
         )
-    }
-
-    private fun generateMappingObject(): String {
-        // TODO Emanuel: centralize in utils/typescript
-        val codeBuilder = StringBuilder()
-        codeBuilder.append("const mappings = {\n")
-
-        for (option in options) {
-            val escapedLabel = option.label.replace("\"", "\\\"")
-            codeBuilder.append("    ${option.identifier}: \"$escapedLabel\",\n")
-        }
-
-        codeBuilder.append("}\n")
-
-        return codeBuilder.toString()
-    }
-
-    private fun generateMapperFunction(): String {
-        // TODO include in formatter function
-        val jsDoc =
-            "/**\n" +
-                "* Maps the technical name of a select option to the respective original name\n" +
-                "* @param technicalName of a select option \n" +
-                "* @param mappingObject that contains the mappings\n" +
-                "* @returns original name that matches the technical name\n" +
-                "*/\n"
-        val functionBody =
-            "function getOriginalNameFromTechnicalName<T extends string>" +
-                "(technicalName: T, mappingObject: {[key in T]:string}): string{\n" +
-                "   return mappingObject[technicalName]\n" +
-                "}\n"
-        return jsDoc + functionBody
     }
 
     private fun generateReturnStatement(): String {

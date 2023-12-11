@@ -9,6 +9,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigB
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
+import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
 
 /**
  * A SingleSelectComponent represents a choice between pre-defined values
@@ -40,16 +41,16 @@ open class SingleSelectComponent(
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
-                // TODO Emannuel: Discuss document support in general with Marc.
                 FrameworkDisplayValueLambda(
                     "{\n" +
-                        generateMappingObject() +
-                        generateMapperFunction() +
+                        generateTsCodeForSelectOptionsMappingObject(options) +
                         generateReturnStatement() +
                         "}",
                     setOf(
                         "import { formatStringForDatatable } from " +
                             "\"@/components/resources/dataTable/conversion/PlainStringValueGetterFactory\";",
+                        "import { getOriginalNameFromTechnicalName } from " +
+                            "\"@/components/resources/dataTable/conversion/Utils\";"
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
@@ -80,36 +81,6 @@ open class SingleSelectComponent(
         )
     }
 
-    private fun generateMappingObject(): String {
-        val codeBuilder = StringBuilder()
-        codeBuilder.append("const mappings = {\n")
-
-        for (option in options) {
-            val escapedLabel = option.label.replace("\"", "\\\"")
-            codeBuilder.append("    ${option.identifier}: \"$escapedLabel\",\n")
-        }
-
-        codeBuilder.append("}\n")
-
-        return codeBuilder.toString()
-    }
-
-    private fun generateMapperFunction(): String {
-        val jsDoc =
-            "/**\n" +
-                "* Maps the technical name of a select option to the respective original name\n" +
-                "* @param technicalName of a select option \n" +
-                "* @param mappingObject that contains the mappings\n" +
-                "* @returns original name that matches the technical name\n" +
-                "*/\n"
-        val functionBody =
-            "function getOriginalNameFromTechnicalName<T extends string>" +
-                "(technicalName: T, mappingObject: {[key in T]:string}): string{\n" +
-                "   return mappingObject[technicalName]\n" +
-                "}\n"
-        return jsDoc + functionBody
-    }
-
     private fun generateReturnStatement(): String {
         return "return formatStringForDatatable(\n" +
             "${getTypescriptFieldAccessor()} ? " +
@@ -118,5 +89,5 @@ open class SingleSelectComponent(
     }
 }
 
-// TODO Emanuel: Discuss EcmaString usage with Marc and where to use it.
-// TODO Emanuel: Discuss the document support with Marc.
+// TODO Emanuel: Check if you have used the EcmaString function everywhere where you put a val
+// TODO into the generated JS Code
