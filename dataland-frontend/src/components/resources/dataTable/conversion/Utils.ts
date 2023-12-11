@@ -44,7 +44,9 @@ export function getFieldValueFromDataModel(identifier: string, dataModel: any): 
  * @param mappingObject that contains the mappings
  * @returns original name that matches the technical name
  */
-export function getOriginalNameFromTechnicalName<T extends string>
-(technicalName: T, mappingObject: {[key in T]:string}): string{
-  return mappingObject[technicalName]
+export function getOriginalNameFromTechnicalName<T extends string>(
+  technicalName: T,
+  mappingObject: { [key in T]: string },
+): string {
+  return mappingObject[technicalName];
 }
