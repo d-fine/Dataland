@@ -14,7 +14,6 @@ before(function () {
   });
 });
 
-// TODO Emanuel: In an optimal world, the devtools creates this file automatically
 describeIf(
   "As a user, I expect to be able to edit and submit GDV data via the upload form",
   {

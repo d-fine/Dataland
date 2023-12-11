@@ -63,8 +63,6 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
         new GdvDataControllerApi(configuration, undefined, axiosInstance),
       );
     default:
-      // eslint-disable-next-line
-      // @ts-ignore
-      return assertNever(framework); // TODO Emanuel: For now we ignore this for dev purposes. But later we need a solution.
+      return assertNever(framework);
   }
 }

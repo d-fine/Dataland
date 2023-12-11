@@ -101,8 +101,5 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
     newFixture.t.unternehmensfuehrungGovernance.esgKriterienUndUeberwachungDerLieferanten = YesNo.Yes;
   }
 
-  // TODO Emanuel: for later: we could think about introducing a util-function, that parses through objects T and sets all yesNos to "yes". WE will need this for several frameworks
-  // TODO Emanuel: And obviously doing it like above is not very convenient
-
   return newFixture;
 }

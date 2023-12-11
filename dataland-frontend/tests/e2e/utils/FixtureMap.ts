@@ -7,5 +7,4 @@ export const frameworkFixtureMap = {
   [DataTypeEnum.P2p]: "CompanyInformationWithP2pData",
   [DataTypeEnum.Sfdr]: "CompanyInformationWithSfdrData",
   [DataTypeEnum.Sme]: "CompanyInformationWithSmeData",
-  // TODO Emanuel: Does gdv need to be automatically added here?
 };
