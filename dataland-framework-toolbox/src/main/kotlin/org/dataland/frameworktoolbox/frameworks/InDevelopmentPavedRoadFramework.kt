@@ -11,7 +11,6 @@ import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtil
 import org.dataland.frameworktoolbox.template.components.TemplateComponentFactory
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.dataland.frameworktoolbox.utils.DatalandRepository
-import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
 import org.springframework.beans.factory.getBean
 import org.springframework.context.ApplicationContext
@@ -30,7 +29,6 @@ abstract class InDevelopmentPavedRoadFramework(
     frameworkTemplateCsvFile: File,
 ) :
     PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile) {
-    private val logger by LoggerDelegate()
 
     override fun convertExcelTemplateToToHighLevelComponentRepresentation(
         context: ApplicationContext,
@@ -135,9 +133,10 @@ abstract class InDevelopmentPavedRoadFramework(
 
         compileDataModel(datalandProject)
         compileViewModel(datalandProject)
-        compileUploadModel(datalandProject)
+        // compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
+        logger.info("✔ Framework toolbox finished for framework $identifier ✨")
     }
 }

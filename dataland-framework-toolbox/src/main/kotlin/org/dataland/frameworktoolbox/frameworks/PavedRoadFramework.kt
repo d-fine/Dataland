@@ -12,6 +12,7 @@ import org.dataland.frameworktoolbox.template.TemplateComponentBuilder
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.dataland.frameworktoolbox.template.components.TemplateComponentFactory
 import org.dataland.frameworktoolbox.utils.DatalandRepository
+import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
 import org.springframework.beans.factory.getBean
 import org.springframework.beans.factory.getBeansOfType
@@ -35,6 +36,8 @@ abstract class PavedRoadFramework(
         label = label,
         explanation = explanation,
     )
+
+    val logger by LoggerDelegate()
 
     /**
      * Can be overwritten to configure the diagnosticManager (to e.g., suppress issues)
@@ -192,5 +195,6 @@ abstract class PavedRoadFramework(
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
         diagnostics.finalizeDiagnosticStream()
+        logger.info("✔ Framework toolbox finished for framework $identifier ✨")
     }
 }

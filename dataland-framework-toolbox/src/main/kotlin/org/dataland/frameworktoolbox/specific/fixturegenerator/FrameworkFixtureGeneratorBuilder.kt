@@ -6,6 +6,7 @@ import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
+import org.dataland.frameworktoolbox.utils.typescript.EsLintRunner
 import java.io.FileWriter
 import java.nio.file.Path
 import kotlin.io.path.div
@@ -20,6 +21,7 @@ class FrameworkFixtureGeneratorBuilder(
     private val framework: Framework,
 ) {
     private val logger by LoggerDelegate()
+    private val generatedTsFiles = mutableListOf<Path>()
 
     val rootSectionBuilder = FixtureSectionBuilder(
         parentSection = null,
@@ -36,6 +38,7 @@ class FrameworkFixtureGeneratorBuilder(
             .getTemplate("/specific/fixturegenerator/index.ts.ftl")
 
         val writer = FileWriter(indexTsPath.toFile())
+        generatedTsFiles.add(indexTsPath)
         freemarkerTemplate.process(freeMarkerContext, writer)
         writer.close()
     }
@@ -50,6 +53,7 @@ class FrameworkFixtureGeneratorBuilder(
 
         if (preparedFixturesTsPath.notExists()) {
             val writer = FileWriter(preparedFixturesTsPath.toFile())
+            generatedTsFiles.add(preparedFixturesTsPath)
             freemarkerTemplate.process(freeMarkerContext, writer)
             writer.close()
         }
@@ -65,6 +69,7 @@ class FrameworkFixtureGeneratorBuilder(
 
         if (frameworkGeneratorTsPath.notExists()) {
             val writer = FileWriter(frameworkGeneratorTsPath.toFile())
+            generatedTsFiles.add(frameworkGeneratorTsPath)
             freemarkerTemplate.process(freeMarkerContext, writer)
             writer.close()
         }
@@ -81,6 +86,7 @@ class FrameworkFixtureGeneratorBuilder(
             .getTemplate("/specific/fixturegenerator/DataFixtures.ts.ftl")
 
         val writer = FileWriter(dataFixturesTsPath.toFile())
+        generatedTsFiles.add(dataFixturesTsPath)
         freemarkerTemplate.process(freeMarkerContext, writer)
         writer.close()
     }
@@ -110,5 +116,7 @@ class FrameworkFixtureGeneratorBuilder(
                 "dataland-frontend:npm_run_fakefixtures",
             ),
         )
+
+        EsLintRunner(into, generatedTsFiles).run()
     }
 }
