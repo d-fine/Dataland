@@ -71,6 +71,8 @@ describeIf(
      * @param reportToReference The name of the report to reference
      */
     function selectHighImpactClimateSectorAndReport(sectorCardIndex: number, reportToReference: string): void {
+      console.log(reportToReference);
+      cy.wait(1000);
       cy.get('div[data-test="applicableHighImpactClimateSectors"]').find("div.p-multiselect-trigger").click();
       cy.get("li.p-multiselect-item")
         .eq(sectorCardIndex)
@@ -84,6 +86,7 @@ describeIf(
         .find('select[name="fileName"]')
         .eq(sectorCardIndex)
         .select(reportToReference);
+      // cy.pause();
     }
 
     /**
@@ -109,7 +112,7 @@ describeIf(
       cy.get('[data-test="rareOrEndangeredEcosystemsExposure"]').find('select[name="quality"]').select(3);
     }
 
-    it("Create a company and a SFDR dataset via the api, then edit the SFDR dataset and re-upload it via the form", () => {
+    it.only("Create a company and a SFDR dataset via the api, then edit the SFDR dataset and re-upload it via the form", () => {
       const uniqueCompanyMarker = Date.now().toString();
       const companyName = "Company-Created-In-Sfdr-DataIntegrity-Test-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
