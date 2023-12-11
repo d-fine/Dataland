@@ -8,10 +8,6 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploa
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.getTypescriptFieldAccessor
-as getTypescriptFieldAccessorUpload
-import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda
-as FrameworkDisplayValueLambdaUpload
 
 /**
  * A StringComponent represents an arbitrary textual value.
@@ -52,16 +48,6 @@ class StringComponent(
             uploadComponentName = "InputTextFormField",
             options = null,
             this,
-            valueGetter =  documentSupport.getFrameworkDisplayValueLambdaUpload(
-                FrameworkDisplayValueLambdaUpload(
-                    "formatStringForDatatable(${getTypescriptFieldAccessorUpload(true)})",
-                    setOf(
-                        "import { formatStringForDatatable } from " +
-                            "\"@/components/resources/dataTable/conversion/PlainStringValueGetterFactory\";",
-                    ),
-                ),
-                label, getTypescriptFieldAccessorUpload(),
-            ),
         )
     }
 

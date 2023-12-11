@@ -6,7 +6,9 @@ import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvYearlyDecimalTimes
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
-import org.dataland.frameworktoolbox.intermediate.group.*
+import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
+import org.dataland.frameworktoolbox.intermediate.group.edit
+import org.dataland.frameworktoolbox.intermediate.group.getOrNull
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -41,7 +43,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         identifier,
                         documentSupport.getFixtureExpression(
                             fixtureExpression = "pickSubsetOfElements(Object.values(Activity))",
-                            nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
+                            nullableFixtureExpression =
+                            "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
                             nullable = isNullable,
                         ),
                         imports = setOf(

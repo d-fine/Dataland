@@ -10,31 +10,102 @@ import { generateGdvFixtures } from "./GdvDataFixtures";
 export function generateGdvPreparedFixtures(): Array<FixtureData<GdvData>> {
   const preparedFixtures = [];
   // Note: Put the code for prepared fixture generation below. This file will not be overwritten automatically
-
-  const manipulatorFunctions: Array<(input: FixtureData<GdvData>) => FixtureData<GdvData>> = [];
-  manipulatorFunctions.push(manipulateFixtureForNoNullFields);
-  const preparedFixturesBeforeManipulation = generateGdvFixtures(manipulatorFunctions.length);
-
-  for (let i = 0; i < manipulatorFunctions.length; i++) {
-    preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
-  }
-
+  preparedFixtures.push(generateFixtureForNoNullFieldsAndOnlyYesAnswers());
   return preparedFixtures;
 }
 
 /**
- * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
- * @param input Fixture data to be manipulated
- * @returns the manipulated fixture data
+ * Generates a gdv fixture with no null values and all YesNo fields set to "Yes"
+ * @returns the fixture
  */
-function manipulateFixtureForNoNullFields(input: FixtureData<GdvData>): FixtureData<GdvData> {
-  input = generateGdvFixtures(1, 0)[0];
-  input.companyInformation.companyName = "Gdv-dataset-with-no-null-fields";
-  if (input.t.general?.masterData) {
-    input.t.general.masterData.berichtsPflicht = YesNo.Yes;
+function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData> {
+  const newFixture = generateGdvFixtures(1, 0)[0];
+  newFixture.companyInformation.companyName = "Gdv-dataset-with-no-null-fields";
+
+  if (newFixture.t.general?.masterData) {
+    newFixture.t.general.masterData.berichtsPflicht = YesNo.Yes;
   }
-  if (input.t.allgemein) {
-    input.t.allgemein.sektorMitHohenKlimaauswirkungen = YesNo.Yes;
+
+  if (newFixture.t.allgemein?.esgZiele) {
+    newFixture.t.allgemein.esgZiele = YesNo.Yes;
   }
-  return input;
+  if (newFixture.t.allgemein?.sektorMitHohenKlimaauswirkungen) {
+    newFixture.t.allgemein.sektorMitHohenKlimaauswirkungen = YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.nachhaltigkeitsbericht) {
+    newFixture.t.allgemein.nachhaltigkeitsbericht = YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze) {
+    newFixture.t.allgemein.mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze =
+      YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.uncgPrinzipien) {
+    newFixture.t.allgemein.uncgPrinzipien = YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.oecdLeitsaetze) {
+    newFixture.t.allgemein.oecdLeitsaetze = YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.ausschlusslistenAufBasisVonEsgKriterien) {
+    newFixture.t.allgemein.ausschlusslistenAufBasisVonEsgKriterien = YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.oekologischeSozialeFuehrungsstandardsOderPrinzipien) {
+    newFixture.t.allgemein.oekologischeSozialeFuehrungsstandardsOderPrinzipien = YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.esgBezogeneRechtsstreitigkeiten) {
+    newFixture.t.allgemein.esgBezogeneRechtsstreitigkeiten = YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.rechtsstreitigkeitenMitBezugZuE) {
+    newFixture.t.allgemein.rechtsstreitigkeitenMitBezugZuE = YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.rechtsstreitigkeitenMitBezugZuS) {
+    newFixture.t.allgemein.rechtsstreitigkeitenMitBezugZuS = YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.rechtsstreitigkeitenMitBezugZuG) {
+    newFixture.t.allgemein.rechtsstreitigkeitenMitBezugZuG = YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.esgRating) {
+    newFixture.t.allgemein.esgRating = YesNo.Yes;
+  }
+  if (newFixture.t.allgemein?.nachhaltigkeitsbezogenenAnleihen) {
+    newFixture.t.allgemein.nachhaltigkeitsbezogenenAnleihen = YesNo.Yes;
+  }
+
+  if (newFixture.t.umwelt?.produkteZurVerringerungDerUmweltbelastung) {
+    newFixture.t.umwelt.produkteZurVerringerungDerUmweltbelastung = YesNo.Yes;
+  }
+  if (newFixture.t.umwelt?.oekologischerMindestStandardFuerProduktionsprozesse) {
+    newFixture.t.umwelt.oekologischerMindestStandardFuerProduktionsprozesse = YesNo.Yes;
+  }
+  if (newFixture.t.umwelt?.biodiversitaet?.negativeAktivitaetenFuerDieBiologischeVielfalt) {
+    newFixture.t.umwelt.biodiversitaet.negativeAktivitaetenFuerDieBiologischeVielfalt = YesNo.Yes;
+  }
+  if (newFixture.t.umwelt?.biodiversitaet?.positiveAktivitaetenFuerDieBiologischeVielfalt) {
+    newFixture.t.umwelt.biodiversitaet.positiveAktivitaetenFuerDieBiologischeVielfalt = YesNo.Yes;
+  }
+  if (newFixture.t.umwelt?.fossileBrennstoffe?.einnahmenAusFossilenBrennstoffen) {
+    newFixture.t.umwelt.fossileBrennstoffe.einnahmenAusFossilenBrennstoffen = YesNo.Yes;
+  }
+
+  if (newFixture.t.soziales) {
+    newFixture.t.soziales.aenderungenUnternehmensstruktur = YesNo.Yes;
+  }
+
+  if (newFixture.t.soziales?.audit) {
+    newFixture.t.soziales.audit.auditsZurEinhaltungVonArbeitsstandards = YesNo.Yes;
+  }
+
+  if (newFixture.t.unternehmensfuehrungGovernance?.ceoVorsitzender) {
+    newFixture.t.unternehmensfuehrungGovernance.ceoVorsitzender = YesNo.Yes;
+  }
+  if (newFixture.t.unternehmensfuehrungGovernance?.einbeziehungVonStakeholdern) {
+    newFixture.t.unternehmensfuehrungGovernance.einbeziehungVonStakeholdern = YesNo.Yes;
+  }
+  if (newFixture.t.unternehmensfuehrungGovernance?.esgKriterienUndUeberwachungDerLieferanten) {
+    newFixture.t.unternehmensfuehrungGovernance.esgKriterienUndUeberwachungDerLieferanten = YesNo.Yes;
+  }
+
+  // TODO Emanuel: for later: we could think about introducing a util-function, that parses through objects T and sets all yesNos to "yes". WE will need this for several frameworks
+  // TODO Emanuel: And obviously doing it like above is not very convenient
+
+  return newFixture;
 }

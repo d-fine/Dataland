@@ -9,10 +9,6 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigB
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.getTypescriptFieldAccessor
-as getTypescriptFieldAccessorUpload
-import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda
-as FrameworkDisplayValueLambdaUpload
 
 /**
  * A SingleSelectComponent represents a choice between pre-defined values
@@ -23,15 +19,16 @@ open class SingleSelectComponent(
 ) : ComponentBase(identifier, parent) {
 
     var options: MutableSet<SelectionOption> = mutableSetOf()
+    val enumName = "${identifier.capitalizeEn()}Options"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val enum = dataClassBuilder.parentPackage.addEnum(
-            name = "${this.identifier.capitalizeEn()}Options",
-            options = this.options,
-            comment = "Enum class for the field ${this.identifier}",
+            name = enumName,
+            options = options,
+            comment = "Enum class for the field $identifier",
         )
         dataClassBuilder.addProperty(
-            this.identifier,
+            identifier,
             documentSupport.getJvmTypeReference(
                 enum.getTypeReference(isNullable),
                 isNullable,
@@ -43,10 +40,13 @@ open class SingleSelectComponent(
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
+                // TODO Emannuel: Discuss document support in general with Marc.
                 FrameworkDisplayValueLambda(
-                    "formatStringForDatatable(${getTypescriptFieldAccessor(true)})",
-                    // TODO Problem: The ts-version of the enum does only contain the "identifier" of the original enum, not the "value" (which is the label to display)
-
+                    "{\n" +
+                        generateMappingObject() +
+                        generateMapperFunction() +
+                        generateReturnStatement() +
+                        "}",
                     setOf(
                         "import { formatStringForDatatable } from " +
                             "\"@/components/resources/dataTable/conversion/PlainStringValueGetterFactory\";",
@@ -59,24 +59,13 @@ open class SingleSelectComponent(
 
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
         sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
-                uploadComponentName = "SingleSelectFormField",
-                component = this,
-                options = this.options,
-            valueGetter =  documentSupport.getFrameworkDisplayValueLambdaUpload(
-                    FrameworkDisplayValueLambdaUpload(
-                            "formatStringForDatatable(${getTypescriptFieldAccessorUpload(true)})",
-                            setOf(
-                                    "import { formatStringForDatatable } from " +
-                                            "\"@/components/resources/dataTable/conversion/PlainStringValueGetterFactory\";",
-                            ),
-                    ),
-                label, getTypescriptFieldAccessorUpload(),
-            ),
+            uploadComponentName = "SingleSelectFormField",
+            component = this,
+            options = options,
         )
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        val enumName = "${this.identifier.capitalizeEn()}Options"
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
@@ -90,4 +79,44 @@ open class SingleSelectComponent(
             ),
         )
     }
+
+    private fun generateMappingObject(): String {
+        val codeBuilder = StringBuilder()
+        codeBuilder.append("const mappings = {\n")
+
+        for (option in options) {
+            val escapedLabel = option.label.replace("\"", "\\\"")
+            codeBuilder.append("    ${option.identifier}: \"$escapedLabel\",\n")
+        }
+
+        codeBuilder.append("}\n")
+
+        return codeBuilder.toString()
+    }
+
+    private fun generateMapperFunction(): String {
+        val jsDoc =
+            "/**\n" +
+                "* Maps the technical name of a select option to the respective original name\n" +
+                "* @param technicalName of a select option \n" +
+                "* @param mappingObject that contains the mappings\n" +
+                "* @returns original name that matches the technical name\n" +
+                "*/\n"
+        val functionBody =
+            "function getOriginalNameFromTechnicalName<T extends string>" +
+                "(technicalName: T, mappingObject: {[key in T]:string}): string{\n" +
+                "   return mappingObject[technicalName]\n" +
+                "}\n"
+        return jsDoc + functionBody
+    }
+
+    private fun generateReturnStatement(): String {
+        return "return formatStringForDatatable(\n" +
+            "${getTypescriptFieldAccessor()} ? " +
+            "getOriginalNameFromTechnicalName(${getTypescriptFieldAccessor()}, mappings) : \"\"\n" +
+            ")\n"
+    }
 }
+
+// TODO Emanuel: Discuss EcmaString usage with Marc and where to use it.
+// TODO Emanuel: Discuss the document support with Marc.

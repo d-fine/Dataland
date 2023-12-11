@@ -10,10 +10,6 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploa
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.getTypescriptFieldAccessor
-as getTypescriptFieldAccessorUpload
-import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda
-as FrameworkDisplayValueLambdaUpload
 
 /**
  * A MultiSelectComponent represents a selection of valid NACE codes
@@ -27,7 +23,7 @@ open class MultiSelectComponent(
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addProperty(
-            this.identifier,
+            identifier,
             documentSupport.getJvmTypeReference(
                 TypeReference("List", isNullable, listOf(TypeReference("String", false))),
                 isNullable,
@@ -38,28 +34,28 @@ open class MultiSelectComponent(
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
-            FrameworkDisplayValueLambda(
-                "formatListOfStringsForDatatable(${getTypescriptFieldAccessor()}, '${escapeEcmaScript(label)}')",
-                setOf(
-                    "import { formatListOfStringsForDatatable } from " +
-                        "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
+            documentSupport.getFrameworkDisplayValueLambda(
+                FrameworkDisplayValueLambda(
+                    "{\n" +
+                        generateMappingObject() +
+                        generateMapperFunction() +
+                        generateReturnStatement() +
+                        "}",
+                    setOf(
+                        "import { formatListOfStringsForDatatable } from " +
+                            "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
+                    ),
                 ),
+                label, getTypescriptFieldAccessor(),
             ),
         )
     }
 
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
         sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
-                uploadComponentName = "MultiSelectFormField",
-                options = this.options,
-                component = this,
-                FrameworkDisplayValueLambdaUpload(
-                "formatListOfStringsForDatatable(${getTypescriptFieldAccessorUpload()}, '${escapeEcmaScript(label)}')",
-                setOf(
-                    "import { formatListOfStringsForDatatable } from " +
-                        "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
-                ),
-            ),
+            uploadComponentName = "MultiSelectFormField",
+            options = this.options,
+            component = this,
         )
     }
 
@@ -76,5 +72,45 @@ open class MultiSelectComponent(
                 "import { pickSubsetOfElements } from \"@e2e/fixtures/FixtureUtils\";",
             ),
         )
+    }
+
+    private fun generateMappingObject(): String {
+        // TODO Emanuel: this is a duplicate to SingleSelectComponent; centralize where?
+        val codeBuilder = StringBuilder()
+        codeBuilder.append("const mappings = {\n")
+
+        for (option in options) {
+            val escapedLabel = option.label.replace("\"", "\\\"")
+            codeBuilder.append("    ${option.identifier}: \"$escapedLabel\",\n")
+        }
+
+        codeBuilder.append("}\n")
+
+        return codeBuilder.toString()
+    }
+
+    private fun generateMapperFunction(): String {
+        // TODO Emanuel: this is a duplicate to SingleSelectComponent; centralize where?
+        val jsDoc =
+            "/**\n" +
+                "* Maps the technical name of a select option to the respective original name\n" +
+                "* @param technicalName of a select option \n" +
+                "* @param mappingObject that contains the mappings\n" +
+                "* @returns original name that matches the technical name\n" +
+                "*/\n"
+        val functionBody =
+            "function getOriginalNameFromTechnicalName<T extends string>" +
+                "(technicalName: T, mappingObject: {[key in T]:string}): string{\n" +
+                "   return mappingObject[technicalName]\n" +
+                "}\n"
+        return jsDoc + functionBody
+    }
+
+    private fun generateReturnStatement(): String {
+        return "return formatListOfStringsForDatatable(" +
+            "${getTypescriptFieldAccessor()}?.map(it => \n" +
+            "   getOriginalNameFromTechnicalName(it, mappings)), " +
+            "'${escapeEcmaScript(label)}'" +
+            ")"
     }
 }

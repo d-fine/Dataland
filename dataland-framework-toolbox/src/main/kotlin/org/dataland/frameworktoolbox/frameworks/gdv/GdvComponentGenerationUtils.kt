@@ -6,7 +6,10 @@ import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.dataland.frameworktoolbox.utils.Naming
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
-class GdvComponentGenerationUtils() : ComponentGenerationUtils() {
+/**
+ * Custom utility class used during Template conversion for the gdv framework.
+ */
+class GdvComponentGenerationUtils : ComponentGenerationUtils() {
     private fun getFieldNameFromGermanString(technicalFieldName: String): String {
         return Naming.getNameFromLabel(
             technicalFieldName

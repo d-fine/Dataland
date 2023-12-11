@@ -86,8 +86,35 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         explanation:
           "Bitte geben Sie an, zu welchen Sektoren (mit hohen Klimaauswirkungen) das Unternehmen zugeordnet werden kann.",
         shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.sektorMitHohenKlimaauswirkungen == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatListOfStringsForDatatable(dataset.allgemein?.sektor, "Sektor"),
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+          const mappings = {
+            A: "A",
+            B: "B",
+            C: "C",
+            D: "D",
+            E: "E",
+            F: "F",
+            G: "G",
+            H: "H",
+            L: "L",
+          };
+          /**
+           * Maps the technical name of a select option to the respective original name
+           * @param technicalName of a select option
+           * @param mappingObject that contains the mappings
+           * @returns original name that matches the technical name
+           */
+          function getOriginalNameFromTechnicalName<T extends string>(
+            technicalName: T,
+            mappingObject: { [key in T]: string },
+          ): string {
+            return mappingObject[technicalName];
+          }
+          return formatListOfStringsForDatatable(
+            dataset.allgemein?.sektor?.map((it) => getOriginalNameFromTechnicalName(it, mappings)),
+            "Sektor",
+          );
+        },
       },
       {
         type: "cell",
@@ -102,8 +129,31 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         label: "Frequenz der Berichterstattung",
 
         shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.nachhaltigkeitsbericht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.allgemein?.frequenzDerBerichterstattung),
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+          const mappings = {
+            Jaehrlich: "jährlich",
+            Halbjaehrlich: "halbjährlich",
+            Vierteljaehrlich: "vierteljährlich",
+            Monatlich: "monatlich",
+          };
+          /**
+           * Maps the technical name of a select option to the respective original name
+           * @param technicalName of a select option
+           * @param mappingObject that contains the mappings
+           * @returns original name that matches the technical name
+           */
+          function getOriginalNameFromTechnicalName<T extends string>(
+            technicalName: T,
+            mappingObject: { [key in T]: string },
+          ): string {
+            return mappingObject[technicalName];
+          }
+          return formatStringForDatatable(
+            dataset.allgemein?.frequenzDerBerichterstattung
+              ? getOriginalNameFromTechnicalName(dataset.allgemein?.frequenzDerBerichterstattung, mappings)
+              : "",
+          );
+        },
       },
       {
         type: "cell",
@@ -195,8 +245,31 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           "Wie spiegeln sich die Anreizmechanismen für den Bereich Umwelt in der jährlichen Zielsetzung für das Management wieder? Bitte geben Sie die aktuellen Verpflichtungen an.",
         shouldDisplay: (dataset: GdvData): boolean =>
           dataset.allgemein?.oekologischeSozialeFuehrungsstandardsOderPrinzipien == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.allgemein?.anreizmechanismenFuerDasManagementUmwelt),
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+          const mappings = {
+            Nein: "Nein",
+            JaAufsichtsrat: "Ja, Aufsichtsrat",
+            JaGeschaeftsleitung: "Ja, Geschäftsleitung",
+            JaAufsichtsratUndGeschaeftsleitung: "Ja, Aufsichtsrat und Geschäftsleitung",
+          };
+          /**
+           * Maps the technical name of a select option to the respective original name
+           * @param technicalName of a select option
+           * @param mappingObject that contains the mappings
+           * @returns original name that matches the technical name
+           */
+          function getOriginalNameFromTechnicalName<T extends string>(
+            technicalName: T,
+            mappingObject: { [key in T]: string },
+          ): string {
+            return mappingObject[technicalName];
+          }
+          return formatStringForDatatable(
+            dataset.allgemein?.anreizmechanismenFuerDasManagementUmwelt
+              ? getOriginalNameFromTechnicalName(dataset.allgemein?.anreizmechanismenFuerDasManagementUmwelt, mappings)
+              : "",
+          );
+        },
       },
       {
         type: "cell",
@@ -205,8 +278,34 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           "Wie spiegeln sich die Anreizmechanismen für den Bereich Soziales in der jährlichen Zielsetzung für das Management wieder? Bitte geben Sie die aktuellen Verpflichtungen an.",
         shouldDisplay: (dataset: GdvData): boolean =>
           dataset.allgemein?.oekologischeSozialeFuehrungsstandardsOderPrinzipien == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.allgemein?.anreizmechanismenFuerDasManagementSoziales),
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+          const mappings = {
+            Nein: "Nein",
+            JaAufsichtsrat: "Ja, Aufsichtsrat",
+            JaGeschaeftsleitung: "Ja, Geschäftsleitung",
+            JaAufsichtsratUndGeschaeftsleitung: "Ja, Aufsichtsrat und Geschäftsleitung",
+          };
+          /**
+           * Maps the technical name of a select option to the respective original name
+           * @param technicalName of a select option
+           * @param mappingObject that contains the mappings
+           * @returns original name that matches the technical name
+           */
+          function getOriginalNameFromTechnicalName<T extends string>(
+            technicalName: T,
+            mappingObject: { [key in T]: string },
+          ): string {
+            return mappingObject[technicalName];
+          }
+          return formatStringForDatatable(
+            dataset.allgemein?.anreizmechanismenFuerDasManagementSoziales
+              ? getOriginalNameFromTechnicalName(
+                  dataset.allgemein?.anreizmechanismenFuerDasManagementSoziales,
+                  mappings,
+                )
+              : "",
+          );
+        },
       },
       {
         type: "cell",
@@ -230,8 +329,29 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         label: "Status zu E",
         explanation: 'Sind die Rechtsstreitigkeiten mit Bezug zu "E" noch offen oder bereits geklärt?',
         shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.rechtsstreitigkeitenMitBezugZuE == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.allgemein?.statusZuE),
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+          const mappings = {
+            Offen: "offen",
+            Geklaert: "geklärt",
+          };
+          /**
+           * Maps the technical name of a select option to the respective original name
+           * @param technicalName of a select option
+           * @param mappingObject that contains the mappings
+           * @returns original name that matches the technical name
+           */
+          function getOriginalNameFromTechnicalName<T extends string>(
+            technicalName: T,
+            mappingObject: { [key in T]: string },
+          ): string {
+            return mappingObject[technicalName];
+          }
+          return formatStringForDatatable(
+            dataset.allgemein?.statusZuE
+              ? getOriginalNameFromTechnicalName(dataset.allgemein?.statusZuE, mappings)
+              : "",
+          );
+        },
       },
       {
         type: "cell",
@@ -254,8 +374,29 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         label: "Status zu S",
         explanation: 'Sind die Rechtsstreitigkeiten mit Bezug zu "S" noch offen oder bereits geklärt?',
         shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.rechtsstreitigkeitenMitBezugZuS == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.allgemein?.statusZuS),
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+          const mappings = {
+            Offen: "offen",
+            Geklaert: "geklärt",
+          };
+          /**
+           * Maps the technical name of a select option to the respective original name
+           * @param technicalName of a select option
+           * @param mappingObject that contains the mappings
+           * @returns original name that matches the technical name
+           */
+          function getOriginalNameFromTechnicalName<T extends string>(
+            technicalName: T,
+            mappingObject: { [key in T]: string },
+          ): string {
+            return mappingObject[technicalName];
+          }
+          return formatStringForDatatable(
+            dataset.allgemein?.statusZuS
+              ? getOriginalNameFromTechnicalName(dataset.allgemein?.statusZuS, mappings)
+              : "",
+          );
+        },
       },
       {
         type: "cell",
@@ -278,8 +419,29 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         label: "Status zu G",
         explanation: 'Sind die Rechtsstreitigkeiten mit Bezug zu "G" noch offen oder bereits geklärt?',
         shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.rechtsstreitigkeitenMitBezugZuG == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.allgemein?.statusZuG),
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+          const mappings = {
+            Offen: "offen",
+            Geklaert: "geklärt",
+          };
+          /**
+           * Maps the technical name of a select option to the respective original name
+           * @param technicalName of a select option
+           * @param mappingObject that contains the mappings
+           * @returns original name that matches the technical name
+           */
+          function getOriginalNameFromTechnicalName<T extends string>(
+            technicalName: T,
+            mappingObject: { [key in T]: string },
+          ): string {
+            return mappingObject[technicalName];
+          }
+          return formatStringForDatatable(
+            dataset.allgemein?.statusZuG
+              ? getOriginalNameFromTechnicalName(dataset.allgemein?.statusZuG, mappings)
+              : "",
+          );
+        },
       },
       {
         type: "cell",
@@ -687,8 +849,29 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Taxonomie Berichterstattung",
             explanation: "Wird der EU-Taxonomie Bericht auf Basis NFRD oder auf Basis CSRD erstellt?",
             shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.umwelt?.taxonomie?.taxonomieBerichterstattung),
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                Nfrd: "NFRD",
+                Csrd: "CSRD",
+              };
+              /**
+               * Maps the technical name of a select option to the respective original name
+               * @param technicalName of a select option
+               * @param mappingObject that contains the mappings
+               * @returns original name that matches the technical name
+               */
+              function getOriginalNameFromTechnicalName<T extends string>(
+                technicalName: T,
+                mappingObject: { [key in T]: string },
+              ): string {
+                return mappingObject[technicalName];
+              }
+              return formatStringForDatatable(
+                dataset.umwelt?.taxonomie?.taxonomieBerichterstattung
+                  ? getOriginalNameFromTechnicalName(dataset.umwelt?.taxonomie?.taxonomieBerichterstattung, mappings)
+                  : "",
+              );
+            },
           },
           {
             type: "cell",
@@ -811,11 +994,33 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           {
             type: "cell",
             label: "Art des Audits",
-
+            explanation: "TEST",
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes",
-            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.soziales?.audit?.artDesAudits),
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                InterneAnhoerung: "Interne Anhörung",
+                PruefungDurchDritte: "Prüfung durch Dritte",
+                SowohlInternAlsAuchVonDrittanbietern: "Sowohl intern als auch von Drittanbietern",
+              };
+              /**
+               * Maps the technical name of a select option to the respective original name
+               * @param technicalName of a select option
+               * @param mappingObject that contains the mappings
+               * @returns original name that matches the technical name
+               */
+              function getOriginalNameFromTechnicalName<T extends string>(
+                technicalName: T,
+                mappingObject: { [key in T]: string },
+              ): string {
+                return mappingObject[technicalName];
+              }
+              return formatStringForDatatable(
+                dataset.soziales?.audit?.artDesAudits
+                  ? getOriginalNameFromTechnicalName(dataset.soziales?.audit?.artDesAudits, mappings)
+                  : "",
+              );
+            },
           },
           {
             type: "cell",
@@ -887,7 +1092,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
       {
         type: "cell",
         label: "Wirtschaftsprüfer",
-
+        explanation: "TEST",
         shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
           formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.wirtschaftspruefer),

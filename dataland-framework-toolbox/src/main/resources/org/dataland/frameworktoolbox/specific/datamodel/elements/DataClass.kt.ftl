@@ -1,8 +1,10 @@
 package ${package}
+<#if imports?size != 0>
 
 <#list imports as import>
 import ${import}
 </#list>
+</#if>
 
 /**
 <#list comment_lines as line> * ${line}
