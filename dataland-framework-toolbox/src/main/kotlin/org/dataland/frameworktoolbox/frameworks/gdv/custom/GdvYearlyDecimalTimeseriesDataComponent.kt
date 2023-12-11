@@ -6,9 +6,11 @@ import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
+import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -57,6 +59,16 @@ class GdvYearlyDecimalTimeseriesDataComponent(
                 ),
                 isNullable,
             ),
+        )
+    }
+
+    override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
+        sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
+            uploadComponentName = "GdvYearlyDecimalTimeseriesDataFormField",
+            options = decimalRows.map {
+                SelectionOption(it.identifier, it.label)
+            }.toMutableSet(),
+            component = this,
         )
     }
 
