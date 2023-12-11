@@ -31,6 +31,7 @@ class EsLintRunner(val repository: DatalandRepository, val files: List<Path>) {
 
         argumentList.addAll(files.map { it.toAbsolutePath().toString() })
 
+        @Suppress("SpreadOperator")
         ProcessBuilder(*argumentList.toTypedArray())
             .directory((repository.path / "dataland-frontend").toFile())
             .redirectOutput(ProcessBuilder.Redirect.INHERIT)

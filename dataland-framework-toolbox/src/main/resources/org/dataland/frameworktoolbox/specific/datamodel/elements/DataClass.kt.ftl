@@ -15,6 +15,11 @@ import ${import}
 </#list>
 data class ${className}(
 <#list properties as property>
+<#if property.name?length + property.type.shortenedQualifier?length + 11 < 120>
     val ${property.name}: ${property.type.shortenedQualifier},
+<#else>
+    val ${property.name}:
+    ${property.type.shortenedQualifier},
+</#if>
 </#list>
 )

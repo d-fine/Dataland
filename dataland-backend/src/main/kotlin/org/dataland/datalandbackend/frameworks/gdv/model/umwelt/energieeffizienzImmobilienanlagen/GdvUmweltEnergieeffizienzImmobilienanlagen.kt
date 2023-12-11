@@ -8,5 +8,6 @@ import org.dataland.datalandbackend.model.gdv.YearlyTimeseriesData
  */
 data class GdvUmweltEnergieeffizienzImmobilienanlagen(
     val unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen: String?,
-    val berichterstattungEnergieverbrauchVonImmobilienvermoegen: YearlyTimeseriesData<BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues?>?,
+    val berichterstattungEnergieverbrauchVonImmobilienvermoegen:
+    YearlyTimeseriesData<BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues?>?,
 )

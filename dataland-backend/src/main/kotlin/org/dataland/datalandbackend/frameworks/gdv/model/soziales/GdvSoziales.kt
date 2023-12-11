@@ -17,6 +17,7 @@ data class GdvSoziales(
     val geschlechterdiversitaet: GdvSozialesGeschlechterdiversitaet?,
     val audit: GdvSozialesAudit?,
     val anzahlDerBetroffenenMitarbeiter: YearlyTimeseriesData<AnzahlDerBetroffenenMitarbeiterValues?>?,
-    val auswirkungenAufAnteilBefristerVertraegeUndFluktuation: YearlyTimeseriesData<AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues?>?,
+    val auswirkungenAufAnteilBefristerVertraegeUndFluktuation:
+    YearlyTimeseriesData<AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues?>?,
     val budgetFuerSchulungAusbildung: YearlyTimeseriesData<BudgetFuerSchulungAusbildungValues?>?,
 )

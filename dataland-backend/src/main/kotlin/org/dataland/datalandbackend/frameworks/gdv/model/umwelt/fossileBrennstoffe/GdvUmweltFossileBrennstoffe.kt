@@ -9,5 +9,6 @@ import org.dataland.datalandbackend.model.gdv.YearlyTimeseriesData
  */
 data class GdvUmweltFossileBrennstoffe(
     val einnahmenAusFossilenBrennstoffen: YesNo?,
-    val berichterstattungEinnahmenAusFossilenBrennstoffen: YearlyTimeseriesData<BerichterstattungEinnahmenAusFossilenBrennstoffenValues?>?,
+    val berichterstattungEinnahmenAusFossilenBrennstoffen:
+    YearlyTimeseriesData<BerichterstattungEinnahmenAusFossilenBrennstoffenValues?>?,
 )
