@@ -30,8 +30,87 @@ export function generateSfdrPreparedFixtures(): Array<FixtureData<SfdrData>> {
     ),
   );
   preparedFixtures.push(manipulateFixtureForNoNullFields(generateSfdrFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForInvalidCurrencyInput(generateSfdrFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForInvalidBigDecimalDataPointInput(generateSfdrFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForInvalidLongDataPointInput(generateSfdrFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForEmptyStringDocumentReference(generateSfdrFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForInvalidPercentageInput(generateSfdrFixtures(1, 0)[0]));
+  preparedFixtures.push(manipulateFixtureForTwoInvalidInputs(generateSfdrFixtures(1, 0)[0]));
 
   return preparedFixtures;
+}
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * sets the currencyDataPoint to an illegal negative value
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForInvalidCurrencyInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-invalid-currency-input";
+  input.t.social!.socialAndEmployeeMatters!.averageGrossHourlyEarningsFemaleEmployees!.value = -100;
+  return input;
+}
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * sets an extendedDataPoint<BigDecimal> to an invalid negative value>
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForInvalidBigDecimalDataPointInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-invalid-negative-big-decimal-input";
+  input.t.social!.socialAndEmployeeMatters!.workdaysLostInDays!.value = -1;
+  return input;
+}
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * sets an extendedDataPoint<long> to an invalid negative value>
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForInvalidLongDataPointInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-invalid-negative-long-input";
+  input.t.social!.antiCorruptionAndAntiBribery!.reportedConvictionsOfBriberyAndCorruption!.value = -1;
+  return input;
+}
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * sets a percentage to an invalid value > 100
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForInvalidPercentageInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-invalid-percentage-input";
+  input.t.social!.socialAndEmployeeMatters!.rateOfAccidentsInPercent!.value = 120;
+  return input;
+}
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * sets a percentage to an invalid value > 100 AND a number to -1
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForTwoInvalidInputs(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-two-invalid-inputs";
+  input.t.social!.socialAndEmployeeMatters!.rateOfAccidentsInPercent!.value = 120;
+  input.t.social!.antiCorruptionAndAntiBribery!.reportedConvictionsOfBriberyAndCorruption!.value = -1;
+  return input;
+}
+
+/**
+ * Sets the company name to a specific value to be able to pick this dataset from the prepared fixtures.
+ * sets a document reference to empty string
+ * @param input Fixture data to be manipulated
+ * @returns the manipulated fixture data
+ */
+function manipulateFixtureForEmptyStringDocumentReference(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
+  input.companyInformation.companyName = "Sfdr-dataset-with-empty-string-document-reference";
+  input.t.social!.socialAndEmployeeMatters!.maleBoardMembers!.dataSource!.fileReference = "";
+  return input;
 }
 
 /**
@@ -124,9 +203,9 @@ function generateOneSfdrDatasetWithManyNulls(): SfdrData {
   return {
     general: {
       general: {
-        dataDate: "27-08-2022",
+        dataDate: "2022-08-27",
         fiscalYearDeviation: "Deviation",
-        fiscalYearEnd: "marker-for-test",
+        fiscalYearEnd: "2023-01-01",
         scopeOfEntities: null!,
         referencedReports: null!,
       },
