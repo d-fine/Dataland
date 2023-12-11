@@ -7955,13 +7955,15 @@
         ]
       },
       "GdvAllgemein": {
-        "required": [
-          "esgZiele"
-        ],
         "type": "object",
         "properties": {
           "esgZiele": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "ziele": {
             "type": "string",
@@ -8002,35 +8004,50 @@
               }
             ]
           },
-          "aktuelleBerichte": {
+          "iso14001": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointString"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
+          },
+          "iso45001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso27001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso50001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "weitereAkkreditierungen": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           },
           "mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze": {
             "nullable": true,
             "allOf": [
               {
                 "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "uncgPrinzipien": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "richtlinienEinhaltungUngc": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointString"
               }
             ]
           },
@@ -8043,14 +8060,6 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "richtlinienEinhaltungOecd": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointString"
               }
             ]
           },
@@ -8275,13 +8284,15 @@
         }
       },
       "GdvGeneralMasterData": {
-        "required": [
-          "berichtsPflicht"
-        ],
         "type": "object",
         "properties": {
           "berichtsPflicht": {
-            "$ref": "#/components/schemas/YesNo"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "gueltigkeitsDatum": {
             "type": "string",
@@ -8300,6 +8311,10 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
+          },
+          "sicherheitsmassnahmenFuerMitarbeiter": {
+            "type": "string",
+            "nullable": true
           },
           "einkommensgleichheit": {
             "nullable": true,
@@ -8379,10 +8394,6 @@
       "GdvSozialesEinkommensgleichheit": {
         "type": "object",
         "properties": {
-          "sicherheitsmassnahmenFuerMitarbeiter": {
-            "type": "string",
-            "nullable": true
-          },
           "massnahmenZurVerbesserungDerEinkommensungleichheit": {
             "type": "string",
             "nullable": true
@@ -8725,6 +8736,13 @@
           "mechanismenZurAusrichtungAufStakeholder": {
             "type": "string",
             "nullable": true
+          },
+          "veroeffentlichteUnternehmensrichtlinien": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
           },
           "esgKriterienUndUeberwachungDerLieferanten": {
             "nullable": true,
