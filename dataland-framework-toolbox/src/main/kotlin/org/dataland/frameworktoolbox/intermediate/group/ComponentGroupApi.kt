@@ -13,7 +13,7 @@ interface ComponentGroupApi {
      * Create a new subcomponent. Throws an exception when the identifier is already in use
      * or the provided class cannot be constructed.
      */
-    fun <T : ComponentBase> create(identifier: String, nextToIdentifier: String? = null, clazz: KClass<T>, init: (T.() -> Unit)? = null): T
+    fun <T : ComponentBase> create(identifier: String, nextToIdentifier: String? = null, clazz: KClass<T>, init: (T.() -> Unit)? = null): T // TODO Emanuel: insertBefore otherise not possible to put on 1st place
 
     /**
      * Edit an existing subcomponent. Throws an exception when the identifier is not existent or

@@ -25,7 +25,7 @@ class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGrou
             "The identifier ${component.identifier} already exists."
         }
         init?.let { component.init() }
-        if (nextToIdentifier == null) { // TODO Emanuel: Ask Marc for general feedback on this new feature
+        if (nextToIdentifier == null) {
             components.add(component) } else {
             val indexOfNextToIdentifier = components.indexOfFirst { it.identifier == nextToIdentifier }
 

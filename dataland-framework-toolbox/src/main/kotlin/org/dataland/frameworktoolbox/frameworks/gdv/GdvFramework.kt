@@ -2,7 +2,8 @@ package org.dataland.frameworktoolbox.frameworks.gdv
 
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
-import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvListOfBaseDataPoint
+import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvListOfBaseDataPointComponent
+import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvYearlyDecimalTimeseriesDataComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
@@ -72,7 +73,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     }
                 }
             }
-        }
+
 
         val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt")
         componentGroupUmwelt?.edit<ComponentGroup>("treibhausgasemissionen") {
@@ -210,18 +211,12 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             }
         }
 
-        // TODO: Remove this. this is just a POC for showing how to create a GdvYearlyDecimalTimeseriesData.
-        /*
+
         framework.root.edit<ComponentGroup>("allgemein") {
-            create<GdvYearlyDecimalTimeseriesDataComponent>("testingData") {
-                label = "Data, for Testing!"
-         decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope1", "Scope 1", "tCO2-Äquiv."),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope2", "Scope 2", "tCO2-Äquiv."),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope3", "Scope 3", "tCO2-Äquiv."),
-                )
+            create<GdvListOfBaseDataPointComponent>("weitereAkkreditierungen", "iso50001") {
+                label = "Weitere Akkreditierungen"
             }
-        }*/
+        }
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {

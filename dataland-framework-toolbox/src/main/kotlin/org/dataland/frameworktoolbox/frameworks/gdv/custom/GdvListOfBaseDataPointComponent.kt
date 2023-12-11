@@ -1,18 +1,22 @@
 package org.dataland.frameworktoolbox.frameworks.gdv.custom
 
+import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
 /**
  * A GdvYearlyDecimalTimeseriesDataComponent is an in-memory representation of a generic field
  * that encodes several values across a span of multi years. It is displayed / upload in a matrix
  */
-class GdvListOfBaseDataPoint(
+class GdvListOfBaseDataPointComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
@@ -33,34 +37,21 @@ class GdvListOfBaseDataPoint(
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        // TODO Emanuel: Do as soon as display component available in framework
-        /*val configurationObject = mutableMapOf<String, Map<String, String>>()
-        for (row in decimalRows) {
-            configurationObject[row.identifier] = mapOf(
-                "label" to row.label,
-                "unitSuffix" to row.unitSuffix,
-            )
-        }
-
-        val objectMapper = jacksonObjectMapper()
-        objectMapper.disable(JsonWriteFeature.QUOTE_FIELD_NAMES.mappedFeature())
-        val configurationObjectString = objectMapper.writeValueAsString(configurationObject)
-
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+        sectionConfigBuilder.addStandardCellWithValueGetterFactory( // TODO for now trying to display just the names
             this,
             FrameworkDisplayValueLambda(
-                "formatGdvYearlyDecimalTimeseriesDataForTable(" +
-                    "${getTypescriptFieldAccessor(true)}, " +
-                    "$configurationObjectString, " +
-                    "'${StringEscapeUtils.escapeEcmaScript(label)}')",
+                "{\n" +
+                    "return formatListOfStringsForDatatable(" +
+                    "${getTypescriptFieldAccessor()}?.map(it => it.value), " +
+                    "'${StringEscapeUtils.escapeEcmaScript(label)}'" +
+                    ")" +
+                    "}",
                 setOf(
-                    "import { formatGdvYearlyDecimalTimeseriesDataForTable } from " +
-                        "\"@/components/resources/dataTable/conversion/gdv" +
-                        "/GdvYearlyDecimalTimeseriesDataGetterFactory\";",
+                    "import { formatListOfStringsForDatatable } from " +
+                        "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
                 ),
             ),
-        )*/
-        println("nothing") // TODO
+        )
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
