@@ -182,7 +182,9 @@ abstract class PavedRoadFramework(
         customizeViewModel(viewConfig)
         viewConfig.build(into = datalandProject)
 
-        // TODO Emanuel: At the end we will need the generateUpload function here
+        val uploadConfig = generateUploadModel(framework)
+        customizeUploadModel(uploadConfig)
+        uploadConfig.build(into = datalandProject)
 
         val fixtureGenerator = generateFakeFixtureGenerator(framework)
         customizeFixtureGenerator(fixtureGenerator)

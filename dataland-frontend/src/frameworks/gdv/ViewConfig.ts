@@ -917,7 +917,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           {
             type: "cell",
             label: "Art des Audits",
-
+            explanation: "TEST",
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
@@ -967,7 +967,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
       {
         type: "cell",
         label: "Wirtschaftsprüfer",
-
+        explanation: "TEST",
         shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
           formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.wirtschaftspruefer),

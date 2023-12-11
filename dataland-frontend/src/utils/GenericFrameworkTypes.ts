@@ -23,13 +23,13 @@ export interface Subcategory {
 }
 
 export interface Field {
-  showIf: (dataModel?: FrameworkData) => boolean;
   name: string;
   label: string;
   description: string;
   unit?: string;
-  component: string;
+  uploadComponentName: string;
   dependency?: string;
+  showIf: (dataModel?: FrameworkData) => boolean;
   validation?: string;
   validationLabel?: string;
   required?: boolean;

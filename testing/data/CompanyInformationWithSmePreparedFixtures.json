@@ -2,55 +2,55 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Joplin",
-			"headquartersPostalCode": "57642-4284",
-			"sector": "systems",
+			"headquarters": "South Giaview",
+			"headquartersPostalCode": "24526",
+			"sector": "deliverables",
 			"identifiers": {
-				"Lei": [
-					"9dFkBP971JOqGo0N0nfQ"
-				],
+				"Lei": [],
 				"Isin": [
-					"lprNejejRM07",
-					"68a924Yrtk35"
+					"nqQ6SJ4Gg9eQ"
 				],
-				"PermId": [],
-				"Ticker": [],
+				"PermId": [
+					"i5gLXVRXn1"
+				],
+				"Ticker": [
+					"1B5OYit"
+				],
 				"Duns": [
-					"XiG7UEG4S"
+					"QAhBv7ocy"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"VoNpP2YyZcbUKPr"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "OM",
+			"countryCode": "CH",
 			"companyAlternativeNames": [
-				"Boyle, Heller and Raynor",
-				"Waelchi Inc"
+				"Dibbert, Veum and Moen",
+				"Fritsch - Hartmann",
+				"Kessler, Rutherford and Hyatt",
+				"Smith Group"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": null,
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://giving-decency.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"05.1",
-						"27.33",
-						"66.29",
-						"80.3",
-						"82.11"
+						"01.21",
+						"25.11",
+						"56.1",
+						"64.3"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Douglas Road 396",
-						"postalCode": null,
-						"city": "Beavercreek",
-						"state": "Texas",
-						"country": "PK"
+						"streetAndHouseNumber": null,
+						"postalCode": "05884",
+						"city": "Milliestad",
+						"state": null,
+						"country": "CO"
 					},
-					"numberOfEmployees": 6777,
-					"fiscalYearStart": "2024-11-09"
+					"numberOfEmployees": 2396,
+					"fiscalYearStart": "2024-10-05"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -60,77 +60,21 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Rodriguez, Lueilwitz and Altenwerth",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Lang Meadows 15923",
-								"postalCode": "88532-8908",
-								"city": "West Sigridboro",
-								"state": "Nebraska",
-								"country": "CU"
-							},
-							"shareOfTotalRevenueInPercent": 62.5033
-						},
-						{
-							"nameOfProductionSite": "Dickens, Torp and Wilderman",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Labadie Road 63170",
-								"postalCode": "87399-8279",
-								"city": "Farmington",
-								"state": "South Carolina",
-								"country": "SC"
-							},
-							"shareOfTotalRevenueInPercent": 87.0895
-						},
-						{
-							"nameOfProductionSite": "Mueller, Huels and Kozey",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "78921",
-								"city": "North Yvonnecester",
-								"state": "Kentucky",
-								"country": "SO"
-							},
-							"shareOfTotalRevenueInPercent": 93.0883
-						},
-						{
-							"nameOfProductionSite": "Hansen, Leuschke and Kuhlman",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Schuster Pine 110",
-								"postalCode": "66800",
-								"city": "Augusta-Richmond County",
-								"state": null,
-								"country": "SJ"
-							},
-							"shareOfTotalRevenueInPercent": 33.7783
-						},
-						{
-							"nameOfProductionSite": "Dach - DuBuque",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Pinfold Lane 366",
-								"postalCode": "60029",
-								"city": "Fort Javon",
-								"state": null,
-								"country": "GG"
-							},
-							"shareOfTotalRevenueInPercent": 29.4758
-						}
-					]
+					"listOfProductionSites": []
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Gorgeous Soft Salad",
-							"shareOfTotalRevenueInPercent": 20.914
+							"name": "Tasty Frozen Chicken",
+							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Ergonomic Soft Sausages",
-							"shareOfTotalRevenueInPercent": 99.4885
+							"name": "Bespoke Frozen Towels",
+							"shareOfTotalRevenueInPercent": 3.8642
 						},
 						{
-							"name": "Ergonomic Granite Keyboard",
-							"shareOfTotalRevenueInPercent": 86.5621
+							"name": "Modern Granite Towels",
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
 				}
@@ -140,23 +84,24 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
+					"powerConsumptionInMWh": 1933,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"energyConsumptionHeatingAndHotWaterInMWh": 171,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 39041619,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 28513560,
 					"naturalHazardsCovered": [
-						"EarthQuake",
 						"Hail",
-						"Wind",
+						"Snow",
+						"EarthQuake",
 						"Avalanche",
-						"Snow"
+						"Flooding",
+						"Wind"
 					]
 				}
 			}
@@ -166,39 +111,44 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Fredericboro",
-			"headquartersPostalCode": "73500",
-			"sector": "channels",
+			"headquarters": "Lake Daphne",
+			"headquartersPostalCode": "44225",
+			"sector": "convergence",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"R3d5qdQmlgWvUJ8jIYxs"
+				],
 				"Isin": [
-					"am4zgVzLepRX",
-					"zW8vNZvH6fYJ"
+					"adV8Aa5w0PuD",
+					"nMgbZplD6TOw"
 				],
-				"PermId": [],
-				"Ticker": [
-					"BVNlSMZ"
+				"PermId": [
+					"G962d3OL4n"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"26fAN0BVL"
+				"Ticker": [],
+				"Duns": [
+					"aHFoNhrDI"
 				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"QWBiABZUnLXa4cn"
+				]
 			},
-			"countryCode": "ZM",
+			"countryCode": "PN",
 			"companyAlternativeNames": [
-				"Cassin LLC",
-				"Luettgen, Dicki and Leannon"
+				"Collier, Mills and Ratke",
+				"Koepp, Daugherty and West",
+				"Lowe - Parisian"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://confused-wampum.org/",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"65.30"
+						"47.41"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -207,13 +157,13 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 3516,
-					"fiscalYearStart": "2024-07-14"
+					"numberOfEmployees": 5008,
+					"fiscalYearStart": "2024-09-18"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 29186707,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 14206116
+					"revenueInEUR": 76334391,
+					"operatingCostInEUR": 41553529,
+					"capitalAssetsInEUR": 24502934
 				}
 			},
 			"production": {
@@ -223,45 +173,35 @@
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Elegant Granite Pants",
-							"shareOfTotalRevenueInPercent": 65.4695
+							"name": "Ergonomic Steel Car",
+							"shareOfTotalRevenueInPercent": 82.406
 						},
 						{
-							"name": "Electronic Fresh Tuna",
-							"shareOfTotalRevenueInPercent": 86.3346
-						},
-						{
-							"name": "Modern Frozen Car",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Small Steel Fish",
-							"shareOfTotalRevenueInPercent": 89.3896
-						},
-						{
-							"name": "Incredible Fresh Cheese",
-							"shareOfTotalRevenueInPercent": 27.9836
+							"name": "Modern Concrete Shirt",
+							"shareOfTotalRevenueInPercent": 47.2784
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 643,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 341,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 540,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
-					"naturalHazardsCovered": null
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 22801945,
+					"naturalHazardsCovered": [
+						"Flooding"
+					]
 				}
 			}
 		},
@@ -270,40 +210,42 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "North Cieloton",
-			"headquartersPostalCode": null,
-			"sector": "infrastructures",
+			"headquarters": "West Nils",
+			"headquartersPostalCode": "35221",
+			"sector": "web services",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"eIIX3ZNTvv0q0Pr7N5Dr"
+				],
 				"Isin": [
-					"29wKkj3xn4IF"
+					"l5ejN7PKGN0R"
 				],
 				"PermId": [],
 				"Ticker": [
-					"j74Vq1x"
+					"TNS9WrY"
 				],
 				"Duns": [
-					"9ca8uhf8Q"
+					"KGiOPfBWd"
 				],
-				"VatNumber": [
-					"kbaxkADtd"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "EG",
+			"countryCode": "PM",
 			"companyAlternativeNames": [
-				"Doyle - Kessler",
-				"Emmerich - Jones"
+				"Blick, Ritchie and Schamberger",
+				"Jacobs Inc",
+				"Okuneva, Donnelly and Simonis",
+				"Schiller Inc"
 			],
-			"companyLegalForm": null,
-			"website": "https://blaring-indicator.org",
+			"companyLegalForm": "GmbH",
+			"website": "https://excitable-complex.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"70.1"
+						"14.20"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -312,58 +254,99 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 276,
-					"fiscalYearStart": "2024-05-23"
+					"numberOfEmployees": 6700,
+					"fiscalYearStart": "2024-05-03"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 9581981,
-					"operatingCostInEUR": 47680558,
-					"capitalAssetsInEUR": 12342294
+					"revenueInEUR": 91558872,
+					"operatingCostInEUR": 39135766,
+					"capitalAssetsInEUR": 23192521
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
-				},
-				"products": {
-					"listOfProducts": [
+					"listOfProductionSites": [
 						{
-							"name": "Oriental Concrete Sausages",
-							"shareOfTotalRevenueInPercent": 92.6933
+							"nameOfProductionSite": "Cremin Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Satterfield Crest 934",
+								"postalCode": "47052",
+								"city": "Bahringerborough",
+								"state": "New Hampshire",
+								"country": "PA"
+							},
+							"shareOfTotalRevenueInPercent": 15.5497
 						},
 						{
-							"name": "Oriental Soft Shirt",
-							"shareOfTotalRevenueInPercent": 66.0542
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Lucile Shoals 54130",
+								"postalCode": "63715",
+								"city": "South Marianna",
+								"state": "West Virginia",
+								"country": "VC"
+							},
+							"shareOfTotalRevenueInPercent": 81.8601
 						},
 						{
-							"name": "Recycled Granite Salad",
-							"shareOfTotalRevenueInPercent": 50.2811
+							"nameOfProductionSite": "Huels, Davis and Hahn",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Agnes View 6223",
+								"postalCode": "77310-9646",
+								"city": "East Madge",
+								"state": "Louisiana",
+								"country": "BM"
+							},
+							"shareOfTotalRevenueInPercent": 32.6953
+						},
+						{
+							"nameOfProductionSite": "Lemke, Langosh and Smitham",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Schumm Crossroad 8252",
+								"postalCode": "00757",
+								"city": "East Kayleeborough",
+								"state": null,
+								"country": "MF"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Heaney and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "89807-4759",
+								"city": "East Maciehaven",
+								"state": "Mississippi",
+								"country": "DJ"
+							},
+							"shareOfTotalRevenueInPercent": 6.3978
 						}
 					]
+				},
+				"products": {
+					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 241,
+					"powerConsumptionInMWh": 1842,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 920,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 21882613,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 33709329,
 					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Hail",
-						"Snow",
 						"Avalanche",
-						"Flooding"
+						"Hail",
+						"Snow"
 					]
 				}
 			}

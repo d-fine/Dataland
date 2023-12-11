@@ -10,10 +10,6 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploa
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.getTypescriptFieldAccessor
-as getTypescriptFieldAccessorUpload
-import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkDisplayValueLambda
-as FrameworkDisplayValueLambdaUpload
 
 /**
  * A MultiSelectComponent represents a selection of valid NACE codes
@@ -60,13 +56,6 @@ open class MultiSelectComponent(
             uploadComponentName = "MultiSelectFormField",
             options = this.options,
             component = this,
-            FrameworkDisplayValueLambdaUpload(
-                "formatListOfStringsForDatatable(${getTypescriptFieldAccessorUpload()}, '${escapeEcmaScript(label)}')",
-                setOf(
-                    "import { formatListOfStringsForDatatable } from " +
-                        "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
-                ),
-            ),
         )
     }
 
