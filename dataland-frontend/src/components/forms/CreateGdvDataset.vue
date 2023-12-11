@@ -9,24 +9,24 @@
       <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
-              v-model="companyAssociatedGdvData"
-              :actions="false"
-              type="form"
-              :id="formId"
-              :name="formId"
-              @submit="postGdvData"
-              @submit-invalid="checkCustomInputs"
+            v-model="companyAssociatedGdvData"
+            :actions="false"
+            type="form"
+            :id="formId"
+            :name="formId"
+            @submit="postGdvData"
+            @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" />
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" />
 
             <FormKit type="group" name="data" label="data">
               <FormKit
-                  type="group"
-                  v-for="category in gdvDataModel"
-                  :key="category"
-                  :label="category.label"
-                  :name="category.name"
+                type="group"
+                v-for="category in gdvDataModel"
+                :key="category"
+                :label="category.label"
+                :name="category.name"
               >
                 <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
@@ -40,20 +40,20 @@
                     <div class="col-9 formFields">
                       <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
                         <component
-                            v-if="field.showIf(companyAssociatedGdvData.data)"
-                            :is="field.component"
-                            :label="field.label"
-                            :placeholder="field.placeholder"
-                            :description="field.description"
-                            :name="field.name"
-                            :options="field.options"
-                            :required="field.required"
-                            :validation="field.validation"
-                            :validation-label="field.validationLabel"
-                            :data-test="field.name"
-                            :unit="field.unit"
-                            @reportsUpdated="updateDocumentsList"
-                            :ref="field.name"
+                          v-if="field.showIf(companyAssociatedGdvData.data)"
+                          :is="field.component"
+                          :label="field.label"
+                          :placeholder="field.placeholder"
+                          :description="field.description"
+                          :name="field.name"
+                          :options="field.options"
+                          :required="field.required"
+                          :validation="field.validation"
+                          :validation-label="field.validationLabel"
+                          :data-test="field.name"
+                          :unit="field.unit"
+                          @reportsUpdated="updateDocumentsList"
+                          :ref="field.name"
                         />
                       </FormKit>
                     </div>
@@ -76,9 +76,9 @@
               <ul>
                 <li v-for="subcategory in category.subcategories" :key="subcategory">
                   <a
-                      v-if="subcategoryVisibility.get(subcategory) ?? true"
-                      @click="smoothScroll(`#${subcategory.name}`)"
-                  >{{ subcategory.label }}</a
+                    v-if="subcategoryVisibility.get(subcategory) ?? true"
+                    @click="smoothScroll(`#${subcategory.name}`)"
+                    >{{ subcategory.label }}</a
                   >
                 </li>
               </ul>
@@ -103,7 +103,7 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { CompanyAssociatedDataGdvData,  type CompanyReport,  DataTypeEnum} from "@clients/backend";
+import { type CompanyAssociatedDataGdvData, type CompanyReport, DataTypeEnum } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -137,7 +137,8 @@ import CurrencyDataPointFormField from "@/components/forms/parts/fields/Currency
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
-import {gdvDataModel} from "@/frameworks/gdv/UploadConfig";
+import GdvYearlyDecimalTimeseriesDataFormField from "@/components/forms/parts/fields/GdvYearlyDecimalTimeseriesDataFormField.vue";
+import { gdvDataModel } from "@/frameworks/gdv/UploadConfig";
 
 export default defineComponent({
   setup() {
@@ -179,6 +180,7 @@ export default defineComponent({
     YesNoBaseDataPointFormField,
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
+    GdvYearlyDecimalTimeseriesDataFormField,
   },
   directives: {
     tooltip: Tooltip,
@@ -249,20 +251,20 @@ export default defineComponent({
     async loadGdvData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const gdvDataControllerApi = new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
+        assertDefined(this.getKeycloakPromise)(),
       ).getUnifiedFrameworkDataController(DataTypeEnum.Gdv);
 
       const dataResponse = await gdvDataControllerApi.getFrameworkData(dataId);
       const gdvResponseData = dataResponse.data;
       this.referencedReportsForPrefill = gdvResponseData.data.general.general.referencedReports ?? {};
       this.climateSectorsForPrefill = gdvResponseData?.data?.environmental?.energyPerformance
-          ?.applicableHighImpactClimateSectors
-          ? Object.keys(gdvResponseData?.data?.environmental?.energyPerformance?.applicableHighImpactClimateSectors).map(
-              (it): string => {
-                return HighImpactClimateSectorsNaceCodes[it as keyof typeof HighImpactClimateSectorsNaceCodes] ?? it;
-              },
+        ?.applicableHighImpactClimateSectors
+        ? Object.keys(gdvResponseData?.data?.environmental?.energyPerformance?.applicableHighImpactClimateSectors).map(
+            (it): string => {
+              return HighImpactClimateSectorsNaceCodes[it as keyof typeof HighImpactClimateSectorsNaceCodes] ?? it;
+            },
           )
-          : [];
+        : [];
       this.companyAssociatedGdvData = objectDropNull(gdvResponseData as ObjectType) as CompanyAssociatedDataGdvData;
 
       this.waitingForData = false;
@@ -275,14 +277,14 @@ export default defineComponent({
       try {
         if (this.documents.size > 0) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
-              this.companyAssociatedGdvData.data as ObjectType,
-              this.namesOfAllCompanyReportsForTheDataset,
+            this.companyAssociatedGdvData.data as ObjectType,
+            this.namesOfAllCompanyReportsForTheDataset,
           );
           await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
 
         const gdvDataControllerApi = new ApiClientProvider(
-            assertDefined(this.getKeycloakPromise)(),
+          assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.Gdv);
         await gdvDataControllerApi.postFrameworkData(this.companyAssociatedGdvData);
         this.$emit("datasetCreated");
@@ -295,7 +297,7 @@ export default defineComponent({
           this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
-              "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
         }
         this.uploadSucceded = false;
       } finally {
