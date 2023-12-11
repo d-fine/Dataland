@@ -129,7 +129,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anteilGefaehrlicherAbfallmenge", "Anteil gefährlicher Abfall an Gesamtmenge", "%"),
                 )
             }
-
         }
 
         componentGroupUmwelt?.edit<ComponentGroup>("abfallproduktion") {
@@ -187,7 +186,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             label = "Unfallrate"
             explanation = "Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten drei Jahre?"
             decimalRows = mutableListOf(
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("haeufigkeitsrateVonArbeitsunfaellen", "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust", "%")
+                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("haeufigkeitsrateVonArbeitsunfaellen", "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust", "%"),
             )
         }
 
@@ -206,7 +205,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("geschlechtsspezifischesLohngefaelle", "Geschlechtsspezifisches Lohngefälle", "%"),
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("einkommensungleichheitsverhaeltnis", "Einkommensungleichheitsverhältnis", "%"),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("ceoEinkommenungleichheitsverhaeltnis","CEO-Einkommensungleichheitsverhältnis", "%")
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("ceoEinkommenungleichheitsverhaeltnis", "CEO-Einkommensungleichheitsverhältnis", "%"),
                 )
             }
         }
