@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.frameworks.gdv.model.general.GdvGeneral
 import org.dataland.datalandbackend.frameworks.gdv.model.soziales.GdvSoziales
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.GdvUmwelt
 import org.dataland.datalandbackend.frameworks.gdv.model.unternehmensfuehrungGovernance.GdvUnternehmensfuehrungGovernance
+import org.dataland.datalandbackend.model.gdv.YearlyTimeseriesData
 
 /**
  * The root data-model for the Gdv Framework
@@ -18,4 +19,5 @@ data class GdvData(
     val umwelt: GdvUmwelt?,
     val soziales: GdvSoziales?,
     val unternehmensfuehrungGovernance: GdvUnternehmensfuehrungGovernance?,
+    val unfallrate: YearlyTimeseriesData<UnfallrateValues?>?,
 )

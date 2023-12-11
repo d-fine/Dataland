@@ -183,6 +183,14 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             )
         }
 
+        framework.root.create<GdvYearlyDecimalTimeseriesDataComponent>("unfallrate") {
+            label = "Unfallrate"
+            explanation = "Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten drei Jahre?"
+            decimalRows = mutableListOf(
+                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("haeufigkeitsrateVonArbeitsunfaellen", "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust", "%")
+            )
+        }
+
         componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>("budgetFuerSchulungAusbildung") {
             label = "Budget für Schulung/Ausbildung"
             explanation = "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde."
@@ -191,7 +199,20 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             )
         }
 
+        componentGroupSoziales?.edit<ComponentGroup>("einkommensgleichheit") {
+            create<GdvYearlyDecimalTimeseriesDataComponent>("ueberwachungDerEinkommensungleichheit") {
+                label = "Überwachung der Einkommensungleichheit"
+                explanation = "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für die letzten drei Jahre an."
+                decimalRows = mutableListOf(
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("geschlechtsspezifischesLohngefaelle", "Geschlechtsspezifisches Lohngefälle", "%"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("einkommensungleichheitsverhaeltnis", "Einkommensungleichheitsverhältnis", "%"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("ceoEinkommenungleichheitsverhaeltnis","CEO-Einkommensungleichheitsverhältnis", "%")
+                )
+            }
+        }
+
         // TODO: Remove this. this is just a POC for showing how to create a GdvYearlyDecimalTimeseriesData.
+        /*
         framework.root.edit<ComponentGroup>("allgemein") {
             create<GdvYearlyDecimalTimeseriesDataComponent>("testingData") {
                 label = "Data, for Testing!"
@@ -201,7 +222,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope3", "Scope 3", "tCO2-Äquiv."),
                 )
             }
-        }
+        }*/
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
