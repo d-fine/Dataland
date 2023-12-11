@@ -1,6 +1,5 @@
 <template>
   <div class="grid">
-    <p>!!-- {{ currentReportValue }}</p>
     <FormKit type="group" :name="name" v-model="dataPoint">
       <div class="col-12">
         <slot />
