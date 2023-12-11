@@ -13,7 +13,6 @@ import org.dataland.datalandbackend.model.sfdr.categories.environmental.subcateg
  * Fields of the category "Environmental" of the sfdr framework.
 */
 data class SfdrEnvironmental(
-    @field:Valid
     val greenhouseGasEmissions: SfdrEnvironmentalGreenhouseGasEmissions? = null,
 
     @field:Valid
