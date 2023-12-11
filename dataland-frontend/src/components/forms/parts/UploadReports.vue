@@ -1,71 +1,73 @@
 <template>
-  <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
-    <h4 class="anchor title">Upload company reports</h4>
-    <p>Please upload all relevant reports for this dataset in the PDF format.</p>
-  </div>
-  <!-- Select company reports -->
-  <div :class="isEuTaxonomy ? 'col-9 formFields' : 'formField'">
-    <h3 class="mt-0">Select company reports</h3>
-    <UploadDocumentsForm
-      ref="uploadDocumentsForm"
-      @updatedDocumentsSelectedForUpload="handleUpdatedDocumentsSelectedForUpload"
-      :name="name"
-    />
-  </div>
-
-  <FormKit name="referencedReports" type="group">
-    <div class="uploadFormSection">
-      <!-- List of company reports to upload -->
-      <div
-        v-for="documentToUpload of documentsToUpload"
-        :key="documentToUpload.file.name"
-        :class="isEuTaxonomy ? 'col-9 formFields' : 'col-9 bordered-box p-3 mb-3'"
-        data-test="report-to-upload-form"
-      >
-        <div :data-test="documentToUpload.fileNameWithoutSuffix + 'ToUploadContainer'">
-          <div class="form-field-label">
-            <h3 class="mt-0">{{ documentToUpload.fileNameWithoutSuffix }}</h3>
-          </div>
-          <ReportFormElement
-            :name="documentToUpload.fileNameWithoutSuffix"
-            :fileReference="documentToUpload.fileReference"
-          />
-        </div>
-      </div>
+  <div :data-test="`upload-reports-${name}`">
+    <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
+      <h4 class="anchor title">Upload company reports</h4>
+      <p>Please upload all relevant reports for this dataset in the PDF format.</p>
     </div>
-    <div v-if="alreadyStoredReports.length > 0" class="uploadFormSection">
-      <!-- List of company reports -->
-      <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
-        <h4 class="anchor title">Uploaded company reports</h4>
-      </div>
-      <div v-else class="col-12">
-        <h3 class="mt-0">Uploaded company reports</h3>
-      </div>
-      <div
-        v-for="(storedReport, index) of alreadyStoredReports"
-        :key="storedReport.fileName"
-        :class="isEuTaxonomy ? 'col-9 formFields' : 'col-9 bordered-box p-3 mb-3'"
-        data-test="report-uploaded-form"
-      >
-        <div :data-test="storedReport.fileName + 'AlreadyUploadedContainer'" class="form-field-label">
-          <div class="flex w-full">
-            <h3 class="mt-0">{{ storedReport.fileName }}</h3>
-            <PrimeButton
-              :data-test="'remove-' + storedReport.fileName"
-              @click="removeReportFromStoredReports(index)"
-              icon="pi pi-times"
-              class="p-button-edit-reports"
+    <!-- Select company reports -->
+    <div :class="isEuTaxonomy ? 'col-9 formFields' : 'formField'">
+      <h3 class="mt-0">Select company reports</h3>
+      <UploadDocumentsForm
+        ref="uploadDocumentsForm"
+        @updatedDocumentsSelectedForUpload="handleUpdatedDocumentsSelectedForUpload"
+        :name="name"
+      />
+    </div>
+
+    <FormKit name="referencedReports" type="group">
+      <div class="uploadFormSection">
+        <!-- List of company reports to upload -->
+        <div
+          v-for="documentToUpload of documentsToUpload"
+          :key="documentToUpload.file.name"
+          :class="isEuTaxonomy ? 'col-9 formFields' : 'col-9 bordered-box p-3 mb-3'"
+          data-test="report-to-upload-form"
+        >
+          <div :data-test="documentToUpload.fileNameWithoutSuffix + 'ToUploadContainer'">
+            <div class="form-field-label">
+              <h3 class="mt-0">{{ documentToUpload.fileNameWithoutSuffix }}</h3>
+            </div>
+            <ReportFormElement
+              :name="documentToUpload.fileNameWithoutSuffix"
+              :fileReference="documentToUpload.fileReference"
             />
           </div>
         </div>
-        <ReportFormElement
-          :name="storedReport.fileName"
-          :report-date="storedReport.reportDate"
-          :fileReference="storedReport.fileReference"
-        />
       </div>
-    </div>
-  </FormKit>
+      <div v-if="alreadyStoredReports.length > 0" class="uploadFormSection">
+        <!-- List of company reports -->
+        <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
+          <h4 class="anchor title">Uploaded company reports</h4>
+        </div>
+        <div v-else class="col-12">
+          <h3 class="mt-0">Uploaded company reports</h3>
+        </div>
+        <div
+          v-for="(storedReport, index) of alreadyStoredReports"
+          :key="storedReport.fileName"
+          :class="isEuTaxonomy ? 'col-9 formFields' : 'col-9 bordered-box p-3 mb-3'"
+          data-test="report-uploaded-form"
+        >
+          <div :data-test="storedReport.fileName + 'AlreadyUploadedContainer'" class="form-field-label">
+            <div class="flex w-full">
+              <h3 class="mt-0">{{ storedReport.fileName }}</h3>
+              <PrimeButton
+                :data-test="'remove-' + storedReport.fileName"
+                @click="removeReportFromStoredReports(index)"
+                icon="pi pi-times"
+                class="p-button-edit-reports"
+              />
+            </div>
+          </div>
+          <ReportFormElement
+            :name="storedReport.fileName"
+            :report-date="storedReport.reportDate"
+            :fileReference="storedReport.fileReference"
+          />
+        </div>
+      </div>
+    </FormKit>
+  </div>
 </template>
 
 <script lang="ts">
