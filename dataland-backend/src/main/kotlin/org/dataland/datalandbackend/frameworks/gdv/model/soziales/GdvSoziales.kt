@@ -12,7 +12,6 @@ import org.dataland.datalandbackend.model.gdv.YearlyTimeseriesData
  */
 data class GdvSoziales(
     val aenderungenUnternehmensstruktur: YesNo?,
-    val sicherheitsmassnahmenFuerMitarbeiter: String?,
     val einkommensgleichheit: GdvSozialesEinkommensgleichheit?,
     val geschlechterdiversitaet: GdvSozialesGeschlechterdiversitaet?,
     val audit: GdvSozialesAudit?,

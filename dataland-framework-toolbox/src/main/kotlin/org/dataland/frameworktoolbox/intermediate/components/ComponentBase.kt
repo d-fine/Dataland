@@ -135,7 +135,7 @@ open class ComponentBase(
      * using the default generator for this component
      */
     open fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
-        throw NotImplementedError("This component did not implement upload config conversion.")
+//        throw NotImplementedError("This component did not implement upload config conversion.") // todo !!
     }
 
     /**

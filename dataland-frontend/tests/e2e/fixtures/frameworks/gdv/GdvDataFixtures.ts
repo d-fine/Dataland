@@ -39,12 +39,12 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
   return {
     general: {
       masterData: {
-        berichtsPflicht: dataGenerator.randomYesNo(),
+        berichtsPflicht: dataGenerator.guaranteedYesNo(),
         gueltigkeitsDatum: dataGenerator.randomFutureDate(),
       },
     },
     allgemein: {
-      esgZiele: dataGenerator.randomYesNo(),
+      esgZiele: dataGenerator.guaranteedYesNo(),
       ziele: dataGenerator.randomShortString(),
       investitionen: dataGenerator.randomShortString(),
       sektorMitHohenKlimaauswirkungen: dataGenerator.randomYesNo(),
@@ -53,11 +53,14 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       frequenzDerBerichterstattung: dataGenerator.valueOrNull(
         pickOneElement(Object.values(FrequenzDerBerichterstattungOptions)),
       ),
+      aktuelleBerichte: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedShortString()),
       mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze:
         dataGenerator.randomYesNo(),
       uncgPrinzipien: dataGenerator.randomYesNo(),
+      richtlinienEinhaltungUngc: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedShortString()),
       erklaerungUngc: dataGenerator.randomShortString(),
       oecdLeitsaetze: dataGenerator.randomYesNo(),
+      richtlinienEinhaltungOecd: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedShortString()),
       erklaerungOecd: dataGenerator.randomShortString(),
       ausrichtungAufDieUnSdgsUndAktivesVerfolgen: dataGenerator.randomShortString(),
       ausschlusslistenAufBasisVonEsgKriterien: dataGenerator.randomYesNo(),
@@ -157,8 +160,8 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
     },
     soziales: {
       aenderungenUnternehmensstruktur: dataGenerator.randomYesNo(),
-      sicherheitsmassnahmenFuerMitarbeiter: dataGenerator.randomShortString(),
       einkommensgleichheit: {
+        sicherheitsmassnahmenFuerMitarbeiter: dataGenerator.randomShortString(),
         massnahmenZurVerbesserungDerEinkommensungleichheit: dataGenerator.randomShortString(),
         ueberwachungDerEinkommensungleichheit: dataGenerator.randomDecimalYearlyTimeseriesData([
           "geschlechtsspezifischesLohngefaelle",

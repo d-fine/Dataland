@@ -2,56 +2,52 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Masonworth",
-			"headquartersPostalCode": null,
-			"sector": "e-markets",
+			"headquarters": "South Hill",
+			"headquartersPostalCode": "27084-8357",
+			"sector": "niches",
 			"identifiers": {
 				"Lei": [
-					"Wp1pxSswwH3NKKMDM416"
+					"tPSpq8RgYc07omxUKboc"
 				],
 				"Isin": [
-					"JC10z0G5GARe"
+					"ooFkMHUwv27b",
+					"SHcjz2LukmH7"
 				],
-				"PermId": [
-					"j3pip6DyO3"
-				],
-				"Ticker": [
-					"S96Z9QC"
-				],
-				"Duns": [
-					"061sJaPxA"
-				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"9r0h7C7CFgtiyWh"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "LC",
+			"countryCode": "HU",
 			"companyAlternativeNames": [
-				"Cummings - Ledner",
-				"Farrell, Ryan and Murray",
-				"Turcotte - Brakus"
+				"Boehm, Ebert and Barrows",
+				"Hammes - Windler",
+				"Kohler - Sauer",
+				"Kshlerin LLC"
 			],
 			"companyLegalForm": "Sole Trader",
-			"website": "https://functional-sheath.info/",
+			"website": "https://bewitched-charset.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"14.20",
+						"01.49",
+						"06",
+						"37.0",
 						"90.03"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Margarette Rest 1871",
-						"postalCode": "30238",
-						"city": "East Adrain",
-						"state": null,
-						"country": "MY"
+						"streetAndHouseNumber": null,
+						"postalCode": "07282-6813",
+						"city": "East Immanuelstead",
+						"state": "North Carolina",
+						"country": "GD"
 					},
-					"numberOfEmployees": 4561,
-					"fiscalYearStart": "2024-04-23"
+					"numberOfEmployees": 5146,
+					"fiscalYearStart": "2024-05-23"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -61,13 +57,74 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Mante, Larkin and Keebler",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Stokes Inlet 18607",
+								"postalCode": "06532",
+								"city": "East Rosafield",
+								"state": "Idaho",
+								"country": "DZ"
+							},
+							"shareOfTotalRevenueInPercent": 59.0288
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Honeysuckle Close 9163",
+								"postalCode": null,
+								"city": "Reading",
+								"state": "Maine",
+								"country": "SE"
+							},
+							"shareOfTotalRevenueInPercent": 53.3565
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Prosacco Crescent 696",
+								"postalCode": null,
+								"city": "Osinskiport",
+								"state": "California",
+								"country": "PY"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Barton, Becker and Braun",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Ethan Track 821",
+								"postalCode": "95660-8237",
+								"city": "Lavinialand",
+								"state": "New Hampshire",
+								"country": "GU"
+							},
+							"shareOfTotalRevenueInPercent": 13.6978
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Sleek Frozen Tuna",
-							"shareOfTotalRevenueInPercent": 96.9636
+							"name": "Handcrafted Granite Chicken",
+							"shareOfTotalRevenueInPercent": 44.0819
+						},
+						{
+							"name": "Rustic Concrete Cheese",
+							"shareOfTotalRevenueInPercent": 57.7445
+						},
+						{
+							"name": "Sleek Steel Chips",
+							"shareOfTotalRevenueInPercent": 89.788
+						},
+						{
+							"name": "Incredible Steel Bacon",
+							"shareOfTotalRevenueInPercent": 85.7644
+						},
+						{
+							"name": "Small Wooden Ball",
+							"shareOfTotalRevenueInPercent": 48.205
 						}
 					]
 				}
@@ -77,9 +134,9 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 132,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 909,
+					"powerConsumptionInMWh": 1455,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 247,
 					"primaryEnergySourceForHeatingAndHotWater": null,
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
@@ -87,11 +144,12 @@
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 19286678,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 37092891,
 					"naturalHazardsCovered": [
 						"Snow",
+						"Flooding",
 						"Avalanche",
-						"EarthQuake"
+						"Wind"
 					]
 				}
 			}
@@ -101,30 +159,38 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "South Nameton",
-			"headquartersPostalCode": "58755-0072",
-			"sector": "schemas",
+			"headquarters": "Quitzonworth",
+			"headquartersPostalCode": "55785-1088",
+			"sector": "technologies",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"l8Ckz6U11yEg6bBzGY2w"
+				],
 				"Isin": [
-					"ZdaCJ5XI7dWj"
+					"Z43FmqyvQlLX",
+					"cCZF3kRXL2BD"
 				],
 				"PermId": [
-					"bMjTgeCyMx"
+					"YVx1gZFzEV"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"MjGbQDB"
+				],
 				"Duns": [
-					"k66YmWXin"
+					"XfaMD64sD"
 				],
 				"VatNumber": [
-					"hy2Cnu08Q"
+					"GhOWFGVhi"
 				],
-				"CompanyRegistrationNumber": [
-					"Ss4qXtyYeRaF8z2"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "AX",
-			"companyAlternativeNames": [],
+			"countryCode": "CA",
+			"companyAlternativeNames": [
+				"Hilpert - Ziemann",
+				"Sawayn, Mayert and Veum",
+				"Thiel - Konopelski",
+				"Wisozk - Schaefer"
+			],
 			"companyLegalForm": null,
 			"website": null,
 			"isTeaserCompany": false
@@ -133,7 +199,7 @@
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"46.3"
+						"01.6"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -142,37 +208,26 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 7413,
-					"fiscalYearStart": "2024-02-02"
+					"numberOfEmployees": 596,
+					"fiscalYearStart": "2024-02-23"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 27026159,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 38488175
+					"revenueInEUR": 86882390,
+					"operatingCostInEUR": 8021255,
+					"capitalAssetsInEUR": 8437628
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Shields, Sporer and Rice",
+							"nameOfProductionSite": "Donnelly - Shanahan",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Towne Mount 643",
-								"postalCode": "63066",
-								"city": "Linden",
-								"state": "New York",
-								"country": "NI"
-							},
-							"shareOfTotalRevenueInPercent": 44.837
-						},
-						{
-							"nameOfProductionSite": "Emard Inc",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Wiza Views 7103",
-								"postalCode": "74891-5764",
-								"city": "Fresno",
-								"state": "Delaware",
-								"country": "CL"
+								"streetAndHouseNumber": "Alia Turnpike 849",
+								"postalCode": "14675",
+								"city": "Turcotteland",
+								"state": "Michigan",
+								"country": "SX"
 							},
 							"shareOfTotalRevenueInPercent": null
 						}
@@ -181,41 +236,48 @@
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Luxurious Concrete Sausages",
-							"shareOfTotalRevenueInPercent": 52.3387
+							"name": "Awesome Fresh Chicken",
+							"shareOfTotalRevenueInPercent": 77.2913
 						},
 						{
-							"name": "Incredible Concrete Chicken",
-							"shareOfTotalRevenueInPercent": 24.8588
+							"name": "Oriental Bronze Fish",
+							"shareOfTotalRevenueInPercent": 47.6757
 						},
 						{
-							"name": "Small Metal Pizza",
-							"shareOfTotalRevenueInPercent": 42.5794
+							"name": "Intelligent Soft Tuna",
+							"shareOfTotalRevenueInPercent": 73.3733
 						},
 						{
-							"name": "Unbranded Soft Gloves",
-							"shareOfTotalRevenueInPercent": 40.8264
+							"name": "Oriental Granite Keyboard",
+							"shareOfTotalRevenueInPercent": 97.4589
+						},
+						{
+							"name": "Handcrafted Concrete Ball",
+							"shareOfTotalRevenueInPercent": 78.5677
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 790,
-					"powerFromRenewableSources": "No",
+					"powerConsumptionInMWh": 1318,
+					"powerFromRenewableSources": "Yes",
 					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 15268498,
-					"naturalHazardsCovered": null
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 29631306,
+					"naturalHazardsCovered": [
+						"Avalanche",
+						"Hail"
+					]
 				}
 			}
 		},
@@ -224,40 +286,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Lake Jadyn",
-			"headquartersPostalCode": "51066-9461",
-			"sector": "convergence",
+			"headquarters": "Hirthechester",
+			"headquartersPostalCode": "06162",
+			"sector": "interfaces",
 			"identifiers": {
-				"Lei": [
-					"TwA1BRAUItFPvl6NcCvG"
-				],
+				"Lei": [],
 				"Isin": [
-					"uWUd45rVElmu",
-					"l8DJ7Ob3egFp"
+					"DKZ2qrX9r1NF",
+					"ICfN6ngbr1Nj"
 				],
-				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"LnMeNNe70"
+				"PermId": [
+					"RRHCSIha88"
 				],
+				"Ticker": [
+					"GCvTInA"
+				],
+				"Duns": [],
 				"VatNumber": [
-					"yaI8zBC8A"
+					"OpKIOqBt3"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "LB",
+			"countryCode": "GH",
 			"companyAlternativeNames": [
-				"VonRueden Group"
+				"Bode, Hoeger and Connelly",
+				"Ratke - Bergstrom",
+				"Russel - Connelly",
+				"Wolf - Boyer"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://teeming-soccer.info/",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://edible-metro.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"98.2"
+						"24.33"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -266,42 +331,61 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 5553,
-					"fiscalYearStart": "2024-07-08"
+					"numberOfEmployees": 8467,
+					"fiscalYearStart": "2024-11-14"
 				},
 				"companyFinancials": {
 					"revenueInEUR": null,
-					"operatingCostInEUR": 60194420,
-					"capitalAssetsInEUR": 365425
+					"operatingCostInEUR": 31122046,
+					"capitalAssetsInEUR": 49680537
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "West Lane 56711",
+								"postalCode": "10845-8316",
+								"city": "Lodi",
+								"state": "Washington",
+								"country": "RU"
+							},
+							"shareOfTotalRevenueInPercent": 74.8865
+						}
+					]
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Oriental Wooden Towels",
+							"shareOfTotalRevenueInPercent": 4.7868
+						},
+						{
+							"name": "Fantastic Concrete Towels",
+							"shareOfTotalRevenueInPercent": 64.493
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 535,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 468,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMWh": 815,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 920,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazards": 21322999,
-					"naturalHazardsCovered": [
-						"Hail"
-					]
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 48117386,
+					"naturalHazardsCovered": null
 				}
 			}
 		},

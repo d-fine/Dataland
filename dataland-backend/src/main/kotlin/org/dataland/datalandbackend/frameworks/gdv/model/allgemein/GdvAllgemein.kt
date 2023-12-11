@@ -8,17 +8,20 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the Allgemein section
  */
 data class GdvAllgemein(
-    val esgZiele: YesNo?,
+    val esgZiele: YesNo,
     val ziele: String?,
     val investitionen: String?,
     val sektorMitHohenKlimaauswirkungen: YesNo?,
     val sektor: List<String>?,
     val nachhaltigkeitsbericht: YesNo?,
     val frequenzDerBerichterstattung: FrequenzDerBerichterstattungOptions?,
+    val aktuelleBerichte: BaseDataPoint<String>?,
     val mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze: YesNo?,
     val uncgPrinzipien: YesNo?,
+    val richtlinienEinhaltungUngc: BaseDataPoint<String>?,
     val erklaerungUngc: String?,
     val oecdLeitsaetze: YesNo?,
+    val richtlinienEinhaltungOecd: BaseDataPoint<String>?,
     val erklaerungOecd: String?,
     val ausrichtungAufDieUnSdgsUndAktivesVerfolgen: String?,
     val ausschlusslistenAufBasisVonEsgKriterien: YesNo?,
