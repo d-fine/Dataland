@@ -41,14 +41,14 @@ class GdvListOfBaseDataPointComponent(
             this,
             FrameworkDisplayValueLambda(
                 "{\n" +
-                    "return formatListOfStringsForDatatable(" +
-                    "${getTypescriptFieldAccessor()}?.map(it => it.value), " +
+                    "return formatListOfBaseDataPoint(" +
+                    "${getTypescriptFieldAccessor()}, " +
                     "'${StringEscapeUtils.escapeEcmaScript(label)}'" +
                     ")" +
                     "}",
                 setOf(
-                    "import { formatListOfStringsForDatatable } from " +
-                        "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
+                    "import { formatListOfBaseDataPoint } from " +
+                        "\"@/components/resources/dataTable/conversion/gdv/GdvListOfBaseDataPointGetterFactory\";",
                 ),
             ),
         )

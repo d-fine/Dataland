@@ -8284,15 +8284,13 @@
         }
       },
       "GdvGeneralMasterData": {
+        "required": [
+          "berichtsPflicht"
+        ],
         "type": "object",
         "properties": {
           "berichtsPflicht": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
+            "$ref": "#/components/schemas/YesNo"
           },
           "gueltigkeitsDatum": {
             "type": "string",

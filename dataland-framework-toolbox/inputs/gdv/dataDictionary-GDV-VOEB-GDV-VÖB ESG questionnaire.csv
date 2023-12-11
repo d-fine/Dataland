@@ -1,5 +1,5 @@
 Field Identifier,Category,Sub-Category,Field Name,Tooltip,Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory Field
-0,General,Master Data,Berichts-Pflicht,Ist das Unternehmen berichtspflichtig?,Yes/No,,,,,,
+0,General,Master Data,Berichts-Pflicht,Ist das Unternehmen berichtspflichtig?,Yes/No,,,,,,Yes
 1,General,Master Data,(Gültigkeits) Datum,Datum bis wann die Information gültig ist,Date,,,,,,
 2,Allgemein,,ESG-Ziele,"Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",Yes/No,,,,0,Yes,
 2.1,Allgemein,,Ziele,Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.,String,,,,2,Yes,

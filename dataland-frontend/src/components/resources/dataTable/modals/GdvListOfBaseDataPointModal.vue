@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, inject, type Ref } from "vue";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { type BaseDataPoint } from "@/utils/DataPoint";
+import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 
 interface GdvListOfBaseDataPointDialogData {
   label: string;
@@ -23,6 +23,16 @@ const tableData = computed(() => {
 
 <template>
   <DataTable :value="tableData">
-    <Column field="value" header="Values" headerStyle="width: 15vw;"> </Column>
+    <Column field="value" header="Certificate Name" headerStyle="width: 15vw;"> </Column>
+    <Column header="Certificate" headerStyle="width: 15vw;">
+      <template #body="{ data }">
+        <DocumentLink
+          label="Download Certificate"
+          :download-name="data.dataSource.fileName"
+          :file-reference="data.dataSource.fileReference"
+          show-icon
+        />
+      </template>
+    </Column>
   </DataTable>
 </template>

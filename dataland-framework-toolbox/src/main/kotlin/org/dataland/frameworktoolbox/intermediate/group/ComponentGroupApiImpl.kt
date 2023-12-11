@@ -20,7 +20,11 @@ class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGrou
             ?: throw IllegalArgumentException("Could not find the component with identifier $identifier.")
     }
 
-    private fun <T : ComponentBase> initComponent(component: T, insertBeforeIdentifier: String? = null, init: (T.() -> Unit)?): T {
+    private fun <T : ComponentBase> initComponent(
+        component: T,
+        insertBeforeIdentifier: String? = null,
+        init: (T.() -> Unit)?,
+    ): T {
         require(components.none { it.identifier == component.identifier }) {
             "The identifier ${component.identifier} already exists."
         }
@@ -62,7 +66,12 @@ class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGrou
         return null
     }
 
-    override fun <T : ComponentBase> create(identifier: String, insertBeforeIdentifier: String?, clazz: KClass<T>, init: (T.() -> Unit)?): T {
+    override fun <T : ComponentBase> create(
+        identifier: String,
+        insertBeforeIdentifier: String?,
+        clazz: KClass<T>,
+        init: (T.() -> Unit)?,
+    ): T {
         val localParent = parent
         requireNotNull(localParent) { "Cannot initialize a new component without an initialized parent." }
 

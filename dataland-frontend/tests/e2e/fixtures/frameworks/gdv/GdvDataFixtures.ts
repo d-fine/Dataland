@@ -40,7 +40,7 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
   return {
     general: {
       masterData: {
-        berichtsPflicht: dataGenerator.randomYesNo(),
+        berichtsPflicht: dataGenerator.guaranteedYesNo(),
         gueltigkeitsDatum: dataGenerator.randomFutureDate(),
       },
     },

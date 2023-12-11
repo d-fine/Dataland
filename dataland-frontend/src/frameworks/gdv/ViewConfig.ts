@@ -9,6 +9,7 @@ import { formatListOfStringsForDatatable } from "@/components/resources/dataTabl
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
+import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/gdv/GdvListOfBaseDataPointGetterFactory";
 export const GdvViewConfiguration: MLDTConfig<GdvData> = [
   {
     type: "section",
@@ -187,10 +188,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
 
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
-          return formatListOfStringsForDatatable(
-            dataset.allgemein?.weitereAkkreditierungen?.map((it) => it.value),
-            "Weitere Akkreditierungen",
-          );
+          return formatListOfBaseDataPoint(dataset.allgemein?.weitereAkkreditierungen, "Weitere Akkreditierungen");
         },
       },
       {
@@ -524,7 +522,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Treibhausgas-Berichterstattung und Prognosen",
             explanation:
-              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
+              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
