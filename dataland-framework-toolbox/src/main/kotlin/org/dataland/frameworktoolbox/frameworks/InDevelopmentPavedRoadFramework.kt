@@ -30,7 +30,6 @@ abstract class InDevelopmentPavedRoadFramework(
     frameworkTemplateCsvFile: File,
 ) :
     PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile) {
-    private val logger by LoggerDelegate()
 
     override fun convertExcelTemplateToToHighLevelComponentRepresentation(
         context: ApplicationContext,
@@ -139,5 +138,6 @@ abstract class InDevelopmentPavedRoadFramework(
         compileFixtureGenerator(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
+        logger.info("✔ Framework toolbox finished for framework $identifier ✨")
     }
 }
