@@ -265,7 +265,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
 
         framework.root.edit<ComponentGroup>("allgemein") {
-            create<GdvListOfBaseDataPointComponent>("weitereAkkreditierungen", "iso50001") {
+            create<GdvListOfBaseDataPointComponent>("weitereAkkreditierungen", "mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze") {
                 label = "Weitere Akkreditierungen"
             }
         }

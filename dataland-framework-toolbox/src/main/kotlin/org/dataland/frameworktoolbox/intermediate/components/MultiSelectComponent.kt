@@ -77,7 +77,7 @@ open class MultiSelectComponent(
     }
 
     private fun generateReturnStatement(): String {
-        return "return formatListOfStringsForDatatable(" + // TODO dont forget to choose the right functio here later
+        return "return formatListOfStringsForDatatable(" +
             "${getTypescriptFieldAccessor()}?.map(it => \n" +
             "   getOriginalNameFromTechnicalName(it, mappings)), " +
             "'${escapeEcmaScript(label)}'" +
