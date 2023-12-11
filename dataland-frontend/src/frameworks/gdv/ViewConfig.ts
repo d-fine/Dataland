@@ -3,6 +3,7 @@ import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
+import { formatGdvYearlyDecimalTimeseriesDataForTable } from "@/components/resources/dataTable/conversion/gdv/GdvYearlyDecimalTimeseriesDataGetterFactory";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
@@ -388,6 +389,23 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 dataset.umwelt?.treibhausgasemissionen?.strategieUndZieleZurReduzierungVonTreibhausgasEmissionen,
               ),
           },
+          {
+            type: "cell",
+            label: "Treibhausgas-Berichterstattung und Prognosen",
+            explanation:
+              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatGdvYearlyDecimalTimeseriesDataForTable(
+                dataset.umwelt?.treibhausgasemissionen?.treibhausgasBerichterstattungUndPrognosen,
+                {
+                  scope1: { label: "Scope 1", unitSuffix: "tCO2-Äquiv." },
+                  scope2: { label: "Scope 2", unitSuffix: "tCO2-Äquiv." },
+                  scope3: { label: "Scope 3", unitSuffix: "tCO2-Äquiv." },
+                },
+                "Treibhausgas-Berichterstattung und Prognosen",
+              ),
+          },
         ],
       },
       {
@@ -434,6 +452,23 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 dataset.umwelt?.energieverbrauch?.unternehmensGruppenStrategieBzglEnergieverbrauch,
               ),
           },
+          {
+            type: "cell",
+            label: "Berichterstattung Energieverbrauch",
+            explanation:
+              "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatGdvYearlyDecimalTimeseriesDataForTable(
+                dataset.umwelt?.energieverbrauch?.berichterstattungEnergieverbrauch,
+                {
+                  energieverbrauch: { label: "Energieverbrauch", unitSuffix: "GWh" },
+                  verbrauchErneuerbareEnergien: { label: "Verbrauch erneuerbare Energien", unitSuffix: "%" },
+                  erzeugungErneuerbareEnergien: { label: "Erzeugung erneuerbare Energien", unitSuffix: "%" },
+                },
+                "Berichterstattung Energieverbrauch",
+              ),
+          },
         ],
       },
       {
@@ -452,6 +487,22 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
               formatStringForDatatable(
                 dataset.umwelt?.energieeffizienzImmobilienanlagen
                   ?.unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Berichterstattung Energieverbrauch von Immobilienvermoegen",
+            explanation:
+              "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatGdvYearlyDecimalTimeseriesDataForTable(
+                dataset.umwelt?.energieeffizienzImmobilienanlagen
+                  ?.berichterstattungEnergieverbrauchVonImmobilienvermoegen,
+                {
+                  energieeffizienteImmobilienanlagen: { label: "energieeffiziente Immobilienanlagen", unitSuffix: "%" },
+                },
+                "Berichterstattung Energieverbrauch von Immobilienvermoegen",
               ),
           },
         ],
@@ -473,6 +524,22 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 dataset.umwelt?.wasserverbrauch?.unternehmensGruppenStrategieBzglWasserverbrauch,
               ),
           },
+          {
+            type: "cell",
+            label: "Berichterstattung Wasserverbrauch",
+            explanation:
+              "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatGdvYearlyDecimalTimeseriesDataForTable(
+                dataset.umwelt?.wasserverbrauch?.berichterstattungWasserverbrauch,
+                {
+                  wasserverbrauch: { label: "Wasserverbrauch", unitSuffix: "l" },
+                  emissionenInWasser: { label: "Emissionen in Wasser", unitSuffix: "t" },
+                },
+                "Berichterstattung Wasserverbrauch",
+              ),
+          },
         ],
       },
       {
@@ -490,6 +557,19 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
                 dataset.umwelt?.abfallproduktion?.unternehmensGruppenStrategieBzglAbfallproduktion,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Recycling im Produktionsprozess",
+            explanation:
+              "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereitsrecyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatGdvYearlyDecimalTimeseriesDataForTable(
+                dataset.umwelt?.abfallproduktion?.recyclingImProduktionsprozess,
+                { anteilAnRecyclaten: { label: "Anteil an Recyclaten", unitSuffix: "%" } },
+                "Recycling im Produktionsprozess",
               ),
           },
         ],
@@ -576,6 +656,24 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.umwelt?.fossileBrennstoffe?.einnahmenAusFossilenBrennstoffen),
           },
+          {
+            type: "cell",
+            label: "Berichterstattung Einnahmen aus fossilen Brennstoffen",
+            explanation:
+              "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatGdvYearlyDecimalTimeseriesDataForTable(
+                dataset.umwelt?.fossileBrennstoffe?.berichterstattungEinnahmenAusFossilenBrennstoffen,
+                {
+                  anteilEinnahmenAusFossilenBrennstoffen: {
+                    label: "Anteil der Einnahmen aus fossilen Brennstoffen",
+                    unitSuffix: "%",
+                  },
+                },
+                "Berichterstattung Einnahmen aus fossilen Brennstoffen",
+              ),
+          },
         ],
       },
       {
@@ -603,6 +701,24 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                   return activityApiNameToHumanizedName(it);
                 }),
                 "EU Taxonomie Kompass Aktivit\u00E4ten",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
+            explanation:
+              "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatGdvYearlyDecimalTimeseriesDataForTable(
+                dataset.umwelt?.taxonomie?.umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten,
+                {
+                  umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten: {
+                    label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
+                    unitSuffix: "Mio. €",
+                  },
+                },
+                "Umsatz/Investitionsaufwand f\u00FCr nachhaltige Aktivit\u00E4ten",
               ),
           },
         ],
@@ -711,6 +827,54 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
               formatStringForDatatable(dataset.soziales?.audit?.auditErgebnisse),
           },
         ],
+      },
+      {
+        type: "cell",
+        label: "Anzahl der betroffenen Mitarbeiter",
+        explanation:
+          "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in Deutschland und in der Gesamtgruppe gibt und wieviele unbefristete Verträge von der Änderung betroffen sind (Verkauf oder Akquisition).",
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+          formatGdvYearlyDecimalTimeseriesDataForTable(
+            dataset.soziales?.anzahlDerBetroffenenMitarbeiter,
+            {
+              anzahlUnbefristeteVertraege: { label: "Anzahl der unbefristeten Verträge", unitSuffix: "" },
+              anzahlvonAenderungBetroffeneVertraege: {
+                label: "Anzahl der von Änderung betroffenen Verträge",
+                unitSuffix: "",
+              },
+            },
+            "Anzahl der betroffenen Mitarbeiter",
+          ),
+      },
+      {
+        type: "cell",
+        label: "Auswirkungen auf Anteil befrister Verträge und Fluktuation",
+        explanation:
+          "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die letzten drei Jahre an.",
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+          formatGdvYearlyDecimalTimeseriesDataForTable(
+            dataset.soziales?.auswirkungenAufAnteilBefristerVertraegeUndFluktuation,
+            {
+              anzahlbefristeteVertraege: { label: "Anzahl der befristeten Verträge", unitSuffix: "" },
+              fluktuation: { label: "Fluktuation", unitSuffix: "%" },
+            },
+            "Auswirkungen auf Anteil befrister Vertr\u00E4ge und Fluktuation",
+          ),
+      },
+      {
+        type: "cell",
+        label: "Budget für Schulung/Ausbildung",
+        explanation:
+          "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde.",
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+          formatGdvYearlyDecimalTimeseriesDataForTable(
+            dataset.soziales?.budgetFuerSchulungAusbildung,
+            { budgetProMitarbeiterProJahr: { label: "Budget pro Mitarbeiter und Jahr", unitSuffix: "€" } },
+            "Budget f\u00FCr Schulung/Ausbildung",
+          ),
       },
     ],
   },

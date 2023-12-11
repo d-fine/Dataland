@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.frameworks.gdv.model.umwelt.taxonomie
 
-import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.taxonomie.TaxonomieBerichterstattungOptions
+import org.dataland.datalandbackend.model.gdv.YearlyTimeseriesData
 
 /**
  * The data-model for the Taxonomie section
@@ -8,4 +8,5 @@ import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.taxonomie.Taxono
 data class GdvUmweltTaxonomie(
     val taxonomieBerichterstattung: TaxonomieBerichterstattungOptions?,
     val euTaxonomieKompassAktivitaeten: List<String>?,
+    val umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten: YearlyTimeseriesData<UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues?>?,
 )

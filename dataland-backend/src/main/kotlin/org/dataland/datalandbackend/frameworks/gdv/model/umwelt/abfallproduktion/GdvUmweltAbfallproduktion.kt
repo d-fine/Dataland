@@ -1,9 +1,11 @@
 package org.dataland.datalandbackend.frameworks.gdv.model.umwelt.abfallproduktion
 
+import org.dataland.datalandbackend.model.gdv.YearlyTimeseriesData
 
 /**
  * The data-model for the Abfallproduktion section
  */
 data class GdvUmweltAbfallproduktion(
     val unternehmensGruppenStrategieBzglAbfallproduktion: String?,
+    val recyclingImProduktionsprozess: YearlyTimeseriesData<RecyclingImProduktionsprozessValues?>?,
 )
