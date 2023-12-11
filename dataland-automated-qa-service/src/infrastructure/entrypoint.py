@@ -13,4 +13,7 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt:
         print("Interrupted")
-        sys.exit()
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)
