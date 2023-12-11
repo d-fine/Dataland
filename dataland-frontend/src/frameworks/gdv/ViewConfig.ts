@@ -2,9 +2,9 @@
 import { type GdvData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import { formatGdvYearlyDecimalTimeseriesDataForTable } from "@/components/resources/dataTable/conversion/gdv/GdvYearlyDecimalTimeseriesDataGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import { formatGdvYearlyDecimalTimeseriesDataForTable } from "@/components/resources/dataTable/conversion/gdv/GdvYearlyDecimalTimeseriesDataGetterFactory";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
@@ -724,6 +724,26 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           },
           {
             type: "cell",
+            label: "Berichterstattung Abfallproduktion",
+            explanation:
+              "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatGdvYearlyDecimalTimeseriesDataForTable(
+                dataset.umwelt?.abfallproduktion?.berichterstattungAbfallproduktion,
+                {
+                  abfallmenge: { label: "Abfallmenge", unitSuffix: "t" },
+                  anteilRecycelterAbfallmenge: { label: "Anteil der recycelten Abfallmenge", unitSuffix: "%" },
+                  anteilGefaehrlicherAbfallmenge: {
+                    label: "Anteil gefährlicher Abfall an Gesamtmenge",
+                    unitSuffix: "%",
+                  },
+                },
+                "Berichterstattung Abfallproduktion",
+              ),
+          },
+          {
+            type: "cell",
             label: "Recycling im Produktionsprozess",
             explanation:
               "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereitsrecyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre.",
@@ -950,6 +970,29 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 dataset.soziales?.einkommensgleichheit?.massnahmenZurVerbesserungDerEinkommensungleichheit,
               ),
           },
+          {
+            type: "cell",
+            label: "Überwachung der Einkommensungleichheit",
+            explanation:
+              "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für die letzten drei Jahre an.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatGdvYearlyDecimalTimeseriesDataForTable(
+                dataset.soziales?.einkommensgleichheit?.ueberwachungDerEinkommensungleichheit,
+                {
+                  geschlechtsspezifischesLohngefaelle: {
+                    label: "Geschlechtsspezifisches Lohngefälle",
+                    unitSuffix: "%",
+                  },
+                  einkommensungleichheitsverhaeltnis: { label: "Einkommensungleichheitsverhältnis", unitSuffix: "%" },
+                  ceoEinkommenungleichheitsverhaeltnis: {
+                    label: "CEO-Einkommensungleichheitsverhältnis",
+                    unitSuffix: "%",
+                  },
+                },
+                "\u00DCberwachung der Einkommensungleichheit",
+              ),
+          },
         ],
       },
       {
@@ -1165,5 +1208,22 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.auswahlkriterien),
       },
     ],
+  },
+  {
+    type: "cell",
+    label: "Unfallrate",
+    explanation: "Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten drei Jahre?",
+    shouldDisplay: (): boolean => true,
+    valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+      formatGdvYearlyDecimalTimeseriesDataForTable(
+        dataset.unfallrate,
+        {
+          haeufigkeitsrateVonArbeitsunfaellen: {
+            label: "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust",
+            unitSuffix: "%",
+          },
+        },
+        "Unfallrate",
+      ),
   },
 ];
