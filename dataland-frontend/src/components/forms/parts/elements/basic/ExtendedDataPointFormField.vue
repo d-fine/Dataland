@@ -156,7 +156,6 @@ export default defineComponent({
      */
     handleBlurValue(isDataValueProvided) {
       if (isDataValueProvided === false) {
-        1;
         this.qualityValue = QualityOptions.Na;
       } else if (this.qualityValue === QualityOptions.Na) {
         this.qualityValue = "";
