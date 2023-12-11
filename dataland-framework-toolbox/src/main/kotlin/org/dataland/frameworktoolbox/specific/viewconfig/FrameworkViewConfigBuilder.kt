@@ -7,9 +7,9 @@ import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
+import org.dataland.frameworktoolbox.utils.typescript.EsLintRunner
 import java.io.FileWriter
 import java.nio.file.Path
-import java.util.concurrent.TimeUnit
 import kotlin.io.path.div
 
 /**
@@ -20,11 +20,9 @@ import kotlin.io.path.div
 class FrameworkViewConfigBuilder(
     private val framework: Framework,
 ) {
-    companion object {
-        private const val ESLINT_TIMEOUT = 60L
-    }
 
     private val logger by LoggerDelegate()
+    private val generatedTsFiles = mutableListOf<Path>()
 
     val rootSectionConfigBuilder = SectionConfigBuilder(
         parentSection = null,
@@ -45,6 +43,7 @@ class FrameworkViewConfigBuilder(
             .getTemplate("/specific/viewconfig/ViewConfig.ts.ftl")
 
         val writer = FileWriter(viewConfigTsPath.toFile())
+        generatedTsFiles.add(viewConfigTsPath)
         freemarkerTemplate.process(freeMarkerContext, writer)
         writer.close()
     }
@@ -58,6 +57,7 @@ class FrameworkViewConfigBuilder(
             .getTemplate("/specific/viewconfig/ApiClient.ts.ftl")
 
         val writer = FileWriter(apiClientTsPath.toFile())
+        generatedTsFiles.add(apiClientTsPath)
         freemarkerTemplate.process(freeMarkerContext, writer)
         writer.close()
     }
@@ -81,6 +81,7 @@ class FrameworkViewConfigBuilder(
         )
 
         for ((template, outputPath) in outputJobs) {
+            generatedTsFiles.add(outputPath)
             val freemarkerTemplate = FreeMarker.configuration
                 .getTemplate(template)
 
@@ -102,25 +103,12 @@ class FrameworkViewConfigBuilder(
             mkdirs()
         }
 
-        val viewConfigTsPath = frameworkConfigDir / "ViewConfig.ts"
-
-        buildViewConfig(viewConfigTsPath)
+        buildViewConfig(frameworkConfigDir / "ViewConfig.ts")
         buildApiClient(frameworkConfigDir / "ApiClient.ts")
         buildFrameworkDefinitionTs(frameworkConfigDir)
 
         into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_checkfrontendcompilation"))
 
-        val npxCommand = if (System.getProperty("os.name").contains("windows", true)) {
-            "npx.cmd"
-        } else {
-            "npx"
-        }
-
-        ProcessBuilder(npxCommand, "eslint", "--fix", viewConfigTsPath.toAbsolutePath().toString())
-            .directory((into.path / "dataland-frontend").toFile())
-            .redirectOutput(ProcessBuilder.Redirect.INHERIT)
-            .redirectError(ProcessBuilder.Redirect.INHERIT)
-            .start()
-            .waitFor(ESLINT_TIMEOUT, TimeUnit.SECONDS)
+        EsLintRunner(into, generatedTsFiles).run()
     }
 }

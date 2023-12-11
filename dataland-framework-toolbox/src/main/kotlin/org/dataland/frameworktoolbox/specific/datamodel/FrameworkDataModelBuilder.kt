@@ -69,6 +69,7 @@ class FrameworkDataModelBuilder(
 
         logger.info("Generation completed. Verifying generated files and updating OpenApi-Spec")
         into.gradleInterface.executeGradleTasks(listOf("assemble"))
+        into.gradleInterface.executeGradleTasks(listOf("dataland-backend:ktlintFormat"))
         into.gradleInterface.executeGradleTasks(listOf("dataland-backend:generateOpenApiDocs"), force = true)
         into.gradleInterface.executeGradleTasks(listOf("generateClients"))
 

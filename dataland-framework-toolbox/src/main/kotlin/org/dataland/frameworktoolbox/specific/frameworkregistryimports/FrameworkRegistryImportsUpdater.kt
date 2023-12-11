@@ -2,7 +2,9 @@ package org.dataland.frameworktoolbox.specific.frameworkregistryimports
 
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
+import org.dataland.frameworktoolbox.utils.typescript.EsLintRunner
 import java.io.FileWriter
+import java.nio.file.Path
 import kotlin.io.path.div
 
 /**
@@ -35,12 +37,16 @@ class FrameworkRegistryImportsUpdater {
             ),
         )
 
+        val generatedTsFiles = mutableListOf<Path>()
         for ((templateName, outputPath) in jobs) {
+            generatedTsFiles.add(outputPath.toAbsolutePath())
             val template = FreeMarker.configuration
                 .getTemplate(templateName)
             val writer = FileWriter(outputPath.toFile())
             template.process(freeMarkerContext, writer)
             writer.close()
         }
+
+        EsLintRunner(repository, generatedTsFiles).run()
     }
 }
