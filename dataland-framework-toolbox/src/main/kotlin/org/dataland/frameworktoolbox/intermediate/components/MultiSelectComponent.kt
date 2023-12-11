@@ -90,7 +90,7 @@ open class MultiSelectComponent(
     }
 
     private fun generateMapperFunction(): String {
-      //TODO include in formatter function
+        // TODO include in formatter function
         val jsDoc =
             "/**\n" +
                 "* Maps the technical name of a select option to the respective original name\n" +

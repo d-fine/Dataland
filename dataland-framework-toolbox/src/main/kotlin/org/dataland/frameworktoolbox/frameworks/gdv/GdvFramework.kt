@@ -74,7 +74,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 }
             }
 
-
         val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt")
         componentGroupUmwelt?.edit<ComponentGroup>("treibhausgasemissionen") {
             create<GdvYearlyDecimalTimeseriesDataComponent>("treibhausgasBerichterstattungUndPrognosen") {
@@ -210,7 +209,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 )
             }
         }
-
 
         framework.root.edit<ComponentGroup>("allgemein") {
             create<GdvListOfBaseDataPointComponent>("weitereAkkreditierungen", "iso50001") {
