@@ -49,7 +49,7 @@ export const ${frameworkIdentifier}DataModel : Category[] = [<@loopCategories up
     <#if fieldConfig.options??>options: [
         <#list fieldConfig.options?sequence as entry>
             {
-                label: "${entry.identifier}",
+                label: "${entry.label}",
                 value: "${entry.identifier}",
             },
         </#list>

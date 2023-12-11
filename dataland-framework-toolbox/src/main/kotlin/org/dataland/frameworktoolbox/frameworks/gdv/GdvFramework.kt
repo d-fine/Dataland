@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.frameworks.gdv
 
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvListOfBaseDataPointComponent
 import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvYearlyDecimalTimeseriesDataComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
@@ -25,7 +26,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
     identifier = "gdv",
     label = "GDV/VÖB",
     explanation = "Das GDV/VÖB Framework",
-    File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
+    File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV_devEdition.csv"),
 ) {
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
@@ -33,46 +34,45 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             viewPageExpandOnPageLoad = true
         }
 
-        val componentGroupTaxonomie: ComponentGroup? = framework.root
+        framework.root
             .getOrNull<ComponentGroup>("umwelt")
             ?.getOrNull<ComponentGroup>("taxonomie")
-
-        componentGroupTaxonomie?.edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
-            if (options.size == 1 && options.single().label == "EuTaxonomyActivityOptions") {
-                this.fixtureGeneratorGenerator = { sectionConfigBuilder: FixtureSectionBuilder ->
-                    sectionConfigBuilder.addAtomicExpression(
-                        identifier,
-                        documentSupport.getFixtureExpression(
-                            fixtureExpression = "pickSubsetOfElements(Object.values(Activity))",
-                            nullableFixtureExpression =
-                            "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
-                            nullable = isNullable,
-                        ),
-                        imports = setOf(
-                            "import { Activity } from \"@clients/backend\";",
-                        ),
-                    )
-                }
-                this.viewConfigGenerator = { sectionConfigBuilder ->
-                    sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-                        this,
-                        FrameworkDisplayValueLambda(
-                            "formatListOfStringsForDatatable(" +
-                                "${getTypescriptFieldAccessor()}?.map(it => {\n" +
-                                "                  return activityApiNameToHumanizedName(it)}), " +
-                                "'${escapeEcmaScript(label)}'" +
-                                ")",
-                            setOf(
-                                "import {activityApiNameToHumanizedName} from " +
-                                    "\"@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName\";",
-                                "import { formatListOfStringsForDatatable } from " +
-                                    "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
+            ?.edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
+                if (options.size == 1 && options.single().label == "EuTaxonomyActivityOptions") {
+                    this.fixtureGeneratorGenerator = { sectionConfigBuilder: FixtureSectionBuilder ->
+                        sectionConfigBuilder.addAtomicExpression(
+                            identifier,
+                            documentSupport.getFixtureExpression(
+                                fixtureExpression = "pickSubsetOfElements(Object.values(Activity))",
+                                nullableFixtureExpression =
+                                "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
+                                nullable = isNullable,
                             ),
-                        ),
-                    )
+                            imports = setOf(
+                                "import { Activity } from \"@clients/backend\";",
+                            ),
+                        )
+                    }
+                    this.viewConfigGenerator = { sectionConfigBuilder ->
+                        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+                            this,
+                            FrameworkDisplayValueLambda(
+                                "formatListOfStringsForDatatable(" +
+                                    "${getTypescriptFieldAccessor()}?.map(it => {\n" +
+                                    "                  return activityApiNameToHumanizedName(it)}), " +
+                                    "'${escapeEcmaScript(label)}'" +
+                                    ")",
+                                setOf(
+                                    "import {activityApiNameToHumanizedName} from " +
+                                        "\"@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName\";",
+                                    "import { formatListOfStringsForDatatable } from " +
+                                        "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
+                                ),
+                            ),
+                        )
+                    }
                 }
             }
-        }
 
         val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt")
         componentGroupUmwelt?.edit<ComponentGroup>("treibhausgasemissionen") {
@@ -264,18 +264,11 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             }
         }
 
-        // TODO: Remove this. this is just a POC for showing how to create a GdvYearlyDecimalTimeseriesData.
-        /*
         framework.root.edit<ComponentGroup>("allgemein") {
-            create<GdvYearlyDecimalTimeseriesDataComponent>("testingData") {
-                label = "Data, for Testing!"
-         decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope1", "Scope 1", "tCO2-Äquiv."),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope2", "Scope 2", "tCO2-Äquiv."),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope3", "Scope 3", "tCO2-Äquiv."),
-                )
+            create<GdvListOfBaseDataPointComponent>("weitereAkkreditierungen", "iso50001") {
+                label = "Weitere Akkreditierungen"
             }
-        }*/
+        }
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {

@@ -133,7 +133,7 @@ abstract class InDevelopmentPavedRoadFramework(
 
         compileDataModel(datalandProject)
         compileViewModel(datalandProject)
-        // compileUploadModel(datalandProject)
+        compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
