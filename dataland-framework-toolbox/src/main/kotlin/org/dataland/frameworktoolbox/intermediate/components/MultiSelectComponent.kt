@@ -45,7 +45,7 @@ open class MultiSelectComponent(
                         "import { formatListOfStringsForDatatable } from " +
                             "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
                         "import { getOriginalNameFromTechnicalName } from " +
-                            "\"@/components/resources/dataTable/conversion/Utils\";"
+                            "\"@/components/resources/dataTable/conversion/Utils\";",
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),

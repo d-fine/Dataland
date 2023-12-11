@@ -50,7 +50,7 @@ open class SingleSelectComponent(
                         "import { formatStringForDatatable } from " +
                             "\"@/components/resources/dataTable/conversion/PlainStringValueGetterFactory\";",
                         "import { getOriginalNameFromTechnicalName } from " +
-                            "\"@/components/resources/dataTable/conversion/Utils\";"
+                            "\"@/components/resources/dataTable/conversion/Utils\";",
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
