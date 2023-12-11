@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.frameworks.gdv.model.soziales.audit.GdvSozia
 import org.dataland.datalandbackend.frameworks.gdv.model.soziales.einkommensgleichheit.GdvSozialesEinkommensgleichheit
 import org.dataland.datalandbackend.frameworks.gdv.model.soziales.geschlechterdiversitaet.GdvSozialesGeschlechterdiversitaet
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.model.gdv.YearlyTimeseriesData
 
 /**
  * The data-model for the Soziales section
@@ -15,4 +16,7 @@ data class GdvSoziales(
     val einkommensgleichheit: GdvSozialesEinkommensgleichheit?,
     val geschlechterdiversitaet: GdvSozialesGeschlechterdiversitaet?,
     val audit: GdvSozialesAudit?,
+    val anzahlDerBetroffenenMitarbeiter: YearlyTimeseriesData<AnzahlDerBetroffenenMitarbeiterValues?>?,
+    val auswirkungenAufAnteilBefristerVertraegeUndFluktuation: YearlyTimeseriesData<AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues?>?,
+    val budgetFuerSchulungAusbildung: YearlyTimeseriesData<BudgetFuerSchulungAusbildungValues?>?,
 )
