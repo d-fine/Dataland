@@ -27,7 +27,7 @@ export interface Field {
   label: string;
   description: string;
   unit?: string;
-  uploadComponentName: string;
+  component: string;
   dependency?: string;
   showIf: (dataModel?: FrameworkData) => boolean;
   validation?: string;

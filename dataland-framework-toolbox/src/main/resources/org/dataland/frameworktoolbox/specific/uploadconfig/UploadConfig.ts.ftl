@@ -55,7 +55,7 @@ export const ${frameworkIdentifier}DataModel : Category[] = [<@loopCategories up
         </#list>
         ],</#if>
     unit: "<#if fieldConfig.unit??>${fieldConfig.unit?js_string}</#if>",
-    uploadComponentName: "${fieldConfig.uploadComponentName?js_string}",
+    component: "${fieldConfig.uploadComponentName?js_string}",
     required: <#if fieldConfig.required??>true<#else>false</#if>,
     showIf: <@frameworklambda fieldConfig.shouldDisplay/>, <#--is this even needed for upload?-->
     validation: "",
