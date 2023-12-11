@@ -1,3 +1,6 @@
+import sys
+import os
+
 import rabbitmq as mq
 
 
@@ -6,4 +9,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Interrupted")
+        sys.exit()

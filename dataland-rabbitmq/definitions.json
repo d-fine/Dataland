@@ -78,7 +78,16 @@
       "arguments": {}
     },
     {
-      "name": "dieter",
+      "name": "send_exchange",
+      "vhost": "vhost",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "receive_exchange",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,

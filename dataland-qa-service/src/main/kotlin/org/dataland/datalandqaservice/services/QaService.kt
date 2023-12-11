@@ -163,8 +163,8 @@ class QaService(
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange("dieter", declare = "false"),
-                key = ["hello"],
+                exchange = Exchange("send_exchange", declare = "false"),
+                key = ["send"],
             ),
         ],
     )
@@ -173,5 +173,9 @@ class QaService(
     ) {
         println("it worked")
         println("the message is \"$body\"")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            "SUCCESS", "TYPE", "correlationId", "receive_exchange",
+            "key",
+        )
     }
 }
