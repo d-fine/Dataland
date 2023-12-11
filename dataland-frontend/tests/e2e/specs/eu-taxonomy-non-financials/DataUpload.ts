@@ -14,7 +14,7 @@ import { uploadDocumentViaApi } from "@e2e/utils/DocumentUpload";
 import { fillAndValidateEuTaxonomyForNonFinancialsUploadForm } from "@e2e/utils/EuTaxonomyNonFinancialsUpload";
 import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from "@e2e/utils/GeneralUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { uploadDocuments } from "@sharedUtils/components/UploadDocuments";
+import { UploadReports } from "@sharedUtils/components/UploadReports";
 
 describeIf(
   "As a user, I expect that the upload form works correctly when editing and uploading a new eu-taxonomy dataset for a non-financial company",
@@ -24,6 +24,7 @@ describeIf(
   function () {
     let frontendDocumentHash = "";
     let testData: FixtureData<EuTaxonomyDataForNonFinancials>;
+    const uploadReports = new UploadReports("referencedReports");
     before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (
         jsonContent: FixtureData<EuTaxonomyDataForNonFinancials>[],
@@ -90,7 +91,7 @@ describeIf(
         { contents: `../${TEST_PDF_FILE_PATH}`, fileName: differentFileNameForSameFile + ".pdf" },
         { force: true },
       );
-      uploadDocuments.fillAllFormsOfReportsSelectedForUpload();
+      uploadReports.fillAllFormsOfReportsSelectedForUpload();
       cy.get('div[name="capex"]').within(() => {
         cy.get('select[name="fileName"]').select(differentFileNameForSameFile);
       });
@@ -121,9 +122,9 @@ describeIf(
             cy.visitAndCheckAppMount(
               `/companies/${storedCompany.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/upload`,
             );
-            uploadDocuments.selectFile(TEST_PDF_FILE_NAME, "referencedReports");
-            uploadDocuments.selectFile(`${TEST_PDF_FILE_NAME}2`, "referencedReports");
-            uploadDocuments.fillAllFormsOfReportsSelectedForUpload(2);
+            uploadReports.selectFile(TEST_PDF_FILE_NAME);
+            uploadReports.selectFile(`${TEST_PDF_FILE_NAME}2`);
+            uploadReports.fillAllFormsOfReportsSelectedForUpload(2);
             fillAndValidateEuTaxonomyForNonFinancialsUploadForm(`${TEST_PDF_FILE_NAME}2`);
             cy.get('div[name="revenue"]').within(() => {
               cy.get('select[name="fileName"]').select(TEST_PDF_FILE_NAME);
@@ -144,7 +145,7 @@ describeIf(
             });
             cy.contains("span", "MY DATASETS");
             goToEditFormAndValidateExistenceOfReports(storedCompany.companyId, true);
-            uploadDocuments.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME);
+            uploadReports.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME);
             cy.intercept({ method: "POST", url: `**/api/data/**`, times: 1 }, (request) => {
               const data = assertDefined(request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data;
               expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.referencedReports)).to.equal(false);
