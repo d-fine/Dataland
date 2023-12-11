@@ -26,7 +26,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
     identifier = "gdv",
     label = "GDV/VÖB",
     explanation = "Das GDV/VÖB Framework",
-    File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
+    File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV_devEdition.csv"),
 ) {
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
@@ -78,11 +78,17 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         componentGroupUmwelt?.edit<ComponentGroup>("treibhausgasemissionen") {
             create<GdvYearlyDecimalTimeseriesDataComponent>("treibhausgasBerichterstattungUndPrognosen") {
                 label = "Treibhausgas-Berichterstattung und Prognosen"
-                explanation = "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.)."
+                explanation = "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene " +
+                        "berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen" +
+                        "# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die " +
+                        "kommenden drei Jahre an (in tCO2-Äquiv.)."
                 decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope1", "Scope 1", "tCO2-Äquiv."),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope2", "Scope 2", "tCO2-Äquiv."),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope3", "Scope 3", "tCO2-Äquiv."),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope1", "Scope 1",
+                        "tCO2-Äquiv."),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope2", "Scope 2",
+                        "tCO2-Äquiv."),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("scope3", "Scope 3",
+                        "tCO2-Äquiv."),
                 )
             }
         }
@@ -90,20 +96,27 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         componentGroupUmwelt?.edit<ComponentGroup>("energieverbrauch") {
             create<GdvYearlyDecimalTimeseriesDataComponent>("berichterstattungEnergieverbrauch") {
                 label = "Berichterstattung Energieverbrauch"
-                explanation = "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an."
+                explanation = "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren " +
+                        "Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("energieverbrauch", "Energieverbrauch", "GWh"),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("verbrauchErneuerbareEnergien", "Verbrauch erneuerbare Energien", "%"),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("erzeugungErneuerbareEnergien", "Erzeugung erneuerbare Energien", "%"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("energieverbrauch",
+                        "Energieverbrauch", "GWh"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("verbrauchErneuerbareEnergien",
+                        "Verbrauch erneuerbare Energien", "%"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("erzeugungErneuerbareEnergien",
+                        "Erzeugung erneuerbare Energien", "%"),
                 )
             }
         }
         componentGroupUmwelt?.edit<ComponentGroup>("energieeffizienzImmobilienanlagen") {
-            create<GdvYearlyDecimalTimeseriesDataComponent>("berichterstattungEnergieverbrauchVonImmobilienvermoegen") {
+            create<GdvYearlyDecimalTimeseriesDataComponent>("berichterstattungEnergieverbrauchVonImmobi" +
+                    "lienvermoegen") {
                 label = "Berichterstattung Energieverbrauch von Immobilienvermoegen"
-                explanation = "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an."
+                explanation = "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) " +
+                        "für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("energieeffizienteImmobilienanlagen", "energieeffiziente Immobilienanlagen", "%"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("energieeffizienteImmobilienanlagen",
+                        "energieeffiziente Immobilienanlagen", "%"),
                 )
             }
         }
@@ -111,10 +124,14 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         componentGroupUmwelt?.edit<ComponentGroup>("wasserverbrauch") {
             create<GdvYearlyDecimalTimeseriesDataComponent>("berichterstattungWasserverbrauch") {
                 label = "Berichterstattung Wasserverbrauch"
-                explanation = "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an."
+                explanation = "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) " +
+                        "für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden" +
+                        " drei Jahre an."
                 decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("wasserverbrauch", "Wasserverbrauch", "l"),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("emissionenInWasser", "Emissionen in Wasser", "t"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("wasserverbrauch",
+                        "Wasserverbrauch", "l"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("emissionenInWasser",
+                        "Emissionen in Wasser", "t"),
                 )
             }
         }
@@ -122,11 +139,17 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         componentGroupUmwelt?.edit<ComponentGroup>("abfallproduktion") {
             create<GdvYearlyDecimalTimeseriesDataComponent>("berichterstattungAbfallproduktion") {
                 label = "Berichterstattung Abfallproduktion"
-                explanation = "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an."
+                explanation = "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten " +
+                        "Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten" +
+                        " Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen " +
+                        "für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("abfallmenge", "Abfallmenge", "t"),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anteilRecycelterAbfallmenge", "Anteil der recycelten Abfallmenge", "%"),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anteilGefaehrlicherAbfallmenge", "Anteil gefährlicher Abfall an Gesamtmenge", "%"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("abfallmenge", "Abfallmenge",
+                        "t"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anteilRecycelterAbfallmenge",
+                        "Anteil der recycelten Abfallmenge", "%"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anteilGefaehrlicherAbfallmenge",
+                        "Anteil gefährlicher Abfall an Gesamtmenge", "%"),
                 )
             }
         }
@@ -138,80 +161,111 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "recyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, " +
                     "die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre."
                 decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anteilAnRecyclaten", "Anteil an Recyclaten", "%"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anteilAnRecyclaten", "Anteil " +
+                            "an Recyclaten", "%"),
                 )
             }
         }
 
         componentGroupUmwelt?.edit<ComponentGroup>("fossileBrennstoffe") {
-            create<GdvYearlyDecimalTimeseriesDataComponent>("berichterstattungEinnahmenAusFossilenBrennstoffen") {
+            create<GdvYearlyDecimalTimeseriesDataComponent>("berichterstattungEinnahmenAusFossilenBrennstoffen")
+            {
                 label = "Berichterstattung Einnahmen aus fossilen Brennstoffen"
-                explanation = "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an."
+                explanation = "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den " +
+                        "gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die " +
+                        "Prognosen für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anteilEinnahmenAusFossilenBrennstoffen", "Anteil der Einnahmen aus fossilen Brennstoffen", "%"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anteilEinnahmenAusFossilen" +
+                            "Brennstoffen", "Anteil der Einnahmen aus fossilen Brennstoffen", "%"),
                 )
             }
         }
 
         componentGroupUmwelt?.edit<ComponentGroup>("taxonomie") {
-            create<GdvYearlyDecimalTimeseriesDataComponent>("umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten") {
+            create<GdvYearlyDecimalTimeseriesDataComponent>("umsatzInvestitionsaufwandFuerNachhaltige" +
+                    "Aktivitaeten") {
                 label = "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten"
-                explanation = "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an."
+                explanation = "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen " +
+                        "Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben " +
+                        "zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen" +
+                        " (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die " +
+                        "Prognosen für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten", "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten", "Mio. €"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("umsatzInvestitionsaufwandAus" +
+                            "NachhaltigenAktivitaeten", "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
+                        "Mio. €"),
                 )
             }
         }
 
         val componentGroupSoziales: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("soziales")
-        componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>("anzahlDerBetroffenenMitarbeiter") {
+        componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>("anzahlDerBetroffenen" +
+                "Mitarbeiter") {
             label = "Anzahl der betroffenen Mitarbeiter"
-            explanation = "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in Deutschland und in der Gesamtgruppe gibt und wieviele unbefristete Verträge von der Änderung betroffen sind (Verkauf oder Akquisition)."
+            explanation = "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in Deutschland und " +
+                    "in der Gesamtgruppe gibt und wieviele unbefristete Verträge von der Änderung betroffen sind " +
+                    "(Verkauf oder Akquisition)."
             decimalRows = mutableListOf(
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anzahlUnbefristeteVertraege", "Anzahl der unbefristeten Verträge", ""),
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anzahlvonAenderungBetroffeneVertraege", "Anzahl der von Änderung betroffenen Verträge", ""),
+                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anzahlUnbefristeteVertraege",
+                    "Anzahl der unbefristeten Verträge", ""),
+                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anzahlvonAenderungBetroffeneVertraege",
+                    "Anzahl der von Änderung betroffenen Verträge", ""),
             )
         }
 
-        componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>("auswirkungenAufAnteilBefristerVertraegeUndFluktuation") {
+        componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>("auswirkungenAufAnteil" +
+                "BefristerVertraegeUndFluktuation") {
             label = "Auswirkungen auf Anteil befrister Verträge und Fluktuation"
-            explanation = "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die letzten drei Jahre an."
+            explanation = "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die" +
+                    " letzten drei Jahre an."
             decimalRows = mutableListOf(
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anzahlbefristeteVertraege", "Anzahl der befristeten Verträge", ""),
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("fluktuation", "Fluktuation", "%"),
+                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("anzahlbefristeteVertraege",
+                    "Anzahl der befristeten Verträge", ""),
+                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("fluktuation", "Fluktuation",
+                    "%"),
             )
         }
 
         framework.root.create<GdvYearlyDecimalTimeseriesDataComponent>("unfallrate") {
             label = "Unfallrate"
-            explanation = "Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten drei Jahre?"
+            explanation = "Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten " +
+                    "drei Jahre?"
             decimalRows = mutableListOf(
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("haeufigkeitsrateVonArbeitsunfaellen", "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust", "%"),
+                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("haeufigkeitsrateVonArbeitsunfaellen",
+                    "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust", "%"),
             )
         }
 
-        componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>("budgetFuerSchulungAusbildung") {
+        componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>("budgetFuerSchulungAusbildung")
+        {
             label = "Budget für Schulung/Ausbildung"
-            explanation = "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde."
+            explanation = "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für " +
+                    "Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde."
             decimalRows = mutableListOf(
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("budgetProMitarbeiterProJahr", "Budget pro Mitarbeiter und Jahr", "€"),
+                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("budgetProMitarbeiterProJahr",
+                    "Budget pro Mitarbeiter und Jahr", "€"),
             )
         }
 
         componentGroupSoziales?.edit<ComponentGroup>("einkommensgleichheit") {
             create<GdvYearlyDecimalTimeseriesDataComponent>("ueberwachungDerEinkommensungleichheit") {
                 label = "Überwachung der Einkommensungleichheit"
-                explanation = "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für die letzten drei Jahre an."
+                explanation = "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das " +
+                        "Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für" +
+                        " die letzten drei Jahre an."
                 decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("geschlechtsspezifischesLohngefaelle", "Geschlechtsspezifisches Lohngefälle", "%"),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("einkommensungleichheitsverhaeltnis", "Einkommensungleichheitsverhältnis", "%"),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("ceoEinkommenungleichheitsverhaeltnis", "CEO-Einkommensungleichheitsverhältnis", "%"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("geschlechtsspezifischesLohngefaelle",
+                        "Geschlechtsspezifisches Lohngefälle", "%"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("einkommensungleichheitsverhaeltnis",
+                        "Einkommensungleichheitsverhältnis", "%"),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow("ceoEinkommenungleichheit" +
+                            "sverhaeltnis", "CEO-Einkommensungleichheitsverhältnis", "%"),
                 )
             }
         }
 
         framework.root.edit<ComponentGroup>("allgemein") {
-            create<GdvListOfBaseDataPointComponent>("weitereAkkreditierungen", "iso50001") {
+            create<GdvListOfBaseDataPointComponent>("weitereAkkreditierungen", "mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze") {
                 label = "Weitere Akkreditierungen"
             }
         }

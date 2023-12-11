@@ -20,21 +20,21 @@ class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGrou
             ?: throw IllegalArgumentException("Could not find the component with identifier $identifier.")
     }
 
-    private fun <T : ComponentBase> initComponent(component: T, nextToIdentifier: String? = null, init: (T.() -> Unit)?): T {
+    private fun <T : ComponentBase> initComponent(component: T, insertBeforeIdentifier: String? = null, init: (T.() -> Unit)?): T {
         require(components.none { it.identifier == component.identifier }) {
             "The identifier ${component.identifier} already exists."
         }
         init?.let { component.init() }
-        if (nextToIdentifier == null) {
+        if (insertBeforeIdentifier == null) {
             components.add(component) } else {
-            val indexOfNextToIdentifier = components.indexOfFirst { it.identifier == nextToIdentifier }
+            val indexOfInsertBeforeIdentifier = components.indexOfFirst { it.identifier == insertBeforeIdentifier }
 
-            require(indexOfNextToIdentifier != -1) {
+            require(indexOfInsertBeforeIdentifier != -1) {
                 "A component for the field ${component.identifier} cannot be added next to a component for a field " +
-                    "$nextToIdentifier because the component group does not contain a field with the name " +
-                    "$nextToIdentifier."
+                    "$insertBeforeIdentifier because the component group does not contain a field with the name " +
+                    "$insertBeforeIdentifier."
             }
-            components.add(indexOfNextToIdentifier + 1, component)
+            components.add(indexOfInsertBeforeIdentifier, component)
         }
         return component
     }
@@ -62,7 +62,7 @@ class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGrou
         return null
     }
 
-    override fun <T : ComponentBase> create(identifier: String, nextToIdentifier: String?, clazz: KClass<T>, init: (T.() -> Unit)?): T {
+    override fun <T : ComponentBase> create(identifier: String, insertBeforeIdentifier: String?, clazz: KClass<T>, init: (T.() -> Unit)?): T {
         val localParent = parent
         requireNotNull(localParent) { "Cannot initialize a new component without an initialized parent." }
 
@@ -70,7 +70,7 @@ class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGrou
         requireNotNull(componentConstructor) { "Could not find any suitable constructor for creating $clazz" }
 
         val component = componentConstructor(identifier, localParent)
-        return initComponent(component, nextToIdentifier, init)
+        return initComponent(component, insertBeforeIdentifier, init)
     }
 
     override fun <T : ComponentBase> edit(identifier: String, clazz: KClass<T>, editFunction: T.() -> Unit): T {

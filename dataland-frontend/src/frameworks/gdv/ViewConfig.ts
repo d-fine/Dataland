@@ -6,6 +6,7 @@ import { formatGdvYearlyDecimalTimeseriesDataForTable } from "@/components/resou
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
+import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 export const GdvViewConfiguration: MLDTConfig<GdvData> = [
@@ -99,18 +100,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             H: "H",
             L: "L",
           };
-          /**
-           * Maps the technical name of a select option to the respective original name
-           * @param technicalName of a select option
-           * @param mappingObject that contains the mappings
-           * @returns original name that matches the technical name
-           */
-          function getOriginalNameFromTechnicalName<T extends string>(
-            technicalName: T,
-            mappingObject: { [key in T]: string },
-          ): string {
-            return mappingObject[technicalName];
-          }
           return formatListOfStringsForDatatable(
             dataset.allgemein?.sektor?.map((it) => getOriginalNameFromTechnicalName(it, mappings)),
             "Sektor",
@@ -137,18 +126,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             Vierteljaehrlich: "vierteljährlich",
             Monatlich: "monatlich",
           };
-          /**
-           * Maps the technical name of a select option to the respective original name
-           * @param technicalName of a select option
-           * @param mappingObject that contains the mappings
-           * @returns original name that matches the technical name
-           */
-          function getOriginalNameFromTechnicalName<T extends string>(
-            technicalName: T,
-            mappingObject: { [key in T]: string },
-          ): string {
-            return mappingObject[technicalName];
-          }
           return formatStringForDatatable(
             dataset.allgemein?.frequenzDerBerichterstattung
               ? getOriginalNameFromTechnicalName(dataset.allgemein?.frequenzDerBerichterstattung, mappings)
@@ -304,18 +281,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             JaGeschaeftsleitung: "Ja, Geschäftsleitung",
             JaAufsichtsratUndGeschaeftsleitung: "Ja, Aufsichtsrat und Geschäftsleitung",
           };
-          /**
-           * Maps the technical name of a select option to the respective original name
-           * @param technicalName of a select option
-           * @param mappingObject that contains the mappings
-           * @returns original name that matches the technical name
-           */
-          function getOriginalNameFromTechnicalName<T extends string>(
-            technicalName: T,
-            mappingObject: { [key in T]: string },
-          ): string {
-            return mappingObject[technicalName];
-          }
           return formatStringForDatatable(
             dataset.allgemein?.anreizmechanismenFuerDasManagementUmwelt
               ? getOriginalNameFromTechnicalName(dataset.allgemein?.anreizmechanismenFuerDasManagementUmwelt, mappings)
@@ -337,18 +302,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             JaGeschaeftsleitung: "Ja, Geschäftsleitung",
             JaAufsichtsratUndGeschaeftsleitung: "Ja, Aufsichtsrat und Geschäftsleitung",
           };
-          /**
-           * Maps the technical name of a select option to the respective original name
-           * @param technicalName of a select option
-           * @param mappingObject that contains the mappings
-           * @returns original name that matches the technical name
-           */
-          function getOriginalNameFromTechnicalName<T extends string>(
-            technicalName: T,
-            mappingObject: { [key in T]: string },
-          ): string {
-            return mappingObject[technicalName];
-          }
           return formatStringForDatatable(
             dataset.allgemein?.anreizmechanismenFuerDasManagementSoziales
               ? getOriginalNameFromTechnicalName(
@@ -386,18 +339,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             Offen: "offen",
             Geklaert: "geklärt",
           };
-          /**
-           * Maps the technical name of a select option to the respective original name
-           * @param technicalName of a select option
-           * @param mappingObject that contains the mappings
-           * @returns original name that matches the technical name
-           */
-          function getOriginalNameFromTechnicalName<T extends string>(
-            technicalName: T,
-            mappingObject: { [key in T]: string },
-          ): string {
-            return mappingObject[technicalName];
-          }
           return formatStringForDatatable(
             dataset.allgemein?.statusZuE
               ? getOriginalNameFromTechnicalName(dataset.allgemein?.statusZuE, mappings)
@@ -431,18 +372,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             Offen: "offen",
             Geklaert: "geklärt",
           };
-          /**
-           * Maps the technical name of a select option to the respective original name
-           * @param technicalName of a select option
-           * @param mappingObject that contains the mappings
-           * @returns original name that matches the technical name
-           */
-          function getOriginalNameFromTechnicalName<T extends string>(
-            technicalName: T,
-            mappingObject: { [key in T]: string },
-          ): string {
-            return mappingObject[technicalName];
-          }
           return formatStringForDatatable(
             dataset.allgemein?.statusZuS
               ? getOriginalNameFromTechnicalName(dataset.allgemein?.statusZuS, mappings)
@@ -476,18 +405,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             Offen: "offen",
             Geklaert: "geklärt",
           };
-          /**
-           * Maps the technical name of a select option to the respective original name
-           * @param technicalName of a select option
-           * @param mappingObject that contains the mappings
-           * @returns original name that matches the technical name
-           */
-          function getOriginalNameFromTechnicalName<T extends string>(
-            technicalName: T,
-            mappingObject: { [key in T]: string },
-          ): string {
-            return mappingObject[technicalName];
-          }
           return formatStringForDatatable(
             dataset.allgemein?.statusZuG
               ? getOriginalNameFromTechnicalName(dataset.allgemein?.statusZuG, mappings)
@@ -926,18 +843,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 Nfrd: "NFRD",
                 Csrd: "CSRD",
               };
-              /**
-               * Maps the technical name of a select option to the respective original name
-               * @param technicalName of a select option
-               * @param mappingObject that contains the mappings
-               * @returns original name that matches the technical name
-               */
-              function getOriginalNameFromTechnicalName<T extends string>(
-                technicalName: T,
-                mappingObject: { [key in T]: string },
-              ): string {
-                return mappingObject[technicalName];
-              }
               return formatStringForDatatable(
                 dataset.umwelt?.taxonomie?.taxonomieBerichterstattung
                   ? getOriginalNameFromTechnicalName(dataset.umwelt?.taxonomie?.taxonomieBerichterstattung, mappings)
@@ -1098,18 +1003,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 PruefungDurchDritte: "Prüfung durch Dritte",
                 SowohlInternAlsAuchVonDrittanbietern: "Sowohl intern als auch von Drittanbietern",
               };
-              /**
-               * Maps the technical name of a select option to the respective original name
-               * @param technicalName of a select option
-               * @param mappingObject that contains the mappings
-               * @returns original name that matches the technical name
-               */
-              function getOriginalNameFromTechnicalName<T extends string>(
-                technicalName: T,
-                mappingObject: { [key in T]: string },
-              ): string {
-                return mappingObject[technicalName];
-              }
               return formatStringForDatatable(
                 dataset.soziales?.audit?.artDesAudits
                   ? getOriginalNameFromTechnicalName(dataset.soziales?.audit?.artDesAudits, mappings)
@@ -1258,18 +1151,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             Whistleblowing: "Whistleblowing",
             Other: "other",
           };
-          /**
-           * Maps the technical name of a select option to the respective original name
-           * @param technicalName of a select option
-           * @param mappingObject that contains the mappings
-           * @returns original name that matches the technical name
-           */
-          function getOriginalNameFromTechnicalName<T extends string>(
-            technicalName: T,
-            mappingObject: { [key in T]: string },
-          ): string {
-            return mappingObject[technicalName];
-          }
           return formatListOfStringsForDatatable(
             dataset.unternehmensfuehrungGovernance?.veroeffentlichteUnternehmensrichtlinien?.map((it) =>
               getOriginalNameFromTechnicalName(it, mappings),
