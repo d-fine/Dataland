@@ -92,11 +92,10 @@ import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldPro
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 
 export default defineComponent({
   name: "ExtendedDataPointFormField",
-  components: { UploadDocumentsForm, UploadFormHeader, FormKit },
+  components: { UploadFormHeader, FormKit },
   inject: {
     injectReportsNameAndReferences: {
       from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
