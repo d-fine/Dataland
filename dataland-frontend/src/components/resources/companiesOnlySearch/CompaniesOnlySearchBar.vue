@@ -20,6 +20,15 @@
         <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
         <SearchResultHighlighter :text="slotProps.option.companyName" :searchString="latestValidSearchString" />
       </template>
+      <template #footer>
+        <ul class="p-autocomplete-items pt-0" v-if="autocompleteArray && autocompleteArray.length >= resultLimit">
+          <li class="p-autocomplete-item">
+            <span class="text-primary font-medium underline pl-3">
+              Only showing {{ resultLimit }} results, please refine your query.</span
+            >
+          </li>
+        </ul>
+      </template>
     </AutoComplete>
   </div>
 </template>
@@ -53,6 +62,7 @@ export default defineComponent({
       searchBarInput: "",
       latestValidSearchString: "",
       autocompleteArray: [] as Array<CompanyIdAndName>,
+      resultLimit: 100,
     };
   },
   props: {
@@ -94,7 +104,10 @@ export default defineComponent({
       try {
         const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
           .companyDataController;
-        const response = await companyDataControllerApi.getCompaniesBySearchString(autoCompleteCompleteEvent.query);
+        const response = await companyDataControllerApi.getCompaniesBySearchString(
+          autoCompleteCompleteEvent.query,
+          this.resultLimit,
+        );
         this.autocompleteArray = response.data;
       } catch (error) {
         console.error(error);
