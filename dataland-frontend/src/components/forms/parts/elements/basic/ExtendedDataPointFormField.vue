@@ -1,37 +1,56 @@
 <template>
   <div class="grid">
+    <p>!!-- {{ currentReportValue }}</p>
     <FormKit type="group" :name="name" v-model="dataPoint">
       <div class="col-12">
         <slot />
         <div class="grid align-content-end">
-          <FormKit type="group" name="dataSource" :key="currentReportValue" :ignore="shouldIgnore()">
-            <div class="col-8">
-              <UploadFormHeader
-                :label="`${label} Report`"
-                description="Select a report as a reference for this data point."
-              />
-              <FormKit
-                type="select"
-                name="fileName"
-                v-model="currentReportValue"
-                placeholder="Select a report"
-                :options="[noReportLabel, ...reportsName]"
-              />
-              <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
-            </div>
-            <div class="col-4">
-              <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
-              <FormKit
-                outer-class="w-100"
-                type="number"
-                name="page"
-                placeholder="Page"
-                validation-label="Page"
-                step="1"
-                min="0"
-                validation="min:0"
-              />
-            </div>
+          <div class="col-8">
+            <UploadFormHeader
+              :label="`${label} Report`"
+              description="Select a report as a reference for this data point."
+            />
+            <FormKit
+              type="select"
+              name="fileName"
+              v-model="currentReportValue"
+              placeholder="Select a report"
+              :options="[noReportLabel, ...reportsName]"
+              :ignore="true"
+            />
+          </div>
+          <div class="col-4">
+            <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
+            <FormKit
+              outer-class="w-100"
+              type="number"
+              name="page"
+              placeholder="Page"
+              v-model="pageForFileReference"
+              validation-label="Page"
+              step="1"
+              min="0"
+              validation="min:0"
+              :ignore="true"
+            />
+          </div>
+
+          <FormKit
+            v-if="
+              (currentReportValue && currentReportValue !== noReportLabel) ||
+              (dataPoint?.dataSource?.fileName && dataPoint?.dataSource?.fileName !== noReportLabel)
+            "
+            type="group"
+            name="dataSource"
+          >
+            <FormKit type="text" name="fileName" v-model="currentReportValue" :outer-class="{ 'hidden-input': true }" />
+            <FormKit
+              type="text"
+              name="fileReference"
+              :modelValue="fileReferenceAccordingToName"
+              :outer-class="{ 'hidden-input': true }"
+            />
+            <FormKit type="number" name="page" v-model="pageForFileReference" :outer-class="{ 'hidden-input': true }" />
           </FormKit>
         </div>
 
@@ -73,10 +92,11 @@ import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldPro
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 
 export default defineComponent({
   name: "ExtendedDataPointFormField",
-  components: { UploadFormHeader, FormKit },
+  components: { UploadDocumentsForm, UploadFormHeader, FormKit },
   inject: {
     injectReportsNameAndReferences: {
       from: "namesAndReferencesOfAllCompanyReportsForTheDataset",
@@ -111,9 +131,10 @@ export default defineComponent({
         value: qualityOption,
       })),
       qualityValue: "NA",
-      currentReportValue: "",
+      currentReportValue: this.noReportLabel,
       dataPoint: {} as unknown,
       noReportLabel: "None...",
+      pageForFileReference: null,
     };
   },
 
@@ -136,17 +157,11 @@ export default defineComponent({
      */
     handleBlurValue(isDataValueProvided) {
       if (isDataValueProvided === false) {
+        1;
         this.qualityValue = QualityOptions.Na;
       } else if (this.qualityValue === QualityOptions.Na) {
         this.qualityValue = "";
       }
-    },
-    /**
-     * Determines whether a report is selected and dataSource should be ignored
-     * @returns boolean true if report is not selected or the selected option is "None..."
-     */
-    shouldIgnore(): boolean {
-      return !(this.currentReportValue?.length > 0 && this.currentReportValue !== this.noReportLabel);
     },
   },
 });
