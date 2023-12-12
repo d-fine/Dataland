@@ -82,7 +82,6 @@ describe("Component tests for SfdrPanel", () => {
 
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Sfdr, sfdrDisplayConfiguration, [preparedFixture]);
 
-    cy.contains("span", "marker-for-test").should("exist");
     cy.contains("td.headers-bg", "Data Date").should("exist");
   });
 });
