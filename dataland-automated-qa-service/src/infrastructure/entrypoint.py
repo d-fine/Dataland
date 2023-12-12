@@ -5,7 +5,7 @@ import rabbitmq as mq
 
 
 def main():
-    mq.tutorial()
+    mq.listen_to_message_queue()
 
 
 if __name__ == "__main__":
