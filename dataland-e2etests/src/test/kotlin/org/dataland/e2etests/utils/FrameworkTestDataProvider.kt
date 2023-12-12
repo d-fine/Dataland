@@ -82,6 +82,16 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
             }
     }
 
+    private fun companyListForTestingSfdrSpecificValidation(): List<CompanyInformationWithT<T>> {
+        return convertJsonToList(File("./build/resources/test/CompanyInformationWithSfdrPreparedFixtures.json"))
+    }
+
+    fun getSpecificCompanyByNameFromPreparedFixtures(companyName: String): CompanyInformationWithT<T>? {
+        return companyListForTestingSfdrSpecificValidation().find {
+            it.companyInformation.companyName == companyName
+        }
+    }
+
     fun getCompanyInformationWithRandomIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
         return testCompanyInformationWithTData.slice(0 until requiredQuantity)
             .map {
