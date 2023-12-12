@@ -35,7 +35,10 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
   if (newFixture.t.allgemein?.esgBerichte?.nachhaltigkeitsberichte) {
     newFixture.t.allgemein.esgBerichte.nachhaltigkeitsberichte = YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien) {
+  if (
+    newFixture.t.allgemein?.unGlobalConceptPrinzipien
+      ?.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien
+  ) {
     newFixture.t.allgemein.unGlobalConceptPrinzipien.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien =
       YesNo.Yes;
   }
