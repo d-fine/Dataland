@@ -79,6 +79,23 @@ export const gdvDataModel: Category[] = [
         fields: [],
       },
       {
+        name: "allgemein",
+        label: "Allgemein",
+        fields: [
+          {
+            name: "aktuelleBerichte",
+            label: "Aktuelle Berichte",
+            description: "Bitte teilen Sie die letzten Berichte mit uns (vorzugsweise die letzten drei).",
+
+            unit: "",
+            component: "ListOfBaseDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+            validation: "",
+          },
+        ],
+      },
+      {
         name: "iso14001",
         label: "ISO 14001",
         fields: [],
@@ -111,6 +128,11 @@ export const gdvDataModel: Category[] = [
       {
         name: "oecdLeitsaetze",
         label: "OECD Leitsätze",
+        fields: [],
+      },
+      {
+        name: "richtlinienEinhaltungOecd",
+        label: "Richtlinien Einhaltung OECD",
         fields: [],
       },
       {
@@ -763,7 +785,7 @@ export const gdvDataModel: Category[] = [
           {
             name: "artDesAudits",
             label: "Art des Audits",
-
+            description: "Art des Audits",
             options: [
               {
                 label: "Interne Anhörung",

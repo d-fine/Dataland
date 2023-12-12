@@ -54,6 +54,9 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       frequenzDerBerichterstattung: dataGenerator.valueOrNull(
         pickOneElement(Object.values(FrequenzDerBerichterstattungOptions)),
       ),
+      allgemein: {
+        aktuelleBerichte: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedShortString()),
+      },
       iso14001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
       iso45001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
       iso27001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
@@ -65,6 +68,7 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         dataGenerator.randomYesNo(),
       erklaerungUngc: dataGenerator.randomShortString(),
       oecdLeitsaetze: dataGenerator.randomYesNo(),
+      richtlinienEinhaltungOecd: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedShortString()),
       erklaerungOecd: dataGenerator.randomShortString(),
       ausrichtungAufDieUnSdgsUndAktivesVerfolgen: dataGenerator.randomShortString(),
       ausschlusslistenAufBasisVonEsgKriterien: dataGenerator.randomYesNo(),

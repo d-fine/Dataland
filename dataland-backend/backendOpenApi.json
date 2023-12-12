@@ -8004,6 +8004,14 @@
               }
             ]
           },
+          "allgemein": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvAllgemeinAllgemein"
+              }
+            ]
+          },
           "iso14001": {
             "nullable": true,
             "allOf": [
@@ -8060,6 +8068,14 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "richtlinienEinhaltungOecd": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointString"
               }
             ]
           },
@@ -8214,6 +8230,19 @@
           "hindernisseBeimUmgangMitEsgBedenken": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "GdvAllgemeinAllgemein": {
+        "type": "object",
+        "properties": {
+          "aktuelleBerichte": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointString"
+              }
+            ]
           }
         }
       },

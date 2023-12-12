@@ -135,6 +135,26 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         },
       },
       {
+        type: "section",
+        label: "Allgemein",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Aktuelle Berichte",
+            explanation: "Bitte teilen Sie die letzten Berichte mit uns (vorzugsweise die letzten drei).",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.nachhaltigkeitsbericht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatStringForDatatable(dataset.allgemein?.allgemein?.aktuelleBerichte?.value),
+                "Aktuelle Berichte",
+                dataset.allgemein?.allgemein?.aktuelleBerichte,
+              ),
+          },
+        ],
+      },
+      {
         type: "cell",
         label: "ISO 14001",
         explanation: "Haben Sie eine ISO 14001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
@@ -220,6 +240,19 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
           formatYesNoValueForDatatable(dataset.allgemein?.oecdLeitsaetze),
+      },
+      {
+        type: "cell",
+        label: "Richtlinien Einhaltung OECD",
+        explanation:
+          "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der OECD Leitsätze überwacht.",
+        shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.oecdLeitsaetze == "Yes",
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatStringForDatatable(dataset.allgemein?.richtlinienEinhaltungOecd?.value),
+            "Richtlinien Einhaltung OECD",
+            dataset.allgemein?.richtlinienEinhaltungOecd,
+          ),
       },
       {
         type: "cell",
@@ -992,7 +1025,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           {
             type: "cell",
             label: "Art des Audits",
-
+            explanation: "Art des Audits",
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
