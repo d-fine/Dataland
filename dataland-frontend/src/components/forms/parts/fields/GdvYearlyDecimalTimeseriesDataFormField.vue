@@ -1,17 +1,17 @@
 <template>
   <div class="form-field">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
-    <FormKit type="group" :name="name">
-      <FormKit type="meta" name="currentYear" :value="baseYear" />
+    <FormKit type="group" :name="name" v-if="reportingPeriod">
+      <FormKit type="meta" name="currentYear" :value="reportingPeriod" />
       <FormKit type="group" name="yearlyData">
         <div class="flex gap-2">
-          <div class="flex flex-column justify-content-around pt-5">
+          <div class="flex flex-column justify-content-around pt-5 pr-3">
             <div v-for="row of options" :key="row.value">
               <h5>{{ row.label }}</h5>
             </div>
           </div>
           <div v-for="group in groupsToDisplay" :key="group.headerTitle">
-            <div :class="['p-badge', `badge-${group.color}`, 'flex', 'align-items-center']">
+            <div :class="['p-badge', `badge-${group.color}`, 'flex', 'align-items-center', 'min-w-max']">
               <em v-if="group.icon" class="material-icons-outlined pr-1">{{ group.icon }}</em>
               {{ group.headerTitle }}
             </div>
@@ -29,6 +29,12 @@
         </div>
       </FormKit>
     </FormKit>
+    <div v-else>
+      <div class="p-badge flex badge-yellow align-items-center w-max">
+        <em class="material-icons-outlined pr-1">warning</em>
+        Please specify a reporting year above to fill this field
+      </div>
+    </div>
   </div>
 </template>
 
@@ -51,29 +57,44 @@ export default defineComponent({
   components: { UploadFormHeader, FormKit },
   props: {
     ...DropdownOptionFormFieldProps,
+    reportingPeriod: {
+      type: String,
+      required: false,
+    },
   },
   computed: {
-    baseYear() {
-      return 2022;
+    numericalYearOfDataDate(): number | undefined {
+      const parsedNumber = parseInt(this.reportingPeriod ?? "");
+      if (isNaN(parsedNumber)) return undefined;
+      else return parsedNumber;
     },
     groupsToDisplay(): YearGroup[] {
+      if (!this.numericalYearOfDataDate) return [];
       return [
         {
           headerTitle: "Historical Data",
           color: "light-gray",
           icon: "menu_book",
-          yearsInOrder: [2019, 2020, 2021],
+          yearsInOrder: [
+            this.numericalYearOfDataDate - 3,
+            this.numericalYearOfDataDate - 2,
+            this.numericalYearOfDataDate - 1,
+          ],
         },
         {
           headerTitle: "Reporting year",
           color: "dark-blue",
-          yearsInOrder: [2022],
+          yearsInOrder: [this.numericalYearOfDataDate],
         },
         {
           headerTitle: "Prognosis Data",
           color: "light-gray",
           icon: "lightbulb",
-          yearsInOrder: [2023, 2024, 2025],
+          yearsInOrder: [
+            this.numericalYearOfDataDate + 1,
+            this.numericalYearOfDataDate + 2,
+            this.numericalYearOfDataDate + 3,
+          ],
         },
       ];
     },

@@ -7955,15 +7955,13 @@
         ]
       },
       "GdvAllgemein": {
+        "required": [
+          "esgZiele"
+        ],
         "type": "object",
         "properties": {
           "esgZiele": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
+            "$ref": "#/components/schemas/YesNo"
           },
           "ziele": {
             "type": "string",
@@ -8004,35 +8002,11 @@
               }
             ]
           },
-          "iso14001": {
+          "aktuelleBerichte": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "iso45001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "iso27001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "iso50001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
+                "$ref": "#/components/schemas/BaseDataPointString"
               }
             ]
           },
@@ -8051,6 +8025,22 @@
               }
             ]
           },
+          "uncgPrinzipien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "richtlinienEinhaltungUngc": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointString"
+              }
+            ]
+          },
           "erklaerungUngc": {
             "type": "string",
             "nullable": true
@@ -8060,6 +8050,14 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "richtlinienEinhaltungOecd": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointString"
               }
             ]
           },
@@ -8284,15 +8282,13 @@
         }
       },
       "GdvGeneralMasterData": {
+        "required": [
+          "berichtsPflicht"
+        ],
         "type": "object",
         "properties": {
           "berichtsPflicht": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
+            "$ref": "#/components/schemas/YesNo"
           },
           "gueltigkeitsDatum": {
             "type": "string",
@@ -8311,10 +8307,6 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
-          },
-          "sicherheitsmassnahmenFuerMitarbeiter": {
-            "type": "string",
-            "nullable": true
           },
           "einkommensgleichheit": {
             "nullable": true,
@@ -8394,6 +8386,10 @@
       "GdvSozialesEinkommensgleichheit": {
         "type": "object",
         "properties": {
+          "sicherheitsmassnahmenFuerMitarbeiter": {
+            "type": "string",
+            "nullable": true
+          },
           "massnahmenZurVerbesserungDerEinkommensungleichheit": {
             "type": "string",
             "nullable": true
@@ -8736,13 +8732,6 @@
           "mechanismenZurAusrichtungAufStakeholder": {
             "type": "string",
             "nullable": true
-          },
-          "veroeffentlichteUnternehmensrichtlinien": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
-            }
           },
           "esgKriterienUndUeberwachungDerLieferanten": {
             "nullable": true,

@@ -80,6 +80,7 @@ class ComponentGroup(
             "You must specify a label for the group $identifier to generate a view configuration"
         }
         val containerSection = sectionUploadConfigBuilder.addSection(
+            identifier = identifier,
             label = localLabel,
             labelBadgeColor = uploadPageLabelBadgeColor,
             expandOnPageLoad = viewPageExpandOnPageLoad,

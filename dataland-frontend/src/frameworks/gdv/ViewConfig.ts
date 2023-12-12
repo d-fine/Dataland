@@ -5,9 +5,9 @@ import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dat
 import { formatGdvYearlyDecimalTimeseriesDataForTable } from "@/components/resources/dataTable/conversion/gdv/GdvYearlyDecimalTimeseriesDataGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
+import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 export const GdvViewConfiguration: MLDTConfig<GdvData> = [
   {
@@ -117,7 +117,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
       {
         type: "cell",
         label: "Frequenz der Berichterstattung",
-        explanation: "In welchen Zeitabständen werden die Berichte erstellt?",
+
         shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.nachhaltigkeitsbericht == "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
           const mappings = {
@@ -135,50 +135,14 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
       },
       {
         type: "cell",
-        label: "ISO 14001",
-        explanation: "Haben Sie eine ISO 14001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-        shouldDisplay: (): boolean => true,
+        label: "Aktuelle Berichte",
+        explanation: "Bitte teilen Sie die letzten Berichte mit uns (vorzugsweise die letzten drei).",
+        shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.nachhaltigkeitsbericht == "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
           wrapDisplayValueWithDatapointInformation(
-            formatYesNoValueForDatatable(dataset.allgemein?.iso14001?.value),
-            "ISO 14001",
-            dataset.allgemein?.iso14001,
-          ),
-      },
-      {
-        type: "cell",
-        label: "ISO 45001",
-        explanation: "Haben Sie eine ISO 45001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatYesNoValueForDatatable(dataset.allgemein?.iso45001?.value),
-            "ISO 45001",
-            dataset.allgemein?.iso45001,
-          ),
-      },
-      {
-        type: "cell",
-        label: "ISO 27001",
-        explanation: "Haben Sie eine ISO 27001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatYesNoValueForDatatable(dataset.allgemein?.iso27001?.value),
-            "ISO 27001",
-            dataset.allgemein?.iso27001,
-          ),
-      },
-      {
-        type: "cell",
-        label: "ISO 50001",
-        explanation: "Haben Sie eine ISO 50001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatYesNoValueForDatatable(dataset.allgemein?.iso50001?.value),
-            "ISO 50001",
-            dataset.allgemein?.iso50001,
+            formatStringForDatatable(dataset.allgemein?.aktuelleBerichte?.value),
+            "Aktuelle Berichte",
+            dataset.allgemein?.aktuelleBerichte,
           ),
       },
       {
@@ -206,22 +170,57 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
       },
       {
         type: "cell",
+        label: "UNCG Prinzipien",
+        explanation: "Hat das Unternehmen Überwachungsmechanismen für die UNGC Prinzipien eingerichtet ?",
+        shouldDisplay: (dataset: GdvData): boolean =>
+          dataset.allgemein?.mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze ==
+          "Yes",
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+          formatYesNoValueForDatatable(dataset.allgemein?.uncgPrinzipien),
+      },
+      {
+        type: "cell",
+        label: "Richtlinien Einhaltung UNGC",
+        explanation:
+          "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung des UNGC (alle vier Säulen) überwacht.",
+        shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.uncgPrinzipien == "Yes",
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatStringForDatatable(dataset.allgemein?.richtlinienEinhaltungUngc?.value),
+            "Richtlinien Einhaltung UNGC",
+            dataset.allgemein?.richtlinienEinhaltungUngc,
+          ),
+      },
+      {
+        type: "cell",
         label: "Erklärung UNGC",
         explanation: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.uncgPrinzipien == "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
           formatStringForDatatable(dataset.allgemein?.erklaerungUngc),
       },
       {
         type: "cell",
         label: "OECD Leitsätze",
-        explanation:
-          "Hat das Unternehmen Überwachungsmechanismen für die OECD Leitsätze eingerichtet ? Wenn ja, bitte teilen Sie die Richtlinien mit uns, die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der OECD Leitsätze überwacht.",
+        explanation: "Hat das Unternehmen Überwachungsmechanismen für die OECD Leitsätze eingerichtet ?",
         shouldDisplay: (dataset: GdvData): boolean =>
           dataset.allgemein?.mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze ==
           "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
           formatYesNoValueForDatatable(dataset.allgemein?.oecdLeitsaetze),
+      },
+      {
+        type: "cell",
+        label: "Richtlinien Einhaltung OECD",
+        explanation:
+          "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der OECD Leitsätze überwacht.",
+        shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.oecdLeitsaetze == "Yes",
+        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+          wrapDisplayValueWithDatapointInformation(
+            formatStringForDatatable(dataset.allgemein?.richtlinienEinhaltungOecd?.value),
+            "Richtlinien Einhaltung OECD",
+            dataset.allgemein?.richtlinienEinhaltungOecd,
+          ),
       },
       {
         type: "cell",
@@ -524,7 +523,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Treibhausgas-Berichterstattung und Prognosen",
             explanation:
-              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
+              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
@@ -901,20 +900,20 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           formatYesNoValueForDatatable(dataset.soziales?.aenderungenUnternehmensstruktur),
       },
       {
-        type: "cell",
-        label: "Sicherheitsmaßnahmen für Mitarbeiter",
-        explanation:
-          "Welche Maßnahmen werden ergriffen, um die Gesundheit und Sicherheit der Mitarbeiter des Unternehmens zu verbessern?",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.soziales?.sicherheitsmassnahmenFuerMitarbeiter),
-      },
-      {
         type: "section",
         label: "Einkommensgleichheit",
         expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
         children: [
+          {
+            type: "cell",
+            label: "Sicherheitsmaßnahmen für Mitarbeiter",
+            explanation:
+              "Welche Maßnahmen werden ergriffen, um die Gesundheit und Sicherheit der Mitarbeiter des Unternehmens zu verbessern?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.soziales?.einkommensgleichheit?.sicherheitsmassnahmenFuerMitarbeiter),
+          },
           {
             type: "cell",
             label: "Maßnahmen zur Verbesserung der Einkommensungleichheit",
@@ -994,7 +993,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           {
             type: "cell",
             label: "Art des Audits",
-
+            explanation: "TEST",
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
@@ -1080,7 +1079,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
       {
         type: "cell",
         label: "Wirtschaftsprüfer",
-
+        explanation: "TEST",
         shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
           formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.wirtschaftspruefer),
@@ -1129,35 +1128,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           dataset.unternehmensfuehrungGovernance?.einbeziehungVonStakeholdern == "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
           formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.mechanismenZurAusrichtungAufStakeholder),
-      },
-      {
-        type: "cell",
-        label: "Veröffentlichte Unternehmensrichtlinien",
-        explanation:
-          "Welche Richtlinien sind im Unternehmen veröffentlicht? Bitte nennen Sie weitere wichtige Richtlinien, falls diese nicht angegeben sind.",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
-          const mappings = {
-            AntiKorruption: "Anti-Korruption",
-            Verhaltenskodex: "Verhaltenskodex",
-            Interessenkonflikte: "Interessenkonflikte",
-            Datenschutz: "Datenschutz",
-            DiversitaetAndInklusion: "Diversität & Inklusion",
-            FaireBehandlungVonKunden: "Faire Behandlung von Kunden",
-            Zwangsarbeit: "Zwangsarbeit",
-            GesundheitUndSicherheit: "Gesundheit und Sicherheit",
-            MgtVonUmweltgefahren: "Mgt von Umweltgefahren",
-            VerantwortungsvollesMarketing: "Verantwortungsvolles Marketing",
-            Whistleblowing: "Whistleblowing",
-            Other: "other",
-          };
-          return formatListOfStringsForDatatable(
-            dataset.unternehmensfuehrungGovernance?.veroeffentlichteUnternehmensrichtlinien?.map((it) =>
-              getOriginalNameFromTechnicalName(it, mappings),
-            ),
-            "Ver\u00F6ffentlichte Unternehmensrichtlinien",
-          );
-        },
       },
       {
         type: "cell",

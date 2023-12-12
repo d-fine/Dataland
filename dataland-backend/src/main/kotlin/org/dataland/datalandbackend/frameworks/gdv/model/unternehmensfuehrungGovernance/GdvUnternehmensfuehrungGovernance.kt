@@ -13,7 +13,6 @@ data class GdvUnternehmensfuehrungGovernance(
     val einbeziehungVonStakeholdern: YesNo?,
     val prozessDerEinbeziehungVonStakeholdern: String?,
     val mechanismenZurAusrichtungAufStakeholder: String?,
-    val veroeffentlichteUnternehmensrichtlinien: List<String>?,
     val esgKriterienUndUeberwachungDerLieferanten: YesNo?,
     val auswahlkriterien: String?,
 )
