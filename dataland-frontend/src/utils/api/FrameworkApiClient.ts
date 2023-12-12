@@ -5,7 +5,6 @@ import {
   DataTypeEnum,
   EuTaxonomyDataForFinancialsControllerApi,
   EuTaxonomyDataForNonFinancialsControllerApi,
-  GdvDataControllerApi,
   LksgDataControllerApi,
   P2pDataControllerApi,
   SfdrDataControllerApi,
@@ -56,11 +55,6 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
       return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyNonFinancials>(
         "EuTaxonomyDataForNonFinancials",
         new EuTaxonomyDataForNonFinancialsControllerApi(configuration, undefined, axiosInstance),
-      );
-    case DataTypeEnum.Gdv: // TODO Emanuel: I had to manually add this. Withut it the view page did not work (because data fetch was broken). Can we automate it?
-      return translateFrameworkApi<typeof DataTypeEnum.Gdv>(
-        "GdvData",
-        new GdvDataControllerApi(configuration, undefined, axiosInstance),
       );
     default:
       return assertNever(framework);

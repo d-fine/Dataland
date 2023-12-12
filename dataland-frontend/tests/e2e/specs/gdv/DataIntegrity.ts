@@ -3,8 +3,9 @@ import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { DataTypeEnum, type GdvData } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { uploadGenericFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { getBaseFrameworkDefinition } from "@/frameworks/BaseFrameworkRegistry";
 
 let gdvFixtureForTest: FixtureData<GdvData>;
 before(function () {
@@ -32,14 +33,10 @@ describeIf(
         const testCompanyName = "Company-Created-In-Gdv-Blanket-Test-" + uniqueCompanyMarker;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-            return uploadFrameworkData(
-              DataTypeEnum.Gdv,
-              token,
-              storedCompany.companyId,
-              "2021",
-              gdvFixtureForTest.t,
+            return uploadGenericFrameworkData(token, storedCompany.companyId, "2021", gdvFixtureForTest.t, (config) =>
+              getBaseFrameworkDefinition(DataTypeEnum.Gdv)!.getFrameworkApiClient(config),
             ).then(() => {
-              cy.log("dummy"); // TODO Emanuel: The rest of the blanket test can be written as soon as the upload page is ready and working
+              cy.log("dummy"); // TODO test code
             });
           });
         });
