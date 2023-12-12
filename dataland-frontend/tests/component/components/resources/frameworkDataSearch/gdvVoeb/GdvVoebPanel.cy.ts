@@ -37,12 +37,11 @@ const configForGdvVoebPanelWithOneRollingWindow: MLDTConfig<GdvData> = [
 const configForGdvVoebPanelWithOneStringComponent: MLDTConfig<GdvData> = [
   {
     type: "cell",
-    label: "Sicherheitsmaßnahmen für Mitarbeiter",
-    explanation:
-        "Welche Maßnahmen werden ergriffen, um die Gesundheit und Sicherheit der Mitarbeiter des Unternehmens zu verbessern?",
-    shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+    label: "(Gültigkeits) Datum",
+    explanation: "Datum bis wann die Information gültig ist",
+    shouldDisplay: (): boolean => true,
     valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-        formatStringForDatatable(dataset.soziales?.einkommensgleichheit?.sicherheitsmassnahmenFuerMitarbeiter),
+        formatStringForDatatable(dataset.general?.masterData?.gueltigkeitsDatum),
   },
 ];
 
@@ -111,7 +110,8 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Gdv, configForGdvVoebPanelWithOneStringComponent, [
       preparedFixture,
     ]);
-    cy.get("span").contains("Sicherheitsmaßnahmen für Mitarbeiter");
+    cy.get("span").contains("(Gültigkeits) Datum");
+    cy.get("span").contains("2024-12-03");
   });
 
   it("Check that on the GDV-VÖB view Page the list base data point component works properly", () => {
