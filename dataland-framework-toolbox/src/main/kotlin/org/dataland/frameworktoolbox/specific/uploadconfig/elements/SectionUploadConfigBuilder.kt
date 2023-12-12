@@ -2,7 +2,6 @@ package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkBooleanLambda
-import org.dataland.frameworktoolbox.utils.capitalizeEn
 
 /**
  * An In-Memory representation of a MLDTSectionConfig
@@ -29,6 +28,7 @@ data class SectionUploadConfigBuilder(
      * Adds a new subsection to this section
      */
     fun addSection(
+        identifier: String,
         label: String,
         labelBadgeColor: LabelBadgeColor?,
         expandOnPageLoad: Boolean,
@@ -37,7 +37,7 @@ data class SectionUploadConfigBuilder(
     ): SectionUploadConfigBuilder {
         val newSection = SectionUploadConfigBuilder(
             parentSection = this,
-            name = camelCaseSify(label),
+            name = identifier,
             label = label,
             labelBadgeColor = labelBadgeColor,
             expandOnPageLoad = expandOnPageLoad,
@@ -52,6 +52,7 @@ data class SectionUploadConfigBuilder(
      * Adds a new cell to this section
      */
     fun addCell(
+        identifier: String,
         label: String,
         explanation: String?,
         shouldDisplay: FrameworkBooleanLambda,
@@ -64,7 +65,7 @@ data class SectionUploadConfigBuilder(
         val newCell = CellConfigBuilder(
             parentSection = this,
             label = label,
-            name = camelCaseSify(label),
+            name = identifier,
             explanation = explanation,
             shouldDisplay = shouldDisplay,
             unit = unit,
@@ -75,15 +76,5 @@ data class SectionUploadConfigBuilder(
         )
         children.add(newCell)
         return newCell
-    }
-
-    private fun camelCaseSify(sentence: String): String {
-        val words = sentence.trim().split(" ")
-        val camelCasedList = mutableListOf(words[0].toLowerCase())
-        val wordsReduced = words.subList(1, words.size)
-        wordsReduced.forEach { entry ->
-            run { camelCasedList.add(entry.capitalizeEn()) }
-        }
-        return camelCasedList.joinToString("")
     }
 }

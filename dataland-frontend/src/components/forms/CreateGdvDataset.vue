@@ -50,6 +50,7 @@
                           :required="field.required"
                           :validation="field.validation"
                           :validation-label="field.validationLabel"
+                          :reportingPeriod="yearOfDataDate"
                           :data-test="field.name"
                           :unit="field.unit"
                           @reportsUpdated="updateDocumentsList"
@@ -209,7 +210,7 @@ export default defineComponent({
   computed: {
     yearOfDataDate: {
       get(): string {
-        const currentDate = this.companyAssociatedGdvData.data?.general?.general?.fiscalYearEnd;
+        const currentDate = this.companyAssociatedGdvData.data?.general?.masterData?.gueltigkeitsDatum;
         if (currentDate === undefined) {
           return "";
         } else {

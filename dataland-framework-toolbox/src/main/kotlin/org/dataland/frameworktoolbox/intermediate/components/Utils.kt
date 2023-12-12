@@ -33,6 +33,7 @@ fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
     component: ComponentBase,
 ) {
     addCell(
+        identifier = component.identifier,
         label = component.label ?: throw IllegalStateException(
             "You must specify a label for ${component.identifier} to generate a view configuration",
         ),
