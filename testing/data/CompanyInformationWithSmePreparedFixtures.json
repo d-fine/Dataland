@@ -2,52 +2,52 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "South Hill",
-			"headquartersPostalCode": "27084-8357",
-			"sector": "niches",
+			"headquarters": "Rosarioville",
+			"headquartersPostalCode": "97392-3949",
+			"sector": null,
 			"identifiers": {
-				"Lei": [
-					"tPSpq8RgYc07omxUKboc"
-				],
+				"Lei": [],
 				"Isin": [
-					"ooFkMHUwv27b",
-					"SHcjz2LukmH7"
+					"mzpletV3cfbi",
+					"TnXTIAWZzjvJ"
 				],
-				"PermId": [],
+				"PermId": [
+					"0ZzGU0X2jZ"
+				],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"s3EfoHHD5"
+				],
+				"CompanyRegistrationNumber": [
+					"0P5aMgkzszVWCbO"
+				]
 			},
-			"countryCode": "HU",
-			"companyAlternativeNames": [
-				"Boehm, Ebert and Barrows",
-				"Hammes - Windler",
-				"Kohler - Sauer",
-				"Kshlerin LLC"
-			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://bewitched-charset.net",
+			"countryCode": "RO",
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": "https://giddy-toffee.net",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.49",
-						"06",
-						"37.0",
-						"90.03"
+						"10.72",
+						"27.3",
+						"64.19",
+						"69.10",
+						"74.10"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": "07282-6813",
-						"city": "East Immanuelstead",
-						"state": "North Carolina",
-						"country": "GD"
+						"streetAndHouseNumber": "Hahn Wells 26226",
+						"postalCode": "05310",
+						"city": "Venabury",
+						"state": "Texas",
+						"country": "KE"
 					},
-					"numberOfEmployees": 5146,
-					"fiscalYearStart": "2024-05-23"
+					"numberOfEmployees": 7515,
+					"fiscalYearStart": "2024-03-05"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -57,74 +57,21 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Mante, Larkin and Keebler",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Stokes Inlet 18607",
-								"postalCode": "06532",
-								"city": "East Rosafield",
-								"state": "Idaho",
-								"country": "DZ"
-							},
-							"shareOfTotalRevenueInPercent": 59.0288
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Honeysuckle Close 9163",
-								"postalCode": null,
-								"city": "Reading",
-								"state": "Maine",
-								"country": "SE"
-							},
-							"shareOfTotalRevenueInPercent": 53.3565
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Prosacco Crescent 696",
-								"postalCode": null,
-								"city": "Osinskiport",
-								"state": "California",
-								"country": "PY"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Barton, Becker and Braun",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Ethan Track 821",
-								"postalCode": "95660-8237",
-								"city": "Lavinialand",
-								"state": "New Hampshire",
-								"country": "GU"
-							},
-							"shareOfTotalRevenueInPercent": 13.6978
-						}
-					]
+					"listOfProductionSites": []
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Handcrafted Granite Chicken",
-							"shareOfTotalRevenueInPercent": 44.0819
+							"name": "Ergonomic Concrete Computer",
+							"shareOfTotalRevenueInPercent": 87.9821
 						},
 						{
-							"name": "Rustic Concrete Cheese",
-							"shareOfTotalRevenueInPercent": 57.7445
+							"name": "Fantastic Metal Shirt",
+							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Sleek Steel Chips",
-							"shareOfTotalRevenueInPercent": 89.788
-						},
-						{
-							"name": "Incredible Steel Bacon",
-							"shareOfTotalRevenueInPercent": 85.7644
-						},
-						{
-							"name": "Small Wooden Ball",
-							"shareOfTotalRevenueInPercent": 48.205
+							"name": "Elegant Metal Towels",
+							"shareOfTotalRevenueInPercent": null
 						}
 					]
 				}
@@ -134,22 +81,23 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1455,
+					"powerConsumptionInMWh": 267,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 247,
-					"primaryEnergySourceForHeatingAndHotWater": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 265,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 37092891,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 31163317,
 					"naturalHazardsCovered": [
-						"Snow",
 						"Flooding",
+						"EarthQuake",
 						"Avalanche",
-						"Wind"
+						"Snow",
+						"Hail"
 					]
 				}
 			}
@@ -159,47 +107,42 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Quitzonworth",
-			"headquartersPostalCode": "55785-1088",
-			"sector": "technologies",
+			"headquarters": "Fort Hilton",
+			"headquartersPostalCode": "76876",
+			"sector": "metrics",
 			"identifiers": {
-				"Lei": [
-					"l8Ckz6U11yEg6bBzGY2w"
-				],
+				"Lei": [],
 				"Isin": [
-					"Z43FmqyvQlLX",
-					"cCZF3kRXL2BD"
+					"yPGbKPfWU38d",
+					"IUYnsF4maZ1j"
 				],
 				"PermId": [
-					"YVx1gZFzEV"
+					"n9SYfBIlci"
 				],
-				"Ticker": [
-					"MjGbQDB"
-				],
+				"Ticker": [],
 				"Duns": [
-					"XfaMD64sD"
+					"lG3hdPFeY"
 				],
 				"VatNumber": [
-					"GhOWFGVhi"
+					"KQI5lbqLW"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CA",
+			"countryCode": "ID",
 			"companyAlternativeNames": [
-				"Hilpert - Ziemann",
-				"Sawayn, Mayert and Veum",
-				"Thiel - Konopelski",
-				"Wisozk - Schaefer"
+				"Marquardt, Donnelly and Macejkovic",
+				"Swift - Grimes",
+				"Wolf, Gerhold and Feil"
 			],
-			"companyLegalForm": null,
-			"website": null,
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://delicious-hierarchy.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.6"
+						"03.2"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -208,163 +151,24 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 596,
-					"fiscalYearStart": "2024-02-23"
-				},
-				"companyFinancials": {
-					"revenueInEUR": 86882390,
-					"operatingCostInEUR": 8021255,
-					"capitalAssetsInEUR": 8437628
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Donnelly - Shanahan",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Alia Turnpike 849",
-								"postalCode": "14675",
-								"city": "Turcotteland",
-								"state": "Michigan",
-								"country": "SX"
-							},
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Awesome Fresh Chicken",
-							"shareOfTotalRevenueInPercent": 77.2913
-						},
-						{
-							"name": "Oriental Bronze Fish",
-							"shareOfTotalRevenueInPercent": 47.6757
-						},
-						{
-							"name": "Intelligent Soft Tuna",
-							"shareOfTotalRevenueInPercent": 73.3733
-						},
-						{
-							"name": "Oriental Granite Keyboard",
-							"shareOfTotalRevenueInPercent": 97.4589
-						},
-						{
-							"name": "Handcrafted Concrete Ball",
-							"shareOfTotalRevenueInPercent": 78.5677
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
-				},
-				"consumption": {
-					"powerConsumptionInMWh": 1318,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazards": 29631306,
-					"naturalHazardsCovered": [
-						"Avalanche",
-						"Hail"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-minimum-address",
-			"headquarters": "Hirthechester",
-			"headquartersPostalCode": "06162",
-			"sector": "interfaces",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"DKZ2qrX9r1NF",
-					"ICfN6ngbr1Nj"
-				],
-				"PermId": [
-					"RRHCSIha88"
-				],
-				"Ticker": [
-					"GCvTInA"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"OpKIOqBt3"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "GH",
-			"companyAlternativeNames": [
-				"Bode, Hoeger and Connelly",
-				"Ratke - Bergstrom",
-				"Russel - Connelly",
-				"Wolf - Boyer"
-			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://edible-metro.biz",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"24.33"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": null,
-						"city": "City 17",
-						"state": null,
-						"country": "Uninspired"
-					},
-					"numberOfEmployees": 8467,
-					"fiscalYearStart": "2024-11-14"
+					"numberOfEmployees": 7021,
+					"fiscalYearStart": "2023-12-28"
 				},
 				"companyFinancials": {
 					"revenueInEUR": null,
-					"operatingCostInEUR": 31122046,
-					"capitalAssetsInEUR": 49680537
+					"operatingCostInEUR": 64177737,
+					"capitalAssetsInEUR": 64996817
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "West Lane 56711",
-								"postalCode": "10845-8316",
-								"city": "Lodi",
-								"state": "Washington",
-								"country": "RU"
-							},
-							"shareOfTotalRevenueInPercent": 74.8865
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Oriental Wooden Towels",
-							"shareOfTotalRevenueInPercent": 4.7868
-						},
-						{
-							"name": "Fantastic Concrete Towels",
-							"shareOfTotalRevenueInPercent": 64.493
+							"name": "Sleek Concrete Salad",
+							"shareOfTotalRevenueInPercent": 47.7903
 						}
 					]
 				}
@@ -374,17 +178,109 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 815,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 920,
+					"powerConsumptionInMWh": 885,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 158,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 48117386,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 26550204,
+					"naturalHazardsCovered": [
+						"Wind",
+						"Hail",
+						"Flooding"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-minimum-address",
+			"headquarters": "Candidohaven",
+			"headquartersPostalCode": null,
+			"sector": "platforms",
+			"identifiers": {
+				"Lei": [
+					"4ZArO62fEVpLBGwZ1UAW"
+				],
+				"Isin": [
+					"kDpRbGZH3Dd7"
+				],
+				"PermId": [
+					"WDcUjsj79X"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"P2lBPUjMO"
+				],
+				"CompanyRegistrationNumber": [
+					"VpnPxJeOI3FNOd2"
+				]
+			},
+			"countryCode": "PH",
+			"companyAlternativeNames": [
+				"Emmerich LLC",
+				"Gottlieb Inc",
+				"Hane - Denesik",
+				"Ziemann and Sons"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://delirious-discipline.org/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"25.5"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": null,
+						"postalCode": null,
+						"city": "City 17",
+						"state": null,
+						"country": "Uninspired"
+					},
+					"numberOfEmployees": 4512,
+					"fiscalYearStart": "2024-10-12"
+				},
+				"companyFinancials": {
+					"revenueInEUR": 61120301,
+					"operatingCostInEUR": 42929164,
+					"capitalAssetsInEUR": 8137912
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": []
+				},
+				"products": {
+					"listOfProducts": []
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+				},
+				"consumption": {
+					"powerConsumptionInMWh": 1906,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 143,
+					"primaryEnergySourceForHeatingAndHotWater": null,
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": null
 				}
 			}

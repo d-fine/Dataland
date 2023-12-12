@@ -29,6 +29,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
     File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
 ) {
 
+    @Suppress("LongMethod") // t0d0: fix detekt error later!
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         framework.root.edit<ComponentGroup>("allgemein") {
             viewPageExpandOnPageLoad = true
