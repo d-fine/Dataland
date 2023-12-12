@@ -82,7 +82,7 @@ recyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle K
 47,Soziales,Geschlechterdiversität,Definition Top-Management,"Bitte geben Sie Ihre Definition von ""Top-Management"".",String,,,,0,Yes,
 48,Soziales,Geschlechterdiversität,Einhaltung rechtlicher Vorgaben,"Welche Maßnahmen wurden ergriffen, um das geltende Recht in Bezug auf die Geschlechterdiversität von Exekutivinstanzen einzuhalten?",String,,,,0,Yes,
 49,Soziales,Audit,Audits zur Einhaltung von Arbeitsstandards,"Führt das Unternehmen interne oder externe Audits durch, um die Einhaltung der Arbeitsnormen durch das Unternehmen zu bewerten?",Yes/No,,,,0,Yes,
-49.1,Soziales,Audit,Art des Audits,,Single-Select Dropdown,Interne Anhörung; Prüfung durch Dritte; Sowohl intern als auch von Drittanbietern,,,49,Yes,
+49.1,Soziales,Audit,Art des Audits,PLACEHOLDER,Single-Select Dropdown,Interne Anhörung; Prüfung durch Dritte; Sowohl intern als auch von Drittanbietern,,,49,Yes,
 49.2,Soziales,Audit,Audit Ergebnisse,Bitte geben Sie Informationen über das letzte Audit an.,String,,,,49,Yes,
 50,Unternehmensführung/ Governance,,Führungsstruktur,Bitte dokumentieren Sie die Führungsstruktur des Unternehmens.,Custom,,,,0,Yes,
 51,Unternehmensführung/ Governance,,Wirtschaftsprüfer,,String,,,,0,Yes,
