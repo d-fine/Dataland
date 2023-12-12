@@ -10,7 +10,6 @@
         <td class="headers-bg pl-4" :data-cell-label="cellOrSectionConfig.label" data-row-header="true">
           <span class="table-left-label">{{ cellOrSectionConfig.label }}</span>
           <em
-            data-test="mldt-tooltip"
             v-if="cellOrSectionConfig.explanation"
             class="material-icons info-icon"
             aria-hidden="true"
