@@ -96,7 +96,7 @@ export default defineComponent({
       return this.dataPointIsAvailable;
     },
   },
-  emits: ["reportsUpdated"],
+  emits: ["fieldSpecificDocumentsUpdated"],
   mounted() {
     this.updateFileUploadFiles();
     this.isMounted = true;
@@ -131,7 +131,7 @@ export default defineComponent({
       this.referencedDocument = updatedDocuments[0];
       this.documentName = this.referencedDocument?.fileNameWithoutSuffix ?? "";
       this.documentReference = this.referencedDocument?.fileReference ?? "";
-      this.$emit("reportsUpdated", this.documentName, this.referencedDocument);
+      this.$emit("fieldSpecificDocumentsUpdated", this.referencedDocument);
     },
 
     /**

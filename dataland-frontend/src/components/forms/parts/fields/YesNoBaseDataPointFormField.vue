@@ -6,7 +6,7 @@
       :label="label"
       :required="required"
       :options="HumanizedYesNo"
-      @reports-updated="reportsUpdated"
+      @field-specific-documents-updated="fieldSpecificDocumentsUpdated"
     />
   </div>
 </template>
@@ -31,15 +31,14 @@ export default defineComponent({
   props: {
     ...BaseFormFieldProps,
   },
-  emits: ["reportsUpdated"],
+  emits: ["fieldSpecificDocumentsUpdated"],
   methods: {
     /**
      * Emits event that the selected document changed
-     * @param documentName the name of the new referenced document
      * @param referencedDocument the new referenced document
      */
-    reportsUpdated(documentName: string, referencedDocument: DocumentToUpload | undefined) {
-      this.$emit("reportsUpdated", documentName, referencedDocument);
+    fieldSpecificDocumentsUpdated(referencedDocument: DocumentToUpload | undefined) {
+      this.$emit("fieldSpecificDocumentsUpdated", referencedDocument);
     },
   },
 });

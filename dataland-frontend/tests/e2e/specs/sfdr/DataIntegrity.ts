@@ -3,7 +3,7 @@ import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { DataTypeEnum, type SfdrData } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation } from "@e2e/utils/CompanyUpload";
-import { selectsReportsForUploadInSfdrForm } from "@e2e/utils/SfdrUpload";
+import { selectSingleReportAndFillWithData } from "@e2e/utils/UploadUtils";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
@@ -131,7 +131,7 @@ describeIf(
           );
           cy.wait("@fetchDataForPrefill", { timeout: Cypress.env("medium_timeout_in_ms") as number });
           cy.get("h1").should("contain", companyName);
-          selectsReportsForUploadInSfdrForm();
+          selectSingleReportAndFillWithData();
           setQualityInSfdrUploadForm();
           setReferenceToAllUploadedReports(
             Object.keys(testSfdrCompany.t.general.general.referencedReports as ObjectType),

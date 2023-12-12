@@ -1,6 +1,11 @@
 <template>
   <!-- Select company reports -->
-  <div id="uploadReports" class="uploaded-files" style="padding: 0; margin-left: 0">
+  <div
+    id="uploadReports"
+    class="uploaded-files"
+    style="padding: 0; margin-left: 0"
+    :data-test="`upload-documents-${name}`"
+  >
     <FileUpload
       name="fileUpload"
       ref="fileUpload"
