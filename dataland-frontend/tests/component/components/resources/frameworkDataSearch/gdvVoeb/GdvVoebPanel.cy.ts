@@ -9,23 +9,28 @@ import { formatGdvYearlyDecimalTimeseriesDataForTable } from "@/components/resou
 import {
   formatStringForDatatable
 } from "../../../../../../src/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
+import {
+  formatListOfBaseDataPoint
+} from "../../../../../../src/components/resources/dataTable/conversion/gdv/GdvListOfBaseDataPointGetterFactory";
 
 const configForGdvVoebPanelWithOneRollingWindow: MLDTConfig<GdvData> = [
   {
     type: "cell",
-    label: "Auswirkungen auf Anteil befrister Verträge und Fluktuation",
+    label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
     explanation:
-      "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die letzten drei Jahre an.",
+        "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
     shouldDisplay: (): boolean => true,
     valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-      formatGdvYearlyDecimalTimeseriesDataForTable(
-        dataset.soziales?.auswirkungenAufAnteilBefristerVertraegeUndFluktuation,
-        {
-          anzahlbefristeteVertraege: { label: "Anzahl der befristeten Verträge", unitSuffix: "" },
-          fluktuation: { label: "Fluktuation", unitSuffix: "%" },
-        },
-        "Auswirkungen auf Anteil befrister Vertr\u00E4ge und Fluktuation",
-      ),
+        formatGdvYearlyDecimalTimeseriesDataForTable(
+            dataset.umwelt?.taxonomie?.umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten,
+            {
+              umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten: {
+                label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
+                unitSuffix: "Mio. €",
+              },
+            },
+            "Umsatz/Investitionsaufwand f\u00FCr nachhaltige Aktivit\u00E4ten",
+        ),
   },
 ];
 
@@ -38,6 +43,23 @@ const configForGdvVoebPanelWithOneStringComponent: MLDTConfig<GdvData> = [
     shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
     valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
         formatStringForDatatable(dataset.soziales?.einkommensgleichheit?.sicherheitsmassnahmenFuerMitarbeiter),
+  },
+];
+
+const configForGdvVoebPanelWithOneListForBaseDataPointComponent: MLDTConfig<GdvData> = [
+  {
+    type: "cell",
+    label: "Aktuelle Berichte",
+    explanation: "Aktuelle Nachhaltigkeits- oder ESG-Berichte",
+    shouldDisplay: (): boolean => true,
+    valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+      return formatListOfBaseDataPoint(
+          "Aktuelle Berichte",
+          dataset.allgemein?.esgBerichte?.aktuelleBerichte,
+          "Beschreibung des Berichts",
+          "Bericht",
+      );
+    },
   },
 ];
 
@@ -62,19 +84,16 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Gdv, configForGdvVoebPanelWithOneRollingWindow, [
       preparedFixture,
     ]);
-    cy.get("span").contains("Auswirkungen auf Anteil befrister Verträge und Fluktuation");
-    cy.get('em[data-test="mldt-tooltip"').click();
+    cy.get("span").contains("Umsatz/Investitionsaufwand für nachhaltige Aktivitäten");
     cy.get("a").should("have.class", "link").click();
     cy.get("div").contains("Historical Data");
     cy.get("div").contains("Reporting");
     cy.get("div").contains("Prognosis Data");
 
-    cy.get("td").contains("Anzahl der befristeten Verträge");
-    cy.get("td").contains("Fluktuation");
-    cy.get("td").contains("77,212.02 %");
-    cy.get("td").contains("20,588.11 %");
-    cy.get("td").contains("41,615.79 %");
-    for (let i = 2026; i < 2031; i++) {
+    cy.get("td").contains("57,945.66 Mio. €");
+    cy.get("td").contains("79,393.32 Mio. €");
+    cy.get("td").contains("55,042.92 Mio. €");
+    for (let i = 2023; i < 2028; i++) {
       cy.get("span").contains(i);
     }
   });
@@ -93,5 +112,29 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
       preparedFixture,
     ]);
     cy.get("span").contains("Sicherheitsmaßnahmen für Mitarbeiter");
+  });
+
+  it("Check that on the GDV-VÖB view Page the list base data point component works properly", () => {
+    const preparedFixture = getPreparedFixture("Gdv-dataset-with-no-null-fields",
+        preparedFixtures);
+    const gdvData = preparedFixture.t;
+
+    cy.intercept("/api/data/gdv/mock-data-id", {
+      companyId: companyId,
+      reportingPeriod: preparedFixture.reportingPeriod,
+      data: gdvData,
+    } as CompanyAssociatedDataGdvData);
+    mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Gdv, configForGdvVoebPanelWithOneListForBaseDataPointComponent,
+        [
+            preparedFixture,
+    ]);
+
+    cy.get("span").contains("Aktuelle Berichte");
+    cy.get("a").should("have.class","link").click();
+
+    cy.get("span").contains("Beschreibung des Berichts");
+    cy.get("div").contains("blockchains");
+    cy.intercept('GET', '/path-to-your-resource').as('getCallAlias')
+    cy.get('span[data-test="Report-Download-Policy"]').should("exist")
   });
 });
