@@ -35,6 +35,28 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
 
         framework.root
+            .getOrNull<ComponentGroup>("allgemein")
+            ?.getOrNull<ComponentGroup>("esgBerichte")
+            ?.create<GdvListOfBaseDataPointComponent>("aktuelleBerichte") {
+                label = "Aktuelle Berichte"
+                descriptionColumnHeader = "Beschreibung des Berichts"
+                documentColumnHeader = "Bericht"
+                // TODO description/tooltip?
+            }
+
+        framework.root
+            .getOrNull<ComponentGroup>("allgemein")
+            ?.getOrNull<ComponentGroup>("akkreditierungen")
+            ?.create<GdvListOfBaseDataPointComponent>(
+                "weitereAkkreditierungen",
+            ) {
+                label = "Weitere Akkreditierungen"
+                descriptionColumnHeader = "Beschreibung der Akkreditierung"
+                documentColumnHeader = "Akkreditierung"
+                // TODO description/tooltip?
+            }
+
+        framework.root
             .getOrNull<ComponentGroup>("umwelt")
             ?.getOrNull<ComponentGroup>("taxonomie")
             ?.edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
@@ -289,15 +311,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "CEO-Einkommensungleichheitsverhältnis", "%",
                     ),
                 )
-            }
-        }
-
-        framework.root.edit<ComponentGroup>("allgemein") {
-            create<GdvListOfBaseDataPointComponent>(
-                "weitereAkkreditierungen",
-                "mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze",
-            ) {
-                label = "Weitere Akkreditierungen"
             }
         }
     }

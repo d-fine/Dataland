@@ -7961,87 +7961,33 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/GdvAllgemeinEsgZiele"
               }
             ]
           },
-          "ziele": {
-            "type": "string",
-            "nullable": true
-          },
-          "investitionen": {
-            "type": "string",
-            "nullable": true
-          },
-          "sektorMitHohenKlimaauswirkungen": {
+          "sektoren": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/GdvAllgemeinSektoren"
               }
             ]
           },
-          "sektor": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
-            }
-          },
-          "nachhaltigkeitsbericht": {
+          "esgBerichte": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/GdvAllgemeinEsgBerichte"
               }
             ]
           },
-          "frequenzDerBerichterstattung": {
+          "akkreditierungen": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/FrequenzDerBerichterstattungOptions"
+                "$ref": "#/components/schemas/GdvAllgemeinAkkreditierungen"
               }
             ]
-          },
-          "iso14001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "iso45001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "iso27001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "iso50001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "weitereAkkreditierungen": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/BaseDataPointString"
-            }
           },
           "mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze": {
             "nullable": true,
@@ -8214,6 +8160,119 @@
           "hindernisseBeimUmgangMitEsgBedenken": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "GdvAllgemeinAkkreditierungen": {
+        "type": "object",
+        "properties": {
+          "iso14001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso45001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso27001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso50001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "weitereAkkreditierungen": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          }
+        }
+      },
+      "GdvAllgemeinEsgBerichte": {
+        "type": "object",
+        "properties": {
+          "nachhaltigkeitsbericht": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "frequenzDerBerichterstattung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FrequenzDerBerichterstattungOptions"
+              }
+            ]
+          },
+          "aktuelleBerichte": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          }
+        }
+      },
+      "GdvAllgemeinEsgZiele": {
+        "type": "object",
+        "properties": {
+          "existenzVonEsgZielen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "beschreibungDerEsgZiele": {
+            "type": "string",
+            "nullable": true
+          },
+          "investitionenInZielerreichung": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvAllgemeinSektoren": {
+        "type": "object",
+        "properties": {
+          "sektorenMitHohenKlimaauswirkungen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "auflistungDerSektoren": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -10161,10 +10220,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

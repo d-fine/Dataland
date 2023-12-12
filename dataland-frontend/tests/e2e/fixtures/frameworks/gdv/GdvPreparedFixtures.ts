@@ -26,14 +26,14 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
     newFixture.t.general.masterData.berichtsPflicht = YesNo.Yes;
   }
 
-  if (newFixture.t.allgemein?.esgZiele) {
-    newFixture.t.allgemein.esgZiele = YesNo.Yes;
+  if (newFixture.t.allgemein?.esgZiele?.existenzVonEsgZielen) {
+    newFixture.t.allgemein.esgZiele.existenzVonEsgZielen = YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.sektorMitHohenKlimaauswirkungen) {
-    newFixture.t.allgemein.sektorMitHohenKlimaauswirkungen = YesNo.Yes;
+  if (newFixture.t.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen) {
+    newFixture.t.allgemein.sektoren.sektorenMitHohenKlimaauswirkungen = YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.nachhaltigkeitsbericht) {
-    newFixture.t.allgemein.nachhaltigkeitsbericht = YesNo.Yes;
+  if (newFixture.t.allgemein?.esgBerichte?.nachhaltigkeitsbericht) {
+    newFixture.t.allgemein.esgBerichte.nachhaltigkeitsbericht = YesNo.Yes;
   }
   if (newFixture.t.allgemein?.mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze) {
     newFixture.t.allgemein.mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze =

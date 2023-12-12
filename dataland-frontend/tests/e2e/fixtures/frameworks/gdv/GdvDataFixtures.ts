@@ -45,22 +45,35 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       },
     },
     allgemein: {
-      esgZiele: dataGenerator.randomYesNo(),
-      ziele: dataGenerator.randomShortString(),
-      investitionen: dataGenerator.randomShortString(),
-      sektorMitHohenKlimaauswirkungen: dataGenerator.randomYesNo(),
-      sektor: dataGenerator.valueOrNull(pickSubsetOfElements(["A", "B", "C", "D", "E", "F", "G", "H", "L"])),
-      nachhaltigkeitsbericht: dataGenerator.randomYesNo(),
-      frequenzDerBerichterstattung: dataGenerator.valueOrNull(
-        pickOneElement(Object.values(FrequenzDerBerichterstattungOptions)),
-      ),
-      iso14001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-      iso45001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-      iso27001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-      iso50001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-      weitereAkkreditierungen: dataGenerator.valueOrNull(
-        generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0),
-      ),
+      esgZiele: {
+        existenzVonEsgZielen: dataGenerator.randomYesNo(),
+        beschreibungDerEsgZiele: dataGenerator.randomShortString(),
+        investitionenInZielerreichung: dataGenerator.randomShortString(),
+      },
+      sektoren: {
+        sektorenMitHohenKlimaauswirkungen: dataGenerator.randomYesNo(),
+        auflistungDerSektoren: dataGenerator.valueOrNull(
+          pickSubsetOfElements(["A", "B", "C", "D", "E", "F", "G", "H", "L"]),
+        ),
+      },
+      esgBerichte: {
+        nachhaltigkeitsbericht: dataGenerator.randomYesNo(),
+        frequenzDerBerichterstattung: dataGenerator.valueOrNull(
+          pickOneElement(Object.values(FrequenzDerBerichterstattungOptions)),
+        ),
+        aktuelleBerichte: dataGenerator.valueOrNull(
+          generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0),
+        ),
+      },
+      akkreditierungen: {
+        iso14001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        iso45001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        iso27001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        iso50001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        weitereAkkreditierungen: dataGenerator.valueOrNull(
+          generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0),
+        ),
+      },
       mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze:
         dataGenerator.randomYesNo(),
       erklaerungUngc: dataGenerator.randomShortString(),
