@@ -12,24 +12,30 @@ import {
 import {
   formatListOfBaseDataPoint
 } from "@/components/resources/dataTable/conversion/gdv/GdvListOfBaseDataPointGetterFactory";
+import {formatNumberToReadableFormat} from "../../../../../../src/utils/Formatter";
 
 const configForGdvVoebPanelWithOneRollingWindow: MLDTConfig<GdvData> = [
   {
     type: "cell",
-    label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
+    label: "Überwachung der Einkommensungleichheit",
     explanation:
-        "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+        "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für die letzten drei Jahre an.",
     shouldDisplay: (): boolean => true,
     valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
         formatGdvYearlyDecimalTimeseriesDataForTable(
-            dataset.umwelt?.taxonomie?.umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten,
+            dataset.soziales?.einkommensgleichheit?.ueberwachungDerEinkommensungleichheit,
             {
-              umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten: {
-                label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
-                unitSuffix: "Mio. €",
+              geschlechtsspezifischesLohngefaelle: {
+                label: "Geschlechtsspezifisches Lohngefälle",
+                unitSuffix: "%",
+              },
+              einkommensungleichheitsverhaeltnis: { label: "Einkommensungleichheitsverhältnis", unitSuffix: "%" },
+              ceoEinkommenungleichheitsverhaeltnis: {
+                label: "CEO-Einkommensungleichheitsverhältnis",
+                unitSuffix: "%",
               },
             },
-            "Umsatz/Investitionsaufwand f\u00FCr nachhaltige Aktivit\u00E4ten",
+            "\u00DCberwachung der Einkommensungleichheit",
         ),
   },
 ];
@@ -37,11 +43,11 @@ const configForGdvVoebPanelWithOneRollingWindow: MLDTConfig<GdvData> = [
 const configForGdvVoebPanelWithOneStringComponent: MLDTConfig<GdvData> = [
   {
     type: "cell",
-    label: "(Gültigkeits) Datum",
-    explanation: "Datum bis wann die Information gültig ist",
+    label: "Wirtschaftsprüfer",
+
     shouldDisplay: (): boolean => true,
     valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-        formatStringForDatatable(dataset.general?.masterData?.gueltigkeitsDatum),
+        formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.wirtschaftspruefer),
   },
 ];
 
@@ -83,17 +89,21 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Gdv, configForGdvVoebPanelWithOneRollingWindow, [
       preparedFixture,
     ]);
-    cy.get("span").contains("Umsatz/Investitionsaufwand für nachhaltige Aktivitäten");
+    cy.get("span").contains("Überwachung der Einkommensungleichheit");
     cy.get("a").should("have.class", "link").click();
     cy.get("div").contains("Historical Data");
     cy.get("div").contains("Reporting");
     cy.get("div").contains("Prognosis Data");
 
-    cy.get("td").contains("17,732.53 Mio. €");
-    cy.get("td").contains("69,053.72 Mio. €");
-    cy.get("td").contains("14,504.13 Mio. €");
-    for (let i = 2023; i < 2028; i++) {
-      cy.get("span").contains(i);
+    const modalDatasets = preparedFixture.t.soziales?.einkommensgleichheit?.
+        ueberwachungDerEinkommensungleichheit?.yearlyData;
+    for (const dataSetOfOneYear in modalDatasets) {
+      cy.get("div").contains(formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear]
+          .ceoEinkommenungleichheitsverhaeltnis));
+      cy.get("div").contains(formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear]
+          .einkommensungleichheitsverhaeltnis));
+      cy.get("div").contains(formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear]
+          .geschlechtsspezifischesLohngefaelle));
     }
   });
 
@@ -110,8 +120,8 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.Gdv, configForGdvVoebPanelWithOneStringComponent, [
       preparedFixture,
     ]);
-    cy.get("span").contains("(Gültigkeits) Datum");
-    cy.get("span").contains("2024-01-17");
+    cy.get("span").contains("Wirtschaftsprüfer");
+    cy.get("span").contains(preparedFixture.t.unternehmensfuehrungGovernance?.wirtschaftspruefer as string);
   });
 
   it("Check that on the GDV-VÖB view Page the list base data point component works properly", () => {
@@ -129,13 +139,15 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
             preparedFixture,
     ]);
 
+    const listData = preparedFixture.t.allgemein?.esgBerichte?.aktuelleBerichte;
     cy.get("span").contains("Aktuelle Berichte");
     cy.get("a").should("have.class","link").click();
 
     cy.get("span").contains("Beschreibung des Berichts");
-    cy.get("div").contains("experiences");
-    cy.get("div").contains("communities");
-    cy.get("div").contains("eyeballs");
+    for (const oneListElement of listData) {
+      cy.get("div").contains(oneListElement.value);
+      cy.get("div").contains(oneListElement.dataSource.fileName);
+    }
     cy.get('span[data-test="Report-Download-Policy"]').should("exist");
   });
 });
