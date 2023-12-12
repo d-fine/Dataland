@@ -2,9 +2,10 @@ import json
 import time
 import logging
 
+from infrastructure.validator import ValidatorHolder
 import pika
 import pika.exceptions
-import properties as p
+import infrastructure.properties as p
 
 data_key = "data"
 document_key = "document"
@@ -19,11 +20,11 @@ qa_completed_type = "QA completed"
 manual_qa_requested_type = "Manual QA requested"
 
 
-def listen_to_message_queue():
+def listen_to_message_queue(data_validators: ValidatorHolder, document_validators: ValidatorHolder):
     mq = RabbitMq(p.rabbit_mq_connection_parameters)
     mq.connect()
-    mq.register_receiver(receiving_exchange, data_key, qa_data)
-    mq.register_receiver(receiving_exchange, document_key, qa_document)
+    mq.register_receiver(receiving_exchange, data_key, lambda x, y, z, a: qa_data(x, y, z, a, data_validators))
+    mq.register_receiver(receiving_exchange, document_key, lambda x, y, z, a: qa_document(x, y, z, a, document_validators))
     mq._channel.start_consuming()  # TODO handle disconnects
     mq.disconnect()
 
@@ -67,15 +68,15 @@ class RabbitMq:
         )
 
 
-def qa_data(channel, method, properties, body):
+def qa_data(channel, method, properties, body, data_validators: ValidatorHolder):
     received_message = json.loads(body)
     bypass_qa = received_message["bypassQa"]
     data_id = received_message["dataId"]
-    process_qa_request(channel, method, properties, data_key, "data", bypass_qa, data_id)
+    process_qa_request(channel, method, properties, data_key, "data", bypass_qa, data_id, data_validators)
 
 
-def qa_document(channel, method, properties, body):
-    process_qa_request(channel, method, properties, document_key, "document", False, body)
+def qa_document(channel, method, properties, body, document_validators: ValidatorHolder):
+    process_qa_request(channel, method, properties, document_key, "document", False, body, document_validators)
 
 
 def process_qa_request(
@@ -85,7 +86,8 @@ def process_qa_request(
         routing_key: str,
         resource_type: str,
         bypass_qa: bool,
-        resource_id: str
+        resource_id: str,
+        validators: ValidatorHolder
 ):
     correlation_id = properties.headers["cloudEvents:id"]
     logging.info(
@@ -112,6 +114,7 @@ def process_qa_request(
         logging.info(
             f"Auto-forwarding {resource_type} with ID {resource_id} to manual QA. (Correlation ID: {correlation_id})"
         )
+        validators.validate_resource(None)  # TODO don't use None but the proper resource
         channel.basic_publish(
             exchange=manual_qa_requested_exchange,
             routing_key=routing_key,

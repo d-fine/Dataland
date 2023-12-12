@@ -5,6 +5,6 @@ WORKDIR /usr/src/app
 COPY ./dataland-automated-qa-service/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./dataland-automated-qa-service/src/infrastructure/ ./infrastructure/
+COPY ./dataland-automated-qa-service/src/ ./
 
-ENTRYPOINT python ./infrastructure/entrypoint.py
+ENTRYPOINT python ./entrypoint.py
