@@ -27,9 +27,9 @@ export function multiSelectValueGetterFactory(
 }
 
 /**
- * Formats the provided string as a raw string cell for the datatable TODO
+ * Formats the provided string as a raw string cell for the datatable
  * @param input the input to display
- * @param fieldLabel TODO
+ * @param fieldLabel the label of the field that holds the string
  * @returns the value formatted for display
  */
 export function formatListOfStringsForDatatable(

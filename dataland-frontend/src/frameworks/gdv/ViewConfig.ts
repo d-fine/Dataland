@@ -167,7 +167,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           {
             type: "cell",
             label: "Aktuelle Berichte",
-
+            explanation: "Aktuelle Nachhaltigkeits- oder ESG-Berichte",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
@@ -241,7 +241,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           {
             type: "cell",
             label: "Weitere Akkreditierungen",
-
+            explanation: "Weitere Akkreditierungen, die noch nicht aufgeführt wurden",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(

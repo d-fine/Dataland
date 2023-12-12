@@ -39,9 +39,9 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             ?.getOrNull<ComponentGroup>("esgBerichte")
             ?.create<GdvListOfBaseDataPointComponent>("aktuelleBerichte") {
                 label = "Aktuelle Berichte"
+                explanation = "Aktuelle Nachhaltigkeits- oder ESG-Berichte"
                 descriptionColumnHeader = "Beschreibung des Berichts"
                 documentColumnHeader = "Bericht"
-                // TODO description/tooltip?
             }
 
         framework.root
@@ -51,9 +51,9 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 "weitereAkkreditierungen",
             ) {
                 label = "Weitere Akkreditierungen"
+                explanation = "Weitere Akkreditierungen, die noch nicht aufgeführt wurden"
                 descriptionColumnHeader = "Beschreibung der Akkreditierung"
                 documentColumnHeader = "Akkreditierung"
-                // TODO description/tooltip?
             }
 
         framework.root
