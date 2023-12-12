@@ -119,7 +119,7 @@ interface CompanyApi {
     )
     fun getCompaniesBySearchString(
         @RequestParam searchString: String,
-        @RequestParam(defaultValue = "100") resultLimit: Int = 100,
+        @RequestParam resultLimit: Int,
     ):
         ResponseEntity<List<CompanyIdAndName>>
 
