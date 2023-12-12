@@ -35,12 +35,12 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
   if (newFixture.t.allgemein?.esgBerichte?.nachhaltigkeitsbericht) {
     newFixture.t.allgemein.esgBerichte.nachhaltigkeitsbericht = YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze) {
-    newFixture.t.allgemein.mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze =
+  if (newFixture.t.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien) {
+    newFixture.t.allgemein.unGlobalConceptPrinzipien.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien =
       YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.oecdLeitsaetze) {
-    newFixture.t.allgemein.oecdLeitsaetze = YesNo.Yes;
+  if (newFixture.t.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze) {
+    newFixture.t.allgemein.oecdLeitsaetze.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze = YesNo.Yes;
   }
   if (newFixture.t.allgemein?.ausschlusslistenAufBasisVonEsgKriterien) {
     newFixture.t.allgemein.ausschlusslistenAufBasisVonEsgKriterien = YesNo.Yes;

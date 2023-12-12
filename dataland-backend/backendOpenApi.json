@@ -7989,29 +7989,21 @@
               }
             ]
           },
-          "mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze": {
+          "unGlobalConceptPrinzipien": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/GdvAllgemeinUnGlobalConceptPrinzipien"
               }
             ]
-          },
-          "erklaerungUngc": {
-            "type": "string",
-            "nullable": true
           },
           "oecdLeitsaetze": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/GdvAllgemeinOecdLeitsaetze"
               }
             ]
-          },
-          "erklaerungOecd": {
-            "type": "string",
-            "nullable": true
           },
           "ausrichtungAufDieUnSdgsUndAktivesVerfolgen": {
             "type": "string",
@@ -8256,6 +8248,23 @@
           }
         }
       },
+      "GdvAllgemeinOecdLeitsaetze": {
+        "type": "object",
+        "properties": {
+          "mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "erklaerungOecd": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "GdvAllgemeinSektoren": {
         "type": "object",
         "properties": {
@@ -8273,6 +8282,23 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "GdvAllgemeinUnGlobalConceptPrinzipien": {
+        "type": "object",
+        "properties": {
+          "mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "erklaerungDerEinhaltung": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

@@ -43,6 +43,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 explanation = "Aktuelle Nachhaltigkeits- oder ESG-Berichte"
                 descriptionColumnHeader = "Beschreibung des Berichts"
                 documentColumnHeader = "Bericht"
+                // TODO dependencies?
             }
 
         framework.root
@@ -55,6 +56,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 explanation = "Weitere Akkreditierungen, die noch nicht aufgeführt wurden"
                 descriptionColumnHeader = "Beschreibung der Akkreditierung"
                 documentColumnHeader = "Akkreditierung"
+                // TODO dependencies?
             }
 
         framework.root
@@ -64,6 +66,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 customizeEuTaxonomieKompassAktivitaetenComponent(this)
             }
 
+// TODO what about the dependencies of all the rolling window fields?
         val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt")
         componentGroupUmwelt?.edit<ComponentGroup>("treibhausgasemissionen") {
             create<GdvYearlyDecimalTimeseriesDataComponent>("treibhausgasBerichterstattungUndPrognosen") {
