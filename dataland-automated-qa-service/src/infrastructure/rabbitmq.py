@@ -1,5 +1,6 @@
 import json
 import time
+import logging
 
 import pika
 import pika.exceptions
@@ -10,6 +11,12 @@ document_key = "document"
 receiving_exchange = "itemStored"
 manual_qa_requested_exchange = "manualQaRequested"
 quality_assured_exchange = "dataQualityAssured"
+
+correlation_id_header = "cloudEvents:id"
+message_type_header = "cloudEvents:type"
+
+qa_completed_type = "QA completed"
+manual_qa_requested_type = "Manual QA requested"
 
 
 def listen_to_message_queue():
@@ -32,12 +39,13 @@ class RabbitMq:
         attempt = 1
         while True:
             try:
-                print(f"Connection attempt {attempt}")
+                logging.info(f"Connection attempt {attempt}")
                 self._connection = pika.BlockingConnection(self._connection_parameters)
                 self._channel = self._connection.channel()
+                logging.info(f"Connection established")
                 break
             except pika.exceptions.AMQPConnectionError:
-                print(f"Connection error during attempt {attempt}")
+                logging.info(f"Connection error during attempt {attempt}")
                 time.sleep(5)
                 attempt += 1
 
@@ -46,9 +54,9 @@ class RabbitMq:
             self._channel.close()
             self._connection.close()
         except pika.exceptions.ChannelWrongStateError:
-            print("Could not close channel.")
+            logging.error("Could not close channel.")
         except pika.exceptions.ConnectionWrongStateError:
-            print("Could not close connection.")
+            logging.error("Could not close connection.")
 
     def tutorial_send(self):
         self._channel.basic_publish(
@@ -87,43 +95,83 @@ def qa_data(channel: pika.adapters.blocking_connection.BlockingChannel, method, 
     bypass_qa = received_message["bypassQa"]
     data_id = received_message["dataId"]
     correlation_id = properties.headers["cloudEvents:id"]
-    print(f"Received data with ID {data_id} for automated review. (Correlation ID: {correlation_id})")
+    logging.info(f"Received data with ID {data_id} for automated review. (Correlation ID: {correlation_id})")
     if bypass_qa:
-        print(f"Bypassing QA for data with ID {data_id}. (Correlation ID: {correlation_id})")
-        message_to_send={"identifier": data_id, "validationResult": "Accepted"}  # TODO use client for accepted
+        logging.info(f"Bypassing QA for data with ID {data_id}. (Correlation ID: {correlation_id})")
+        message_to_send = {
+            "identifier": data_id,
+            "validationResult": "Accepted"
+        }  # TODO use client for accepted
         channel.basic_publish(
             exchange=quality_assured_exchange,
             routing_key=data_key,
             body=json.dumps(message_to_send),
             properties=pika.BasicProperties(
                 headers={
-                    "cloudEvents:id": correlation_id,
-                    "cloudEvents:type": "QA completed"
+                    correlation_id_header: correlation_id,
+                    message_type_header: qa_completed_type
                 }
             )
-            # properties=pika.BasicProperties()
         )
     else:
         # TODO actual logic here
-        print(f"Auto-forwarding data with ID {data_id} to manual QA")
-        # message={"dataId": data_id, "qaResult": "Accepted"} # TODO use client for accepted
-        # channel.basic_publish(
-        #     exchange=manual_qa_requested_exchange,
-        #     routing_key=data_key,
-        #     body=message.__str__()
-        #     # properties=pika.BasicProperties()
-        # )
+        logging.info(f"Auto-forwarding data with ID {data_id} to manual QA")
+        channel.basic_publish(
+            exchange=manual_qa_requested_exchange,
+            routing_key=data_key,
+            body=data_id,
+            properties=pika.BasicProperties(
+                headers={
+                    correlation_id_header: correlation_id,
+                    message_type_header: manual_qa_requested_type
+                }
+            )
+        )
     channel.basic_ack(delivery_tag=method.delivery_tag)
 
+def process_qa_request(channel: pika.adapters.blocking_connection.BlockingChannel, method, properties: pika.BasicProperties, body: bytes, routing_key: str):
+    if routing_key == data_key:
+        received_message = json.loads(body)
+        bypass_qa = received_message["bypassQa"]
+        resource_id = received_message["dataId"]
+    else:
+        bypass_qa = False
+        resource_id = body
+    correlation_id = properties.headers["cloudEvents:id"]
+    logging.info(f"Received {routing_key} with ID {resource_id} for automated review. (Correlation ID: {correlation_id})")
+    if bypass_qa:
+        logging.info(f"Bypassing QA for {routing_key} with ID {resource_id}. (Correlation ID: {correlation_id})")
+        message_to_send = {
+            "identifier": resource_id,
+            "validationResult": "Accepted"
+        }  # TODO use client for accepted
+        channel.basic_publish(
+            exchange=quality_assured_exchange,
+            routing_key=routing_key,
+            body=json.dumps(message_to_send),
+            properties=pika.BasicProperties(
+                headers={
+                    correlation_id_header: correlation_id,
+                    message_type_header: qa_completed_type
+                }
+            )
+        )
+    else:
+        # TODO actual logic here
+        logging.info(f"Auto-forwarding data with ID {resource_id} to manual QA")
+        channel.basic_publish(
+            exchange=manual_qa_requested_exchange,
+            routing_key=routing_key,
+            body=resource_id,
+            properties=pika.BasicProperties(
+                headers={
+                    correlation_id_header: correlation_id,
+                    message_type_header: manual_qa_requested_type
+                }
+            )
+        )
+    channel.basic_ack(delivery_tag=method.delivery_tag)
 
 def qa_document(channel, method, properties, body: str):
-    # print(f"Received data with ID {document_id} for automated review")
-    # print(f"Auto-forwarding data with ID {document_id} to manual QA") # TODO actual logic here
-    # message={"dataId": document_id, "qaResult": "Accepted"} # TODO use client for accepted
-    # channel.basic_publish(
-    #     exchange=manual_qa_requested_exchange,
-    #     routing_key=data_key,
-    #     body=message.__str__()
-    # )
     pass
 

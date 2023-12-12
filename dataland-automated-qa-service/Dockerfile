@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./dataland-automated-qa-service/src/infrastructure/ ./infrastructure/
 
-ENTRYPOINT [ "python", "./infrastructure/entrypoint.py" ]
+ENTRYPOINT python ./infrastructure/entrypoint.py

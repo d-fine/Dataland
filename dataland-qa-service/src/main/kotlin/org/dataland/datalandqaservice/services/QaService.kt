@@ -12,7 +12,6 @@ import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewQueueEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
-import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -41,7 +40,7 @@ class QaService(
 
     /**
      * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
-     * @param payload the content of the message
+     * @param dataId the data ID
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
@@ -49,49 +48,32 @@ class QaService(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "dataStoredQaService",
+                    "manualQaRequestedQaService",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
+                exchange = Exchange(ExchangeName.ManualQaRequested, declare = "false"),
                 key = [RoutingKeyNames.data],
             ),
         ],
     )
     @Transactional
     fun addDataToQueue(
-        @Payload payload: String,
+        @Payload dataId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        val dataId = JSONObject(payload).getString("dataId")
-        val bypassQa = JSONObject(payload).getBoolean("bypassQa")
-        messageUtils.validateMessageType(type, MessageType.DataStored)
+        messageUtils.validateMessageType(type, MessageType.ManualQaRequested)
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         messageUtils.rejectMessageOnException {
             logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
-            if (bypassQa) {
-                sendAcceptDatasetMessage(dataId, correlationId)
-            } else {
-                storeDatasetAsToBeReviewed(dataId)
-            }
+            storeDatasetAsToBeReviewed(dataId)
         }
-    }
-
-    private fun sendAcceptDatasetMessage(dataId: String, correlationId: String) {
-        logger.info("Bypassing data with DataId: $dataId with Correlation Id: $correlationId")
-        val message = objectMapper.writeValueAsString(
-            QaCompletedMessage(dataId, QaStatus.Accepted),
-        )
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            message, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,
-            RoutingKeyNames.data,
-        )
     }
 
     private fun storeDatasetAsToBeReviewed(dataId: String) {
@@ -109,28 +91,28 @@ class QaService(
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "documentStoredQaService",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
-                key = [RoutingKeyNames.document],
-            ),
-        ],
-    )
+//    @RabbitListener(
+//        bindings = [
+//            QueueBinding(
+//                value = Queue(
+//                    "documentStoredQaService",
+//                    arguments = [
+//                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+//                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+//                        Argument(name = "defaultRequeueRejected", value = "false"),
+//                    ],
+//                ),
+//                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
+//                key = [RoutingKeyNames.document],
+//            ),
+//        ],
+//    )
     fun assureQualityOfDocument(
         @Payload documentId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.DocumentStored)
+        messageUtils.validateMessageType(type, MessageType.ManualQaRequested)
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
@@ -138,6 +120,11 @@ class QaService(
             logger.info(
                 "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
             )
+            // TODO send message to automatic qa service instead
+//            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+//                documentId, MessageType.QaRequested, correlationId, ExchangeName.QaRequested,
+//                RoutingKeyNames.document,
+//            )
             val message = objectMapper.writeValueAsString(
                 QaCompletedMessage(documentId, QaStatus.Accepted),
             )
@@ -152,30 +139,30 @@ class QaService(
      * Method for testing stuff out
      * @param body the body of the message
      */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "hello",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange("send_exchange", declare = "false"),
-                key = ["send"],
-            ),
-        ],
-    )
-    fun tutorial(
-        @Payload body: String,
-    ) {
-        println("it worked")
-        println("the message is \"$body\"")
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            "SUCCESS", "TYPE", "correlationId", "receive_exchange",
-            "key",
-        )
-    }
+//    @RabbitListener(
+//        bindings = [
+//            QueueBinding(
+//                value = Queue(
+//                    "automaticQaCompletedQaService",
+//                    arguments = [
+//                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+//                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+//                        Argument(name = "defaultRequeueRejected", value = "false"),
+//                    ],
+//                ),
+//                exchange = Exchange(ExchangeName.AutomatedQaCompleted, declare = "false"),
+//                key = ["send"],
+//            ),
+//        ],
+//    )
+//    fun tutorial(
+//        @Payload body: String,
+//    ) {
+//        println("it worked")
+//        println("the message is \"$body\"")
+//        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+//            "SUCCESS", "TYPE", "correlationId", ExchangeName.QaRequested,
+//            "key",
+//        )
+//    }
 }
