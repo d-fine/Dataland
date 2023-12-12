@@ -50,7 +50,8 @@
 </template>
 
 <script lang="ts">
-import Tree, { type TreeNode } from "primevue/tree";
+import Tree from "primevue/tree";
+import { type TreeNode } from "primevue/treenode";
 import InputText from "primevue/inputtext";
 import OverlayPanel from "primevue/overlaypanel";
 import Checkbox from "primevue/checkbox";
