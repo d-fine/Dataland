@@ -16,10 +16,10 @@ import GdvListOfBaseDataPointModal from "@/components/resources/dataTable/modals
  * @returns a valid display object type for the MLDT
  */
 export function formatListOfBaseDataPoint(
-    fieldLabel: string,
-    baseDataPoints: BaseDataPoint<string>[] | null | undefined,
-    descriptionColumnHeader: string,
-    documentColumnHeader: string,
+  fieldLabel: string,
+  baseDataPoints: BaseDataPoint<string>[] | null | undefined,
+  descriptionColumnHeader: string,
+  documentColumnHeader: string,
 ): AvailableMLDTDisplayObjectTypes {
   if (!baseDataPoints) {
     return MLDTDisplayObjectForEmptyString;
