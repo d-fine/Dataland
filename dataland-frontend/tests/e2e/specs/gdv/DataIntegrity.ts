@@ -36,7 +36,7 @@ describeIf(
             return uploadGenericFrameworkData(token, storedCompany.companyId, "2021", gdvFixtureForTest.t, (config) =>
               getBaseFrameworkDefinition(DataTypeEnum.Gdv)!.getFrameworkApiClient(config),
             ).then(() => {
-              cy.log("dummy"); // TODO test code
+              cy.log("dummy"); // TODO test code needs to be written.  Compare to other blanket tests
             });
           });
         });

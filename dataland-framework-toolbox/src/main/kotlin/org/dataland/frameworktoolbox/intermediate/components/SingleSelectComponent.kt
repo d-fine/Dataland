@@ -89,5 +89,4 @@ open class SingleSelectComponent(
     }
 }
 
-// TODO Emanuel: Check if you have used the EcmaString function everywhere where you put a val
-// TODO into the generated JS Code
+// TODO Emanuel: Check if you have used EcmaString everywhere where you put a val into the generated JS Code
