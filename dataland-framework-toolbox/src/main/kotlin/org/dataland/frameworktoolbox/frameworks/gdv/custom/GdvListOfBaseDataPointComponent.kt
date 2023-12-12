@@ -40,7 +40,7 @@ class GdvListOfBaseDataPointComponent(
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        sectionConfigBuilder.addStandardCellWithValueGetterFactory( // TODO for now trying to display just the names
+        sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
                 "{\n" +

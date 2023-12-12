@@ -2,113 +2,72 @@
 	{
 		"companyInformation": {
 			"companyName": "Gdv-dataset-with-no-null-fields",
-			"headquarters": "West Amayahaven",
-			"headquartersPostalCode": "95926-0270",
-			"sector": "lifetime value",
+			"headquarters": "Fort Destineyland",
+			"headquartersPostalCode": "15021-6452",
+			"sector": null,
 			"identifiers": {
 				"Lei": [
-					"wubCsuXQgdEnFGf7BpLJ"
+					"ATsZUuDtOyyBBOYw1Fa5"
 				],
 				"Isin": [
-					"8itodqgZh0Lm",
-					"tq5Coh8zfdon"
+					"9dQhqFsyOkud"
 				],
 				"PermId": [
-					"XVa8dYQhcN"
+					"XFcNU3tMvf"
 				],
 				"Ticker": [],
-				"Duns": [
-					"nifOr1xpp"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"22na6IiJC"
+					"C6MW1iL24"
 				],
-				"CompanyRegistrationNumber": [
-					"tDuEzeYN14o2aLA"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MH",
+			"countryCode": "GN",
 			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://stimulating-hydroxyl.com/",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://trim-sentiment.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"masterData": {
 					"berichtsPflicht": "Yes",
-					"gueltigkeitsDatum": "2024-12-03"
+					"gueltigkeitsDatum": "2024-11-27"
 				}
 			},
 			"allgemein": {
 				"esgZiele": {
 					"existenzVonEsgZielen": "Yes",
-					"beschreibungDerEsgZiele": "methodologies",
-					"investitionenInZielerreichung": "synergies"
+					"beschreibungDerEsgZiele": "convergence",
+					"investitionenInZielerreichung": "applications"
 				},
 				"sektoren": {
 					"sektorenMitHohenKlimaauswirkungen": "Yes",
 					"auflistungDerSektoren": [
-						"L",
-						"E",
-						"D",
-						"G",
+						"C",
+						"H",
 						"F",
-						"H"
+						"A",
+						"L",
+						"G",
+						"E",
+						"B",
+						"D"
 					]
 				},
 				"esgBerichte": {
 					"nachhaltigkeitsbericht": "Yes",
-					"frequenzDerBerichterstattung": "Halbjaehrlich",
+					"frequenzDerBerichterstattung": "Vierteljaehrlich",
 					"aktuelleBerichte": [
 						{
-							"value": "blockchains",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						}
-					]
-				},
-				"akkreditierungen": {
-					"iso14001": {
-						"value": "No",
-						"dataSource": {
-							"fileName": "Certification",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"iso45001": {
-						"value": "Yes",
-						"dataSource": {
-							"fileName": "Policy",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"iso27001": {
-						"value": "No",
-						"dataSource": {
-							"fileName": "Policy",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"iso50001": {
-						"value": "Yes",
-						"dataSource": {
-							"fileName": "Certification",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-						}
-					},
-					"weitereAkkreditierungen": [
-						{
-							"value": "solutions",
+							"value": "initiatives",
 							"dataSource": {
 								"fileName": "Policy",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
 						},
 						{
-							"value": "bandwidth",
+							"value": "models",
 							"dataSource": {
 								"fileName": "Policy",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
@@ -122,238 +81,277 @@
 							}
 						},
 						{
-							"value": "methodologies",
+							"value": "e-business",
 							"dataSource": {
-								"fileName": "Policy",
+								"fileName": "Certification",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
 						},
 						{
-							"value": "synergies",
+							"value": "models",
 							"dataSource": {
-								"fileName": "Policy",
+								"fileName": "Certification",
+								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							}
+						}
+					]
+				},
+				"akkreditierungen": {
+					"iso14001": {
+						"value": "No",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"iso45001": {
+						"value": "No",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"iso27001": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"iso50001": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"weitereAkkreditierungen": [
+						{
+							"value": "e-commerce",
+							"dataSource": {
+								"fileName": "Certification",
 								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 							}
 						}
 					]
 				},
 				"mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze": "Yes",
-				"erklaerungUngc": "networks",
+				"erklaerungUngc": "schemas",
 				"oecdLeitsaetze": "Yes",
-				"erklaerungOecd": "solutions",
-				"ausrichtungAufDieUnSdgsUndAktivesVerfolgen": "synergies",
+				"erklaerungOecd": "eyeballs",
+				"ausrichtungAufDieUnSdgsUndAktivesVerfolgen": "networks",
 				"ausschlusslistenAufBasisVonEsgKriterien": "Yes",
-				"ausschlusslisten": "blockchains",
+				"ausschlusslisten": "interfaces",
 				"oekologischeSozialeFuehrungsstandardsOderPrinzipien": "Yes",
 				"anreizmechanismenFuerDasManagementUmwelt": "Nein",
 				"anreizmechanismenFuerDasManagementSoziales": "JaAufsichtsratUndGeschaeftsleitung",
 				"esgBezogeneRechtsstreitigkeiten": "Yes",
 				"rechtsstreitigkeitenMitBezugZuE": "Yes",
 				"statusZuE": "Offen",
-				"einzelheitenZuDenRechtsstreitigkeitenZuE": "platforms",
+				"einzelheitenZuDenRechtsstreitigkeitenZuE": "web services",
 				"rechtsstreitigkeitenMitBezugZuS": "Yes",
-				"statusZuS": "Geklaert",
-				"einzelheitenZuDenRechtsstreitigkeitenZuS": "architectures",
+				"statusZuS": "Offen",
+				"einzelheitenZuDenRechtsstreitigkeitenZuS": "experiences",
 				"rechtsstreitigkeitenMitBezugZuG": "Yes",
-				"statusZuG": "Offen",
-				"einzelheitenZuDenRechtsstreitigkeitenZuG": "web services",
+				"statusZuG": "Geklaert",
+				"einzelheitenZuDenRechtsstreitigkeitenZuG": "markets",
 				"esgRating": "Yes",
-				"agentur": "networks",
+				"agentur": "web services",
 				"ergebnis": {
-					"value": "bandwidth",
+					"value": "infrastructures",
 					"dataSource": {
 						"fileName": "Certification",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 					}
 				},
-				"kritischePunkte": "interfaces",
+				"kritischePunkte": "markets",
 				"nachhaltigkeitsbezogenenAnleihen": "Yes",
-				"wichtigsteESUndGRisikenUndBewertung": "applications",
-				"hindernisseBeimUmgangMitEsgBedenken": "ROI"
+				"wichtigsteESUndGRisikenUndBewertung": "bandwidth",
+				"hindernisseBeimUmgangMitEsgBedenken": "blockchains"
 			},
 			"umwelt": {
 				"treibhausgasemissionen": {
-					"treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird": "convergence",
-					"strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": "experiences",
+					"treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird": "channels",
+					"strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": "content",
 					"treibhausgasBerichterstattungUndPrognosen": {
 						"currentYear": 2026,
 						"yearlyData": {
 							"2024": {
-								"scope1": 24789.29,
-								"scope2": 34346.4,
-								"scope3": 33387.48
+								"scope1": 52829.51,
+								"scope2": 95553.76,
+								"scope3": 47458.87
 							},
 							"2025": {
-								"scope1": 5535.22,
-								"scope2": 88297.27,
-								"scope3": 13938.7
+								"scope1": 76628.4,
+								"scope2": 29536.49,
+								"scope3": 93255.71
 							},
 							"2026": {
-								"scope1": 25359.01,
-								"scope2": 96779.03,
-								"scope3": 33402.32
+								"scope1": 16707.88,
+								"scope2": 92252.56,
+								"scope3": 54903.36
 							},
 							"2027": {
-								"scope1": 5841.45,
-								"scope2": 1932.92,
-								"scope3": 70236.45
+								"scope1": 10027.69,
+								"scope2": 19343.2,
+								"scope3": 7838.83
 							},
 							"2028": {
-								"scope1": 33916.24,
-								"scope2": 72612.9,
-								"scope3": 38368.81
+								"scope1": 61011.4,
+								"scope2": 34833.98,
+								"scope3": 34592.83
 							}
 						}
 					}
 				},
 				"produkteZurVerringerungDerUmweltbelastung": "Yes",
-				"verringerungenDerUmweltbelastung": "markets",
+				"verringerungenDerUmweltbelastung": "initiatives",
 				"oekologischerMindestStandardFuerProduktionsprozesse": "Yes",
 				"energieverbrauch": {
-					"unternehmensGruppenStrategieBzglEnergieverbrauch": "paradigms",
+					"unternehmensGruppenStrategieBzglEnergieverbrauch": "users",
 					"berichterstattungEnergieverbrauch": {
-						"currentYear": 2028,
+						"currentYear": 2026,
 						"yearlyData": {
+							"2024": {
+								"energieverbrauch": 9767.38,
+								"verbrauchErneuerbareEnergien": 96606.04,
+								"erzeugungErneuerbareEnergien": 77980.78
+							},
+							"2025": {
+								"energieverbrauch": 28898.24,
+								"verbrauchErneuerbareEnergien": 16388.41,
+								"erzeugungErneuerbareEnergien": 29257.8
+							},
 							"2026": {
-								"energieverbrauch": 62634.66,
-								"verbrauchErneuerbareEnergien": 6222.82,
-								"erzeugungErneuerbareEnergien": 48573.83
+								"energieverbrauch": 8174.48,
+								"verbrauchErneuerbareEnergien": 1056.14,
+								"erzeugungErneuerbareEnergien": 90075.91
 							},
 							"2027": {
-								"energieverbrauch": 65036.33,
-								"verbrauchErneuerbareEnergien": 28681.55,
-								"erzeugungErneuerbareEnergien": 2595.64
+								"energieverbrauch": 55467.22,
+								"verbrauchErneuerbareEnergien": 31155.36,
+								"erzeugungErneuerbareEnergien": 76432.49
 							},
 							"2028": {
-								"energieverbrauch": 69156.22,
-								"verbrauchErneuerbareEnergien": 86279.03,
-								"erzeugungErneuerbareEnergien": 61499.31
-							},
-							"2029": {
-								"energieverbrauch": 59490.31,
-								"verbrauchErneuerbareEnergien": 48361.76,
-								"erzeugungErneuerbareEnergien": 51779.81
-							},
-							"2030": {
-								"energieverbrauch": 72042.7,
-								"verbrauchErneuerbareEnergien": 12010.28,
-								"erzeugungErneuerbareEnergien": 1655.64
+								"energieverbrauch": 7087.82,
+								"verbrauchErneuerbareEnergien": 17656.77,
+								"erzeugungErneuerbareEnergien": 16676.04
 							}
 						}
 					}
 				},
 				"energieeffizienzImmobilienanlagen": {
-					"unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": "web services",
+					"unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": "deliverables",
 					"berichterstattungEnergieverbrauchVonImmobilienvermoegen": {
-						"currentYear": 2027,
+						"currentYear": 2023,
 						"yearlyData": {
+							"2021": {
+								"energieeffizienteImmobilienanlagen": 91700.64
+							},
+							"2022": {
+								"energieeffizienteImmobilienanlagen": 39070.69
+							},
+							"2023": {
+								"energieeffizienteImmobilienanlagen": 33211.38
+							},
+							"2024": {
+								"energieeffizienteImmobilienanlagen": 4958.3
+							},
 							"2025": {
-								"energieeffizienteImmobilienanlagen": 37022.35
-							},
-							"2026": {
-								"energieeffizienteImmobilienanlagen": 40558.25
-							},
-							"2027": {
-								"energieeffizienteImmobilienanlagen": 52230.61
-							},
-							"2028": {
-								"energieeffizienteImmobilienanlagen": 43724.91
-							},
-							"2029": {
-								"energieeffizienteImmobilienanlagen": 761.12
+								"energieeffizienteImmobilienanlagen": 98955.2
 							}
 						}
 					}
 				},
 				"wasserverbrauch": {
-					"unternehmensGruppenStrategieBzglWasserverbrauch": "supply-chains",
+					"unternehmensGruppenStrategieBzglWasserverbrauch": "systems",
 					"berichterstattungWasserverbrauch": {
-						"currentYear": 2027,
+						"currentYear": 2028,
 						"yearlyData": {
-							"2025": {
-								"wasserverbrauch": 66354.6,
-								"emissionenInWasser": 14880.41
-							},
 							"2026": {
-								"wasserverbrauch": 60398.14,
-								"emissionenInWasser": 34009.41
+								"wasserverbrauch": 79928.21,
+								"emissionenInWasser": 22397.1
 							},
 							"2027": {
-								"wasserverbrauch": 4277.03,
-								"emissionenInWasser": 63328.67
+								"wasserverbrauch": 48603.54,
+								"emissionenInWasser": 31009.41
 							},
 							"2028": {
-								"wasserverbrauch": 46999.95,
-								"emissionenInWasser": 15489.05
+								"wasserverbrauch": 54304.55,
+								"emissionenInWasser": 60153.05
 							},
 							"2029": {
-								"wasserverbrauch": 68218.6,
-								"emissionenInWasser": 96147.51
+								"wasserverbrauch": 42003.28,
+								"emissionenInWasser": 58826.45
+							},
+							"2030": {
+								"wasserverbrauch": 27111.09,
+								"emissionenInWasser": 46450.93
 							}
 						}
 					}
 				},
 				"abfallproduktion": {
-					"unternehmensGruppenStrategieBzglAbfallproduktion": "applications",
+					"unternehmensGruppenStrategieBzglAbfallproduktion": "relationships",
 					"berichterstattungAbfallproduktion": {
-						"currentYear": 2027,
+						"currentYear": 2028,
 						"yearlyData": {
-							"2025": {
-								"abfallmenge": 57792.03,
-								"anteilRecycelterAbfallmenge": 54054.95,
-								"anteilGefaehrlicherAbfallmenge": 86744.07
-							},
 							"2026": {
-								"abfallmenge": 38002.21,
-								"anteilRecycelterAbfallmenge": 31558.08,
-								"anteilGefaehrlicherAbfallmenge": 17325.44
+								"abfallmenge": 30427.53,
+								"anteilRecycelterAbfallmenge": 58557.51,
+								"anteilGefaehrlicherAbfallmenge": 47675.68
 							},
 							"2027": {
-								"abfallmenge": 5740.52,
-								"anteilRecycelterAbfallmenge": 55851.2,
-								"anteilGefaehrlicherAbfallmenge": 35698.41
+								"abfallmenge": 12856.82,
+								"anteilRecycelterAbfallmenge": 38174.85,
+								"anteilGefaehrlicherAbfallmenge": 99697.77
 							},
 							"2028": {
-								"abfallmenge": 3245.43,
-								"anteilRecycelterAbfallmenge": 80195.82,
-								"anteilGefaehrlicherAbfallmenge": 94811.29
+								"abfallmenge": 70902.36,
+								"anteilRecycelterAbfallmenge": 19362.05,
+								"anteilGefaehrlicherAbfallmenge": 71152.22
 							},
 							"2029": {
-								"abfallmenge": 26182.3,
-								"anteilRecycelterAbfallmenge": 1589.59,
-								"anteilGefaehrlicherAbfallmenge": 31140.37
+								"abfallmenge": 60268.01,
+								"anteilRecycelterAbfallmenge": 38389.35,
+								"anteilGefaehrlicherAbfallmenge": 50687.33
+							},
+							"2030": {
+								"abfallmenge": 78832.41,
+								"anteilRecycelterAbfallmenge": 64836.32,
+								"anteilGefaehrlicherAbfallmenge": 48447.59
 							}
 						}
 					},
 					"recyclingImProduktionsprozess": {
-						"currentYear": 2023,
+						"currentYear": 2027,
 						"yearlyData": {
-							"2021": {
-								"anteilAnRecyclaten": 28335
-							},
-							"2022": {
-								"anteilAnRecyclaten": 62125.68
-							},
-							"2023": {
-								"anteilAnRecyclaten": 52609.78
-							},
-							"2024": {
-								"anteilAnRecyclaten": 14162.21
-							},
 							"2025": {
-								"anteilAnRecyclaten": 8652.58
+								"anteilAnRecyclaten": 51622.96
+							},
+							"2026": {
+								"anteilAnRecyclaten": 7686.17
+							},
+							"2027": {
+								"anteilAnRecyclaten": 19431.36
+							},
+							"2028": {
+								"anteilAnRecyclaten": 79343.03
+							},
+							"2029": {
+								"anteilAnRecyclaten": 23750.71
 							}
 						}
 					}
 				},
 				"gefaehrlicheAbfaelle": {
-					"gefaehrlicherAbfall": "architectures"
+					"gefaehrlicherAbfall": "bandwidth"
 				},
 				"biodiversitaet": {
 					"negativeAktivitaetenFuerDieBiologischeVielfalt": "Yes",
-					"negativeMassnahmenFuerDieBiologischeVielfalt": "initiatives",
+					"negativeMassnahmenFuerDieBiologischeVielfalt": "portals",
 					"positiveAktivitaetenFuerDieBiologischeVielfalt": "Yes",
-					"positiveMassnahmenFuerDieBiologischeVielfalt": "schemas"
+					"positiveMassnahmenFuerDieBiologischeVielfalt": "infrastructures"
 				},
 				"fossileBrennstoffe": {
 					"einnahmenAusFossilenBrennstoffen": "Yes",
@@ -361,60 +359,88 @@
 						"currentYear": 2025,
 						"yearlyData": {
 							"2023": {
-								"anteilEinnahmenAusFossilenBrennstoffen": 24290.21
+								"anteilEinnahmenAusFossilenBrennstoffen": 88555.21
 							},
 							"2024": {
-								"anteilEinnahmenAusFossilenBrennstoffen": 45602.11
+								"anteilEinnahmenAusFossilenBrennstoffen": 75467.41
 							},
 							"2025": {
-								"anteilEinnahmenAusFossilenBrennstoffen": 74542.97
+								"anteilEinnahmenAusFossilenBrennstoffen": 92986.67
 							},
 							"2026": {
-								"anteilEinnahmenAusFossilenBrennstoffen": 23326.39
+								"anteilEinnahmenAusFossilenBrennstoffen": 13285.96
 							},
 							"2027": {
-								"anteilEinnahmenAusFossilenBrennstoffen": 84065.88
+								"anteilEinnahmenAusFossilenBrennstoffen": 47628.85
 							}
 						}
 					}
 				},
 				"taxonomie": {
-					"taxonomieBerichterstattung": "Nfrd",
+					"taxonomieBerichterstattung": "Csrd",
 					"euTaxonomieKompassAktivitaeten": [
-						"FreightTransportServicesByRoad",
+						"TransportOfCo2",
 						"DataProcessingHostingAndRelatedActivities",
-						"InstallationMaintenanceAndRepairOfEnergyEfficiencyEquipment",
-						"ProfessionalServicesRelatedToEnergyPerformanceOfBuildings",
-						"InstallationAndOperationOfElectricHeatPumps",
-						"ProgrammingAndBroadcastingActivities",
-						"ManufactureOfCarbonBlack",
-						"ConstructionOfNewBuildings",
-						"ForestManagement",
-						"ResidentialCareActivities",
-						"RenovationOfExistingBuildings",
-						"ProductionOfHeatCoolUsingWasteHeat",
+						"ElectricityGenerationFromGeothermalEnergy",
+						"Education",
 						"AirportInfrastructure",
-						"AnaerobicDigestionOfBioWaste",
-						"ManufactureOfSodaAsh",
-						"ConservationForestry"
+						"InlandPassengerWaterTransport",
+						"ProgrammingAndBroadcastingActivities",
+						"SeaAndCoastalPassengerWaterTransport",
+						"CogenerationOfHeatCoolAndPowerFromBioenergy",
+						"ElectricityGenerationFromWindPower",
+						"ManufactureOfOtherLowCarbonTechnologies",
+						"TransmissionAndDistributionOfElectricity",
+						"RenewalOfWaterCollectionTreatmentAndSupplySystems",
+						"ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies",
+						"InfrastructureForPersonalMobilityCycleLogistics",
+						"ConstructionExtensionAndOperationOfWasteWaterCollectionAndTreatment",
+						"TransmissionAndDistributionNetworksForRenewableAndLowCarbonGases",
+						"InstallationMaintenanceAndRepairOfChargingStationsForElectricVehiclesInBuildingsAndParkingSpacesAttachedToBuildings",
+						"UrbanAndSuburbanTransportRoadPassengerTransport",
+						"ElectricityGenerationUsingConcentratedSolarPowerCspTechnology",
+						"ManufactureOfNitricAcid",
+						"ForestManagement",
+						"CogenerationOfHeatCoolAndPowerFromRenewableNonFossilGaseousAndLiquidFuels",
+						"LandfillGasCaptureAndUtilisation",
+						"FreightRailTransport",
+						"ResearchDevelopmentAndInnovationForDirectAirCaptureOfCo2",
+						"CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+						"AcquisitionAndOwnershipOfBuildings",
+						"CogenerationOfHeatCoolAndPowerFromSolarEnergy",
+						"OperationOfPersonalMobilityDevicesCycleLogistics",
+						"InfrastructureEnablingRoadTransportAndPublicTransport",
+						"ProductionOfHeatCoolFromSolarThermalHeating",
+						"ElectricityGenerationFromRenewableNonFossilGaseousAndLiquidFuels",
+						"StorageOfElectricity",
+						"RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent",
+						"ManufactureOfLowCarbonTechnologiesForTransport",
+						"ElectricityGenerationFromFossilGaseousFuels",
+						"PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
+						"ProductionOfHeatCoolFromGeothermalEnergy",
+						"CreativeArtsAndEntertainmentActivities",
+						"ElectricityGenerationFromOceanEnergyTechnologies",
+						"Reinsurance",
+						"AnaerobicDigestionOfSewageSludge",
+						"ProfessionalServicesRelatedToEnergyPerformanceOfBuildings"
 					],
 					"umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten": {
 						"currentYear": 2025,
 						"yearlyData": {
 							"2023": {
-								"umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten": 57945.66
+								"umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten": 31923.17
 							},
 							"2024": {
-								"umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten": 79393.32
+								"umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten": 30686.71
 							},
 							"2025": {
-								"umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten": 39644.57
+								"umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten": 43328.03
 							},
 							"2026": {
-								"umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten": 30643.64
+								"umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten": 6123.17
 							},
 							"2027": {
-								"umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten": 55042.92
+								"umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten": 83242.51
 							}
 						}
 					}
@@ -422,157 +448,165 @@
 			},
 			"soziales": {
 				"aenderungenUnternehmensstruktur": "Yes",
-				"sicherheitsmassnahmenFuerMitarbeiter": "supply-chains",
+				"sicherheitsmassnahmenFuerMitarbeiter": "blockchains",
 				"einkommensgleichheit": {
-					"massnahmenZurVerbesserungDerEinkommensungleichheit": "systems",
+					"massnahmenZurVerbesserungDerEinkommensungleichheit": "niches",
 					"ueberwachungDerEinkommensungleichheit": {
-						"currentYear": 2023,
+						"currentYear": 2026,
 						"yearlyData": {
-							"2021": {
-								"geschlechtsspezifischesLohngefaelle": 92428.42,
-								"einkommensungleichheitsverhaeltnis": 35220.6,
-								"ceoEinkommenungleichheitsverhaeltnis": 36778.76
-							},
-							"2022": {
-								"geschlechtsspezifischesLohngefaelle": 12818.46,
-								"einkommensungleichheitsverhaeltnis": 46671.79,
-								"ceoEinkommenungleichheitsverhaeltnis": 72886.75
-							},
-							"2023": {
-								"geschlechtsspezifischesLohngefaelle": 94846,
-								"einkommensungleichheitsverhaeltnis": 79664.31,
-								"ceoEinkommenungleichheitsverhaeltnis": 29170.18
-							},
 							"2024": {
-								"geschlechtsspezifischesLohngefaelle": 17444.47,
-								"einkommensungleichheitsverhaeltnis": 9844.18,
-								"ceoEinkommenungleichheitsverhaeltnis": 91874.05
+								"geschlechtsspezifischesLohngefaelle": 59244.41,
+								"einkommensungleichheitsverhaeltnis": 29031.37,
+								"ceoEinkommenungleichheitsverhaeltnis": 37903.15
 							},
 							"2025": {
-								"geschlechtsspezifischesLohngefaelle": 61063.19,
-								"einkommensungleichheitsverhaeltnis": 99902.9,
-								"ceoEinkommenungleichheitsverhaeltnis": 64985.55
+								"geschlechtsspezifischesLohngefaelle": 26563.2,
+								"einkommensungleichheitsverhaeltnis": 38915.48,
+								"ceoEinkommenungleichheitsverhaeltnis": 73511.22
+							},
+							"2026": {
+								"geschlechtsspezifischesLohngefaelle": 95604.57,
+								"einkommensungleichheitsverhaeltnis": 53843.68,
+								"ceoEinkommenungleichheitsverhaeltnis": 78558.46
+							},
+							"2027": {
+								"geschlechtsspezifischesLohngefaelle": 28313.88,
+								"einkommensungleichheitsverhaeltnis": 89572.73,
+								"ceoEinkommenungleichheitsverhaeltnis": 55823.82
+							},
+							"2028": {
+								"geschlechtsspezifischesLohngefaelle": 20378.53,
+								"einkommensungleichheitsverhaeltnis": 24623.75,
+								"ceoEinkommenungleichheitsverhaeltnis": 51102.78
 							}
 						}
 					}
 				},
 				"geschlechterdiversitaet": {
-					"definitionTopManagement": "relationships",
-					"einhaltungRechtlicherVorgaben": "niches"
+					"definitionTopManagement": "action-items",
+					"einhaltungRechtlicherVorgaben": "solutions"
 				},
 				"audit": {
 					"auditsZurEinhaltungVonArbeitsstandards": "Yes",
-					"artDesAudits": "SowohlInternAlsAuchVonDrittanbietern",
-					"auditErgebnisse": "solutions"
+					"artDesAudits": "InterneAnhoerung",
+					"auditErgebnisse": "channels"
 				},
 				"anzahlDerBetroffenenMitarbeiter": {
-					"currentYear": 2023,
+					"currentYear": 2025,
 					"yearlyData": {
-						"2021": {
-							"anzahlUnbefristeteVertraege": 97672.14,
-							"anzahlvonAenderungBetroffeneVertraege": 17596.45
-						},
-						"2022": {
-							"anzahlUnbefristeteVertraege": 5329.55,
-							"anzahlvonAenderungBetroffeneVertraege": 67510.22
-						},
 						"2023": {
-							"anzahlUnbefristeteVertraege": 68514.11,
-							"anzahlvonAenderungBetroffeneVertraege": 43032.55
+							"anzahlUnbefristeteVertraege": 26620.51,
+							"anzahlvonAenderungBetroffeneVertraege": 80494.97
 						},
 						"2024": {
-							"anzahlUnbefristeteVertraege": 58993.38,
-							"anzahlvonAenderungBetroffeneVertraege": 21267.25
+							"anzahlUnbefristeteVertraege": 49671.04,
+							"anzahlvonAenderungBetroffeneVertraege": 51269.84
 						},
 						"2025": {
-							"anzahlUnbefristeteVertraege": 57128.28,
-							"anzahlvonAenderungBetroffeneVertraege": 95298.99
+							"anzahlUnbefristeteVertraege": 96460.85,
+							"anzahlvonAenderungBetroffeneVertraege": 66034.01
+						},
+						"2026": {
+							"anzahlUnbefristeteVertraege": 68428.12,
+							"anzahlvonAenderungBetroffeneVertraege": 36163.89
+						},
+						"2027": {
+							"anzahlUnbefristeteVertraege": 54330.75,
+							"anzahlvonAenderungBetroffeneVertraege": 13369.1
 						}
 					}
 				},
 				"auswirkungenAufAnteilBefristerVertraegeUndFluktuation": {
-					"currentYear": 2027,
+					"currentYear": 2024,
 					"yearlyData": {
+						"2022": {
+							"anzahlbefristeteVertraege": 6533.52,
+							"fluktuation": 77844.3
+						},
+						"2023": {
+							"anzahlbefristeteVertraege": 91217.67,
+							"fluktuation": 31456.5
+						},
+						"2024": {
+							"anzahlbefristeteVertraege": 31198.47,
+							"fluktuation": 66262.69
+						},
 						"2025": {
-							"anzahlbefristeteVertraege": 47915.4,
-							"fluktuation": 44087.23
+							"anzahlbefristeteVertraege": 4476.84,
+							"fluktuation": 92850.84
 						},
 						"2026": {
-							"anzahlbefristeteVertraege": 38263.04,
-							"fluktuation": 12514.38
-						},
-						"2027": {
-							"anzahlbefristeteVertraege": 25469.73,
-							"fluktuation": 97300.59
-						},
-						"2028": {
-							"anzahlbefristeteVertraege": 47425.72,
-							"fluktuation": 32990.67
-						},
-						"2029": {
-							"anzahlbefristeteVertraege": 39912.58,
-							"fluktuation": 34356.13
+							"anzahlbefristeteVertraege": 32065.46,
+							"fluktuation": 57108.63
 						}
 					}
 				},
 				"budgetFuerSchulungAusbildung": {
-					"currentYear": 2025,
+					"currentYear": 2028,
 					"yearlyData": {
-						"2023": {
-							"budgetProMitarbeiterProJahr": 20777.4
-						},
-						"2024": {
-							"budgetProMitarbeiterProJahr": 56407.38
-						},
-						"2025": {
-							"budgetProMitarbeiterProJahr": 46807.87
-						},
 						"2026": {
-							"budgetProMitarbeiterProJahr": 93480.81
+							"budgetProMitarbeiterProJahr": 43847.14
 						},
 						"2027": {
-							"budgetProMitarbeiterProJahr": 2955.56
+							"budgetProMitarbeiterProJahr": 33775.61
+						},
+						"2028": {
+							"budgetProMitarbeiterProJahr": 20593.5
+						},
+						"2029": {
+							"budgetProMitarbeiterProJahr": 69765.37
+						},
+						"2030": {
+							"budgetProMitarbeiterProJahr": 19813.8
 						}
 					}
 				}
 			},
 			"unternehmensfuehrungGovernance": {
-				"wirtschaftspruefer": "paradigms",
+				"wirtschaftspruefer": "networks",
 				"ceoVorsitzender": "Yes",
-				"amtszeit": "architectures",
+				"amtszeit": "convergence",
 				"einbeziehungVonStakeholdern": "Yes",
-				"prozessDerEinbeziehungVonStakeholdern": "web services",
-				"mechanismenZurAusrichtungAufStakeholder": "users",
+				"prozessDerEinbeziehungVonStakeholdern": "niches",
+				"mechanismenZurAusrichtungAufStakeholder": "channels",
 				"veroeffentlichteUnternehmensrichtlinien": [
+					"Anti-Korruption",
+					"Mgt von Umweltgefahren",
+					"Zwangsarbeit",
 					"Diversität & Inklusion",
-					"Interessenkonflikte",
+					"other",
+					"Verhaltenskodex",
+					"Whistleblowing",
+					"Gesundheit und Sicherheit",
 					"Datenschutz",
-					"Whistleblowing"
+					"Faire Behandlung von Kunden",
+					"Interessenkonflikte",
+					"Verantwortungsvolles Marketing"
 				],
 				"esgKriterienUndUeberwachungDerLieferanten": "Yes",
-				"auswahlkriterien": "ROI"
+				"auswahlkriterien": "networks"
 			},
 			"unfallrate": {
-				"currentYear": 2025,
+				"currentYear": 2027,
 				"yearlyData": {
-					"2023": {
-						"haeufigkeitsrateVonArbeitsunfaellen": 68413.49
-					},
-					"2024": {
-						"haeufigkeitsrateVonArbeitsunfaellen": 15185.04
-					},
 					"2025": {
-						"haeufigkeitsrateVonArbeitsunfaellen": 96228.6
+						"haeufigkeitsrateVonArbeitsunfaellen": 45074.67
 					},
 					"2026": {
-						"haeufigkeitsrateVonArbeitsunfaellen": 39669.58
+						"haeufigkeitsrateVonArbeitsunfaellen": 13490.21
 					},
 					"2027": {
-						"haeufigkeitsrateVonArbeitsunfaellen": 47809.98
+						"haeufigkeitsrateVonArbeitsunfaellen": 76161.99
+					},
+					"2028": {
+						"haeufigkeitsrateVonArbeitsunfaellen": 20719.93
+					},
+					"2029": {
+						"haeufigkeitsrateVonArbeitsunfaellen": 28648.75
 					}
 				}
 			}
 		},
-		"reportingPeriod": "2019"
+		"reportingPeriod": "2020"
 	}
 ]
