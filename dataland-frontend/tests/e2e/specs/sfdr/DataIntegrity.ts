@@ -71,7 +71,6 @@ describeIf(
      * @param reportToReference The name of the report to reference
      */
     function selectHighImpactClimateSectorAndReport(sectorCardIndex: number, reportToReference: string): void {
-      console.log(reportToReference);
       cy.get('div[data-test="applicableHighImpactClimateSectors"]').find("div.p-multiselect-trigger").click();
       cy.get("li.p-multiselect-item")
         .eq(sectorCardIndex)
