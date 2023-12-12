@@ -140,6 +140,7 @@ import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBa
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import GdvYearlyDecimalTimeseriesDataFormField from "@/components/forms/parts/fields/GdvYearlyDecimalTimeseriesDataFormField.vue";
 import { gdvDataModel } from "@/frameworks/gdv/UploadConfig";
+import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
 
 export default defineComponent({
   setup() {
@@ -182,6 +183,7 @@ export default defineComponent({
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
     GdvYearlyDecimalTimeseriesDataFormField,
+    ListOfBaseDataPointsFormField,
   },
   directives: {
     tooltip: Tooltip,

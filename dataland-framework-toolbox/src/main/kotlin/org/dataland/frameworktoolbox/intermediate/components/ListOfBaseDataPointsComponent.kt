@@ -45,7 +45,7 @@ class ListOfBaseDataPointsComponent(
 
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
         sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
-            uploadComponentName = "ListOfBaseDataPointFormField",
+            uploadComponentName = "ListOfBaseDataPointsFormField",
             options = null,
             this,
         )
