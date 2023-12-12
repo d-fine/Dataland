@@ -57,7 +57,7 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         ),
       },
       esgBerichte: {
-        nachhaltigkeitsbericht: dataGenerator.randomYesNo(),
+        nachhaltigkeitsberichte: dataGenerator.randomYesNo(),
         frequenzDerBerichterstattung: dataGenerator.valueOrNull(
           pickOneElement(Object.values(FrequenzDerBerichterstattungOptions)),
         ),
@@ -74,11 +74,14 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
           generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0),
         ),
       },
-      mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze:
-        dataGenerator.randomYesNo(),
-      erklaerungUngc: dataGenerator.randomShortString(),
-      oecdLeitsaetze: dataGenerator.randomYesNo(),
-      erklaerungOecd: dataGenerator.randomShortString(),
+      unGlobalConceptPrinzipien: {
+        mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien: dataGenerator.randomYesNo(),
+        erklaerungDerEinhaltung: dataGenerator.randomShortString(),
+      },
+      oecdLeitsaetze: {
+        mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze: dataGenerator.randomYesNo(),
+        erklaerungOecd: dataGenerator.randomShortString(),
+      },
       ausrichtungAufDieUnSdgsUndAktivesVerfolgen: dataGenerator.randomShortString(),
       ausschlusslistenAufBasisVonEsgKriterien: dataGenerator.randomYesNo(),
       ausschlusslisten: dataGenerator.randomShortString(),

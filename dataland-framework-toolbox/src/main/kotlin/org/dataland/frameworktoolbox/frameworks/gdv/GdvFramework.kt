@@ -6,11 +6,13 @@ import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvListOfBaseDataPoin
 import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvYearlyDecimalTimeseriesDataComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
+import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.dataland.frameworktoolbox.intermediate.group.getOrNull
+import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -31,20 +33,42 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
 
     @Suppress("LongMethod") // t0d0: fix detekt error later!
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
+        val berichtsPflicht = framework.root
+            .getOrNull<ComponentGroup>("general")
+            ?.getOrNull<ComponentGroup>("masterData")
+            ?.getOrNull<YesNoComponent>("berichtsPflicht")
+        require(berichtsPflicht != null) {
+            "The field with the label \"berichtsPflicht\" cannot be null in the " +
+                "gdv framework."
+        }
+
+        val esgBerichte = framework.root
+            .getOrNull<ComponentGroup>("allgemein")
+            ?.getOrNull<ComponentGroup>("esgBerichte")
+        require(esgBerichte != null) {
+            "The component group with the label \"esgBerichte\" cannot be null in the gdv framework."
+        }
+
+        val nachhaltigkeitsberichte = esgBerichte.getOrNull<YesNoComponent>("nachhaltigkeitsberichte")
+        require(nachhaltigkeitsberichte != null) {
+            "The field with the label \"nachhaltigkeitsberichte\" cannot be null in the gdv framework."
+        }
+
         framework.root.edit<ComponentGroup>("allgemein") {
             viewPageExpandOnPageLoad = true
         }
 
-        framework.root
-            .getOrNull<ComponentGroup>("allgemein")
-            ?.getOrNull<ComponentGroup>("esgBerichte")
-            ?.create<GdvListOfBaseDataPointComponent>("aktuelleBerichte") {
-                label = "Aktuelle Berichte"
-                explanation = "Aktuelle Nachhaltigkeits- oder ESG-Berichte"
-                descriptionColumnHeader = "Beschreibung des Berichts"
-                documentColumnHeader = "Bericht"
-                // TODO dependencies?
-            }
+        esgBerichte.create<GdvListOfBaseDataPointComponent>("aktuelleBerichte") {
+            label = "Aktuelle Berichte"
+            explanation = "Aktuelle Nachhaltigkeits- oder ESG-Berichte"
+            descriptionColumnHeader = "Beschreibung des Berichts"
+            documentColumnHeader = "Bericht"
+            availableIf = DependsOnComponentValue(
+                nachhaltigkeitsberichte,
+                "Yes",
+            )
+            // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
+        }
 
         framework.root
             .getOrNull<ComponentGroup>("allgemein")
@@ -56,7 +80,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 explanation = "Weitere Akkreditierungen, die noch nicht aufgeführt wurden"
                 descriptionColumnHeader = "Beschreibung der Akkreditierung"
                 documentColumnHeader = "Akkreditierung"
-                // TODO dependencies?
+                availableIf = DependsOnComponentValue(berichtsPflicht, "Yes")
+                // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
             }
 
         framework.root

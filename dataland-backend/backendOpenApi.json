@@ -8202,7 +8202,7 @@
       "GdvAllgemeinEsgBerichte": {
         "type": "object",
         "properties": {
-          "nachhaltigkeitsbericht": {
+          "nachhaltigkeitsberichte": {
             "nullable": true,
             "allOf": [
               {
@@ -10246,10 +10246,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

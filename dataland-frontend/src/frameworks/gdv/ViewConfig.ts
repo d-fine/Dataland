@@ -135,18 +135,18 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         children: [
           {
             type: "cell",
-            label: "Nachhaltigkeitsbericht",
+            label: "Nachhaltigkeitsberichte",
             explanation: "Erstellt das Unternehmen Nachhaltigkeits- oder ESG-Berichte?",
             shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.esgBerichte?.nachhaltigkeitsbericht),
+              formatYesNoValueForDatatable(dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte),
           },
           {
             type: "cell",
             label: "Frequenz der Berichterstattung",
             explanation: "In welchen Zeitabständen werden die Berichte erstellt?",
             shouldDisplay: (dataset: GdvData): boolean =>
-              dataset.allgemein?.esgBerichte?.nachhaltigkeitsbericht == "Yes",
+              dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
                 Jaehrlich: "jährlich",
@@ -168,7 +168,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Aktuelle Berichte",
             explanation: "Aktuelle Nachhaltigkeits- oder ESG-Berichte",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
                 "Aktuelle Berichte",
@@ -191,7 +192,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "ISO 14001",
             explanation:
               "Haben Sie eine ISO 14001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso14001?.value),
@@ -204,7 +205,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "ISO 45001",
             explanation:
               "Haben Sie eine ISO 45001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso45001?.value),
@@ -217,7 +218,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "ISO 27001",
             explanation:
               "Haben Sie eine ISO 27001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso27001?.value),
@@ -230,7 +231,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "ISO 50001",
             explanation:
               "Haben Sie eine ISO 50001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso50001?.value),
@@ -242,7 +243,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Weitere Akkreditierungen",
             explanation: "Weitere Akkreditierungen, die noch nicht aufgeführt wurden",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
                 "Weitere Akkreditierungen",
@@ -255,42 +256,62 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         ],
       },
       {
-        type: "cell",
-        label: "Mechanismen zur Überwachung der Einhaltung UN Global Compact Prinzipien und/oder OECD Leitsätze",
-        explanation:
-          "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der Prinzipien des UN Global Compact und/oder der OECD-Leitsätze für multinationale Unternehmen (OECD MNE-Leitsätze) zu überwachen?",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(
-            dataset.allgemein?.mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze,
-          ),
-      },
-      {
-        type: "cell",
-        label: "Erklärung UNGC",
-        explanation: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
+        type: "section",
+        label: "UN Global Concept Prinzipien",
+        expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.allgemein?.erklaerungUngc),
+        children: [
+          {
+            type: "cell",
+            label: "Mechanismen zur Überwachung der Einhaltung der UN Global Compact Prinzipien",
+            explanation:
+              "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der Prinzipien des UN Global Compact zu überwachen?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.allgemein?.unGlobalConceptPrinzipien
+                  ?.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Erklärung der Einhaltung ",
+            explanation: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.allgemein?.unGlobalConceptPrinzipien
+                ?.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.allgemein?.unGlobalConceptPrinzipien?.erklaerungDerEinhaltung),
+          },
+        ],
       },
       {
-        type: "cell",
+        type: "section",
         label: "OECD Leitsätze",
-        explanation:
-          "Hat das Unternehmen Überwachungsmechanismen für die OECD Leitsätze eingerichtet ? Wenn ja, bitte teilen Sie die Richtlinien mit uns, die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der OECD Leitsätze überwacht.",
-        shouldDisplay: (dataset: GdvData): boolean =>
-          dataset.allgemein?.mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze ==
-          "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(dataset.allgemein?.oecdLeitsaetze),
-      },
-      {
-        type: "cell",
-        label: "Erklärung OECD",
-        explanation: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.oecdLeitsaetze == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.allgemein?.erklaerungOecd),
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Mechanismen zur Überwachung der Einhaltung der OECD-Leitsätze",
+            explanation:
+              "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der OECD-Leitsätze für multinationale Unternehmen (OECD MNE Guidelines) zu überwachen?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Erklärung OECD",
+            explanation: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.allgemein?.oecdLeitsaetze?.erklaerungOecd),
+          },
+        ],
       },
       {
         type: "cell",
@@ -1055,7 +1076,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           {
             type: "cell",
             label: "Art des Audits",
-            explanation: "PLACEHOLDER",
+
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {

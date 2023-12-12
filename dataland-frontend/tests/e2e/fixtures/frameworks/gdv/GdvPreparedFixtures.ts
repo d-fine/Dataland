@@ -32,8 +32,8 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
   if (newFixture.t.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen) {
     newFixture.t.allgemein.sektoren.sektorenMitHohenKlimaauswirkungen = YesNo.Yes;
   }
-  if (newFixture.t.allgemein?.esgBerichte?.nachhaltigkeitsbericht) {
-    newFixture.t.allgemein.esgBerichte.nachhaltigkeitsbericht = YesNo.Yes;
+  if (newFixture.t.allgemein?.esgBerichte?.nachhaltigkeitsberichte) {
+    newFixture.t.allgemein.esgBerichte.nachhaltigkeitsberichte = YesNo.Yes;
   }
   if (newFixture.t.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien) {
     newFixture.t.allgemein.unGlobalConceptPrinzipien.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien =

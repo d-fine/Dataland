@@ -6,6 +6,8 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkB
  * A FrameworkConditional is a boolean formula that may take any data of the framework dataset
  * into account for it's calculation
  */
+// TODO Emanuel: Do we really need an extra Conditional class for uploads?
+// TODO: Why not use the same one for upload and view?
 abstract class FrameworkConditionalUpload {
 
     /**
