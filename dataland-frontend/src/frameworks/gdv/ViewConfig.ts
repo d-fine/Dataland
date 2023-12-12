@@ -50,166 +50,209 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
     shouldDisplay: (): boolean => true,
     children: [
       {
-        type: "cell",
-        label: "ESG-Ziele",
-        explanation:
-          "Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(dataset.allgemein?.esgZiele),
-      },
-      {
-        type: "cell",
-        label: "Ziele",
-        explanation: "Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.esgZiele == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.allgemein?.ziele),
-      },
-      {
-        type: "cell",
-        label: "Investitionen",
-        explanation:
-          "Bitte geben Sie an wieviele Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele zugewiesen wurden.",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.esgZiele == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.allgemein?.investitionen),
-      },
-      {
-        type: "cell",
-        label: "Sektor mit hohen Klimaauswirkungen",
-        explanation: "Kann das Unternehmen einem oder mehreren Sektoren mit hohen Klimaauswirkungen zugeordnet werden?",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(dataset.allgemein?.sektorMitHohenKlimaauswirkungen),
-      },
-      {
-        type: "cell",
-        label: "Sektor",
-        explanation:
-          "Bitte geben Sie an, zu welchen Sektoren (mit hohen Klimaauswirkungen) das Unternehmen zugeordnet werden kann.",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.sektorMitHohenKlimaauswirkungen == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
-          const mappings = {
-            A: "A",
-            B: "B",
-            C: "C",
-            D: "D",
-            E: "E",
-            F: "F",
-            G: "G",
-            H: "H",
-            L: "L",
-          };
-          return formatListOfStringsForDatatable(
-            dataset.allgemein?.sektor?.map((it) => getOriginalNameFromTechnicalName(it, mappings)),
-            "Sektor",
-          );
-        },
-      },
-      {
-        type: "cell",
-        label: "Nachhaltigkeitsbericht",
-        explanation: "Erstellt das Unternehmen Nachhaltigkeits- oder ESG-Berichte?",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(dataset.allgemein?.nachhaltigkeitsbericht),
-      },
-      {
-        type: "cell",
-        label: "Frequenz der Berichterstattung",
-        explanation: "In welchen Zeitabständen werden die Berichte erstellt?",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.nachhaltigkeitsbericht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
-          const mappings = {
-            Jaehrlich: "jährlich",
-            Halbjaehrlich: "halbjährlich",
-            Vierteljaehrlich: "vierteljährlich",
-            Monatlich: "monatlich",
-          };
-          return formatStringForDatatable(
-            dataset.allgemein?.frequenzDerBerichterstattung
-              ? getOriginalNameFromTechnicalName(dataset.allgemein?.frequenzDerBerichterstattung, mappings)
-              : "",
-          );
-        },
-      },
-      {
         type: "section",
-        label: "Allgemein",
+        label: "ESG Ziele",
         expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: "cell",
-            label: "Aktuelle Berichte",
-            explanation: "Bitte teilen Sie die letzten Berichte mit uns (vorzugsweise die letzten drei).",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.nachhaltigkeitsbericht == "Yes",
+            label: "Existenz von ESG-Zielen",
+            explanation:
+              "Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatStringForDatatable(dataset.allgemein?.allgemein?.aktuelleBerichte?.value),
-                "Aktuelle Berichte",
-                dataset.allgemein?.allgemein?.aktuelleBerichte,
-              ),
+              formatYesNoValueForDatatable(dataset.allgemein?.esgZiele?.existenzVonEsgZielen),
+          },
+          {
+            type: "cell",
+            label: "Beschreibung der ESG-Ziele",
+            explanation: "Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.esgZiele?.existenzVonEsgZielen == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.allgemein?.esgZiele?.beschreibungDerEsgZiele),
+          },
+          {
+            type: "cell",
+            label: "Investitionen in Zielerreichung",
+            explanation:
+              "Bitte geben Sie an wieviele Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele zugewiesen wurden.",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.esgZiele?.existenzVonEsgZielen == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.allgemein?.esgZiele?.investitionenInZielerreichung),
           },
         ],
       },
       {
-        type: "cell",
-        label: "ISO 14001",
-        explanation: "Haben Sie eine ISO 14001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+        type: "section",
+        label: "Sektoren",
+        expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatYesNoValueForDatatable(dataset.allgemein?.iso14001?.value),
-            "ISO 14001",
-            dataset.allgemein?.iso14001,
-          ),
+        children: [
+          {
+            type: "cell",
+            label: "Sektoren mit hohen Klimaauswirkungen",
+            explanation:
+              "Kann das Unternehmen einem oder mehreren Sektoren mit hohen Klimaauswirkungen zugeordnet werden?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen),
+          },
+          {
+            type: "cell",
+            label: "Auflistung der Sektoren",
+            explanation:
+              "Bitte geben Sie an, zu welchen Sektoren (mit hohen Klimaauswirkungen) das Unternehmen zugeordnet werden kann.",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                A: "A",
+                B: "B",
+                C: "C",
+                D: "D",
+                E: "E",
+                F: "F",
+                G: "G",
+                H: "H",
+                L: "L",
+              };
+              return formatListOfStringsForDatatable(
+                dataset.allgemein?.sektoren?.auflistungDerSektoren?.map((it) =>
+                  getOriginalNameFromTechnicalName(it, mappings),
+                ),
+                "Auflistung der Sektoren",
+              );
+            },
+          },
+        ],
       },
       {
-        type: "cell",
-        label: "ISO 45001",
-        explanation: "Haben Sie eine ISO 45001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+        type: "section",
+        label: "ESG Berichte",
+        expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatYesNoValueForDatatable(dataset.allgemein?.iso45001?.value),
-            "ISO 45001",
-            dataset.allgemein?.iso45001,
-          ),
+        children: [
+          {
+            type: "cell",
+            label: "Nachhaltigkeitsbericht",
+            explanation: "Erstellt das Unternehmen Nachhaltigkeits- oder ESG-Berichte?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.allgemein?.esgBerichte?.nachhaltigkeitsbericht),
+          },
+          {
+            type: "cell",
+            label: "Frequenz der Berichterstattung",
+            explanation: "In welchen Zeitabständen werden die Berichte erstellt?",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.allgemein?.esgBerichte?.nachhaltigkeitsbericht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                Jaehrlich: "jährlich",
+                Halbjaehrlich: "halbjährlich",
+                Vierteljaehrlich: "vierteljährlich",
+                Monatlich: "monatlich",
+              };
+              return formatStringForDatatable(
+                dataset.allgemein?.esgBerichte?.frequenzDerBerichterstattung
+                  ? getOriginalNameFromTechnicalName(
+                      dataset.allgemein?.esgBerichte?.frequenzDerBerichterstattung,
+                      mappings,
+                    )
+                  : "",
+              );
+            },
+          },
+          {
+            type: "cell",
+            label: "Aktuelle Berichte",
+            explanation: "Aktuelle Nachhaltigkeits- oder ESG-Berichte",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Aktuelle Berichte",
+                dataset.allgemein?.esgBerichte?.aktuelleBerichte,
+                "Beschreibung des Berichts",
+                "Bericht",
+              );
+            },
+          },
+        ],
       },
       {
-        type: "cell",
-        label: "ISO 27001",
-        explanation: "Haben Sie eine ISO 27001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+        type: "section",
+        label: "Akkreditierungen",
+        expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatYesNoValueForDatatable(dataset.allgemein?.iso27001?.value),
-            "ISO 27001",
-            dataset.allgemein?.iso27001,
-          ),
-      },
-      {
-        type: "cell",
-        label: "ISO 50001",
-        explanation: "Haben Sie eine ISO 50001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatYesNoValueForDatatable(dataset.allgemein?.iso50001?.value),
-            "ISO 50001",
-            dataset.allgemein?.iso50001,
-          ),
-      },
-      {
-        type: "cell",
-        label: "Weitere Akkreditierungen",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
-          return formatListOfBaseDataPoint(dataset.allgemein?.weitereAkkreditierungen, "Weitere Akkreditierungen");
-        },
+        children: [
+          {
+            type: "cell",
+            label: "ISO 14001",
+            explanation:
+              "Haben Sie eine ISO 14001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso14001?.value),
+                "ISO 14001",
+                dataset.allgemein?.akkreditierungen?.iso14001,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 45001",
+            explanation:
+              "Haben Sie eine ISO 45001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso45001?.value),
+                "ISO 45001",
+                dataset.allgemein?.akkreditierungen?.iso45001,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 27001",
+            explanation:
+              "Haben Sie eine ISO 27001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso27001?.value),
+                "ISO 27001",
+                dataset.allgemein?.akkreditierungen?.iso27001,
+              ),
+          },
+          {
+            type: "cell",
+            label: "ISO 50001",
+            explanation:
+              "Haben Sie eine ISO 50001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso50001?.value),
+                "ISO 50001",
+                dataset.allgemein?.akkreditierungen?.iso50001,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Weitere Akkreditierungen",
+            explanation: "Weitere Akkreditierungen, die noch nicht aufgeführt wurden",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Weitere Akkreditierungen",
+                dataset.allgemein?.akkreditierungen?.weitereAkkreditierungen,
+                "Beschreibung der Akkreditierung",
+                "Akkreditierung",
+              );
+            },
+          },
+        ],
       },
       {
         type: "cell",
@@ -240,19 +283,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
           formatYesNoValueForDatatable(dataset.allgemein?.oecdLeitsaetze),
-      },
-      {
-        type: "cell",
-        label: "Richtlinien Einhaltung OECD",
-        explanation:
-          "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der OECD Leitsätze überwacht.",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.oecdLeitsaetze == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatStringForDatatable(dataset.allgemein?.richtlinienEinhaltungOecd?.value),
-            "Richtlinien Einhaltung OECD",
-            dataset.allgemein?.richtlinienEinhaltungOecd,
-          ),
       },
       {
         type: "cell",
@@ -1025,7 +1055,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           {
             type: "cell",
             label: "Art des Audits",
-            explanation: "Art des Audits",
+
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {

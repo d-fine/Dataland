@@ -20,6 +20,9 @@ class GdvListOfBaseDataPointComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
+    lateinit var descriptionColumnHeader: String
+    lateinit var documentColumnHeader: String
+
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addProperty(
             this.identifier,
@@ -41,10 +44,12 @@ class GdvListOfBaseDataPointComponent(
             this,
             FrameworkDisplayValueLambda(
                 "{\n" +
-                    "return formatListOfBaseDataPoint(" +
-                    "${getTypescriptFieldAccessor()}, " +
-                    "'${StringEscapeUtils.escapeEcmaScript(label)}'" +
-                    ")" +
+                    "return formatListOfBaseDataPoint(\n" +
+                    "'${StringEscapeUtils.escapeEcmaScript(label)}',\n" +
+                    "${getTypescriptFieldAccessor()},\n" +
+                    "\"$descriptionColumnHeader\",\n" +
+                    "\"$documentColumnHeader\",\n" +
+                    ")\n" +
                     "}",
                 setOf(
                     "import { formatListOfBaseDataPoint } from " +

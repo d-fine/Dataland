@@ -9,6 +9,8 @@ import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLin
 interface GdvListOfBaseDataPointDialogData {
   label: string;
   input: Array<BaseDataPoint<string>>;
+  descriptionColumnHeader: string;
+  documentColumnHeader: string;
 }
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>("dialogRef");
@@ -23,11 +25,11 @@ const tableData = computed(() => {
 
 <template>
   <DataTable :value="tableData">
-    <Column field="value" header="Certificate Name" headerStyle="width: 15vw;"> </Column>
-    <Column header="Certificate" headerStyle="width: 15vw;">
+    <Column field="value" :header="dialogData.descriptionColumnHeader" headerStyle="width: 15vw;"> </Column>
+    <Column :header="dialogData.documentColumnHeader" headerStyle="width: 15vw;">
       <template #body="{ data }">
         <DocumentLink
-          label="Download Certificate"
+          :label="data.dataSource.fileName"
           :download-name="data.dataSource.fileName"
           :file-reference="data.dataSource.fileReference"
           show-icon
