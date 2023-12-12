@@ -8,10 +8,10 @@ import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dat
 import { formatGdvYearlyDecimalTimeseriesDataForTable } from "@/components/resources/dataTable/conversion/gdv/GdvYearlyDecimalTimeseriesDataGetterFactory";
 import {
   formatStringForDatatable
-} from "../../../../../../src/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
+} from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import {
   formatListOfBaseDataPoint
-} from "../../../../../../src/components/resources/dataTable/conversion/gdv/GdvListOfBaseDataPointGetterFactory";
+} from "@/components/resources/dataTable/conversion/gdv/GdvListOfBaseDataPointGetterFactory";
 
 const configForGdvVoebPanelWithOneRollingWindow: MLDTConfig<GdvData> = [
   {
