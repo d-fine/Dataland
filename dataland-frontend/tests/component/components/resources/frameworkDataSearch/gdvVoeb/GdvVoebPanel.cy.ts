@@ -89,9 +89,9 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     cy.get("div").contains("Reporting");
     cy.get("div").contains("Prognosis Data");
 
-    cy.get("td").contains("57,945.66 Mio. €");
-    cy.get("td").contains("79,393.32 Mio. €");
-    cy.get("td").contains("55,042.92 Mio. €");
+    cy.get("td").contains("17,732.53 Mio. €");
+    cy.get("td").contains("69,053.72 Mio. €");
+    cy.get("td").contains("14,504.13 Mio. €");
     for (let i = 2023; i < 2028; i++) {
       cy.get("span").contains(i);
     }
@@ -111,7 +111,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
       preparedFixture,
     ]);
     cy.get("span").contains("(Gültigkeits) Datum");
-    cy.get("span").contains("2024-12-03");
+    cy.get("span").contains("2024-01-17");
   });
 
   it("Check that on the GDV-VÖB view Page the list base data point component works properly", () => {
@@ -133,8 +133,9 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     cy.get("a").should("have.class","link").click();
 
     cy.get("span").contains("Beschreibung des Berichts");
-    cy.get("div").contains("blockchains");
-    cy.intercept('GET', '/path-to-your-resource').as('getCallAlias')
-    cy.get('span[data-test="Report-Download-Policy"]').should("exist")
+    cy.get("div").contains("experiences");
+    cy.get("div").contains("communities");
+    cy.get("div").contains("eyeballs");
+    cy.get('span[data-test="Report-Download-Policy"]').should("exist");
   });
 });
