@@ -19,7 +19,6 @@ data class GdvAllgemein(
     val mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze: YesNo?,
     val erklaerungUngc: String?,
     val oecdLeitsaetze: YesNo?,
-    val richtlinienEinhaltungOecd: BaseDataPoint<String>?,
     val erklaerungOecd: String?,
     val ausrichtungAufDieUnSdgsUndAktivesVerfolgen: String?,
     val ausschlusslistenAufBasisVonEsgKriterien: YesNo?,

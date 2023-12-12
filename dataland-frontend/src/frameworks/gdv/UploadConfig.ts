@@ -43,64 +43,37 @@ export const gdvDataModel : Category[] = [    {
         showIf: ():boolean => true,
         subcategories: [    {
             name: "esgZiele",
-            label: "ESG-Ziele",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "ziele",
-            label: "Ziele",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "investitionen",
-            label: "Investitionen",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "sektorMitHohenKlimaauswirkungen",
-            label: "Sektor mit hohen Klimaauswirkungen",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "sektor",
-            label: "Sektor",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "nachhaltigkeitsbericht",
-            label: "Nachhaltigkeitsbericht",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "frequenzDerBerichterstattung",
-            label: "Frequenz der Berichterstattung",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "allgemein",
-            label: "Allgemein",
+            label: "ESG Ziele",
             fields: [
                  {
-                name: "aktuelleBerichte",
-                label: "Aktuelle Berichte",
-                description: "Bitte teilen Sie die letzten Berichte mit uns (vorzugsweise die letzten drei).",
+                name: "existenzVonEsgZielen",
+                label: "Existenz von ESG-Zielen",
+                description: "Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
     
                 unit: "",
-                component: "ListOfBaseDataPointsFormField",
+                component: "YesNoFormField",
+                required: false,
+                showIf: ():boolean => true, 
+                validation: "",
+                },
+            {
+                name: "beschreibungDerEsgZiele",
+                label: "Beschreibung der ESG-Ziele",
+                description: "Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.",
+    
+                unit: "",
+                component: "InputTextFormField",
+                required: false,
+                showIf: ():boolean => true, 
+                validation: "",
+                },
+            {
+                name: "investitionenInZielerreichung",
+                label: "Investitionen in Zielerreichung",
+                description: "Bitte geben Sie an wieviele Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele zugewiesen wurden.",
+    
+                unit: "",
+                component: "InputTextFormField",
                 required: false,
                 showIf: ():boolean => true, 
                 validation: "",
@@ -109,31 +82,166 @@ export const gdvDataModel : Category[] = [    {
             ],
             },
         {
-            name: "iso14001",
-            label: "ISO 14001",
+            name: "sektoren",
+            label: "Sektoren",
             fields: [
+                 {
+                name: "sektorenMitHohenKlimaauswirkungen",
+                label: "Sektoren mit hohen Klimaauswirkungen",
+                description: "Kann das Unternehmen einem oder mehreren Sektoren mit hohen Klimaauswirkungen zugeordnet werden?",
     
+                unit: "",
+                component: "YesNoFormField",
+                required: false,
+                showIf: ():boolean => true, 
+                validation: "",
+                },
+            {
+                name: "auflistungDerSektoren",
+                label: "Auflistung der Sektoren",
+                description: "Bitte geben Sie an, zu welchen Sektoren (mit hohen Klimaauswirkungen) das Unternehmen zugeordnet werden kann.",
+                options: [
+                        {
+                            label: "A",
+                            value: "A",
+                        },
+                        {
+                            label: "B",
+                            value: "B",
+                        },
+                        {
+                            label: "C",
+                            value: "C",
+                        },
+                        {
+                            label: "D",
+                            value: "D",
+                        },
+                        {
+                            label: "E",
+                            value: "E",
+                        },
+                        {
+                            label: "F",
+                            value: "F",
+                        },
+                        {
+                            label: "G",
+                            value: "G",
+                        },
+                        {
+                            label: "H",
+                            value: "H",
+                        },
+                        {
+                            label: "L",
+                            value: "L",
+                        },
+                    ],
+                unit: "",
+                component: "MultiSelectFormField",
+                required: false,
+                showIf: ():boolean => true, 
+                validation: "",
+                },
+     
             ],
             },
         {
-            name: "iso45001",
-            label: "ISO 45001",
+            name: "esgBerichte",
+            label: "ESG Berichte",
             fields: [
+                 {
+                name: "nachhaltigkeitsbericht",
+                label: "Nachhaltigkeitsbericht",
+                description: "Erstellt das Unternehmen Nachhaltigkeits- oder ESG-Berichte?",
     
+                unit: "",
+                component: "YesNoFormField",
+                required: false,
+                showIf: ():boolean => true, 
+                validation: "",
+                },
+            {
+                name: "frequenzDerBerichterstattung",
+                label: "Frequenz der Berichterstattung",
+                description: "In welchen Zeitabständen werden die Berichte erstellt?",
+                options: [
+                        {
+                            label: "jährlich",
+                            value: "Jaehrlich",
+                        },
+                        {
+                            label: "halbjährlich",
+                            value: "Halbjaehrlich",
+                        },
+                        {
+                            label: "vierteljährlich",
+                            value: "Vierteljaehrlich",
+                        },
+                        {
+                            label: "monatlich",
+                            value: "Monatlich",
+                        },
+                    ],
+                unit: "",
+                component: "SingleSelectFormField",
+                required: false,
+                showIf: ():boolean => true, 
+                validation: "",
+                },
+     
             ],
             },
         {
-            name: "iso27001",
-            label: "ISO 27001",
+            name: "akkreditierungen",
+            label: "Akkreditierungen",
             fields: [
+                 {
+                name: "iso14001",
+                label: "ISO 14001",
+                description: "Haben Sie eine ISO 14001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
     
-            ],
-            },
-        {
-            name: "iso50001",
-            label: "ISO 50001",
-            fields: [
+                unit: "",
+                component: "YesNoFormField",
+                required: false,
+                showIf: ():boolean => true, 
+                validation: "",
+                },
+            {
+                name: "iso45001",
+                label: "ISO 45001",
+                description: "Haben Sie eine ISO 45001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
     
+                unit: "",
+                component: "YesNoFormField",
+                required: false,
+                showIf: ():boolean => true, 
+                validation: "",
+                },
+            {
+                name: "iso27001",
+                label: "ISO 27001",
+                description: "Haben Sie eine ISO 27001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+    
+                unit: "",
+                component: "YesNoFormField",
+                required: false,
+                showIf: ():boolean => true, 
+                validation: "",
+                },
+            {
+                name: "iso50001",
+                label: "ISO 50001",
+                description: "Haben Sie eine ISO 50001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+    
+                unit: "",
+                component: "YesNoFormField",
+                required: false,
+                showIf: ():boolean => true, 
+                validation: "",
+                },
+     
             ],
             },
         {
@@ -153,13 +261,6 @@ export const gdvDataModel : Category[] = [    {
         {
             name: "oecdLeitsaetze",
             label: "OECD Leitsätze",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "richtlinienEinhaltungOecd",
-            label: "Richtlinien Einhaltung OECD",
             fields: [
     
             ],
@@ -857,7 +958,7 @@ export const gdvDataModel : Category[] = [    {
             {
                 name: "artDesAudits",
                 label: "Art des Audits",
-                description: "Art des Audits",
+                description: "PLACEHOLDER",
                 options: [
                         {
                             label: "Interne Anhörung",

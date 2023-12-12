@@ -2,163 +2,266 @@
 	{
 		"companyInformation": {
 			"companyName": "all-fields-defined-for-eu-taxo-non-financials",
-			"headquarters": "Lake Jeramietown",
-			"headquartersPostalCode": "24723",
-			"sector": "relationships",
+			"headquarters": "New Joshboro",
+			"headquartersPostalCode": "84021-3945",
+			"sector": "e-commerce",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"MDPcOUamLzu5gZRnn2sD"
+				],
 				"Isin": [
-					"fK40tIsLalHw"
+					"S1165nVBgVwn",
+					"M4hzgjCS4yCR"
 				],
-				"PermId": [],
-				"Ticker": [
-					"npJVktv"
+				"PermId": [
+					"I87jf76hif"
 				],
+				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"Tmt37YTLp"
+					"vLwoRvMq6"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "IT",
+			"countryCode": "BR",
 			"companyAlternativeNames": [],
-			"companyLegalForm": null,
-			"website": "https://aggressive-enthusiasm.org/",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://adored-spear.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"fiscalYearDeviation": "Deviation",
-				"fiscalYearEnd": "2023-02-10",
-				"numberOfEmployees": 24797,
+				"fiscalYearEnd": "2023-04-12",
+				"numberOfEmployees": 37664,
 				"referencedReports": {
-					"AnnualReport": {
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"fileName": "AnnualReport",
-						"isGroupLevel": "No",
-						"reportDate": "2023-03-13",
-						"currency": "GNF"
-					},
-					"SustainabilityReport": {
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"fileName": "SustainabilityReport",
-						"isGroupLevel": "No",
-						"reportDate": "2023-08-08",
-						"currency": "GYD"
-					},
-					"ESEFReport": {
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"fileName": "ESEFReport",
-						"isGroupLevel": "Yes",
-						"reportDate": "2023-09-22",
-						"currency": "BSD"
-					},
 					"IntegratedReport": {
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"fileName": "IntegratedReport",
 						"isGroupLevel": "Yes",
-						"reportDate": "2023-09-19",
-						"currency": "PHP"
+						"reportDate": "2023-03-16",
+						"currency": "KPW"
 					}
 				},
 				"assurance": {
 					"value": "LimitedAssurance",
-					"provider": "Heathcote - Swaniawski",
+					"provider": "Bosco - Reynolds",
 					"dataSource": {
-						"page": 1190,
+						"page": 1085,
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "initiatives"
+						"tagName": "systems"
 					}
 				},
-				"scopeOfEntities": "No",
+				"scopeOfEntities": "NA",
 				"nfrdMandatory": "Yes",
-				"euTaxonomyActivityLevelReporting": "No"
+				"euTaxonomyActivityLevelReporting": "Yes"
 			},
 			"opex": {
 				"totalAmount": {
-					"value": 7942818866.58,
+					"value": 4501036775.76,
 					"dataSource": {
-						"page": 1108,
-						"fileName": "SustainabilityReport",
+						"page": 469,
+						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "blockchains"
+						"tagName": "channels"
 					},
-					"comment": "hack open-source port",
-					"quality": "Incomplete",
-					"currency": "GHS"
+					"comment": "parse mobile sensor",
+					"quality": "Reported",
+					"currency": "UZS"
 				},
 				"nonEligibleShare": {
-					"relativeShareInPercent": 95.3183,
+					"relativeShareInPercent": 96.2819,
 					"absoluteShare": {
-						"amount": 4820949833.37,
-						"currency": "DOP"
+						"amount": 8210456331.73,
+						"currency": "AWG"
 					}
 				},
 				"eligibleShare": {
-					"relativeShareInPercent": 84.2841,
+					"relativeShareInPercent": 64.8307,
 					"absoluteShare": {
-						"amount": 4736581475.01,
-						"currency": "BZD"
+						"amount": 9362444558.65,
+						"currency": "AED"
 					}
 				},
 				"nonAlignedShare": {
-					"relativeShareInPercent": 96.6121,
+					"relativeShareInPercent": 10.8989,
 					"absoluteShare": {
-						"amount": 1647725012.15,
-						"currency": "CRC"
+						"amount": 4501218148.51,
+						"currency": "AFN"
 					}
 				},
-				"nonAlignedActivities": [
-					{
-						"activityName": "RetrofittingOfSeaAndCoastalFreightAndPassengerWaterTransport",
-						"naceCodes": [
-							"H50.2",
-							"C33.15"
-						],
-						"share": {
-							"relativeShareInPercent": 85.4214,
-							"absoluteShare": {
-								"amount": 4270235211.59,
-								"currency": "NGN"
-							}
-						}
-					}
-				],
+				"nonAlignedActivities": [],
 				"alignedShare": {
-					"relativeShareInPercent": 2.9523,
+					"relativeShareInPercent": 12.1146,
 					"absoluteShare": {
-						"amount": 2834491201.21,
-						"currency": "MKD"
+						"amount": 2094805592.2,
+						"currency": "BDT"
 					}
 				},
-				"substantialContributionToClimateChangeMitigationInPercent": 76.3025,
-				"substantialContributionToClimateChangeAdaptionInPercent": 11.2604,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 29.2088,
-				"substantialContributionToTransitionToACircularEconomyInPercent": 93.3962,
-				"substantialContributionToPollutionPreventionAndControlInPercent": 59.5138,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 37.8883,
+				"substantialContributionToClimateChangeMitigationInPercent": 62.0004,
+				"substantialContributionToClimateChangeAdaptionInPercent": 94.6687,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 63.9835,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 16.4371,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 66.3118,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 53.7387,
 				"alignedActivities": [
 					{
-						"activityName": "ManufactureOfChlorine",
+						"activityName": "ElectricityGenerationUsingSolarPhotovoltaicTechnology",
 						"naceCodes": [
-							"C20.13"
+							"D35.11",
+							"F42.22"
 						],
 						"share": {
-							"relativeShareInPercent": 90.8128,
+							"relativeShareInPercent": 6.8168,
 							"absoluteShare": {
-								"amount": 6829687594.44,
-								"currency": "ILS"
+								"amount": 2497577494.94,
+								"currency": "BSD"
 							}
 						},
-						"substantialContributionToClimateChangeMitigationInPercent": 93.0105,
-						"substantialContributionToClimateChangeAdaptionInPercent": 78.4289,
-						"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 80.0206,
-						"substantialContributionToTransitionToACircularEconomyInPercent": 34.4462,
-						"substantialContributionToPollutionPreventionAndControlInPercent": 88.2928,
-						"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 53.3772,
+						"substantialContributionToClimateChangeMitigationInPercent": 93.9132,
+						"substantialContributionToClimateChangeAdaptionInPercent": 97.5477,
+						"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 49.0458,
+						"substantialContributionToTransitionToACircularEconomyInPercent": 75.74,
+						"substantialContributionToPollutionPreventionAndControlInPercent": 3.5582,
+						"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 27.1817,
+						"dnshToClimateChangeMitigation": "No",
+						"dnshToClimateChangeAdaption": "No",
+						"dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "No",
+						"dnshToTransitionToACircularEconomy": "Yes",
+						"dnshToPollutionPreventionAndControl": "No",
+						"dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
+						"minimumSafeguards": "Yes"
+					},
+					{
+						"activityName": "ElectricityGenerationFromGeothermalEnergy",
+						"naceCodes": [
+							"F42.22",
+							"D35.11"
+						],
+						"share": {
+							"relativeShareInPercent": 96.5723,
+							"absoluteShare": {
+								"amount": 451060943.3,
+								"currency": "INR"
+							}
+						},
+						"substantialContributionToClimateChangeMitigationInPercent": 15.6655,
+						"substantialContributionToClimateChangeAdaptionInPercent": 28.5024,
+						"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 94.6738,
+						"substantialContributionToTransitionToACircularEconomyInPercent": 2.8296,
+						"substantialContributionToPollutionPreventionAndControlInPercent": 13.061,
+						"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 53.0367,
 						"dnshToClimateChangeMitigation": "No",
 						"dnshToClimateChangeAdaption": "Yes",
+						"dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "No",
+						"dnshToTransitionToACircularEconomy": "No",
+						"dnshToPollutionPreventionAndControl": "Yes",
+						"dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
+						"minimumSafeguards": "Yes"
+					}
+				],
+				"enablingShareInPercent": 76.6556,
+				"transitionalShareInPercent": 47.6665
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 9291898657.11,
+					"dataSource": {
+						"page": 474,
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "architectures"
+					},
+					"comment": "navigate haptic system",
+					"quality": "Audited",
+					"currency": "MRU"
+				},
+				"nonEligibleShare": {
+					"relativeShareInPercent": 1.4747,
+					"absoluteShare": {
+						"amount": 5924336460.89,
+						"currency": "JMD"
+					}
+				},
+				"eligibleShare": {
+					"relativeShareInPercent": 13.1476,
+					"absoluteShare": {
+						"amount": 6098238416.02,
+						"currency": "BDT"
+					}
+				},
+				"nonAlignedShare": {
+					"relativeShareInPercent": 5.565,
+					"absoluteShare": {
+						"amount": 8572911110.24,
+						"currency": "UGX"
+					}
+				},
+				"nonAlignedActivities": [],
+				"alignedShare": {
+					"relativeShareInPercent": 83.6281,
+					"absoluteShare": {
+						"amount": 2805112753.99,
+						"currency": "BMD"
+					}
+				},
+				"substantialContributionToClimateChangeMitigationInPercent": 7.0051,
+				"substantialContributionToClimateChangeAdaptionInPercent": 29.7433,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 15.6855,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 9.5595,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 20.4281,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 77.3241,
+				"alignedActivities": [
+					{
+						"activityName": "ManufactureOfIronAndSteel",
+						"naceCodes": [
+							"C24.31",
+							"C24.10",
+							"C24.20",
+							"C24.32"
+						],
+						"share": {
+							"relativeShareInPercent": 19.1936,
+							"absoluteShare": {
+								"amount": 4315729346.13,
+								"currency": "HKD"
+							}
+						},
+						"substantialContributionToClimateChangeMitigationInPercent": 32.8234,
+						"substantialContributionToClimateChangeAdaptionInPercent": 92.8853,
+						"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 63.2869,
+						"substantialContributionToTransitionToACircularEconomyInPercent": 54.0319,
+						"substantialContributionToPollutionPreventionAndControlInPercent": 43.6512,
+						"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 73.8344,
+						"dnshToClimateChangeMitigation": "Yes",
+						"dnshToClimateChangeAdaption": "No",
+						"dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
+						"dnshToTransitionToACircularEconomy": "No",
+						"dnshToPollutionPreventionAndControl": "No",
+						"dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
+						"minimumSafeguards": "No"
+					},
+					{
+						"activityName": "AnaerobicDigestionOfSewageSludge",
+						"naceCodes": [
+							"E37.00"
+						],
+						"share": {
+							"relativeShareInPercent": 99.0626,
+							"absoluteShare": {
+								"amount": 4274495791.18,
+								"currency": "PGK"
+							}
+						},
+						"substantialContributionToClimateChangeMitigationInPercent": 57.8918,
+						"substantialContributionToClimateChangeAdaptionInPercent": 53.3312,
+						"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 77.5205,
+						"substantialContributionToTransitionToACircularEconomyInPercent": 82.8493,
+						"substantialContributionToPollutionPreventionAndControlInPercent": 92.6151,
+						"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 60.3648,
+						"dnshToClimateChangeMitigation": "No",
+						"dnshToClimateChangeAdaption": "No",
 						"dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
 						"dnshToTransitionToACircularEconomy": "Yes",
 						"dnshToPollutionPreventionAndControl": "Yes",
@@ -166,220 +269,131 @@
 						"minimumSafeguards": "No"
 					}
 				],
-				"enablingShareInPercent": 25.2905,
-				"transitionalShareInPercent": 66.6253
-			},
-			"capex": {
-				"totalAmount": {
-					"value": 3194597030.52,
-					"dataSource": {
-						"page": 113,
-						"fileName": "SustainabilityReport",
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "methodologies"
-					},
-					"comment": "reboot 1080p circuit",
-					"quality": "Reported",
-					"currency": "TRY"
-				},
-				"nonEligibleShare": {
-					"relativeShareInPercent": 93.6704,
-					"absoluteShare": {
-						"amount": 6729046481.2,
-						"currency": "PAB"
-					}
-				},
-				"eligibleShare": {
-					"relativeShareInPercent": 76.6004,
-					"absoluteShare": {
-						"amount": 8392250158.36,
-						"currency": "SYP"
-					}
-				},
-				"nonAlignedShare": {
-					"relativeShareInPercent": 99.3532,
-					"absoluteShare": {
-						"amount": 7556853443.39,
-						"currency": "XPF"
-					}
-				},
-				"nonAlignedActivities": [
-					{
-						"activityName": "StorageOfElectricity",
-						"naceCodes": null,
-						"share": {
-							"relativeShareInPercent": 26.7637,
-							"absoluteShare": {
-								"amount": 3412471485.79,
-								"currency": "INR"
-							}
-						}
-					}
-				],
-				"alignedShare": {
-					"relativeShareInPercent": 70.9501,
-					"absoluteShare": {
-						"amount": 1963944770.39,
-						"currency": "LSL"
-					}
-				},
-				"substantialContributionToClimateChangeMitigationInPercent": 48.9505,
-				"substantialContributionToClimateChangeAdaptionInPercent": 39.6242,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 35.8519,
-				"substantialContributionToTransitionToACircularEconomyInPercent": 44.8015,
-				"substantialContributionToPollutionPreventionAndControlInPercent": 82.0271,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 4.3639,
-				"alignedActivities": [
-					{
-						"activityName": "CompostingOfBioWaste",
-						"naceCodes": [
-							"F42.99"
-						],
-						"share": {
-							"relativeShareInPercent": 12.1908,
-							"absoluteShare": {
-								"amount": 6699539027.18,
-								"currency": "JPY"
-							}
-						},
-						"substantialContributionToClimateChangeMitigationInPercent": 75.0527,
-						"substantialContributionToClimateChangeAdaptionInPercent": 54.5553,
-						"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 25.0778,
-						"substantialContributionToTransitionToACircularEconomyInPercent": 13.7912,
-						"substantialContributionToPollutionPreventionAndControlInPercent": 20.4497,
-						"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 27.338,
-						"dnshToClimateChangeMitigation": "Yes",
-						"dnshToClimateChangeAdaption": "Yes",
-						"dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
-						"dnshToTransitionToACircularEconomy": "No",
-						"dnshToPollutionPreventionAndControl": "No",
-						"dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "No",
-						"minimumSafeguards": "No"
-					}
-				],
-				"enablingShareInPercent": 23.1221,
-				"transitionalShareInPercent": 8.7863
+				"enablingShareInPercent": 41.2922,
+				"transitionalShareInPercent": 7.4565
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 2712661861.44,
+					"value": 8229603504.3,
 					"dataSource": {
-						"page": 502,
-						"fileName": "AnnualReport",
+						"page": 288,
+						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "metrics"
+						"tagName": "technologies"
 					},
-					"comment": "transmit optical feed",
-					"quality": "Incomplete",
-					"currency": "BHD"
+					"comment": "override redundant bus",
+					"quality": "Estimated",
+					"currency": "KGS"
 				},
 				"nonEligibleShare": {
-					"relativeShareInPercent": 98.3924,
+					"relativeShareInPercent": 17.2141,
 					"absoluteShare": {
-						"amount": 292639215.47,
-						"currency": "PHP"
+						"amount": 8156166390.98,
+						"currency": "SBD"
 					}
 				},
 				"eligibleShare": {
-					"relativeShareInPercent": 39.4747,
+					"relativeShareInPercent": 22.439,
 					"absoluteShare": {
-						"amount": 8203798085.45,
-						"currency": "SEK"
+						"amount": 9431623311.25,
+						"currency": "MWK"
 					}
 				},
 				"nonAlignedShare": {
-					"relativeShareInPercent": 97.4542,
+					"relativeShareInPercent": 84.2726,
 					"absoluteShare": {
-						"amount": 6878549642.86,
-						"currency": "BOB"
+						"amount": 2815392601.77,
+						"currency": "GIP"
 					}
 				},
 				"nonAlignedActivities": [
 					{
-						"activityName": "InfrastructureEnablingRoadTransportAndPublicTransport",
-						"naceCodes": [
-							"F71.20",
-							"F42.13"
-						],
-						"share": {
-							"relativeShareInPercent": 74.7243,
-							"absoluteShare": {
-								"amount": 7999292036.99,
-								"currency": "RWF"
-							}
-						}
-					}
-				],
-				"alignedShare": {
-					"relativeShareInPercent": 1.6406,
-					"absoluteShare": {
-						"amount": 2458596718.5,
-						"currency": "NGN"
-					}
-				},
-				"substantialContributionToClimateChangeMitigationInPercent": 4.2134,
-				"substantialContributionToClimateChangeAdaptionInPercent": 84.8504,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 52.6785,
-				"substantialContributionToTransitionToACircularEconomyInPercent": 95.6133,
-				"substantialContributionToPollutionPreventionAndControlInPercent": 6.9081,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 54.6661,
-				"alignedActivities": [
-					{
-						"activityName": "HighEfficiencyCoGenerationOfHeatCoolAndPowerFromFossilGaseousFuels",
-						"naceCodes": [
-							"D35.30",
-							"D35.11"
-						],
-						"share": {
-							"relativeShareInPercent": 12.7835,
-							"absoluteShare": {
-								"amount": 5530070951.21,
-								"currency": "MMK"
-							}
-						},
-						"substantialContributionToClimateChangeMitigationInPercent": 64.8546,
-						"substantialContributionToClimateChangeAdaptionInPercent": 98.9344,
-						"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 89.4751,
-						"substantialContributionToTransitionToACircularEconomyInPercent": 47.0841,
-						"substantialContributionToPollutionPreventionAndControlInPercent": 21.0588,
-						"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 57.1527,
-						"dnshToClimateChangeMitigation": "Yes",
-						"dnshToClimateChangeAdaption": "Yes",
-						"dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "No",
-						"dnshToTransitionToACircularEconomy": "No",
-						"dnshToPollutionPreventionAndControl": "Yes",
-						"dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "No",
-						"minimumSafeguards": "No"
-					},
-					{
-						"activityName": "InlandFreightWaterTransport",
+						"activityName": "RetrofittingOfInlandWaterPassengerAndFreightTransport",
 						"naceCodes": [
 							"H50.4"
 						],
 						"share": {
-							"relativeShareInPercent": 96.023,
+							"relativeShareInPercent": 23.138,
 							"absoluteShare": {
-								"amount": 1740636758.04,
-								"currency": "NOK"
+								"amount": 3943825345.49,
+								"currency": "PHP"
+							}
+						}
+					}
+				],
+				"alignedShare": {
+					"relativeShareInPercent": 77.8118,
+					"absoluteShare": {
+						"amount": 899366489.61,
+						"currency": "HTG"
+					}
+				},
+				"substantialContributionToClimateChangeMitigationInPercent": 81.1063,
+				"substantialContributionToClimateChangeAdaptionInPercent": 78.6158,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 26.0162,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 87.4242,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 77.8002,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 35.9165,
+				"alignedActivities": [
+					{
+						"activityName": "ManufactureOfCement",
+						"naceCodes": [
+							"C23.51"
+						],
+						"share": {
+							"relativeShareInPercent": 66.0056,
+							"absoluteShare": {
+								"amount": 5648085358.55,
+								"currency": "KYD"
 							}
 						},
-						"substantialContributionToClimateChangeMitigationInPercent": 82.0497,
-						"substantialContributionToClimateChangeAdaptionInPercent": 96.953,
-						"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 58.9232,
-						"substantialContributionToTransitionToACircularEconomyInPercent": 81.0581,
-						"substantialContributionToPollutionPreventionAndControlInPercent": 0.3247,
-						"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 61.812,
+						"substantialContributionToClimateChangeMitigationInPercent": 44.0214,
+						"substantialContributionToClimateChangeAdaptionInPercent": 11.8945,
+						"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 0.6141,
+						"substantialContributionToTransitionToACircularEconomyInPercent": 56.4882,
+						"substantialContributionToPollutionPreventionAndControlInPercent": 73.1606,
+						"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 91.0538,
+						"dnshToClimateChangeMitigation": "Yes",
+						"dnshToClimateChangeAdaption": "Yes",
+						"dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "Yes",
+						"dnshToTransitionToACircularEconomy": "Yes",
+						"dnshToPollutionPreventionAndControl": "Yes",
+						"dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
+						"minimumSafeguards": "Yes"
+					},
+					{
+						"activityName": "InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
+						"naceCodes": [
+							"C28",
+							"C17",
+							"C22",
+							"C25",
+							"C27"
+						],
+						"share": {
+							"relativeShareInPercent": 84.9777,
+							"absoluteShare": {
+								"amount": 9791369291.49,
+								"currency": "HKD"
+							}
+						},
+						"substantialContributionToClimateChangeMitigationInPercent": 49.0146,
+						"substantialContributionToClimateChangeAdaptionInPercent": 11.1787,
+						"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 47.0176,
+						"substantialContributionToTransitionToACircularEconomyInPercent": 20.6604,
+						"substantialContributionToPollutionPreventionAndControlInPercent": 13.8304,
+						"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 42.7235,
 						"dnshToClimateChangeMitigation": "Yes",
 						"dnshToClimateChangeAdaption": "No",
 						"dnshToSustainableUseAndProtectionOfWaterAndMarineResources": "No",
 						"dnshToTransitionToACircularEconomy": "Yes",
-						"dnshToPollutionPreventionAndControl": "Yes",
+						"dnshToPollutionPreventionAndControl": "No",
 						"dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": "Yes",
-						"minimumSafeguards": "No"
+						"minimumSafeguards": "Yes"
 					}
 				],
-				"enablingShareInPercent": 28.9163,
-				"transitionalShareInPercent": 30.6906
+				"enablingShareInPercent": 48.558,
+				"transitionalShareInPercent": 40.868
 			}
 		},
 		"reportingPeriod": "2020"
