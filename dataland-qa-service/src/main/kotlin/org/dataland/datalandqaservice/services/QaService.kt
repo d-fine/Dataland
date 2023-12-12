@@ -48,7 +48,7 @@ class QaService(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "manualQaRequestedQaService",
+                    "manualQaRequestedDataQaService",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -91,22 +91,22 @@ class QaService(
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
-//    @RabbitListener(
-//        bindings = [
-//            QueueBinding(
-//                value = Queue(
-//                    "documentStoredQaService",
-//                    arguments = [
-//                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-//                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-//                        Argument(name = "defaultRequeueRejected", value = "false"),
-//                    ],
-//                ),
-//                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
-//                key = [RoutingKeyNames.document],
-//            ),
-//        ],
-//    )
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value = Queue(
+                    "manualQaRequestedDocumentQaService",
+                    arguments = [
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                        Argument(name = "defaultRequeueRejected", value = "false"),
+                    ],
+                ),
+                exchange = Exchange(ExchangeName.ManualQaRequested, declare = "false"),
+                key = [RoutingKeyNames.document],
+            ),
+        ],
+    )
     fun assureQualityOfDocument(
         @Payload documentId: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
@@ -120,11 +120,6 @@ class QaService(
             logger.info(
                 "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
             )
-            // TODO send message to automatic qa service instead
-//            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-//                documentId, MessageType.QaRequested, correlationId, ExchangeName.QaRequested,
-//                RoutingKeyNames.document,
-//            )
             val message = objectMapper.writeValueAsString(
                 QaCompletedMessage(documentId, QaStatus.Accepted),
             )
@@ -134,35 +129,4 @@ class QaService(
             )
         }
     }
-
-    /**
-     * Method for testing stuff out
-     * @param body the body of the message
-     */
-//    @RabbitListener(
-//        bindings = [
-//            QueueBinding(
-//                value = Queue(
-//                    "automaticQaCompletedQaService",
-//                    arguments = [
-//                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-//                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-//                        Argument(name = "defaultRequeueRejected", value = "false"),
-//                    ],
-//                ),
-//                exchange = Exchange(ExchangeName.AutomatedQaCompleted, declare = "false"),
-//                key = ["send"],
-//            ),
-//        ],
-//    )
-//    fun tutorial(
-//        @Payload body: String,
-//    ) {
-//        println("it worked")
-//        println("the message is \"$body\"")
-//        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-//            "SUCCESS", "TYPE", "correlationId", ExchangeName.QaRequested,
-//            "key",
-//        )
-//    }
 }

@@ -24,7 +24,6 @@ def listen_to_message_queue():
     mq.connect()
     mq.register_receiver(receiving_exchange, data_key, qa_data)
     mq.register_receiver(receiving_exchange, document_key, qa_document)
-    # mq.register_receiver(receiving_exchange, data_key, tutorial_callback)
     mq._channel.start_consuming()  # TODO handle disconnects
     mq.disconnect()
 
@@ -58,24 +57,6 @@ class RabbitMq:
         except pika.exceptions.ConnectionWrongStateError:
             logging.error("Could not close connection.")
 
-    def tutorial_send(self):
-        self._channel.basic_publish(
-            exchange="automaticQaCompleted",
-            routing_key="send",
-            body="Hello World!"
-        )
-
-    def tutorial_register_receiver(self):
-        queue = "qaRequestedAutomatedQa"
-        self._channel.queue_declare(queue=queue)
-        self._channel.queue_bind(queue=queue, exchange="qaRequested", routing_key="key")
-        self._channel.basic_consume(
-            queue=queue,
-            auto_ack=True,
-            on_message_callback=tutorial_callback
-        )
-        print("registered")
-
     def register_receiver(self, exchange: str, routing_key: str, callback):
         queue = f"{exchange}_{routing_key}"
         self._channel.queue_declare(queue=queue)
@@ -86,61 +67,31 @@ class RabbitMq:
         )
 
 
-def tutorial_callback(channel, method, properties, body):
-    print(f" [x] Received {body}")
-
-
-def qa_data(channel: pika.adapters.blocking_connection.BlockingChannel, method, properties: pika.BasicProperties, body: bytes):
+def qa_data(channel, method, properties, body):
     received_message = json.loads(body)
     bypass_qa = received_message["bypassQa"]
     data_id = received_message["dataId"]
-    correlation_id = properties.headers["cloudEvents:id"]
-    logging.info(f"Received data with ID {data_id} for automated review. (Correlation ID: {correlation_id})")
-    if bypass_qa:
-        logging.info(f"Bypassing QA for data with ID {data_id}. (Correlation ID: {correlation_id})")
-        message_to_send = {
-            "identifier": data_id,
-            "validationResult": "Accepted"
-        }  # TODO use client for accepted
-        channel.basic_publish(
-            exchange=quality_assured_exchange,
-            routing_key=data_key,
-            body=json.dumps(message_to_send),
-            properties=pika.BasicProperties(
-                headers={
-                    correlation_id_header: correlation_id,
-                    message_type_header: qa_completed_type
-                }
-            )
-        )
-    else:
-        # TODO actual logic here
-        logging.info(f"Auto-forwarding data with ID {data_id} to manual QA")
-        channel.basic_publish(
-            exchange=manual_qa_requested_exchange,
-            routing_key=data_key,
-            body=data_id,
-            properties=pika.BasicProperties(
-                headers={
-                    correlation_id_header: correlation_id,
-                    message_type_header: manual_qa_requested_type
-                }
-            )
-        )
-    channel.basic_ack(delivery_tag=method.delivery_tag)
+    process_qa_request(channel, method, properties, data_key, "data", bypass_qa, data_id)
 
-def process_qa_request(channel: pika.adapters.blocking_connection.BlockingChannel, method, properties: pika.BasicProperties, body: bytes, routing_key: str):
-    if routing_key == data_key:
-        received_message = json.loads(body)
-        bypass_qa = received_message["bypassQa"]
-        resource_id = received_message["dataId"]
-    else:
-        bypass_qa = False
-        resource_id = body
+
+def qa_document(channel, method, properties, body):
+    process_qa_request(channel, method, properties, document_key, "document", False, body)
+
+
+def process_qa_request(
+        channel: pika.adapters.blocking_connection.BlockingChannel,
+        method,
+        properties: pika.BasicProperties,
+        routing_key: str,
+        resource_type: str,
+        bypass_qa: bool,
+        resource_id: str
+):
     correlation_id = properties.headers["cloudEvents:id"]
-    logging.info(f"Received {routing_key} with ID {resource_id} for automated review. (Correlation ID: {correlation_id})")
+    logging.info(
+        f"Received {resource_type} with ID {resource_id} for automated review. (Correlation ID: {correlation_id})")
     if bypass_qa:
-        logging.info(f"Bypassing QA for {routing_key} with ID {resource_id}. (Correlation ID: {correlation_id})")
+        logging.info(f"Bypassing QA for {resource_type} with ID {resource_id}. (Correlation ID: {correlation_id})")
         message_to_send = {
             "identifier": resource_id,
             "validationResult": "Accepted"
@@ -158,7 +109,9 @@ def process_qa_request(channel: pika.adapters.blocking_connection.BlockingChanne
         )
     else:
         # TODO actual logic here
-        logging.info(f"Auto-forwarding data with ID {resource_id} to manual QA")
+        logging.info(
+            f"Auto-forwarding {resource_type} with ID {resource_id} to manual QA. (Correlation ID: {correlation_id})"
+        )
         channel.basic_publish(
             exchange=manual_qa_requested_exchange,
             routing_key=routing_key,
@@ -171,7 +124,3 @@ def process_qa_request(channel: pika.adapters.blocking_connection.BlockingChanne
             )
         )
     channel.basic_ack(delivery_tag=method.delivery_tag)
-
-def qa_document(channel, method, properties, body: str):
-    pass
-
