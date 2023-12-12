@@ -1,6 +1,8 @@
 package org.dataland.datalandbackend.model.eutaxonomy.financials
 
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.Valid
+import jakarta.validation.constraints.Min
 import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.interfaces.frameworks.EuTaxonomyCommonFields
 import org.dataland.datalandbackend.interfaces.frameworks.FrameworkBase
@@ -23,13 +25,17 @@ import java.util.EnumSet
 data class EuTaxonomyDataForFinancials(
     val financialServicesTypes: EnumSet<FinancialServicesType>? = null,
 
+    @field:Valid
     @field:Schema(example = JsonExampleFormattingConstants.ELIGIBILITY_KPIS_DEFAULT_VALUE)
     val eligibilityKpis: Map<FinancialServicesType, EligibilityKpis>? = null,
 
+    @field:Valid
     val creditInstitutionKpis: CreditInstitutionKpis? = null,
 
+    @field:Valid
     val investmentFirmKpis: InvestmentFirmKpis? = null,
 
+    @field:Valid
     val insuranceKpis: InsuranceKpis? = null,
 
     override val fiscalYearDeviation: FiscalYearDeviation? = null,
@@ -42,8 +48,10 @@ data class EuTaxonomyDataForFinancials(
 
     override val euTaxonomyActivityLevelReporting: YesNo? = null,
 
+    @field:Valid
     override val assurance: AssuranceDataPoint? = null,
 
+    @Min(0)
     override val numberOfEmployees: BigDecimal? = null,
 
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)

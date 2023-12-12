@@ -118,8 +118,32 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
     )
 }
 
+tasks.register("generateDocumentsClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    val documentsClientDestinationPackage = "org.dataland.datalanddocumentmanager.openApiClient"
+    input = project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json")
+        .path
+    outputDir.set("$buildDir/clients/document-manager")
+    packageName.set(documentsClientDestinationPackage)
+    modelPackage.set("$documentsClientDestinationPackage.model")
+    apiPackage.set("$documentsClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
+
 tasks.register("generateClients") {
     dependsOn("generateInternalStorageClient")
+    dependsOn("generateDocumentsClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -133,6 +157,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 sourceSets {
     val main by getting
     main.kotlin.srcDir("$buildDir/clients/internal-storage/src/main/kotlin")
+    main.kotlin.srcDir("$buildDir/clients/document-manager/src/main/kotlin")
 }
 
 ktlint {

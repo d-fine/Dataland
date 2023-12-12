@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.eutaxonomy
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.validation.Valid
 import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
@@ -12,7 +13,7 @@ import org.dataland.datalandbackend.model.enums.eutaxonomy.AssuranceOptions
 data class AssuranceDataPoint(
     @field:JsonProperty(required = true)
     override val value: AssuranceOptions,
-
+    @field:Valid
     override val dataSource: ExtendedDocumentReference? = null,
 
     val provider: String? = null,

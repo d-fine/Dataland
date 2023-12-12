@@ -1,6 +1,8 @@
 package org.dataland.datalandbackend.model.eutaxonomy.financials
 
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
+import org.dataland.datalandbackend.validator.DataPointMaximumValue
+import org.dataland.datalandbackend.validator.DataPointMinimumValue
 import java.math.BigDecimal
 
 /**
@@ -9,5 +11,7 @@ import java.math.BigDecimal
  */
 
 data class InvestmentFirmKpis(
+    @DataPointMinimumValue(minimumValue = 0)
+    @DataPointMaximumValue(maximumValue = 100)
     val greenAssetRatioInPercent: ExtendedDataPoint<BigDecimal>? = null,
 )
