@@ -144,7 +144,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 customizeEuTaxonomieKompassAktivitaetenComponent(this)
             }
 
-// TODO what about the dependencies of all the rolling window fields?
 // TODO what about the placements of all the rolling window fields?
         val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt")
         componentGroupUmwelt?.edit<ComponentGroup>("treibhausgasemissionen") {
@@ -168,6 +167,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "tCO2-Äquiv.",
                     ), // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
                 )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                )
             }
         }
 
@@ -189,8 +192,14 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "erzeugungErneuerbareEnergien",
                         "Erzeugung erneuerbare Energien", "%",
-                    ), // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
-                ) // TODO Emanuel: Die labels in den Reihen weichen iwie ab von denen im Fragebogen. Wieso?
+                    ),
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                )
+                // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+                // TODO Emanuel: Die labels in den Reihen weichen iwie ab von denen im Fragebogen. Wieso?
             }
         }
         componentGroupUmwelt?.edit<ComponentGroup>("energieeffizienzImmobilienanlagen") {
@@ -207,7 +216,12 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "energieeffizienteImmobilienanlagen",
                         "energieeffiziente Immobilienanlagen", "%",
                     ),
-                ) // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                )
+                // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
                 // TODO Emanuel: Das label in der einen Reihe weicht iwie ab von dem im Fragebogen. Wieso?
             }
         }
@@ -226,7 +240,13 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "emissionenInWasser",
                         "Emissionen in Wasser", "t",
-                    ), // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+                    ),
+
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                    // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
                 )
             }
         }
@@ -250,8 +270,14 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "anteilGefaehrlicherAbfallmenge",
                         "Anteil gefährlicher Abfall an Gesamtmenge", "%",
-                    ), // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
-                ) // TODO Emanuel: Das label in der einen Reihe weicht iwie ab von dem im Fragebogen. Wieso?
+                    ),
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                )
+                // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+                // TODO Emanuel: Das label in der einen Reihe weicht iwie ab von dem im Fragebogen. Wieso?
             }
         }
 
@@ -269,11 +295,24 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "%",
                     ), // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
                 )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                )
             }
         }
+        val einnahmenAusFossilenBrennstoffen = componentGroupUmwelt
+            ?.getOrNull<ComponentGroup>("fossileBrennstoffe")
+            ?.getOrNull<YesNoComponent>("einnahmenAusFossilenBrennstoffen")
+        require(einnahmenAusFossilenBrennstoffen != null) {
+            "The field with the label \"einnahmenAusFossilenBrennstoffen\" cannot be null in the " +
+                "gdv framework."
+        }
 
-        componentGroupUmwelt?.edit<ComponentGroup>("fossileBrennstoffe") {
-            create<GdvYearlyDecimalTimeseriesDataComponent>("berichterstattungEinnahmenAusFossilenBrennstoffen") {
+        componentGroupUmwelt.edit<ComponentGroup>("fossileBrennstoffe") {
+            create<GdvYearlyDecimalTimeseriesDataComponent>(
+                "berichterstattungEinnahmenAusFossilenBrennstoffen",
+            ) {
                 label = "Berichterstattung Einnahmen aus fossilen Brennstoffen"
                 explanation = "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den " +
                     "gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die " +
@@ -284,11 +323,17 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                             "Brennstoffen",
                         "Anteil der Einnahmen aus fossilen Brennstoffen", "%",
                     ),
-                ) // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
-            } // TODO Emanuel: Die fixtures von dem Ding sind keine vernünftigen Prozentzahlen
+                )
+                availableIf = DependsOnComponentValue(
+                    einnahmenAusFossilenBrennstoffen,
+                    "Yes",
+                )
+            }
+            // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+            // TODO Emanuel: Die fixtures von dem Ding sind keine vernünftigen Prozentzahlen
         }
 
-        componentGroupUmwelt?.edit<ComponentGroup>("taxonomie") {
+        componentGroupUmwelt.edit<ComponentGroup>("taxonomie") {
             create<GdvYearlyDecimalTimeseriesDataComponent>(
                 "umsatzInvestitionsaufwandFuerNachhaltige" +
                     "Aktivitaeten",
@@ -306,8 +351,14 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
                         "Mio. €",
                     ),
-                ) // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
-            } // TODO Emanuel: Irgendwie sieht die Tabelle hier auf der viewpage ganz anders aus als im Fragebogen
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                )
+            }
+            // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+            // TODO Emanuel: Irgendwie sieht die Tabelle hier auf der viewpage ganz anders aus als im Fragebogen
         }
 
         val componentGroupSoziales: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("soziales")
@@ -330,8 +381,13 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 ),
             )
         }
-
-        componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>(
+        val aenderungenUnternehmensstruktur = componentGroupSoziales
+            ?.getOrNull<YesNoComponent>("aenderungenUnternehmensstruktur")
+        require(aenderungenUnternehmensstruktur != null) {
+            "The field with the label \"einnahmenAusFossilenBrennstoffen\" cannot be null in the " +
+                "gdv framework."
+        }
+        componentGroupSoziales.create<GdvYearlyDecimalTimeseriesDataComponent>(
             "auswirkungenAufAnteil" +
                 "BefristerVertraegeUndFluktuation",
         ) {
@@ -348,6 +404,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "%",
                 ),
             )
+            availableIf = DependsOnComponentValue(
+                aenderungenUnternehmensstruktur,
+                "Yes",
+            )
         }
 
         framework.root.create<GdvYearlyDecimalTimeseriesDataComponent>("unfallrate") {
@@ -360,9 +420,13 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust", "%",
                 ),
             )
+            availableIf = DependsOnComponentValue(
+                berichtsPflicht,
+                "Yes",
+            )
         }
 
-        componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>("budgetFuerSchulungAusbildung") {
+        componentGroupSoziales.create<GdvYearlyDecimalTimeseriesDataComponent>("budgetFuerSchulungAusbildung") {
             label = "Budget für Schulung/Ausbildung"
             explanation = "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für " +
                 "Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde."
@@ -372,9 +436,13 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "Budget pro Mitarbeiter und Jahr", "€",
                 ),
             )
+            availableIf = DependsOnComponentValue(
+                berichtsPflicht,
+                "Yes",
+            )
         }
 
-        componentGroupSoziales?.edit<ComponentGroup>("einkommensgleichheit") {
+        componentGroupSoziales.edit<ComponentGroup>("einkommensgleichheit") {
             create<GdvYearlyDecimalTimeseriesDataComponent>("ueberwachungDerEinkommensungleichheit") {
                 label = "Überwachung der Einkommensungleichheit"
                 explanation = "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das " +
@@ -394,6 +462,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                             "sverhaeltnis",
                         "CEO-Einkommensungleichheitsverhältnis", "%",
                     ),
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
                 )
             }
         }
