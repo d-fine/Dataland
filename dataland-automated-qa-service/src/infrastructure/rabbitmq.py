@@ -9,6 +9,9 @@ import pika.exceptions
 from .resources import Resource, DataResource, DocumentResource
 import infrastructure.properties as p
 
+from dataland_backend_api_documentation_client.models.qa_status import QaStatus
+
+
 data_key = "data"
 document_key = "document"
 receiving_exchange = "itemStored"
@@ -21,9 +24,6 @@ message_type_header = "cloudEvents:type"
 qa_completed_type = "QA completed"
 manual_qa_requested_type = "Manual QA requested"
 
-class QaStatus:
-    ACCEPTED = "Accepted"
-    REJECTED = "Rejected"
 
 def listen_to_message_queue():
     mq = RabbitMq(p.rabbit_mq_connection_parameters)

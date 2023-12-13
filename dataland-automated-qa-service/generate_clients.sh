@@ -12,9 +12,6 @@ openapi-python-client generate --path "$PROJECT_ROOT"/dataland-backend/backendOp
 echo Reconstructing build directory
 rm -r "$SUBPROJECT_ROOT"/build
 mkdir -p "$SUBPROJECT_ROOT"/build/clients
-touch "$SUBPROJECT_ROOT"/build/clients/__init__.py
 echo Moving clients into build directory
-mv "$SUBPROJECT_ROOT"/dataland-backend-api-documentation-client/dataland_backend_api_documentation_client "$SUBPROJECT_ROOT"/build/clients
-mv "$SUBPROJECT_ROOT"/dataland-internal-storage-api-documentation-client/dataland_internal_storage_api_documentation_client "$SUBPROJECT_ROOT"/build/clients
-rm -r "$SUBPROJECT_ROOT"/dataland-backend-api-documentation-client
-rm -r "$SUBPROJECT_ROOT"/dataland-internal-storage-api-documentation-client
+mv dataland-backend-api-documentation-client "$SUBPROJECT_ROOT"/build/clients
+mv dataland-internal-storage-api-documentation-client "$SUBPROJECT_ROOT"/build/clients
