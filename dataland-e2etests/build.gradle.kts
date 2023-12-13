@@ -67,7 +67,6 @@ tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plug
     modelPackage.set("$qaServiceClientDestinationPackage.model")
     apiPackage.set("$qaServiceClientDestinationPackage.api")
     generatorName.set("kotlin")
-
     additionalProperties.set(
         mapOf(
             "removeEnumValuePrefix" to false,

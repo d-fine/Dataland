@@ -21,9 +21,9 @@
     <MultiLayerDataTable
       :mldtDatasets="mldtDatasets"
       :config="
-        inReviewMode
-          ? editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration)
-          : displayConfiguration
+        hideEmptyFields
+          ? displayConfiguration
+          : editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration)
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
     />
@@ -66,6 +66,8 @@ const props = defineProps<{
   displayConfiguration: MLDTConfig<FrameworkDataType>;
   inReviewMode: boolean;
 }>();
+const injecHideEmptyFields = inject<{ value: boolean }>("hideEmptyFields");
+const hideEmptyFields = computed<boolean | undefined>(() => injecHideEmptyFields?.value);
 
 const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.frameworkIdentifier));
 

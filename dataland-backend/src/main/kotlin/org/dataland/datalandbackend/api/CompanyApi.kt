@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.model.companies.AggregatedFrameworkDataSummary
 import org.dataland.datalandbackend.model.companies.CompanyAvailableDistinctValues
+import org.dataland.datalandbackend.model.companies.CompanyId
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.companies.CompanyInformationPatch
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -145,6 +146,31 @@ interface CompanyApi {
         @PathVariable("identifierType") identifierType: IdentifierType,
         @PathVariable("identifier") identifier: String,
     )
+
+    /**
+     * A method to get the company an identifier of a given type exists
+     * @param identifierType the type of the identifier
+     * @param identifier the identifier
+     */
+    @Operation(
+        summary = "Gets the company ID for an identifier of specified type.",
+        description = "Get the company ID for an identifier of specified type.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Found a company corresponding the identifier."),
+            ApiResponse(responseCode = "404", description = "Found no company corresponding the identifier."),
+        ],
+    )
+    @GetMapping(
+        value = ["/identifiers/{identifierType}/{identifier}"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getCompanyIdByIdentifier(
+        @PathVariable("identifierType") identifierType: IdentifierType,
+        @PathVariable("identifier") identifier: String,
+    ): ResponseEntity<CompanyId>
 
     /**
      * A method used to retrieve all available distinct values for framework type, country code & sector

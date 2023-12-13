@@ -5,7 +5,7 @@
       :description="description"
       :label="label"
       :required="required"
-      @reports-updated="reportsUpdated"
+      @field-specific-documents-updated="fieldSpecificDocumentsUpdated"
     >
       <YesNoNaFormField
         name="value"
@@ -32,15 +32,14 @@ export default defineComponent({
   components: { YesNoNaFormField, BaseDataPointFormField },
   inheritAttrs: false,
   props: { ...BaseFormFieldProps },
-  emits: ["reportsUpdated"],
+  emits: ["fieldSpecificDocumentsUpdated"],
   methods: {
     /**
      * Emits event that the selected document changed
-     * @param documentName the name of the new referenced document
      * @param referencedDocument the new referenced document
      */
-    reportsUpdated(documentName: string, referencedDocument: DocumentToUpload | undefined) {
-      this.$emit("reportsUpdated", documentName, referencedDocument);
+    fieldSpecificDocumentsUpdated(referencedDocument: DocumentToUpload | undefined) {
+      this.$emit("fieldSpecificDocumentsUpdated", referencedDocument);
     },
   },
 });

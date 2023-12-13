@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbatchmanager.model.GleifCompanyInformation
 import org.slf4j.LoggerFactory
@@ -62,7 +63,7 @@ class CompanyUploader(
         while (counter < MAX_RETRIES) {
             try {
                 functionToExecute()
-                break
+                return
             } catch (exception: ClientException) {
                 logger.error("Unexpected client exception occurred. Response was: ${exception.message}.")
                 counter++
@@ -74,6 +75,7 @@ class CompanyUploader(
                 counter++
             }
         }
+        logger.error("Maximum number of retries exceeded.")
     }
 
     /**
@@ -85,7 +87,6 @@ class CompanyUploader(
         companyInformation: GleifCompanyInformation,
     ) {
         var patchCompanyId: String? = null
-
         retryOnCommonApiErrors {
             try {
                 logger.info(
@@ -125,5 +126,42 @@ class CompanyUploader(
                 companyInformation.toCompanyPatch(),
             )
         }
+    }
+
+    /**
+     * Updates the ISINs of all companies.
+     * @param leiIsinMapping the delta-map with the format "LEI"->"ISIN1,ISIN2,..."
+     */
+    fun updateIsins(
+        leiIsinMapping: Map<String, Set<String>>,
+    ) {
+        @Suppress("unused")
+        for ((lei, newIsins) in leiIsinMapping) {
+            retryOnCommonApiErrors {
+                logger.info("Searching for company with LEI: $lei")
+                val companyId = try {
+                    companyDataControllerApi.getCompanyIdByIdentifier(IdentifierType.lei, lei).companyId
+                } catch (e: ClientException) {
+                    if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+                        logger.error("Could not find company with LEI: $lei")
+                        return@retryOnCommonApiErrors
+                    }
+                    throw e
+                }
+                logger.info("Patching company with ID: $companyId and LEI: $lei")
+                updateIsinsOfCompany(newIsins, companyId)
+            }
+        }
+    }
+
+    private fun updateIsinsOfCompany(isins: Set<String>, companyId: String) {
+        val updatedIdentifiers = mapOf(
+            IdentifierType.isin.value to isins.toList(),
+        )
+        val companyPatch = CompanyInformationPatch(identifiers = updatedIdentifiers)
+        companyDataControllerApi.patchCompanyById(
+            companyId,
+            companyPatch,
+        )
     }
 }

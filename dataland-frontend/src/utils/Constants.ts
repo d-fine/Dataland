@@ -33,3 +33,5 @@ export const TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS = 2000;
 export const REGEX_FOR_FILE_NAMES = /^[^<>:"|?/*\\\s][^<>:"|?/*\\]{0,252}[^<>:"|?/*\\.\s]$/;
 
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+export const NO_DATA_PROVIDED = "No data provided";
