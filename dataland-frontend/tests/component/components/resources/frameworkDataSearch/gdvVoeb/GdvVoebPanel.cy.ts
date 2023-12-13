@@ -138,13 +138,14 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
       preparedFixture,
     ]);
 
-    const listData: Array<BaseDataPointString> = preparedFixture.t.allgemein?.esgBerichte?.aktuelleBerichte as Array<BaseDataPointString>;
+    const listData: Array<BaseDataPointString> = preparedFixture.t.allgemein?.esgBerichte
+      ?.aktuelleBerichte as Array<BaseDataPointString>;
     cy.get("span").contains("Aktuelle Berichte");
     cy.get("a").should("have.class", "link").click();
 
     cy.get("span").contains("Beschreibung des Berichts");
     for (const oneListElement of listData) {
-      cy.get("div").contains(oneListElement.value);
+      cy.get("div").contains(oneListElement.value as string);
       cy.get("div").contains(oneListElement.dataSource?.fileName as string);
     }
     cy.get('span[data-test="Report-Download-Policy"]').should("exist");

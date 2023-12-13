@@ -83,7 +83,13 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 availableIf = DependsOnComponentValue(berichtsPflicht, "Yes")
                 // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
             }
+        val mechanismenZurUeberwachungDerEinhaltungDerUngcp = framework.root.
+        getOrNull<ComponentGroup>("allgemein")?.getOrNull<ComponentGroup>("unGlobalConceptPrinzipien")?.
+            getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerUngcp");
+        require(mechanismenZurUeberwachungDerEinhaltungDerUngcp != null) {
+            "The field with the label \"mechanismenZurUeberwachungDerEinhaltungDerUngcp\" cannot be null in the gdv framework."
 
+        }
         framework.root
             .getOrNull<ComponentGroup>("allgemein")
             ?.getOrNull<ComponentGroup>("unGlobalConceptPrinzipien")
@@ -96,12 +102,20 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht."
                 descriptionColumnHeader = "Beschreibung der Richtlinie"
                 documentColumnHeader = "Richtlinie"
-                // availableIf = DependsOnComponentValue( TODO
+                 availableIf = DependsOnComponentValue(
+                     mechanismenZurUeberwachungDerEinhaltungDerUngcp,
+                     "Yes"
+                 )
                 // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
             }
+        val mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze = framework.root.
+        getOrNull<ComponentGroup>("allgemein")?.getOrNull<ComponentGroup>("oecdLeitsaetze")?.
+            getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze");
+        require(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze != null) {
+            "The field with the label \"mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze\" cannot be null in the gdv framework."
 
-        framework.root
-            .getOrNull<ComponentGroup>("allgemein")
+        }
+        framework.root.getOrNull<ComponentGroup>("allgemein")
             ?.getOrNull<ComponentGroup>("oecdLeitsaetze")
             ?.create<GdvListOfBaseDataPointComponent>(
                 "richtlinienZurEinhaltungDerOecdLeitsaetze",
@@ -112,7 +126,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht."
                 descriptionColumnHeader = "Beschreibung der Richtlinie"
                 documentColumnHeader = "Richtlinie"
-                // availableIf = DependsOnComponentValue( TODO
+                availableIf = DependsOnComponentValue(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze,
+                    "Yes")
                 // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
             }
 
@@ -124,7 +139,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             }
 
 // TODO what about the dependencies of all the rolling window fields?
-        val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt")
+        val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt");
         componentGroupUmwelt?.edit<ComponentGroup>("treibhausgasemissionen") {
             create<GdvYearlyDecimalTimeseriesDataComponent>("treibhausgasBerichterstattungUndPrognosen") {
                 label = "Treibhausgas-Berichterstattung und Prognosen"
@@ -145,6 +160,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "scope3", "Scope 3",
                         "tCO2-Äquiv.",
                     ),
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
                 )
             }
         }
@@ -169,6 +188,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "Erzeugung erneuerbare Energien", "%",
                     ),
                 )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                )
             }
         }
         componentGroupUmwelt?.edit<ComponentGroup>("energieeffizienzImmobilienanlagen") {
@@ -185,6 +208,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "energieeffizienteImmobilienanlagen",
                         "energieeffiziente Immobilienanlagen", "%",
                     ),
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
                 )
             }
         }
@@ -204,6 +231,11 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "emissionenInWasser",
                         "Emissionen in Wasser", "t",
                     ),
+
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
                 )
             }
         }
@@ -229,6 +261,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "Anteil gefährlicher Abfall an Gesamtmenge", "%",
                     ),
                 )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                )
             }
         }
 
@@ -246,7 +282,18 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "%",
                     ),
                 )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                )
             }
+        }
+        val einnahmenAusFossilenBrennstoffen = componentGroupUmwelt?.
+        getOrNull<ComponentGroup>("fossileBrennstoffe")?.
+        getOrNull<YesNoComponent>("einnahmenAusFossilenBrennstoffen");
+        require(einnahmenAusFossilenBrennstoffen != null) {
+            "The field with the label \"einnahmenAusFossilenBrennstoffen\" cannot be null in the " +
+                    "gdv framework."
         }
 
         componentGroupUmwelt?.edit<ComponentGroup>("fossileBrennstoffe") {
@@ -261,6 +308,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                             "Brennstoffen",
                         "Anteil der Einnahmen aus fossilen Brennstoffen", "%",
                     ),
+                )
+                availableIf = DependsOnComponentValue(
+                    einnahmenAusFossilenBrennstoffen ,
+                    "Yes",
                 )
             }
         }
@@ -283,6 +334,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
                         "Mio. €",
                     ),
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
                 )
             }
         }
@@ -307,7 +362,12 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 ),
             )
         }
-
+        val aenderungenUnternehmensstruktur = componentGroupSoziales?.
+        getOrNull<YesNoComponent>("aenderungenUnternehmensstruktur");
+        require(aenderungenUnternehmensstruktur != null) {
+            "The field with the label \"einnahmenAusFossilenBrennstoffen\" cannot be null in the " +
+                    "gdv framework."
+        }
         componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>(
             "auswirkungenAufAnteil" +
                 "BefristerVertraegeUndFluktuation",
@@ -325,6 +385,11 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "%",
                 ),
             )
+            availableIf = DependsOnComponentValue(
+                aenderungenUnternehmensstruktur,
+                "Yes",
+            )
+
         }
 
         framework.root.create<GdvYearlyDecimalTimeseriesDataComponent>("unfallrate") {
@@ -337,6 +402,11 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust", "%",
                 ),
             )
+            availableIf = DependsOnComponentValue(
+                berichtsPflicht,
+                "Yes",
+            )
+
         }
 
         componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>("budgetFuerSchulungAusbildung") {
@@ -348,6 +418,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "budgetProMitarbeiterProJahr",
                     "Budget pro Mitarbeiter und Jahr", "€",
                 ),
+            )
+            availableIf = DependsOnComponentValue(
+                berichtsPflicht,
+                "Yes",
             )
         }
 
@@ -371,6 +445,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                             "sverhaeltnis",
                         "CEO-Einkommensungleichheitsverhältnis", "%",
                     ),
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
                 )
             }
         }
