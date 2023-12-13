@@ -4,9 +4,7 @@ package org.dataland.datalandbackend.frameworks.gdv.model.allgemein
 import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.akkreditierungen.GdvAllgemeinAkkreditierungen
 import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.esgBerichte.GdvAllgemeinEsgBerichte
 import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.esgZiele.GdvAllgemeinEsgZiele
-import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.oecdLeitsaetze.GdvAllgemeinOecdLeitsaetze
 import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.sektoren.GdvAllgemeinSektoren
-import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.unGlobalConceptPrinzipien.GdvAllgemeinUnGlobalConceptPrinzipien
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 
@@ -18,8 +16,10 @@ data class GdvAllgemein(
     val sektoren: GdvAllgemeinSektoren?,
     val esgBerichte: GdvAllgemeinEsgBerichte?,
     val akkreditierungen: GdvAllgemeinAkkreditierungen?,
-    val unGlobalConceptPrinzipien: GdvAllgemeinUnGlobalConceptPrinzipien?,
-    val oecdLeitsaetze: GdvAllgemeinOecdLeitsaetze?,
+    val mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze: YesNo?,
+    val erklaerungUngc: String?,
+    val oecdLeitsaetze: YesNo?,
+    val erklaerungOecd: String?,
     val ausrichtungAufDieUnSdgsUndAktivesVerfolgen: String?,
     val ausschlusslistenAufBasisVonEsgKriterien: YesNo?,
     val ausschlusslisten: String?,
