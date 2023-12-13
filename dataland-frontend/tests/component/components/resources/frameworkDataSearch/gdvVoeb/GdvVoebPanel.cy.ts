@@ -1,5 +1,6 @@
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import {
+  BaseDataPointString,
   type CompanyAssociatedDataGdvData,
   type DataMetaInformation,
   DataTypeEnum,
@@ -14,7 +15,6 @@ import { formatStringForDatatable } from "@/components/resources/dataTable/conve
 import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/gdv/GdvListOfBaseDataPointGetterFactory";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
 import { mountMLDTFrameworkPanel } from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
-import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 const configForGdvVoebPanelWithOneRollingWindow: MLDTConfig<GdvData> = [
@@ -137,15 +137,15 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
       preparedFixture,
     ]);
 
-    const listData = preparedFixture.t.allgemein?.esgBerichte?.aktuelleBerichte;
+    const listData: Array<BaseDataPointString> = preparedFixture.t.allgemein?.esgBerichte?.aktuelleBerichte;
     cy.get("span").contains("Aktuelle Berichte");
     cy.get("a").should("have.class", "link").click();
 
     cy.get("span").contains("Beschreibung des Berichts");
-    for (const oneListElement of listData) {
-      cy.get("div").contains(oneListElement.value);
-      cy.get("div").contains(oneListElement.dataSource?.fileName as string);
-    }
+      for (const oneListElement of listData) {
+        cy.get("div").contains(oneListElement.value);
+        cy.get("div").contains(oneListElement.dataSource?.fileName as string);
+      }
     cy.get('span[data-test="Report-Download-Policy"]').should("exist");
   });
 });
@@ -162,12 +162,12 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
  */
 function mountGDVFrameworkFromFakeFixture(
   frameworkIdentifier: DataTypeEnum,
-  displayConfiguration: MLDTConfig<FrameworkDataTypes>,
-  fixtureDatasetsForDisplay: Array<FixtureData<FrameworkDataTypes>>,
+  displayConfiguration: MLDTConfig<GdvData>,
+  fixtureDatasetsForDisplay: Array<FixtureData<GdvData>>,
   companyId = "mock-company-id",
   reviewMode = false,
 ): Cypress.Chainable {
-  const convertedDataAndMetaInformation: Array<DataAndMetaInformation<FrameworkDataTypes>> =
+  const convertedDataAndMetaInformation: Array<DataAndMetaInformation<GdvData>> =
     fixtureDatasetsForDisplay.map((it, idx) => {
       const metaInformation: DataMetaInformation = {
         dataId: `data-id-${idx}`,
