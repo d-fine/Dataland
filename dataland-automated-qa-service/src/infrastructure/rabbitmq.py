@@ -1,5 +1,4 @@
 import json
-import time
 import logging
 
 from .qa_exceptions import AutomaticQaNotPossibleError
@@ -26,12 +25,21 @@ manual_qa_requested_type = "Manual QA requested"
 
 
 def listen_to_message_queue():
-    mq = RabbitMq(p.rabbit_mq_connection_parameters)
-    mq.connect()
-    mq.register_receiver(receiving_exchange, data_key, qa_data)
-    mq.register_receiver(receiving_exchange, document_key, qa_document)
-    mq._channel.start_consuming()  # TODO handle disconnects
-    mq.disconnect()
+    while True:
+        try:
+            mq = RabbitMq(p.rabbit_mq_connection_parameters)
+            mq.connect()
+            mq.register_receiver(receiving_exchange, data_key, qa_data)
+            mq.register_receiver(receiving_exchange, document_key, qa_document)
+            mq.consume_loop()
+        except pika.exceptions.ConnectionClosedByBroker:
+            continue
+        except pika.exceptions.AMQPChannelError as err:
+            logging.error(f"Caught a channel error: {err}, stopping...")
+            break
+        except pika.exceptions.AMQPConnectionError:
+            logging.error("Connection was closed, retrying...")
+            continue
 
 
 class RabbitMq:
@@ -41,18 +49,10 @@ class RabbitMq:
         self._channel: pika.adapters.blocking_connection.BlockingChannel | None = None
 
     def connect(self):
-        attempt = 1
-        while True:
-            try:
-                logging.info(f"Connection attempt {attempt}")
-                self._connection = pika.BlockingConnection(self._connection_parameters)
-                self._channel = self._connection.channel()
-                logging.info(f"Connection established")
-                break
-            except pika.exceptions.AMQPConnectionError:
-                logging.info(f"Connection error during attempt {attempt}")
-                time.sleep(5)
-                attempt += 1
+        logging.info(f"Connecting to RabbitMQ")
+        self._connection = pika.BlockingConnection(self._connection_parameters)
+        self._channel = self._connection.channel()
+        logging.info(f"Connection established")
 
     def disconnect(self):
         try:
@@ -65,12 +65,15 @@ class RabbitMq:
 
     def register_receiver(self, exchange: str, routing_key: str, callback):
         queue = f"{exchange}_{routing_key}"
-        self._channel.queue_declare(queue=queue)
+        self._channel.queue_declare(queue=queue, durable=True)
         self._channel.queue_bind(queue=queue, exchange=exchange, routing_key=routing_key)
         self._channel.basic_consume(
             queue=queue,
             on_message_callback=callback
         )
+
+    def consume_loop(self):
+        self._channel.start_consuming()
 
 
 def qa_data(channel, method, properties, body):
@@ -120,7 +123,8 @@ def process_qa_request(
                         correlation_id_header: correlation_id,
                         message_type_header: manual_qa_requested_type
                     }
-                )
+                ),
+                mandatory=True
             )
     channel.basic_ack(delivery_tag=method.delivery_tag)
 
@@ -146,7 +150,8 @@ def send_qa_completed_message(
                 correlation_id_header: correlation_id,
                 message_type_header: qa_completed_type
             }
-        )
+        ),
+        mandatory=True
     )
 
 
