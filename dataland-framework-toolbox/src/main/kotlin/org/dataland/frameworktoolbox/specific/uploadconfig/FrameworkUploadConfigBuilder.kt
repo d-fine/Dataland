@@ -2,7 +2,7 @@ package org.dataland.frameworktoolbox.specific.uploadconfig
 
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
-import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkBooleanLambda
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.capitalizeEn

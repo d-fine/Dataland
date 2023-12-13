@@ -41,7 +41,7 @@ fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
         unit = component.unit,
         required = component.required,
         isNullable = component.isNullable,
-        shouldDisplay = component.availableIfUpload.toFrameworkBooleanLambdaUpload(),
+        shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
         uploadComponentName = uploadComponentName,
         options = options,
     )

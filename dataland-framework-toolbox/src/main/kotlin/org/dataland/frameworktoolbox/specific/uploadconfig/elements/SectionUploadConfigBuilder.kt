@@ -1,7 +1,7 @@
 package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
-import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkBooleanLambda
+import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 
 /**
  * An In-Memory representation of a MLDTSectionConfig
