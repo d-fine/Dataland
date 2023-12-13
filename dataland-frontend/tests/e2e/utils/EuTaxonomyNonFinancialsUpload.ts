@@ -33,19 +33,19 @@ export function fillAndValidateEuTaxonomyForNonFinancialsUploadForm(assuranceRep
   cy.get("div.p-datepicker").find('button[aria-label="Next Month"]').click();
   cy.get("div.p-datepicker").find('span:contains("11")').click();
   cy.get('input[name="fiscalYearEnd"]').invoke("val").should("contain", "11");
-  cy.get('div[data-test="fiscalYearDeviation"]').get('input[value="Deviation"]').check();
+  cy.get('div[data-test="fiscalYearDeviation"]').find('input[value="Deviation"]').check();
   cy.get('div[data-test="submitSideBar"] li:last a').click();
   cy.window().then((win) => {
     const scrollPosition = win.scrollY;
     expect(scrollPosition).to.be.greaterThan(0);
   });
-  cy.get('div[data-test="scopeOfEntities"]').get('input[value="Yes"]').check();
-  cy.get('div[data-test="euTaxonomyActivityLevelReporting"]').get('input[value="Yes"]').check();
+  cy.get('div[data-test="scopeOfEntities"]').find('input[value="Yes"]').check();
+  cy.get('div[data-test="euTaxonomyActivityLevelReporting"]').find('input[value="Yes"]').check();
   cy.get('input[name="numberOfEmployees"]').type("-13");
   cy.get('em[title="Number Of Employees"]').click();
   cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
   cy.get('input[name="numberOfEmployees"]').clear().type("333");
-  cy.get('div[data-test="nfrdMandatory"]').get('input[value="Yes"]').check();
+  cy.get('div[data-test="nfrdMandatory"]').find('input[value="Yes"]').check();
   cy.get('select[name="value"]').select(1);
   cy.get('input[name="provider"]').type("Some Assurance Provider Company");
   cy.get('select[name="fileName"]').eq(0).select(assuranceReportName);
