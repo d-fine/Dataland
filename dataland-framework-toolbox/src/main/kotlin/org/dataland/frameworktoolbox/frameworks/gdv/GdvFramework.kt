@@ -85,6 +85,38 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             }
 
         framework.root
+            .getOrNull<ComponentGroup>("allgemein")
+            ?.getOrNull<ComponentGroup>("unGlobalConceptPrinzipien")
+            ?.create<GdvListOfBaseDataPointComponent>(
+                "richtlinienZurEinhaltungDerUngcp",
+                "erklaerungDerEinhaltungDerUngcp",
+            ) {
+                label = "Richtlinien zur Einhaltung der UNGCP"
+                explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
+                    "liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht."
+                descriptionColumnHeader = "Beschreibung der Richtlinie"
+                documentColumnHeader = "Richtlinie"
+                // availableIf = DependsOnComponentValue( TODO
+                // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
+            }
+
+        framework.root
+            .getOrNull<ComponentGroup>("allgemein")
+            ?.getOrNull<ComponentGroup>("oecdLeitsaetze")
+            ?.create<GdvListOfBaseDataPointComponent>(
+                "richtlinienZurEinhaltungDerOecdLeitsaetze",
+                "erklaerungDerEinhaltungDerOecdLeitsaetze",
+            ) {
+                label = "Richtlinien zur Einhaltung der OECD-Leitsätze"
+                explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
+                    "liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht."
+                descriptionColumnHeader = "Beschreibung der Richtlinie"
+                documentColumnHeader = "Richtlinie"
+                // availableIf = DependsOnComponentValue( TODO
+                // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
+            }
+
+        framework.root
             .getOrNull<ComponentGroup>("umwelt")
             ?.getOrNull<ComponentGroup>("taxonomie")
             ?.edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {

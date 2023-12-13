@@ -36,9 +36,9 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
   }
   if (
     newFixture.t.allgemein?.unGlobalConceptPrinzipien
-      ?.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien
+        ?.mechanismenZurUeberwachungDerEinhaltungDerUngcp
   ) {
-    newFixture.t.allgemein.unGlobalConceptPrinzipien.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien =
+    newFixture.t.allgemein.unGlobalConceptPrinzipien.mechanismenZurUeberwachungDerEinhaltungDerUngcp =
       YesNo.Yes;
   }
   if (newFixture.t.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze) {

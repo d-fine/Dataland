@@ -8295,7 +8295,14 @@
               }
             ]
           },
-          "erklaerungOecd": {
+          "richtlinienZurEinhaltungDerOecdLeitsaetze": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          },
+          "erklaerungDerEinhaltungDerOecdLeitsaetze": {
             "type": "string",
             "nullable": true
           }
@@ -8460,7 +8467,7 @@
       "GdvAllgemeinUnGlobalConceptPrinzipien": {
         "type": "object",
         "properties": {
-          "mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien": {
+          "mechanismenZurUeberwachungDerEinhaltungDerUngcp": {
             "nullable": true,
             "allOf": [
               {
@@ -8468,7 +8475,14 @@
               }
             ]
           },
-          "erklaerungDerEinhaltung": {
+          "richtlinienZurEinhaltungDerUngcp": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          },
+          "erklaerungDerEinhaltungDerUngcp": {
             "type": "string",
             "nullable": true
           }
@@ -10431,10 +10445,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

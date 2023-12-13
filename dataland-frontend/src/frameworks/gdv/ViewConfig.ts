@@ -264,25 +264,38 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         children: [
           {
             type: "cell",
-            label: "Mechanismen zur Überwachung der Einhaltung der UN Global Compact Prinzipien",
+            label: "Mechanismen zur Überwachung der Einhaltung der UNGCP",
             explanation:
               "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der Prinzipien des UN Global Compact zu überwachen?",
             shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.allgemein?.unGlobalConceptPrinzipien
-                  ?.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien,
+                dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp,
               ),
           },
           {
             type: "cell",
-            label: "Erklärung der Einhaltung ",
+            label: "Richtlinien zur Einhaltung der UNGCP",
+            explanation:
+              "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Richtlinien zur Einhaltung der UNGCP",
+                dataset.allgemein?.unGlobalConceptPrinzipien?.richtlinienZurEinhaltungDerUngcp,
+                "Beschreibung der Richtlinie",
+                "Richtlinie",
+              );
+            },
+          },
+          {
+            type: "cell",
+            label: "Erklärung der Einhaltung der UNGCP",
             explanation: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
             shouldDisplay: (dataset: GdvData): boolean =>
-              dataset.allgemein?.unGlobalConceptPrinzipien
-                ?.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien == "Yes",
+              dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.unGlobalConceptPrinzipien?.erklaerungDerEinhaltung),
+              formatStringForDatatable(dataset.allgemein?.unGlobalConceptPrinzipien?.erklaerungDerEinhaltungDerUngcp),
           },
         ],
       },
@@ -305,12 +318,27 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           },
           {
             type: "cell",
-            label: "Erklärung OECD",
+            label: "Richtlinien zur Einhaltung der OECD-Leitsätze",
+            explanation:
+              "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Richtlinien zur Einhaltung der OECD-Leits\u00E4tze",
+                dataset.allgemein?.oecdLeitsaetze?.richtlinienZurEinhaltungDerOecdLeitsaetze,
+                "Beschreibung der Richtlinie",
+                "Richtlinie",
+              );
+            },
+          },
+          {
+            type: "cell",
+            label: "Erklärung der Einhaltung der OECD-Leitsätze",
             explanation: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.oecdLeitsaetze?.erklaerungOecd),
+              formatStringForDatatable(dataset.allgemein?.oecdLeitsaetze?.erklaerungDerEinhaltungDerOecdLeitsaetze),
           },
         ],
       },

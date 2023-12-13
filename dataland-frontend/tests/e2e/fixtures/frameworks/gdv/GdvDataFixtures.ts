@@ -75,12 +75,18 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         ),
       },
       unGlobalConceptPrinzipien: {
-        mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien: dataGenerator.randomYesNo(),
-        erklaerungDerEinhaltung: dataGenerator.randomShortString(),
+        mechanismenZurUeberwachungDerEinhaltungDerUngcp: dataGenerator.randomYesNo(),
+        richtlinienZurEinhaltungDerUngcp: dataGenerator.valueOrNull(
+          generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0),
+        ),
+        erklaerungDerEinhaltungDerUngcp: dataGenerator.randomShortString(),
       },
       oecdLeitsaetze: {
         mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze: dataGenerator.randomYesNo(),
-        erklaerungOecd: dataGenerator.randomShortString(),
+        richtlinienZurEinhaltungDerOecdLeitsaetze: dataGenerator.valueOrNull(
+          generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0),
+        ),
+        erklaerungDerEinhaltungDerOecdLeitsaetze: dataGenerator.randomShortString(),
       },
       sonstige: {
         ausrichtungAufDieUnSdgsUndAktivesVerfolgen: dataGenerator.randomShortString(),

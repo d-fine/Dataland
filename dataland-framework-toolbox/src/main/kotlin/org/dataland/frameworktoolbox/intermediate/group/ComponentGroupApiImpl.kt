@@ -34,7 +34,7 @@ class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGrou
             val indexOfInsertBeforeIdentifier = components.indexOfFirst { it.identifier == insertBeforeIdentifier }
 
             require(indexOfInsertBeforeIdentifier != -1) {
-                "A component for the field ${component.identifier} cannot be added next to a component for a field " +
+                "A component for the field ${component.identifier} cannot be added before a component for a field " +
                     "$insertBeforeIdentifier because the component group does not contain a field with the name " +
                     "$insertBeforeIdentifier."
             }
