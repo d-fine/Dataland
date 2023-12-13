@@ -2,13 +2,17 @@
 package org.dataland.datalandbackend.frameworks.gdv.model.allgemein
 
 import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.akkreditierungen.GdvAllgemeinAkkreditierungen
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.anleihen.GdvAllgemeinAnleihen
 import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.esgBerichte.GdvAllgemeinEsgBerichte
 import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.esgZiele.GdvAllgemeinEsgZiele
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.fuehrungsstandards.GdvAllgemeinFuehrungsstandards
 import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.oecdLeitsaetze.GdvAllgemeinOecdLeitsaetze
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.rating.GdvAllgemeinRating
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.rechtsstreitigkeiten.GdvAllgemeinRechtsstreitigkeiten
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.risiken.GdvAllgemeinRisiken
 import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.sektoren.GdvAllgemeinSektoren
+import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.sonstige.GdvAllgemeinSonstige
 import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.unGlobalConceptPrinzipien.GdvAllgemeinUnGlobalConceptPrinzipien
-import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
-import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * The data-model for the Allgemein section
@@ -20,27 +24,10 @@ data class GdvAllgemein(
     val akkreditierungen: GdvAllgemeinAkkreditierungen?,
     val unGlobalConceptPrinzipien: GdvAllgemeinUnGlobalConceptPrinzipien?,
     val oecdLeitsaetze: GdvAllgemeinOecdLeitsaetze?,
-    val ausrichtungAufDieUnSdgsUndAktivesVerfolgen: String?,
-    val ausschlusslistenAufBasisVonEsgKriterien: YesNo?,
-    val ausschlusslisten: String?,
-    val oekologischeSozialeFuehrungsstandardsOderPrinzipien: YesNo?,
-    val anreizmechanismenFuerDasManagementUmwelt: AnreizmechanismenFuerDasManagementUmweltOptions?,
-    val anreizmechanismenFuerDasManagementSoziales: AnreizmechanismenFuerDasManagementSozialesOptions?,
-    val esgBezogeneRechtsstreitigkeiten: YesNo?,
-    val rechtsstreitigkeitenMitBezugZuE: YesNo?,
-    val statusZuE: StatusZuEOptions?,
-    val einzelheitenZuDenRechtsstreitigkeitenZuE: String?,
-    val rechtsstreitigkeitenMitBezugZuS: YesNo?,
-    val statusZuS: StatusZuSOptions?,
-    val einzelheitenZuDenRechtsstreitigkeitenZuS: String?,
-    val rechtsstreitigkeitenMitBezugZuG: YesNo?,
-    val statusZuG: StatusZuGOptions?,
-    val einzelheitenZuDenRechtsstreitigkeitenZuG: String?,
-    val esgRating: YesNo?,
-    val agentur: String?,
-    val ergebnis: BaseDataPoint<String>?,
-    val kritischePunkte: String?,
-    val nachhaltigkeitsbezogenenAnleihen: YesNo?,
-    val wichtigsteESUndGRisikenUndBewertung: String?,
-    val hindernisseBeimUmgangMitEsgBedenken: String?,
+    val sonstige: GdvAllgemeinSonstige?,
+    val fuehrungsstandards: GdvAllgemeinFuehrungsstandards?,
+    val rechtsstreitigkeiten: GdvAllgemeinRechtsstreitigkeiten?,
+    val rating: GdvAllgemeinRating?,
+    val anleihen: GdvAllgemeinAnleihen?,
+    val risiken: GdvAllgemeinRisiken?,
 )

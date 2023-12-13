@@ -7,19 +7,17 @@ import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.energieeffizienz
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.energieverbrauch.GdvUmweltEnergieverbrauch
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.fossileBrennstoffe.GdvUmweltFossileBrennstoffe
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.gefaehrlicheAbfaelle.GdvUmweltGefaehrlicheAbfaelle
+import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.produktion.GdvUmweltProduktion
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.taxonomie.GdvUmweltTaxonomie
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.treibhausgasemissionen.GdvUmweltTreibhausgasemissionen
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.wasserverbrauch.GdvUmweltWasserverbrauch
-import org.dataland.datalandbackend.model.enums.commons.YesNo
 
 /**
  * The data-model for the Umwelt section
  */
 data class GdvUmwelt(
     val treibhausgasemissionen: GdvUmweltTreibhausgasemissionen?,
-    val produkteZurVerringerungDerUmweltbelastung: YesNo?,
-    val verringerungenDerUmweltbelastung: String?,
-    val oekologischerMindestStandardFuerProduktionsprozesse: YesNo?,
+    val produktion: GdvUmweltProduktion?,
     val energieverbrauch: GdvUmweltEnergieverbrauch?,
     val energieeffizienzImmobilienanlagen: GdvUmweltEnergieeffizienzImmobilienanlagen?,
     val wasserverbrauch: GdvUmweltWasserverbrauch?,

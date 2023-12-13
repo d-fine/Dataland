@@ -7914,13 +7914,11 @@
         }
       },
       "BaseDataPointString": {
-        "required": [
-          "value"
-        ],
         "type": "object",
         "properties": {
           "value": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "dataSource": {
             "nullable": true,
@@ -8085,11 +8083,104 @@
               }
             ]
           },
-          "ausrichtungAufDieUnSdgsUndAktivesVerfolgen": {
-            "type": "string",
-            "nullable": true
+          "sonstige": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvAllgemeinSonstige"
+              }
+            ]
           },
-          "ausschlusslistenAufBasisVonEsgKriterien": {
+          "fuehrungsstandards": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvAllgemeinFuehrungsstandards"
+              }
+            ]
+          },
+          "rechtsstreitigkeiten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvAllgemeinRechtsstreitigkeiten"
+              }
+            ]
+          },
+          "rating": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvAllgemeinRating"
+              }
+            ]
+          },
+          "anleihen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvAllgemeinAnleihen"
+              }
+            ]
+          },
+          "risiken": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvAllgemeinRisiken"
+              }
+            ]
+          }
+        }
+      },
+      "GdvAllgemeinAkkreditierungen": {
+        "type": "object",
+        "properties": {
+          "iso14001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso45001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso27001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso50001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "weitereAkkreditierungen": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          }
+        }
+      },
+      "GdvAllgemeinAnleihen": {
+        "type": "object",
+        "properties": {
+          "grueneSozialeUndOderNachhaltigeEmissionen": {
             "nullable": true,
             "allOf": [
               {
@@ -8097,10 +8188,76 @@
               }
             ]
           },
-          "ausschlusslisten": {
+          "ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen": {
+            "type": "number",
+            "nullable": true
+          },
+          "sustainibilityLinkedDebt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "ausstehendeSustainibilityLinkedDebt": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "GdvAllgemeinEsgBerichte": {
+        "type": "object",
+        "properties": {
+          "nachhaltigkeitsberichte": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "frequenzDerBerichterstattung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FrequenzDerBerichterstattungOptions"
+              }
+            ]
+          },
+          "aktuelleBerichte": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          }
+        }
+      },
+      "GdvAllgemeinEsgZiele": {
+        "type": "object",
+        "properties": {
+          "existenzVonEsgZielen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "beschreibungDerEsgZiele": {
             "type": "string",
             "nullable": true
           },
+          "investitionenInZielerreichung": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvAllgemeinFuehrungsstandards": {
+        "type": "object",
+        "properties": {
           "oekologischeSozialeFuehrungsstandardsOderPrinzipien": {
             "nullable": true,
             "allOf": [
@@ -8124,7 +8281,58 @@
                 "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementSozialesOptions"
               }
             ]
+          }
+        }
+      },
+      "GdvAllgemeinOecdLeitsaetze": {
+        "type": "object",
+        "properties": {
+          "mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
+          "erklaerungOecd": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvAllgemeinRating": {
+        "type": "object",
+        "properties": {
+          "esgRating": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "agentur": {
+            "type": "string",
+            "nullable": true
+          },
+          "ergebnis": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointString"
+              }
+            ]
+          },
+          "kritischePunkte": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvAllgemeinRechtsstreitigkeiten": {
+        "type": "object",
+        "properties": {
           "esgBezogeneRechtsstreitigkeiten": {
             "nullable": true,
             "allOf": [
@@ -8192,154 +8400,17 @@
           "einzelheitenZuDenRechtsstreitigkeitenZuG": {
             "type": "string",
             "nullable": true
-          },
-          "esgRating": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "agentur": {
-            "type": "string",
-            "nullable": true
-          },
-          "ergebnis": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointString"
-              }
-            ]
-          },
-          "kritischePunkte": {
-            "type": "string",
-            "nullable": true
-          },
-          "nachhaltigkeitsbezogenenAnleihen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
+          }
+        }
+      },
+      "GdvAllgemeinRisiken": {
+        "type": "object",
+        "properties": {
           "wichtigsteESUndGRisikenUndBewertung": {
             "type": "string",
             "nullable": true
           },
           "hindernisseBeimUmgangMitEsgBedenken": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvAllgemeinAkkreditierungen": {
-        "type": "object",
-        "properties": {
-          "iso14001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "iso45001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "iso27001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "iso50001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "weitereAkkreditierungen": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/BaseDataPointString"
-            }
-          }
-        }
-      },
-      "GdvAllgemeinEsgBerichte": {
-        "type": "object",
-        "properties": {
-          "nachhaltigkeitsberichte": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "frequenzDerBerichterstattung": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FrequenzDerBerichterstattungOptions"
-              }
-            ]
-          },
-          "aktuelleBerichte": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/BaseDataPointString"
-            }
-          }
-        }
-      },
-      "GdvAllgemeinEsgZiele": {
-        "type": "object",
-        "properties": {
-          "existenzVonEsgZielen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "beschreibungDerEsgZiele": {
-            "type": "string",
-            "nullable": true
-          },
-          "investitionenInZielerreichung": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvAllgemeinOecdLeitsaetze": {
-        "type": "object",
-        "properties": {
-          "mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "erklaerungOecd": {
             "type": "string",
             "nullable": true
           }
@@ -8362,6 +8433,27 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "GdvAllgemeinSonstige": {
+        "type": "object",
+        "properties": {
+          "ausrichtungAufDieUnSdgsUndAktivesVerfolgen": {
+            "type": "string",
+            "nullable": true
+          },
+          "ausschlusslistenAufBasisVonEsgKriterien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "ausschlusslisten": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -8595,23 +8687,11 @@
               }
             ]
           },
-          "produkteZurVerringerungDerUmweltbelastung": {
+          "produktion": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "verringerungenDerUmweltbelastung": {
-            "type": "string",
-            "nullable": true
-          },
-          "oekologischerMindestStandardFuerProduktionsprozesse": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/GdvUmweltProduktion"
               }
             ]
           },
@@ -8796,6 +8876,31 @@
           "gefaehrlicherAbfall": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "GdvUmweltProduktion": {
+        "type": "object",
+        "properties": {
+          "produkteZurVerringerungDerUmweltbelastung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "verringerungenDerUmweltbelastung": {
+            "type": "string",
+            "nullable": true
+          },
+          "oekologischerMindestStandardFuerProduktionsprozesse": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -10326,10 +10431,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

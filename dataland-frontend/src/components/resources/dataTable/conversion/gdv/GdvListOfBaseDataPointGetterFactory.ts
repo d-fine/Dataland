@@ -4,8 +4,8 @@ import {
   type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { type BaseDataPoint } from "@/utils/DataPoint";
 import GdvListOfBaseDataPointModal from "@/components/resources/dataTable/modals/GdvListOfBaseDataPointModal.vue";
+import {BaseDataPointString} from "@clients/backend";
 
 /**
  * Convert a list of string-wrapping base datapoints into a display object.
@@ -17,7 +17,7 @@ import GdvListOfBaseDataPointModal from "@/components/resources/dataTable/modals
  */
 export function formatListOfBaseDataPoint(
   fieldLabel: string,
-  baseDataPoints: BaseDataPoint<string>[] | null | undefined,
+  baseDataPoints: BaseDataPointString[] | null | undefined,
   descriptionColumnHeader: string,
   documentColumnHeader: string,
 ): AvailableMLDTDisplayObjectTypes {
