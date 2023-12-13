@@ -27,8 +27,7 @@
     v-model="currentValue"
     :validation="validation"
     :validation-label="validationLabel"
-    :ignore="shouldBeIgnored"
-    :key="key"
+    v-if="!shouldBeIgnored"
     :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
   />
 </template>
@@ -58,12 +57,10 @@ export default defineComponent({
     emitUpdateCurrentValue(checkboxValue: [string]) {
       if (checkboxValue[0]) {
         this.shouldBeIgnored = false;
-        this.key++;
         this.currentValue = checkboxValue[0].toString();
         this.$emit("update:currentValue", checkboxValue[0].toString());
       } else {
         this.shouldBeIgnored = true;
-        this.key++;
         this.$emit("update:currentValue", null);
       }
     },
@@ -74,11 +71,9 @@ export default defineComponent({
     setIgnoreToFields(currentValue: string) {
       if (currentValue && currentValue !== "") {
         this.shouldBeIgnored = false;
-        this.key++;
         this.checkboxValue = [currentValue];
       } else {
         this.shouldBeIgnored = true;
-        this.key++;
       }
     },
   },
