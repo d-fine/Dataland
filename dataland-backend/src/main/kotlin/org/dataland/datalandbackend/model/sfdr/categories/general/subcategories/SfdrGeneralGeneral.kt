@@ -12,7 +12,7 @@ import java.time.LocalDate
 /**
  * --- API model ---
  * Fields of the subcategory "General" belonging to the category "General" of the sfdr framework.
- */
+*/
 data class SfdrGeneralGeneral(
     @field:JsonProperty(required = true)
     val dataDate: LocalDate,
