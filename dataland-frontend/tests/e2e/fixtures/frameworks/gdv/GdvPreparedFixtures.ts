@@ -34,12 +34,8 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
   if (newFixture.t.allgemein?.esgBerichte?.nachhaltigkeitsberichte) {
     newFixture.t.allgemein.esgBerichte.nachhaltigkeitsberichte = YesNo.Yes;
   }
-  if (
-    newFixture.t.allgemein?.unGlobalConceptPrinzipien
-        ?.mechanismenZurUeberwachungDerEinhaltungDerUngcp
-  ) {
-    newFixture.t.allgemein.unGlobalConceptPrinzipien.mechanismenZurUeberwachungDerEinhaltungDerUngcp =
-      YesNo.Yes;
+  if (newFixture.t.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp) {
+    newFixture.t.allgemein.unGlobalConceptPrinzipien.mechanismenZurUeberwachungDerEinhaltungDerUngcp = YesNo.Yes;
   }
   if (newFixture.t.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze) {
     newFixture.t.allgemein.oecdLeitsaetze.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze = YesNo.Yes;

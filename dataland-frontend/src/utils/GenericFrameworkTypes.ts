@@ -1,7 +1,8 @@
 import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import {
   type EuTaxonomyDataForFinancials,
-  type EuTaxonomyDataForNonFinancials, GdvData,
+  type EuTaxonomyDataForNonFinancials,
+  type GdvData,
   type LksgData,
   type PathwaysToParisData,
   type SfdrData,

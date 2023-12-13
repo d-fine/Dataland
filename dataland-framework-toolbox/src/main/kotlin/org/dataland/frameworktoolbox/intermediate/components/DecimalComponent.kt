@@ -49,12 +49,11 @@ open class DecimalComponent(
         )
     }
 
-
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
         sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
-                uploadComponentName = "NumberFormField",
-                options = null,
-                this,
+            uploadComponentName = "NumberFormField",
+            options = null,
+            this,
         )
     }
 
