@@ -1,4 +1,5 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
+import { ${frameworkIdentifier?cap_first}Data } from "@clients/backend";
 
 export const ${frameworkIdentifier}DataModel : Category[] = [<@loopCategories uploadConfig/>];
 
