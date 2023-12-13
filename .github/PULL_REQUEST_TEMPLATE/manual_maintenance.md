@@ -8,6 +8,7 @@ creation URL (or simply copy this md file into the description)
 ## Dataland
 
 ### Notes from Dec 2023
+- Timeout not working
 - There were two 2 messages found in RabbitMQ dead letter queue on dev1 and dev2 respectively, details added in ticket
 - JDK/JRE must remain at 17, upgrading it to 21 caused too many errors, also Kotlin 1.9.10 is not compatible with Java 21
 - kotlin to remain at 1.9.10 instead of 1.9.20, which caused error
