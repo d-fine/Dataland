@@ -10,5 +10,7 @@ COPY ./dataland-internal-storage/internalStorageOpenApi.json ./dataland-internal
 COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
 RUN openapi-python-client generate --path ./dataland-internal-storage/internalStorageOpenApi.json
 RUN openapi-python-client generate --path ./dataland-backend/backendOpenApi.json
+RUN pip install --no-cache-dir ./dataland-backend-api-documentation-client
+RUN pip install --no-cache-dir ./dataland-internal-storage-api-documentation-client
 
 ENTRYPOINT python ./entrypoint.py
