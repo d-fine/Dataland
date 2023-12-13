@@ -1,23 +1,23 @@
 <template>
   <div class="mb-3" :data-test="name">
-<!--    this inherits the data upload and the show condition on radio buttons from nested field-->
+    <!--    this inherits the data upload and the show condition on radio buttons from nested field-->
     <BaseDataPointFormField
-        :name="name"
-        :description="description"
-        :label="label"
-        :required="required"
-        @reports-updated="reportsUpdated"
+      :name="name"
+      :description="description"
+      :label="label"
+      :required="required"
+      @reports-updated="reportsUpdated"
     >
-<!--      this shows the text-->
+      <!--      this shows the text-->
       <YesNoFormField
-          name="value"
-          :label="label"
-          :description="description"
-          :is-required="required"
-          :validation="validation"
-          :validation-label="validationLabel ?? label"
-          :radio-buttons-data-test="dataTest"
-          classes=""
+        name="value"
+        :label="label"
+        :description="description"
+        :is-required="required"
+        :validation="validation"
+        :validation-label="validationLabel ?? label"
+        :radio-buttons-data-test="dataTest"
+        classes=""
       />
       INSERT STUFF HERE
     </BaseDataPointFormField>
@@ -28,9 +28,8 @@
 import { defineComponent } from "vue";
 import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
-import {BaseFormFieldProps} from "@/components/forms/parts/fields/FormFieldProps";
-import type {DocumentToUpload} from "@/utils/FileUploadUtils";
-
+import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import type { DocumentToUpload } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "ListOfBaseDataPointsFormField",
