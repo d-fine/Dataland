@@ -27,7 +27,7 @@ export function formatListOfBaseDataPoint(
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
-        label: `Show ${baseDataPoints.length} certificate${baseDataPoints.length > 1 ? "s" : ""}`,
+        label: `Show ${baseDataPoints.length} value${baseDataPoints.length > 1 ? "s" : ""}`,
         modalComponent: GdvListOfBaseDataPointModal,
         modalOptions: {
           props: {
