@@ -2,9 +2,11 @@ import json
 import time
 import logging
 
-from infrastructure.validator import ValidatorHolder, AutomaticQaNotPossibleException
+from .validation import AutomaticQaNotPossibleError
+from validation.validate import validate_data, validate_document
 import pika
 import pika.exceptions
+from .resources import Resource, DataResource, DocumentResource
 import infrastructure.properties as p
 
 data_key = "data"
@@ -19,12 +21,15 @@ message_type_header = "cloudEvents:type"
 qa_completed_type = "QA completed"
 manual_qa_requested_type = "Manual QA requested"
 
+class QaStatus:
+    ACCEPTED = "Accepted"
+    REJECTED = "Rejected"
 
-def listen_to_message_queue(data_validators: ValidatorHolder, document_validators: ValidatorHolder):
+def listen_to_message_queue():
     mq = RabbitMq(p.rabbit_mq_connection_parameters)
     mq.connect()
-    mq.register_receiver(receiving_exchange, data_key, lambda x, y, z, a: qa_data(x, y, z, a, data_validators))
-    mq.register_receiver(receiving_exchange, document_key, lambda x, y, z, a: qa_document(x, y, z, a, document_validators))
+    mq.register_receiver(receiving_exchange, data_key, qa_data)
+    mq.register_receiver(receiving_exchange, document_key, qa_document)
     mq._channel.start_consuming()  # TODO handle disconnects
     mq.disconnect()
 
@@ -68,15 +73,17 @@ class RabbitMq:
         )
 
 
-def qa_data(channel, method, properties, body, data_validators: ValidatorHolder):
+def qa_data(channel, method, properties, body):
     received_message = json.loads(body)
     bypass_qa = received_message["bypassQa"]
     data_id = received_message["dataId"]
-    process_qa_request(channel, method, properties, data_key, "data", bypass_qa, data_id, data_validators)
+    data = DataResource(data_id)
+    process_qa_request(channel, method, properties, data_key, "data", bypass_qa, data, validate_data)
 
 
-def qa_document(channel, method, properties, body, document_validators: ValidatorHolder):
-    process_qa_request(channel, method, properties, document_key, "document", False, body, document_validators)
+def qa_document(channel, method, properties, body):
+    document = DocumentResource(body)
+    process_qa_request(channel, method, properties, document_key, "document", False, document, validate_document)
 
 
 def process_qa_request(
@@ -86,29 +93,28 @@ def process_qa_request(
         routing_key: str,
         resource_type: str,
         bypass_qa: bool,
-        resource_id: str,
-        validators: ValidatorHolder
+        resource: Resource,
+        validate
 ):
     correlation_id = properties.headers["cloudEvents:id"]
     logging.info(
-        f"Received {resource_type} with ID {resource_id} for automated review. (Correlation ID: {correlation_id})")
+        f"Received {resource_type} with ID {resource.id} for automated review. (Correlation ID: {correlation_id})")
     if bypass_qa:
-        logging.info(f"Bypassing QA for {resource_type} with ID {resource_id}. (Correlation ID: {correlation_id})")
-        send_qa_completed_message(channel, routing_key, resource_id, "Accepted", correlation_id)  # TODO use client for Accepted
+        logging.info(f"Bypassing QA for {resource_type} with ID {resource.id}. (Correlation ID: {correlation_id})")
+        send_qa_completed_message(channel, routing_key, resource.id, QaStatus.ACCEPTED, correlation_id)
     else:
-        # TODO actual logic here
         logging.info(
-            f"Auto-forwarding {resource_type} with ID {resource_id} to manual QA. (Correlation ID: {correlation_id})"
+            f"Evaluating {resource_type} with ID {resource.id}. (Correlation ID: {correlation_id})"
         )
         try:
-            validation_result = validators.validate_resource(None)  # TODO don't use None but the proper resource
-            # TODO check if validation_result is in feasible set of ACCEPTED and REJECTED, else throw invalid input exception or something
-            send_qa_completed_message(channel, routing_key, resource_id, validation_result, correlation_id)
-        except AutomaticQaNotPossibleException:
+            validation_result = validate(resource, correlation_id)  # TODO don't use None but the proper resource
+            assert_status_is_valid_for_qa_completion(validation_result)
+            send_qa_completed_message(channel, routing_key, resource.id, validation_result, correlation_id)
+        except AutomaticQaNotPossibleError:
             channel.basic_publish(
                 exchange=manual_qa_requested_exchange,
                 routing_key=routing_key,
-                body=resource_id,
+                body=resource.id,
                 properties=pika.BasicProperties(
                     headers={
                         correlation_id_header: correlation_id,
@@ -123,12 +129,13 @@ def send_qa_completed_message(
         channel: pika.adapters.blocking_connection.BlockingChannel,
         routing_key: str,
         resource_id: str,
-        result: str,  # TODO change datatype to QaStatus
-        correlation_id: str,
+        status: QaStatus,
+        correlation_id: str
 ):
+    assert_status_is_valid_for_qa_completion(status)
     message_to_send = {
         "identifier": resource_id,
-        "validationResult": result
+        "validationResult": status
     }
     channel.basic_publish(
         exchange=quality_assured_exchange,
@@ -141,3 +148,8 @@ def send_qa_completed_message(
             }
         )
     )
+
+
+def assert_status_is_valid_for_qa_completion(status: QaStatus):
+    if status != QaStatus.ACCEPTED and status != QaStatus.REJECTED:
+        raise ValueError(f"Argument (status) must be in range [QaStatus.ACCEPTED, QaStatus.REJECTED]")
