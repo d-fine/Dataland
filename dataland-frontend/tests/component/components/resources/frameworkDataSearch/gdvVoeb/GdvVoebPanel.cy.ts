@@ -12,10 +12,10 @@ import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dat
 import { formatGdvYearlyDecimalTimeseriesDataForTable } from "@/components/resources/dataTable/conversion/gdv/GdvYearlyDecimalTimeseriesDataGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/gdv/GdvListOfBaseDataPointGetterFactory";
-import { formatNumberToReadableFormat } from "../../../../../../src/utils/Formatter";
-import { mountMLDTFrameworkPanel } from "../../../../testUtils/MultiLayerDataTableComponentTestUtils";
-import { type FrameworkDataTypes } from "../../../../../../src/utils/api/FrameworkDataTypes";
-import { type DataAndMetaInformation } from "../../../../../../src/api-models/DataAndMetaInformation";
+import { formatNumberToReadableFormat } from "@/utils/Formatter";
+import { mountMLDTFrameworkPanel } from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
+import { type FrameworkDataTypes } from "@/utils/api/FrameworkDataTypes";
+import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
 const configForGdvVoebPanelWithOneRollingWindow: MLDTConfig<GdvData> = [
   {
@@ -119,9 +119,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
       reportingPeriod: preparedFixture.reportingPeriod,
       data: gdvData,
     } as CompanyAssociatedDataGdvData);
-    mountGDVFrameworkFromFakeFixture(DataTypeEnum.Gdv, configForGdvVoebPanelWithOneStringComponent, [
-      preparedFixture,
-    ]);
+    mountGDVFrameworkFromFakeFixture(DataTypeEnum.Gdv, configForGdvVoebPanelWithOneStringComponent, [preparedFixture]);
     cy.get("span").contains("Wirtschaftsprüfer");
     cy.get("span").contains(preparedFixture.t.unternehmensfuehrungGovernance?.wirtschaftspruefer as string);
   });
@@ -135,11 +133,9 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
       reportingPeriod: preparedFixture.reportingPeriod,
       data: gdvData,
     } as CompanyAssociatedDataGdvData);
-    mountGDVFrameworkFromFakeFixture(
-      DataTypeEnum.Gdv,
-      configForGdvVoebPanelWithOneListForBaseDataPointComponent,
-      [preparedFixture],
-    );
+    mountGDVFrameworkFromFakeFixture(DataTypeEnum.Gdv, configForGdvVoebPanelWithOneListForBaseDataPointComponent, [
+      preparedFixture,
+    ]);
 
     const listData = preparedFixture.t.allgemein?.esgBerichte?.aktuelleBerichte;
     cy.get("span").contains("Aktuelle Berichte");
@@ -165,7 +161,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
  * @returns the component mounting chainable
  */
 function mountGDVFrameworkFromFakeFixture(
-  frameworkIdentifier: Framework,
+  frameworkIdentifier: DataTypeEnum,
   displayConfiguration: MLDTConfig<FrameworkDataTypes>,
   fixtureDatasetsForDisplay: Array<FixtureData<FrameworkDataTypes>>,
   companyId = "mock-company-id",
@@ -188,7 +184,7 @@ function mountGDVFrameworkFromFakeFixture(
       };
     });
 
-  mountMLDTFrameworkPanel(
+  return mountMLDTFrameworkPanel(
     frameworkIdentifier,
     displayConfiguration,
     convertedDataAndMetaInformation,
