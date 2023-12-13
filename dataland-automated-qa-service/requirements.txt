@@ -1,1 +1,2 @@
 pika==1.0.0
+openapi-python-client==0.16.0
