@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.biodiversitaet.G
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.energieeffizienzImmobilienanlagen.GdvUmweltEnergieeffizienzImmobilienanlagen
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.energieverbrauch.GdvUmweltEnergieverbrauch
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.fossileBrennstoffe.GdvUmweltFossileBrennstoffe
-import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.gefaehrlicheAbfaelle.GdvUmweltGefaehrlicheAbfaelle
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.produktion.GdvUmweltProduktion
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.taxonomie.GdvUmweltTaxonomie
 import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.treibhausgasemissionen.GdvUmweltTreibhausgasemissionen
@@ -22,7 +21,6 @@ data class GdvUmwelt(
     val energieeffizienzImmobilienanlagen: GdvUmweltEnergieeffizienzImmobilienanlagen?,
     val wasserverbrauch: GdvUmweltWasserverbrauch?,
     val abfallproduktion: GdvUmweltAbfallproduktion?,
-    val gefaehrlicheAbfaelle: GdvUmweltGefaehrlicheAbfaelle?,
     val biodiversitaet: GdvUmweltBiodiversitaet?,
     val fossileBrennstoffe: GdvUmweltFossileBrennstoffe?,
     val taxonomie: GdvUmweltTaxonomie?,

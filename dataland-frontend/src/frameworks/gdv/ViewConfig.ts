@@ -278,7 +278,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Richtlinien zur Einhaltung der UNGCP",
             explanation:
               "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht.",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
                 "Richtlinien zur Einhaltung der UNGCP",
@@ -321,7 +322,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Richtlinien zur Einhaltung der OECD-Leitsätze",
             explanation:
               "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht.",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
                 "Richtlinien zur Einhaltung der OECD-Leits\u00E4tze",
@@ -911,6 +913,15 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           },
           {
             type: "cell",
+            label: "Gefährlicher Abfall",
+            explanation:
+              "Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.umwelt?.abfallproduktion?.gefaehrlicherAbfall),
+          },
+          {
+            type: "cell",
             label: "Berichterstattung Abfallproduktion",
             explanation:
               "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
@@ -941,23 +952,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 { anteilAnRecyclaten: { label: "Anteil an Recyclaten", unitSuffix: "%" } },
                 "Recycling im Produktionsprozess",
               ),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Gefährliche Abfälle",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Gefährlicher Abfall",
-            explanation:
-              "Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.umwelt?.gefaehrlicheAbfaelle?.gefaehrlicherAbfall),
           },
         ],
       },

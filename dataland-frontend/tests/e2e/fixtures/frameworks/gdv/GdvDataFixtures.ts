@@ -169,15 +169,13 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       },
       abfallproduktion: {
         unternehmensGruppenStrategieBzglAbfallproduktion: dataGenerator.randomShortString(),
+        gefaehrlicherAbfall: dataGenerator.randomShortString(),
         berichterstattungAbfallproduktion: dataGenerator.randomDecimalYearlyTimeseriesData([
           "abfallmenge",
           "anteilRecycelterAbfallmenge",
           "anteilGefaehrlicherAbfallmenge",
         ]),
         recyclingImProduktionsprozess: dataGenerator.randomDecimalYearlyTimeseriesData(["anteilAnRecyclaten"]),
-      },
-      gefaehrlicheAbfaelle: {
-        gefaehrlicherAbfall: dataGenerator.randomShortString(),
       },
       biodiversitaet: {
         negativeAktivitaetenFuerDieBiologischeVielfalt: dataGenerator.randomYesNo(),
