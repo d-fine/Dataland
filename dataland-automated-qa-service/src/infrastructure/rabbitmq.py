@@ -2,7 +2,7 @@ import json
 import time
 import logging
 
-from .validation import AutomaticQaNotPossibleError
+from .qa_exceptions import AutomaticQaNotPossibleError
 from validation.validate import validate_data, validate_document
 import pika
 import pika.exceptions

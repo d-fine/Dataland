@@ -1,5 +1,5 @@
 import logging
-from infrastructure.validation import AutomaticQaNotPossibleError
+from infrastructure.qa_exceptions import AutomaticQaNotPossibleError
 from infrastructure.resources import DataResource, DocumentResource
 
 
