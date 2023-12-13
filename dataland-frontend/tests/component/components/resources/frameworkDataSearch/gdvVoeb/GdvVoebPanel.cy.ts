@@ -1,6 +1,6 @@
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import {
-  BaseDataPointString,
+  type BaseDataPointString,
   type CompanyAssociatedDataGdvData,
   type DataMetaInformation,
   DataTypeEnum,
@@ -14,8 +14,9 @@ import { formatGdvYearlyDecimalTimeseriesDataForTable } from "@/components/resou
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/gdv/GdvListOfBaseDataPointGetterFactory";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
-import { mountMLDTFrameworkPanel } from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
+import MultiLayerDataTableFrameworkPanel from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue";
+import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 
 const configForGdvVoebPanelWithOneRollingWindow: MLDTConfig<GdvData> = [
   {
@@ -142,10 +143,10 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     cy.get("a").should("have.class", "link").click();
 
     cy.get("span").contains("Beschreibung des Berichts");
-      for (const oneListElement of listData) {
-        cy.get("div").contains(oneListElement.value);
-        cy.get("div").contains(oneListElement.dataSource?.fileName as string);
-      }
+    for (const oneListElement of listData) {
+      cy.get("div").contains(oneListElement.value);
+      cy.get("div").contains(oneListElement.dataSource?.fileName as string);
+    }
     cy.get('span[data-test="Report-Download-Policy"]').should("exist");
   });
 });
@@ -167,8 +168,8 @@ function mountGDVFrameworkFromFakeFixture(
   companyId = "mock-company-id",
   reviewMode = false,
 ): Cypress.Chainable {
-  const convertedDataAndMetaInformation: Array<DataAndMetaInformation<GdvData>> =
-    fixtureDatasetsForDisplay.map((it, idx) => {
+  const convertedDataAndMetaInformation: Array<DataAndMetaInformation<GdvData>> = fixtureDatasetsForDisplay.map(
+    (it, idx) => {
       const metaInformation: DataMetaInformation = {
         dataId: `data-id-${idx}`,
         companyId: companyId,
@@ -182,13 +183,45 @@ function mountGDVFrameworkFromFakeFixture(
         data: it.t,
         metaInfo: metaInformation,
       };
-    });
+    },
+  );
 
-  return mountMLDTFrameworkPanel(
+  return mountMLDTForGdvPanel(
     frameworkIdentifier,
     displayConfiguration,
     convertedDataAndMetaInformation,
     companyId,
     reviewMode,
+  );
+}
+
+/**
+ * Mounts the MultiLayerDataTableFrameworkPanel with the given dataset
+ * @param frameworkIdentifier the identifier of the framework whose datasets should be displayed
+ * @param displayConfiguration the MLDT display configuration
+ * @param datasetsToDisplay datasets to mount
+ * @param companyId company ID of the mocked requests
+ * @param reviewMode toggles the reviewer mode
+ * @returns the component mounting chainable
+ */
+export function mountMLDTForGdvPanel(
+  frameworkIdentifier: DataTypeEnum,
+  displayConfiguration: MLDTConfig<GdvData>,
+  datasetsToDisplay: Array<DataAndMetaInformation<GdvData>>,
+  companyId = "mock-company-id",
+  reviewMode = false,
+): Cypress.Chainable {
+  cy.intercept(`/api/data/${frameworkIdentifier}/companies/${companyId}`, datasetsToDisplay);
+  return cy.mountWithDialog(
+    MultiLayerDataTableFrameworkPanel,
+    {
+      keycloak: minimalKeycloakMock({}),
+    },
+    {
+      companyId: companyId,
+      frameworkIdentifier: frameworkIdentifier,
+      displayConfiguration: displayConfiguration,
+      inReviewMode: reviewMode,
+    },
   );
 }
