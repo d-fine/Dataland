@@ -138,7 +138,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
       preparedFixture,
     ]);
 
-    const listData: Array<BaseDataPointString> = preparedFixture.t.allgemein?.esgBerichte?.aktuelleBerichte;
+    const listData: Array<BaseDataPointString> = preparedFixture.t.allgemein?.esgBerichte?.aktuelleBerichte as Array<BaseDataPointString>;
     cy.get("span").contains("Aktuelle Berichte");
     cy.get("a").should("have.class", "link").click();
 
