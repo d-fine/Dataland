@@ -85,9 +85,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             }
         val mechanismenZurUeberwachungDerEinhaltungDerUngcp = framework.root.
         getOrNull<ComponentGroup>("allgemein")?.getOrNull<ComponentGroup>("unGlobalConceptPrinzipien")?.
-            getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerUngcp");
+            getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerUngcp")
         require(mechanismenZurUeberwachungDerEinhaltungDerUngcp != null) {
-            "The field with the label \"mechanismenZurUeberwachungDerEinhaltungDerUngcp\" cannot be null in the gdv framework."
+            "The field with the label \"mechanismenZurUeberwachungDerEinhaltungDerUngcp\" cannot be null in the g" +
+                    "dv framework."
 
         }
         framework.root
@@ -110,9 +111,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             }
         val mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze = framework.root.
         getOrNull<ComponentGroup>("allgemein")?.getOrNull<ComponentGroup>("oecdLeitsaetze")?.
-            getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze");
+            getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze")
         require(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze != null) {
-            "The field with the label \"mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze\" cannot be null in the gdv framework."
+            "The field with the label \"mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze\" cannot be null " +
+                    "in the gdv framework."
 
         }
         framework.root.getOrNull<ComponentGroup>("allgemein")
@@ -139,7 +141,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             }
 
 // TODO what about the dependencies of all the rolling window fields?
-        val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt");
+        val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt")
         componentGroupUmwelt?.edit<ComponentGroup>("treibhausgasemissionen") {
             create<GdvYearlyDecimalTimeseriesDataComponent>("treibhausgasBerichterstattungUndPrognosen") {
                 label = "Treibhausgas-Berichterstattung und Prognosen"
@@ -290,22 +292,23 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
         val einnahmenAusFossilenBrennstoffen = componentGroupUmwelt?.
         getOrNull<ComponentGroup>("fossileBrennstoffe")?.
-        getOrNull<YesNoComponent>("einnahmenAusFossilenBrennstoffen");
+        getOrNull<YesNoComponent>("einnahmenAusFossilenBrennstoffen")
         require(einnahmenAusFossilenBrennstoffen != null) {
             "The field with the label \"einnahmenAusFossilenBrennstoffen\" cannot be null in the " +
                     "gdv framework."
         }
 
-        componentGroupUmwelt?.edit<ComponentGroup>("fossileBrennstoffe") {
-            create<GdvYearlyDecimalTimeseriesDataComponent>("berichterstattungEinnahmenAusFossilenBrennstoffen") {
+        componentGroupUmwelt.edit<ComponentGroup>("fossileBrennstoffe") {
+            create<GdvYearlyDecimalTimeseriesDataComponent>("berichterstattungEinnahmenAusFossi" +
+                    "lenBrennstoffen") {
                 label = "Berichterstattung Einnahmen aus fossilen Brennstoffen"
                 explanation = "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den " +
-                    "gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die " +
-                    "Prognosen für die kommenden drei Jahre an."
+                        "gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die " +
+                        "Prognosen für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "anteilEinnahmenAusFossilen" +
-                            "Brennstoffen",
+                                "Brennstoffen",
                         "Anteil der Einnahmen aus fossilen Brennstoffen", "%",
                     ),
                 )
@@ -316,21 +319,21 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             }
         }
 
-        componentGroupUmwelt?.edit<ComponentGroup>("taxonomie") {
+        componentGroupUmwelt.edit<ComponentGroup>("taxonomie") {
             create<GdvYearlyDecimalTimeseriesDataComponent>(
                 "umsatzInvestitionsaufwandFuerNachhaltige" +
-                    "Aktivitaeten",
+                        "Aktivitaeten",
             ) {
                 label = "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten"
                 explanation = "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen " +
-                    "Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben " +
-                    "zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen" +
-                    " (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die " +
-                    "Prognosen für die kommenden drei Jahre an."
+                        "Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben " +
+                        "zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen" +
+                        " (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die " +
+                        "Prognosen für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "umsatzInvestitionsaufwandAus" +
-                            "NachhaltigenAktivitaeten",
+                                "NachhaltigenAktivitaeten",
                         "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
                         "Mio. €",
                     ),
@@ -363,18 +366,18 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             )
         }
         val aenderungenUnternehmensstruktur = componentGroupSoziales?.
-        getOrNull<YesNoComponent>("aenderungenUnternehmensstruktur");
+        getOrNull<YesNoComponent>("aenderungenUnternehmensstruktur")
         require(aenderungenUnternehmensstruktur != null) {
             "The field with the label \"einnahmenAusFossilenBrennstoffen\" cannot be null in the " +
                     "gdv framework."
         }
-        componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>(
+        componentGroupSoziales.create<GdvYearlyDecimalTimeseriesDataComponent>(
             "auswirkungenAufAnteil" +
-                "BefristerVertraegeUndFluktuation",
+                    "BefristerVertraegeUndFluktuation",
         ) {
             label = "Auswirkungen auf Anteil befrister Verträge und Fluktuation"
             explanation = "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die" +
-                " letzten drei Jahre an."
+                    " letzten drei Jahre an."
             decimalRows = mutableListOf(
                 GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                     "anzahlbefristeteVertraege",
@@ -409,10 +412,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
 
         }
 
-        componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>("budgetFuerSchulungAusbildung") {
+        componentGroupSoziales.create<GdvYearlyDecimalTimeseriesDataComponent>("budgetFuerSchulungAusbildung") {
             label = "Budget für Schulung/Ausbildung"
             explanation = "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für " +
-                "Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde."
+                    "Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde."
             decimalRows = mutableListOf(
                 GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                     "budgetProMitarbeiterProJahr",
@@ -425,12 +428,12 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             )
         }
 
-        componentGroupSoziales?.edit<ComponentGroup>("einkommensgleichheit") {
+        componentGroupSoziales.edit<ComponentGroup>("einkommensgleichheit") {
             create<GdvYearlyDecimalTimeseriesDataComponent>("ueberwachungDerEinkommensungleichheit") {
                 label = "Überwachung der Einkommensungleichheit"
                 explanation = "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das " +
-                    "Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für" +
-                    " die letzten drei Jahre an."
+                        "Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für" +
+                        " die letzten drei Jahre an."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "geschlechtsspezifischesLohngefaelle",
@@ -442,7 +445,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     ),
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "ceoEinkommenungleichheit" +
-                            "sverhaeltnis",
+                                "sverhaeltnis",
                         "CEO-Einkommensungleichheitsverhältnis", "%",
                     ),
                 )
