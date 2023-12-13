@@ -736,7 +736,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Treibhausgas-Berichterstattung und Prognosen",
             explanation:
               "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.treibhausgasemissionen?.treibhausgasBerichterstattungUndPrognosen,
@@ -809,7 +809,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Berichterstattung Energieverbrauch",
             explanation:
               "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.energieverbrauch?.berichterstattungEnergieverbrauch,
@@ -846,7 +846,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Berichterstattung Energieverbrauch von Immobilienvermoegen",
             explanation:
               "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.energieeffizienzImmobilienanlagen
@@ -881,7 +881,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Berichterstattung Wasserverbrauch",
             explanation:
               "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.wasserverbrauch?.berichterstattungWasserverbrauch,
@@ -925,7 +925,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Berichterstattung Abfallproduktion",
             explanation:
               "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.abfallproduktion?.berichterstattungAbfallproduktion,
@@ -945,7 +945,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Recycling im Produktionsprozess",
             explanation:
               "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereitsrecyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre.",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.abfallproduktion?.recyclingImProduktionsprozess,
@@ -1025,7 +1025,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Berichterstattung Einnahmen aus fossilen Brennstoffen",
             explanation:
               "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.umwelt?.fossileBrennstoffe?.einnahmenAusFossilenBrennstoffen == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.fossileBrennstoffe?.berichterstattungEinnahmenAusFossilenBrennstoffen,
@@ -1081,7 +1082,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
             explanation:
               "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.taxonomie?.umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten,
@@ -1144,7 +1145,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Überwachung der Einkommensungleichheit",
             explanation:
               "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für die letzten drei Jahre an.",
-            shouldDisplay: (): boolean => true,
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.soziales?.einkommensgleichheit?.ueberwachungDerEinkommensungleichheit,
@@ -1258,7 +1259,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         label: "Auswirkungen auf Anteil befrister Verträge und Fluktuation",
         explanation:
           "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die letzten drei Jahre an.",
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (dataset: GdvData): boolean => dataset.soziales?.aenderungenUnternehmensstruktur == "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
           formatGdvYearlyDecimalTimeseriesDataForTable(
             dataset.soziales?.auswirkungenAufAnteilBefristerVertraegeUndFluktuation,
@@ -1274,7 +1275,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         label: "Budget für Schulung/Ausbildung",
         explanation:
           "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde.",
-        shouldDisplay: (): boolean => true,
+        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
           formatGdvYearlyDecimalTimeseriesDataForTable(
             dataset.soziales?.budgetFuerSchulungAusbildung,
@@ -1399,7 +1400,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
     type: "cell",
     label: "Unfallrate",
     explanation: "Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten drei Jahre?",
-    shouldDisplay: (): boolean => true,
+    shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
     valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
       formatGdvYearlyDecimalTimeseriesDataForTable(
         dataset.unfallrate,

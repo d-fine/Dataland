@@ -1,1143 +1,1429 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
-import { GdvData } from "@clients/backend";
+import { type GdvData } from "@clients/backend";
 
-export const gdvDataModel : Category[] = [    {
-        name: "general",
-        label: "General",
-        color: " ", 
-        showIf: ():boolean => true,
-        subcategories: [    {
-            name: "masterData",
-            label: "Master Data",
-            fields: [
-                 {
-                name: "berichtsPflicht",
-                label: "Berichts-Pflicht",
-                description: "Ist das Unternehmen berichtspflichtig?",
-    
-                unit: "",
-                component: "YesNoFormField",
-                required: true,
-                showIf: ():boolean => true, 
-                validation: "",
-                },
-            {
-                name: "gueltigkeitsDatum",
-                label: "(Gültigkeits) Datum",
-                description: "Datum bis wann die Information gültig ist",
-    
-                unit: "",
-                component: "DateFormField",
-                required: false,
-                showIf: ():boolean => true, 
-                validation: "",
-                },
-     
-            ],
-            },
+export const gdvDataModel: Category[] = [
+  {
+    name: "general",
+    label: "General",
+    color: " ",
+    showIf: (): boolean => true,
+    subcategories: [
+      {
+        name: "masterData",
+        label: "Master Data",
+        fields: [
+          {
+            name: "berichtsPflicht",
+            label: "Berichts-Pflicht",
+            description: "Ist das Unternehmen berichtspflichtig?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: true,
+            showIf: (): boolean => true,
+            validation: "",
+          },
+          {
+            name: "gueltigkeitsDatum",
+            label: "(Gültigkeits) Datum",
+            description: "Datum bis wann die Information gültig ist",
+
+            unit: "",
+            component: "DateFormField",
+            required: false,
+            showIf: (): boolean => true,
+            validation: "",
+          },
         ],
-        },
-    {
-        name: "allgemein",
-        label: "Allgemein",
-        color: " ", 
-        showIf: ():boolean => true,
-        subcategories: [    {
-            name: "esgZiele",
-            label: "ESG Ziele",
-            fields: [
-                 {
-                name: "existenzVonEsgZielen",
-                label: "Existenz von ESG-Zielen",
-                description: "Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
-    
-                unit: "",
-                component: "YesNoFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "beschreibungDerEsgZiele",
-                label: "Beschreibung der ESG-Ziele",
-                description: "Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.allgemein?.esgZiele?.existenzVonEsgZielen == "Yes", 
-                validation: "",
-                },
-            {
-                name: "investitionenInZielerreichung",
-                label: "Investitionen in Zielerreichung",
-                description: "Bitte geben Sie an wieviele Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele zugewiesen wurden.",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.allgemein?.esgZiele?.existenzVonEsgZielen == "Yes", 
-                validation: "",
-                },
-     
+      },
+    ],
+  },
+  {
+    name: "allgemein",
+    label: "Allgemein",
+    color: " ",
+    showIf: (): boolean => true,
+    subcategories: [
+      {
+        name: "esgZiele",
+        label: "ESG Ziele",
+        fields: [
+          {
+            name: "existenzVonEsgZielen",
+            label: "Existenz von ESG-Zielen",
+            description:
+              "Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "beschreibungDerEsgZiele",
+            label: "Beschreibung der ESG-Ziele",
+            description: "Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.allgemein?.esgZiele?.existenzVonEsgZielen == "Yes",
+            validation: "",
+          },
+          {
+            name: "investitionenInZielerreichung",
+            label: "Investitionen in Zielerreichung",
+            description:
+              "Bitte geben Sie an wieviele Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele zugewiesen wurden.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.allgemein?.esgZiele?.existenzVonEsgZielen == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "sektoren",
+        label: "Sektoren",
+        fields: [
+          {
+            name: "sektorenMitHohenKlimaauswirkungen",
+            label: "Sektoren mit hohen Klimaauswirkungen",
+            description:
+              "Kann das Unternehmen einem oder mehreren Sektoren mit hohen Klimaauswirkungen zugeordnet werden?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "auflistungDerSektoren",
+            label: "Auflistung der Sektoren",
+            description:
+              "Bitte geben Sie an, zu welchen Sektoren (mit hohen Klimaauswirkungen) das Unternehmen zugeordnet werden kann.",
+            options: [
+              {
+                label: "A",
+                value: "A",
+              },
+              {
+                label: "B",
+                value: "B",
+              },
+              {
+                label: "C",
+                value: "C",
+              },
+              {
+                label: "D",
+                value: "D",
+              },
+              {
+                label: "E",
+                value: "E",
+              },
+              {
+                label: "F",
+                value: "F",
+              },
+              {
+                label: "G",
+                value: "G",
+              },
+              {
+                label: "H",
+                value: "H",
+              },
+              {
+                label: "L",
+                value: "L",
+              },
             ],
-            },
-        {
-            name: "sektoren",
-            label: "Sektoren",
-            fields: [
-                 {
-                name: "sektorenMitHohenKlimaauswirkungen",
-                label: "Sektoren mit hohen Klimaauswirkungen",
-                description: "Kann das Unternehmen einem oder mehreren Sektoren mit hohen Klimaauswirkungen zugeordnet werden?",
-    
-                unit: "",
-                component: "YesNoFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "auflistungDerSektoren",
-                label: "Auflistung der Sektoren",
-                description: "Bitte geben Sie an, zu welchen Sektoren (mit hohen Klimaauswirkungen) das Unternehmen zugeordnet werden kann.",
-                options: [
-                        {
-                            label: "A",
-                            value: "A",
-                        },
-                        {
-                            label: "B",
-                            value: "B",
-                        },
-                        {
-                            label: "C",
-                            value: "C",
-                        },
-                        {
-                            label: "D",
-                            value: "D",
-                        },
-                        {
-                            label: "E",
-                            value: "E",
-                        },
-                        {
-                            label: "F",
-                            value: "F",
-                        },
-                        {
-                            label: "G",
-                            value: "G",
-                        },
-                        {
-                            label: "H",
-                            value: "H",
-                        },
-                        {
-                            label: "L",
-                            value: "L",
-                        },
-                    ],
-                unit: "",
-                component: "MultiSelectFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen == "Yes", 
-                validation: "",
-                },
-     
+            unit: "",
+            component: "MultiSelectFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "esgBerichte",
+        label: "ESG Berichte",
+        fields: [
+          {
+            name: "nachhaltigkeitsberichte",
+            label: "Nachhaltigkeitsberichte",
+            description: "Erstellt das Unternehmen Nachhaltigkeits- oder ESG-Berichte?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "frequenzDerBerichterstattung",
+            label: "Frequenz der Berichterstattung",
+            description: "In welchen Zeitabständen werden die Berichte erstellt?",
+            options: [
+              {
+                label: "jährlich",
+                value: "Jaehrlich",
+              },
+              {
+                label: "halbjährlich",
+                value: "Halbjaehrlich",
+              },
+              {
+                label: "vierteljährlich",
+                value: "Vierteljaehrlich",
+              },
+              {
+                label: "monatlich",
+                value: "Monatlich",
+              },
             ],
-            },
-        {
-            name: "esgBerichte",
-            label: "ESG Berichte",
-            fields: [
-                 {
-                name: "nachhaltigkeitsberichte",
-                label: "Nachhaltigkeitsberichte",
-                description: "Erstellt das Unternehmen Nachhaltigkeits- oder ESG-Berichte?",
-    
-                unit: "",
-                component: "YesNoFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "frequenzDerBerichterstattung",
-                label: "Frequenz der Berichterstattung",
-                description: "In welchen Zeitabständen werden die Berichte erstellt?",
-                options: [
-                        {
-                            label: "jährlich",
-                            value: "Jaehrlich",
-                        },
-                        {
-                            label: "halbjährlich",
-                            value: "Halbjaehrlich",
-                        },
-                        {
-                            label: "vierteljährlich",
-                            value: "Vierteljaehrlich",
-                        },
-                        {
-                            label: "monatlich",
-                            value: "Monatlich",
-                        },
-                    ],
-                unit: "",
-                component: "SingleSelectFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == "Yes", 
-                validation: "",
-                },
-            {
-                name: "aktuelleBerichte",
-                label: "Aktuelle Berichte",
-                description: "Aktuelle Nachhaltigkeits- oder ESG-Berichte",
-    
-                unit: "",
-                component: "ListOfBaseDataPointsFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == "Yes", 
-                validation: "",
-                },
-     
-            ],
-            },
-        {
-            name: "akkreditierungen",
-            label: "Akkreditierungen",
-            fields: [
-                 {
-                name: "iso14001",
-                label: "ISO 14001",
-                description: "Haben Sie eine ISO 14001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-    
-                unit: "",
-                component: "YesNoFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "iso45001",
-                label: "ISO 45001",
-                description: "Haben Sie eine ISO 45001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-    
-                unit: "",
-                component: "YesNoFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "iso27001",
-                label: "ISO 27001",
-                description: "Haben Sie eine ISO 27001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-    
-                unit: "",
-                component: "YesNoFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "iso50001",
-                label: "ISO 50001",
-                description: "Haben Sie eine ISO 50001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-    
-                unit: "",
-                component: "YesNoFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "weitereAkkreditierungen",
-                label: "Weitere Akkreditierungen",
-                description: "Weitere Akkreditierungen, die noch nicht aufgeführt wurden",
-    
-                unit: "",
-                component: "ListOfBaseDataPointsFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-     
-            ],
-            },
-        {
-            name: "unGlobalConceptPrinzipien",
-            label: "UN Global Concept Prinzipien",
-            fields: [
-                 {
-                name: "mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien",
-                label: "Mechanismen zur Überwachung der Einhaltung der UN Global Compact Prinzipien",
-                description: "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der Prinzipien des UN Global Compact zu überwachen?",
-    
-                unit: "",
-                component: "YesNoFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "erklaerungDerEinhaltung",
-                label: "Erklärung der Einhaltung ",
-                description: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien == "Yes", 
-                validation: "",
-                },
-     
-            ],
-            },
-        {
-            name: "oecdLeitsaetze",
-            label: "OECD Leitsätze",
-            fields: [
-                 {
-                name: "mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze",
-                label: "Mechanismen zur Überwachung der Einhaltung der OECD-Leitsätze",
-                description: "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der OECD-Leitsätze für multinationale Unternehmen (OECD MNE Guidelines) zu überwachen?",
-    
-                unit: "",
-                component: "YesNoFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "erklaerungOecd",
-                label: "Erklärung OECD",
-                description: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == "Yes", 
-                validation: "",
-                },
-     
-            ],
-            },
-        {
+            unit: "",
+            component: "SingleSelectFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == "Yes",
+            validation: "",
+          },
+          {
+            name: "aktuelleBerichte",
+            label: "Aktuelle Berichte",
+            description: "Aktuelle Nachhaltigkeits- oder ESG-Berichte",
+
+            unit: "",
+            component: "ListOfBaseDataPointsFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "akkreditierungen",
+        label: "Akkreditierungen",
+        fields: [
+          {
+            name: "iso14001",
+            label: "ISO 14001",
+            description:
+              "Haben Sie eine ISO 14001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "iso45001",
+            label: "ISO 45001",
+            description:
+              "Haben Sie eine ISO 45001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "iso27001",
+            label: "ISO 27001",
+            description:
+              "Haben Sie eine ISO 27001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "iso50001",
+            label: "ISO 50001",
+            description:
+              "Haben Sie eine ISO 50001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "weitereAkkreditierungen",
+            label: "Weitere Akkreditierungen",
+            description: "Weitere Akkreditierungen, die noch nicht aufgeführt wurden",
+
+            unit: "",
+            component: "ListOfBaseDataPointsFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "unGlobalConceptPrinzipien",
+        label: "UN Global Concept Prinzipien",
+        fields: [
+          {
+            name: "mechanismenZurUeberwachungDerEinhaltungDerUngcp",
+            label: "Mechanismen zur Überwachung der Einhaltung der UNGCP",
+            description:
+              "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der Prinzipien des UN Global Compact zu überwachen?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "richtlinienZurEinhaltungDerUngcp",
+            label: "Richtlinien zur Einhaltung der UNGCP",
+            description:
+              "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht.",
+
+            unit: "",
+            component: "ListOfBaseDataPointsFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == "Yes",
+            validation: "",
+          },
+          {
+            name: "erklaerungDerEinhaltungDerUngcp",
+            label: "Erklärung der Einhaltung der UNGCP",
+            description: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "oecdLeitsaetze",
+        label: "OECD Leitsätze",
+        fields: [
+          {
+            name: "mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze",
+            label: "Mechanismen zur Überwachung der Einhaltung der OECD-Leitsätze",
+            description:
+              "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der OECD-Leitsätze für multinationale Unternehmen (OECD MNE Guidelines) zu überwachen?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "richtlinienZurEinhaltungDerOecdLeitsaetze",
+            label: "Richtlinien zur Einhaltung der OECD-Leitsätze",
+            description:
+              "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht.",
+
+            unit: "",
+            component: "ListOfBaseDataPointsFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == "Yes",
+            validation: "",
+          },
+          {
+            name: "erklaerungDerEinhaltungDerOecdLeitsaetze",
+            label: "Erklärung der Einhaltung der OECD-Leitsätze",
+            description: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "sonstige",
+        label: "Sonstige",
+        fields: [
+          {
             name: "ausrichtungAufDieUnSdgsUndAktivesVerfolgen",
             label: "Ausrichtung auf die UN SDGs und aktives Verfolgen",
-            fields: [
-    
-            ],
-            },
-        {
+            description:
+              "Wie steht das Unternehmen in Einklang mit den 17 UN-Zielen für nachhaltige Entwicklung? Welche dieser Ziele verfolgt das Unternehmen aktiv, entweder durch ihre Geschäftstätigkeit oder durch die Unternehmensführung?",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
             name: "ausschlusslistenAufBasisVonEsgKriterien",
             label: "Ausschlusslisten auf Basis von ESG Kriterien",
-            fields: [
-    
-            ],
-            },
-        {
+            description:
+              "Führt das Unternehmen Ausschlusslisten? Von besonderem Interesse sind Listen die Ausschlusskriterien, die einen Bezug zu den Bereichen E, S oder G haben.",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
             name: "ausschlusslisten",
             label: "Ausschlusslisten",
-            fields: [
-    
-            ],
-            },
-        {
+            description: "Bitte nennen Sie die Ausschlusslisten auf Basis von ESG Kriterien.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.sonstige?.ausschlusslistenAufBasisVonEsgKriterien == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "fuehrungsstandards",
+        label: "Führungsstandards",
+        fields: [
+          {
             name: "oekologischeSozialeFuehrungsstandardsOderPrinzipien",
             label: "Ökologische/soziale Führungsstandards oder -prinzipien",
-            fields: [
-    
-            ],
-            },
-        {
+            description:
+              "Hat sich das Unternehmen zu ökologischen/sozialen Führungsstandards oder Prinzipien verpflichtet?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
             name: "anreizmechanismenFuerDasManagementUmwelt",
             label: "Anreizmechanismen für das Management (Umwelt)",
-            fields: [
-    
+            description:
+              "Wie spiegeln sich die Anreizmechanismen für den Bereich Umwelt in der jährlichen Zielsetzung für das Management wieder? Bitte geben Sie die aktuellen Verpflichtungen an.",
+            options: [
+              {
+                label: "Nein",
+                value: "Nein",
+              },
+              {
+                label: "Ja, Aufsichtsrat",
+                value: "JaAufsichtsrat",
+              },
+              {
+                label: "Ja, Geschäftsleitung",
+                value: "JaGeschaeftsleitung",
+              },
+              {
+                label: "Ja, Aufsichtsrat und Geschäftsleitung",
+                value: "JaAufsichtsratUndGeschaeftsleitung",
+              },
             ],
-            },
-        {
+            unit: "",
+            component: "SingleSelectFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien == "Yes",
+            validation: "",
+          },
+          {
             name: "anreizmechanismenFuerDasManagementSoziales",
             label: "Anreizmechanismen für das Management (Soziales)",
-            fields: [
-    
+            description:
+              "Wie spiegeln sich die Anreizmechanismen für den Bereich Soziales in der jährlichen Zielsetzung für das Management wieder? Bitte geben Sie die aktuellen Verpflichtungen an.",
+            options: [
+              {
+                label: "Nein",
+                value: "Nein",
+              },
+              {
+                label: "Ja, Aufsichtsrat",
+                value: "JaAufsichtsrat",
+              },
+              {
+                label: "Ja, Geschäftsleitung",
+                value: "JaGeschaeftsleitung",
+              },
+              {
+                label: "Ja, Aufsichtsrat und Geschäftsleitung",
+                value: "JaAufsichtsratUndGeschaeftsleitung",
+              },
             ],
-            },
-        {
+            unit: "",
+            component: "SingleSelectFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "rechtsstreitigkeiten",
+        label: "Rechtsstreitigkeiten",
+        fields: [
+          {
             name: "esgBezogeneRechtsstreitigkeiten",
             label: "ESG-bezogene Rechtsstreitigkeiten",
-            fields: [
-    
-            ],
-            },
-        {
+            description:
+              "Ist das Unternehmen in laufende bzw. war das Unternehmen in den letzten 3 Jahren in abgeschlossenen Rechtsstreitigkeiten im Zusammenhang mit ESG involviert?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
             name: "rechtsstreitigkeitenMitBezugZuE",
             label: "Rechtsstreitigkeiten mit Bezug zu E",
-            fields: [
-    
-            ],
-            },
-        {
+            description: 'Haben bzw. hatten die Rechtsstreitigkeiten Bezug zu "E"',
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeiten == "Yes",
+            validation: "",
+          },
+          {
             name: "statusZuE",
             label: "Status zu E",
-            fields: [
-    
+            description: 'Sind die Rechtsstreitigkeiten mit Bezug zu "E" noch offen oder bereits geklärt?',
+            options: [
+              {
+                label: "offen",
+                value: "Offen",
+              },
+              {
+                label: "geklärt",
+                value: "Geklaert",
+              },
             ],
-            },
-        {
+            unit: "",
+            component: "SingleSelectFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuE == "Yes",
+            validation: "",
+          },
+          {
             name: "einzelheitenZuDenRechtsstreitigkeitenZuE",
             label: "Einzelheiten zu den Rechtsstreitigkeiten zu E",
-            fields: [
-    
-            ],
-            },
-        {
+            description: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuE == "Yes",
+            validation: "",
+          },
+          {
             name: "rechtsstreitigkeitenMitBezugZuS",
             label: "Rechtsstreitigkeiten mit Bezug zu S",
-            fields: [
-    
-            ],
-            },
-        {
+            description: 'Haben bzw. hatten die Rechtsstreitigkeiten Bezug zu "S"',
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeiten == "Yes",
+            validation: "",
+          },
+          {
             name: "statusZuS",
             label: "Status zu S",
-            fields: [
-    
+            description: 'Sind die Rechtsstreitigkeiten mit Bezug zu "S" noch offen oder bereits geklärt?',
+            options: [
+              {
+                label: "offen",
+                value: "Offen",
+              },
+              {
+                label: "geklärt",
+                value: "Geklaert",
+              },
             ],
-            },
-        {
+            unit: "",
+            component: "SingleSelectFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuS == "Yes",
+            validation: "",
+          },
+          {
             name: "einzelheitenZuDenRechtsstreitigkeitenZuS",
             label: "Einzelheiten zu den Rechtsstreitigkeiten zu S",
-            fields: [
-    
-            ],
-            },
-        {
+            description: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuS == "Yes",
+            validation: "",
+          },
+          {
             name: "rechtsstreitigkeitenMitBezugZuG",
             label: "Rechtsstreitigkeiten mit Bezug zu G",
-            fields: [
-    
-            ],
-            },
-        {
+            description: 'Haben bzw. hatten die Rechtsstreitigkeiten Bezug zu "G"',
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeiten == "Yes",
+            validation: "",
+          },
+          {
             name: "statusZuG",
             label: "Status zu G",
-            fields: [
-    
+            description: 'Sind die Rechtsstreitigkeiten mit Bezug zu "G" noch offen oder bereits geklärt?',
+            options: [
+              {
+                label: "offen",
+                value: "Offen",
+              },
+              {
+                label: "geklärt",
+                value: "Geklaert",
+              },
             ],
-            },
-        {
+            unit: "",
+            component: "SingleSelectFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuG == "Yes",
+            validation: "",
+          },
+          {
             name: "einzelheitenZuDenRechtsstreitigkeitenZuG",
             label: "Einzelheiten zu den Rechtsstreitigkeiten zu G",
-            fields: [
-    
-            ],
-            },
-        {
+            description: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuG == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "rating",
+        label: "Rating",
+        fields: [
+          {
             name: "esgRating",
             label: "ESG-Rating",
-            fields: [
-    
-            ],
-            },
-        {
+            description: "Hat das Unternehmen bereits ein ESG-Rating einer anerkannten Ratingagentur?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
             name: "agentur",
             label: "Agentur",
-            fields: [
-    
-            ],
-            },
-        {
+            description: "Welche Rating Agentur hat das Rating durchgeführt?",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.allgemein?.rating?.esgRating == "Yes",
+            validation: "",
+          },
+          {
             name: "ergebnis",
             label: "Ergebnis",
-            fields: [
-    
-            ],
-            },
-        {
+            description: "Wie lautet das Rating (Ratingbericht bitte anfügen)?",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.allgemein?.rating?.esgRating == "Yes",
+            validation: "",
+          },
+          {
             name: "kritischePunkte",
             label: "Kritische Punkte",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "nachhaltigkeitsbezogenenAnleihen",
-            label: "Nachhaltigkeitsbezogenen Anleihen",
-            fields: [
-    
-            ],
-            },
-        {
+            description: "Was waren die kritischen Punkte beim ESG-Rating?",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.allgemein?.rating?.esgRating == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "anleihen",
+        label: "Anleihen",
+        fields: [
+          {
+            name: "grueneSozialeUndOderNachhaltigeEmissionen",
+            label: "Grüne, soziale und/oder nachhaltige Emissionen",
+            description: "Hat das Unternehmen „grüne“, „soziale“ und/oder „nachhaltige“ Schuldtitel begeben?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen",
+            label: "Ausstehende grüne, soziale und/oder nachhaltige Emissionen",
+            description:
+              "Bitte geben Sie Details zu den ausstehenden Emissionen für das letzte Jahr der Berichterstattung an (in Mio €).",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.allgemein?.anleihen?.grueneSozialeUndOderNachhaltigeEmissionen == "Yes",
+            validation: "",
+          },
+          {
+            name: "sustainibilityLinkedDebt",
+            label: "Sustainibility Linked Debt",
+            description: "Hat das Unternehmen Sustainability Linked Debt („SLD“) emittiert?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "ausstehendeSustainibilityLinkedDebt",
+            label: "Ausstehende Sustainibility Linked Debt",
+            description:
+              "Bitte geben Sie Details zu den ausstehenden Emissionen für das letzte Jahr der Berichterstattung an (in Mio €).",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.allgemein?.anleihen?.sustainibilityLinkedDebt == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "risiken",
+        label: "Risiken",
+        fields: [
+          {
             name: "wichtigsteESUndGRisikenUndBewertung",
             label: "Wichtigste E-, S- und G-Risiken und Bewertung",
-            fields: [
-    
-            ],
-            },
-        {
+            description:
+              "Welches sind die wichtigsten von der Gruppe identifizierten E-, S- und G-Risiken? Bitte geben Sie die Details / Bewertung der identifizierten Risiken an.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
             name: "hindernisseBeimUmgangMitEsgBedenken",
             label: "Hindernisse beim Umgang mit ESG-Bedenken",
-            fields: [
-    
-            ],
-            },
+            description:
+              "Welche grundsätzlichen Hindernisse bestehen für das Unternehmen bei der Berücksichtigung von ESG-Belangen?",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
         ],
-        },
-    {
-        name: "umwelt",
-        label: "Umwelt",
-        color: " ", 
-        showIf: ():boolean => true,
-        subcategories: [    {
-            name: "treibhausgasemissionen",
-            label: "Treibhausgasemissionen",
-            fields: [
-                 {
-                name: "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird",
-                label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investriert wird",
-                description: "THG-Emissionsintensität der Unternehmen, in die investiert wird. Scope 1 + Scope 2 Treibhausgasemissionen ./. Umsatz in Millionen EUR Scope 1 + Scope 2 Treibhausgasemissionen ./. Unternehmensgröße in Mio. EUR",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "strategieUndZieleZurReduzierungVonTreibhausgasEmissionen",
-                label: "Strategie und Ziele zur Reduzierung von Treibhausgas-Emissionen",
-                description: "Welchen Entwicklungspfad bzgl. der (Reduktion von) Treibhausgasemissionen verfolgt das Unternehmen. Gibt es einen Zeitplan bzw. konkrete Ziele? Und wie plant das Unternehmen, diesen Kurs zu erreichen? Bitte erläutern Sie, in welchem Bezug dieser Entwicklungspfad zu dem auf dem Pariser Abkommen basierenden Kurs steht.",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "treibhausgasBerichterstattungUndPrognosen",
-                label: "Treibhausgas-Berichterstattung und Prognosen",
-                description: "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
-                options: [
-                        {
-                            label: "Scope 1",
-                            value: "scope1",
-                        },
-                        {
-                            label: "Scope 2",
-                            value: "scope2",
-                        },
-                        {
-                            label: "Scope 3",
-                            value: "scope3",
-                        },
-                    ],
-                unit: "",
-                component: "GdvYearlyDecimalTimeseriesDataFormField",
-                required: false,
-                showIf: ():boolean => true, 
-                validation: "",
-                },
-     
+      },
+    ],
+  },
+  {
+    name: "umwelt",
+    label: "Umwelt",
+    color: " ",
+    showIf: (): boolean => true,
+    subcategories: [
+      {
+        name: "treibhausgasemissionen",
+        label: "Treibhausgasemissionen",
+        fields: [
+          {
+            name: "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird",
+            label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investriert wird",
+            description:
+              "THG-Emissionsintensität der Unternehmen, in die investiert wird. Scope 1 + Scope 2 Treibhausgasemissionen ./. Umsatz in Millionen EUR Scope 1 + Scope 2 Treibhausgasemissionen ./. Unternehmensgröße in Mio. EUR",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "strategieUndZieleZurReduzierungVonTreibhausgasEmissionen",
+            label: "Strategie und Ziele zur Reduzierung von Treibhausgas-Emissionen",
+            description:
+              "Welchen Entwicklungspfad bzgl. der (Reduktion von) Treibhausgasemissionen verfolgt das Unternehmen. Gibt es einen Zeitplan bzw. konkrete Ziele? Und wie plant das Unternehmen, diesen Kurs zu erreichen? Bitte erläutern Sie, in welchem Bezug dieser Entwicklungspfad zu dem auf dem Pariser Abkommen basierenden Kurs steht.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "treibhausgasBerichterstattungUndPrognosen",
+            label: "Treibhausgas-Berichterstattung und Prognosen",
+            description:
+              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
+            options: [
+              {
+                label: "Scope 1",
+                value: "scope1",
+              },
+              {
+                label: "Scope 2",
+                value: "scope2",
+              },
+              {
+                label: "Scope 3",
+                value: "scope3",
+              },
             ],
-            },
-        {
+            unit: "",
+            component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "produktion",
+        label: "Produktion",
+        fields: [
+          {
             name: "produkteZurVerringerungDerUmweltbelastung",
             label: "Produkte zur Verringerung der Umweltbelastung",
-            fields: [
-    
-            ],
-            },
-        {
+            description:
+              "Entwickelt, produziert oder vertreibt das Unternehmen Produkte, die die Umweltbelastung verringern?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
             name: "verringerungenDerUmweltbelastung",
             label: "Verringerungen der Umweltbelastung",
-            fields: [
-    
-            ],
-            },
-        {
+            description: "Bitte beschreiben Sie möglichst genau, wie die Produkte die Umweltbelastung reduzieren.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.umwelt?.produktion?.produkteZurVerringerungDerUmweltbelastung == "Yes",
+            validation: "",
+          },
+          {
             name: "oekologischerMindestStandardFuerProduktionsprozesse",
             label: "Ökologischer Mindest-Standard für Produktionsprozesse",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "energieverbrauch",
-            label: "Energieverbrauch",
-            fields: [
-                 {
-                name: "unternehmensGruppenStrategieBzglEnergieverbrauch",
-                label: "Unternehmens/Gruppen Strategie bzgl Energieverbrauch",
-                description: "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "berichterstattungEnergieverbrauch",
-                label: "Berichterstattung Energieverbrauch",
-                description: "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-                options: [
-                        {
-                            label: "Energieverbrauch",
-                            value: "energieverbrauch",
-                        },
-                        {
-                            label: "Verbrauch erneuerbare Energien",
-                            value: "verbrauchErneuerbareEnergien",
-                        },
-                        {
-                            label: "Erzeugung erneuerbare Energien",
-                            value: "erzeugungErneuerbareEnergien",
-                        },
-                    ],
-                unit: "",
-                component: "GdvYearlyDecimalTimeseriesDataFormField",
-                required: false,
-                showIf: ():boolean => true, 
-                validation: "",
-                },
-     
-            ],
-            },
-        {
-            name: "energieeffizienzImmobilienanlagen",
-            label: "Energieeffizienz Immobilienanlagen",
-            fields: [
-                 {
-                name: "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen",
-                label: "Unternehmens/Gruppen Strategie bzgl energieeffizienten Immobilienanlagen",
-                description: "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "berichterstattungEnergieverbrauchVonImmobilienvermoegen",
-                label: "Berichterstattung Energieverbrauch von Immobilienvermoegen",
-                description: "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-                options: [
-                        {
-                            label: "energieeffiziente Immobilienanlagen",
-                            value: "energieeffizienteImmobilienanlagen",
-                        },
-                    ],
-                unit: "",
-                component: "GdvYearlyDecimalTimeseriesDataFormField",
-                required: false,
-                showIf: ():boolean => true, 
-                validation: "",
-                },
-     
-            ],
-            },
-        {
-            name: "wasserverbrauch",
-            label: "Wasserverbrauch",
-            fields: [
-                 {
-                name: "unternehmensGruppenStrategieBzglWasserverbrauch",
-                label: "Unternehmens/Gruppen Strategie bzgl Wasserverbrauch",
-                description: "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "berichterstattungWasserverbrauch",
-                label: "Berichterstattung Wasserverbrauch",
-                description: "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-                options: [
-                        {
-                            label: "Wasserverbrauch",
-                            value: "wasserverbrauch",
-                        },
-                        {
-                            label: "Emissionen in Wasser",
-                            value: "emissionenInWasser",
-                        },
-                    ],
-                unit: "",
-                component: "GdvYearlyDecimalTimeseriesDataFormField",
-                required: false,
-                showIf: ():boolean => true, 
-                validation: "",
-                },
-     
-            ],
-            },
-        {
-            name: "abfallproduktion",
-            label: "Abfallproduktion",
-            fields: [
-                 {
-                name: "unternehmensGruppenStrategieBzglAbfallproduktion",
-                label: "Unternehmens/Gruppen Strategie bzgl Abfallproduktion",
-                description: "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "berichterstattungAbfallproduktion",
-                label: "Berichterstattung Abfallproduktion",
-                description: "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-                options: [
-                        {
-                            label: "Abfallmenge",
-                            value: "abfallmenge",
-                        },
-                        {
-                            label: "Anteil der recycelten Abfallmenge",
-                            value: "anteilRecycelterAbfallmenge",
-                        },
-                        {
-                            label: "Anteil gefährlicher Abfall an Gesamtmenge",
-                            value: "anteilGefaehrlicherAbfallmenge",
-                        },
-                    ],
-                unit: "",
-                component: "GdvYearlyDecimalTimeseriesDataFormField",
-                required: false,
-                showIf: ():boolean => true, 
-                validation: "",
-                },
-            {
-                name: "recyclingImProduktionsprozess",
-                label: "Recycling im Produktionsprozess",
-                description: "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereitsrecyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre.",
-                options: [
-                        {
-                            label: "Anteil an Recyclaten",
-                            value: "anteilAnRecyclaten",
-                        },
-                    ],
-                unit: "",
-                component: "GdvYearlyDecimalTimeseriesDataFormField",
-                required: false,
-                showIf: ():boolean => true, 
-                validation: "",
-                },
-     
-            ],
-            },
-        {
-            name: "gefaehrlicheAbfaelle",
-            label: "Gefährliche Abfälle",
-            fields: [
-                 {
-                name: "gefaehrlicherAbfall",
-                label: "Gefährlicher Abfall",
-                description: "Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-     
-            ],
-            },
-        {
-            name: "biodiversitaet",
-            label: "Biodiversität",
-            fields: [
-                 {
-                name: "negativeAktivitaetenFuerDieBiologischeVielfalt",
-                label: "Negative Aktivitäten für die biologische Vielfalt",
-                description: "Hat das Unternehmen Standorte / Betriebe in oder in der Nähe von biodiversitätssensiblen Gebieten, in denen sich die Aktivitäten des Unternehmens negativ auf diese Gebiete auswirken?",
-    
-                unit: "",
-                component: "YesNoFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "negativeMassnahmenFuerDieBiologischeVielfalt",
-                label: "Negative Maßnahmen für die biologische Vielfalt",
-                description: "Bitte erläutern Sie Aktivitäten, die sich negativ auf die Biodiversität auswirken. Teilen Sie bitte auch den von der Gruppe/Unternehmen definierte Entwicklungspfad für den Umgang mit diesen Maßnahmen (Zeitplan und Ziel - falls vorhanden) mit uns und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.umwelt?.biodiversitaet?.negativeAktivitaetenFuerDieBiologischeVielfalt == "Yes", 
-                validation: "",
-                },
-            {
-                name: "positiveAktivitaetenFuerDieBiologischeVielfalt",
-                label: "Positive Aktivitäten für die biologische Vielfalt",
-                description: "Hat das Unternehmen Standorte / Betriebe in oder in der Nähe von biodiversitätssensiblen Gebieten, in denen sich die Aktivitäten des Unternehmens positiv auf diese Gebiete auswirken?",
-    
-                unit: "",
-                component: "YesNoFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "positiveMassnahmenFuerDieBiologischeVielfalt",
-                label: "Positive Maßnahmen für die biologische Vielfalt",
-                description: "Bitte erläutern Sie Aktivitäten, die sich positiv auf die Biodiversität auswirken. Teilen Sie bitte auch den von der Gruppe/Unternehmen definierte Entwicklungspfad für die Weiterentwicklung dieser Maßnahmen (Zeitplan und Ziel - falls vorhanden) mit uns und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.umwelt?.biodiversitaet?.positiveAktivitaetenFuerDieBiologischeVielfalt == "Yes", 
-                validation: "",
-                },
-     
-            ],
-            },
-        {
-            name: "fossileBrennstoffe",
-            label: "Fossile Brennstoffe",
-            fields: [
-                 {
-                name: "einnahmenAusFossilenBrennstoffen",
-                label: "Einnahmen aus fossilen Brennstoffen",
-                description: "Erzielt das Unternehmen einen Teil seiner Einnahmen aus Aktivitäten im Bereich fossiler Brennstoffe und/oder besitzt das Unternehmen Immobilien, die an der Gewinnung, Lagerung, dem Transport oder der Herstellung fossiler Brennstoffe beteiligt sind?",
-    
-                unit: "",
-                component: "YesNoFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "berichterstattungEinnahmenAusFossilenBrennstoffen",
-                label: "Berichterstattung Einnahmen aus fossilen Brennstoffen",
-                description: "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-                options: [
-                        {
-                            label: "Anteil der Einnahmen aus fossilen Brennstoffen",
-                            value: "anteilEinnahmenAusFossilenBrennstoffen",
-                        },
-                    ],
-                unit: "",
-                component: "GdvYearlyDecimalTimeseriesDataFormField",
-                required: false,
-                showIf: ():boolean => true, 
-                validation: "",
-                },
-     
-            ],
-            },
-        {
-            name: "taxonomie",
-            label: "Taxonomie",
-            fields: [
-                 {
-                name: "taxonomieBerichterstattung",
-                label: "Taxonomie Berichterstattung",
-                description: "Wird der EU-Taxonomie Bericht auf Basis NFRD oder auf Basis CSRD erstellt?",
-                options: [
-                        {
-                            label: "NFRD",
-                            value: "Nfrd",
-                        },
-                        {
-                            label: "CSRD",
-                            value: "Csrd",
-                        },
-                    ],
-                unit: "",
-                component: "SingleSelectFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "euTaxonomieKompassAktivitaeten",
-                label: "EU Taxonomie Kompass Aktivitäten",
-                description: "Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?",
-                options: [
-                        {
-                            label: "EuTaxonomyActivityOptions",
-                            value: "Eutaxonomyactivityoptions",
-                        },
-                    ],
-                unit: "",
-                component: "MultiSelectFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten",
-                label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
-                description: "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-                options: [
-                        {
-                            label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
-                            value: "umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten",
-                        },
-                    ],
-                unit: "",
-                component: "GdvYearlyDecimalTimeseriesDataFormField",
-                required: false,
-                showIf: ():boolean => true, 
-                validation: "",
-                },
-     
-            ],
-            },
-        ],
-        },
-    {
-        name: "soziales",
-        label: "Soziales",
-        color: " ", 
-        showIf: ():boolean => true,
-        subcategories: [    {
-            name: "aenderungenUnternehmensstruktur",
-            label: "Änderungen Unternehmensstruktur",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "sicherheitsmassnahmenFuerMitarbeiter",
-            label: "Sicherheitsmaßnahmen für Mitarbeiter",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "einkommensgleichheit",
-            label: "Einkommensgleichheit",
-            fields: [
-                 {
-                name: "massnahmenZurVerbesserungDerEinkommensungleichheit",
-                label: "Maßnahmen zur Verbesserung der Einkommensungleichheit",
-                description: "Wie überwacht das Unternehmen die Einkommens(un)gleichheit und welche Maßnahmen wurden ergriffen, um die Einkommensungleichheit abzustellen?",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "ueberwachungDerEinkommensungleichheit",
-                label: "Überwachung der Einkommensungleichheit",
-                description: "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für die letzten drei Jahre an.",
-                options: [
-                        {
-                            label: "Geschlechtsspezifisches Lohngefälle",
-                            value: "geschlechtsspezifischesLohngefaelle",
-                        },
-                        {
-                            label: "Einkommensungleichheitsverhältnis",
-                            value: "einkommensungleichheitsverhaeltnis",
-                        },
-                        {
-                            label: "CEO-Einkommensungleichheitsverhältnis",
-                            value: "ceoEinkommenungleichheitsverhaeltnis",
-                        },
-                    ],
-                unit: "",
-                component: "GdvYearlyDecimalTimeseriesDataFormField",
-                required: false,
-                showIf: ():boolean => true, 
-                validation: "",
-                },
-     
-            ],
-            },
-        {
-            name: "geschlechterdiversitaet",
-            label: "Geschlechterdiversität",
-            fields: [
-                 {
-                name: "definitionTopManagement",
-                label: "Definition Top-Management",
-                description: "Bitte geben Sie Ihre Definition von \"Top-Management\".",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "einhaltungRechtlicherVorgaben",
-                label: "Einhaltung rechtlicher Vorgaben",
-                description: "Welche Maßnahmen wurden ergriffen, um das geltende Recht in Bezug auf die Geschlechterdiversität von Exekutivinstanzen einzuhalten?",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-     
-            ],
-            },
-        {
-            name: "audit",
-            label: "Audit",
-            fields: [
-                 {
-                name: "auditsZurEinhaltungVonArbeitsstandards",
-                label: "Audits zur Einhaltung von Arbeitsstandards",
-                description: "Führt das Unternehmen interne oder externe Audits durch, um die Einhaltung der Arbeitsnormen durch das Unternehmen zu bewerten?",
-    
-                unit: "",
-                component: "YesNoFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
-                validation: "",
-                },
-            {
-                name: "artDesAudits",
-                label: "Art des Audits",
-    
-                options: [
-                        {
-                            label: "Interne Anhörung",
-                            value: "InterneAnhoerung",
-                        },
-                        {
-                            label: "Prüfung durch Dritte",
-                            value: "PruefungDurchDritte",
-                        },
-                        {
-                            label: "Sowohl intern als auch von Drittanbietern",
-                            value: "SowohlInternAlsAuchVonDrittanbietern",
-                        },
-                    ],
-                unit: "",
-                component: "SingleSelectFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes", 
-                validation: "",
-                },
-            {
-                name: "auditErgebnisse",
-                label: "Audit Ergebnisse",
-                description: "Bitte geben Sie Informationen über das letzte Audit an.",
-    
-                unit: "",
-                component: "InputTextFormField",
-                required: false,
-                showIf: (dataset: GdvData):boolean => dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes", 
-                validation: "",
-                },
-     
-            ],
-            },
-        {
-            name: "anzahlDerBetroffenenMitarbeiter",
-            label: "Anzahl der betroffenen Mitarbeiter",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "auswirkungenAufAnteilBefristerVertraegeUndFluktuation",
-            label: "Auswirkungen auf Anteil befrister Verträge und Fluktuation",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "budgetFuerSchulungAusbildung",
-            label: "Budget für Schulung/Ausbildung",
-            fields: [
-    
-            ],
-            },
-        ],
-        },
-    {
-        name: "unternehmensfuehrungGovernance",
-        label: "Unternehmensführung/ Governance",
-        color: " ", 
-        showIf: ():boolean => true,
-        subcategories: [    {
-            name: "wirtschaftspruefer",
-            label: "Wirtschaftsprüfer",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "ceoVorsitzender",
-            label: "CEO/Vorsitzender",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "amtszeit",
-            label: "Amtszeit",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "einbeziehungVonStakeholdern",
-            label: "Einbeziehung von Stakeholdern",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "prozessDerEinbeziehungVonStakeholdern",
-            label: "Prozess der Einbeziehung von Stakeholdern",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "mechanismenZurAusrichtungAufStakeholder",
-            label: "Mechanismen zur Ausrichtung auf Stakeholder",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "veroeffentlichteUnternehmensrichtlinien",
-            label: "Veröffentlichte Unternehmensrichtlinien",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "esgKriterienUndUeberwachungDerLieferanten",
-            label: "ESG-Kriterien und Überwachung der Lieferanten",
-            fields: [
-    
-            ],
-            },
-        {
-            name: "auswahlkriterien",
-            label: "Auswahlkriterien",
-            fields: [
-    
-            ],
-            },
-        ],
-        },
-    ];
+            description:
+              "Verfügt das Unternehmen über interne Richtlinien, die einen Mindestumweltstandard im Produktionsprozess sicherstellen?",
 
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "energieverbrauch",
+        label: "Energieverbrauch",
+        fields: [
+          {
+            name: "unternehmensGruppenStrategieBzglEnergieverbrauch",
+            label: "Unternehmens/Gruppen Strategie bzgl Energieverbrauch",
+            description:
+              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "berichterstattungEnergieverbrauch",
+            label: "Berichterstattung Energieverbrauch",
+            description:
+              "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+            options: [
+              {
+                label: "Energieverbrauch",
+                value: "energieverbrauch",
+              },
+              {
+                label: "Verbrauch erneuerbare Energien",
+                value: "verbrauchErneuerbareEnergien",
+              },
+              {
+                label: "Erzeugung erneuerbare Energien",
+                value: "erzeugungErneuerbareEnergien",
+              },
+            ],
+            unit: "",
+            component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "energieeffizienzImmobilienanlagen",
+        label: "Energieeffizienz Immobilienanlagen",
+        fields: [
+          {
+            name: "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen",
+            label: "Unternehmens/Gruppen Strategie bzgl energieeffizienten Immobilienanlagen",
+            description:
+              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "berichterstattungEnergieverbrauchVonImmobilienvermoegen",
+            label: "Berichterstattung Energieverbrauch von Immobilienvermoegen",
+            description:
+              "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+            options: [
+              {
+                label: "energieeffiziente Immobilienanlagen",
+                value: "energieeffizienteImmobilienanlagen",
+              },
+            ],
+            unit: "",
+            component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "wasserverbrauch",
+        label: "Wasserverbrauch",
+        fields: [
+          {
+            name: "unternehmensGruppenStrategieBzglWasserverbrauch",
+            label: "Unternehmens/Gruppen Strategie bzgl Wasserverbrauch",
+            description:
+              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "berichterstattungWasserverbrauch",
+            label: "Berichterstattung Wasserverbrauch",
+            description:
+              "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+            options: [
+              {
+                label: "Wasserverbrauch",
+                value: "wasserverbrauch",
+              },
+              {
+                label: "Emissionen in Wasser",
+                value: "emissionenInWasser",
+              },
+            ],
+            unit: "",
+            component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "abfallproduktion",
+        label: "Abfallproduktion",
+        fields: [
+          {
+            name: "unternehmensGruppenStrategieBzglAbfallproduktion",
+            label: "Unternehmens/Gruppen Strategie bzgl Abfallproduktion",
+            description:
+              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "gefaehrlicherAbfall",
+            label: "Gefährlicher Abfall",
+            description:
+              "Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "berichterstattungAbfallproduktion",
+            label: "Berichterstattung Abfallproduktion",
+            description:
+              "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+            options: [
+              {
+                label: "Abfallmenge",
+                value: "abfallmenge",
+              },
+              {
+                label: "Anteil der recycelten Abfallmenge",
+                value: "anteilRecycelterAbfallmenge",
+              },
+              {
+                label: "Anteil gefährlicher Abfall an Gesamtmenge",
+                value: "anteilGefaehrlicherAbfallmenge",
+              },
+            ],
+            unit: "",
+            component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "recyclingImProduktionsprozess",
+            label: "Recycling im Produktionsprozess",
+            description:
+              "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereitsrecyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre.",
+            options: [
+              {
+                label: "Anteil an Recyclaten",
+                value: "anteilAnRecyclaten",
+              },
+            ],
+            unit: "",
+            component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "biodiversitaet",
+        label: "Biodiversität",
+        fields: [
+          {
+            name: "negativeAktivitaetenFuerDieBiologischeVielfalt",
+            label: "Negative Aktivitäten für die biologische Vielfalt",
+            description:
+              "Hat das Unternehmen Standorte / Betriebe in oder in der Nähe von biodiversitätssensiblen Gebieten, in denen sich die Aktivitäten des Unternehmens negativ auf diese Gebiete auswirken?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "negativeMassnahmenFuerDieBiologischeVielfalt",
+            label: "Negative Maßnahmen für die biologische Vielfalt",
+            description:
+              "Bitte erläutern Sie Aktivitäten, die sich negativ auf die Biodiversität auswirken. Teilen Sie bitte auch den von der Gruppe/Unternehmen definierte Entwicklungspfad für den Umgang mit diesen Maßnahmen (Zeitplan und Ziel - falls vorhanden) mit uns und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.umwelt?.biodiversitaet?.negativeAktivitaetenFuerDieBiologischeVielfalt == "Yes",
+            validation: "",
+          },
+          {
+            name: "positiveAktivitaetenFuerDieBiologischeVielfalt",
+            label: "Positive Aktivitäten für die biologische Vielfalt",
+            description:
+              "Hat das Unternehmen Standorte / Betriebe in oder in der Nähe von biodiversitätssensiblen Gebieten, in denen sich die Aktivitäten des Unternehmens positiv auf diese Gebiete auswirken?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "positiveMassnahmenFuerDieBiologischeVielfalt",
+            label: "Positive Maßnahmen für die biologische Vielfalt",
+            description:
+              "Bitte erläutern Sie Aktivitäten, die sich positiv auf die Biodiversität auswirken. Teilen Sie bitte auch den von der Gruppe/Unternehmen definierte Entwicklungspfad für die Weiterentwicklung dieser Maßnahmen (Zeitplan und Ziel - falls vorhanden) mit uns und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.umwelt?.biodiversitaet?.positiveAktivitaetenFuerDieBiologischeVielfalt == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "fossileBrennstoffe",
+        label: "Fossile Brennstoffe",
+        fields: [
+          {
+            name: "einnahmenAusFossilenBrennstoffen",
+            label: "Einnahmen aus fossilen Brennstoffen",
+            description:
+              "Erzielt das Unternehmen einen Teil seiner Einnahmen aus Aktivitäten im Bereich fossiler Brennstoffe und/oder besitzt das Unternehmen Immobilien, die an der Gewinnung, Lagerung, dem Transport oder der Herstellung fossiler Brennstoffe beteiligt sind?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "berichterstattungEinnahmenAusFossilenBrennstoffen",
+            label: "Berichterstattung Einnahmen aus fossilen Brennstoffen",
+            description:
+              "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+            options: [
+              {
+                label: "Anteil der Einnahmen aus fossilen Brennstoffen",
+                value: "anteilEinnahmenAusFossilenBrennstoffen",
+              },
+            ],
+            unit: "",
+            component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.umwelt?.fossileBrennstoffe?.einnahmenAusFossilenBrennstoffen == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "taxonomie",
+        label: "Taxonomie",
+        fields: [
+          {
+            name: "taxonomieBerichterstattung",
+            label: "Taxonomie Berichterstattung",
+            description: "Wird der EU-Taxonomie Bericht auf Basis NFRD oder auf Basis CSRD erstellt?",
+            options: [
+              {
+                label: "NFRD",
+                value: "Nfrd",
+              },
+              {
+                label: "CSRD",
+                value: "Csrd",
+              },
+            ],
+            unit: "",
+            component: "SingleSelectFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "euTaxonomieKompassAktivitaeten",
+            label: "EU Taxonomie Kompass Aktivitäten",
+            description: "Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?",
+            options: [
+              {
+                label: "EuTaxonomyActivityOptions",
+                value: "Eutaxonomyactivityoptions",
+              },
+            ],
+            unit: "",
+            component: "MultiSelectFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten",
+            label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
+            description:
+              "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+            options: [
+              {
+                label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
+                value: "umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten",
+              },
+            ],
+            unit: "",
+            component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "soziales",
+    label: "Soziales",
+    color: " ",
+    showIf: (): boolean => true,
+    subcategories: [
+      {
+        name: "aenderungenUnternehmensstruktur",
+        label: "Änderungen Unternehmensstruktur",
+        fields: [],
+      },
+      {
+        name: "sicherheitsmassnahmenFuerMitarbeiter",
+        label: "Sicherheitsmaßnahmen für Mitarbeiter",
+        fields: [],
+      },
+      {
+        name: "einkommensgleichheit",
+        label: "Einkommensgleichheit",
+        fields: [
+          {
+            name: "massnahmenZurVerbesserungDerEinkommensungleichheit",
+            label: "Maßnahmen zur Verbesserung der Einkommensungleichheit",
+            description:
+              "Wie überwacht das Unternehmen die Einkommens(un)gleichheit und welche Maßnahmen wurden ergriffen, um die Einkommensungleichheit abzustellen?",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "ueberwachungDerEinkommensungleichheit",
+            label: "Überwachung der Einkommensungleichheit",
+            description:
+              "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für die letzten drei Jahre an.",
+            options: [
+              {
+                label: "Geschlechtsspezifisches Lohngefälle",
+                value: "geschlechtsspezifischesLohngefaelle",
+              },
+              {
+                label: "Einkommensungleichheitsverhältnis",
+                value: "einkommensungleichheitsverhaeltnis",
+              },
+              {
+                label: "CEO-Einkommensungleichheitsverhältnis",
+                value: "ceoEinkommenungleichheitsverhaeltnis",
+              },
+            ],
+            unit: "",
+            component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "geschlechterdiversitaet",
+        label: "Geschlechterdiversität",
+        fields: [
+          {
+            name: "definitionTopManagement",
+            label: "Definition Top-Management",
+            description: 'Bitte geben Sie Ihre Definition von "Top-Management".',
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "einhaltungRechtlicherVorgaben",
+            label: "Einhaltung rechtlicher Vorgaben",
+            description:
+              "Welche Maßnahmen wurden ergriffen, um das geltende Recht in Bezug auf die Geschlechterdiversität von Exekutivinstanzen einzuhalten?",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "audit",
+        label: "Audit",
+        fields: [
+          {
+            name: "auditsZurEinhaltungVonArbeitsstandards",
+            label: "Audits zur Einhaltung von Arbeitsstandards",
+            description:
+              "Führt das Unternehmen interne oder externe Audits durch, um die Einhaltung der Arbeitsnormen durch das Unternehmen zu bewerten?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "artDesAudits",
+            label: "Art des Audits",
+
+            options: [
+              {
+                label: "Interne Anhörung",
+                value: "InterneAnhoerung",
+              },
+              {
+                label: "Prüfung durch Dritte",
+                value: "PruefungDurchDritte",
+              },
+              {
+                label: "Sowohl intern als auch von Drittanbietern",
+                value: "SowohlInternAlsAuchVonDrittanbietern",
+              },
+            ],
+            unit: "",
+            component: "SingleSelectFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes",
+            validation: "",
+          },
+          {
+            name: "auditErgebnisse",
+            label: "Audit Ergebnisse",
+            description: "Bitte geben Sie Informationen über das letzte Audit an.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes",
+            validation: "",
+          },
+        ],
+      },
+      {
+        name: "anzahlDerBetroffenenMitarbeiter",
+        label: "Anzahl der betroffenen Mitarbeiter",
+        fields: [],
+      },
+      {
+        name: "auswirkungenAufAnteilBefristerVertraegeUndFluktuation",
+        label: "Auswirkungen auf Anteil befrister Verträge und Fluktuation",
+        fields: [],
+      },
+      {
+        name: "budgetFuerSchulungAusbildung",
+        label: "Budget für Schulung/Ausbildung",
+        fields: [],
+      },
+    ],
+  },
+  {
+    name: "unternehmensfuehrungGovernance",
+    label: "Unternehmensführung/ Governance",
+    color: " ",
+    showIf: (): boolean => true,
+    subcategories: [
+      {
+        name: "wirtschaftspruefer",
+        label: "Wirtschaftsprüfer",
+        fields: [],
+      },
+      {
+        name: "ceoVorsitzender",
+        label: "CEO/Vorsitzender",
+        fields: [],
+      },
+      {
+        name: "amtszeit",
+        label: "Amtszeit",
+        fields: [],
+      },
+      {
+        name: "einbeziehungVonStakeholdern",
+        label: "Einbeziehung von Stakeholdern",
+        fields: [],
+      },
+      {
+        name: "prozessDerEinbeziehungVonStakeholdern",
+        label: "Prozess der Einbeziehung von Stakeholdern",
+        fields: [],
+      },
+      {
+        name: "mechanismenZurAusrichtungAufStakeholder",
+        label: "Mechanismen zur Ausrichtung auf Stakeholder",
+        fields: [],
+      },
+      {
+        name: "veroeffentlichteUnternehmensrichtlinien",
+        label: "Veröffentlichte Unternehmensrichtlinien",
+        fields: [],
+      },
+      {
+        name: "esgKriterienUndUeberwachungDerLieferanten",
+        label: "ESG-Kriterien und Überwachung der Lieferanten",
+        fields: [],
+      },
+      {
+        name: "auswahlkriterien",
+        label: "Auswahlkriterien",
+        fields: [],
+      },
+    ],
+  },
+];
