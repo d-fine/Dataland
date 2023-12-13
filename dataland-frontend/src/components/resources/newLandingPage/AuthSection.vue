@@ -72,7 +72,7 @@ const register = (): void => {
   &__authsection {
     display: flex;
     gap: 32px;
-    align-items: center;
+    align-items: baseline;
 
     &-login {
       position: relative;

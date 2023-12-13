@@ -24,7 +24,22 @@
               @change="handleChangeFrameworkEvent"
             />
             <slot name="reportingPeriodDropdown" />
+            <div
+              class="flex align-content-start align-items-center pl-3"
+              v-if="dataType != DataTypeEnum.EutaxonomyNonFinancials && dataType !== DataTypeEnum.Sme"
+            >
+              <InputSwitch
+                class="form-field vertical-middle"
+                data-test="hideEmptyDataToggleButton"
+                inputId="hideEmptyDataToggleButton"
+                v-model="hideEmptyFields"
+              />
+              <span data-test="hideEmptyDataToggleCaption" class="ml-2 font-semibold" style="font-size: 14px">
+                Hide empty fields
+              </span>
+            </div>
           </div>
+
           <div class="flex align-content-end align-items-center">
             <QualityAssuranceButtons
               v-if="isReviewableByCurrentUser"
@@ -80,18 +95,20 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
 import PrimeButton from "primevue/button";
 import Dropdown, { type DropdownChangeEvent } from "primevue/dropdown";
-import { defineComponent, inject, ref } from "vue";
+import { computed, defineComponent, inject, ref } from "vue";
 
 import TheFooter from "@/components/generics/TheFooter.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from "@/utils/KeycloakUtils";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
-import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } from "@clients/backend";
+import { type DataMetaInformation, type CompanyInformation, DataTypeEnum } from "@clients/backend";
 
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import OverlayPanel from "primevue/overlaypanel";
 import QualityAssuranceButtons from "@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
+import type FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
+import InputSwitch from "primevue/inputswitch";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -106,6 +123,7 @@ export default defineComponent({
     OverlayPanel,
     SelectReportingPeriodDialog,
     QualityAssuranceButtons,
+    InputSwitch,
   },
   emits: ["updateActiveDataMetaInfoForChosenFramework"],
   props: {
@@ -134,7 +152,6 @@ export default defineComponent({
   data() {
     return {
       fetchedCompanyInformation: {} as CompanyInformation,
-
       chosenDataTypeInDropdown: "",
       dataTypesInDropdown: [] as { label: string; value: string }[],
       humanizeStringOrNumber,
@@ -148,9 +165,20 @@ export default defineComponent({
       isDataProcessedSuccesfully: true,
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
+      hideEmptyFields: !this.hasUserReviewerRights,
+    };
+  },
+  provide() {
+    return {
+      hideEmptyFields: computed(() => {
+        return this.hideEmptyFields;
+      }),
     };
   },
   computed: {
+    DataTypeEnum() {
+      return DataTypeEnum;
+    },
     isReviewableByCurrentUser() {
       return this.hasUserReviewerRights && this.singleDataMetaInfoToDisplay?.qaStatus === "Pending";
     },
@@ -330,6 +358,9 @@ export default defineComponent({
   watch: {
     companyID() {
       void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
+    },
+    isReviewableByCurrentUser() {
+      this.hideEmptyFields = !this.hasUserReviewerRights;
     },
     dataType(newDataType: string) {
       this.chosenDataTypeInDropdown = newDataType;

@@ -25,13 +25,13 @@ const handleClick = (): void => {
 .button-font-style {
   font-size: 16px;
   font-weight: 600;
-  line-height: 20px;
+  line-height: 24px;
   letter-spacing: 0.75px;
   text-transform: uppercase;
 }
 
 .button-component {
-  padding: 14px 32px;
+  padding: 14px 32px 12px;
   border-radius: 32px;
   background-color: var(--primary-orange);
   color: var(--default-neutral-white);

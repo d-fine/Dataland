@@ -34,3 +34,5 @@ local
 
 gitinfo
 .envrc
+
+testing/data-migration/migrationConfig.sh
