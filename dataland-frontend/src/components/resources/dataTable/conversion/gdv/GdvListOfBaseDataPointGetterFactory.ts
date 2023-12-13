@@ -9,8 +9,8 @@ import GdvListOfBaseDataPointModal from "@/components/resources/dataTable/modals
 
 /**
  * Convert a list of string-wrapping base datapoints into a display object.
- * @param baseDataPoints to convert
  * @param fieldLabel of the field that holds this list of base datapoints
+ * @param baseDataPoints to convert
  * @param descriptionColumnHeader will appear as column header on the description column
  * @param documentColumnHeader will appear as column header on the documents column
  * @returns a valid display object type for the MLDT
