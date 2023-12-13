@@ -54,7 +54,6 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
    */
   function uploadFieldSpecificDocuments(fileName: string, contentSize: number, fieldName: string): void {
     cy.get(`[data-test=${fieldName}]`).get('input[value="Yes"]').check();
-    cy.wait(10000);
     new UploadDocuments(fieldName).selectDummyFile(fileName, contentSize);
   }
 
