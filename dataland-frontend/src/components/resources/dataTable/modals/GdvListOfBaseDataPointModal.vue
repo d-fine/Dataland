@@ -29,9 +29,9 @@ const tableData = computed(() => {
     <Column :header="dialogData.documentColumnHeader" headerStyle="width: 15vw;">
       <template #body="{ data }">
         <DocumentLink
-          :label="data.dataSource.fileName"
-          :download-name="data.dataSource.fileName"
-          :file-reference="data.dataSource.fileReference"
+          :label="data.dataSource?.fileName"
+          :download-name="data.dataSource?.fileName"
+          :file-reference="data.dataSource?.fileReference"
           show-icon
         />
       </template>

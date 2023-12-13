@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :label="label" :description="description" :is-required="required" />
+    <UploadFormHeader :label="label" v-if="description" :description="description" :is-required="required" />
     <FormKit
       type="list"
       :name="name"
@@ -36,6 +36,7 @@ import NonAlignedActivitiesFormElement from "@/components/forms/parts/elements/d
 import ProductionSiteFormElement from "@/components/forms/parts/elements/derived/ProductionSiteFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import UploadDocumentsFormWithComment from "@/components/forms/parts/elements/basic/UploadDocumentsFormWithComment.vue";
 
 export default defineComponent({
   name: "FormListFormField",
@@ -45,6 +46,7 @@ export default defineComponent({
     ProductionSiteFormElement,
     AlignedActivitiesFormElements,
     NonAlignedActivitiesFormElement,
+    UploadDocumentsFormWithComment,
     FormKit,
     PrimeButton,
   },

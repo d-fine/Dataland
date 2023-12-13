@@ -54,6 +54,9 @@
                           :data-test="field.name"
                           :unit="field.unit"
                           @reportsUpdated="updateDocumentsList"
+                          @field-specific-documents-updated="
+                            updateDocumentsOnField(`${category.name}.${subcategory.name}.${field.name}`, $event)
+                          "
                           :ref="field.name"
                         />
                       </FormKit>
@@ -317,6 +320,18 @@ export default defineComponent({
       this.documents = new Map();
       if (reportsToUpload?.length) {
         reportsToUpload.forEach((document) => this.documents.set(document.file.name, document));
+      }
+    },
+    /**
+     * Updates the referenced document for a specific field
+     * @param fieldId an identifier for the field
+     * @param referencedDocument the documen that is referenced
+     */
+    updateDocumentsOnField(fieldId: string, referencedDocument: DocumentToUpload | undefined) {
+      if (referencedDocument) {
+        this.fieldSpecificDocuments.set(fieldId, [referencedDocument]);
+      } else {
+        this.fieldSpecificDocuments.delete(fieldId);
       }
     },
   },
