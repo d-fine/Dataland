@@ -7,11 +7,10 @@ creation URL (or simply copy this md file into the description)
 
 ## Dataland
 
-### Notes from Nov 2023
+### Notes from Dec 2023
+- There were two 2 messages found in RabbitMQ dead letter queue on dev1 and dev2 respectively, details added in ticket
 - JDK/JRE must remain at 17, upgrading it to 21 caused too many errors, also Kotlin 1.9.10 is not compatible with Java 21
 - kotlin to remain at 1.9.10 instead of 1.9.20, which caused error
-- kept gradle wrapper at 8.4 instead of updating to 8.4.RC1
-- updated flyway to only 9.22.3
 - eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI, we're using 17.
 - some sec fixes or updates to `package.json` in /frontend and /keycloak break the build
 
@@ -32,10 +31,7 @@ appear.
   https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
 - [ ] Update @zxcvbn-ts/language-common to 3.0.3 is skipped due to issues in rebuilding keycloak Docker images
 - [ ] Update @zxcvbn-ts/language-en to 3.0.1 is skipped due to issues in rebuilding keycloak Docker images
-- [ ] Update Postgres in Docker-compose.yml to 16.0 causes CD to fail. Should be retried in future tickets.
 - [ ] The docker-compose-plugin v.2.19.1 causes connection issues:
-  If running `sudo apt-get update && sudo apt-get upgrade` on the servers causes connection issues
-  this can be possibly fixed by reverting the docker-compose-plugin version
 - [ ] Check that it is still valid for `**/CompanyApi.kt', '**/CompanyDataController.kt` to be excluded from detekt, 
       at latest once the refactoring of the APIs is done this must be reevaluated
 ### Gradle update
