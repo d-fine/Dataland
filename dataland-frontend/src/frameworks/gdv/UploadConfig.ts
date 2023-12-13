@@ -152,8 +152,8 @@ export const gdvDataModel : Category[] = [    {
             label: "ESG Berichte",
             fields: [
                  {
-                name: "nachhaltigkeitsbericht",
-                label: "Nachhaltigkeitsbericht",
+                name: "nachhaltigkeitsberichte",
+                label: "Nachhaltigkeitsberichte",
                 description: "Erstellt das Unternehmen Nachhaltigkeits- oder ESG-Berichte?",
     
                 unit: "",
@@ -187,7 +187,7 @@ export const gdvDataModel : Category[] = [    {
                 unit: "",
                 component: "SingleSelectFormField",
                 required: false,
-                showIf: (dataset: GdvData):boolean => dataset.allgemein?.esgBerichte?.nachhaltigkeitsbericht == "Yes", 
+                showIf: (dataset: GdvData):boolean => dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == "Yes", 
                 validation: "",
                 },
             {
@@ -198,7 +198,7 @@ export const gdvDataModel : Category[] = [    {
                 unit: "",
                 component: "ListOfBaseDataPointsFormField",
                 required: false,
-                showIf: ():boolean => true, 
+                showIf: (dataset: GdvData):boolean => dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == "Yes", 
                 validation: "",
                 },
      
@@ -216,7 +216,7 @@ export const gdvDataModel : Category[] = [    {
                 unit: "",
                 component: "YesNoFormField",
                 required: false,
-                showIf: ():boolean => true, 
+                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
                 validation: "",
                 },
             {
@@ -227,7 +227,7 @@ export const gdvDataModel : Category[] = [    {
                 unit: "",
                 component: "YesNoFormField",
                 required: false,
-                showIf: ():boolean => true, 
+                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
                 validation: "",
                 },
             {
@@ -238,7 +238,7 @@ export const gdvDataModel : Category[] = [    {
                 unit: "",
                 component: "YesNoFormField",
                 required: false,
-                showIf: ():boolean => true, 
+                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
                 validation: "",
                 },
             {
@@ -249,7 +249,7 @@ export const gdvDataModel : Category[] = [    {
                 unit: "",
                 component: "YesNoFormField",
                 required: false,
-                showIf: ():boolean => true, 
+                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
                 validation: "",
                 },
             {
@@ -260,38 +260,68 @@ export const gdvDataModel : Category[] = [    {
                 unit: "",
                 component: "ListOfBaseDataPointsFormField",
                 required: false,
-                showIf: ():boolean => true, 
+                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
                 validation: "",
                 },
      
             ],
             },
         {
-            name: "mechanismenZurUeberwachungDerEinhaltungUnGlobalCompactPrinzipienUndOderOecdLeitsaetze",
-            label: "Mechanismen zur Überwachung der Einhaltung UN Global Compact Prinzipien und/oder OECD Leitsätze",
+            name: "unGlobalConceptPrinzipien",
+            label: "UN Global Concept Prinzipien",
             fields: [
+                 {
+                name: "mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien",
+                label: "Mechanismen zur Überwachung der Einhaltung der UN Global Compact Prinzipien",
+                description: "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der Prinzipien des UN Global Compact zu überwachen?",
     
-            ],
-            },
-        {
-            name: "erklaerungUngc",
-            label: "Erklärung UNGC",
-            fields: [
+                unit: "",
+                component: "YesNoFormField",
+                required: false,
+                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
+                validation: "",
+                },
+            {
+                name: "erklaerungDerEinhaltung",
+                label: "Erklärung der Einhaltung ",
+                description: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
     
+                unit: "",
+                component: "InputTextFormField",
+                required: false,
+                showIf: (dataset: GdvData):boolean => dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUnGlobalCompactPrinzipien == "Yes", 
+                validation: "",
+                },
+     
             ],
             },
         {
             name: "oecdLeitsaetze",
             label: "OECD Leitsätze",
             fields: [
+                 {
+                name: "mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze",
+                label: "Mechanismen zur Überwachung der Einhaltung der OECD-Leitsätze",
+                description: "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der OECD-Leitsätze für multinationale Unternehmen (OECD MNE Guidelines) zu überwachen?",
     
-            ],
-            },
-        {
-            name: "erklaerungOecd",
-            label: "Erklärung OECD",
-            fields: [
+                unit: "",
+                component: "YesNoFormField",
+                required: false,
+                showIf: (dataset: GdvData):boolean => dataset.general?.masterData?.berichtsPflicht == "Yes", 
+                validation: "",
+                },
+            {
+                name: "erklaerungOecd",
+                label: "Erklärung OECD",
+                description: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
     
+                unit: "",
+                component: "InputTextFormField",
+                required: false,
+                showIf: (dataset: GdvData):boolean => dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == "Yes", 
+                validation: "",
+                },
+     
             ],
             },
         {
@@ -980,7 +1010,7 @@ export const gdvDataModel : Category[] = [    {
             {
                 name: "artDesAudits",
                 label: "Art des Audits",
-                description: "PLACEHOLDER",
+    
                 options: [
                         {
                             label: "Interne Anhörung",
