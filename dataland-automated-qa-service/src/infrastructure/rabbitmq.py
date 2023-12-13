@@ -2,7 +2,7 @@ import json
 import time
 import logging
 
-from infrastructure.validator import ValidatorHolder
+from infrastructure.validator import ValidatorHolder, AutomaticQaNotPossibleException
 import pika
 import pika.exceptions
 import infrastructure.properties as p
@@ -94,36 +94,50 @@ def process_qa_request(
         f"Received {resource_type} with ID {resource_id} for automated review. (Correlation ID: {correlation_id})")
     if bypass_qa:
         logging.info(f"Bypassing QA for {resource_type} with ID {resource_id}. (Correlation ID: {correlation_id})")
-        message_to_send = {
-            "identifier": resource_id,
-            "validationResult": "Accepted"
-        }  # TODO use client for accepted
-        channel.basic_publish(
-            exchange=quality_assured_exchange,
-            routing_key=routing_key,
-            body=json.dumps(message_to_send),
-            properties=pika.BasicProperties(
-                headers={
-                    correlation_id_header: correlation_id,
-                    message_type_header: qa_completed_type
-                }
-            )
-        )
+        send_qa_completed_message(channel, routing_key, resource_id, "Accepted", correlation_id)  # TODO use client for Accepted
     else:
         # TODO actual logic here
         logging.info(
             f"Auto-forwarding {resource_type} with ID {resource_id} to manual QA. (Correlation ID: {correlation_id})"
         )
-        validators.validate_resource(None)  # TODO don't use None but the proper resource
-        channel.basic_publish(
-            exchange=manual_qa_requested_exchange,
-            routing_key=routing_key,
-            body=resource_id,
-            properties=pika.BasicProperties(
-                headers={
-                    correlation_id_header: correlation_id,
-                    message_type_header: manual_qa_requested_type
-                }
+        try:
+            validation_result = validators.validate_resource(None)  # TODO don't use None but the proper resource
+            # TODO check if validation_result is in feasible set of ACCEPTED and REJECTED, else throw invalid input exception or something
+            send_qa_completed_message(channel, routing_key, resource_id, validation_result, correlation_id)
+        except AutomaticQaNotPossibleException:
+            channel.basic_publish(
+                exchange=manual_qa_requested_exchange,
+                routing_key=routing_key,
+                body=resource_id,
+                properties=pika.BasicProperties(
+                    headers={
+                        correlation_id_header: correlation_id,
+                        message_type_header: manual_qa_requested_type
+                    }
+                )
             )
-        )
     channel.basic_ack(delivery_tag=method.delivery_tag)
+
+
+def send_qa_completed_message(
+        channel: pika.adapters.blocking_connection.BlockingChannel,
+        routing_key: str,
+        resource_id: str,
+        result: str,  # TODO change datatype to QaStatus
+        correlation_id: str,
+):
+    message_to_send = {
+        "identifier": resource_id,
+        "validationResult": result
+    }
+    channel.basic_publish(
+        exchange=quality_assured_exchange,
+        routing_key=routing_key,
+        body=json.dumps(message_to_send),
+        properties=pika.BasicProperties(
+            headers={
+                correlation_id_header: correlation_id,
+                message_type_header: qa_completed_type
+            }
+        )
+    )
