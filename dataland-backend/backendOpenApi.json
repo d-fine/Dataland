@@ -8741,14 +8741,6 @@
               }
             ]
           },
-          "gefaehrlicheAbfaelle": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUmweltGefaehrlicheAbfaelle"
-              }
-            ]
-          },
           "biodiversitaet": {
             "nullable": true,
             "allOf": [
@@ -8779,6 +8771,10 @@
         "type": "object",
         "properties": {
           "unternehmensGruppenStrategieBzglAbfallproduktion": {
+            "type": "string",
+            "nullable": true
+          },
+          "gefaehrlicherAbfall": {
             "type": "string",
             "nullable": true
           },
@@ -8881,15 +8877,6 @@
                 "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungEinnahmenAusFossilenBrennstoffenValues"
               }
             ]
-          }
-        }
-      },
-      "GdvUmweltGefaehrlicheAbfaelle": {
-        "type": "object",
-        "properties": {
-          "gefaehrlicherAbfall": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -10445,10 +10432,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

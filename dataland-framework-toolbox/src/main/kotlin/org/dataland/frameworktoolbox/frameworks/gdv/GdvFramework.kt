@@ -38,20 +38,47 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             ?.getOrNull<ComponentGroup>("masterData")
             ?.getOrNull<YesNoComponent>("berichtsPflicht")
         require(berichtsPflicht != null) {
-            "The field with the label \"berichtsPflicht\" cannot be null in the " +
-                "gdv framework."
+            "The field with the label \"berichtsPflicht\" must exist in the gdv framework."
         }
 
         val esgBerichte = framework.root
             .getOrNull<ComponentGroup>("allgemein")
             ?.getOrNull<ComponentGroup>("esgBerichte")
         require(esgBerichte != null) {
-            "The component group with the label \"esgBerichte\" cannot be null in the gdv framework."
+            "The component group with the label \"esgBerichte\" must exist in the gdv framework."
         }
 
         val nachhaltigkeitsberichte = esgBerichte.getOrNull<YesNoComponent>("nachhaltigkeitsberichte")
         require(nachhaltigkeitsberichte != null) {
-            "The field with the label \"nachhaltigkeitsberichte\" cannot be null in the gdv framework."
+            "The field with the label \"nachhaltigkeitsberichte\" must exist in the gdv framework."
+        }
+
+        val unGlobalConceptPrinzipien = framework.root
+            .getOrNull<ComponentGroup>("allgemein")
+            ?.getOrNull<ComponentGroup>("unGlobalConceptPrinzipien")
+        require(unGlobalConceptPrinzipien != null) {
+            "The section with the label \"unGlobalConceptPrinzipien\" must exist in the gdv framework."
+        }
+
+        val mechanismenZurUeberwachungDerEinhaltungDerUngcp =
+            unGlobalConceptPrinzipien.getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerUngcp")
+        require(mechanismenZurUeberwachungDerEinhaltungDerUngcp != null) {
+            "The field with the label \"mechanismenZurUeberwachungDerEinhaltungDerUngcp\" " +
+                "must exist in the gdv framework."
+        }
+
+        val oecdLeitsaetze = framework.root
+            .getOrNull<ComponentGroup>("allgemein")
+            ?.getOrNull<ComponentGroup>("oecdLeitsaetze")
+        require(oecdLeitsaetze != null) {
+            "The section with the label \"oecdLeitsaetze\" must exist in the gdv framework."
+        }
+
+        val mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze =
+            oecdLeitsaetze.getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze")
+        require(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze != null) {
+            "The field with the label \"mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze\" " +
+                "must exist in the gdv framework."
         }
 
         framework.root.edit<ComponentGroup>("allgemein") {
@@ -84,37 +111,31 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
             }
 
-        framework.root
-            .getOrNull<ComponentGroup>("allgemein")
-            ?.getOrNull<ComponentGroup>("unGlobalConceptPrinzipien")
-            ?.create<GdvListOfBaseDataPointComponent>(
-                "richtlinienZurEinhaltungDerUngcp",
-                "erklaerungDerEinhaltungDerUngcp",
-            ) {
-                label = "Richtlinien zur Einhaltung der UNGCP"
-                explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
-                    "liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht."
-                descriptionColumnHeader = "Beschreibung der Richtlinie"
-                documentColumnHeader = "Richtlinie"
-                // availableIf = DependsOnComponentValue( TODO
-                // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
-            }
+        unGlobalConceptPrinzipien.create<GdvListOfBaseDataPointComponent>(
+            "richtlinienZurEinhaltungDerUngcp",
+            "erklaerungDerEinhaltungDerUngcp",
+        ) {
+            label = "Richtlinien zur Einhaltung der UNGCP"
+            explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
+                "liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht."
+            descriptionColumnHeader = "Beschreibung der Richtlinie"
+            documentColumnHeader = "Richtlinie"
+            availableIf = DependsOnComponentValue(mechanismenZurUeberwachungDerEinhaltungDerUngcp, "Yes")
+            // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
+        }
 
-        framework.root
-            .getOrNull<ComponentGroup>("allgemein")
-            ?.getOrNull<ComponentGroup>("oecdLeitsaetze")
-            ?.create<GdvListOfBaseDataPointComponent>(
-                "richtlinienZurEinhaltungDerOecdLeitsaetze",
-                "erklaerungDerEinhaltungDerOecdLeitsaetze",
-            ) {
-                label = "Richtlinien zur Einhaltung der OECD-Leitsätze"
-                explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
-                    "liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht."
-                descriptionColumnHeader = "Beschreibung der Richtlinie"
-                documentColumnHeader = "Richtlinie"
-                // availableIf = DependsOnComponentValue( TODO
-                // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
-            }
+        oecdLeitsaetze.create<GdvListOfBaseDataPointComponent>(
+            "richtlinienZurEinhaltungDerOecdLeitsaetze",
+            "erklaerungDerEinhaltungDerOecdLeitsaetze",
+        ) {
+            label = "Richtlinien zur Einhaltung der OECD-Leitsätze"
+            explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
+                "liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht."
+            descriptionColumnHeader = "Beschreibung der Richtlinie"
+            documentColumnHeader = "Richtlinie"
+            availableIf = DependsOnComponentValue(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze, "Yes")
+            // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
+        }
 
         framework.root
             .getOrNull<ComponentGroup>("umwelt")
@@ -123,7 +144,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 customizeEuTaxonomieKompassAktivitaetenComponent(this)
             }
 
-// TODO what about the dependencies of all the rolling window fields?
+// TODO what about the placements of all the rolling window fields?
         val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt")
         componentGroupUmwelt?.edit<ComponentGroup>("treibhausgasemissionen") {
             create<GdvYearlyDecimalTimeseriesDataComponent>("treibhausgasBerichterstattungUndPrognosen") {
@@ -144,7 +165,11 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "scope3", "Scope 3",
                         "tCO2-Äquiv.",
-                    ),
+                    ), // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
                 )
             }
         }
@@ -169,6 +194,12 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "Erzeugung erneuerbare Energien", "%",
                     ),
                 )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                )
+                // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+                // TODO Emanuel: Die labels in den Reihen weichen iwie ab von denen im Fragebogen. Wieso?
             }
         }
         componentGroupUmwelt?.edit<ComponentGroup>("energieeffizienzImmobilienanlagen") {
@@ -186,6 +217,12 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "energieeffiziente Immobilienanlagen", "%",
                     ),
                 )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                )
+                // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+                // TODO Emanuel: Das label in der einen Reihe weicht iwie ab von dem im Fragebogen. Wieso?
             }
         }
 
@@ -204,6 +241,12 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "emissionenInWasser",
                         "Emissionen in Wasser", "t",
                     ),
+
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                    // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
                 )
             }
         }
@@ -229,6 +272,12 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "Anteil gefährlicher Abfall an Gesamtmenge", "%",
                     ),
                 )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                )
+                // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+                // TODO Emanuel: Das label in der einen Reihe weicht iwie ab von dem im Fragebogen. Wieso?
             }
         }
 
@@ -244,13 +293,26 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "Anteil " +
                             "an Recyclaten",
                         "%",
-                    ),
+                    ), // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
                 )
             }
         }
+        val einnahmenAusFossilenBrennstoffen = componentGroupUmwelt
+            ?.getOrNull<ComponentGroup>("fossileBrennstoffe")
+            ?.getOrNull<YesNoComponent>("einnahmenAusFossilenBrennstoffen")
+        require(einnahmenAusFossilenBrennstoffen != null) {
+            "The field with the label \"einnahmenAusFossilenBrennstoffen\" cannot be null in the " +
+                "gdv framework."
+        }
 
-        componentGroupUmwelt?.edit<ComponentGroup>("fossileBrennstoffe") {
-            create<GdvYearlyDecimalTimeseriesDataComponent>("berichterstattungEinnahmenAusFossilenBrennstoffen") {
+        componentGroupUmwelt.edit<ComponentGroup>("fossileBrennstoffe") {
+            create<GdvYearlyDecimalTimeseriesDataComponent>(
+                "berichterstattungEinnahmenAusFossilenBrennstoffen",
+            ) {
                 label = "Berichterstattung Einnahmen aus fossilen Brennstoffen"
                 explanation = "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den " +
                     "gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die " +
@@ -262,10 +324,16 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "Anteil der Einnahmen aus fossilen Brennstoffen", "%",
                     ),
                 )
+                availableIf = DependsOnComponentValue(
+                    einnahmenAusFossilenBrennstoffen,
+                    "Yes",
+                )
             }
+            // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+            // TODO Emanuel: Die fixtures von dem Ding sind keine vernünftigen Prozentzahlen
         }
 
-        componentGroupUmwelt?.edit<ComponentGroup>("taxonomie") {
+        componentGroupUmwelt.edit<ComponentGroup>("taxonomie") {
             create<GdvYearlyDecimalTimeseriesDataComponent>(
                 "umsatzInvestitionsaufwandFuerNachhaltige" +
                     "Aktivitaeten",
@@ -284,7 +352,13 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "Mio. €",
                     ),
                 )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
+                )
             }
+            // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+            // TODO Emanuel: Irgendwie sieht die Tabelle hier auf der viewpage ganz anders aus als im Fragebogen
         }
 
         val componentGroupSoziales: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("soziales")
@@ -307,8 +381,13 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 ),
             )
         }
-
-        componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>(
+        val aenderungenUnternehmensstruktur = componentGroupSoziales
+            ?.getOrNull<YesNoComponent>("aenderungenUnternehmensstruktur")
+        require(aenderungenUnternehmensstruktur != null) {
+            "The field with the label \"einnahmenAusFossilenBrennstoffen\" cannot be null in the " +
+                "gdv framework."
+        }
+        componentGroupSoziales.create<GdvYearlyDecimalTimeseriesDataComponent>(
             "auswirkungenAufAnteil" +
                 "BefristerVertraegeUndFluktuation",
         ) {
@@ -325,6 +404,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "%",
                 ),
             )
+            availableIf = DependsOnComponentValue(
+                aenderungenUnternehmensstruktur,
+                "Yes",
+            )
         }
 
         framework.root.create<GdvYearlyDecimalTimeseriesDataComponent>("unfallrate") {
@@ -337,9 +420,13 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust", "%",
                 ),
             )
+            availableIf = DependsOnComponentValue(
+                berichtsPflicht,
+                "Yes",
+            )
         }
 
-        componentGroupSoziales?.create<GdvYearlyDecimalTimeseriesDataComponent>("budgetFuerSchulungAusbildung") {
+        componentGroupSoziales.create<GdvYearlyDecimalTimeseriesDataComponent>("budgetFuerSchulungAusbildung") {
             label = "Budget für Schulung/Ausbildung"
             explanation = "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für " +
                 "Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde."
@@ -349,9 +436,13 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "Budget pro Mitarbeiter und Jahr", "€",
                 ),
             )
+            availableIf = DependsOnComponentValue(
+                berichtsPflicht,
+                "Yes",
+            )
         }
 
-        componentGroupSoziales?.edit<ComponentGroup>("einkommensgleichheit") {
+        componentGroupSoziales.edit<ComponentGroup>("einkommensgleichheit") {
             create<GdvYearlyDecimalTimeseriesDataComponent>("ueberwachungDerEinkommensungleichheit") {
                 label = "Überwachung der Einkommensungleichheit"
                 explanation = "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das " +
@@ -371,6 +462,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                             "sverhaeltnis",
                         "CEO-Einkommensungleichheitsverhältnis", "%",
                     ),
+                )
+                availableIf = DependsOnComponentValue(
+                    berichtsPflicht,
+                    "Yes",
                 )
             }
         }
