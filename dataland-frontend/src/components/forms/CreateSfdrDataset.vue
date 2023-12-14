@@ -52,7 +52,10 @@
                           :validation-label="field.validationLabel"
                           :data-test="field.name"
                           :unit="field.unit"
-                          @reportsUpdated="updateDocumentsList"
+                          @reports-updated="updateDocumentsList"
+                          @field-specific-documents-updated="
+                            updateDocumentsOnField(`${category.name}.${subcategory.name}.${field.name}`, $event)
+                          "
                           :ref="field.name"
                         />
                       </FormKit>
@@ -138,6 +141,9 @@ import CurrencyDataPointFormField from "@/components/forms/parts/fields/Currency
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
+import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
+
+const referenceableReportsFieldId = "referenceableReports";
 
 export default defineComponent({
   setup() {
@@ -147,6 +153,7 @@ export default defineComponent({
   },
   name: "CreateSfdrDataset",
   components: {
+    BaseDataPointFormField,
     SubmitButton,
     SubmitSideBar,
     UploadFormHeader,
@@ -198,10 +205,10 @@ export default defineComponent({
       postSfdrDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
-      documents: new Map() as Map<string, DocumentToUpload>,
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       climateSectorsForPrefill: [] as Array<string>,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
+      fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
     };
   },
   computed: {
@@ -273,13 +280,14 @@ export default defineComponent({
     async postSfdrData(): Promise<void> {
       this.messageCounter++;
       try {
-        if (this.documents.size > 0) {
+        if (this.fieldSpecificDocuments.get(referenceableReportsFieldId)?.length) {
           checkIfAllUploadedReportsAreReferencedInDataModel(
             this.companyAssociatedSfdrData.data as ObjectType,
             this.namesOfAllCompanyReportsForTheDataset,
           );
-          await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
         }
+        const documentsToUpload = Array.from(this.fieldSpecificDocuments.values()).flat();
+        await uploadFiles(documentsToUpload, assertDefined(this.getKeycloakPromise));
 
         const sfdrDataControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
@@ -309,9 +317,22 @@ export default defineComponent({
      */
     updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
       this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
-      this.documents = new Map();
-      if (reportsToUpload?.length) {
-        reportsToUpload.forEach((document) => this.documents.set(document.file.name, document));
+      if (reportsToUpload.length) {
+        this.fieldSpecificDocuments.set(referenceableReportsFieldId, reportsToUpload);
+      } else {
+        this.fieldSpecificDocuments.delete(referenceableReportsFieldId);
+      }
+    },
+    /**
+     * Updates the referenced document for a specific field
+     * @param fieldId an identifier for the field
+     * @param referencedDocument the documen that is referenced
+     */
+    updateDocumentsOnField(fieldId: string, referencedDocument: DocumentToUpload | undefined) {
+      if (referencedDocument) {
+        this.fieldSpecificDocuments.set(fieldId, [referencedDocument]);
+      } else {
+        this.fieldSpecificDocuments.delete(fieldId);
       }
     },
   },

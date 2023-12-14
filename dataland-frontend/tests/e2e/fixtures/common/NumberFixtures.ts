@@ -23,21 +23,28 @@ export function generateCurrencyValue(min = 0, max = 1e10, precision = 1e-2): nu
 }
 
 /**
- * Generates a random decimal value between 0 and 1
- * @param precision the precision of the decimal value
- * @returns a random float between 0 and 1
+ * Generates a random percentage value, by default in the standard range [0,100]
+ * @param min is the minimum value
+ * @param max is the maximum value
+ * @returns a random percentage value generated according to the specifications
  */
-export function generatePercentageValue(precision = 1e-4): number {
-  return generateFloat(0, 100, precision);
+export function generatePercentageValue(min = 0, max = 100): number {
+  return generateFloat(min, max);
 }
 
 /**
- * Generates a random number in [0, max]
+ * Generates a random number in [0, max] or [-max, max] if desired
  * @param max the maximum allowed value (inclusive)
- * @returns a random number in [0, max]
+ * @param negative boolean that indicates whether negative outputs are also permitted
+ * @returns a random number in [0, max], or between [-max, max] if desired
  */
-export function generateInt(max: number = 10000): number {
-  return faker.number.int(max);
+export function generateInt(max = 10000, negative = false): number {
+  const integer = faker.number.int(max);
+  if (negative) {
+    return Math.random() > 0.5 ? -integer : integer;
+  } else {
+    return integer;
+  }
 }
 
 /**
