@@ -12,7 +12,6 @@ creation URL (or simply copy this md file into the description)
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
 
-- [ ] postgres can't be updated to 16 as existing data in dev instances are not compatible
 - [ ] There were two 2 messages found in RabbitMQ dead letter queue on dev1 and dev2 respectively, details added in ticket
 - [ ] JDK/JRE must remain at 17, upgrading it to 21 caused too many errors, also Kotlin 1.9.10 is not compatible with Java 21
 - [ ] kotlin to remain at 1.9.10 instead of 1.9.20, which caused error
@@ -30,6 +29,7 @@ appear.
   https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
 - [ ] Update @zxcvbn-ts/language-common to 3.0.3 is skipped due to issues in rebuilding keycloak Docker images
 - [ ] Update @zxcvbn-ts/language-en to 3.0.1 is skipped due to issues in rebuilding keycloak Docker images
+- [ ] Update Postgres in Docker-compose.yml to 16.0 causes CD to fail. Postgres can't be upgraded to 16 as existing data is not compatible.
 - [ ] The docker-compose-plugin v.2.19.1 causes connection issues:
 - [ ] Check that it is still valid for `**/CompanyApi.kt', '**/CompanyDataController.kt` to be excluded from detekt, 
       at latest once the refactoring of the APIs is done this must be reevaluated
