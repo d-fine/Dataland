@@ -1,9 +1,9 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent>
+    <TheContent class="paper-section">
       <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
-        <MarginWrapper class="mb-2">
+        <MarginWrapper class="mb-2 bg-white">
           <BackButton id="backButton" class="mt-2" />
           <CompanyInformation :companyId="companyID" />
         </MarginWrapper>
