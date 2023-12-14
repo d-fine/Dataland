@@ -107,9 +107,9 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { type CompanyAssociatedDataGdvData, type CompanyReport, DataTypeEnum } from "@clients/backend";
+import { type CompanyAssociatedDataGdvData, type CompanyReport, DataTypeEnum, type GdvData } from "@clients/backend";
 import { useRoute } from "vue-router";
-import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from "@/utils/ValidationsUtils";
+import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
 import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
 import FreeTextFormField from "@/components/forms/parts/fields/FreeTextFormField.vue";
@@ -127,14 +127,13 @@ import PercentageFormField from "@/components/forms/parts/fields/PercentageFormF
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
-import { type DocumentToUpload, getFileName, uploadFiles } from "@/utils/FileUploadUtils";
+import { type DocumentToUpload, getFileName } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
 import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
 import { createSubcategoryVisibilityMap } from "@/utils/UploadFormUtils";
 import HighImpactClimateSectorsFormField from "@/components/forms/parts/fields/HighImpactClimateSectorsFormField.vue";
 import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
-import { HighImpactClimateSectorsNaceCodes } from "@/types/HighImpactClimateSectors";
 import IntegerExtendedDataPointFormField from "@/components/forms/parts/fields/IntegerExtendedDataPointFormField.vue";
 import BigDecimalExtendedDataPointFormField from "@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue";
 import CurrencyDataPointFormField from "@/components/forms/parts/fields/CurrencyDataPointFormField.vue";
@@ -144,6 +143,8 @@ import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNo
 import GdvYearlyDecimalTimeseriesDataFormField from "@/components/forms/parts/fields/GdvYearlyDecimalTimeseriesDataFormField.vue";
 import { gdvDataModel } from "@/frameworks/gdv/UploadConfig";
 import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
+import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 
 export default defineComponent({
   setup() {
@@ -256,22 +257,15 @@ export default defineComponent({
      */
     async loadGdvData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const gdvDataControllerApi = new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
-      ).getUnifiedFrameworkDataController(DataTypeEnum.Gdv);
-
-      const dataResponse = await gdvDataControllerApi.getFrameworkData(dataId);
-      const gdvResponseData = dataResponse.data;
-      this.referencedReportsForPrefill = gdvResponseData.data.general.general.referencedReports ?? {};
-      this.climateSectorsForPrefill = gdvResponseData?.data?.environmental?.energyPerformance
-        ?.applicableHighImpactClimateSectors
-        ? Object.keys(gdvResponseData?.data?.environmental?.energyPerformance?.applicableHighImpactClimateSectors).map(
-            (it): string => {
-              return HighImpactClimateSectorsNaceCodes[it as keyof typeof HighImpactClimateSectorsNaceCodes] ?? it;
-            },
-          )
-        : [];
-      this.companyAssociatedGdvData = objectDropNull(gdvResponseData as ObjectType) as CompanyAssociatedDataGdvData;
+      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+      const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Gdv);
+      let gdvDataControllerApi: FrameworkDataApi<GdvData>;
+      if (frameworkDefinition) {
+        gdvDataControllerApi = frameworkDefinition?.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+        const dataResponse = await gdvDataControllerApi.getFrameworkData(dataId);
+        const gdvResponseData = dataResponse.data;
+        this.companyAssociatedGdvData = objectDropNull(gdvResponseData as ObjectType) as CompanyAssociatedDataGdvData;
+      }
 
       this.waitingForData = false;
     },
@@ -281,18 +275,13 @@ export default defineComponent({
     async postGdvData(): Promise<void> {
       this.messageCounter++;
       try {
-        if (this.documents.size > 0) {
-          checkIfAllUploadedReportsAreReferencedInDataModel(
-            this.companyAssociatedGdvData.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset,
-          );
-          await uploadFiles(Array.from(this.documents.values()), assertDefined(this.getKeycloakPromise));
+        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+        const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Gdv);
+        let gdvDataControllerApi: FrameworkDataApi<GdvData>;
+        if (frameworkDefinition) {
+          gdvDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+          await gdvDataControllerApi.postFrameworkData(this.companyAssociatedGdvData);
         }
-
-        const gdvDataControllerApi = new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getUnifiedFrameworkDataController(DataTypeEnum.Gdv);
-        await gdvDataControllerApi.postFrameworkData(this.companyAssociatedGdvData);
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
