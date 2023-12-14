@@ -2198,11 +2198,10 @@
           {
             "name": "resultLimit",
             "in": "query",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "integer",
-              "format": "int32",
-              "default": 100
+              "format": "int32"
             }
           }
         ],
