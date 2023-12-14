@@ -1,11 +1,5 @@
 import { type BaseDocumentReference, type ExtendedDocumentReference, type QualityOptions } from "@clients/backend";
 
-type BaseDocumentReferenceWithComment = {
-  fileName?: string | null;
-  fileReference: string;
-  comment?: string | null;
-};
-
 export interface ExtendedDataPoint<T> {
   value?: T | null;
   dataSource?: ExtendedDocumentReference | null;
@@ -16,11 +10,6 @@ export interface ExtendedDataPoint<T> {
 export interface BaseDataPoint<T> {
   value: T;
   dataSource?: BaseDocumentReference | null;
-}
-
-export interface ListOfBaseDataPointsFormField {
-  value: string;
-  dataSource?: BaseDocumentReference[BaseDocumentReferenceWithComment] | null;
 }
 
 export type DataPointDisplay = {
