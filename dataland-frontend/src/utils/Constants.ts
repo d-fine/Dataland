@@ -9,6 +9,7 @@ export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM: DataTypeEnum[] = [
   DataTypeEnum.Sfdr,
   DataTypeEnum.Lksg,
   DataTypeEnum.EutaxonomyNonFinancials,
+    DataTypeEnum.Gdv
 ];
 
 // - Keycloak and session management related settings
