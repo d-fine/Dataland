@@ -110,7 +110,13 @@
 
                       <!-- Data source -->
                       <div class="form-field">
-                        <FormKit type="group" name="dataSource">
+                        <FormKit
+                          type="group"
+                          name="dataSource"
+                          v-model="dataSource"
+                          :key="currentReportValue"
+                          :ignore="!hasValidDataSource"
+                        >
                           <h4 class="mt-0">Data source</h4>
                           <div class="next-to-each-other">
                             <div class="flex-1">
@@ -121,14 +127,21 @@
                               />
                               <FormKit
                                 type="select"
-                                name="fileName"
+                                ignore="true"
                                 placeholder="Select a report"
                                 validation-label="Selecting a report"
                                 v-model="currentReportValue"
-                                :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
+                                :options="[noReportLabel, ...namesOfAllCompanyReportsForTheDataset]"
                                 :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />
-                              <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
+                              <div v-if="hasValidDataSource()">
+                                <FormKit type="hidden" name="fileName" :modelValue="fileReferenceAccordingToName" />
+                                <FormKit
+                                  type="hidden"
+                                  name="fileReference"
+                                  :modelValue="fileReferenceAccordingToName"
+                                />
+                              </div>
                             </div>
                             <div>
                               <UploadFormHeader
@@ -144,6 +157,7 @@
                                 validation="min:0"
                                 step="1"
                                 min="0"
+                                :ignore="!hasValidDataSource"
                               />
                             </div>
                           </div>
@@ -331,6 +345,7 @@ import {
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
+  type CompanyReport,
 } from "@clients/backend";
 import { type AxiosResponse } from "axios";
 import { type ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
@@ -373,7 +388,7 @@ export default defineComponent({
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       fiscalYearEndAsDate: null as Date | null,
       fiscalYearEnd: "",
-      currentReportValue: "",
+      currentReportValue: "" as string,
       reportingPeriod: undefined as undefined | Date,
       assuranceData: {
         None: humanizeStringOrNumber(AssuranceDataPointValueEnum.None),
@@ -386,6 +401,8 @@ export default defineComponent({
       route: useRoute(),
       waitingForData: false,
       editMode: false,
+      dataSource: undefined as CompanyReport | undefined,
+      noReportLabel: "None...",
 
       postEuTaxonomyDataForFinancialsProcessed: false,
       messageCount: 0,
@@ -446,6 +463,9 @@ export default defineComponent({
         this.currentReportValue,
         this.namesAndReferencesOfAllCompanyReportsForTheDataset,
       );
+    },
+    validDataSource(): CompanyReport | undefined {
+      return !this.dataSource?.fileReference ? undefined : this.dataSource;
     },
   },
   watch: {
@@ -690,6 +710,16 @@ export default defineComponent({
      */
     handleChangeOfReferenceableReportNamesAndReferences(reportNamesAndReferences: object) {
       this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportNamesAndReferences;
+    },
+
+    /**
+     * @returns
+     */
+    hasValidDataSource(): boolean {
+      const hasCurrentReportValue = this.currentReportValue && this.currentReportValue !== this.noReportLabel;
+      const hasFileName = this.validDataSource?.fileName && this.validDataSource?.fileName !== this.noReportLabel;
+
+      return hasCurrentReportValue || !!hasFileName;
     },
   },
 });
