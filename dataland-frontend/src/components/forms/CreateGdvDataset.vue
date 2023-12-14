@@ -28,38 +28,40 @@
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="uploadFormSection grid" v-for="subcategory in category.subcategories" :key="subcategory">
+                <div class="" v-for="subcategory in category.subcategories" :key="subcategory">
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
-                    <div class="col-3 p-3 topicLabel">
-                      <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
-                      <div :class="`p-badge badge-${category.color}`">
-                        <span>{{ category.label.toUpperCase() }}</span>
+                    <div class="uploadFormSection grid">
+                      <div class="col-3 p-3 topicLabel">
+                        <h4 :id="subcategory.name" class="anchor title">{{ subcategory.label }}</h4>
+                        <div :class="`p-badge badge-${category.color}`">
+                          <span>{{ category.label.toUpperCase() }}</span>
+                        </div>
                       </div>
-                    </div>
 
-                    <div class="col-9 formFields">
-                      <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
-                        <component
-                          v-if="field.showIf(companyAssociatedGdvData.data)"
-                          :is="field.component"
-                          :label="field.label"
-                          :placeholder="field.placeholder"
-                          :description="field.description"
-                          :name="field.name"
-                          :options="field.options"
-                          :required="field.required"
-                          :validation="field.validation"
-                          :validation-label="field.validationLabel"
-                          :reportingPeriod="yearOfDataDate"
-                          :data-test="field.name"
-                          :unit="field.unit"
-                          @reportsUpdated="updateDocumentsList"
-                          @field-specific-documents-updated="
-                            updateDocumentsOnField(`${category.name}.${subcategory.name}.${field.name}`, $event)
-                          "
-                          :ref="field.name"
-                        />
-                      </FormKit>
+                      <div class="col-9 formFields">
+                        <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
+                          <component
+                            v-if="field.showIf(companyAssociatedGdvData.data)"
+                            :is="field.component"
+                            :label="field.label"
+                            :placeholder="field.placeholder"
+                            :description="field.description"
+                            :name="field.name"
+                            :options="field.options"
+                            :required="field.required"
+                            :validation="field.validation"
+                            :validation-label="field.validationLabel"
+                            :reportingPeriod="yearOfDataDate"
+                            :data-test="field.name"
+                            :unit="field.unit"
+                            @reportsUpdated="updateDocumentsList"
+                            @field-specific-documents-updated="
+                              updateDocumentsOnField(`${category.name}.${subcategory.name}.${field.name}`, $event)
+                            "
+                            :ref="field.name"
+                          />
+                        </FormKit>
+                      </div>
                     </div>
                   </template>
                 </div>

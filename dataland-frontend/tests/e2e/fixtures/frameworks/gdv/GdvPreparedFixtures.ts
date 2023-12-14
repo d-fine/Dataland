@@ -82,20 +82,24 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
   if (newFixture.t.umwelt?.fossileBrennstoffe?.einnahmenAusFossilenBrennstoffen) {
     newFixture.t.umwelt.fossileBrennstoffe.einnahmenAusFossilenBrennstoffen = YesNo.Yes;
   }
-  if (newFixture.t.soziales) {
-    newFixture.t.soziales.aenderungenUnternehmensstruktur = YesNo.Yes;
+  if (
+    newFixture.t.soziales?.unternehmensstrukturaenderungen?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur
+  ) {
+    newFixture.t.soziales.unternehmensstrukturaenderungen.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur =
+      YesNo.Yes;
   }
   if (newFixture.t.soziales?.audit) {
     newFixture.t.soziales.audit.auditsZurEinhaltungVonArbeitsstandards = YesNo.Yes;
   }
-  if (newFixture.t.unternehmensfuehrungGovernance?.ceoVorsitzender) {
-    newFixture.t.unternehmensfuehrungGovernance.ceoVorsitzender = YesNo.Yes;
+  if (newFixture.t.unternehmensfuehrungGovernance?.sonstige?.ceoVorsitzender) {
+    newFixture.t.unternehmensfuehrungGovernance.sonstige.ceoVorsitzender = YesNo.Yes;
   }
-  if (newFixture.t.unternehmensfuehrungGovernance?.einbeziehungVonStakeholdern) {
-    newFixture.t.unternehmensfuehrungGovernance.einbeziehungVonStakeholdern = YesNo.Yes;
+  if (newFixture.t.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern) {
+    newFixture.t.unternehmensfuehrungGovernance.stakeholder.einbeziehungVonStakeholdern = YesNo.Yes;
   }
-  if (newFixture.t.unternehmensfuehrungGovernance?.esgKriterienUndUeberwachungDerLieferanten) {
-    newFixture.t.unternehmensfuehrungGovernance.esgKriterienUndUeberwachungDerLieferanten = YesNo.Yes;
+  if (newFixture.t.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten) {
+    newFixture.t.unternehmensfuehrungGovernance.lieferantenauswahl.esgKriterienUndUeberwachungDerLieferanten =
+      YesNo.Yes;
   }
   return newFixture;
 }

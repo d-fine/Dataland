@@ -7,6 +7,6 @@ import org.dataland.datalandbackend.model.gdv.YearlyTimeseriesData
  * The data-model for the Einkommensgleichheit section
  */
 data class GdvSozialesEinkommensgleichheit(
-    val massnahmenZurVerbesserungDerEinkommensungleichheit: String?,
     val ueberwachungDerEinkommensungleichheit: YearlyTimeseriesData<UeberwachungDerEinkommensungleichheitValues?>?,
+    val massnahmenZurVerbesserungDerEinkommensungleichheit: String?,
 )

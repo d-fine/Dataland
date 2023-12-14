@@ -4,20 +4,16 @@ package org.dataland.datalandbackend.frameworks.gdv.model.soziales
 import org.dataland.datalandbackend.frameworks.gdv.model.soziales.audit.GdvSozialesAudit
 import org.dataland.datalandbackend.frameworks.gdv.model.soziales.einkommensgleichheit.GdvSozialesEinkommensgleichheit
 import org.dataland.datalandbackend.frameworks.gdv.model.soziales.geschlechterdiversitaet.GdvSozialesGeschlechterdiversitaet
-import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.model.gdv.YearlyTimeseriesData
+import org.dataland.datalandbackend.frameworks.gdv.model.soziales.sicherheitUndWeiterbildung.GdvSozialesSicherheitUndWeiterbildung
+import org.dataland.datalandbackend.frameworks.gdv.model.soziales.unternehmensstrukturaenderungen.GdvSozialesUnternehmensstrukturaenderungen
 
 /**
  * The data-model for the Soziales section
  */
 data class GdvSoziales(
-    val aenderungenUnternehmensstruktur: YesNo?,
-    val sicherheitsmassnahmenFuerMitarbeiter: String?,
+    val unternehmensstrukturaenderungen: GdvSozialesUnternehmensstrukturaenderungen?,
+    val sicherheitUndWeiterbildung: GdvSozialesSicherheitUndWeiterbildung?,
     val einkommensgleichheit: GdvSozialesEinkommensgleichheit?,
     val geschlechterdiversitaet: GdvSozialesGeschlechterdiversitaet?,
     val audit: GdvSozialesAudit?,
-    val anzahlDerBetroffenenMitarbeiter: YearlyTimeseriesData<AnzahlDerBetroffenenMitarbeiterValues?>?,
-    val auswirkungenAufAnteilBefristerVertraegeUndFluktuation:
-    YearlyTimeseriesData<AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues?>?,
-    val budgetFuerSchulungAusbildung: YearlyTimeseriesData<BudgetFuerSchulungAusbildungValues?>?,
 )

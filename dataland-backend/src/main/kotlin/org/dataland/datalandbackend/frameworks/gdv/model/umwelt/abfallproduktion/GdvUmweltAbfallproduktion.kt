@@ -7,8 +7,8 @@ import org.dataland.datalandbackend.model.gdv.YearlyTimeseriesData
  * The data-model for the Abfallproduktion section
  */
 data class GdvUmweltAbfallproduktion(
-    val unternehmensGruppenStrategieBzglAbfallproduktion: String?,
-    val gefaehrlicherAbfall: String?,
     val berichterstattungAbfallproduktion: YearlyTimeseriesData<BerichterstattungAbfallproduktionValues?>?,
+    val unternehmensGruppenStrategieBzglAbfallproduktion: String?,
     val recyclingImProduktionsprozess: YearlyTimeseriesData<RecyclingImProduktionsprozessValues?>?,
+    val gefaehrlicherAbfall: String?,
 )

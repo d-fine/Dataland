@@ -7879,19 +7879,6 @@
           "JaAufsichtsratUndGeschaeftsleitung"
         ]
       },
-      "AnzahlDerBetroffenenMitarbeiterValues": {
-        "type": "object",
-        "properties": {
-          "anzahlUnbefristeteVertraege": {
-            "type": "number",
-            "nullable": true
-          },
-          "anzahlvonAenderungBetroffeneVertraege": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
       "ArtDesAuditsOptions": {
         "type": "string",
         "enum": [
@@ -7998,7 +7985,7 @@
       "BudgetFuerSchulungAusbildungValues": {
         "type": "object",
         "properties": {
-          "budgetProMitarbeiterProJahr": {
+          "budgetProMitarbeiter": {
             "type": "number",
             "nullable": true
           }
@@ -8530,14 +8517,6 @@
                 "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernance"
               }
             ]
-          },
-          "unfallrate": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataUnfallrateValues"
-              }
-            ]
           }
         }
       },
@@ -8573,17 +8552,21 @@
       "GdvSoziales": {
         "type": "object",
         "properties": {
-          "aenderungenUnternehmensstruktur": {
+          "unternehmensstrukturaenderungen": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/GdvSozialesUnternehmensstrukturaenderungen"
               }
             ]
           },
-          "sicherheitsmassnahmenFuerMitarbeiter": {
-            "type": "string",
-            "nullable": true
+          "sicherheitUndWeiterbildung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvSozialesSicherheitUndWeiterbildung"
+              }
+            ]
           },
           "einkommensgleichheit": {
             "nullable": true,
@@ -8606,30 +8589,6 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/GdvSozialesAudit"
-              }
-            ]
-          },
-          "anzahlDerBetroffenenMitarbeiter": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataAnzahlDerBetroffenenMitarbeiterValues"
-              }
-            ]
-          },
-          "auswirkungenAufAnteilBefristerVertraegeUndFluktuation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataAuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues"
-              }
-            ]
-          },
-          "budgetFuerSchulungAusbildung": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataBudgetFuerSchulungAusbildungValues"
               }
             ]
           }
@@ -8663,10 +8622,6 @@
       "GdvSozialesEinkommensgleichheit": {
         "type": "object",
         "properties": {
-          "massnahmenZurVerbesserungDerEinkommensungleichheit": {
-            "type": "string",
-            "nullable": true
-          },
           "ueberwachungDerEinkommensungleichheit": {
             "nullable": true,
             "allOf": [
@@ -8674,12 +8629,32 @@
                 "$ref": "#/components/schemas/YearlyTimeseriesDataUeberwachungDerEinkommensungleichheitValues"
               }
             ]
+          },
+          "massnahmenZurVerbesserungDerEinkommensungleichheit": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
       "GdvSozialesGeschlechterdiversitaet": {
         "type": "object",
         "properties": {
+          "mitarbeiterAufTopManagementEbene": {
+            "type": "number",
+            "nullable": true
+          },
+          "frauenAufTopManagementEbene": {
+            "type": "number",
+            "nullable": true
+          },
+          "mitgliederGeschaeftsfuehrung": {
+            "type": "number",
+            "nullable": true
+          },
+          "frauenInDerGeschaeftsfuehrung": {
+            "type": "number",
+            "nullable": true
+          },
           "definitionTopManagement": {
             "type": "string",
             "nullable": true
@@ -8687,6 +8662,76 @@
           "einhaltungRechtlicherVorgaben": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "GdvSozialesSicherheitUndWeiterbildung": {
+        "type": "object",
+        "properties": {
+          "sicherheitsmassnahmenFuerMitarbeiter": {
+            "type": "string",
+            "nullable": true
+          },
+          "unfallrate": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataUnfallrateValues"
+              }
+            ]
+          },
+          "budgetFuerSchulungAusbildung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataBudgetFuerSchulungAusbildungValues"
+              }
+            ]
+          }
+        }
+      },
+      "GdvSozialesUnternehmensstrukturaenderungen": {
+        "type": "object",
+        "properties": {
+          "vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "anzahlUnbefristeterVertraegeInDeutschland": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlUnbefristeterVertraegeInDerGesamtgruppe": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": {
+            "type": "number",
+            "nullable": true
+          },
+          "auswirkungenAufAnteilBefristerVertraegeUndFluktuation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataAuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues"
+              }
+            ]
           }
         }
       },
@@ -8770,14 +8815,6 @@
       "GdvUmweltAbfallproduktion": {
         "type": "object",
         "properties": {
-          "unternehmensGruppenStrategieBzglAbfallproduktion": {
-            "type": "string",
-            "nullable": true
-          },
-          "gefaehrlicherAbfall": {
-            "type": "string",
-            "nullable": true
-          },
           "berichterstattungAbfallproduktion": {
             "nullable": true,
             "allOf": [
@@ -8786,6 +8823,10 @@
               }
             ]
           },
+          "unternehmensGruppenStrategieBzglAbfallproduktion": {
+            "type": "string",
+            "nullable": true
+          },
           "recyclingImProduktionsprozess": {
             "nullable": true,
             "allOf": [
@@ -8793,6 +8834,10 @@
                 "$ref": "#/components/schemas/YearlyTimeseriesDataRecyclingImProduktionsprozessValues"
               }
             ]
+          },
+          "gefaehrlicherAbfall": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -8828,10 +8873,6 @@
       "GdvUmweltEnergieeffizienzImmobilienanlagen": {
         "type": "object",
         "properties": {
-          "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": {
-            "type": "string",
-            "nullable": true
-          },
           "berichterstattungEnergieverbrauchVonImmobilienvermoegen": {
             "nullable": true,
             "allOf": [
@@ -8839,16 +8880,16 @@
                 "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungEnergieverbrauchVonImmobilienvermoegenValues"
               }
             ]
+          },
+          "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
       "GdvUmweltEnergieverbrauch": {
         "type": "object",
         "properties": {
-          "unternehmensGruppenStrategieBzglEnergieverbrauch": {
-            "type": "string",
-            "nullable": true
-          },
           "berichterstattungEnergieverbrauch": {
             "nullable": true,
             "allOf": [
@@ -8856,6 +8897,10 @@
                 "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungEnergieverbrauchValues"
               }
             ]
+          },
+          "unternehmensGruppenStrategieBzglEnergieverbrauch": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -8936,14 +8981,6 @@
       "GdvUmweltTreibhausgasemissionen": {
         "type": "object",
         "properties": {
-          "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird": {
-            "type": "string",
-            "nullable": true
-          },
-          "strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": {
-            "type": "string",
-            "nullable": true
-          },
           "treibhausgasBerichterstattungUndPrognosen": {
             "nullable": true,
             "allOf": [
@@ -8951,16 +8988,20 @@
                 "$ref": "#/components/schemas/YearlyTimeseriesDataTreibhausgasBerichterstattungUndPrognosenValues"
               }
             ]
+          },
+          "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird": {
+            "type": "string",
+            "nullable": true
+          },
+          "strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
       "GdvUmweltWasserverbrauch": {
         "type": "object",
         "properties": {
-          "unternehmensGruppenStrategieBzglWasserverbrauch": {
-            "type": "string",
-            "nullable": true
-          },
           "berichterstattungWasserverbrauch": {
             "nullable": true,
             "allOf": [
@@ -8968,10 +9009,176 @@
                 "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungWasserverbrauchValues"
               }
             ]
+          },
+          "unternehmensGruppenStrategieBzglWasserverbrauch": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
       "GdvUnternehmensfuehrungGovernance": {
+        "type": "object",
+        "properties": {
+          "aufsichtsrat": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceAufsichtsrat"
+              }
+            ]
+          },
+          "verguetungsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceVerguetungsausschuss"
+              }
+            ]
+          },
+          "nominierungsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceNominierungsausschuss"
+              }
+            ]
+          },
+          "pruefungsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernancePruefungsausschuss"
+              }
+            ]
+          },
+          "nachhaltigkeitsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceNachhaltigkeitsausschuss"
+              }
+            ]
+          },
+          "sonstige": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceSonstige"
+              }
+            ]
+          },
+          "stakeholder": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceStakeholder"
+              }
+            ]
+          },
+          "unternehmensrichtlinien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceUnternehmensrichtlinien"
+              }
+            ]
+          },
+          "lieferantenauswahl": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceLieferantenauswahl"
+              }
+            ]
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceAufsichtsrat": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImAufsichtsrat": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImAufsichtsrat": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlVonFrauenImAufsichtsrat": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceLieferantenauswahl": {
+        "type": "object",
+        "properties": {
+          "esgKriterienUndUeberwachungDerLieferanten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "auswahlkriterien": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceNachhaltigkeitsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImNachhaltigkeitsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlVonFrauenImNachhaltigkeitsausschuss": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceNominierungsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImNominierungsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImNominierungsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlVonFrauenImVerguetungsausschuss": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernancePruefungsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImPruefungsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImPruefungsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlVonFrauenImPruefungsausschuss": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceSonstige": {
         "type": "object",
         "properties": {
           "wirtschaftspruefer": {
@@ -8989,7 +9196,12 @@
           "amtszeit": {
             "type": "string",
             "nullable": true
-          },
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceStakeholder": {
+        "type": "object",
+        "properties": {
           "einbeziehungVonStakeholdern": {
             "nullable": true,
             "allOf": [
@@ -9005,7 +9217,12 @@
           "mechanismenZurAusrichtungAufStakeholder": {
             "type": "string",
             "nullable": true
-          },
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceUnternehmensrichtlinien": {
+        "type": "object",
+        "properties": {
           "veroeffentlichteUnternehmensrichtlinien": {
             "type": "array",
             "nullable": true,
@@ -9013,16 +9230,25 @@
               "type": "string"
             }
           },
-          "esgKriterienUndUeberwachungDerLieferanten": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "auswahlkriterien": {
+          "weitereVeroeffentlicheUnternehmensrichtlinien": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceVerguetungsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImVerguetungsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImVerguetungsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlVonFrauenImVerguetungsausschuss": {
+            "type": "number",
             "nullable": true
           }
         }
@@ -9113,25 +9339,6 @@
           "haeufigkeitsrateVonArbeitsunfaellen": {
             "type": "number",
             "nullable": true
-          }
-        }
-      },
-      "YearlyTimeseriesDataAnzahlDerBetroffenenMitarbeiterValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/AnzahlDerBetroffenenMitarbeiterValues"
-            }
           }
         }
       },
