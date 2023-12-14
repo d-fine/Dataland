@@ -7,19 +7,17 @@ creation URL (or simply copy this md file into the description)
 
 ## Dataland
 
-### Notes from Dec 2023
-- Timeout not working
-- There were two 2 messages found in RabbitMQ dead letter queue on dev1 and dev2 respectively, details added in ticket
-- JDK/JRE must remain at 17, upgrading it to 21 caused too many errors, also Kotlin 1.9.10 is not compatible with Java 21
-- kotlin to remain at 1.9.10 instead of 1.9.20, which caused error
-- eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI, we're using 17.
-- some sec fixes or updates to `package.json` in /frontend and /keycloak break the build
-
 ### Skipped updates
 
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
 
+- [ ] postgres can't be updated to 16 as existing data in dev instances are not compatible
+- [ ] There were two 2 messages found in RabbitMQ dead letter queue on dev1 and dev2 respectively, details added in ticket
+- [ ] JDK/JRE must remain at 17, upgrading it to 21 caused too many errors, also Kotlin 1.9.10 is not compatible with Java 21
+- [ ] kotlin to remain at 1.9.10 instead of 1.9.20, which caused error
+- [ ] eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI, we're using 17.
+- [ ] some sec fixes or updates to `package.json` in /frontend and /keycloak break the build
 - [ ] Update keycloak to >=22.0.3 is skipped due to failing all e2e tests
 - [ ] Update e2etests/Dockerfile update breaks the build
 - [ ] Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
