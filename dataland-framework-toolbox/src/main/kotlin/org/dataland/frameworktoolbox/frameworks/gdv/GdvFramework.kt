@@ -305,7 +305,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             ?.getOrNull<ComponentGroup>("fossileBrennstoffe")
             ?.getOrNull<YesNoComponent>("einnahmenAusFossilenBrennstoffen")
         require(einnahmenAusFossilenBrennstoffen != null) {
-            "The field with the label \"einnahmenAusFossilenBrennstoffen\" cannot be null in the " +
+            "The field with the label \"einnahmenAusFossilenBrennstoffen\" must exist in the " +
                 "gdv framework."
         }
 
@@ -381,11 +381,12 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 ),
             )
         }
-        val aenderungenUnternehmensstruktur = componentGroupSoziales
-            ?.getOrNull<YesNoComponent>("aenderungenUnternehmensstruktur")
-        require(aenderungenUnternehmensstruktur != null) {
-            "The field with the label \"einnahmenAusFossilenBrennstoffen\" cannot be null in the " +
-                "gdv framework."
+        val vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur = componentGroupSoziales
+            ?.getOrNull<ComponentGroup>("unternehmensstrukturaenderungen")
+            ?.getOrNull<YesNoComponent>("vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur")
+        require(vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur != null) {
+            "The field with the label \"vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur\" must exist in " +
+                "the gdv framework."
         }
         componentGroupSoziales.create<GdvYearlyDecimalTimeseriesDataComponent>(
             "auswirkungenAufAnteil" +
@@ -405,7 +406,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 ),
             )
             availableIf = DependsOnComponentValue(
-                aenderungenUnternehmensstruktur,
+                vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur,
                 "Yes",
             )
         }
@@ -418,22 +419,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                     "haeufigkeitsrateVonArbeitsunfaellen",
                     "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust", "%",
-                ),
-            )
-            availableIf = DependsOnComponentValue(
-                berichtsPflicht,
-                "Yes",
-            )
-        }
-
-        componentGroupSoziales.create<GdvYearlyDecimalTimeseriesDataComponent>("budgetFuerSchulungAusbildung") {
-            label = "Budget für Schulung/Ausbildung"
-            explanation = "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für " +
-                "Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde."
-            decimalRows = mutableListOf(
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "budgetProMitarbeiterProJahr",
-                    "Budget pro Mitarbeiter und Jahr", "€",
                 ),
             )
             availableIf = DependsOnComponentValue(

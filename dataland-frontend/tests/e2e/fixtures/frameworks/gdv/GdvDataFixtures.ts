@@ -200,8 +200,18 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       },
     },
     soziales: {
-      aenderungenUnternehmensstruktur: dataGenerator.randomYesNo(),
-      sicherheitsmassnahmenFuerMitarbeiter: dataGenerator.randomShortString(),
+      unternehmensstrukturaenderungen: {
+        vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur: dataGenerator.randomYesNo(),
+        anzahlUnbefristeterVertraegeInDeutschland: dataGenerator.randomFloat(),
+        anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland: dataGenerator.randomFloat(),
+        anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland: dataGenerator.randomFloat(),
+        anzahlUnbefristeterVertraegeInDerGesamtgruppe: dataGenerator.randomFloat(),
+        anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: dataGenerator.randomFloat(),
+        anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: dataGenerator.randomFloat(),
+      },
+      sicherheitUndWeiterbildung: {
+        sicherheitsmassnahmenFuerMitarbeiter: dataGenerator.randomShortString(),
+      },
       einkommensgleichheit: {
         massnahmenZurVerbesserungDerEinkommensungleichheit: dataGenerator.randomShortString(),
         ueberwachungDerEinkommensungleichheit: dataGenerator.randomDecimalYearlyTimeseriesData([
@@ -211,6 +221,10 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         ]),
       },
       geschlechterdiversitaet: {
+        mitarbeiterAufTopManagementEbene: dataGenerator.randomFloat(),
+        frauenAufTopManagementEbene: dataGenerator.randomFloat(),
+        mitgliederGeschaeftsfuehrung: dataGenerator.randomFloat(),
+        frauenInDerGeschaeftsfuehrung: dataGenerator.randomFloat(),
         definitionTopManagement: dataGenerator.randomShortString(),
         einhaltungRechtlicherVorgaben: dataGenerator.randomShortString(),
       },
@@ -227,33 +241,66 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         "anzahlbefristeteVertraege",
         "fluktuation",
       ]),
-      budgetFuerSchulungAusbildung: dataGenerator.randomDecimalYearlyTimeseriesData(["budgetProMitarbeiterProJahr"]),
     },
     unternehmensfuehrungGovernance: {
-      wirtschaftspruefer: dataGenerator.randomShortString(),
-      ceoVorsitzender: dataGenerator.randomYesNo(),
-      amtszeit: dataGenerator.randomShortString(),
-      einbeziehungVonStakeholdern: dataGenerator.randomYesNo(),
-      prozessDerEinbeziehungVonStakeholdern: dataGenerator.randomShortString(),
-      mechanismenZurAusrichtungAufStakeholder: dataGenerator.randomShortString(),
-      veroeffentlichteUnternehmensrichtlinien: dataGenerator.valueOrNull(
-        pickSubsetOfElements([
-          "Anti-Korruption",
-          "Verhaltenskodex",
-          "Interessenkonflikte",
-          "Datenschutz",
-          "Diversit\u00E4t & Inklusion",
-          "Faire Behandlung von Kunden",
-          "Zwangsarbeit",
-          "Gesundheit und Sicherheit",
-          "Mgt von Umweltgefahren",
-          "Verantwortungsvolles Marketing",
-          "Whistleblowing",
-          "other",
-        ]),
-      ),
-      esgKriterienUndUeberwachungDerLieferanten: dataGenerator.randomYesNo(),
-      auswahlkriterien: dataGenerator.randomShortString(),
+      aufsichtsrat: {
+        anzahlDerMitgliederImAufsichtsrat: dataGenerator.randomFloat(),
+        anzahlUnabhaengigerMitgliederImAufsichtsrat: dataGenerator.randomFloat(),
+        anzahlVonFrauenImAufsichtsrat: dataGenerator.randomFloat(),
+      },
+      verguetungsausschuss: {
+        anzahlDerMitgliederImVerguetungsausschuss: dataGenerator.randomFloat(),
+        anzahlUnabhaengigerMitgliederImVerguetungsausschuss: dataGenerator.randomFloat(),
+        anzahlVonFrauenImVerguetungsausschuss: dataGenerator.randomFloat(),
+      },
+      nominierungsausschuss: {
+        anzahlDerMitgliederImNominierungsausschuss: dataGenerator.randomFloat(),
+        anzahlUnabhaengigerMitgliederImNominierungsausschuss: dataGenerator.randomFloat(),
+        anzahlVonFrauenImVerguetungsausschuss: dataGenerator.randomFloat(),
+      },
+      pruefungsausschuss: {
+        anzahlDerMitgliederImPruefungsausschuss: dataGenerator.randomFloat(),
+        anzahlUnabhaengigerMitgliederImPruefungsausschuss: dataGenerator.randomFloat(),
+        anzahlVonFrauenImPruefungsausschuss: dataGenerator.randomFloat(),
+      },
+      nachhaltigkeitsausschuss: {
+        anzahlDerMitgliederImNachhaltigkeitsausschuss: dataGenerator.randomFloat(),
+        anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss: dataGenerator.randomFloat(),
+        anzahlVonFrauenImNachhaltigkeitsausschuss: dataGenerator.randomFloat(),
+      },
+      sonstige: {
+        wirtschaftspruefer: dataGenerator.randomShortString(),
+        ceoVorsitzender: dataGenerator.randomYesNo(),
+        amtszeit: dataGenerator.randomShortString(),
+      },
+      stakeholder: {
+        einbeziehungVonStakeholdern: dataGenerator.randomYesNo(),
+        prozessDerEinbeziehungVonStakeholdern: dataGenerator.randomShortString(),
+        mechanismenZurAusrichtungAufStakeholder: dataGenerator.randomShortString(),
+      },
+      unternehmensrichtlinien: {
+        veroeffentlichteUnternehmensrichtlinien: dataGenerator.valueOrNull(
+          pickSubsetOfElements([
+            "Anti-Korruption",
+            "Verhaltenskodex",
+            "Interessenkonflikte",
+            "Datenschutz",
+            "Diversit\u00E4t & Inklusion",
+            "Faire Behandlung von Kunden",
+            "Zwangsarbeit",
+            "Gesundheit und Sicherheit",
+            "Mgt von Umweltgefahren",
+            "Verantwortungsvolles Marketing",
+            "Whistleblowing",
+            "other",
+          ]),
+        ),
+        weitereVeroeffentlicheUnternehmensrichtlinien: dataGenerator.randomShortString(),
+      },
+      lieferantenauswahl: {
+        esgKriterienUndUeberwachungDerLieferanten: dataGenerator.randomYesNo(),
+        auswahlkriterien: dataGenerator.randomShortString(),
+      },
     },
     unfallrate: dataGenerator.randomDecimalYearlyTimeseriesData(["haeufigkeitsrateVonArbeitsunfaellen"]),
   };

@@ -7,8 +7,8 @@ import { formatStringForDatatable } from "@/components/resources/dataTable/conve
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
-import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
+import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/gdv/GdvListOfBaseDataPointGetterFactory";
 export const GdvViewConfiguration: MLDTConfig<GdvData> = [
@@ -1106,22 +1106,130 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
     shouldDisplay: (): boolean => true,
     children: [
       {
-        type: "cell",
-        label: "Änderungen Unternehmensstruktur",
-        explanation:
-          "Gab es kürzlich eine Veränderung im Unternehmen / in der Gruppe (Umstrukturierung, Verkauf oder Übernahme)?",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(dataset.soziales?.aenderungenUnternehmensstruktur),
+        type: "section",
+        label: "Unternehmensstrukturänderungen",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Vorhandensein kürzlicher Änderungen der Unternehmensstruktur",
+            explanation:
+              "Gab es kürzlich eine Veränderung im Unternehmen / in der Gruppe (Umstrukturierung, Verkauf oder Übernahme)?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.soziales?.unternehmensstrukturaenderungen
+                  ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl unbefristeter Verträge in Deutschland",
+            explanation: "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in Deutschland gibt.",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.soziales?.unternehmensstrukturaenderungen
+                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.soziales?.unternehmensstrukturaenderungen?.anzahlUnbefristeterVertraegeInDeutschland,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl der von einem Verkauf betroffenen unbefristeten Verträge in Deutschland ",
+            explanation:
+              "Bitte teilen Sie mit uns wieviele unbefristete Verträge in Deutschland von einem etwaigen Verkauf betroffen waren.",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.soziales?.unternehmensstrukturaenderungen
+                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.soziales?.unternehmensstrukturaenderungen
+                  ?.anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl der von einer Akquisition betroffenen unbefristeten Verträge in Deutschland ",
+            explanation:
+              "Bitte teilen Sie mit uns wieviele unbefristete Verträge in Deutschland von einer etwaigen Akquisition betroffen waren.",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.soziales?.unternehmensstrukturaenderungen
+                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.soziales?.unternehmensstrukturaenderungen
+                  ?.anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl unbefristeter Verträge in der Gesamtgruppe",
+            explanation:
+              "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in der Gesamtgruppe gibt",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.soziales?.unternehmensstrukturaenderungen
+                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.soziales?.unternehmensstrukturaenderungen?.anzahlUnbefristeterVertraegeInDerGesamtgruppe,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl der von einem Verkauf betroffenen unbefristeten Verträge in der Gesamtgruppe",
+            explanation:
+              "Bitte teilen Sie mit uns wieviele unbefristete Verträge in der Gesamtgruppe von einem etwaigen Verkauf betroffen waren.",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.soziales?.unternehmensstrukturaenderungen
+                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.soziales?.unternehmensstrukturaenderungen
+                  ?.anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl der von einer Akquisition betroffenen unbefristeten Verträge in der Gesamtgruppe",
+            explanation:
+              "Bitte teilen Sie mit uns wieviele unbefristete Verträge in der Gesamtgruppe von einer etwaigen Akquisition betroffen waren.",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.soziales?.unternehmensstrukturaenderungen
+                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.soziales?.unternehmensstrukturaenderungen
+                  ?.anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe,
+                "",
+              ),
+          },
+        ],
       },
       {
-        type: "cell",
-        label: "Sicherheitsmaßnahmen für Mitarbeiter",
-        explanation:
-          "Welche Maßnahmen werden ergriffen, um die Gesundheit und Sicherheit der Mitarbeiter des Unternehmens zu verbessern?",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.soziales?.sicherheitsmassnahmenFuerMitarbeiter),
+        type: "section",
+        label: "Sicherheit und Weiterbildung",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Sicherheitsmaßnahmen für Mitarbeiter",
+            explanation:
+              "Welche Maßnahmen werden ergriffen, um die Gesundheit und Sicherheit der Mitarbeiter des Unternehmens zu verbessern?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.soziales?.sicherheitUndWeiterbildung?.sicherheitsmassnahmenFuerMitarbeiter,
+              ),
+          },
+        ],
       },
       {
         type: "section",
@@ -1173,6 +1281,38 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         children: [
           {
             type: "cell",
+            label: "Mitarbeiter auf Top-Management Ebene",
+            explanation: "Geben Sie bitte an wieviele Personen eine Top-Management Position innehaben.",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.mitarbeiterAufTopManagementEbene, ""),
+          },
+          {
+            type: "cell",
+            label: "Frauen auf Top-Management-Ebene",
+            explanation: "Geben Sie bitte an wieviele Frauen eine Top-Management Position innehaben.",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.frauenAufTopManagementEbene, ""),
+          },
+          {
+            type: "cell",
+            label: "Mitglieder Geschäftsführung",
+            explanation: "Geben Sie bitte an wieviele Mitglieder die Geschäftsführung hat.",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.mitgliederGeschaeftsfuehrung, ""),
+          },
+          {
+            type: "cell",
+            label: "Frauen in der Geschäftsführung",
+            explanation: "Geben Sie bitte an wieviele Frauen in der Geschäftsführung sind.",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.frauenInDerGeschaeftsfuehrung, ""),
+          },
+          {
+            type: "cell",
             label: "Definition Top-Management",
             explanation: 'Bitte geben Sie Ihre Definition von "Top-Management".',
             shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
@@ -1208,7 +1348,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           {
             type: "cell",
             label: "Art des Audits",
-
+            explanation: "Wie werden die Audits zur Einhaltung von Arbeitsstandards durchgeführt?",
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
@@ -1259,7 +1399,9 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         label: "Auswirkungen auf Anteil befrister Verträge und Fluktuation",
         explanation:
           "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die letzten drei Jahre an.",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.soziales?.aenderungenUnternehmensstruktur == "Yes",
+        shouldDisplay: (dataset: GdvData): boolean =>
+          dataset.soziales?.unternehmensstrukturaenderungen
+            ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
         valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
           formatGdvYearlyDecimalTimeseriesDataForTable(
             dataset.soziales?.auswirkungenAufAnteilBefristerVertraegeUndFluktuation,
@@ -1268,19 +1410,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
               fluktuation: { label: "Fluktuation", unitSuffix: "%" },
             },
             "Auswirkungen auf Anteil befrister Vertr\u00E4ge und Fluktuation",
-          ),
-      },
-      {
-        type: "cell",
-        label: "Budget für Schulung/Ausbildung",
-        explanation:
-          "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde.",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatGdvYearlyDecimalTimeseriesDataForTable(
-            dataset.soziales?.budgetFuerSchulungAusbildung,
-            { budgetProMitarbeiterProJahr: { label: "Budget pro Mitarbeiter und Jahr", unitSuffix: "€" } },
-            "Budget f\u00FCr Schulung/Ausbildung",
           ),
       },
     ],
@@ -1292,107 +1421,370 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
     shouldDisplay: (): boolean => true,
     children: [
       {
-        type: "cell",
-        label: "Wirtschaftsprüfer",
+        type: "section",
+        label: "Aufsichtsrat",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Anzahl der Mitglieder im Aufsichtsrat",
+            explanation: "Wieviele Mitglieder hat der Aufsichtsrat?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.aufsichtsrat?.anzahlDerMitgliederImAufsichtsrat,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl unabhängiger Mitglieder im Aufsichtsrat",
+            explanation: "Wieviele unabhängige Mitglieder hat der Aufsichtsrat?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.aufsichtsrat?.anzahlUnabhaengigerMitgliederImAufsichtsrat,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl von Frauen im Aufsichtsrat",
+            explanation: "Wieviele Frauen sind im Aufsichtsrat?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.aufsichtsrat?.anzahlVonFrauenImAufsichtsrat,
+                "",
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Vergütungsausschuss",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Anzahl der Mitglieder im Vergütungsausschuss",
+            explanation: "Wieviele Mitglieder hat der Vergütungsausschuss?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.verguetungsausschuss?.anzahlDerMitgliederImVerguetungsausschuss,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl unabhängiger Mitglieder im Vergütungsausschuss",
+            explanation: "Wieviele unabhängige Mitglieder hat der Vergütungsausschuss?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.verguetungsausschuss
+                  ?.anzahlUnabhaengigerMitgliederImVerguetungsausschuss,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl von Frauen im Vergütungsausschuss",
+            explanation: "Wieviele Frauen sind im Vergütungsausschuss?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.verguetungsausschuss?.anzahlVonFrauenImVerguetungsausschuss,
+                "",
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Nominierungsausschuss",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Anzahl der Mitglieder im Nominierungsausschuss",
+            explanation: "Wieviele Mitglieder hat der Nominierungsausschuss?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.nominierungsausschuss
+                  ?.anzahlDerMitgliederImNominierungsausschuss,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl unabhängiger Mitglieder im Nominierungsausschuss",
+            explanation: "Wieviele unabhängige Mitglieder hat der Nominierungsausschuss?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.nominierungsausschuss
+                  ?.anzahlUnabhaengigerMitgliederImNominierungsausschuss,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl von Frauen im Vergütungsausschuss",
+            explanation: "Wieviele Frauen sind im Nominierungsausschuss?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.nominierungsausschuss?.anzahlVonFrauenImVerguetungsausschuss,
+                "",
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Prüfungsausschuss",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Anzahl der Mitglieder im Prüfungsausschuss",
+            explanation: "Wieviele Mitglieder hat der Prüfungsausschuss?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.pruefungsausschuss?.anzahlDerMitgliederImPruefungsausschuss,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl unabhängiger Mitglieder im Prüfungsausschuss",
+            explanation: "Wieviele unabhängige Mitglieder hat der Prüfungsausschuss?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.pruefungsausschuss
+                  ?.anzahlUnabhaengigerMitgliederImPruefungsausschuss,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl von Frauen im Prüfungsausschuss",
+            explanation: "Wieviele Frauen sind im Prüfungsausschuss?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.pruefungsausschuss?.anzahlVonFrauenImPruefungsausschuss,
+                "",
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Nachhaltigkeitsausschuss",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Anzahl der Mitglieder im Nachhaltigkeitsausschuss",
+            explanation: "Wieviele Mitglieder hat der Nachhaltigkeitsausschuss?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.nachhaltigkeitsausschuss
+                  ?.anzahlDerMitgliederImNachhaltigkeitsausschuss,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl unabhängiger Mitglieder im Nachhaltigkeitsausschuss",
+            explanation: "Wieviele unabhängige Mitglieder hat der Nachhaltigkeitsausschuss?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.nachhaltigkeitsausschuss
+                  ?.anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss,
+                "",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Anzahl von Frauen im Nachhaltigkeitsausschuss",
+            explanation: "Wieviele Frauen sind im Nachhaltigkeitsausschuss?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.nachhaltigkeitsausschuss
+                  ?.anzahlVonFrauenImNachhaltigkeitsausschuss,
+                "",
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Sonstige",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Wirtschaftsprüfer",
 
-        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.wirtschaftspruefer),
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.sonstige?.wirtschaftspruefer),
+          },
+          {
+            type: "cell",
+            label: "CEO/Vorsitzender",
+            explanation:
+              "Hat sich das Unternehmen im aktuellen Jahr der Berichterstattung von CEO/Vorsitzenden getrennt?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.unternehmensfuehrungGovernance?.sonstige?.ceoVorsitzender),
+          },
+          {
+            type: "cell",
+            label: "Amtszeit",
+            explanation: "Wieviele Jahre war der/die CEO/Vorsitzende(r) im Amt?",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.unternehmensfuehrungGovernance?.sonstige?.ceoVorsitzender == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.sonstige?.amtszeit),
+          },
+        ],
       },
       {
-        type: "cell",
-        label: "CEO/Vorsitzender",
-        explanation: "Hat sich das Unternehmen im aktuellen Jahr der Berichterstattung von CEO/Vorsitzenden getrennt?",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(dataset.unternehmensfuehrungGovernance?.ceoVorsitzender),
+        type: "section",
+        label: "Stakeholder",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Einbeziehung von Stakeholdern",
+            explanation:
+              "Gibt es einen kontinuierlichen Prozess des Dialogs mit den Stakeholdern des Unternehmens? Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Prozess der Einbeziehung von Stakeholdern",
+            explanation:
+              "Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.unternehmensfuehrungGovernance?.stakeholder?.prozessDerEinbeziehungVonStakeholdern,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Mechanismen zur Ausrichtung auf Stakeholder",
+            explanation:
+              "Welche Mechanismen gibt es derzeit, um sicherzustellen, dass die Stakeholder im besten Interesse des Unternehmens handeln? Bitte erläutern Sie (falls zutreffend) die Beteiligungsmechanismen, verschiedene Anreizsysteme usw.",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.unternehmensfuehrungGovernance?.stakeholder?.mechanismenZurAusrichtungAufStakeholder,
+              ),
+          },
+        ],
       },
       {
-        type: "cell",
-        label: "Amtszeit",
-        explanation: "Wieviele Jahre war der/die CEO/Vorsitzende(r) im Amt?",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.unternehmensfuehrungGovernance?.ceoVorsitzender == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.amtszeit),
+        type: "section",
+        label: "Unternehmensrichtlinien",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Veröffentlichte Unternehmensrichtlinien",
+            explanation: "Welche Richtlinien sind im Unternehmen veröffentlicht?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
+              const mappings = {
+                AntiKorruption: "Anti-Korruption",
+                Verhaltenskodex: "Verhaltenskodex",
+                Interessenkonflikte: "Interessenkonflikte",
+                Datenschutz: "Datenschutz",
+                DiversitaetAndInklusion: "Diversität & Inklusion",
+                FaireBehandlungVonKunden: "Faire Behandlung von Kunden",
+                Zwangsarbeit: "Zwangsarbeit",
+                GesundheitUndSicherheit: "Gesundheit und Sicherheit",
+                MgtVonUmweltgefahren: "Mgt von Umweltgefahren",
+                VerantwortungsvollesMarketing: "Verantwortungsvolles Marketing",
+                Whistleblowing: "Whistleblowing",
+                Other: "other",
+              };
+              return formatListOfStringsForDatatable(
+                dataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.map(
+                  (it) => getOriginalNameFromTechnicalName(it, mappings),
+                ),
+                "Ver\u00F6ffentlichte Unternehmensrichtlinien",
+              );
+            },
+          },
+          {
+            type: "cell",
+            label: "Weitere veröffentliche Unternehmensrichtlinien",
+            explanation: "Bitte nennen Sie weitere wichtige Richtlinien, falls diese nicht angegeben sind.",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien
+                  ?.weitereVeroeffentlicheUnternehmensrichtlinien,
+              ),
+          },
+        ],
       },
       {
-        type: "cell",
-        label: "Einbeziehung von Stakeholdern",
-        explanation:
-          "Gibt es einen kontinuierlichen Prozess des Dialogs mit den Stakeholdern des Unternehmens? Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(dataset.unternehmensfuehrungGovernance?.einbeziehungVonStakeholdern),
-      },
-      {
-        type: "cell",
-        label: "Prozess der Einbeziehung von Stakeholdern",
-        explanation:
-          "Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.",
-        shouldDisplay: (dataset: GdvData): boolean =>
-          dataset.unternehmensfuehrungGovernance?.einbeziehungVonStakeholdern == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.prozessDerEinbeziehungVonStakeholdern),
-      },
-      {
-        type: "cell",
-        label: "Mechanismen zur Ausrichtung auf Stakeholder",
-        explanation:
-          "Welche Mechanismen gibt es derzeit, um sicherzustellen, dass die Stakeholder im besten Interesse des Unternehmens handeln? Bitte erläutern Sie (falls zutreffend) die Beteiligungsmechanismen, verschiedene Anreizsysteme usw.",
-        shouldDisplay: (dataset: GdvData): boolean =>
-          dataset.unternehmensfuehrungGovernance?.einbeziehungVonStakeholdern == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.mechanismenZurAusrichtungAufStakeholder),
-      },
-      {
-        type: "cell",
-        label: "Veröffentlichte Unternehmensrichtlinien",
-        explanation:
-          "Welche Richtlinien sind im Unternehmen veröffentlicht? Bitte nennen Sie weitere wichtige Richtlinien, falls diese nicht angegeben sind.",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
-          const mappings = {
-            AntiKorruption: "Anti-Korruption",
-            Verhaltenskodex: "Verhaltenskodex",
-            Interessenkonflikte: "Interessenkonflikte",
-            Datenschutz: "Datenschutz",
-            DiversitaetAndInklusion: "Diversität & Inklusion",
-            FaireBehandlungVonKunden: "Faire Behandlung von Kunden",
-            Zwangsarbeit: "Zwangsarbeit",
-            GesundheitUndSicherheit: "Gesundheit und Sicherheit",
-            MgtVonUmweltgefahren: "Mgt von Umweltgefahren",
-            VerantwortungsvollesMarketing: "Verantwortungsvolles Marketing",
-            Whistleblowing: "Whistleblowing",
-            Other: "other",
-          };
-          return formatListOfStringsForDatatable(
-            dataset.unternehmensfuehrungGovernance?.veroeffentlichteUnternehmensrichtlinien?.map((it) =>
-              getOriginalNameFromTechnicalName(it, mappings),
-            ),
-            "Ver\u00F6ffentlichte Unternehmensrichtlinien",
-          );
-        },
-      },
-      {
-        type: "cell",
-        label: "ESG-Kriterien und Überwachung der Lieferanten",
-        explanation:
-          "Wendet das Unternehmen ESG-Kriterien bei der Auswahl seiner Lieferanten an, einschließlich einer Bestandsaufnahme der Lieferkette?",
-        shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(
-            dataset.unternehmensfuehrungGovernance?.esgKriterienUndUeberwachungDerLieferanten,
-          ),
-      },
-      {
-        type: "cell",
-        label: "Auswahlkriterien",
-        explanation:
-          "Bitte nennen Sie die Auswahlkriterien und erläutern Sie, wie diese Kriterien im Laufe der Zeit überwacht/geprüft werden. Bezieht das Unternehmen beispielsweise Rohstoffe aus Gebieten, in denen umstrittene Abholzungsaktivitäten stattfinden (z.B. Soja, Palmöl, Tropenholz, Holz oder industrielle Viehzucht)?",
-        shouldDisplay: (dataset: GdvData): boolean =>
-          dataset.unternehmensfuehrungGovernance?.esgKriterienUndUeberwachungDerLieferanten == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.auswahlkriterien),
+        type: "section",
+        label: "Lieferantenauswahl",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "ESG-Kriterien und Überwachung der Lieferanten",
+            explanation:
+              "Wendet das Unternehmen ESG-Kriterien bei der Auswahl seiner Lieferanten an, einschließlich einer Bestandsaufnahme der Lieferkette?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Auswahlkriterien",
+            explanation:
+              "Bitte nennen Sie die Auswahlkriterien und erläutern Sie, wie diese Kriterien im Laufe der Zeit überwacht/geprüft werden. Bezieht das Unternehmen beispielsweise Rohstoffe aus Gebieten, in denen umstrittene Abholzungsaktivitäten stattfinden (z.B. Soja, Palmöl, Tropenholz, Holz oder industrielle Viehzucht)?",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten ==
+              "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.auswahlkriterien),
+          },
+        ],
       },
     ],
   },

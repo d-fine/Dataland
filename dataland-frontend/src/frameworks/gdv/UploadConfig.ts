@@ -1,7 +1,7 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
 import { type GdvData } from "@clients/backend";
 
-export const gdvDataModel: Category[] = [
+export const gdvDataModel = [
   {
     name: "general",
     label: "General",
@@ -1220,14 +1220,123 @@ export const gdvDataModel: Category[] = [
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: "aenderungenUnternehmensstruktur",
-        label: "Änderungen Unternehmensstruktur",
-        fields: [],
+        name: "unternehmensstrukturaenderungen",
+        label: "Unternehmensstrukturänderungen",
+        fields: [
+          {
+            name: "vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur",
+            label: "Vorhandensein kürzlicher Änderungen der Unternehmensstruktur",
+            description:
+              "Gab es kürzlich eine Veränderung im Unternehmen / in der Gruppe (Umstrukturierung, Verkauf oder Übernahme)?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlUnbefristeterVertraegeInDeutschland",
+            label: "Anzahl unbefristeter Verträge in Deutschland",
+            description: "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in Deutschland gibt.",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.soziales?.unternehmensstrukturaenderungen
+                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland",
+            label: "Anzahl der von einem Verkauf betroffenen unbefristeten Verträge in Deutschland ",
+            description:
+              "Bitte teilen Sie mit uns wieviele unbefristete Verträge in Deutschland von einem etwaigen Verkauf betroffen waren.",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.soziales?.unternehmensstrukturaenderungen
+                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland",
+            label: "Anzahl der von einer Akquisition betroffenen unbefristeten Verträge in Deutschland ",
+            description:
+              "Bitte teilen Sie mit uns wieviele unbefristete Verträge in Deutschland von einer etwaigen Akquisition betroffen waren.",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.soziales?.unternehmensstrukturaenderungen
+                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlUnbefristeterVertraegeInDerGesamtgruppe",
+            label: "Anzahl unbefristeter Verträge in der Gesamtgruppe",
+            description:
+              "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in der Gesamtgruppe gibt",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.soziales?.unternehmensstrukturaenderungen
+                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe",
+            label: "Anzahl der von einem Verkauf betroffenen unbefristeten Verträge in der Gesamtgruppe",
+            description:
+              "Bitte teilen Sie mit uns wieviele unbefristete Verträge in der Gesamtgruppe von einem etwaigen Verkauf betroffen waren.",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.soziales?.unternehmensstrukturaenderungen
+                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe",
+            label: "Anzahl der von einer Akquisition betroffenen unbefristeten Verträge in der Gesamtgruppe",
+            description:
+              "Bitte teilen Sie mit uns wieviele unbefristete Verträge in der Gesamtgruppe von einer etwaigen Akquisition betroffen waren.",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.soziales?.unternehmensstrukturaenderungen
+                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
+            validation: "",
+          },
+        ],
       },
       {
-        name: "sicherheitsmassnahmenFuerMitarbeiter",
-        label: "Sicherheitsmaßnahmen für Mitarbeiter",
-        fields: [],
+        name: "sicherheitUndWeiterbildung",
+        label: "Sicherheit und Weiterbildung",
+        fields: [
+          {
+            name: "sicherheitsmassnahmenFuerMitarbeiter",
+            label: "Sicherheitsmaßnahmen für Mitarbeiter",
+            description:
+              "Welche Maßnahmen werden ergriffen, um die Gesundheit und Sicherheit der Mitarbeiter des Unternehmens zu verbessern?",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
       },
       {
         name: "einkommensgleichheit",
@@ -1277,6 +1386,50 @@ export const gdvDataModel: Category[] = [
         label: "Geschlechterdiversität",
         fields: [
           {
+            name: "mitarbeiterAufTopManagementEbene",
+            label: "Mitarbeiter auf Top-Management Ebene",
+            description: "Geben Sie bitte an wieviele Personen eine Top-Management Position innehaben.",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "frauenAufTopManagementEbene",
+            label: "Frauen auf Top-Management-Ebene",
+            description: "Geben Sie bitte an wieviele Frauen eine Top-Management Position innehaben.",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "mitgliederGeschaeftsfuehrung",
+            label: "Mitglieder Geschäftsführung",
+            description: "Geben Sie bitte an wieviele Mitglieder die Geschäftsführung hat.",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "frauenInDerGeschaeftsfuehrung",
+            label: "Frauen in der Geschäftsführung",
+            description: "Geben Sie bitte an wieviele Frauen in der Geschäftsführung sind.",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
             name: "definitionTopManagement",
             label: "Definition Top-Management",
             description: 'Bitte geben Sie Ihre Definition von "Top-Management".',
@@ -1320,7 +1473,7 @@ export const gdvDataModel: Category[] = [
           {
             name: "artDesAudits",
             label: "Art des Audits",
-
+            description: "Wie werden die Audits zur Einhaltung von Arbeitsstandards durchgeführt?",
             options: [
               {
                 label: "Interne Anhörung",
@@ -1366,11 +1519,6 @@ export const gdvDataModel: Category[] = [
         label: "Auswirkungen auf Anteil befrister Verträge und Fluktuation",
         fields: [],
       },
-      {
-        name: "budgetFuerSchulungAusbildung",
-        label: "Budget für Schulung/Ausbildung",
-        fields: [],
-      },
     ],
   },
   {
@@ -1380,50 +1528,393 @@ export const gdvDataModel: Category[] = [
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: "wirtschaftspruefer",
-        label: "Wirtschaftsprüfer",
-        fields: [],
+        name: "aufsichtsrat",
+        label: "Aufsichtsrat",
+        fields: [
+          {
+            name: "anzahlDerMitgliederImAufsichtsrat",
+            label: "Anzahl der Mitglieder im Aufsichtsrat",
+            description: "Wieviele Mitglieder hat der Aufsichtsrat?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlUnabhaengigerMitgliederImAufsichtsrat",
+            label: "Anzahl unabhängiger Mitglieder im Aufsichtsrat",
+            description: "Wieviele unabhängige Mitglieder hat der Aufsichtsrat?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlVonFrauenImAufsichtsrat",
+            label: "Anzahl von Frauen im Aufsichtsrat",
+            description: "Wieviele Frauen sind im Aufsichtsrat?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
       },
       {
-        name: "ceoVorsitzender",
-        label: "CEO/Vorsitzender",
-        fields: [],
+        name: "verguetungsausschuss",
+        label: "Vergütungsausschuss",
+        fields: [
+          {
+            name: "anzahlDerMitgliederImVerguetungsausschuss",
+            label: "Anzahl der Mitglieder im Vergütungsausschuss",
+            description: "Wieviele Mitglieder hat der Vergütungsausschuss?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlUnabhaengigerMitgliederImVerguetungsausschuss",
+            label: "Anzahl unabhängiger Mitglieder im Vergütungsausschuss",
+            description: "Wieviele unabhängige Mitglieder hat der Vergütungsausschuss?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlVonFrauenImVerguetungsausschuss",
+            label: "Anzahl von Frauen im Vergütungsausschuss",
+            description: "Wieviele Frauen sind im Vergütungsausschuss?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
       },
       {
-        name: "amtszeit",
-        label: "Amtszeit",
-        fields: [],
+        name: "nominierungsausschuss",
+        label: "Nominierungsausschuss",
+        fields: [
+          {
+            name: "anzahlDerMitgliederImNominierungsausschuss",
+            label: "Anzahl der Mitglieder im Nominierungsausschuss",
+            description: "Wieviele Mitglieder hat der Nominierungsausschuss?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlUnabhaengigerMitgliederImNominierungsausschuss",
+            label: "Anzahl unabhängiger Mitglieder im Nominierungsausschuss",
+            description: "Wieviele unabhängige Mitglieder hat der Nominierungsausschuss?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlVonFrauenImVerguetungsausschuss",
+            label: "Anzahl von Frauen im Vergütungsausschuss",
+            description: "Wieviele Frauen sind im Nominierungsausschuss?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
       },
       {
-        name: "einbeziehungVonStakeholdern",
-        label: "Einbeziehung von Stakeholdern",
-        fields: [],
+        name: "pruefungsausschuss",
+        label: "Prüfungsausschuss",
+        fields: [
+          {
+            name: "anzahlDerMitgliederImPruefungsausschuss",
+            label: "Anzahl der Mitglieder im Prüfungsausschuss",
+            description: "Wieviele Mitglieder hat der Prüfungsausschuss?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlUnabhaengigerMitgliederImPruefungsausschuss",
+            label: "Anzahl unabhängiger Mitglieder im Prüfungsausschuss",
+            description: "Wieviele unabhängige Mitglieder hat der Prüfungsausschuss?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlVonFrauenImPruefungsausschuss",
+            label: "Anzahl von Frauen im Prüfungsausschuss",
+            description: "Wieviele Frauen sind im Prüfungsausschuss?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
       },
       {
-        name: "prozessDerEinbeziehungVonStakeholdern",
-        label: "Prozess der Einbeziehung von Stakeholdern",
-        fields: [],
+        name: "nachhaltigkeitsausschuss",
+        label: "Nachhaltigkeitsausschuss",
+        fields: [
+          {
+            name: "anzahlDerMitgliederImNachhaltigkeitsausschuss",
+            label: "Anzahl der Mitglieder im Nachhaltigkeitsausschuss",
+            description: "Wieviele Mitglieder hat der Nachhaltigkeitsausschuss?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss",
+            label: "Anzahl unabhängiger Mitglieder im Nachhaltigkeitsausschuss",
+            description: "Wieviele unabhängige Mitglieder hat der Nachhaltigkeitsausschuss?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "anzahlVonFrauenImNachhaltigkeitsausschuss",
+            label: "Anzahl von Frauen im Nachhaltigkeitsausschuss",
+            description: "Wieviele Frauen sind im Nachhaltigkeitsausschuss?",
+
+            unit: "",
+            component: "NumberFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
       },
       {
-        name: "mechanismenZurAusrichtungAufStakeholder",
-        label: "Mechanismen zur Ausrichtung auf Stakeholder",
-        fields: [],
+        name: "sonstige",
+        label: "Sonstige",
+        fields: [
+          {
+            name: "wirtschaftspruefer",
+            label: "Wirtschaftsprüfer",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "ceoVorsitzender",
+            label: "CEO/Vorsitzender",
+            description:
+              "Hat sich das Unternehmen im aktuellen Jahr der Berichterstattung von CEO/Vorsitzenden getrennt?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "amtszeit",
+            label: "Amtszeit",
+            description: "Wieviele Jahre war der/die CEO/Vorsitzende(r) im Amt?",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.unternehmensfuehrungGovernance?.sonstige?.ceoVorsitzender == "Yes",
+            validation: "",
+          },
+        ],
       },
       {
-        name: "veroeffentlichteUnternehmensrichtlinien",
-        label: "Veröffentlichte Unternehmensrichtlinien",
-        fields: [],
+        name: "stakeholder",
+        label: "Stakeholder",
+        fields: [
+          {
+            name: "einbeziehungVonStakeholdern",
+            label: "Einbeziehung von Stakeholdern",
+            description:
+              "Gibt es einen kontinuierlichen Prozess des Dialogs mit den Stakeholdern des Unternehmens? Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "prozessDerEinbeziehungVonStakeholdern",
+            label: "Prozess der Einbeziehung von Stakeholdern",
+            description:
+              "Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == "Yes",
+            validation: "",
+          },
+          {
+            name: "mechanismenZurAusrichtungAufStakeholder",
+            label: "Mechanismen zur Ausrichtung auf Stakeholder",
+            description:
+              "Welche Mechanismen gibt es derzeit, um sicherzustellen, dass die Stakeholder im besten Interesse des Unternehmens handeln? Bitte erläutern Sie (falls zutreffend) die Beteiligungsmechanismen, verschiedene Anreizsysteme usw.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == "Yes",
+            validation: "",
+          },
+        ],
       },
       {
-        name: "esgKriterienUndUeberwachungDerLieferanten",
-        label: "ESG-Kriterien und Überwachung der Lieferanten",
-        fields: [],
+        name: "unternehmensrichtlinien",
+        label: "Unternehmensrichtlinien",
+        fields: [
+          {
+            name: "veroeffentlichteUnternehmensrichtlinien",
+            label: "Veröffentlichte Unternehmensrichtlinien",
+            description: "Welche Richtlinien sind im Unternehmen veröffentlicht?",
+            options: [
+              {
+                label: "Anti-Korruption",
+                value: "AntiKorruption",
+              },
+              {
+                label: "Verhaltenskodex",
+                value: "Verhaltenskodex",
+              },
+              {
+                label: "Interessenkonflikte",
+                value: "Interessenkonflikte",
+              },
+              {
+                label: "Datenschutz",
+                value: "Datenschutz",
+              },
+              {
+                label: "Diversität & Inklusion",
+                value: "DiversitaetAndInklusion",
+              },
+              {
+                label: "Faire Behandlung von Kunden",
+                value: "FaireBehandlungVonKunden",
+              },
+              {
+                label: "Zwangsarbeit",
+                value: "Zwangsarbeit",
+              },
+              {
+                label: "Gesundheit und Sicherheit",
+                value: "GesundheitUndSicherheit",
+              },
+              {
+                label: "Mgt von Umweltgefahren",
+                value: "MgtVonUmweltgefahren",
+              },
+              {
+                label: "Verantwortungsvolles Marketing",
+                value: "VerantwortungsvollesMarketing",
+              },
+              {
+                label: "Whistleblowing",
+                value: "Whistleblowing",
+              },
+              {
+                label: "other",
+                value: "Other",
+              },
+            ],
+            unit: "",
+            component: "MultiSelectFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "weitereVeroeffentlicheUnternehmensrichtlinien",
+            label: "Weitere veröffentliche Unternehmensrichtlinien",
+            description: "Bitte nennen Sie weitere wichtige Richtlinien, falls diese nicht angegeben sind.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+        ],
       },
       {
-        name: "auswahlkriterien",
-        label: "Auswahlkriterien",
-        fields: [],
+        name: "lieferantenauswahl",
+        label: "Lieferantenauswahl",
+        fields: [
+          {
+            name: "esgKriterienUndUeberwachungDerLieferanten",
+            label: "ESG-Kriterien und Überwachung der Lieferanten",
+            description:
+              "Wendet das Unternehmen ESG-Kriterien bei der Auswahl seiner Lieferanten an, einschließlich einer Bestandsaufnahme der Lieferkette?",
+
+            unit: "",
+            component: "YesNoFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "auswahlkriterien",
+            label: "Auswahlkriterien",
+            description:
+              "Bitte nennen Sie die Auswahlkriterien und erläutern Sie, wie diese Kriterien im Laufe der Zeit überwacht/geprüft werden. Bezieht das Unternehmen beispielsweise Rohstoffe aus Gebieten, in denen umstrittene Abholzungsaktivitäten stattfinden (z.B. Soja, Palmöl, Tropenholz, Holz oder industrielle Viehzucht)?",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten ==
+              "Yes",
+            validation: "",
+          },
+        ],
       },
     ],
   },
-];
+] as Category[];
