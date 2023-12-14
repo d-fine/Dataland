@@ -25,6 +25,8 @@ manual_qa_requested_type = "Manual QA requested"
 
 
 def listen_to_message_queue():
+    DataResource("34baff5b-4063-4be1-b8f4-dc4e4c570cd1")
+    return
     while True:
         try:
             mq = RabbitMq(p.rabbit_mq_connection_parameters)
