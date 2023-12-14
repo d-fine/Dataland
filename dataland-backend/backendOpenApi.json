@@ -7995,15 +7995,6 @@
           }
         }
       },
-      "BudgetFuerSchulungAusbildungValues": {
-        "type": "object",
-        "properties": {
-          "budgetProMitarbeiterProJahr": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
       "CompanyAssociatedDataGdvData": {
         "required": [
           "companyId",
@@ -8573,17 +8564,21 @@
       "GdvSoziales": {
         "type": "object",
         "properties": {
-          "aenderungenUnternehmensstruktur": {
+          "unternehmensstrukturaenderungen": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/YesNo"
+                "$ref": "#/components/schemas/GdvSozialesUnternehmensstrukturaenderungen"
               }
             ]
           },
-          "sicherheitsmassnahmenFuerMitarbeiter": {
-            "type": "string",
-            "nullable": true
+          "sicherheitUndWeiterbildung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvSozialesSicherheitUndWeiterbildung"
+              }
+            ]
           },
           "einkommensgleichheit": {
             "nullable": true,
@@ -8622,14 +8617,6 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/YearlyTimeseriesDataAuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues"
-              }
-            ]
-          },
-          "budgetFuerSchulungAusbildung": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataBudgetFuerSchulungAusbildungValues"
               }
             ]
           }
@@ -8680,12 +8667,74 @@
       "GdvSozialesGeschlechterdiversitaet": {
         "type": "object",
         "properties": {
+          "mitarbeiterAufTopManagementEbene": {
+            "type": "number",
+            "nullable": true
+          },
+          "frauenAufTopManagementEbene": {
+            "type": "number",
+            "nullable": true
+          },
+          "mitgliederGeschaeftsfuehrung": {
+            "type": "number",
+            "nullable": true
+          },
+          "frauenInDerGeschaeftsfuehrung": {
+            "type": "number",
+            "nullable": true
+          },
           "definitionTopManagement": {
             "type": "string",
             "nullable": true
           },
           "einhaltungRechtlicherVorgaben": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvSozialesSicherheitUndWeiterbildung": {
+        "type": "object",
+        "properties": {
+          "sicherheitsmassnahmenFuerMitarbeiter": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvSozialesUnternehmensstrukturaenderungen": {
+        "type": "object",
+        "properties": {
+          "vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "anzahlUnbefristeterVertraegeInDeutschland": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlUnbefristeterVertraegeInDerGesamtgruppe": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": {
+            "type": "number",
             "nullable": true
           }
         }
@@ -8974,6 +9023,168 @@
       "GdvUnternehmensfuehrungGovernance": {
         "type": "object",
         "properties": {
+          "aufsichtsrat": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceAufsichtsrat"
+              }
+            ]
+          },
+          "verguetungsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceVerguetungsausschuss"
+              }
+            ]
+          },
+          "nominierungsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceNominierungsausschuss"
+              }
+            ]
+          },
+          "pruefungsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernancePruefungsausschuss"
+              }
+            ]
+          },
+          "nachhaltigkeitsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceNachhaltigkeitsausschuss"
+              }
+            ]
+          },
+          "sonstige": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceSonstige"
+              }
+            ]
+          },
+          "stakeholder": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceStakeholder"
+              }
+            ]
+          },
+          "unternehmensrichtlinien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceUnternehmensrichtlinien"
+              }
+            ]
+          },
+          "lieferantenauswahl": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceLieferantenauswahl"
+              }
+            ]
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceAufsichtsrat": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImAufsichtsrat": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImAufsichtsrat": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlVonFrauenImAufsichtsrat": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceLieferantenauswahl": {
+        "type": "object",
+        "properties": {
+          "esgKriterienUndUeberwachungDerLieferanten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "auswahlkriterien": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceNachhaltigkeitsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImNachhaltigkeitsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlVonFrauenImNachhaltigkeitsausschuss": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceNominierungsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImNominierungsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImNominierungsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlVonFrauenImVerguetungsausschuss": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernancePruefungsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImPruefungsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImPruefungsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlVonFrauenImPruefungsausschuss": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceSonstige": {
+        "type": "object",
+        "properties": {
           "wirtschaftspruefer": {
             "type": "string",
             "nullable": true
@@ -8989,7 +9200,12 @@
           "amtszeit": {
             "type": "string",
             "nullable": true
-          },
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceStakeholder": {
+        "type": "object",
+        "properties": {
           "einbeziehungVonStakeholdern": {
             "nullable": true,
             "allOf": [
@@ -9005,7 +9221,12 @@
           "mechanismenZurAusrichtungAufStakeholder": {
             "type": "string",
             "nullable": true
-          },
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceUnternehmensrichtlinien": {
+        "type": "object",
+        "properties": {
           "veroeffentlichteUnternehmensrichtlinien": {
             "type": "array",
             "nullable": true,
@@ -9013,16 +9234,25 @@
               "type": "string"
             }
           },
-          "esgKriterienUndUeberwachungDerLieferanten": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "auswahlkriterien": {
+          "weitereVeroeffentlicheUnternehmensrichtlinien": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GdvUnternehmensfuehrungGovernanceVerguetungsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImVerguetungsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImVerguetungsausschuss": {
+            "type": "number",
+            "nullable": true
+          },
+          "anzahlVonFrauenImVerguetungsausschuss": {
+            "type": "number",
             "nullable": true
           }
         }
@@ -9245,25 +9475,6 @@
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/BerichterstattungWasserverbrauchValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataBudgetFuerSchulungAusbildungValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/BudgetFuerSchulungAusbildungValues"
             }
           }
         }
@@ -10432,10 +10643,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
