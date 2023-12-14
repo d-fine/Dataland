@@ -6,7 +6,6 @@ import org.dataland.datalandbackend.frameworks.gdv.model.soziales.einkommensglei
 import org.dataland.datalandbackend.frameworks.gdv.model.soziales.geschlechterdiversitaet.GdvSozialesGeschlechterdiversitaet
 import org.dataland.datalandbackend.frameworks.gdv.model.soziales.sicherheitUndWeiterbildung.GdvSozialesSicherheitUndWeiterbildung
 import org.dataland.datalandbackend.frameworks.gdv.model.soziales.unternehmensstrukturaenderungen.GdvSozialesUnternehmensstrukturaenderungen
-import org.dataland.datalandbackend.model.gdv.YearlyTimeseriesData
 
 /**
  * The data-model for the Soziales section
@@ -17,7 +16,4 @@ data class GdvSoziales(
     val einkommensgleichheit: GdvSozialesEinkommensgleichheit?,
     val geschlechterdiversitaet: GdvSozialesGeschlechterdiversitaet?,
     val audit: GdvSozialesAudit?,
-    val anzahlDerBetroffenenMitarbeiter: YearlyTimeseriesData<AnzahlDerBetroffenenMitarbeiterValues?>?,
-    val auswirkungenAufAnteilBefristerVertraegeUndFluktuation:
-    YearlyTimeseriesData<AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues?>?,
 )

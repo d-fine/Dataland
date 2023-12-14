@@ -779,30 +779,6 @@ export const gdvDataModel = [
         label: "Treibhausgasemissionen",
         fields: [
           {
-            name: "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird",
-            label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investriert wird",
-            description:
-              "THG-Emissionsintensität der Unternehmen, in die investiert wird. Scope 1 + Scope 2 Treibhausgasemissionen ./. Umsatz in Millionen EUR Scope 1 + Scope 2 Treibhausgasemissionen ./. Unternehmensgröße in Mio. EUR",
-
-            unit: "",
-            component: "InputTextFormField",
-            required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-            validation: "",
-          },
-          {
-            name: "strategieUndZieleZurReduzierungVonTreibhausgasEmissionen",
-            label: "Strategie und Ziele zur Reduzierung von Treibhausgas-Emissionen",
-            description:
-              "Welchen Entwicklungspfad bzgl. der (Reduktion von) Treibhausgasemissionen verfolgt das Unternehmen. Gibt es einen Zeitplan bzw. konkrete Ziele? Und wie plant das Unternehmen, diesen Kurs zu erreichen? Bitte erläutern Sie, in welchem Bezug dieser Entwicklungspfad zu dem auf dem Pariser Abkommen basierenden Kurs steht.",
-
-            unit: "",
-            component: "InputTextFormField",
-            required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-            validation: "",
-          },
-          {
             name: "treibhausgasBerichterstattungUndPrognosen",
             label: "Treibhausgas-Berichterstattung und Prognosen",
             description:
@@ -823,6 +799,30 @@ export const gdvDataModel = [
             ],
             unit: "",
             component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird",
+            label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investriert wird",
+            description:
+              "THG-Emissionsintensität der Unternehmen, in die investiert wird. Scope 1 + Scope 2 Treibhausgasemissionen ./. Umsatz in Millionen EUR Scope 1 + Scope 2 Treibhausgasemissionen ./. Unternehmensgröße in Mio. EUR",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "strategieUndZieleZurReduzierungVonTreibhausgasEmissionen",
+            label: "Strategie und Ziele zur Reduzierung von Treibhausgas-Emissionen",
+            description:
+              "Welchen Entwicklungspfad bzgl. der (Reduktion von) Treibhausgasemissionen verfolgt das Unternehmen. Gibt es einen Zeitplan bzw. konkrete Ziele? Und wie plant das Unternehmen, diesen Kurs zu erreichen? Bitte erläutern Sie, in welchem Bezug dieser Entwicklungspfad zu dem auf dem Pariser Abkommen basierenden Kurs steht.",
+
+            unit: "",
+            component: "InputTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
@@ -876,18 +876,6 @@ export const gdvDataModel = [
         label: "Energieverbrauch",
         fields: [
           {
-            name: "unternehmensGruppenStrategieBzglEnergieverbrauch",
-            label: "Unternehmens/Gruppen Strategie bzgl Energieverbrauch",
-            description:
-              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-
-            unit: "",
-            component: "InputTextFormField",
-            required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-            validation: "",
-          },
-          {
             name: "berichterstattungEnergieverbrauch",
             label: "Berichterstattung Energieverbrauch",
             description:
@@ -912,15 +900,9 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
           },
-        ],
-      },
-      {
-        name: "energieeffizienzImmobilienanlagen",
-        label: "Energieeffizienz Immobilienanlagen",
-        fields: [
           {
-            name: "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen",
-            label: "Unternehmens/Gruppen Strategie bzgl energieeffizienten Immobilienanlagen",
+            name: "unternehmensGruppenStrategieBzglEnergieverbrauch",
+            label: "Unternehmens/Gruppen Strategie bzgl Energieverbrauch",
             description:
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
 
@@ -930,6 +912,12 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
           },
+        ],
+      },
+      {
+        name: "energieeffizienzImmobilienanlagen",
+        label: "Energieeffizienz Immobilienanlagen",
+        fields: [
           {
             name: "berichterstattungEnergieverbrauchVonImmobilienvermoegen",
             label: "Berichterstattung Energieverbrauch von Immobilienvermoegen",
@@ -947,15 +935,9 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
           },
-        ],
-      },
-      {
-        name: "wasserverbrauch",
-        label: "Wasserverbrauch",
-        fields: [
           {
-            name: "unternehmensGruppenStrategieBzglWasserverbrauch",
-            label: "Unternehmens/Gruppen Strategie bzgl Wasserverbrauch",
+            name: "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen",
+            label: "Unternehmens/Gruppen Strategie bzgl energieeffizienten Immobilienanlagen",
             description:
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
 
@@ -965,6 +947,12 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
           },
+        ],
+      },
+      {
+        name: "wasserverbrauch",
+        label: "Wasserverbrauch",
+        fields: [
           {
             name: "berichterstattungWasserverbrauch",
             label: "Berichterstattung Wasserverbrauch",
@@ -986,15 +974,9 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
           },
-        ],
-      },
-      {
-        name: "abfallproduktion",
-        label: "Abfallproduktion",
-        fields: [
           {
-            name: "unternehmensGruppenStrategieBzglAbfallproduktion",
-            label: "Unternehmens/Gruppen Strategie bzgl Abfallproduktion",
+            name: "unternehmensGruppenStrategieBzglWasserverbrauch",
+            label: "Unternehmens/Gruppen Strategie bzgl Wasserverbrauch",
             description:
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
 
@@ -1004,18 +986,12 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
           },
-          {
-            name: "gefaehrlicherAbfall",
-            label: "Gefährlicher Abfall",
-            description:
-              "Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?",
-
-            unit: "",
-            component: "InputTextFormField",
-            required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-            validation: "",
-          },
+        ],
+      },
+      {
+        name: "abfallproduktion",
+        label: "Abfallproduktion",
+        fields: [
           {
             name: "berichterstattungAbfallproduktion",
             label: "Berichterstattung Abfallproduktion",
@@ -1042,6 +1018,18 @@ export const gdvDataModel = [
             validation: "",
           },
           {
+            name: "unternehmensGruppenStrategieBzglAbfallproduktion",
+            label: "Unternehmens/Gruppen Strategie bzgl Abfallproduktion",
+            description:
+              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+
+            unit: "",
+            component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
             name: "recyclingImProduktionsprozess",
             label: "Recycling im Produktionsprozess",
             description:
@@ -1054,6 +1042,18 @@ export const gdvDataModel = [
             ],
             unit: "",
             component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "gefaehrlicherAbfall",
+            label: "Gefährlicher Abfall",
+            description:
+              "Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?",
+
+            unit: "",
+            component: "InputTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
@@ -1318,6 +1318,29 @@ export const gdvDataModel = [
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
             validation: "",
           },
+          {
+            name: "auswirkungenAufAnteilBefristerVertraegeUndFluktuation",
+            label: "Auswirkungen auf Anteil befrister Verträge und Fluktuation",
+            description:
+              "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die letzten drei Jahre an.",
+            options: [
+              {
+                label: "Anzahl der befristeten Verträge",
+                value: "anzahlbefristeteVertraege",
+              },
+              {
+                label: "Fluktuation",
+                value: "fluktuation",
+              },
+            ],
+            unit: "",
+            component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean =>
+              dataset.soziales?.unternehmensstrukturaenderungen
+                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
+            validation: "",
+          },
         ],
       },
       {
@@ -1336,24 +1359,46 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
           },
+          {
+            name: "unfallrate",
+            label: "Unfallrate",
+            description:
+              "Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten drei Jahre?",
+            options: [
+              {
+                label: "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust",
+                value: "haeufigkeitsrateVonArbeitsunfaellen",
+              },
+            ],
+            unit: "",
+            component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "budgetFuerSchulungAusbildung",
+            label: "Budget für Schulung/Ausbildung",
+            description:
+              "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde.",
+            options: [
+              {
+                label: "Budget pro Mitarbeiter",
+                value: "budgetProMitarbeiter",
+              },
+            ],
+            unit: "",
+            component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
         ],
       },
       {
         name: "einkommensgleichheit",
         label: "Einkommensgleichheit",
         fields: [
-          {
-            name: "massnahmenZurVerbesserungDerEinkommensungleichheit",
-            label: "Maßnahmen zur Verbesserung der Einkommensungleichheit",
-            description:
-              "Wie überwacht das Unternehmen die Einkommens(un)gleichheit und welche Maßnahmen wurden ergriffen, um die Einkommensungleichheit abzustellen?",
-
-            unit: "",
-            component: "InputTextFormField",
-            required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-            validation: "",
-          },
           {
             name: "ueberwachungDerEinkommensungleichheit",
             label: "Überwachung der Einkommensungleichheit",
@@ -1375,6 +1420,18 @@ export const gdvDataModel = [
             ],
             unit: "",
             component: "GdvYearlyDecimalTimeseriesDataFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            validation: "",
+          },
+          {
+            name: "massnahmenZurVerbesserungDerEinkommensungleichheit",
+            label: "Maßnahmen zur Verbesserung der Einkommensungleichheit",
+            description:
+              "Wie überwacht das Unternehmen die Einkommens(un)gleichheit und welche Maßnahmen wurden ergriffen, um die Einkommensungleichheit abzustellen?",
+
+            unit: "",
+            component: "InputTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
@@ -1508,16 +1565,6 @@ export const gdvDataModel = [
             validation: "",
           },
         ],
-      },
-      {
-        name: "anzahlDerBetroffenenMitarbeiter",
-        label: "Anzahl der betroffenen Mitarbeiter",
-        fields: [],
-      },
-      {
-        name: "auswirkungenAufAnteilBefristerVertraegeUndFluktuation",
-        label: "Auswirkungen auf Anteil befrister Verträge und Fluktuation",
-        fields: [],
       },
     ],
   },

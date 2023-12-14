@@ -2,6 +2,7 @@
 package org.dataland.datalandbackend.frameworks.gdv.model.soziales.unternehmensstrukturaenderungen
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.model.gdv.YearlyTimeseriesData
 import java.math.BigDecimal
 
 /**
@@ -15,4 +16,6 @@ data class GdvSozialesUnternehmensstrukturaenderungen(
     val anzahlUnbefristeterVertraegeInDerGesamtgruppe: BigDecimal?,
     val anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: BigDecimal?,
     val anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: BigDecimal?,
+    val auswirkungenAufAnteilBefristerVertraegeUndFluktuation:
+    YearlyTimeseriesData<AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues?>?,
 )

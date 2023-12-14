@@ -7879,19 +7879,6 @@
           "JaAufsichtsratUndGeschaeftsleitung"
         ]
       },
-      "AnzahlDerBetroffenenMitarbeiterValues": {
-        "type": "object",
-        "properties": {
-          "anzahlUnbefristeteVertraege": {
-            "type": "number",
-            "nullable": true
-          },
-          "anzahlvonAenderungBetroffeneVertraege": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
       "ArtDesAuditsOptions": {
         "type": "string",
         "enum": [
@@ -7990,6 +7977,15 @@
             "nullable": true
           },
           "emissionenInWasser": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "BudgetFuerSchulungAusbildungValues": {
+        "type": "object",
+        "properties": {
+          "budgetProMitarbeiter": {
             "type": "number",
             "nullable": true
           }
@@ -8521,14 +8517,6 @@
                 "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernance"
               }
             ]
-          },
-          "unfallrate": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataUnfallrateValues"
-              }
-            ]
           }
         }
       },
@@ -8603,22 +8591,6 @@
                 "$ref": "#/components/schemas/GdvSozialesAudit"
               }
             ]
-          },
-          "anzahlDerBetroffenenMitarbeiter": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataAnzahlDerBetroffenenMitarbeiterValues"
-              }
-            ]
-          },
-          "auswirkungenAufAnteilBefristerVertraegeUndFluktuation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataAuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues"
-              }
-            ]
           }
         }
       },
@@ -8650,10 +8622,6 @@
       "GdvSozialesEinkommensgleichheit": {
         "type": "object",
         "properties": {
-          "massnahmenZurVerbesserungDerEinkommensungleichheit": {
-            "type": "string",
-            "nullable": true
-          },
           "ueberwachungDerEinkommensungleichheit": {
             "nullable": true,
             "allOf": [
@@ -8661,6 +8629,10 @@
                 "$ref": "#/components/schemas/YearlyTimeseriesDataUeberwachungDerEinkommensungleichheitValues"
               }
             ]
+          },
+          "massnahmenZurVerbesserungDerEinkommensungleichheit": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -8699,6 +8671,22 @@
           "sicherheitsmassnahmenFuerMitarbeiter": {
             "type": "string",
             "nullable": true
+          },
+          "unfallrate": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataUnfallrateValues"
+              }
+            ]
+          },
+          "budgetFuerSchulungAusbildung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataBudgetFuerSchulungAusbildungValues"
+              }
+            ]
           }
         }
       },
@@ -8736,6 +8724,14 @@
           "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": {
             "type": "number",
             "nullable": true
+          },
+          "auswirkungenAufAnteilBefristerVertraegeUndFluktuation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataAuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues"
+              }
+            ]
           }
         }
       },
@@ -8819,14 +8815,6 @@
       "GdvUmweltAbfallproduktion": {
         "type": "object",
         "properties": {
-          "unternehmensGruppenStrategieBzglAbfallproduktion": {
-            "type": "string",
-            "nullable": true
-          },
-          "gefaehrlicherAbfall": {
-            "type": "string",
-            "nullable": true
-          },
           "berichterstattungAbfallproduktion": {
             "nullable": true,
             "allOf": [
@@ -8835,6 +8823,10 @@
               }
             ]
           },
+          "unternehmensGruppenStrategieBzglAbfallproduktion": {
+            "type": "string",
+            "nullable": true
+          },
           "recyclingImProduktionsprozess": {
             "nullable": true,
             "allOf": [
@@ -8842,6 +8834,10 @@
                 "$ref": "#/components/schemas/YearlyTimeseriesDataRecyclingImProduktionsprozessValues"
               }
             ]
+          },
+          "gefaehrlicherAbfall": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -8877,10 +8873,6 @@
       "GdvUmweltEnergieeffizienzImmobilienanlagen": {
         "type": "object",
         "properties": {
-          "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": {
-            "type": "string",
-            "nullable": true
-          },
           "berichterstattungEnergieverbrauchVonImmobilienvermoegen": {
             "nullable": true,
             "allOf": [
@@ -8888,16 +8880,16 @@
                 "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungEnergieverbrauchVonImmobilienvermoegenValues"
               }
             ]
+          },
+          "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
       "GdvUmweltEnergieverbrauch": {
         "type": "object",
         "properties": {
-          "unternehmensGruppenStrategieBzglEnergieverbrauch": {
-            "type": "string",
-            "nullable": true
-          },
           "berichterstattungEnergieverbrauch": {
             "nullable": true,
             "allOf": [
@@ -8905,6 +8897,10 @@
                 "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungEnergieverbrauchValues"
               }
             ]
+          },
+          "unternehmensGruppenStrategieBzglEnergieverbrauch": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -8985,14 +8981,6 @@
       "GdvUmweltTreibhausgasemissionen": {
         "type": "object",
         "properties": {
-          "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird": {
-            "type": "string",
-            "nullable": true
-          },
-          "strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": {
-            "type": "string",
-            "nullable": true
-          },
           "treibhausgasBerichterstattungUndPrognosen": {
             "nullable": true,
             "allOf": [
@@ -9000,16 +8988,20 @@
                 "$ref": "#/components/schemas/YearlyTimeseriesDataTreibhausgasBerichterstattungUndPrognosenValues"
               }
             ]
+          },
+          "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird": {
+            "type": "string",
+            "nullable": true
+          },
+          "strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
       "GdvUmweltWasserverbrauch": {
         "type": "object",
         "properties": {
-          "unternehmensGruppenStrategieBzglWasserverbrauch": {
-            "type": "string",
-            "nullable": true
-          },
           "berichterstattungWasserverbrauch": {
             "nullable": true,
             "allOf": [
@@ -9017,6 +9009,10 @@
                 "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungWasserverbrauchValues"
               }
             ]
+          },
+          "unternehmensGruppenStrategieBzglWasserverbrauch": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -9346,25 +9342,6 @@
           }
         }
       },
-      "YearlyTimeseriesDataAnzahlDerBetroffenenMitarbeiterValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/AnzahlDerBetroffenenMitarbeiterValues"
-            }
-          }
-        }
-      },
       "YearlyTimeseriesDataAuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues": {
         "required": [
           "currentYear",
@@ -9475,6 +9452,25 @@
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/BerichterstattungWasserverbrauchValues"
+            }
+          }
+        }
+      },
+      "YearlyTimeseriesDataBudgetFuerSchulungAusbildungValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
+        "type": "object",
+        "properties": {
+          "currentYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yearlyData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/BudgetFuerSchulungAusbildungValues"
             }
           }
         }
@@ -10643,10 +10639,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

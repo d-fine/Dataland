@@ -133,13 +133,13 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
     },
     umwelt: {
       treibhausgasemissionen: {
-        treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird: dataGenerator.randomShortString(),
-        strategieUndZieleZurReduzierungVonTreibhausgasEmissionen: dataGenerator.randomShortString(),
         treibhausgasBerichterstattungUndPrognosen: dataGenerator.randomDecimalYearlyTimeseriesData([
           "scope1",
           "scope2",
           "scope3",
         ]),
+        treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird: dataGenerator.randomShortString(),
+        strategieUndZieleZurReduzierungVonTreibhausgasEmissionen: dataGenerator.randomShortString(),
       },
       produktion: {
         produkteZurVerringerungDerUmweltbelastung: dataGenerator.randomYesNo(),
@@ -147,35 +147,35 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         oekologischerMindestStandardFuerProduktionsprozesse: dataGenerator.randomYesNo(),
       },
       energieverbrauch: {
-        unternehmensGruppenStrategieBzglEnergieverbrauch: dataGenerator.randomShortString(),
         berichterstattungEnergieverbrauch: dataGenerator.randomDecimalYearlyTimeseriesData([
           "energieverbrauch",
           "verbrauchErneuerbareEnergien",
           "erzeugungErneuerbareEnergien",
         ]),
+        unternehmensGruppenStrategieBzglEnergieverbrauch: dataGenerator.randomShortString(),
       },
       energieeffizienzImmobilienanlagen: {
-        unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen: dataGenerator.randomShortString(),
         berichterstattungEnergieverbrauchVonImmobilienvermoegen: dataGenerator.randomDecimalYearlyTimeseriesData([
           "energieeffizienteImmobilienanlagen",
         ]),
+        unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen: dataGenerator.randomShortString(),
       },
       wasserverbrauch: {
-        unternehmensGruppenStrategieBzglWasserverbrauch: dataGenerator.randomShortString(),
         berichterstattungWasserverbrauch: dataGenerator.randomDecimalYearlyTimeseriesData([
           "wasserverbrauch",
           "emissionenInWasser",
         ]),
+        unternehmensGruppenStrategieBzglWasserverbrauch: dataGenerator.randomShortString(),
       },
       abfallproduktion: {
-        unternehmensGruppenStrategieBzglAbfallproduktion: dataGenerator.randomShortString(),
-        gefaehrlicherAbfall: dataGenerator.randomShortString(),
         berichterstattungAbfallproduktion: dataGenerator.randomDecimalYearlyTimeseriesData([
           "abfallmenge",
           "anteilRecycelterAbfallmenge",
           "anteilGefaehrlicherAbfallmenge",
         ]),
+        unternehmensGruppenStrategieBzglAbfallproduktion: dataGenerator.randomShortString(),
         recyclingImProduktionsprozess: dataGenerator.randomDecimalYearlyTimeseriesData(["anteilAnRecyclaten"]),
+        gefaehrlicherAbfall: dataGenerator.randomShortString(),
       },
       biodiversitaet: {
         negativeAktivitaetenFuerDieBiologischeVielfalt: dataGenerator.randomYesNo(),
@@ -208,17 +208,23 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         anzahlUnbefristeterVertraegeInDerGesamtgruppe: dataGenerator.randomFloat(),
         anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: dataGenerator.randomFloat(),
         anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: dataGenerator.randomFloat(),
+        auswirkungenAufAnteilBefristerVertraegeUndFluktuation: dataGenerator.randomDecimalYearlyTimeseriesData([
+          "anzahlbefristeteVertraege",
+          "fluktuation",
+        ]),
       },
       sicherheitUndWeiterbildung: {
         sicherheitsmassnahmenFuerMitarbeiter: dataGenerator.randomShortString(),
+        unfallrate: dataGenerator.randomDecimalYearlyTimeseriesData(["haeufigkeitsrateVonArbeitsunfaellen"]),
+        budgetFuerSchulungAusbildung: dataGenerator.randomDecimalYearlyTimeseriesData(["budgetProMitarbeiter"]),
       },
       einkommensgleichheit: {
-        massnahmenZurVerbesserungDerEinkommensungleichheit: dataGenerator.randomShortString(),
         ueberwachungDerEinkommensungleichheit: dataGenerator.randomDecimalYearlyTimeseriesData([
           "geschlechtsspezifischesLohngefaelle",
           "einkommensungleichheitsverhaeltnis",
           "ceoEinkommenungleichheitsverhaeltnis",
         ]),
+        massnahmenZurVerbesserungDerEinkommensungleichheit: dataGenerator.randomShortString(),
       },
       geschlechterdiversitaet: {
         mitarbeiterAufTopManagementEbene: dataGenerator.randomFloat(),
@@ -233,14 +239,6 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         artDesAudits: dataGenerator.valueOrNull(pickOneElement(Object.values(ArtDesAuditsOptions))),
         auditErgebnisse: dataGenerator.randomShortString(),
       },
-      anzahlDerBetroffenenMitarbeiter: dataGenerator.randomDecimalYearlyTimeseriesData([
-        "anzahlUnbefristeteVertraege",
-        "anzahlvonAenderungBetroffeneVertraege",
-      ]),
-      auswirkungenAufAnteilBefristerVertraegeUndFluktuation: dataGenerator.randomDecimalYearlyTimeseriesData([
-        "anzahlbefristeteVertraege",
-        "fluktuation",
-      ]),
     },
     unternehmensfuehrungGovernance: {
       aufsichtsrat: {
@@ -302,6 +300,5 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         auswahlkriterien: dataGenerator.randomShortString(),
       },
     },
-    unfallrate: dataGenerator.randomDecimalYearlyTimeseriesData(["haeufigkeitsrateVonArbeitsunfaellen"]),
   };
 }

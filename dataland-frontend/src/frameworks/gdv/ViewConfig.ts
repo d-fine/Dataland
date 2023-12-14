@@ -2,12 +2,12 @@
 import { type GdvData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { formatGdvYearlyDecimalTimeseriesDataForTable } from "@/components/resources/dataTable/conversion/gdv/GdvYearlyDecimalTimeseriesDataGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
+import { formatGdvYearlyDecimalTimeseriesDataForTable } from "@/components/resources/dataTable/conversion/gdv/GdvYearlyDecimalTimeseriesDataGetterFactory";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/gdv/GdvListOfBaseDataPointGetterFactory";
@@ -710,6 +710,23 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         children: [
           {
             type: "cell",
+            label: "Treibhausgas-Berichterstattung und Prognosen",
+            explanation:
+              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatGdvYearlyDecimalTimeseriesDataForTable(
+                dataset.umwelt?.treibhausgasemissionen?.treibhausgasBerichterstattungUndPrognosen,
+                {
+                  scope1: { label: "Scope 1", unitSuffix: "tCO2-Äquiv." },
+                  scope2: { label: "Scope 2", unitSuffix: "tCO2-Äquiv." },
+                  scope3: { label: "Scope 3", unitSuffix: "tCO2-Äquiv." },
+                },
+                "Treibhausgas-Berichterstattung und Prognosen",
+              ),
+          },
+          {
+            type: "cell",
             label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investriert wird",
             explanation:
               "THG-Emissionsintensität der Unternehmen, in die investiert wird. Scope 1 + Scope 2 Treibhausgasemissionen ./. Umsatz in Millionen EUR Scope 1 + Scope 2 Treibhausgasemissionen ./. Unternehmensgröße in Mio. EUR",
@@ -729,23 +746,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
                 dataset.umwelt?.treibhausgasemissionen?.strategieUndZieleZurReduzierungVonTreibhausgasEmissionen,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Treibhausgas-Berichterstattung und Prognosen",
-            explanation:
-              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatGdvYearlyDecimalTimeseriesDataForTable(
-                dataset.umwelt?.treibhausgasemissionen?.treibhausgasBerichterstattungUndPrognosen,
-                {
-                  scope1: { label: "Scope 1", unitSuffix: "tCO2-Äquiv." },
-                  scope2: { label: "Scope 2", unitSuffix: "tCO2-Äquiv." },
-                  scope3: { label: "Scope 3", unitSuffix: "tCO2-Äquiv." },
-                },
-                "Treibhausgas-Berichterstattung und Prognosen",
               ),
           },
         ],
@@ -795,17 +795,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         children: [
           {
             type: "cell",
-            label: "Unternehmens/Gruppen Strategie bzgl Energieverbrauch",
-            explanation:
-              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.umwelt?.energieverbrauch?.unternehmensGruppenStrategieBzglEnergieverbrauch,
-              ),
-          },
-          {
-            type: "cell",
             label: "Berichterstattung Energieverbrauch",
             explanation:
               "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
@@ -821,6 +810,17 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 "Berichterstattung Energieverbrauch",
               ),
           },
+          {
+            type: "cell",
+            label: "Unternehmens/Gruppen Strategie bzgl Energieverbrauch",
+            explanation:
+              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.umwelt?.energieverbrauch?.unternehmensGruppenStrategieBzglEnergieverbrauch,
+              ),
+          },
         ],
       },
       {
@@ -829,18 +829,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
         children: [
-          {
-            type: "cell",
-            label: "Unternehmens/Gruppen Strategie bzgl energieeffizienten Immobilienanlagen",
-            explanation:
-              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.umwelt?.energieeffizienzImmobilienanlagen
-                  ?.unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen,
-              ),
-          },
           {
             type: "cell",
             label: "Berichterstattung Energieverbrauch von Immobilienvermoegen",
@@ -857,6 +845,18 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 "Berichterstattung Energieverbrauch von Immobilienvermoegen",
               ),
           },
+          {
+            type: "cell",
+            label: "Unternehmens/Gruppen Strategie bzgl energieeffizienten Immobilienanlagen",
+            explanation:
+              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.umwelt?.energieeffizienzImmobilienanlagen
+                  ?.unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen,
+              ),
+          },
         ],
       },
       {
@@ -865,17 +865,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
         children: [
-          {
-            type: "cell",
-            label: "Unternehmens/Gruppen Strategie bzgl Wasserverbrauch",
-            explanation:
-              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.umwelt?.wasserverbrauch?.unternehmensGruppenStrategieBzglWasserverbrauch,
-              ),
-          },
           {
             type: "cell",
             label: "Berichterstattung Wasserverbrauch",
@@ -892,6 +881,17 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 "Berichterstattung Wasserverbrauch",
               ),
           },
+          {
+            type: "cell",
+            label: "Unternehmens/Gruppen Strategie bzgl Wasserverbrauch",
+            explanation:
+              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.umwelt?.wasserverbrauch?.unternehmensGruppenStrategieBzglWasserverbrauch,
+              ),
+          },
         ],
       },
       {
@@ -900,26 +900,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
         children: [
-          {
-            type: "cell",
-            label: "Unternehmens/Gruppen Strategie bzgl Abfallproduktion",
-            explanation:
-              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.umwelt?.abfallproduktion?.unternehmensGruppenStrategieBzglAbfallproduktion,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Gefährlicher Abfall",
-            explanation:
-              "Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.umwelt?.abfallproduktion?.gefaehrlicherAbfall),
-          },
           {
             type: "cell",
             label: "Berichterstattung Abfallproduktion",
@@ -942,6 +922,17 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           },
           {
             type: "cell",
+            label: "Unternehmens/Gruppen Strategie bzgl Abfallproduktion",
+            explanation:
+              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.umwelt?.abfallproduktion?.unternehmensGruppenStrategieBzglAbfallproduktion,
+              ),
+          },
+          {
+            type: "cell",
             label: "Recycling im Produktionsprozess",
             explanation:
               "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereitsrecyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre.",
@@ -952,6 +943,15 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 { anteilAnRecyclaten: { label: "Anteil an Recyclaten", unitSuffix: "%" } },
                 "Recycling im Produktionsprozess",
               ),
+          },
+          {
+            type: "cell",
+            label: "Gefährlicher Abfall",
+            explanation:
+              "Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.umwelt?.abfallproduktion?.gefaehrlicherAbfall),
           },
         ],
       },
@@ -1210,6 +1210,25 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 "",
               ),
           },
+          {
+            type: "cell",
+            label: "Auswirkungen auf Anteil befrister Verträge und Fluktuation",
+            explanation:
+              "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die letzten drei Jahre an.",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.soziales?.unternehmensstrukturaenderungen
+                ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatGdvYearlyDecimalTimeseriesDataForTable(
+                dataset.soziales?.unternehmensstrukturaenderungen
+                  ?.auswirkungenAufAnteilBefristerVertraegeUndFluktuation,
+                {
+                  anzahlbefristeteVertraege: { label: "Anzahl der befristeten Verträge", unitSuffix: "" },
+                  fluktuation: { label: "Fluktuation", unitSuffix: "%" },
+                },
+                "Auswirkungen auf Anteil befrister Vertr\u00E4ge und Fluktuation",
+              ),
+          },
         ],
       },
       {
@@ -1229,6 +1248,37 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 dataset.soziales?.sicherheitUndWeiterbildung?.sicherheitsmassnahmenFuerMitarbeiter,
               ),
           },
+          {
+            type: "cell",
+            label: "Unfallrate",
+            explanation:
+              "Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten drei Jahre?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatGdvYearlyDecimalTimeseriesDataForTable(
+                dataset.soziales?.sicherheitUndWeiterbildung?.unfallrate,
+                {
+                  haeufigkeitsrateVonArbeitsunfaellen: {
+                    label: "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust",
+                    unitSuffix: "",
+                  },
+                },
+                "Unfallrate",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Budget für Schulung/Ausbildung",
+            explanation:
+              "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde.",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatGdvYearlyDecimalTimeseriesDataForTable(
+                dataset.soziales?.sicherheitUndWeiterbildung?.budgetFuerSchulungAusbildung,
+                { budgetProMitarbeiter: { label: "Budget pro Mitarbeiter", unitSuffix: "€" } },
+                "Budget f\u00FCr Schulung/Ausbildung",
+              ),
+          },
         ],
       },
       {
@@ -1237,17 +1287,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
         children: [
-          {
-            type: "cell",
-            label: "Maßnahmen zur Verbesserung der Einkommensungleichheit",
-            explanation:
-              "Wie überwacht das Unternehmen die Einkommens(un)gleichheit und welche Maßnahmen wurden ergriffen, um die Einkommensungleichheit abzustellen?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.soziales?.einkommensgleichheit?.massnahmenZurVerbesserungDerEinkommensungleichheit,
-              ),
-          },
           {
             type: "cell",
             label: "Überwachung der Einkommensungleichheit",
@@ -1269,6 +1308,17 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                   },
                 },
                 "\u00DCberwachung der Einkommensungleichheit",
+              ),
+          },
+          {
+            type: "cell",
+            label: "Maßnahmen zur Verbesserung der Einkommensungleichheit",
+            explanation:
+              "Wie überwacht das Unternehmen die Einkommens(un)gleichheit und welche Maßnahmen wurden ergriffen, um die Einkommensungleichheit abzustellen?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.soziales?.einkommensgleichheit?.massnahmenZurVerbesserungDerEinkommensungleichheit,
               ),
           },
         ],
@@ -1374,43 +1424,6 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
               formatStringForDatatable(dataset.soziales?.audit?.auditErgebnisse),
           },
         ],
-      },
-      {
-        type: "cell",
-        label: "Anzahl der betroffenen Mitarbeiter",
-        explanation:
-          "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in Deutschland und in der Gesamtgruppe gibt und wieviele unbefristete Verträge von der Änderung betroffen sind (Verkauf oder Akquisition).",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatGdvYearlyDecimalTimeseriesDataForTable(
-            dataset.soziales?.anzahlDerBetroffenenMitarbeiter,
-            {
-              anzahlUnbefristeteVertraege: { label: "Anzahl der unbefristeten Verträge", unitSuffix: "" },
-              anzahlvonAenderungBetroffeneVertraege: {
-                label: "Anzahl der von Änderung betroffenen Verträge",
-                unitSuffix: "",
-              },
-            },
-            "Anzahl der betroffenen Mitarbeiter",
-          ),
-      },
-      {
-        type: "cell",
-        label: "Auswirkungen auf Anteil befrister Verträge und Fluktuation",
-        explanation:
-          "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die letzten drei Jahre an.",
-        shouldDisplay: (dataset: GdvData): boolean =>
-          dataset.soziales?.unternehmensstrukturaenderungen
-            ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
-        valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-          formatGdvYearlyDecimalTimeseriesDataForTable(
-            dataset.soziales?.auswirkungenAufAnteilBefristerVertraegeUndFluktuation,
-            {
-              anzahlbefristeteVertraege: { label: "Anzahl der befristeten Verträge", unitSuffix: "" },
-              fluktuation: { label: "Fluktuation", unitSuffix: "%" },
-            },
-            "Auswirkungen auf Anteil befrister Vertr\u00E4ge und Fluktuation",
-          ),
       },
     ],
   },
@@ -1787,22 +1800,5 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         ],
       },
     ],
-  },
-  {
-    type: "cell",
-    label: "Unfallrate",
-    explanation: "Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten drei Jahre?",
-    shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
-    valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-      formatGdvYearlyDecimalTimeseriesDataForTable(
-        dataset.unfallrate,
-        {
-          haeufigkeitsrateVonArbeitsunfaellen: {
-            label: "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust",
-            unitSuffix: "%",
-          },
-        },
-        "Unfallrate",
-      ),
   },
 ];
