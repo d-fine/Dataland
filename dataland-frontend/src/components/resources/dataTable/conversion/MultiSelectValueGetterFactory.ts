@@ -21,15 +21,19 @@ export function multiSelectValueGetterFactory(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const fieldValueFromFrameworkDataset = getFieldValueFromFrameworkDataset(path, dataset) as Array<string>;
+    let fieldValueFromFrameworkDataset = getFieldValueFromFrameworkDataset(path, dataset) as Array<string>;
+    if (fieldValueFromFrameworkDataset == undefined) {
+      fieldValueFromFrameworkDataset = [];
+    }
+
     const expectedDropDownOptions = field.options ?? [];
     const technicalNameToLabelMapping = new Map<string, string>();
     for (const option of expectedDropDownOptions) {
       technicalNameToLabelMapping.set(option.value, option.label);
     }
     const labelsToDisplayInFrontend = fieldValueFromFrameworkDataset.map(
-      (it) => technicalNameToLabelMapping.get(it) ?? it,
-    );
+          (it) => technicalNameToLabelMapping.get(it) ?? it,
+      );
     return formatListOfStringsForDatatable(labelsToDisplayInFrontend, field.label);
   };
 }
