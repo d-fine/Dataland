@@ -68,9 +68,11 @@ class CompanyQueryManager(
     @Transactional
     fun searchCompaniesByNameOrIdentifierAndGetApiModel(
         searchString: String,
+        resultLimit: Int,
     ): List<CompanyIdAndName> {
         return companyRepository.searchCompaniesByNameOrIdentifier(
             searchString,
+            resultLimit,
         )
     }
 
