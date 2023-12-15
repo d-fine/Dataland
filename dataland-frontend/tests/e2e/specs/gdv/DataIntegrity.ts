@@ -37,10 +37,10 @@ describeIf(
       "Create a company and a GDV dataset via api, then re-upload it with the upload form in Edit mode and " +
         "assure that the re-uploaded dataset equals the pre-uploaded one",
       () => {
-        const uniqueCompanyMarker = Date.now().toString();
-        const testCompanyName = "Company-Created-In-Gdv-Blanket-Test-" + uniqueCompanyMarker;
+        const uniqueCompanyMarkerWithDate = Date.now().toString();
+        const testCompanyNameGdv = "Company-Created-In-Gdv-Blanket-Test-" + uniqueCompanyMarkerWithDate;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameGdv)).then((storedCompany) => {
             return uploadGenericFrameworkData(token, storedCompany.companyId, "2021", gdvFixtureForTest.t, (config) =>
               getBaseFrameworkDefinition(DataTypeEnum.Gdv)!.getFrameworkApiClient(config),
             ).then((dataMetaInformation) => {
@@ -54,7 +54,7 @@ describeIf(
                   dataMetaInformation.dataId,
               );
               cy.wait("@fetchDataForPrefill", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-              cy.get("h1").should("contain", testCompanyName);
+              cy.get("h1").should("contain", testCompanyNameGdv);
               cy.intercept({
                 url: `**/api/data/${DataTypeEnum.Gdv}`,
                 times: 1,

@@ -32,8 +32,8 @@ export function multiSelectValueGetterFactory(
       technicalNameToLabelMapping.set(option.value, option.label);
     }
     const labelsToDisplayInFrontend = fieldValueFromFrameworkDataset.map(
-          (it) => technicalNameToLabelMapping.get(it) ?? it,
-      );
+      (it) => technicalNameToLabelMapping.get(it) ?? it,
+    );
     return formatListOfStringsForDatatable(labelsToDisplayInFrontend, field.label);
   };
 }
