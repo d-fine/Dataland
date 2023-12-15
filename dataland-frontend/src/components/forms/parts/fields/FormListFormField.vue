@@ -57,6 +57,7 @@ export default defineComponent({
       idCounter: 0,
     };
   },
+  inheritAttrs: false,
   props: {
     ...BaseFormFieldProps,
     subFormComponent: {

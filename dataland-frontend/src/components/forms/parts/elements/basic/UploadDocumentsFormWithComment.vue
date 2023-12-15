@@ -1,10 +1,10 @@
 <template>
-  <div class="form-field" :data-test="name">
+  <div class="form-field" data-test="UploadDocumentsFormWithComment">
     <FormKit v-model="baseDataPoint" type="group" name="dataSource">
       <UploadDocumentsForm
         @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
         ref="uploadDocumentsForm"
-        :name="name"
+        name="UploadDocumentsFormWithComment"
         :more-than-one-document-allowed="false"
         :file-names-for-prefill="fileNamesForPrefill"
       />
@@ -21,7 +21,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { type BaseDataPoint } from "@/utils/DataPoint";
@@ -30,7 +29,6 @@ export default defineComponent({
   name: "UploadDocumentsFormWithComment",
   components: { UploadDocumentsForm },
   inheritAttrs: false,
-  props: { ...BaseFormFieldProps },
   data() {
     return {
       baseDataPoint: {} as BaseDataPoint<unknown>,
