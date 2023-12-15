@@ -12,7 +12,7 @@
       <FormKit type="hidden" name="fileReference" v-model="documentReference" />
       <FormKit
         type="textarea"
-        name="comment"
+        name="value"
         placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
       />
     </FormKit>
