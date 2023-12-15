@@ -2399,6 +2399,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "resultLimit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
           }
         ],
         "responses": {

@@ -7,18 +7,20 @@ creation URL (or simply copy this md file into the description)
 
 ## Dataland
 
-### Notes from Nov 2023
-- kotlin to remain at 1.9.10 instead of 1.9.20, which caused error
-- kept gradle wrapper at 8.4 instead of updating to 8.4.RC1
-- updated flyway to only 9.22.3
-- eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI, we're using 17.
-- some sec fixes or updates to `package.json` in /frontend and /keycloak break the build
+### Notes from Dec, 15 2023
+Some tests are failing locally due to the cookie banner. A description is given in
+https://jira.d-fine.dev/browse/DALA-3137
 
 ### Skipped updates
 
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
 
+- [ ] There were two 2 messages found in RabbitMQ dead letter queue on dev1 and dev2 respectively, details added in ticket
+- [ ] JDK/JRE must remain at 17, upgrading it to 21 caused too many errors, also Kotlin 1.9.10 is not compatible with Java 21
+- [ ] kotlin to remain at 1.9.10 instead of 1.9.20, which caused error
+- [ ] eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI, we're using 17.
+- [ ] some sec fixes or updates to `package.json` in /frontend and /keycloak break the build
 - [ ] Update keycloak to >=22.0.3 is skipped due to failing all e2e tests
 - [ ] Update e2etests/Dockerfile update breaks the build
 - [ ] Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
@@ -31,10 +33,8 @@ appear.
   https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
 - [ ] Update @zxcvbn-ts/language-common to 3.0.3 is skipped due to issues in rebuilding keycloak Docker images
 - [ ] Update @zxcvbn-ts/language-en to 3.0.1 is skipped due to issues in rebuilding keycloak Docker images
-- [ ] Update Postgres in Docker-compose.yml to 16.0 causes CD to fail. Should be retried in future tickets.
+- [ ] Update Postgres in Docker-compose.yml to 16.0 causes CD to fail. Postgres can't be upgraded to 16 as existing data is not compatible.
 - [ ] The docker-compose-plugin v.2.19.1 causes connection issues:
-  If running `sudo apt-get update && sudo apt-get upgrade` on the servers causes connection issues
-  this can be possibly fixed by reverting the docker-compose-plugin version
 - [ ] Check that it is still valid for `**/CompanyApi.kt', '**/CompanyDataController.kt` to be excluded from detekt, 
       at latest once the refactoring of the APIs is done this must be reevaluated
 ### Gradle update
