@@ -381,6 +381,7 @@ services:
       <<: *rabbit-mq-user-and-pass
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: ${DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET}
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
     depends_on:
       - qa-service
   qa-service:
