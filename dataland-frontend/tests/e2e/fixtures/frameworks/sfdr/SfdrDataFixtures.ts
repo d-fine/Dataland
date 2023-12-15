@@ -65,9 +65,8 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         nonRenewableEnergyProductionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         relativeNonRenewableEnergyProductionInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
         nonRenewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
-        relativeNonRenewableEnergyConsumptionInPercent: dataGenerator.randomExtendedDataPoint(
-          generatePercentageValue(),
-        ),
+        relativeNonRenewableEnergyConsumptionInPercent:
+          dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
         applicableHighImpactClimateSectors: dataGenerator.generateHighImpactClimateSectors(),
         totalHighImpactClimateSectorEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
         nonRenewableEnergyConsumptionFossilFuelsInGWh: dataGenerator.randomExtendedDataPoint(generateFloat()),
@@ -128,9 +127,8 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         fairCompetitionPolicy: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         violationOfTaxRulesAndRegulation: dataGenerator.randomExtendedDataPoint(generateYesNo()),
         unGlobalCompactPrinciplesCompliancePolicy: dataGenerator.randomBaseDataPoint(generateYesNo()),
-        oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: dataGenerator.randomExtendedDataPoint(
-          generateYesNo(),
-        ),
+        oecdGuidelinesForMultinationalEnterprisesGrievanceHandling:
+          dataGenerator.randomExtendedDataPoint(generateYesNo()),
         averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(),
         averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(),
         unadjustedGenderPayGapInPercent: dataGenerator.randomExtendedDataPoint(generatePercentageValue()),
@@ -182,9 +180,8 @@ class SfdrGenerator extends Generator {
           naceCode as string,
           {
             highImpactClimateSectorEnergyConsumptionInGWh: this.randomExtendedDataPoint(generateFloat()),
-            highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue: this.randomExtendedDataPoint(
-              generateFloat(),
-            ),
+            highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue:
+              this.randomExtendedDataPoint(generateFloat()),
           } as SfdrHighImpactClimateSectorEnergyConsumption,
         ]),
       ),

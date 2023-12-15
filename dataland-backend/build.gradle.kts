@@ -56,6 +56,10 @@ dependencies {
     implementation(libs.mailjet.client)
     implementation(project(":dataland-message-queue-utils"))
     implementation(libs.flyway)
+    implementation(libs.flyway.core)
+    implementation("org.springframework.boot:spring-boot-starter-validation:3.1.5")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 }
 
 openApi {
