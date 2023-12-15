@@ -135,7 +135,7 @@
                                 :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />
                               <div v-if="hasValidDataSource()">
-                                <FormKit type="hidden" name="fileName" :modelValue="fileReferenceAccordingToName" />
+                                <FormKit type="hidden" name="fileName" :modelValue="currentReportValue" />
                                 <FormKit
                                   type="hidden"
                                   name="fileReference"
@@ -645,6 +645,10 @@ export default defineComponent({
           ...(clonedFormInputsModel.data as ObjectType),
           ...this.convertKpis(kpiSections as ObjectType),
         };
+        // (((clonedFormInputsModel.data as ObjectType).assurance as ObjectType).dataSource as CompanyReport | undefined) =
+        //   this.validDataSource;
+
+        clonedFormInputsModel.data.assurance.dataSource = this.validDataSource;
 
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
@@ -713,7 +717,8 @@ export default defineComponent({
     },
 
     /**
-     * @returns
+     * Checks whether the Assurance data source has appropriate values
+     * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
      */
     hasValidDataSource(): boolean {
       const hasCurrentReportValue = this.currentReportValue && this.currentReportValue !== this.noReportLabel;
