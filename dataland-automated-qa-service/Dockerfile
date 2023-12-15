@@ -17,4 +17,4 @@ RUN pip install --no-cache-dir ./dataland-document-manager-api-documentation-cli
 ENTRYPOINT python ./entrypoint.py
 
 # TODO dummy healtcheck, maybe check if a python process is running
-HEALTHCHECK --interval=30s --timeout=3s CMD echo Healthcheck
+HEALTHCHECK NONE

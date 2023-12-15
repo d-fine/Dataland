@@ -13,6 +13,7 @@ def main():
         format="%(asctime)s %(levelname)s: %(name)s: %(message)s",
         level=logging.INFO
     )
+    logging.info("Starting service")
     while True:
         try:
             mq = RabbitMq(p.rabbit_mq_connection_parameters)
