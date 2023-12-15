@@ -2,60 +2,55 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Augusta-Richmond County",
-			"headquartersPostalCode": "65223",
-			"sector": "initiatives",
+			"headquarters": "Eliezerbury",
+			"headquartersPostalCode": "58224-0317",
+			"sector": "action-items",
 			"identifiers": {
 				"Lei": [
-					"6f2lUmC0IsYZntT9sJEq"
+					"ONoJy3oImVfLrEjix9bb"
 				],
 				"Isin": [
-					"ET6JV00ez2sr"
+					"BRxSYBSFmw7w",
+					"MzYGdsdsaNcy"
 				],
-				"PermId": [
-					"J26gfdZXR6"
-				],
+				"PermId": [],
 				"Ticker": [
-					"Wq4BxU1"
+					"kdeKnRw"
 				],
 				"Duns": [
-					"qtFppJiyw"
+					"mvpIIKB7H"
 				],
 				"VatNumber": [
-					"opD9voonl"
+					"bBOSIuptS"
 				],
-				"CompanyRegistrationNumber": [
-					"V2XxppUu0yqY9wp"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "IM",
+			"countryCode": "TF",
 			"companyAlternativeNames": [
-				"Keebler - McCullough",
-				"Lebsack - Homenick",
-				"Windler, Connelly and Reinger"
+				"Botsford and Sons"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://mealy-incense.info/",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://tidy-drapes.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"14.19",
-						"24.4",
-						"26.6",
-						"46.63"
+						"25.4",
+						"43.2",
+						"46.90",
+						"51.2"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": "50666-3770",
-						"city": "Pourosbury",
-						"state": "Georgia",
-						"country": "VC"
+						"streetAndHouseNumber": "Highfield Avenue 6181",
+						"postalCode": "01389-9027",
+						"city": "Allen",
+						"state": "Nevada",
+						"country": "CC"
 					},
-					"numberOfEmployees": 5036,
-					"fiscalYearStart": "2024-09-10"
+					"numberOfEmployees": 7890,
+					"fiscalYearStart": "2024-11-16"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -67,51 +62,53 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Okuneva LLC",
+							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Francis Square 353",
-								"postalCode": "98049",
-								"city": "Lavernland",
-								"state": "Montana",
-								"country": "JO"
+								"streetAndHouseNumber": "Strosin Walks 36493",
+								"postalCode": "25870-9002",
+								"city": "Kaleview",
+								"state": "South Carolina",
+								"country": "AT"
 							},
-							"shareOfTotalRevenueInPercent": 12.3737
+							"shareOfTotalRevenueInPercent": 24.76
 						},
 						{
-							"nameOfProductionSite": "Doyle - Lynch",
+							"nameOfProductionSite": "Huel LLC",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Lennie Burg 7861",
-								"postalCode": "34497",
-								"city": "South Reagan",
+								"streetAndHouseNumber": "W Broad Street 2204",
+								"postalCode": null,
+								"city": "Valentinabury",
+								"state": "Idaho",
+								"country": "IQ"
+							},
+							"shareOfTotalRevenueInPercent": 83.78
+						},
+						{
+							"nameOfProductionSite": "O'Keefe, Emard and Gusikowski",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Tania Valley 14738",
+								"postalCode": "16876",
+								"city": "New Taraborough",
+								"state": "Rhode Island",
+								"country": "CN"
+							},
+							"shareOfTotalRevenueInPercent": 8.72
+						},
+						{
+							"nameOfProductionSite": "Thompson, Batz and Marvin",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "21325-6791",
+								"city": "Crooksburgh",
 								"state": null,
-								"country": "AZ"
+								"country": "AU"
 							},
-							"shareOfTotalRevenueInPercent": 59.7593
-						},
-						{
-							"nameOfProductionSite": "Windler and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Annetta Throughway 791",
-								"postalCode": "37213-9529",
-								"city": "Gresham",
-								"state": "Mississippi",
-								"country": "TL"
-							},
-							"shareOfTotalRevenueInPercent": 28.0863
+							"shareOfTotalRevenueInPercent": 4.33
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Intelligent Frozen Sausages",
-							"shareOfTotalRevenueInPercent": 53.2795
-						},
-						{
-							"name": "Small Plastic Cheese",
-							"shareOfTotalRevenueInPercent": 16.9043
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
@@ -119,23 +116,18 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1721,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 729,
-					"primaryEnergySourceForHeatingAndHotWater": null,
+					"powerConsumptionInMWh": 22,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 474,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
-					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Snow",
-						"Avalanche",
-						"Wind"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 37823325,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -144,40 +136,43 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Aidaworth",
-			"headquartersPostalCode": "92093",
-			"sector": "partnerships",
+			"headquarters": "Fort Antonietta",
+			"headquartersPostalCode": null,
+			"sector": "methodologies",
 			"identifiers": {
-				"Lei": [
-					"hvvgmLEqWB5q1X4uyujH"
-				],
+				"Lei": [],
 				"Isin": [
-					"Pyz5fDNxmcix",
-					"7AyqTJ82c6ja"
+					"DLT8sbw22TMw",
+					"dt4NtXHjEEP8"
 				],
-				"PermId": [],
-				"Ticker": [],
+				"PermId": [
+					"VZ10ma6bev"
+				],
+				"Ticker": [
+					"JhENmmV"
+				],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"3RpUBU3sstINqTv"
-				]
+				"VatNumber": [
+					"XtJnFXmUN"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "HN",
+			"countryCode": "LK",
 			"companyAlternativeNames": [
-				"Bahringer and Sons",
-				"Hagenes, Kihn and O'Keefe",
-				"Strosin and Sons"
+				"Conn - Pagac",
+				"Herzog - MacGyver",
+				"Satterfield, Fay and Wuckert",
+				"Towne LLC"
 			],
 			"companyLegalForm": "GmbH",
-			"website": "https://lumpy-bunch.org",
+			"website": "https://talkative-spark.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"72"
+						"47.99"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -186,109 +181,85 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 7900,
-					"fiscalYearStart": "2024-03-11"
+					"numberOfEmployees": 6759,
+					"fiscalYearStart": "2024-11-30"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 56641248,
-					"operatingCostInEUR": 62506682,
-					"capitalAssetsInEUR": 65712045
+					"revenueInEUR": null,
+					"operatingCostInEUR": null,
+					"capitalAssetsInEUR": 63885351
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Weimann - Reynolds",
+							"nameOfProductionSite": "Leffler - Klein",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Osinski Walk 538",
-								"postalCode": "15218-6876",
-								"city": "Westleyton",
-								"state": "Maryland",
-								"country": "DM"
-							},
-							"shareOfTotalRevenueInPercent": 82.0053
-						},
-						{
-							"nameOfProductionSite": "Rosenbaum - Murray",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "New Road 9679",
-								"postalCode": "66332",
-								"city": "Mullerfield",
-								"state": "Vermont",
-								"country": "SD"
-							},
-							"shareOfTotalRevenueInPercent": 59.837
-						},
-						{
-							"nameOfProductionSite": "Smitham - Wunsch",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Walker Lock 1391",
-								"postalCode": "51674-9620",
-								"city": "East Ally",
-								"state": "California",
-								"country": "MN"
-							},
-							"shareOfTotalRevenueInPercent": 98.7789
-						},
-						{
-							"nameOfProductionSite": "Kirlin, Aufderhar and Halvorson",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Alayna Loop 52075",
-								"postalCode": "64730",
-								"city": "Binsville",
-								"state": "West Virginia",
-								"country": "MH"
-							},
-							"shareOfTotalRevenueInPercent": 78.4608
-						},
-						{
-							"nameOfProductionSite": "Kunze and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Littel Prairie 219",
+								"streetAndHouseNumber": "Hauck Manors 45765",
 								"postalCode": null,
-								"city": "North Celestine",
-								"state": "Mississippi",
-								"country": "CI"
+								"city": "Hildegardshire",
+								"state": "Iowa",
+								"country": "CZ"
 							},
-							"shareOfTotalRevenueInPercent": null
+							"shareOfTotalRevenueInPercent": 11.22
+						},
+						{
+							"nameOfProductionSite": "Altenwerth - Collins",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "02267-3462",
+								"city": "Conway",
+								"state": "New Jersey",
+								"country": "SM"
+							},
+							"shareOfTotalRevenueInPercent": 18.46
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "The Orchard 124",
+								"postalCode": null,
+								"city": "Missoula",
+								"state": "Missouri",
+								"country": "BB"
+							},
+							"shareOfTotalRevenueInPercent": 52.79
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "09755",
+								"city": "Hodkiewiczborough",
+								"state": null,
+								"country": "MQ"
+							},
+							"shareOfTotalRevenueInPercent": 79.22
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Refined Granite Car",
-							"shareOfTotalRevenueInPercent": 13.53
-						},
-						{
-							"name": "Modern Frozen Cheese",
-							"shareOfTotalRevenueInPercent": 36.6144
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 562,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"powerConsumptionInMWh": 1676,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 293,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
-					"naturalHazardsCovered": [
-						"Hail",
-						"Flooding",
-						"EarthQuake"
-					]
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 47363892,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -297,41 +268,39 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Leliabury",
-			"headquartersPostalCode": "06748-9218",
-			"sector": "web services",
+			"headquarters": "Hilariofort",
+			"headquartersPostalCode": null,
+			"sector": "portals",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"59u9QG2GDkSszqlSgx6v"
+				],
 				"Isin": [
-					"MCbVWVEhAVO3",
-					"70dcUuf4kRmL"
+					"KZqJaSCDCr5D"
 				],
 				"PermId": [],
 				"Ticker": [
-					"nz66iCT"
+					"1SfXw3E"
 				],
-				"Duns": [
-					"gEo2gNHDk"
-				],
-				"VatNumber": [
-					"GuQofrSBH"
-				],
+				"Duns": [],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "LC",
+			"countryCode": "PN",
 			"companyAlternativeNames": [
-				"Mayer - Boyer",
-				"Parisian, Glover and Lakin"
+				"Franecki, Stroman and Swift",
+				"Gleason - Hoppe",
+				"Osinski - Schimmel"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://subdued-livestock.net",
+			"companyLegalForm": "GmbH",
+			"website": "https://sparse-sip.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"16.24"
+						"05"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -340,84 +309,84 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 4455,
-					"fiscalYearStart": "2024-10-07"
+					"numberOfEmployees": 3048,
+					"fiscalYearStart": "2024-08-18"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 75826152,
-					"operatingCostInEUR": 60941709,
-					"capitalAssetsInEUR": null
+					"revenueInEUR": 77279241,
+					"operatingCostInEUR": 54149271,
+					"capitalAssetsInEUR": 63059972
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Gutkowski - Smith",
+							"nameOfProductionSite": "Grant - Rath",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "South View 179",
-								"postalCode": null,
-								"city": "Greenholttown",
-								"state": null,
-								"country": "MG"
+								"streetAndHouseNumber": "MacGyver Falls 5873",
+								"postalCode": "14590",
+								"city": "Framiland",
+								"state": "Kansas",
+								"country": "MV"
 							},
-							"shareOfTotalRevenueInPercent": 39.1458
+							"shareOfTotalRevenueInPercent": 44.7
 						},
 						{
-							"nameOfProductionSite": "Donnelly, Olson and Kunze",
+							"nameOfProductionSite": "Gerhold - Windler",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Bergnaum Tunnel 652",
-								"postalCode": "88657",
-								"city": "Kansas City",
-								"state": "New Hampshire",
-								"country": "AT"
+								"streetAndHouseNumber": "Collier Lane 419",
+								"postalCode": null,
+								"city": "Downey",
+								"state": "Arizona",
+								"country": "GA"
 							},
-							"shareOfTotalRevenueInPercent": null
+							"shareOfTotalRevenueInPercent": 86.09
 						}
 					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Intelligent Steel Tuna",
-							"shareOfTotalRevenueInPercent": 10.3146
-						},
-						{
-							"name": "Small Steel Pizza",
-							"shareOfTotalRevenueInPercent": 2.1753
-						},
-						{
-							"name": "Rustic Fresh Table",
+							"name": "Generic Plastic Bike",
 							"shareOfTotalRevenueInPercent": null
 						},
 						{
-							"name": "Ergonomic Plastic Pants",
-							"shareOfTotalRevenueInPercent": null
+							"name": "Elegant Steel Table",
+							"shareOfTotalRevenueInPercent": 61.26
+						},
+						{
+							"name": "Elegant Bronze Table",
+							"shareOfTotalRevenueInPercent": 64.57
+						},
+						{
+							"name": "Fantastic Metal Mouse",
+							"shareOfTotalRevenueInPercent": 27.79
+						},
+						{
+							"name": "Practical Fresh Chips",
+							"shareOfTotalRevenueInPercent": 18.23
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1861,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 483,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 822,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 31871660,
-					"naturalHazardsCovered": [
-						"Hail",
-						"Snow",
-						"Wind"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 31877583,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
