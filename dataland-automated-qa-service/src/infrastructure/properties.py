@@ -9,3 +9,15 @@ rabbit_mq_connection_parameters = pika.ConnectionParameters(
     connection_attempts=100000,
     retry_delay=5,
 )
+
+mq_data_key = "data"
+mq_document_key = "document"
+mq_receiving_exchange = "itemStored"
+mq_manual_qa_requested_exchange = "manualQaRequested"
+mq_quality_assured_exchange = "dataQualityAssured"
+
+mq_correlation_id_header = "cloudEvents:id"
+mq_message_type_header = "cloudEvents:type"
+
+mq_qa_completed_type = "QA completed"
+mq_manual_qa_requested_type = "Manual QA requested"

@@ -2,7 +2,8 @@ import sys
 import os
 import logging
 
-import infrastructure.rabbitmq as mq
+from infrastructure.rabbitmq import RabbitMq
+from infrastructure.properties import *
 
 
 def main():
@@ -10,7 +11,21 @@ def main():
         format="%(asctime)s %(levelname)s: %(name)s: %(message)s",
         level=logging.INFO
     )
-    mq.listen_to_message_queue()
+    while True:
+        try:
+            mq = RabbitMq(p.rabbit_mq_connection_parameters)
+            mq.connect()
+            mq.register_receiver(mq_receiving_exchange, mq_data_key, qa_data)
+            mq.register_receiver(mq_receiving_exchange, mq_document_key, qa_document)
+            mq.consume_loop()
+        except pika.exceptions.ConnectionClosedByBroker:
+            continue
+        except pika.exceptions.AMQPChannelError as err:
+            logging.error(f"Caught a channel error: {err}, stopping...")
+            break
+        except pika.exceptions.AMQPConnectionError:
+            logging.error("Connection was closed, retrying...")
+            continue
 
 
 if __name__ == "__main__":
