@@ -7900,7 +7900,7 @@
       "AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues": {
         "type": "object",
         "properties": {
-          "anzahlbefristeteVertraege": {
+          "anzahlDerBefristetenVertraege": {
             "type": "number",
             "nullable": true
           },
@@ -7930,15 +7930,15 @@
       "BerichterstattungAbfallproduktionValues": {
         "type": "object",
         "properties": {
-          "abfallmenge": {
+          "gesamteAbfallmenge": {
             "type": "number",
             "nullable": true
           },
-          "anteilRecycelterAbfallmenge": {
+          "prozentAbfallRecyclet": {
             "type": "number",
             "nullable": true
           },
-          "anteilGefaehrlicherAbfallmenge": {
+          "prozentGefaehrlicherAbfall": {
             "type": "number",
             "nullable": true
           }
@@ -7947,7 +7947,7 @@
       "BerichterstattungEinnahmenAusFossilenBrennstoffenValues": {
         "type": "object",
         "properties": {
-          "anteilEinnahmenAusFossilenBrennstoffen": {
+          "prozentDerEinnahmenAusFossilenBrennstoffen": {
             "type": "number",
             "nullable": true
           }
@@ -7960,11 +7960,11 @@
             "type": "number",
             "nullable": true
           },
-          "verbrauchErneuerbareEnergien": {
+          "prozentDesVerbrauchsErneuerbarerEnergien": {
             "type": "number",
             "nullable": true
           },
-          "erzeugungErneuerbareEnergien": {
+          "ggfProzentDerErneuerbarenEnergieerzeugung": {
             "type": "number",
             "nullable": true
           }
@@ -7973,7 +7973,7 @@
       "BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues": {
         "type": "object",
         "properties": {
-          "energieeffizienteImmobilienanlagen": {
+          "engagementAnteilInEnergieineffizientenImmobilienanlagen": {
             "type": "number",
             "nullable": true
           }
@@ -9270,7 +9270,7 @@
       "RecyclingImProduktionsprozessValues": {
         "type": "object",
         "properties": {
-          "anteilAnRecyclaten": {
+          "prozentRecycelteWerkstoffeImProduktionsprozess": {
             "type": "number",
             "nullable": true
           }
@@ -9324,7 +9324,7 @@
       "UeberwachungDerEinkommensungleichheitValues": {
         "type": "object",
         "properties": {
-          "geschlechtsspezifischesLohngefaelle": {
+          "unbereinigtesGeschlechtsspezifischesLohngefaelle": {
             "type": "number",
             "nullable": true
           },
@@ -9332,7 +9332,7 @@
             "type": "number",
             "nullable": true
           },
-          "ceoEinkommenungleichheitsverhaeltnis": {
+          "ceoEinkommensungleichheitsverhaeltnis": {
             "type": "number",
             "nullable": true
           }
@@ -9341,7 +9341,19 @@
       "UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues": {
         "type": "object",
         "properties": {
-          "umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten": {
+          "taxonomieGeeignetNachProzentUmsatz": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomieGeeignetNachProzentCapex": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomieKonformNachProzentUmsatz": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomieKonformNachProzentCapex": {
             "type": "number",
             "nullable": true
           }
@@ -9350,7 +9362,7 @@
       "UnfallrateValues": {
         "type": "object",
         "properties": {
-          "haeufigkeitsrateVonArbeitsunfaellen": {
+          "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": {
             "type": "number",
             "nullable": true
           }
@@ -10653,10 +10665,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

@@ -191,12 +191,12 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "Energieverbrauch", "GWh",
                     ),
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "verbrauchErneuerbareEnergien",
-                        "Verbrauch erneuerbare Energien", "%",
+                        "prozentDesVerbrauchsErneuerbarerEnergien",
+                        "% des Verbrauchs erneuerbarer Energien", "%",
                     ),
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "erzeugungErneuerbareEnergien",
-                        "Erzeugung erneuerbare Energien", "%",
+                        "ggfProzentDerErneuerbarenEnergieerzeugung",
+                        "Gegebenenfalls % der erneuerbaren Energieerzeugung", "%",
                     ),
                 )
                 availableIf = DependsOnComponentValue(
@@ -204,7 +204,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "Yes",
                 )
                 // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
-                // TODO Emanuel: Die labels in den Reihen weichen iwie ab von denen im Fragebogen. Wieso?
             }
         }
         componentGroupUmwelt?.edit<ComponentGroup>("energieeffizienzImmobilienanlagen") {
@@ -218,8 +217,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "kommenden drei Jahre an."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "energieeffizienteImmobilienanlagen",
-                        "energieeffiziente Immobilienanlagen", "%",
+                        "engagementAnteilInEnergieineffizientenImmobilienanlagen",
+                        "Engagement/Anteil in energieineffizienten Immobilienanlagen", "",
                     ),
                 )
                 availableIf = DependsOnComponentValue(
@@ -227,7 +226,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "Yes",
                 )
                 // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
-                // TODO Emanuel: Das label in der einen Reihe weicht iwie ab von dem im Fragebogen. Wieso?
             }
         }
 
@@ -271,16 +269,16 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "die Prognosen für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "abfallmenge", "Abfallmenge",
+                        "gesamteAbfallmenge", "Gesamte Abfallmenge",
                         "t",
                     ),
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "anteilRecycelterAbfallmenge",
-                        "Anteil der recycelten Abfallmenge", "%",
+                        "prozentAbfallRecyclet",
+                        "% Abfall recycelt", "%",
                     ),
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "anteilGefaehrlicherAbfallmenge",
-                        "Anteil gefährlicher Abfall an Gesamtmenge", "%",
+                        "prozentGefaehrlicherAbfall",
+                        "% Gefährlicher Abfall", "%",
                     ),
                 )
                 availableIf = DependsOnComponentValue(
@@ -288,7 +286,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "Yes",
                 )
                 // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
-                // TODO Emanuel: Das label in der einen Reihe weicht iwie ab von dem im Fragebogen. Wieso?
             }
         }
 
@@ -303,9 +300,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "anteilAnRecyclaten",
-                        "Anteil " +
-                            "an Recyclaten",
+                        "prozentRecycelteWerkstoffeImProduktionsprozess",
+                        "% Recycelte Werkstoffe im Produktionsprozess",
                         "%",
                     ), // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
                 )
@@ -334,9 +330,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "Prognosen für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "anteilEinnahmenAusFossilen" +
-                            "Brennstoffen",
-                        "Anteil der Einnahmen aus fossilen Brennstoffen", "%",
+                        "prozentDerEinnahmenAusFossilenBrennstoffen",
+                        "% der Einnahmen aus fossilen Brennstoffen", "%",
                     ),
                 )
                 availableIf = DependsOnComponentValue(
@@ -361,10 +356,24 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "Prognosen für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "umsatzInvestitionsaufwandAus" +
-                            "NachhaltigenAktivitaeten",
-                        "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
-                        "Mio. €",
+                        "taxonomieGeeignetNachProzentUmsatz",
+                        "Taxonomie geeignet (eligible) nach % Umsatz",
+                        "%",
+                    ),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "taxonomieGeeignetNachProzentCapex",
+                        "Taxonomie geeignet (eligible) nach % Capex",
+                        "%",
+                    ),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "taxonomieKonformNachProzentUmsatz",
+                        "Taxonomie konform (aligned) nach % Umsatz",
+                        "%",
+                    ),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "taxonomieKonformNachProzentCapex",
+                        "Taxonomie konform (aligned) nach % Capex",
+                        "%",
                     ),
                 )
                 availableIf = DependsOnComponentValue(
@@ -373,7 +382,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 )
             }
             // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
-            // TODO Emanuel: Irgendwie sieht die Tabelle hier auf der viewpage ganz anders aus als im Fragebogen
         }
 
         val unternehmensstrukturaenderungen = framework.root.getOrNull<ComponentGroup>("soziales")
@@ -396,8 +404,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 " letzten drei Jahre an."
             decimalRows = mutableListOf(
                 GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "anzahlbefristeteVertraege",
-                    "Anzahl der befristeten Verträge", "",
+                    "anzahlDerBefristetenVertraege",
+                    "# der befristeten Verträge", "",
                 ),
                 GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                     "fluktuation", "Fluktuation",
@@ -407,7 +415,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             availableIf = DependsOnComponentValue(
                 vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur,
                 "Yes",
-            )
+            ) // TODO nur drei Jahre rückwirkend betrachten
         }
 
         val sicherheitUndWeiterbildung = framework.root.getOrNull<ComponentGroup>("soziales")
@@ -431,7 +439,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             availableIf = DependsOnComponentValue(
                 berichtsPflicht,
                 "Yes",
-            )
+            ) // TODO nur drei Jahre rückwirkend betrachten
         }
 
         sicherheitUndWeiterbildung.create<GdvYearlyDecimalTimeseriesDataComponent>(
@@ -443,14 +451,14 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 "drei Jahre?"
             decimalRows = mutableListOf(
                 GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "haeufigkeitsrateVonArbeitsunfaellen",
+                    "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust",
                     "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust", "",
                 ),
             )
             availableIf = DependsOnComponentValue(
                 berichtsPflicht,
                 "Yes",
-            )
+            ) // TODO nur drei Jahre rückwirkend betrachten
         }
 
         val einkommensgleichheit = framework.root.getOrNull<ComponentGroup>("soziales")
@@ -469,23 +477,22 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 " die letzten drei Jahre an."
             decimalRows = mutableListOf(
                 GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "geschlechtsspezifischesLohngefaelle",
-                    "Geschlechtsspezifisches Lohngefälle", "%",
+                    "unbereinigtesGeschlechtsspezifischesLohngefaelle",
+                    "Unbereinigtes geschlechtsspezifisches Lohngefälle", "%",
                 ),
                 GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                     "einkommensungleichheitsverhaeltnis",
                     "Einkommensungleichheitsverhältnis", "%",
                 ),
                 GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "ceoEinkommenungleichheit" +
-                        "sverhaeltnis",
+                    "ceoEinkommensungleichheitsverhaeltnis",
                     "CEO-Einkommensungleichheitsverhältnis", "%",
                 ),
             )
             availableIf = DependsOnComponentValue(
                 berichtsPflicht,
                 "Yes",
-            )
+            ) // TODO nur drei Jahre rückwirkend betrachten
         }
     }
 
