@@ -72,7 +72,7 @@ export default defineComponent({
       if (!this.numericalYearOfDataDate) return [];
       return [
         {
-          headerTitle: "Historical Data",
+          headerTitle: "Historische Daten",
           color: "light-gray",
           icon: "menu_book",
           yearsInOrder: [
@@ -82,12 +82,12 @@ export default defineComponent({
           ],
         },
         {
-          headerTitle: "Reporting year",
+          headerTitle: "Jahr der Berichterstattung",
           color: "dark-blue",
           yearsInOrder: [this.numericalYearOfDataDate],
         },
         {
-          headerTitle: "Prognosis Data",
+          headerTitle: "Prognostizierte Daten",
           color: "light-gray",
           icon: "lightbulb",
           yearsInOrder: [

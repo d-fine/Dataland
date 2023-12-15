@@ -99,7 +99,7 @@
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
-import { defineComponent, inject, computed } from "vue";
+import { defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
@@ -301,43 +301,6 @@ export default defineComponent({
         this.postGdvDataProcessed = true;
       }
     },
-    /**
-     * updates the list of documents that were uploaded
-     * @param reportsNamesAndReferences repots names and references
-     * @param reportsToUpload reports to upload
-     */
-    updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
-      this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
-      this.documents = new Map();
-      if (reportsToUpload?.length) {
-        reportsToUpload.forEach((document) => this.documents.set(document.file.name, document));
-      }
-    },
-    /**
-     * Updates the referenced document for a specific field
-     * @param fieldId an identifier for the field
-     * @param referencedDocument the documen that is referenced
-     */
-    updateDocumentsOnField(fieldId: string, referencedDocument: DocumentToUpload | undefined) {
-      if (referencedDocument) {
-        this.fieldSpecificDocuments.set(fieldId, [referencedDocument]);
-      } else {
-        this.fieldSpecificDocuments.delete(fieldId);
-      }
-    },
-  },
-  provide() {
-    return {
-      namesAndReferencesOfAllCompanyReportsForTheDataset: computed(() => {
-        return this.namesAndReferencesOfAllCompanyReportsForTheDataset;
-      }),
-      referencedReportsForPrefill: computed(() => {
-        return this.referencedReportsForPrefill;
-      }),
-      climateSectorsForPrefill: computed(() => {
-        return this.climateSectorsForPrefill;
-      }),
-    };
   },
 });
 </script>

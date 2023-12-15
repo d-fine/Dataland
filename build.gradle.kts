@@ -110,8 +110,9 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
                 "EuTaxonomyForNonFinancialsDisplayDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
-                "configForEutaxonomyFinancialsMLDT.ts",
-
+                "configForEutaxonomyFinancialsMLDT.ts," +
+                "dataland-frontend/src/frameworks/gdv/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/gdv/ViewConfig.ts",
         )
         property(
             "sonar.exclusions",
