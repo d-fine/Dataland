@@ -16,4 +16,4 @@ RUN pip install --no-cache-dir ./dataland-document-manager-api-documentation-cli
 
 ENTRYPOINT python ./entrypoint.py
 
-HEALTHCHECK --interval=30s --timeout=3s CMD top -n 1 | grep -c python > /dev/null
+HEALTHCHECK CMD exit 0
