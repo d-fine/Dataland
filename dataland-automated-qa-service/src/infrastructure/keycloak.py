@@ -6,8 +6,7 @@ import base64
 import json
 
 
-# _keycloak_base_url = "http://keycloak:8080/keycloak" # TODO should be default
-_keycloak_base_url = "https://local-dev.dataland.com/keycloak"
+_keycloak_base_url = "http://keycloak:8080/keycloak"
 
 _client_id = "dataland-automated-qa-service"
 _client_secret = os.environ["DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET"]
