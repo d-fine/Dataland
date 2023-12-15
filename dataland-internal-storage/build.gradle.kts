@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.json)
     testImplementation(Spring.boot.test)
     implementation(libs.flyway)
+    implementation(libs.flyway.core)
 }
 
 openApi {

@@ -1,4 +1,4 @@
-import { type TreeNode } from "primevue/tree";
+import { type TreeNode } from "primevue/treenode";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 /**
