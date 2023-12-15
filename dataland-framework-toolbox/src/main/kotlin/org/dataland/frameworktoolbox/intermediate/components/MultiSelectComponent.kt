@@ -62,7 +62,7 @@ open class MultiSelectComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        val formattedString = "[" + options.joinToString { "\"${escapeEcmaScript(it.label)}\"" } + "]"
+        val formattedString = "[" + options.joinToString { "\"${escapeEcmaScript(it.identifier)}\"" } + "]"
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
