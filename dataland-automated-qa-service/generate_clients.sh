@@ -15,3 +15,7 @@ mkdir -p "$SUBPROJECT_ROOT"/build/clients
 echo Moving clients into build directory
 mv dataland-backend-api-documentation-client "$SUBPROJECT_ROOT"/build/clients
 mv dataland-document-manager-api-documentation-client "$SUBPROJECT_ROOT"/build/clients
+
+echo Installing client packages
+pip install $SUBPROJECT_ROOT/build/clients/dataland-backend-api-documentation-client
+pip install $SUBPROJECT_ROOT/build/clients/dataland-document-manager-api-documentation-client
