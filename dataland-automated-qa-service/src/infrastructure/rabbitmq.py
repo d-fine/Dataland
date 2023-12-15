@@ -1,7 +1,7 @@
 import logging
 import pika.exceptions
 
-from properties import *
+from infrastructure.properties import *
 
 
 class RabbitMq:

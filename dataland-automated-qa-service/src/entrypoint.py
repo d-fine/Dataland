@@ -1,9 +1,11 @@
 import sys
 import os
 import logging
+import pika.exceptions
 
 from infrastructure.rabbitmq import RabbitMq
-from infrastructure.properties import *
+from infrastructure.messaging import qa_data, qa_document
+import infrastructure.properties as p
 
 
 def main():
@@ -15,8 +17,8 @@ def main():
         try:
             mq = RabbitMq(p.rabbit_mq_connection_parameters)
             mq.connect()
-            mq.register_receiver(mq_receiving_exchange, mq_data_key, qa_data)
-            mq.register_receiver(mq_receiving_exchange, mq_document_key, qa_document)
+            mq.register_receiver(p.mq_receiving_exchange, p.mq_data_key, qa_data)
+            mq.register_receiver(p.mq_receiving_exchange, p.mq_document_key, qa_document)
             mq.consume_loop()
         except pika.exceptions.ConnectionClosedByBroker:
             continue

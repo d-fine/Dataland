@@ -4,7 +4,7 @@ import pika.exceptions
 
 from .qa_exceptions import AutomaticQaNotPossibleError
 from .resources import Resource, DataResource, DocumentResource
-from properties import *
+from infrastructure.properties import *
 from validation.validate import validate_data, validate_document
 
 from dataland_backend_api_documentation_client.models.qa_status import QaStatus
