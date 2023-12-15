@@ -21,8 +21,19 @@ export function multiSelectValueGetterFactory(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const selectionValue = getFieldValueFromFrameworkDataset(path, dataset) as Array<string>;
-    return formatListOfStringsForDatatable(selectionValue, field.label);
+    const fieldValueFromFrameworkDataset = getFieldValueFromFrameworkDataset(path, dataset) as Array<string>;
+    const expectedDropDownOptions = field.options ?? [];
+
+    const technicalNameToLabelMapping = new Map<string, string>();
+    for (const option of expectedDropDownOptions) {
+      technicalNameToLabelMapping.set(option.value, option.label);
+    }
+
+    const labelsToDisplayInFrontend = fieldValueFromFrameworkDataset.map(
+      (it) => technicalNameToLabelMapping.get(it) ?? it,
+    );
+
+    return formatListOfStringsForDatatable(labelsToDisplayInFrontend, field.label);
   };
 }
 
