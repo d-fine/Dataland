@@ -8311,10 +8311,14 @@
             "nullable": true
           },
           "ergebnis": {
+            "type": "string",
+            "nullable": true
+          },
+          "ratingbericht": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointString"
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
           },

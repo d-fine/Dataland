@@ -220,7 +220,7 @@ export const gdvDataModel = [
               "Haben Sie eine ISO 14001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
 
             unit: "",
-            component: "YesNoFormField",
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
@@ -232,7 +232,7 @@ export const gdvDataModel = [
               "Haben Sie eine ISO 45001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
 
             unit: "",
-            component: "YesNoFormField",
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
@@ -244,7 +244,7 @@ export const gdvDataModel = [
               "Haben Sie eine ISO 27001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
 
             unit: "",
-            component: "YesNoFormField",
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
@@ -256,7 +256,7 @@ export const gdvDataModel = [
               "Haben Sie eine ISO 50001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
 
             unit: "",
-            component: "YesNoFormField",
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
@@ -662,10 +662,21 @@ export const gdvDataModel = [
           {
             name: "ergebnis",
             label: "Ergebnis",
-            description: "Wie lautet das Rating (Ratingbericht bitte anfügen)?",
+            description: "Wie lautet das Rating?",
 
             unit: "",
             component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: GdvData): boolean => dataset.allgemein?.rating?.esgRating == "Yes",
+            validation: "",
+          },
+          {
+            name: "ratingbericht",
+            label: "Ratingbericht",
+            description: "Liegt ein Ratingbericht vor?",
+
+            unit: "",
+            component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: GdvData): boolean => dataset.allgemein?.rating?.esgRating == "Yes",
             validation: "",
@@ -1180,12 +1191,7 @@ export const gdvDataModel = [
             name: "euTaxonomieKompassAktivitaeten",
             label: "EU Taxonomie Kompass Aktivitäten",
             description: "Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?",
-            options: [
-              {
-                label: "EuTaxonomyActivityOptions",
-                value: "Eutaxonomyactivityoptions",
-              },
-            ],
+
             unit: "",
             component: "MultiSelectFormField",
             required: false,

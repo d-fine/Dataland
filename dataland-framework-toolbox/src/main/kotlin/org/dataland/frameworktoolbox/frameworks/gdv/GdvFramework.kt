@@ -528,6 +528,13 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     ),
                 )
             }
+            component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
+                sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
+                    uploadComponentName = "MultiSelectFormField",
+                    options = null, // TODO Problem:  We cannot make it use the ActivityName.ts file! Limitation!
+                    component,
+                )
+            }
         }
     }
 }

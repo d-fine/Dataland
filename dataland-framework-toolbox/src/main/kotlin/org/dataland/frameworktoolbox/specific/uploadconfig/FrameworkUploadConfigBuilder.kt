@@ -66,11 +66,6 @@ class FrameworkUploadConfigBuilder(
 
         into.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_checkfrontendcompilation"))
 
-//        ProcessBuilder("npx", "eslint", "--fix", uploadConfigTsPath.toAbsolutePath().toString())
-//            .directory((into.path / "dataland-frontend").toFile())
-//            .redirectOutput(ProcessBuilder.Redirect.INHERIT)
-//            .redirectError(ProcessBuilder.Redirect.INHERIT)
-//            .start()
-//            .waitFor(ESLINT_TIMEOUT, TimeUnit.SECONDS)
+        // TODO Marc: Pls include EsLintRunner here too
     }
 }

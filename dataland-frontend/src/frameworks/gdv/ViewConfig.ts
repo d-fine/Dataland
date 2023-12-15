@@ -602,13 +602,21 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           {
             type: "cell",
             label: "Ergebnis",
-            explanation: "Wie lautet das Rating (Ratingbericht bitte anfügen)?",
+            explanation: "Wie lautet das Rating?",
+            shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.rating?.esgRating == "Yes",
+            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.allgemein?.rating?.ergebnis),
+          },
+          {
+            type: "cell",
+            label: "Ratingbericht",
+            explanation: "Liegt ein Ratingbericht vor?",
             shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.rating?.esgRating == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatStringForDatatable(dataset.allgemein?.rating?.ergebnis?.value),
-                "Ergebnis",
-                dataset.allgemein?.rating?.ergebnis,
+                formatYesNoValueForDatatable(dataset.allgemein?.rating?.ratingbericht?.value),
+                "Ratingbericht",
+                dataset.allgemein?.rating?.ratingbericht,
               ),
           },
           {

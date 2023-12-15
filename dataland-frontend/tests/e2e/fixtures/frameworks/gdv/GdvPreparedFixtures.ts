@@ -61,6 +61,9 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
   if (newFixture.t.allgemein?.rating?.esgRating) {
     newFixture.t.allgemein.rating.esgRating = YesNo.Yes;
   }
+  if (newFixture.t.allgemein?.rating?.ratingbericht) {
+    newFixture.t.allgemein.rating.ratingbericht.value = YesNo.Yes;
+  }
   if (newFixture.t.allgemein?.anleihen?.grueneSozialeUndOderNachhaltigeEmissionen) {
     newFixture.t.allgemein.anleihen.grueneSozialeUndOderNachhaltigeEmissionen = YesNo.Yes;
   }

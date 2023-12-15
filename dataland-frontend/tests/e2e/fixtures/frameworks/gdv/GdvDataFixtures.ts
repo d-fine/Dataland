@@ -117,7 +117,8 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       rating: {
         esgRating: dataGenerator.randomYesNo(),
         agentur: dataGenerator.randomShortString(),
-        ergebnis: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedShortString()),
+        ergebnis: dataGenerator.randomShortString(),
+        ratingbericht: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         kritischePunkte: dataGenerator.randomShortString(),
       },
       anleihen: {
