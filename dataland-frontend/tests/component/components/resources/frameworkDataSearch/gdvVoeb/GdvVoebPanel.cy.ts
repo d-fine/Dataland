@@ -145,7 +145,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
 
     cy.get("span").contains("Beschreibung des Berichts");
     for (const oneListElement of listData) {
-      cy.get("div").contains(oneListElement.value);
+      cy.get("div").contains(oneListElement.value as string);
       cy.get("div").contains(oneListElement.dataSource?.fileName as string);
     }
     cy.get('span[data-test="Report-Download-Policy"]').should("exist");
