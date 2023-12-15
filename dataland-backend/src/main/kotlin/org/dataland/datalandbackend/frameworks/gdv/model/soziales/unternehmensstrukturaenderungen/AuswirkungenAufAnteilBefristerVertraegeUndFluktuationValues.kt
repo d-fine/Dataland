@@ -7,6 +7,6 @@ import java.math.BigDecimal
  * Data class for the timeseries data contained in the field auswirkungenAufAnteilBefristerVertraegeUndFluktuation
  */
 data class AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues(
-    val anzahlbefristeteVertraege: BigDecimal?,
+    val anzahlDerBefristetenVertraege: BigDecimal?,
     val fluktuation: BigDecimal?,
 )

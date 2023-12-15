@@ -7,5 +7,5 @@ import java.math.BigDecimal
  * Data class for the timeseries data contained in the field recyclingImProduktionsprozess
  */
 data class RecyclingImProduktionsprozessValues(
-    val anteilAnRecyclaten: BigDecimal?,
+    val prozentRecycelteWerkstoffeImProduktionsprozess: BigDecimal?,
 )

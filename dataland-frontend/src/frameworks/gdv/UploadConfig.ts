@@ -21,7 +21,7 @@ export const gdvDataModel = [
             component: "YesNoFormField",
             required: true,
             showIf: (): boolean => true,
-            validation: "",
+            validation: "required",
           },
           {
             name: "gueltigkeitsDatum",
@@ -897,12 +897,12 @@ export const gdvDataModel = [
                 value: "energieverbrauch",
               },
               {
-                label: "Verbrauch erneuerbare Energien",
-                value: "verbrauchErneuerbareEnergien",
+                label: "% des Verbrauchs erneuerbarer Energien",
+                value: "prozentDesVerbrauchsErneuerbarerEnergien",
               },
               {
-                label: "Erzeugung erneuerbare Energien",
-                value: "erzeugungErneuerbareEnergien",
+                label: "Gegebenenfalls % der erneuerbaren Energieerzeugung",
+                value: "ggfProzentDerErneuerbarenEnergieerzeugung",
               },
             ],
             unit: "",
@@ -936,8 +936,8 @@ export const gdvDataModel = [
               "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
-                label: "energieeffiziente Immobilienanlagen",
-                value: "energieeffizienteImmobilienanlagen",
+                label: "Engagement/Anteil in energieineffizienten Immobilienanlagen",
+                value: "engagementAnteilInEnergieineffizientenImmobilienanlagen",
               },
             ],
             unit: "",
@@ -1010,16 +1010,16 @@ export const gdvDataModel = [
               "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
-                label: "Abfallmenge",
-                value: "abfallmenge",
+                label: "Gesamte Abfallmenge",
+                value: "gesamteAbfallmenge",
               },
               {
-                label: "Anteil der recycelten Abfallmenge",
-                value: "anteilRecycelterAbfallmenge",
+                label: "% Abfall recycelt",
+                value: "prozentAbfallRecyclet",
               },
               {
-                label: "Anteil gefährlicher Abfall an Gesamtmenge",
-                value: "anteilGefaehrlicherAbfallmenge",
+                label: "% Gefährlicher Abfall",
+                value: "prozentGefaehrlicherAbfall",
               },
             ],
             unit: "",
@@ -1047,8 +1047,8 @@ export const gdvDataModel = [
               "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereitsrecyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre.",
             options: [
               {
-                label: "Anteil an Recyclaten",
-                value: "anteilAnRecyclaten",
+                label: "% Recycelte Werkstoffe im Produktionsprozess",
+                value: "prozentRecycelteWerkstoffeImProduktionsprozess",
               },
             ],
             unit: "",
@@ -1150,8 +1150,8 @@ export const gdvDataModel = [
               "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
-                label: "Anteil der Einnahmen aus fossilen Brennstoffen",
-                value: "anteilEinnahmenAusFossilenBrennstoffen",
+                label: "% der Einnahmen aus fossilen Brennstoffen",
+                value: "prozentDerEinnahmenAusFossilenBrennstoffen",
               },
             ],
             unit: "",
@@ -1205,8 +1205,20 @@ export const gdvDataModel = [
               "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
-                label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
-                value: "umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten",
+                label: "Taxonomie geeignet (eligible) nach % Umsatz",
+                value: "taxonomieGeeignetNachProzentUmsatz",
+              },
+              {
+                label: "Taxonomie geeignet (eligible) nach % Capex",
+                value: "taxonomieGeeignetNachProzentCapex",
+              },
+              {
+                label: "Taxonomie konform (aligned) nach % Umsatz",
+                value: "taxonomieKonformNachProzentUmsatz",
+              },
+              {
+                label: "Taxonomie konform (aligned) nach % Capex",
+                value: "taxonomieKonformNachProzentCapex",
               },
             ],
             unit: "",
@@ -1331,8 +1343,8 @@ export const gdvDataModel = [
               "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die letzten drei Jahre an.",
             options: [
               {
-                label: "Anzahl der befristeten Verträge",
-                value: "anzahlbefristeteVertraege",
+                label: "# der befristeten Verträge",
+                value: "anzahlDerBefristetenVertraege",
               },
               {
                 label: "Fluktuation",
@@ -1373,7 +1385,7 @@ export const gdvDataModel = [
             options: [
               {
                 label: "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust",
-                value: "haeufigkeitsrateVonArbeitsunfaellen",
+                value: "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust",
               },
             ],
             unit: "",
@@ -1412,8 +1424,8 @@ export const gdvDataModel = [
               "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für die letzten drei Jahre an.",
             options: [
               {
-                label: "Geschlechtsspezifisches Lohngefälle",
-                value: "geschlechtsspezifischesLohngefaelle",
+                label: "Unbereinigtes geschlechtsspezifisches Lohngefälle",
+                value: "unbereinigtesGeschlechtsspezifischesLohngefaelle",
               },
               {
                 label: "Einkommensungleichheitsverhältnis",
@@ -1421,7 +1433,7 @@ export const gdvDataModel = [
               },
               {
                 label: "CEO-Einkommensungleichheitsverhältnis",
-                value: "ceoEinkommenungleichheitsverhaeltnis",
+                value: "ceoEinkommensungleichheitsverhaeltnis",
               },
             ],
             unit: "",

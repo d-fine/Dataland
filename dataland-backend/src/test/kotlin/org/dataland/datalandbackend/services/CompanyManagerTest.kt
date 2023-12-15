@@ -28,6 +28,7 @@ class CompanyManagerTest(
 ) {
     val testDataProvider = TestDataProvider(objectMapper)
     val testCompanyList = testDataProvider.getCompanyInformation(4)
+    val resultLimit = 100
 
     @BeforeEach
     fun addTestCompanies() {
@@ -51,7 +52,7 @@ class CompanyManagerTest(
     @Test
     fun `retrieve companies as a list and check for each company if it can be found as expected`() {
         val allCompaniesInStore = testCompanyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
-            "",
+            "", resultLimit,
         )
         assertTrue(
             allCompaniesInStore.all {
@@ -65,7 +66,7 @@ class CompanyManagerTest(
     fun `search for them one by one by using their names`() {
         for (company in testCompanyList) {
             val searchResponse = testCompanyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
-                searchString = company.companyName,
+                searchString = company.companyName, resultLimit,
             )
             assertTrue(
                 searchResponse.any { it.companyName == company.companyName },
@@ -89,7 +90,7 @@ class CompanyManagerTest(
             }
         }
         val searchResponse = testCompanyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
-            searchString,
+            searchString, resultLimit,
         )
         assertEquals(
             occurencesOfSearchString,
@@ -108,7 +109,7 @@ class CompanyManagerTest(
             }
         }
         val searchResponse = testCompanyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
-            searchString = searchString,
+            searchString = searchString, resultLimit,
         )
         assertEquals(
             occurencesOfSearchString,
@@ -121,7 +122,7 @@ class CompanyManagerTest(
     fun `search for name substring to check the ordering of results`() {
         val searchString = testCompanyList.first().companyName.take(1)
         val searchResponse = testCompanyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
-            searchString = searchString,
+            searchString = searchString, resultLimit,
         )
         val responsesStartingWith =
             searchResponse.takeWhile { it.companyName.startsWith(searchString) }
@@ -144,7 +145,7 @@ class CompanyManagerTest(
         val testString = "unique-test-string-${UUID.randomUUID()}"
         uploadCompaniesInReverseToExpectedOrder(testString)
         val sortedCompanyNames = testCompanyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
-            searchString = testString,
+            searchString = testString, resultLimit,
         ).map { it.companyName }
         assertEquals(
             listOf(testString, company2, "${testString}2", company5, company6, "3$testString", company9),
@@ -156,7 +157,7 @@ class CompanyManagerTest(
         )
 
         val otherCompanyNames = testCompanyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
-            searchString = "other_name",
+            searchString = "other_name", resultLimit,
         ).map { it.companyName }
         assertTrue(otherCompanyNames.contains(company8))
         Assertions.assertFalse(otherCompanyNames.contains("Company 7"))

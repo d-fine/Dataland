@@ -812,8 +812,14 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 dataset.umwelt?.energieverbrauch?.berichterstattungEnergieverbrauch,
                 {
                   energieverbrauch: { label: "Energieverbrauch", unitSuffix: "GWh" },
-                  verbrauchErneuerbareEnergien: { label: "Verbrauch erneuerbare Energien", unitSuffix: "%" },
-                  erzeugungErneuerbareEnergien: { label: "Erzeugung erneuerbare Energien", unitSuffix: "%" },
+                  prozentDesVerbrauchsErneuerbarerEnergien: {
+                    label: "% des Verbrauchs erneuerbarer Energien",
+                    unitSuffix: "%",
+                  },
+                  ggfProzentDerErneuerbarenEnergieerzeugung: {
+                    label: "Gegebenenfalls % der erneuerbaren Energieerzeugung",
+                    unitSuffix: "%",
+                  },
                 },
                 "Berichterstattung Energieverbrauch",
               ),
@@ -848,7 +854,10 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 dataset.umwelt?.energieeffizienzImmobilienanlagen
                   ?.berichterstattungEnergieverbrauchVonImmobilienvermoegen,
                 {
-                  energieeffizienteImmobilienanlagen: { label: "energieeffiziente Immobilienanlagen", unitSuffix: "%" },
+                  engagementAnteilInEnergieineffizientenImmobilienanlagen: {
+                    label: "Engagement/Anteil in energieineffizienten Immobilienanlagen",
+                    unitSuffix: "",
+                  },
                 },
                 "Berichterstattung Energieverbrauch von Immobilienvermoegen",
               ),
@@ -918,12 +927,9 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.abfallproduktion?.berichterstattungAbfallproduktion,
                 {
-                  abfallmenge: { label: "Abfallmenge", unitSuffix: "t" },
-                  anteilRecycelterAbfallmenge: { label: "Anteil der recycelten Abfallmenge", unitSuffix: "%" },
-                  anteilGefaehrlicherAbfallmenge: {
-                    label: "Anteil gefährlicher Abfall an Gesamtmenge",
-                    unitSuffix: "%",
-                  },
+                  gesamteAbfallmenge: { label: "Gesamte Abfallmenge", unitSuffix: "t" },
+                  prozentAbfallRecyclet: { label: "% Abfall recycelt", unitSuffix: "%" },
+                  prozentGefaehrlicherAbfall: { label: "% Gefährlicher Abfall", unitSuffix: "%" },
                 },
                 "Berichterstattung Abfallproduktion",
               ),
@@ -948,7 +954,12 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.abfallproduktion?.recyclingImProduktionsprozess,
-                { anteilAnRecyclaten: { label: "Anteil an Recyclaten", unitSuffix: "%" } },
+                {
+                  prozentRecycelteWerkstoffeImProduktionsprozess: {
+                    label: "% Recycelte Werkstoffe im Produktionsprozess",
+                    unitSuffix: "%",
+                  },
+                },
                 "Recycling im Produktionsprozess",
               ),
           },
@@ -1039,8 +1050,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.fossileBrennstoffe?.berichterstattungEinnahmenAusFossilenBrennstoffen,
                 {
-                  anteilEinnahmenAusFossilenBrennstoffen: {
-                    label: "Anteil der Einnahmen aus fossilen Brennstoffen",
+                  prozentDerEinnahmenAusFossilenBrennstoffen: {
+                    label: "% der Einnahmen aus fossilen Brennstoffen",
                     unitSuffix: "%",
                   },
                 },
@@ -1095,9 +1106,21 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.taxonomie?.umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten,
                 {
-                  umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten: {
-                    label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
-                    unitSuffix: "Mio. €",
+                  taxonomieGeeignetNachProzentUmsatz: {
+                    label: "Taxonomie geeignet (eligible) nach % Umsatz",
+                    unitSuffix: "%",
+                  },
+                  taxonomieGeeignetNachProzentCapex: {
+                    label: "Taxonomie geeignet (eligible) nach % Capex",
+                    unitSuffix: "%",
+                  },
+                  taxonomieKonformNachProzentUmsatz: {
+                    label: "Taxonomie konform (aligned) nach % Umsatz",
+                    unitSuffix: "%",
+                  },
+                  taxonomieKonformNachProzentCapex: {
+                    label: "Taxonomie konform (aligned) nach % Capex",
+                    unitSuffix: "%",
                   },
                 },
                 "Umsatz/Investitionsaufwand f\u00FCr nachhaltige Aktivit\u00E4ten",
@@ -1231,7 +1254,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 dataset.soziales?.unternehmensstrukturaenderungen
                   ?.auswirkungenAufAnteilBefristerVertraegeUndFluktuation,
                 {
-                  anzahlbefristeteVertraege: { label: "Anzahl der befristeten Verträge", unitSuffix: "" },
+                  anzahlDerBefristetenVertraege: { label: "# der befristeten Verträge", unitSuffix: "" },
                   fluktuation: { label: "Fluktuation", unitSuffix: "%" },
                 },
                 "Auswirkungen auf Anteil befrister Vertr\u00E4ge und Fluktuation",
@@ -1266,7 +1289,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.soziales?.sicherheitUndWeiterbildung?.unfallrate,
                 {
-                  haeufigkeitsrateVonArbeitsunfaellen: {
+                  haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust: {
                     label: "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust",
                     unitSuffix: "",
                   },
@@ -1305,12 +1328,12 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.soziales?.einkommensgleichheit?.ueberwachungDerEinkommensungleichheit,
                 {
-                  geschlechtsspezifischesLohngefaelle: {
-                    label: "Geschlechtsspezifisches Lohngefälle",
+                  unbereinigtesGeschlechtsspezifischesLohngefaelle: {
+                    label: "Unbereinigtes geschlechtsspezifisches Lohngefälle",
                     unitSuffix: "%",
                   },
                   einkommensungleichheitsverhaeltnis: { label: "Einkommensungleichheitsverhältnis", unitSuffix: "%" },
-                  ceoEinkommenungleichheitsverhaeltnis: {
+                  ceoEinkommensungleichheitsverhaeltnis: {
                     label: "CEO-Einkommensungleichheitsverhältnis",
                     unitSuffix: "%",
                   },

@@ -150,14 +150,14 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       energieverbrauch: {
         berichterstattungEnergieverbrauch: dataGenerator.randomDecimalYearlyTimeseriesData([
           "energieverbrauch",
-          "verbrauchErneuerbareEnergien",
-          "erzeugungErneuerbareEnergien",
+          "prozentDesVerbrauchsErneuerbarerEnergien",
+          "ggfProzentDerErneuerbarenEnergieerzeugung",
         ]),
         unternehmensGruppenStrategieBzglEnergieverbrauch: dataGenerator.randomShortString(),
       },
       energieeffizienzImmobilienanlagen: {
         berichterstattungEnergieverbrauchVonImmobilienvermoegen: dataGenerator.randomDecimalYearlyTimeseriesData([
-          "energieeffizienteImmobilienanlagen",
+          "engagementAnteilInEnergieineffizientenImmobilienanlagen",
         ]),
         unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen: dataGenerator.randomShortString(),
       },
@@ -170,12 +170,14 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       },
       abfallproduktion: {
         berichterstattungAbfallproduktion: dataGenerator.randomDecimalYearlyTimeseriesData([
-          "abfallmenge",
-          "anteilRecycelterAbfallmenge",
-          "anteilGefaehrlicherAbfallmenge",
+          "gesamteAbfallmenge",
+          "prozentAbfallRecyclet",
+          "prozentGefaehrlicherAbfall",
         ]),
         unternehmensGruppenStrategieBzglAbfallproduktion: dataGenerator.randomShortString(),
-        recyclingImProduktionsprozess: dataGenerator.randomDecimalYearlyTimeseriesData(["anteilAnRecyclaten"]),
+        recyclingImProduktionsprozess: dataGenerator.randomDecimalYearlyTimeseriesData([
+          "prozentRecycelteWerkstoffeImProduktionsprozess",
+        ]),
         gefaehrlicherAbfall: dataGenerator.randomShortString(),
       },
       biodiversitaet: {
@@ -187,7 +189,7 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       fossileBrennstoffe: {
         einnahmenAusFossilenBrennstoffen: dataGenerator.randomYesNo(),
         berichterstattungEinnahmenAusFossilenBrennstoffen: dataGenerator.randomDecimalYearlyTimeseriesData([
-          "anteilEinnahmenAusFossilenBrennstoffen",
+          "prozentDerEinnahmenAusFossilenBrennstoffen",
         ]),
       },
       taxonomie: {
@@ -196,7 +198,10 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         ),
         euTaxonomieKompassAktivitaeten: dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity))),
         umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten: dataGenerator.randomDecimalYearlyTimeseriesData([
-          "umsatzInvestitionsaufwandAusNachhaltigenAktivitaeten",
+          "taxonomieGeeignetNachProzentUmsatz",
+          "taxonomieGeeignetNachProzentCapex",
+          "taxonomieKonformNachProzentUmsatz",
+          "taxonomieKonformNachProzentCapex",
         ]),
       },
     },
@@ -210,20 +215,22 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: dataGenerator.randomFloat(),
         anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: dataGenerator.randomFloat(),
         auswirkungenAufAnteilBefristerVertraegeUndFluktuation: dataGenerator.randomDecimalYearlyTimeseriesData([
-          "anzahlbefristeteVertraege",
+          "anzahlDerBefristetenVertraege",
           "fluktuation",
         ]),
       },
       sicherheitUndWeiterbildung: {
         sicherheitsmassnahmenFuerMitarbeiter: dataGenerator.randomShortString(),
-        unfallrate: dataGenerator.randomDecimalYearlyTimeseriesData(["haeufigkeitsrateVonArbeitsunfaellen"]),
+        unfallrate: dataGenerator.randomDecimalYearlyTimeseriesData([
+          "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust",
+        ]),
         budgetFuerSchulungAusbildung: dataGenerator.randomDecimalYearlyTimeseriesData(["budgetProMitarbeiter"]),
       },
       einkommensgleichheit: {
         ueberwachungDerEinkommensungleichheit: dataGenerator.randomDecimalYearlyTimeseriesData([
-          "geschlechtsspezifischesLohngefaelle",
+          "unbereinigtesGeschlechtsspezifischesLohngefaelle",
           "einkommensungleichheitsverhaeltnis",
-          "ceoEinkommenungleichheitsverhaeltnis",
+          "ceoEinkommensungleichheitsverhaeltnis",
         ]),
         massnahmenZurVerbesserungDerEinkommensungleichheit: dataGenerator.randomShortString(),
       },
