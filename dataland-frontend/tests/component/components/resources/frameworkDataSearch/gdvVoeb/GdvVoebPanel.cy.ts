@@ -51,7 +51,7 @@ const configForGdvVoebPanelWithOneStringComponent: MLDTConfig<GdvData> = [
 
     shouldDisplay: (): boolean => true,
     valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-      formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.wirtschaftspruefer),
+      formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.sonstige?.wirtschaftspruefer),
   },
 ];
 
@@ -122,7 +122,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     } as CompanyAssociatedDataGdvData);
     mountGDVFrameworkFromFakeFixture(DataTypeEnum.Gdv, configForGdvVoebPanelWithOneStringComponent, [preparedFixture]);
     cy.get("span").contains("Wirtschaftsprüfer");
-    cy.get("span").contains(preparedFixture.t.unternehmensfuehrungGovernance?.wirtschaftspruefer as string);
+    cy.get("span").contains(preparedFixture.t.unternehmensfuehrungGovernance?.sonstige?.wirtschaftspruefer as string);
   });
 
   it("Check that on the GDV-VÖB view Page the list base data point component works properly", () => {
