@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { activityTree } from "@/components/forms/parts/elements/derived/ActivityTree";
-import { type TreeNode } from "primevue/tree";
+import { type TreeNode } from "primevue/treenode";
 import { pickOneElement, pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 import { naceCodeMap } from "@/components/forms/parts/elements/derived/NaceCodeTree";
 
