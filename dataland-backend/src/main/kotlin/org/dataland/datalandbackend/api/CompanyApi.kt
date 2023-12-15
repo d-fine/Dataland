@@ -102,7 +102,8 @@ interface CompanyApi {
     /**
      * A method to retrieve companies with names or identifiers matching a search string
      * @param searchString string used for substring matching in the name and the identifiers of a company
-     * @return names of the first 100 companies matching the search criteria
+     * @param resultLimit number of search results to be retrieved
+     * @return names of the first [resultLimit] companies matching the search criteria
      */
     @Operation(
         summary = "Retrieve specific companies by searching their names and identifiers",
@@ -119,7 +120,7 @@ interface CompanyApi {
     )
     fun getCompaniesBySearchString(
         @RequestParam searchString: String,
-        @RequestParam(defaultValue = "100") resultLimit: Int = 100,
+        @RequestParam(defaultValue = "100") resultLimit: Int,
     ):
         ResponseEntity<List<CompanyIdAndName>>
 

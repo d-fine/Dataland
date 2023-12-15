@@ -7,6 +7,10 @@ creation URL (or simply copy this md file into the description)
 
 ## Dataland
 
+### Notes from Dec, 15 2023
+Some tests are failing locally due to the cookie banner. A description is given in
+https://jira.d-fine.dev/browse/DALA-3137
+
 ### Skipped updates
 
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
