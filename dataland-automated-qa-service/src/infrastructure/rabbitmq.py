@@ -25,8 +25,6 @@ manual_qa_requested_type = "Manual QA requested"
 
 
 def listen_to_message_queue():
-    DataResource("34baff5b-4063-4be1-b8f4-dc4e4c570cd1")
-    return
     while True:
         try:
             mq = RabbitMq(p.rabbit_mq_connection_parameters)
@@ -112,7 +110,7 @@ def process_qa_request(
             f"Evaluating {resource_type} with ID {resource.id}. (Correlation ID: {correlation_id})"
         )
         try:
-            validation_result = validate(resource, correlation_id)  # TODO don't use None but the proper resource
+            validation_result = validate(resource, correlation_id)
             assert_status_is_valid_for_qa_completion(validation_result)
             send_qa_completed_message(channel, routing_key, resource.id, validation_result, correlation_id)
         except AutomaticQaNotPossibleError:

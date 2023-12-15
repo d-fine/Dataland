@@ -1,0 +1,19 @@
+import logging
+
+from .resource import Resource
+from infrastructure.keycloak import get_access_token
+
+from dataland_backend_api_documentation_client.client import AuthenticatedClient
+from dataland_document_manager_api_documentation_client.api.document_controller.get_document import sync as get_document
+
+
+class DocumentResource(Resource):
+    def _load(self):
+        logging.info(f"Loading document resource with ID {self.id}")
+        token = get_access_token()
+        documents_client = AuthenticatedClient(
+            base_url="https://local-dev.dataland.com/api",
+            token=token
+        )
+        logging.info(f"Retrieving document data with ID {self.id}")
+        get_document(self.id, client=documents_client)
