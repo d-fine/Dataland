@@ -638,17 +638,19 @@ export default defineComponent({
         this.messageCount++;
 
         // JSON.parse/stringify used to clone the formInputsModel in order to stop Proxy refreneces
-        const clonedFormInputsModel = JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType;
+        const clonedFormInputsModel = JSON.parse(
+          JSON.stringify(this.formInputsModel),
+        ) as unknown as CompanyAssociatedDataEuTaxonomyDataForFinancials;
         const kpiSections = (clonedFormInputsModel.data as ObjectType).kpiSections;
         delete (clonedFormInputsModel.data as ObjectType).kpiSections;
-        clonedFormInputsModel.data = {
+        (clonedFormInputsModel.data as ObjectType) = {
           ...(clonedFormInputsModel.data as ObjectType),
           ...this.convertKpis(kpiSections as ObjectType),
         };
-        // (((clonedFormInputsModel.data as ObjectType).assurance as ObjectType).dataSource as CompanyReport | undefined) =
-        //   this.validDataSource;
 
-        clonedFormInputsModel.data.assurance.dataSource = this.validDataSource;
+        if (clonedFormInputsModel.data?.assurance?.dataSource) {
+          clonedFormInputsModel.data.assurance.dataSource = this.validDataSource;
+        }
 
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
@@ -663,9 +665,8 @@ export default defineComponent({
         const euTaxonomyDataForFinancialsControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
-        this.postEuTaxonomyDataForFinancialsResponse = await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(
-          clonedFormInputsModel as CompanyAssociatedDataEuTaxonomyDataForFinancials,
-        );
+        this.postEuTaxonomyDataForFinancialsResponse =
+          await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(clonedFormInputsModel);
         this.$emit("datasetCreated");
       } catch (error) {
         this.messageCount++;
