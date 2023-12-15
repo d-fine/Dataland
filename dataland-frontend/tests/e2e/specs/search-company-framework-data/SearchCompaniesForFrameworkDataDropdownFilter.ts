@@ -51,7 +51,8 @@ describe("As a user, I expect the search functionality on the /companies page to
         "eq",
         getBaseUrl() +
           "/companies?" +
-          `framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
+          `framework=${DataTypeEnum.Gdv}` +
+          `&framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
           `&framework=${DataTypeEnum.Lksg}` +
           `&framework=${DataTypeEnum.P2p}` +
           `&framework=${DataTypeEnum.Sfdr}` +
@@ -60,18 +61,22 @@ describe("As a user, I expect the search functionality on the /companies page to
       .get("div.p-multiselect-panel")
       .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials)})`)
       .click();
-    verifySearchResultTableExists();
-    cy.url()
+      verifySearchResultTableExists();
+      //cy.pause();
+      cy.get('.p-multiselect-items-wrapper').scrollTo('bottom');
+      cy.url()
       .should("eq", getBaseUrl() + "/companies")
       .get("div.p-multiselect-panel")
       .find(`li.p-highlight:contains(${humanizeStringOrNumber(DataTypeEnum.Sfdr)})`)
       .click();
+      //cy.pause();
     verifySearchResultTableExists();
     cy.url().should(
       "eq",
       getBaseUrl() +
         "/companies?" +
-        `framework=${DataTypeEnum.EutaxonomyFinancials}` +
+        `framework=${DataTypeEnum.Gdv}` +
+        `&framework=${DataTypeEnum.EutaxonomyFinancials}` +
         `&framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
         `&framework=${DataTypeEnum.Lksg}` +
         `&framework=${DataTypeEnum.P2p}` +
