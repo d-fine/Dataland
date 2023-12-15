@@ -23,7 +23,7 @@
       <template #footer>
         <ul class="p-autocomplete-items pt-0" v-if="autocompleteArray && autocompleteArray.length >= resultLimit">
           <li class="p-autocomplete-item">
-            <span class="text-primary font-medium underline pl-3">
+            <span class="font-medium pl-3">
               Only showing {{ resultLimit }} results, please refine your query.</span
             >
           </li>
