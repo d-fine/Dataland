@@ -40,8 +40,8 @@ describe("Component test for P2pPanel", () => {
     cy.get(".p-dialog").find(".p-dialog-title").should("have.text", "Sectors");
     cy.get("td").contains("Ammonia").should("exist");
     cy.get("td").contains("Cement").should("exist");
-    // cy.get("td").contains("Livestock Farming").should("exist"); // see also lines 62-64
-    // cy.get("td").contains("Freight Transport by Road").should("exist");
+    cy.get("td").contains("Livestock Farming").should("exist");
+    cy.get("td").contains("Freight Transport by Road").should("exist");
     cy.get(".p-dialog").find(".p-dialog-header-icon").click();
 
     cy.get(`span.p-column-title`).should("contain.text", p2pData.general.general.dataDate.substring(0, 4));
@@ -59,9 +59,9 @@ describe("Component test for P2pPanel", () => {
       .should("contain.text", formatPercentageNumberAsString(ccsTechnologyAdoptionInPercent))
       .should("be.visible");
 
-    // getSectionHead("Livestock farming").click();
-    // getSectionHead("Animal feed").click();
-    // cy.get("span[data-test=Report-Download-Policy]").next("i[data-test=download-icon]").should("be.visible");
+    getSectionHead("Livestock farming").click();
+    getSectionHead("Animal feed").click();
+    cy.get("span[data-test=Report-Download-Policy]").next("i[data-test=download-icon]").should("be.visible");
 
     getSectionHead("Cement").click();
     getSectionHead("Material").click();
