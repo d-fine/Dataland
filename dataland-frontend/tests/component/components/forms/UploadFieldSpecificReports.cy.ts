@@ -8,7 +8,7 @@ import { UploadDocuments } from "@sharedUtils/components/UploadDocuments";
 const createSfdrDataset = {
   fillRequiredFields(): void {
     this.fillDateFieldWithFutureDate("dataDate");
-    cy.get('input[name="fiscalYearDeviation"][value="Deviation"]').click();
+    cy.get('div[data-test="fiscalYearDeviation"]').get('input[value="Deviation"]').click();
     this.fillDateFieldWithFutureDate("fiscalYearEnd");
   },
   fillDateFieldWithFutureDate(fieldName: string): void {
@@ -53,7 +53,7 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
    * @param fieldName name of the field under which the report should be added
    */
   function uploadFieldSpecificDocuments(fileName: string, contentSize: number, fieldName: string): void {
-    cy.get(`[data-test=${fieldName}] input[type="radio"][name="value"][value="Yes"]`).check();
+    cy.get(`[data-test=${fieldName}]`).find('input[value="Yes"]').check();
     new UploadDocuments(fieldName).selectDummyFile(fileName, contentSize);
   }
 
