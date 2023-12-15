@@ -10,6 +10,9 @@ rabbit_mq_connection_parameters = pika.ConnectionParameters(
     retry_delay=5,
 )
 
+backend_api_url = "http://backend:8080/api"
+document_manager_api_url = "http://document-manager:8080/documents"
+
 mq_data_key = "data"
 mq_document_key = "document"
 mq_receiving_exchange = "itemStored"

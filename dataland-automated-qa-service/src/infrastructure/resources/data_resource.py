@@ -1,8 +1,9 @@
 import logging
 from collections.abc import Callable
 
-from infrastructure.keycloak import get_access_token
 from .resource import Resource
+from infrastructure.keycloak import get_access_token
+from infrastructure.properties import backend_api_url
 
 from dataland_backend_api_documentation_client.api.meta_data_controller.get_data_meta_info import sync as get_data_meta_info
 from dataland_backend_api_documentation_client.api.eu_taxonomy_data_for_financials_controller.get_company_associated_eu_taxonomy_data_for_financials import sync as get_eu_taxonomy_financials_data
@@ -20,7 +21,7 @@ class DataResource(Resource):
         logging.info(f"Loading data resource with ID {self.id}")
         token = get_access_token()
         backend_client = AuthenticatedClient(
-            base_url="https://local-dev.dataland.com/api",
+            base_url=backend_api_url,
             token=token
         )
         logging.info(f"Retrieving meta information for dataset with ID {self.id}")

@@ -1,6 +1,7 @@
 import logging
 
 from .resource import Resource
+from infrastructure.properties import document_manager_api_url
 from infrastructure.keycloak import get_access_token
 
 from dataland_backend_api_documentation_client.client import AuthenticatedClient
@@ -12,7 +13,7 @@ class DocumentResource(Resource):
         logging.info(f"Loading document resource with ID {self.id}")
         token = get_access_token()
         documents_client = AuthenticatedClient(
-            base_url="https://local-dev.dataland.com/api",
+            base_url=document_manager_api_url,
             token=token
         )
         logging.info(f"Retrieving document data with ID {self.id}")
