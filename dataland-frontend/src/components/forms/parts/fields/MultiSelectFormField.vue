@@ -24,6 +24,7 @@ import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/Fo
 export default defineComponent({
   name: "MultiSelectFormField",
   components: { MultiSelectFormElement, UploadFormHeader },
+  inheritAttrs: false,
   props: {
     ...DropdownOptionFormFieldProps,
     dataTest: {
