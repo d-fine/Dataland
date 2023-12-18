@@ -459,6 +459,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 berichtsPflicht,
                 "Yes",
             ) // TODO nur drei Jahre rückwirkend betrachten
+            uploadBehaviour = GdvYearlyDecimalTimeseriesDataComponent.UploadBehaviour.ThreeYearPast
         }
 
         val einkommensgleichheit = framework.root.getOrNull<ComponentGroup>("soziales")
