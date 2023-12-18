@@ -5,15 +5,8 @@ import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
 import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvListOfBaseDataPointComponent
 import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvYearlyDecimalTimeseriesDataComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
-import org.dataland.frameworktoolbox.intermediate.components.DateComponent
-import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
-import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
-import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
-import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
-import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
-import org.dataland.frameworktoolbox.intermediate.group.create
-import org.dataland.frameworktoolbox.intermediate.group.edit
-import org.dataland.frameworktoolbox.intermediate.group.getOrNull
+import org.dataland.frameworktoolbox.intermediate.components.*
+import org.dataland.frameworktoolbox.intermediate.group.*
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
@@ -35,19 +28,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
 
     @Suppress("LongMethod") // t0d0: fix detekt error later!
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
-        framework.root.edit<ComponentGroup>("general") {
-            edit<ComponentGroup>("masterData") {
-                edit<DateComponent>("gueltigkeitsDatum") {
-                    fixtureGeneratorGenerator = {
-                        it.addAtomicExpression(
-                            identifier,
-                            "dataGenerator.dataDate",
-                        )
-                    }
-                }
-            }
-        }
-
         val berichtsPflicht = framework.root
             .getOrNull<ComponentGroup>("general")
             ?.getOrNull<ComponentGroup>("masterData")
@@ -55,7 +35,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         require(berichtsPflicht != null) {
             "The field with the label \"berichtsPflicht\" must exist in the gdv framework."
         }
-
         val esgBerichte = framework.root
             .getOrNull<ComponentGroup>("allgemein")
             ?.getOrNull<ComponentGroup>("esgBerichte")
@@ -96,35 +75,11 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 "must exist in the gdv framework."
         }
 
-        framework.root.edit<ComponentGroup>("allgemein") {
-            viewPageExpandOnPageLoad = true
-        }
-
-        esgBerichte.create<GdvListOfBaseDataPointComponent>("aktuelleBerichte") {
-            label = "Aktuelle Berichte"
-            explanation = "Aktuelle Nachhaltigkeits- oder ESG-Berichte"
-            descriptionColumnHeader = "Beschreibung des Berichts"
-            documentColumnHeader = "Bericht"
-            availableIf = DependsOnComponentValue(
-                nachhaltigkeitsberichte,
-                "Yes",
-            )
-            // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
-        }
-
-        framework.root
-            .getOrNull<ComponentGroup>("allgemein")
-            ?.getOrNull<ComponentGroup>("akkreditierungen")
-            ?.create<GdvListOfBaseDataPointComponent>(
-                "weitereAkkreditierungen",
-            ) {
-                label = "Weitere Akkreditierungen"
-                explanation = "Weitere Akkreditierungen, die noch nicht aufgeführt wurden"
-                descriptionColumnHeader = "Beschreibung der Akkreditierung"
-                documentColumnHeader = "Akkreditierung"
-                availableIf = DependsOnComponentValue(berichtsPflicht, "Yes")
-                // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
-            }
+        val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt")
+        splitHighLevelIntermediateRepresentationCustumizationPartOne(framework)
+        splitHighLevelIntermediateRepresentationCustumizationPartTwo(framework, berichtsPflicht)
+        splitHighLevelIntermediateRepresentationCustumizationPartThree(esgBerichte, nachhaltigkeitsberichte)
+        splitHighLevelIntermediateRepresentationCustumizationPartFour(componentGroupUmwelt, berichtsPflicht)
 
         unGlobalConceptPrinzipien.create<GdvListOfBaseDataPointComponent>(
             "richtlinienZurEinhaltungDerUngcp",
@@ -159,38 +114,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 customizeEuTaxonomieKompassAktivitaetenComponent(this)
             }
 
-        val tCo2UnitString = "tCO2-Äquiv.";
-        val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt")
-        componentGroupUmwelt?.edit<ComponentGroup>("treibhausgasemissionen") {
-            create<GdvYearlyDecimalTimeseriesDataComponent>(
-                "treibhausgasBerichterstattungUndPrognosen",
-                "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird",
-            ) {
-                label = "Treibhausgas-Berichterstattung und Prognosen"
-                explanation = "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene " +
-                    "berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen" +
-                    "# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die " +
-                    "kommenden drei Jahre an (in tCO2-Äquiv.)."
-                decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "scope1", "Scope 1",
-                        tCo2UnitString,
-                    ),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "scope2", "Scope 2",
-                        tCo2UnitString,
-                    ),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "scope3", "Scope 3",
-                        tCo2UnitString,
-                    ),
-                )
-                availableIf = DependsOnComponentValue(
-                    berichtsPflicht,
-                    "Yes",
-                )
-            }
-        }
 
         componentGroupUmwelt?.edit<ComponentGroup>("energieverbrauch") {
             create<GdvYearlyDecimalTimeseriesDataComponent>(
@@ -556,6 +479,95 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     // TODO Problem:  We cannot make it use the ActivityName.ts file! Limitation!
                 )
             }
+        }
+    }
+}
+
+fun splitHighLevelIntermediateRepresentationCustumizationPartOne(framework: Framework) {
+    framework.root.edit<ComponentGroup>("general") {
+        edit<ComponentGroup>("masterData") {
+            edit<DateComponent>("gueltigkeitsDatum") {
+                fixtureGeneratorGenerator = {
+                    it.addAtomicExpression(
+                        identifier,
+                        "dataGenerator.dataDate",
+                    )
+                }
+            }
+        }
+    }
+
+    framework.root.edit<ComponentGroup>("allgemein") {
+        viewPageExpandOnPageLoad = true
+    }
+
+}
+
+fun splitHighLevelIntermediateRepresentationCustumizationPartTwo(framework: Framework, berichtsPflicht:
+ComponentBase) {
+    framework.root
+        .getOrNull<ComponentGroup>("allgemein")
+        ?.getOrNull<ComponentGroup>("akkreditierungen")
+        ?.create<GdvListOfBaseDataPointComponent>(
+            "weitereAkkreditierungen",
+        ) {
+            label = "Weitere Akkreditierungen"
+            explanation = "Weitere Akkreditierungen, die noch nicht aufgeführt wurden"
+            descriptionColumnHeader = "Beschreibung der Akkreditierung"
+            documentColumnHeader = "Akkreditierung"
+            availableIf = DependsOnComponentValue(berichtsPflicht, "Yes")
+            // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
+        }
+}
+
+fun splitHighLevelIntermediateRepresentationCustumizationPartThree(esgBerichte: ComponentGroup, nachhaltigkeitsberichte:
+ComponentBase) {
+
+    esgBerichte.create<GdvListOfBaseDataPointComponent>("aktuelleBerichte") {
+        label = "Aktuelle Berichte"
+        explanation = "Aktuelle Nachhaltigkeits- oder ESG-Berichte"
+        descriptionColumnHeader = "Beschreibung des Berichts"
+        documentColumnHeader = "Bericht"
+        availableIf = DependsOnComponentValue(
+            nachhaltigkeitsberichte,
+            "Yes",
+        )
+        // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
+    }
+}
+
+fun splitHighLevelIntermediateRepresentationCustumizationPartFour(componentGroupUmwelt:
+ComponentGroup?, berichtsPflicht:ComponentBase) {
+
+    val tCo2UnitString = "tCO2-Äquiv."
+    componentGroupUmwelt?.edit<ComponentGroup>("treibhausgasemissionen") {
+        create<GdvYearlyDecimalTimeseriesDataComponent>(
+            "treibhausgasBerichterstattungUndPrognosen",
+            "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird",
+        ) {
+            label = "Treibhausgas-Berichterstattung und Prognosen"
+            explanation = "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene " +
+                    "berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen" +
+                    "# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die " +
+                    "kommenden drei Jahre an (in tCO2-Äquiv.)."
+            decimalRows = mutableListOf(
+                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                    "scope1", "Scope 1",
+                    tCo2UnitString,
+                ),
+                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                    "scope2", "Scope 2",
+                    tCo2UnitString,
+                ),
+                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                    "scope3", "Scope 3",
+                    tCo2UnitString,
+                ),
+            )
+            availableIf = DependsOnComponentValue(
+                berichtsPflicht,
+                "Yes",
+            )
         }
     }
 }
