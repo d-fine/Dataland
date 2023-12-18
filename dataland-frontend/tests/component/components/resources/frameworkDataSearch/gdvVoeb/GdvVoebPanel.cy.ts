@@ -88,9 +88,9 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     mountGDVFrameworkFromFakeFixture(DataTypeEnum.Gdv, configForGdvVoebPanelWithOneRollingWindow, [preparedFixture]);
     cy.get("span").contains("Treibhausgas-Berichterstattung und Prognosen");
     cy.get("a").should("have.class", "link").click();
-    cy.get("div").contains("Historical Data");
-    cy.get("div").contains("Reporting");
-    cy.get("div").contains("Prognosis Data");
+    cy.get("div").contains("Historische Daten");
+    cy.get("div").contains("Aktuelles Jahr");
+    cy.get("div").contains("Prognosen");
 
     const modalDatasets =
       preparedFixture.t.umwelt?.treibhausgasemissionen?.treibhausgasBerichterstattungUndPrognosen?.yearlyData;
