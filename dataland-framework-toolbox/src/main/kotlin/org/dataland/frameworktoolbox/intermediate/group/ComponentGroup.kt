@@ -83,7 +83,6 @@ class ComponentGroup(
             identifier = identifier,
             label = localLabel,
             labelBadgeColor = uploadPageLabelBadgeColor,
-            expandOnPageLoad = viewPageExpandOnPageLoad,
             shouldDisplay = org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda.TRUE,
             subcategory = true,
         )

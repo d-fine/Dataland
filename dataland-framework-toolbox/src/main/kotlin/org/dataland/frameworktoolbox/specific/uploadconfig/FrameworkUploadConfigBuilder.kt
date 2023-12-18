@@ -24,7 +24,6 @@ class FrameworkUploadConfigBuilder(
     val rootSectionConfigBuilder = SectionUploadConfigBuilder(
         parentSection = null,
         label = "root-section",
-        expandOnPageLoad = false,
         shouldDisplay = FrameworkBooleanLambda.TRUE,
         name = "???",
         subcategory = false,

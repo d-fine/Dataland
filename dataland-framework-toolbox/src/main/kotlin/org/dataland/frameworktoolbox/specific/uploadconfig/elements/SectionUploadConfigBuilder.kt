@@ -4,9 +4,8 @@ import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOp
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 
 /**
- * An In-Memory representation of a MLDTSectionConfig
+ * An In-Memory representation of a upload-configuration section
  * @param label the displayed label of the section
- * @param expandOnPageLoad if true, the section is expanded when it is first rendered
  * @param shouldDisplay a lambda deciding if this section should be displayed or not
  * @param children the elements contained in this section
  * @param labelBadgeColor the color of the badge in which the label is contained
@@ -17,7 +16,6 @@ data class SectionUploadConfigBuilder(
     override val parentSection: SectionUploadConfigBuilder?,
     val name: String,
     var label: String,
-    var expandOnPageLoad: Boolean,
     var shouldDisplay: FrameworkBooleanLambda,
     var children: MutableList<UploadConfigElement> = mutableListOf(),
     var labelBadgeColor: LabelBadgeColor? = null,
@@ -31,7 +29,6 @@ data class SectionUploadConfigBuilder(
         identifier: String,
         label: String,
         labelBadgeColor: LabelBadgeColor?,
-        expandOnPageLoad: Boolean,
         shouldDisplay: FrameworkBooleanLambda,
         subcategory: Boolean,
     ): SectionUploadConfigBuilder {
@@ -40,7 +37,6 @@ data class SectionUploadConfigBuilder(
             name = identifier,
             label = label,
             labelBadgeColor = labelBadgeColor,
-            expandOnPageLoad = expandOnPageLoad,
             shouldDisplay = shouldDisplay,
             subcategory = subcategory,
         )
