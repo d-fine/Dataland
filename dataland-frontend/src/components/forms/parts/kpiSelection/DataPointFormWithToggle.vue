@@ -82,7 +82,14 @@
       </div>
     </div>
     <div class="form-field">
-      <FormKit type="group" v-if="dataPointIsAvailable" name="dataSource">
+      <FormKit
+        type="group"
+        v-if="dataPointIsAvailable"
+        name="dataSource"
+        v-model="dataSource"
+        :key="currentReportValue"
+        :ignore="!hasValidDataSource"
+      >
         <h4 class="mt-0">Data source</h4>
         <div class="next-to-each-other">
           <div class="flex-1">
@@ -93,7 +100,7 @@
               :disabled="!dataPointIsAvailable"
               v-model="currentReportValue"
               placeholder="Select a report"
-              :options="['None...', ...reportsName]"
+              :options="[noReportLabel, ...reportsName]"
               :plugins="[selectNothingIfNotExistsFormKitPlugin]"
             />
             <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
@@ -153,7 +160,7 @@ import { defineComponent } from "vue";
 import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
-import { QualityOptions } from "@clients/backend";
+import { type CompanyReport, QualityOptions } from "@clients/backend";
 import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
@@ -178,6 +185,8 @@ export default defineComponent({
     reportValueBeforeDataPointWasDisabled: "",
     pageValueBeforeDataPointWasDisabled: "",
     qualityValueBeforeDataPointWasDisabled: "",
+    noReportLabel: "None...",
+    dataSource: undefined as CompanyReport | undefined,
   }),
   watch: {
     dataPointIsAvailable(newValue: boolean) {
@@ -243,6 +252,16 @@ export default defineComponent({
      */
     dataPointAvailableToggle(): void {
       this.dataPointIsAvailable = !this.dataPointIsAvailable;
+    },
+    /**
+     * Checks whether the Assurance data source has appropriate values
+     * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
+     */
+    hasValidDataSource(): boolean {
+      const hasCurrentReportValue = this.currentReportValue && this.currentReportValue !== this.noReportLabel;
+      const hasFileName = this.dataSource?.fileName && this.dataSource?.fileName !== this.noReportLabel;
+
+      return hasCurrentReportValue || !!hasFileName;
     },
   },
 });

@@ -464,9 +464,6 @@ export default defineComponent({
         this.namesAndReferencesOfAllCompanyReportsForTheDataset,
       );
     },
-    validDataSource(): CompanyReport | undefined {
-      return !this.dataSource?.fileReference ? undefined : this.dataSource;
-    },
   },
   watch: {
     confirmedSelectedFinancialServiceOptions: function (newValue: { label: string; value: string }[]) {
@@ -615,6 +612,12 @@ export default defineComponent({
         .filter((financialServiceTypeKey) => financialServiceTypeKey !== "assetManagementKpis")
         .map((financialServiceTypeKey) => {
           const kpi = { [financialServiceTypeKey]: kpiSections[financialServiceTypeKey] };
+          Object.values(kpi).forEach((key) =>
+            Object.values(key).forEach(
+              (value: { dataSource: CompanyReport | undefined; value: string; quality: string }) =>
+                (value.dataSource = this.pruneDataSource(value.dataSource)),
+            ),
+          );
           if (kpiSections[financialServiceTypeKey]) {
             const financialServiceType = (euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType as ObjectType)[
               financialServiceTypeKey
@@ -649,7 +652,9 @@ export default defineComponent({
         };
 
         if (clonedFormInputsModel.data?.assurance?.dataSource) {
-          clonedFormInputsModel.data.assurance.dataSource = this.validDataSource;
+          clonedFormInputsModel.data.assurance.dataSource = this.pruneDataSource(
+            clonedFormInputsModel.data.assurance.dataSource,
+          );
         }
 
         checkIfAllUploadedReportsAreReferencedInDataModel(
@@ -723,9 +728,17 @@ export default defineComponent({
      */
     hasValidDataSource(): boolean {
       const hasCurrentReportValue = this.currentReportValue && this.currentReportValue !== this.noReportLabel;
-      const hasFileName = this.validDataSource?.fileName && this.validDataSource?.fileName !== this.noReportLabel;
+      const hasFileName = !!this.pruneDataSource(this.dataSource);
 
-      return hasCurrentReportValue || !!hasFileName;
+      return hasCurrentReportValue || hasFileName;
+    },
+    /**
+     * Check if provided data source has appropriate file name and return undefined if not
+     * @param dataSource the company report object
+     * @returns unchanged company report or undefined
+     */
+    pruneDataSource(dataSource: CompanyReport | undefined) {
+      return dataSource?.fileName && dataSource?.fileName !== this.noReportLabel ? this.dataSource : undefined;
     },
   },
 });
