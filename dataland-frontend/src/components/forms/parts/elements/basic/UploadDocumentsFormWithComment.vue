@@ -11,7 +11,15 @@
       <FormKit type="hidden" name="fileName" v-model="documentName" />
       <FormKit type="hidden" name="fileReference" v-model="documentReference" />
     </FormKit>
-    <FormKit type="textarea" name="value" placeholder="Add a description for this document." />
+    <FormKit
+      type="textarea"
+      :validation-messages="{
+        required: 'Please add a description it is required',
+      }"
+      validation="required"
+      name="value"
+      placeholder="Add a description for this document."
+    />
   </div>
 </template>
 
