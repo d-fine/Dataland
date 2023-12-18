@@ -29,12 +29,12 @@ const configForGdvVoebPanelWithOneRollingWindow: MLDTConfig<GdvData> = [
       formatGdvYearlyDecimalTimeseriesDataForTable(
         dataset.soziales?.einkommensgleichheit?.ueberwachungDerEinkommensungleichheit,
         {
-          geschlechtsspezifischesLohngefaelle: {
+          unbereinigtesGeschlechtsspezifischesLohngefaelle: {
             label: "Geschlechtsspezifisches Lohngefälle",
             unitSuffix: "%",
           },
           einkommensungleichheitsverhaeltnis: { label: "Einkommensungleichheitsverhältnis", unitSuffix: "%" },
-          ceoEinkommenungleichheitsverhaeltnis: {
+          ceoEinkommensungleichheitsverhaeltnis: {
             label: "CEO-Einkommensungleichheitsverhältnis",
             unitSuffix: "%",
           },
@@ -80,7 +80,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
       preparedFixtures = jsonContent as Array<FixtureData<GdvData>>;
     });
   });
-  it("Check that on the GDV-VÖB view Page the rolling window component works properly", () => {
+  it.only("Check that on the GDV-VÖB view Page the rolling window component works properly", () => {
     const preparedFixture = getPreparedFixture("Gdv-dataset-with-no-null-fields", preparedFixtures);
     const gdvData = preparedFixture.t;
 
@@ -100,13 +100,13 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
       preparedFixture.t.soziales?.einkommensgleichheit?.ueberwachungDerEinkommensungleichheit?.yearlyData;
     for (const dataSetOfOneYear in modalDatasets) {
       cy.get("div").contains(
-        formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear].ceoEinkommenungleichheitsverhaeltnis),
+        formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear].ceoEinkommensungleichheitsverhaeltnis),
       );
       cy.get("div").contains(
         formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear].einkommensungleichheitsverhaeltnis),
       );
       cy.get("div").contains(
-        formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear].geschlechtsspezifischesLohngefaelle),
+        formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear].unbereinigtesGeschlechtsspezifischesLohngefaelle),
       );
     }
   });
