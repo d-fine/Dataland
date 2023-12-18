@@ -26,8 +26,22 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
     File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
 ) {
 
+    private fun setGroupsThatAreExpandedOnPageLoad(framework: Framework) {
+        framework.root.edit<ComponentGroup>("allgemein") {
+            viewPageExpandOnPageLoad = true
+        }
+        framework.root.edit<ComponentGroup>("general") {
+            viewPageExpandOnPageLoad = true
+            edit<ComponentGroup>("masterData") {
+                viewPageExpandOnPageLoad = true
+            }
+        }
+    }
+
     @Suppress("LongMethod") // t0d0: fix detekt error later!
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
+        setGroupsThatAreExpandedOnPageLoad(framework)
+
         val berichtsPflicht = framework.root
             .getOrNull<ComponentGroup>("general")
             ?.getOrNull<ComponentGroup>("masterData")
@@ -495,10 +509,6 @@ fun splitHighLevelIntermediateRepresentationCustumizationPartOne(framework: Fram
                 }
             }
         }
-    }
-
-    framework.root.edit<ComponentGroup>("allgemein") {
-        viewPageExpandOnPageLoad = true
     }
 
 }
