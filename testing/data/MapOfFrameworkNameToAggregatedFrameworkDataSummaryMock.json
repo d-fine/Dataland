@@ -1,4 +1,7 @@
 {
+	"gdv": {
+		"numberOfProvidedReportingPeriods": 9
+	},
 	"eutaxonomy-financials": {
 		"numberOfProvidedReportingPeriods": 30
 	},
