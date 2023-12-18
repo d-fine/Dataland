@@ -54,9 +54,8 @@
                             :reportingPeriod="yearOfDataDate"
                             :data-test="field.name"
                             :unit="field.unit"
-                            @reportsUpdated="updateDocumentsList"
                             @field-specific-documents-updated="
-                              updateDocumentsOnField(`${category.name}.${subcategory.name}.${field.name}`, $event)
+                              updateDocumentList(`${category.name}.${subcategory.name}.${field.name}`, $event)
                             "
                             :ref="field.name"
                           />
@@ -99,7 +98,7 @@
 import { FormKit } from "@formkit/vue";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
-import { defineComponent, inject } from "vue";
+import { computed, defineComponent, inject } from "vue";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import Tooltip from "primevue/tooltip";
@@ -109,7 +108,7 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { type CompanyAssociatedDataGdvData, type CompanyReport, DataTypeEnum, type GdvData } from "@clients/backend";
+import { type CompanyAssociatedDataGdvData, DataTypeEnum, type GdvData } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -129,7 +128,7 @@ import PercentageFormField from "@/components/forms/parts/fields/PercentageFormF
 import ProductionSitesFormField from "@/components/forms/parts/fields/ProductionSitesFormField.vue";
 import { objectDropNull, type ObjectType } from "@/utils/UpdateObjectUtils";
 import { smoothScroll } from "@/utils/SmoothScroll";
-import { type DocumentToUpload, getFileName } from "@/utils/FileUploadUtils";
+import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
 import MostImportantProductsFormField from "@/components/forms/parts/fields/MostImportantProductsFormField.vue";
 import { type Subcategory } from "@/utils/GenericFrameworkTypes";
 import ProcurementCategoriesFormField from "@/components/forms/parts/fields/ProcurementCategoriesFormField.vue";
@@ -147,6 +146,7 @@ import { gdvDataModel } from "@/frameworks/gdv/UploadConfig";
 import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
+import { getFilledKpis } from "@/utils/DataPoint";
 
 export default defineComponent({
   setup() {
@@ -204,15 +204,13 @@ export default defineComponent({
       gdvDataModel: gdvDataModel,
       route: useRoute(),
       message: "",
+      listOfFilledKpis: [] as Array<string>,
       smoothScroll: smoothScroll,
       uploadSucceded: false,
       postGdvDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
-      documents: new Map() as Map<string, DocumentToUpload>,
-      referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
-      climateSectorsForPrefill: [] as Array<string>,
-      namesAndReferencesOfAllCompanyReportsForTheDataset: {},
+      fieldSpecificDocuments: new Map() as Map<string, DocumentToUpload>,
     };
   },
   computed: {
@@ -229,9 +227,6 @@ export default defineComponent({
       set() {
         // IGNORED
       },
-    },
-    namesOfAllCompanyReportsForTheDataset(): string[] {
-      return getFileName(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(this.gdvDataModel, this.companyAssociatedGdvData.data);
@@ -266,6 +261,7 @@ export default defineComponent({
         gdvDataControllerApi = frameworkDefinition?.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
         const dataResponse = await gdvDataControllerApi.getFrameworkData(dataId);
         const gdvResponseData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(gdvResponseData.data);
         this.companyAssociatedGdvData = objectDropNull(gdvResponseData as ObjectType) as CompanyAssociatedDataGdvData;
       }
 
@@ -277,6 +273,9 @@ export default defineComponent({
     async postGdvData(): Promise<void> {
       this.messageCounter++;
       try {
+        if (this.fieldSpecificDocuments.size > 0) {
+          await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
+        }
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Gdv);
         let gdvDataControllerApi: FrameworkDataApi<GdvData>;
@@ -301,6 +300,26 @@ export default defineComponent({
         this.postGdvDataProcessed = true;
       }
     },
+
+    /**
+     * updates the list of certificates that were uploaded in the corresponding formfields on change
+     * @param fieldName the name of the formfield as a key
+     * @param document the certificate as combined object of reference id and file content
+     */
+    updateDocumentList(fieldName: string, document: DocumentToUpload) {
+      if (document) {
+        this.fieldSpecificDocuments.set(fieldName, document);
+      } else {
+        this.fieldSpecificDocuments.delete(fieldName);
+      }
+    },
+  },
+  provide() {
+    return {
+      listOfFilledKpis: computed(() => {
+        return this.listOfFilledKpis;
+      }),
+    };
   },
 });
 </script>

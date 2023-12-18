@@ -4,18 +4,18 @@
       <UploadDocumentsForm
         @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
         ref="uploadDocumentsForm"
-        name="UploadDocumentsFormWithComment"
+        name="name"
         :more-than-one-document-allowed="false"
         :file-names-for-prefill="fileNamesForPrefill"
       />
       <FormKit type="hidden" name="fileName" v-model="documentName" />
       <FormKit type="hidden" name="fileReference" v-model="documentReference" />
-      <FormKit
-        type="textarea"
-        name="value"
-        placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
-      />
     </FormKit>
+    <FormKit
+      type="textarea"
+      name="value"
+      placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
+    />
   </div>
 </template>
 
@@ -23,7 +23,7 @@
 import { defineComponent } from "vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
-import { type BaseDataPoint } from "@/utils/DataPoint";
+import { type BaseDataPointString } from "@clients/backend";
 
 export default defineComponent({
   name: "UploadDocumentsFormWithComment",
@@ -31,7 +31,7 @@ export default defineComponent({
   inheritAttrs: false,
   data() {
     return {
-      baseDataPoint: {} as BaseDataPoint<unknown>,
+      baseDataPoint: {} as BaseDataPointString,
       referencedDocument: undefined as DocumentToUpload | undefined,
       documentName: "",
       documentReference: "",
@@ -45,11 +45,6 @@ export default defineComponent({
     this.isMounted = true;
   },
   watch: {
-    baseDataPoint(newValue: BaseDataPoint<unknown>, oldValue: BaseDataPoint<unknown>) {
-      if (newValue.value === "No" && oldValue.value === "Yes") {
-        (this.$refs.uploadDocumentsForm.removeAllDocuments as () => void)();
-      }
-    },
     documentName() {
       if (this.isMounted) {
         this.updateFileUploadFiles();
