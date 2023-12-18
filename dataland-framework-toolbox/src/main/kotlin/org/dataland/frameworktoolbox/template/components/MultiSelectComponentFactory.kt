@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * Generates StringComponents from rows with the component "String"
+ * Generates MultiSelectComponents from rows with the component "Multi-Select Dropdown"
  */
 @Component
 class MultiSelectComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
