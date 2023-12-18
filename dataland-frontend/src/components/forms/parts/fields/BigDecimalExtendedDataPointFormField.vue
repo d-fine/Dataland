@@ -7,9 +7,9 @@
     :required="required"
     :input-class="inputClass"
     :check-value-validity="hasDataPointProperValue"
+    :isDataPointToggleable="isDataPointToggleable"
   >
     <div class="mb-2">
-      <UploadFormHeader :label="label" :description="description" :is-required="required" />
       <NumberFormField
         :name="'value'"
         :validation-label="validationLabel"
@@ -23,7 +23,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
@@ -31,11 +30,15 @@ import { hasDataPointProperValue } from "@/utils/DataPoint";
 
 export default defineComponent({
   name: "BigDecimalExtendedDataPointFormField",
-  components: { NumberFormField, ExtendedDataPointFormField, UploadFormHeader },
+  components: { NumberFormField, ExtendedDataPointFormField },
   props: {
     ...BaseFormFieldProps,
     unit: {
       type: String,
+    },
+    isDataPointToggleable: {
+      type: Boolean,
+      default: true,
     },
   },
   methods: { hasDataPointProperValue },

@@ -8,11 +8,10 @@
         class="material-icons info-icon"
         aria-hidden="true"
         :title="label"
-        v-tooltip.top="{
-          value: description,
-        }"
-        >info</em
+        v-tooltip.top="{ value: description }"
       >
+        info
+      </em>
     </div>
   </div>
 </template>
