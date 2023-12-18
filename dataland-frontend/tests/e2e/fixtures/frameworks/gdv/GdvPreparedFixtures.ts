@@ -22,6 +22,16 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
   const newFixture = generateGdvFixtures(1, 0)[0];
   newFixture.companyInformation.companyName = "Gdv-dataset-with-no-null-fields";
 
+  modifyPreparedFixturesPartOne(newFixture);
+  modifyPreparedFixturesPartTwo(newFixture);
+  return newFixture;
+}
+
+/**
+ * Modifies the prepared fixtures
+ * @param newFixture generated prepared fixture to modify
+ */
+function modifyPreparedFixturesPartOne(newFixture:FixtureData<GdvData>) {
   if (newFixture.t.general?.masterData) {
     newFixture.t.general.masterData.berichtsPflicht = YesNo.Yes;
   }
@@ -61,6 +71,13 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
   if (newFixture.t.allgemein?.rating?.esgRating) {
     newFixture.t.allgemein.rating.esgRating = YesNo.Yes;
   }
+}
+
+/**
+ * Modifies the prepared fixtures
+ * @param newFixture generated prepared fixture to modify
+ */
+function modifyPreparedFixturesPartTwo(newFixture: FixtureData<GdvData>)  {
   if (newFixture.t.allgemein?.rating?.ratingbericht) {
     newFixture.t.allgemein.rating.ratingbericht.value = YesNo.Yes;
   }
@@ -86,10 +103,10 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
     newFixture.t.umwelt.fossileBrennstoffe.einnahmenAusFossilenBrennstoffen = YesNo.Yes;
   }
   if (
-    newFixture.t.soziales?.unternehmensstrukturaenderungen?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur
+      newFixture.t.soziales?.unternehmensstrukturaenderungen?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur
   ) {
     newFixture.t.soziales.unternehmensstrukturaenderungen.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur =
-      YesNo.Yes;
+        YesNo.Yes;
   }
   if (newFixture.t.soziales?.audit) {
     newFixture.t.soziales.audit.auditsZurEinhaltungVonArbeitsstandards = YesNo.Yes;
@@ -102,7 +119,6 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
   }
   if (newFixture.t.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten) {
     newFixture.t.unternehmensfuehrungGovernance.lieferantenauswahl.esgKriterienUndUeberwachungDerLieferanten =
-      YesNo.Yes;
+        YesNo.Yes;
   }
-  return newFixture;
 }
