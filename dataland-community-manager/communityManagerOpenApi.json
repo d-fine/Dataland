@@ -466,6 +466,7 @@
             "items": {
               "type": "string",
               "enum": [
+                "gdv",
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
                 "lksg",
@@ -513,6 +514,7 @@
           "dataType": {
             "type": "string",
             "enum": [
+              "gdv",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
@@ -566,6 +568,7 @@
           "dataType": {
             "type": "string",
             "enum": [
+              "gdv",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
