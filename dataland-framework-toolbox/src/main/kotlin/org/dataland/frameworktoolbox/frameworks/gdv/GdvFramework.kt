@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
 import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvListOfBaseDataPointComponent
 import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvYearlyDecimalTimeseriesDataComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
+import org.dataland.frameworktoolbox.intermediate.components.DateComponent
 import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
@@ -34,6 +35,19 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
 
     @Suppress("LongMethod") // t0d0: fix detekt error later!
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
+        framework.root.edit<ComponentGroup>("general") {
+            edit<ComponentGroup>("masterData") {
+                edit<DateComponent>("gueltigkeitsDatum") {
+                    fixtureGeneratorGenerator = {
+                        it.addAtomicExpression(
+                            identifier,
+                            "dataGenerator.dataDate",
+                        )
+                    }
+                }
+            }
+        }
+
         val berichtsPflicht = framework.root
             .getOrNull<ComponentGroup>("general")
             ?.getOrNull<ComponentGroup>("masterData")
