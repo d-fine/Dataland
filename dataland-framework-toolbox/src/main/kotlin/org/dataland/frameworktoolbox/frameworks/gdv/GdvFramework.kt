@@ -84,6 +84,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             val sozialesGroup = this
             with(GdvSozialesRollingWindowComponents) {
                 auswirkungenAufAnteilBefristerVertraegeUndFluktuation(sozialesGroup)
+                budgetFuerSchulungAusbildung(sozialesGroup, showIfBerichtsPflicht)
+                unfallrate(sozialesGroup, showIfBerichtsPflicht)
             }
         }
     }
@@ -179,59 +181,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             ?.edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
                 customizeEuTaxonomieKompassAktivitaetenComponent(this)
             }
-
-        val einnahmenAusFossilenBrennstoffen = componentGroupUmwelt
-            ?.getOrNull<ComponentGroup>("fossileBrennstoffe")
-            ?.getOrNull<YesNoComponent>("einnahmenAusFossilenBrennstoffen")
-        require(einnahmenAusFossilenBrennstoffen != null) {
-            "The field with the label \"einnahmenAusFossilenBrennstoffen\" must exist in the " +
-                "gdv framework."
-        }
-
-        val sicherheitUndWeiterbildung = framework.root.getOrNull<ComponentGroup>("soziales")
-            ?.getOrNull<ComponentGroup>("sicherheitUndWeiterbildung")
-        require(sicherheitUndWeiterbildung != null) {
-            "The component group with the label \"sicherheitUndWeiterbildung\" must exist in the gdv framework."
-        }
-
-        sicherheitUndWeiterbildung.create<GdvYearlyDecimalTimeseriesDataComponent>(
-            "budgetFuerSchulungAusbildung",
-        ) {
-            label = "Budget für Schulung/Ausbildung"
-            explanation = "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für " +
-                "Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde."
-            decimalRows = mutableListOf(
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "budgetProMitarbeiter",
-                    "Budget pro Mitarbeiter", "€",
-                ),
-            )
-            availableIf = DependsOnComponentValue(
-                berichtsPflicht,
-                "Yes",
-            )
-            uploadBehaviour = GdvYearlyDecimalTimeseriesDataComponent.UploadBehaviour.ThreeYearPast
-        }
-
-        sicherheitUndWeiterbildung.create<GdvYearlyDecimalTimeseriesDataComponent>(
-            "unfallrate",
-            "budgetFuerSchulungAusbildung",
-        ) {
-            label = "Unfallrate"
-            explanation = "Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten " +
-                "drei Jahre?"
-            decimalRows = mutableListOf(
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust",
-                    "Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust", "",
-                ),
-            )
-            availableIf = DependsOnComponentValue(
-                berichtsPflicht,
-                "Yes",
-            )
-            uploadBehaviour = GdvYearlyDecimalTimeseriesDataComponent.UploadBehaviour.ThreeYearPast
-        }
 
         val einkommensgleichheit = framework.root.getOrNull<ComponentGroup>("soziales")
             ?.getOrNull<ComponentGroup>("einkommensgleichheit")
