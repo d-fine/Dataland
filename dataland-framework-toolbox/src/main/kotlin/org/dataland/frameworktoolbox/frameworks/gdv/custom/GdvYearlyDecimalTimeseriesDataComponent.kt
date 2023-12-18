@@ -25,11 +25,20 @@ class GdvYearlyDecimalTimeseriesDataComponent(
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
     /**
-     * TODO
+     * A TimeseriesRow specifies a single property that is to be tracked across time
      */
     data class TimeseriesRow(val identifier: String, val label: String, val unitSuffix: String)
 
+    /**
+     * The UploadBehaviour specifies how many years this component is expected to be filled out with
+     * during upload
+     */
+    enum class UploadBehaviour {
+        ThreeYearDelta, ThreeYearPast
+    }
+
     var decimalRows: MutableList<TimeseriesRow> = mutableListOf()
+    var uploadBehaviour: UploadBehaviour = UploadBehaviour.ThreeYearDelta
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         require(decimalRows.isNotEmpty()) {
@@ -63,10 +72,20 @@ class GdvYearlyDecimalTimeseriesDataComponent(
     }
 
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
+        val componentName = when (uploadBehaviour) {
+            UploadBehaviour.ThreeYearDelta -> "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField"
+            UploadBehaviour.ThreeYearPast -> "GdvYearlyDecimalTimeseriesThreeYearPastDataFormField"
+        }
+
         sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
-            uploadComponentName = "GdvYearlyDecimalTimeseriesDataFormField",
+            uploadComponentName = componentName,
             options = decimalRows.map {
-                SelectionOption(it.identifier, it.label)
+                var rowLabel = it.label
+                if (it.unitSuffix.isNotBlank()) {
+                    rowLabel += " (in ${it.unitSuffix})"
+                }
+
+                SelectionOption(it.identifier, rowLabel)
             }.toMutableSet(),
             component = this,
         )
