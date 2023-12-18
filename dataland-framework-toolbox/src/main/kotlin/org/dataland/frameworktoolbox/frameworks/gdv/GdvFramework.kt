@@ -64,6 +64,9 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             with(GdvUmweltRollingWindowComponents) {
                 treibhausgasBerichterstattungUndPrognosen(umweltGroup, showIfBerichtsPflicht)
                 berichterstattungEnergieverbrauch(umweltGroup, showIfBerichtsPflicht)
+                energieeffizienzImmobilienanlagen(umweltGroup, showIfBerichtsPflicht)
+                berichterstattungWasserverbrauch(umweltGroup, showIfBerichtsPflicht)
+                unternehmensGruppenStrategieBzglAbfallproduktion(umweltGroup, showIfBerichtsPflicht)
             }
         }
     }
@@ -158,86 +161,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             ?.edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
                 customizeEuTaxonomieKompassAktivitaetenComponent(this)
             }
-
-        componentGroupUmwelt?.edit<ComponentGroup>("energieeffizienzImmobilienanlagen") {
-            create<GdvYearlyDecimalTimeseriesDataComponent>(
-                "berichterstattungEnergieverbrauchVonImmobilienvermoegen",
-                "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen",
-            ) {
-                label = "Berichterstattung Energieverbrauch von Immobilienvermoegen"
-                explanation = "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) " +
-                    "für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die " +
-                    "kommenden drei Jahre an."
-                decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "engagementAnteilInEnergieineffizientenImmobilienanlagen",
-                        "Engagement/Anteil in energieineffizienten Immobilienanlagen", "",
-                    ),
-                )
-                availableIf = DependsOnComponentValue(
-                    berichtsPflicht,
-                    "Yes",
-                )
-            }
-        }
-
-        componentGroupUmwelt?.edit<ComponentGroup>("wasserverbrauch") {
-            create<GdvYearlyDecimalTimeseriesDataComponent>(
-                "berichterstattungWasserverbrauch",
-                "unternehmensGruppenStrategieBzglWasserverbrauch",
-            ) {
-                label = "Berichterstattung Wasserverbrauch"
-                explanation = "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser " +
-                    "(in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen " +
-                    "für die kommenden drei Jahre an."
-                decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "wasserverbrauch",
-                        "Wasserverbrauch", "l",
-                    ),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "emissionenInWasser",
-                        "Emissionen in Wasser", "t",
-                    ),
-
-                )
-                availableIf = DependsOnComponentValue(
-                    berichtsPflicht,
-                    "Yes",
-                )
-            }
-        }
-
-        componentGroupUmwelt?.edit<ComponentGroup>("abfallproduktion") {
-            create<GdvYearlyDecimalTimeseriesDataComponent>(
-                "berichterstattungAbfallproduktion",
-                "unternehmensGruppenStrategieBzglAbfallproduktion",
-            ) {
-                label = "Berichterstattung Abfallproduktion"
-                explanation = "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) " +
-                    "der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der " +
-                    "gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahren sowie " +
-                    "die Prognosen für die kommenden drei Jahre an."
-                decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "gesamteAbfallmenge", "Gesamte Abfallmenge",
-                        "t",
-                    ),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "prozentAbfallRecyclet",
-                        "% Abfall recycelt", "%",
-                    ),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "prozentGefaehrlicherAbfall",
-                        "% Gefährlicher Abfall", "%",
-                    ),
-                )
-                availableIf = DependsOnComponentValue(
-                    berichtsPflicht,
-                    "Yes",
-                )
-            }
-        }
 
         componentGroupUmwelt?.edit<ComponentGroup>("abfallproduktion") {
             create<GdvYearlyDecimalTimeseriesDataComponent>(

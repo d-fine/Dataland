@@ -4,6 +4,7 @@ import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvYearlyDecimalTimes
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
+import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 
 /**
@@ -78,5 +79,92 @@ object GdvUmweltRollingWindowComponents {
                 availableIf = available
             }
         }
+    }
+
+    /**
+     * Creates the "Berichterstattung Energieverbrauch von Immobilienvermögen" field
+     */
+    fun energieeffizienzImmobilienanlagen(componentGroupUmwelt: ComponentGroup, available: FrameworkConditional) {
+        componentGroupUmwelt.edit<ComponentGroup>("energieeffizienzImmobilienanlagen") {
+            create<GdvYearlyDecimalTimeseriesDataComponent>(
+                "berichterstattungEnergieverbrauchVonImmobilienvermoegen",
+                "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen",
+            ) {
+                label = "Berichterstattung Energieverbrauch von Immobilienvermoegen"
+                explanation = "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) " +
+                        "für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die " +
+                        "kommenden drei Jahre an."
+                decimalRows = mutableListOf(
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "engagementAnteilInEnergieineffizientenImmobilienanlagen",
+                        "Engagement/Anteil in energieineffizienten Immobilienanlagen", "",
+                    ),
+                )
+                availableIf = available
+            }
+        }
+    }
+
+    /**
+     * Creates the "Berichterstattung Wasserverbrauch" field
+     */
+    fun berichterstattungWasserverbrauch(componentGroupUmwelt: ComponentGroup, available: FrameworkConditional) {
+        componentGroupUmwelt.edit<ComponentGroup>("wasserverbrauch") {
+            create<GdvYearlyDecimalTimeseriesDataComponent>(
+                "berichterstattungWasserverbrauch",
+                "unternehmensGruppenStrategieBzglWasserverbrauch",
+            ) {
+                label = "Berichterstattung Wasserverbrauch"
+                explanation = "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser " +
+                        "(in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen " +
+                        "für die kommenden drei Jahre an."
+                decimalRows = mutableListOf(
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "wasserverbrauch",
+                        "Wasserverbrauch", "l",
+                    ),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "emissionenInWasser",
+                        "Emissionen in Wasser", "t",
+                    ),
+
+                    )
+                availableIf = available
+            }
+        }
+    }
+
+    /**
+     * Creates the "Berichterstattung Abfallproduktion" field
+     */
+    fun unternehmensGruppenStrategieBzglAbfallproduktion(componentGroupUmwelt: ComponentGroup, available: FrameworkConditional) {
+        componentGroupUmwelt.edit<ComponentGroup>("abfallproduktion") {
+            create<GdvYearlyDecimalTimeseriesDataComponent>(
+                "berichterstattungAbfallproduktion",
+                "unternehmensGruppenStrategieBzglAbfallproduktion",
+            ) {
+                label = "Berichterstattung Abfallproduktion"
+                explanation = "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) " +
+                        "der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der " +
+                        "gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahren sowie " +
+                        "die Prognosen für die kommenden drei Jahre an."
+                decimalRows = mutableListOf(
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "gesamteAbfallmenge", "Gesamte Abfallmenge",
+                        "t",
+                    ),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "prozentAbfallRecyclet",
+                        "% Abfall recycelt", "%",
+                    ),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "prozentGefaehrlicherAbfall",
+                        "% Gefährlicher Abfall", "%",
+                    ),
+                )
+                availableIf = available
+            }
+        }
+
     }
 }
