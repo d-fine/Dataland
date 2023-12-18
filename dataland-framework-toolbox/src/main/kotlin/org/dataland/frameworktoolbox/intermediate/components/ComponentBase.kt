@@ -8,7 +8,7 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 
 /**
@@ -47,7 +47,7 @@ open class ComponentBase(
      * The uploadConfigGenerator allows users to overwrite the UploadConfig generation of
      * this specific component instance
      */
-    var uploadConfigGenerator: ((sectionUploadConfigBuilder: SectionUploadConfigBuilder) -> Unit)? = null
+    var uploadConfigGenerator: ((uploadCategoryBuilder: UploadCategoryBuilder) -> Unit)? = null
 
     /**
      * The fixtureGeneratorGenerator allows users to overwrite the FixtureGeneration generation
@@ -120,7 +120,7 @@ open class ComponentBase(
      * Build this component instance into the provided upload-section configuration
      * using the default generator for this component
      */
-    open fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
+    open fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         throw NotImplementedError("This component did not implement upload config conversion.")
     }
 
@@ -134,9 +134,9 @@ open class ComponentBase(
     /**
      * Build this component instance into the provided upload-section configuration
      */
-    fun generateUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
-        return uploadConfigGenerator?.let { it(sectionUploadConfigBuilder) }
-            ?: generateDefaultUploadConfig(sectionUploadConfigBuilder)
+    fun generateUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        return uploadConfigGenerator?.let { it(uploadCategoryBuilder) }
+            ?: generateDefaultUploadConfig(uploadCategoryBuilder)
     }
 
     /**

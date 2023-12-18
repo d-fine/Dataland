@@ -11,7 +11,7 @@ import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOp
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -72,13 +72,13 @@ class GdvYearlyDecimalTimeseriesDataComponent(
         )
     }
 
-    override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
+    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         val componentName = when (uploadBehaviour) {
             UploadBehaviour.ThreeYearDelta -> "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField"
             UploadBehaviour.ThreeYearPast -> "GdvYearlyDecimalTimeseriesThreeYearPastDataFormField"
         }
 
-        sectionUploadConfigBuilder.addStandardUploadConfigCell(
+        uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = componentName,
             options = decimalRows.map {

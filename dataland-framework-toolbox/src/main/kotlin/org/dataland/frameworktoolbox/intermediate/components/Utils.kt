@@ -1,7 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
@@ -26,7 +26,7 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
 /**
  * Add a cell to the upload-config section with configuration shared between components
  */
-fun SectionUploadConfigBuilder.addStandardUploadConfigCell(
+fun UploadCategoryBuilder.addStandardUploadConfigCell(
     component: ComponentBase,
     uploadComponentName: String,
     options: MutableSet<SelectionOption>? = null,
