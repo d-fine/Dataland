@@ -19,10 +19,6 @@ import kotlin.io.path.div
 class FrameworkUploadConfigBuilder(
     private val framework: Framework,
 ) {
-    companion object {
-//        private const val ESLINT_TIMEOUT = 60L
-    }
-
     private val logger by LoggerDelegate()
 
     val rootSectionConfigBuilder = SectionUploadConfigBuilder(
