@@ -36,11 +36,6 @@ open class ComponentBase(
     /**
      * The unit of a string component
      */
-    var unit: String? = null
-
-    /**
-     * The unit of a string component
-     */
     var uploadComponentName: String? = null
 
     /**

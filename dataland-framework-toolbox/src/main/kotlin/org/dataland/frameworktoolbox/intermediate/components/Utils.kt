@@ -31,6 +31,7 @@ fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
     uploadComponentName: String?,
     options: MutableSet<SelectionOption>?,
     component: ComponentBase,
+    unit: String? = null,
 ) {
     addCell(
         identifier = component.identifier,
@@ -38,7 +39,7 @@ fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
             "You must specify a label for ${component.identifier} to generate a view configuration",
         ),
         explanation = component.explanation,
-        unit = component.unit,
+        unit = unit,
         required = component.required,
         isNullable = component.isNullable,
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
