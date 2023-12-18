@@ -76,7 +76,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
       preparedFixtures = jsonContent as Array<FixtureData<GdvData>>;
     });
   });
-  it.only("Check that on the GDV-VÖB view Page the rolling window component works properly", () => {
+  it("Check that on the GDV-VÖB view Page the rolling window component works properly", () => {
     const preparedFixture = getPreparedFixture("Gdv-dataset-with-no-null-fields", preparedFixtures);
     const gdvData = preparedFixture.t;
 
