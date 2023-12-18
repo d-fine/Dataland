@@ -57,8 +57,7 @@ data class SectionUploadConfigBuilder(
         explanation: String?,
         shouldDisplay: FrameworkBooleanLambda,
         unit: String?,
-        isNullable: Boolean,
-        required: Boolean?,
+        required: Boolean,
         uploadComponentName: String?,
         options: MutableSet<SelectionOption>?,
     ): CellConfigBuilder {
@@ -69,7 +68,6 @@ data class SectionUploadConfigBuilder(
             explanation = explanation,
             shouldDisplay = shouldDisplay,
             unit = unit,
-            isNullable = isNullable,
             required = required,
             uploadComponentName = uploadComponentName,
             options = options,

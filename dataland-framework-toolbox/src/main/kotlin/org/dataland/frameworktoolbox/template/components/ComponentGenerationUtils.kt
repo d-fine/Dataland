@@ -47,7 +47,6 @@ open class ComponentGenerationUtils {
         component.explanation = if (row.tooltip.isNotBlank()) row.tooltip else null
         component.isNullable = row.mandatoryField == TemplateYesNo.No
         component.documentSupport = DocumentSupport.fromTemplate(row.documentSupport)
-        component.required = if (component.isNullable == false) true else null
     }
 
     /**

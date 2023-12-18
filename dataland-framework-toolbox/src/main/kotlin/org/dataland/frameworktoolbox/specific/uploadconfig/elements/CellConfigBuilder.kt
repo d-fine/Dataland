@@ -18,8 +18,7 @@ class CellConfigBuilder(
     var explanation: String?,
     var shouldDisplay: FrameworkBooleanLambda,
     var unit: String?,
-    var isNullable: Boolean,
-    var required: Boolean?,
+    var required: Boolean,
     var uploadComponentName: String?,
     var options: MutableSet<SelectionOption>?,
 ) : UploadConfigElement

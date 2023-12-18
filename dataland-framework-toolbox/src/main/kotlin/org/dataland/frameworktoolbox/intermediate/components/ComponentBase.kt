@@ -34,11 +34,6 @@ open class ComponentBase(
     var explanation: String? = null
 
     /**
-     * The unit of a string component
-     */
-    var required: Boolean? = null
-
-    /**
      * The dataModelGenerator allows users to overwrite the DataClass generation of this specific component instance
      */
     var dataModelGenerator: ((dataClassBuilder: DataClassBuilder) -> Unit)? = null
@@ -64,6 +59,13 @@ open class ComponentBase(
      * True iff this component is optional / accepts null values
      */
     var isNullable: Boolean = true
+
+    /**
+     * True iff this component is required (just a pointer to !isNullable for convenience)
+     */
+    var isRequired: Boolean
+        get() = !isNullable
+        set(value) { isNullable = !value }
 
     /**
      * A logical condition that decides whether this component is available / shown to users

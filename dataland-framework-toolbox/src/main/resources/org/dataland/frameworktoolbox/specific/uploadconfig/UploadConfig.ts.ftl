@@ -57,9 +57,9 @@ export const ${frameworkIdentifier}DataModel = [<@loopCategories uploadConfig/>]
         ],</#if>
     unit: "<#if fieldConfig.unit??>${fieldConfig.unit?js_string}</#if>",
     component: "${fieldConfig.uploadComponentName?js_string}",
-    required: <#if fieldConfig.required??>true<#else>false</#if>,
+    required: ${fieldConfig.required?c},
     showIf: <@frameworklambda fieldConfig.shouldDisplay/>, <#--is this even needed for upload?-->
-    validation: <#if fieldConfig.required??>"required"<#else>""</#if>,
+    validation: <#if fieldConfig.required>"required"<#else>""</#if>,
     },
 </#macro>
 
