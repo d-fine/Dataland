@@ -40,44 +40,47 @@ describeIf(
         const uniqueCompanyMarkerWithDate = Date.now().toString();
         const testCompanyNameGdv = "Company-Created-In-Gdv-Blanket-Test-" + uniqueCompanyMarkerWithDate;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameGdv)).then((storedCompany) => {
-            return uploadGenericFrameworkData(token, storedCompany.companyId, "2021", gdvFixtureForTest.t, (config) =>
-              getBaseFrameworkDefinition(DataTypeEnum.Gdv)!.getFrameworkApiClient(config),
-            ).then((dataMetaInformation) => {
-              cy.intercept(`**/api/data/${DataTypeEnum.Gdv}/${dataMetaInformation.dataId}`).as("fetchDataForPrefill");
-              cy.visitAndCheckAppMount(
-                "/companies/" +
-                  storedCompany.companyId +
-                  "/frameworks/" +
-                  DataTypeEnum.Gdv +
-                  "/upload?templateDataId=" +
-                  dataMetaInformation.dataId,
-              );
-              cy.wait("@fetchDataForPrefill", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-              cy.get("h1").should("contain", testCompanyNameGdv);
-              cy.intercept({
-                url: `**/api/data/${DataTypeEnum.Gdv}`,
-                times: 1,
-              }).as("postCompanyAssociatedData");
-              submitButton.clickButton();
-              cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
-                (postInterception) => {
-                  cy.url().should("eq", getBaseUrl() + "/datasets");
-                  const dataMetaInformationOfReuploadedDataset = postInterception.response?.body as DataMetaInformation;
-                  return new GdvDataControllerApi(new Configuration({ accessToken: token }))
-                    .getCompanyAssociatedGdvData(dataMetaInformationOfReuploadedDataset.dataId)
-                    .then((axiosResponse) => {
-                      const frontendSubmittedGdvDataset = axiosResponse.data.data;
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameGdv)).then(
+            (storedCompany) => {
+              return uploadGenericFrameworkData(token, storedCompany.companyId, "2021", gdvFixtureForTest.t, (config) =>
+                getBaseFrameworkDefinition(DataTypeEnum.Gdv)!.getFrameworkApiClient(config),
+              ).then((dataMetaInformation) => {
+                cy.intercept(`**/api/data/${DataTypeEnum.Gdv}/${dataMetaInformation.dataId}`).as("fetchDataForPrefill");
+                cy.visitAndCheckAppMount(
+                  "/companies/" +
+                    storedCompany.companyId +
+                    "/frameworks/" +
+                    DataTypeEnum.Gdv +
+                    "/upload?templateDataId=" +
+                    dataMetaInformation.dataId,
+                );
+                cy.wait("@fetchDataForPrefill", { timeout: Cypress.env("medium_timeout_in_ms") as number });
+                cy.get("h1").should("contain", testCompanyNameGdv);
+                cy.intercept({
+                  url: `**/api/data/${DataTypeEnum.Gdv}`,
+                  times: 1,
+                }).as("postCompanyAssociatedData");
+                submitButton.clickButton();
+                cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
+                  (postInterception) => {
+                    cy.url().should("eq", getBaseUrl() + "/datasets");
+                    const dataMetaInformationOfReuploadedDataset = postInterception.response
+                      ?.body as DataMetaInformation;
+                    return new GdvDataControllerApi(new Configuration({ accessToken: token }))
+                      .getCompanyAssociatedGdvData(dataMetaInformationOfReuploadedDataset.dataId)
+                      .then((axiosResponse) => {
+                        const frontendSubmittedGdvDataset = axiosResponse.data.data;
 
-                      compareObjectKeysAndValuesDeep(
-                        gdvFixtureForTest.t as Record<string, object>,
-                        frontendSubmittedGdvDataset as Record<string, object>,
-                      );
-                    });
-                },
-              );
-            });
-          });
+                        compareObjectKeysAndValuesDeep(
+                          gdvFixtureForTest.t as Record<string, object>,
+                          frontendSubmittedGdvDataset as Record<string, object>,
+                        );
+                      });
+                  },
+                );
+              });
+            },
+          );
         });
       },
     );

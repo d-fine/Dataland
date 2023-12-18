@@ -141,7 +141,8 @@ import CurrencyDataPointFormField from "@/components/forms/parts/fields/Currency
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
-import GdvYearlyDecimalTimeseriesDataFormField from "@/components/forms/parts/fields/GdvYearlyDecimalTimeseriesDataFormField.vue";
+import GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField from "@/components/forms/parts/fields/GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField.vue";
+import GdvYearlyDecimalTimeseriesThreeYearPastDataFormField from "@/components/forms/parts/fields/GdvYearlyDecimalTimeseriesThreeYearPastDataFormField.vue";
 import { gdvDataModel } from "@/frameworks/gdv/UploadConfig";
 import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
@@ -188,7 +189,8 @@ export default defineComponent({
     YesNoBaseDataPointFormField,
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
-    GdvYearlyDecimalTimeseriesDataFormField,
+    GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField,
+    GdvYearlyDecimalTimeseriesThreeYearPastDataFormField,
     ListOfBaseDataPointsFormField,
   },
   directives: {
