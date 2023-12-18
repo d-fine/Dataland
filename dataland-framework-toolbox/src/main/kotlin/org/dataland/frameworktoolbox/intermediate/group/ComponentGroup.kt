@@ -9,7 +9,6 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColo
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.LabelBadgeColor as LabelBadgeColorUpload
 
 /**
  * A collection of components (i.e., a section or subsection).
@@ -21,7 +20,7 @@ class ComponentGroup(
 ) : ComponentBase(identifier, parent), FieldNodeParent, ComponentGroupApi by componentGroupApi {
 
     var viewPageLabelBadgeColor: LabelBadgeColor? = null
-    var uploadPageLabelBadgeColor: LabelBadgeColorUpload? = null
+    var uploadPageLabelBadgeColor: LabelBadgeColor? = null
     var viewPageExpandOnPageLoad: Boolean = false
 
     override val children: Sequence<ComponentBase> by componentGroupApi::children
@@ -83,7 +82,7 @@ class ComponentGroup(
             identifier = identifier,
             label = localLabel,
             labelBadgeColor = uploadPageLabelBadgeColor,
-            shouldDisplay = org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda.TRUE,
+            shouldDisplay = FrameworkBooleanLambda.TRUE,
             subcategory = true,
         )
 

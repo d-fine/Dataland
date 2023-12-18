@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
+import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 
 /**
