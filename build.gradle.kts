@@ -120,7 +120,7 @@ sonar {
                 "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt," +
                 "dataland-frontend/src/components/general/SlideShow.vue," +
                 "dataland-frontend/src/components/resources/newLandingPage/TheQuotes.vue," +
-                "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**/*",
+                "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/",
 
         )
     }
