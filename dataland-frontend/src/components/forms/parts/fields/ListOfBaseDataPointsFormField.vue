@@ -20,7 +20,7 @@
           :validation-label="validationLabel"
           sub-form-component="UploadDocumentsFormWithComment"
           data-test-add-button="addNewProductButton"
-          label-add-button="Neuen Parport hinzufügen"
+          label-add-button="Weiteres Dokument hinzügen"
           data-test-sub-form="productSection"
           @fieldSpecificDocumentsUpdated="fieldSpecificDocumentsUpdated"
         />

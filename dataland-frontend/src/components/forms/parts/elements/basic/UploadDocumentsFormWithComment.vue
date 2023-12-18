@@ -11,11 +11,7 @@
       <FormKit type="hidden" name="fileName" v-model="documentName" />
       <FormKit type="hidden" name="fileReference" v-model="documentReference" />
     </FormKit>
-    <FormKit
-      type="textarea"
-      name="value"
-      placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
-    />
+    <FormKit type="textarea" name="value" placeholder="Add a description for this document." />
   </div>
 </template>
 
