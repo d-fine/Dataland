@@ -59,9 +59,9 @@ open class SingleSelectComponent(
     }
 
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
-        sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
-            uploadComponentName = "SingleSelectFormField",
+        sectionUploadConfigBuilder.addStandardUploadConfigCell(
             component = this,
+            uploadComponentName = "SingleSelectFormField",
             options = options,
         )
     }

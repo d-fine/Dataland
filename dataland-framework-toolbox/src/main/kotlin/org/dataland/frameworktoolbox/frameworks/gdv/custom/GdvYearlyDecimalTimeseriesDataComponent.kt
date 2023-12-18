@@ -6,6 +6,7 @@ import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
+import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
@@ -77,7 +78,8 @@ class GdvYearlyDecimalTimeseriesDataComponent(
             UploadBehaviour.ThreeYearPast -> "GdvYearlyDecimalTimeseriesThreeYearPastDataFormField"
         }
 
-        sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
+        sectionUploadConfigBuilder.addStandardUploadConfigCell(
+            component = this,
             uploadComponentName = componentName,
             options = decimalRows.map {
                 var rowLabel = it.label
@@ -87,7 +89,6 @@ class GdvYearlyDecimalTimeseriesDataComponent(
 
                 SelectionOption(it.identifier, rowLabel)
             }.toMutableSet(),
-            component = this,
         )
     }
 

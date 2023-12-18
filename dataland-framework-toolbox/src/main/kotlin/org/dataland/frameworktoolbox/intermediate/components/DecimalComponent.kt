@@ -50,10 +50,9 @@ open class DecimalComponent(
     }
 
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
-        sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
-            uploadComponentName = "NumberFormField",
-            options = null,
+        sectionUploadConfigBuilder.addStandardUploadConfigCell(
             this,
+            uploadComponentName = "NumberFormField",
         )
     }
 

@@ -8,6 +8,7 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
+import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
@@ -537,10 +538,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 )
             }
             component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
-                sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
-                    uploadComponentName = "MultiSelectFormField",
-                    options = null, // TODO Problem:  We cannot make it use the ActivityName.ts file! Limitation!
+                sectionUploadConfigBuilder.addStandardUploadConfigCell(
                     component,
+                    uploadComponentName = "MultiSelectFormField",
+                    // TODO Problem:  We cannot make it use the ActivityName.ts file! Limitation!
                 )
             }
         }

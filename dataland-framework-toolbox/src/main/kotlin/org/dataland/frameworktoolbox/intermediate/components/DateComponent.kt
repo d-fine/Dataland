@@ -44,10 +44,9 @@ class DateComponent(
     }
 
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
-        sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
-            uploadComponentName = "DateFormField",
-            options = null,
+        sectionUploadConfigBuilder.addStandardUploadConfigCell(
             component = this,
+            uploadComponentName = "DateFormField",
         )
     }
 

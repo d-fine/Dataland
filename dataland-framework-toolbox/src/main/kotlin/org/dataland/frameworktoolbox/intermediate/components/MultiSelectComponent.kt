@@ -54,10 +54,10 @@ open class MultiSelectComponent(
     }
 
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
-        sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
+        sectionUploadConfigBuilder.addStandardUploadConfigCell(
+            component = this,
             uploadComponentName = "MultiSelectFormField",
             options = this.options,
-            component = this,
         )
     }
 

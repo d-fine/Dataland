@@ -44,10 +44,9 @@ class StringComponent(
     }
 
     override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
-        sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
-            uploadComponentName = "InputTextFormField",
-            options = null,
+        sectionUploadConfigBuilder.addStandardUploadConfigCell(
             this,
+            uploadComponentName = "InputTextFormField",
         )
     }
 

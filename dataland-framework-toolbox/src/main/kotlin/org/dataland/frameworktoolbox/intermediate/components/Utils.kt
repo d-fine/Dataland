@@ -24,13 +24,12 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
 }
 
 /**
- * Add a cell to the section with configuration shared between components
- * and a component-specific value-getter
+ * Add a cell to the upload-config section with configuration shared between components
  */
-fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
-    uploadComponentName: String?,
-    options: MutableSet<SelectionOption>?,
+fun SectionUploadConfigBuilder.addStandardUploadConfigCell(
     component: ComponentBase,
+    uploadComponentName: String,
+    options: MutableSet<SelectionOption>? = null,
     unit: String? = null,
 ) {
     addCell(

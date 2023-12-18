@@ -50,10 +50,9 @@ class YesNoComponent(
         } else {
             "YesNoFormField"
         }
-        sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
-            uploadComponentName = uploadComponentNameToUse,
-            options = null,
+        sectionUploadConfigBuilder.addStandardUploadConfigCell(
             component = this,
+            uploadComponentName = uploadComponentNameToUse,
         )
     }
 
