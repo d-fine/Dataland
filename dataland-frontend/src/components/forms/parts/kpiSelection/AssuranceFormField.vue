@@ -36,7 +36,7 @@
 
     <!-- Data source -->
     <div class="form-field">
-      <FormKit type="group" name="dataSource">
+      <FormKit type="group" name="dataSource" :ignore="ignoreDataSource">
         <h4 class="mt-0">Data source</h4>
         <div class="next-to-each-other">
           <div class="flex-1">
@@ -50,7 +50,7 @@
               name="fileName"
               v-model="currentReportValue"
               placeholder="Select a report"
-              :options="['None...', ...reportsName]"
+              :options="[noReportLabel, ...reportsName]"
             />
             <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
           </div>
@@ -109,6 +109,7 @@ export default defineComponent({
         ReasonableAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.ReasonableAssurance),
       },
       currentReportValue: "",
+      noReportLabel: "None...",
     };
   },
   computed: {
@@ -120,5 +121,14 @@ export default defineComponent({
     },
   },
   props: BaseFormFieldProps,
+  methods: {
+    /**
+     * Checks whether the Assurance data source has appropriate values
+     * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
+     */
+    ignoreDataSource(): boolean {
+      return !(this.currentReportValue && this.currentReportValue !== this.noReportLabel);
+    },
+  },
 });
 </script>
