@@ -159,6 +159,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 customizeEuTaxonomieKompassAktivitaetenComponent(this)
             }
 
+        val tCo2UnitString = "tCO2-Äquiv.";
         val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt")
         componentGroupUmwelt?.edit<ComponentGroup>("treibhausgasemissionen") {
             create<GdvYearlyDecimalTimeseriesDataComponent>(
@@ -173,15 +174,15 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "scope1", "Scope 1",
-                        "tCO2-Äquiv.",
+                        tCo2UnitString,
                     ),
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "scope2", "Scope 2",
-                        "tCO2-Äquiv.",
+                        tCo2UnitString,
                     ),
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "scope3", "Scope 3",
-                        "tCO2-Äquiv.",
+                        tCo2UnitString,
                     ),
                 )
                 availableIf = DependsOnComponentValue(

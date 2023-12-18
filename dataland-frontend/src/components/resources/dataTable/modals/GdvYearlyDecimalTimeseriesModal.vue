@@ -102,7 +102,7 @@ const yearsForDisplay = computed<YearsForDisplay | undefined>(() => {
     data.allYearsSorted.push(data.reportingYear);
   }
 
-  data.allYearsSorted = data.allYearsSorted.sort((a, b) => a - b);
+  data.allYearsSorted = data.allYearsSorted.toSorted((a, b) => a - b);
 
   return data;
 });
