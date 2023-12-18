@@ -3,7 +3,6 @@ package org.dataland.frameworktoolbox.frameworks.gdv
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
 import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvListOfBaseDataPointComponent
-import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvYearlyDecimalTimeseriesDataComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.*
 import org.dataland.frameworktoolbox.intermediate.group.*
@@ -86,6 +85,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 auswirkungenAufAnteilBefristerVertraegeUndFluktuation(sozialesGroup)
                 budgetFuerSchulungAusbildung(sozialesGroup, showIfBerichtsPflicht)
                 unfallrate(sozialesGroup, showIfBerichtsPflicht)
+                massnahmenZurVerbesserungDerEinkommensungleichheit(sozialesGroup, showIfBerichtsPflicht)
             }
         }
     }
@@ -94,6 +94,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setGroupsThatAreExpandedOnPageLoad(framework)
         overwriteFakeFixtureGenerationForDataDate(framework)
+
         val berichtsPflicht = framework.root
             .getOrNull<ComponentGroup>("general")
             ?.getOrNull<ComponentGroup>("masterData")
@@ -145,7 +146,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 "must exist in the gdv framework."
         }
 
-        val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt")
         splitHighLevelIntermediateRepresentationCustumizationPartTwo(framework, berichtsPflicht)
         splitHighLevelIntermediateRepresentationCustumizationPartThree(esgBerichte, nachhaltigkeitsberichte)
 
@@ -186,35 +186,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             ?.getOrNull<ComponentGroup>("einkommensgleichheit")
         require(einkommensgleichheit != null) {
             "The component group with the label \"einkommensgleichheit\" must exist in the gdv framework."
-        }
-
-        einkommensgleichheit.create<GdvYearlyDecimalTimeseriesDataComponent>(
-            "ueberwachungDerEinkommensungleichheit",
-            "massnahmenZurVerbesserungDerEinkommensungleichheit",
-        ) {
-            label = "Überwachung der Einkommensungleichheit"
-            explanation = "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das " +
-                "Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für" +
-                " die letzten drei Jahre an."
-            decimalRows = mutableListOf(
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "unbereinigtesGeschlechtsspezifischesLohngefaelle",
-                    "Unbereinigtes geschlechtsspezifisches Lohngefälle", "%",
-                ),
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "einkommensungleichheitsverhaeltnis",
-                    "Einkommensungleichheitsverhältnis", "%",
-                ),
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "ceoEinkommensungleichheitsverhaeltnis",
-                    "CEO-Einkommensungleichheitsverhältnis", "%",
-                ),
-            )
-            availableIf = DependsOnComponentValue(
-                berichtsPflicht,
-                "Yes",
-            )
-            uploadBehaviour = GdvYearlyDecimalTimeseriesDataComponent.UploadBehaviour.ThreeYearPast
         }
     }
 

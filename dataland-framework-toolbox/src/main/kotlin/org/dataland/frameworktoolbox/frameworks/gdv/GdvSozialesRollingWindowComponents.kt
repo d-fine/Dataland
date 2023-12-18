@@ -94,4 +94,40 @@ object GdvSozialesRollingWindowComponents {
             }
         }
     }
+
+    /**
+     * Creates the "Überwachung der Einkommensungleichheit" field
+     */
+    fun massnahmenZurVerbesserungDerEinkommensungleichheit(
+        componentGroupSoziales: ComponentGroup,
+        available: FrameworkConditional,
+    ) {
+        componentGroupSoziales.edit<ComponentGroup>("einkommensgleichheit") {
+            create<GdvYearlyDecimalTimeseriesDataComponent>(
+                "ueberwachungDerEinkommensungleichheit",
+                "massnahmenZurVerbesserungDerEinkommensungleichheit",
+            ) {
+                label = "Überwachung der Einkommensungleichheit"
+                explanation = "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das " +
+                    "Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für" +
+                    " die letzten drei Jahre an."
+                decimalRows = mutableListOf(
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "unbereinigtesGeschlechtsspezifischesLohngefaelle",
+                        "Unbereinigtes geschlechtsspezifisches Lohngefälle", "%",
+                    ),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "einkommensungleichheitsverhaeltnis",
+                        "Einkommensungleichheitsverhältnis", "%",
+                    ),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "ceoEinkommensungleichheitsverhaeltnis",
+                        "CEO-Einkommensungleichheitsverhältnis", "%",
+                    ),
+                )
+                availableIf = available
+                uploadBehaviour = GdvYearlyDecimalTimeseriesDataComponent.UploadBehaviour.ThreeYearPast
+            }
+        }
+    }
 }
