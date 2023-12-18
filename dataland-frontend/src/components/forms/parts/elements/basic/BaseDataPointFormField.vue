@@ -10,7 +10,14 @@
         :more-than-one-document-allowed="false"
         :file-names-for-prefill="fileNamesForPrefill"
       />
-      <FormKit v-if="baseDataPoint.value === 'Yes'" type="group" name="dataSource">
+
+      <FormKit
+        v-if="baseDataPoint.value === 'Yes'"
+        :key="documentName"
+        :ignore="shouldIgnoreDataSource()"
+        type="group"
+        name="dataSource"
+      >
         <FormKit type="hidden" name="fileName" v-model="documentName" />
         <FormKit type="hidden" name="fileReference" v-model="documentReference" />
       </FormKit>
@@ -77,6 +84,14 @@ export default defineComponent({
       if (this.documentName !== "" && this.referencedDocument === undefined) {
         this.fileNamesForPrefill = [this.documentName];
       }
+    },
+
+    /**
+     * Determine whether dataSource should be added or blank
+     * @returns flase if file name is blank or value of 'None...'
+     */
+    shouldIgnoreDataSource() {
+      return this.documentName.length === 0 || this.documentName === "None...";
     },
   },
 });
