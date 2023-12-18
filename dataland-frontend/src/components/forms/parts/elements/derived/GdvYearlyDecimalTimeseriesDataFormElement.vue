@@ -19,7 +19,7 @@
               <div class="flex flex-column justify-content-between" v-for="year of group.yearsInOrder" :key="year">
                 <FormKit type="group" :name="year">
                   <div v-for="row of options" :key="row.value">
-                    <h6>{{ year }}</h6>
+                    <h6 class="mb-1">{{ year }}</h6>
                     <FormKit type="text" :name="row.value" validation="number" />
                   </div>
                 </FormKit>
@@ -84,7 +84,7 @@ export default defineComponent({
       if (!this.nYearsIntoPast || !this.numericalYearOfDataDate) return undefined;
 
       const pastGroup: YearGroup = {
-        headerTitle: "Historical Data",
+        headerTitle: "Historische Daten",
         color: "light-gray",
         icon: "menu_book",
         yearsInOrder: [],
@@ -97,7 +97,7 @@ export default defineComponent({
     futureGroup(): YearGroup | undefined {
       if (!this.nYearsIntoFuture || !this.numericalYearOfDataDate) return undefined;
       const futureGroup: YearGroup = {
-        headerTitle: "Prognosis Data",
+        headerTitle: "Prognosen",
         color: "light-gray",
         icon: "lightbulb",
         yearsInOrder: [],
@@ -114,7 +114,7 @@ export default defineComponent({
     currentGroup(): YearGroup | undefined {
       if (!this.showCurrentYear || !this.numericalYearOfDataDate) return undefined;
       return {
-        headerTitle: "Reporting year",
+        headerTitle: "Aktuelles Jahr",
         color: "dark-blue",
         yearsInOrder: [this.numericalYearOfDataDate],
       };

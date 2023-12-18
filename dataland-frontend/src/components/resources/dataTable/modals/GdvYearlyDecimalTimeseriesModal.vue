@@ -162,18 +162,18 @@ function getClassForTableRow(year: number): string[] {
           <template #header>
             <div class="p-badge badge-light-gray flex align-items-center">
               <em class="material-icons-outlined pr-1">menu_book</em>
-              Historical Data
+              Historische Daten
             </div>
           </template>
         </Column>
         <Column :colspan="1" class="reporting-year-table-cell">
-          <template #header> <div class="p-badge badge-dark-blue">Reporting Year</div></template>
+          <template #header> <div class="p-badge badge-dark-blue">Aktuelles Jahr</div></template>
         </Column>
 
         <Column :colspan="yearsForDisplay.numberOfPrognosisYears" v-if="yearsForDisplay.numberOfPrognosisYears > 0">
           <template #header>
             <div class="p-badge badge-light-gray flex align-items-center">
-              <em class="material-icons-outlined pr-1">lightbulb</em> Prognosis Data
+              <em class="material-icons-outlined pr-1">lightbulb</em> Prognosen
             </div>
           </template>
         </Column>
