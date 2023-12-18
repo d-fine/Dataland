@@ -7,6 +7,7 @@ describe("test IntegerExtendedDataPointFormField for entries", () => {
         name: "foo",
         unit: "",
       });
+      cy.get('[data-test="dataPointToggleButton"]').click();
       //check existence
       cy.get('input[name="value"]').should("exist");
       //error on float

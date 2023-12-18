@@ -124,6 +124,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    * @param reports the name of the reports that are uploaded
    */
   function fillAndValidateOtherSections(reports: string[]): void {
+    cy.get('div[label="Revenue"] [data-test="dataPointToggleButton"]').click();
     cy.get('div[label="Revenue"] input[name="value"]').clear().type("130000");
     cy.get('div[label="Revenue"] select[data-test="datapoint-currency"]').select(1);
     cy.get('div[label="Revenue"] select[name="fileName"]').select(reports[0]);

@@ -75,7 +75,9 @@ describeIf(
             "exist",
           );
 
-          cy.get('[data-test="mercuryAndMercuryWasteHandlingPolicy"] [data-test="files-to-upload-remove"]')
+          cy.get(
+            '[data-test="BaseDataPointFormFieldmercuryAndMercuryWasteHandlingPolicy"] [data-test="files-to-upload-remove"]',
+          )
             .should("exist")
             .click();
           cy.get('[data-test="mercuryAndMercuryWasteHandlingPolicy"] [data-test="FileUploadContainer"]').should(
