@@ -25,6 +25,11 @@ class GdvYearlyDecimalTimeseriesDataComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
+
+    companion object {
+        const val THREE_YEARS = 3
+    }
+
     /**
      * A TimeseriesRow specifies a single property that is to be tracked across time
      */
@@ -34,8 +39,8 @@ class GdvYearlyDecimalTimeseriesDataComponent(
      * The UploadBehaviour specifies how many years this component is expected to be filled out with
      * during upload
      */
-    enum class UploadBehaviour {
-        ThreeYearDelta, ThreeYearPast
+    enum class UploadBehaviour(val yearsIntoPast: Int, val yearsIntoFuture: Int) {
+        ThreeYearDelta(THREE_YEARS, THREE_YEARS), ThreeYearPast(THREE_YEARS, 0)
     }
 
     var decimalRows: MutableList<TimeseriesRow> = mutableListOf()
@@ -132,8 +137,10 @@ class GdvYearlyDecimalTimeseriesDataComponent(
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
-                fixtureExpression = "dataGenerator.guaranteedDecimalYearlyTimeseriesData($jsIdentifierArray)",
-                nullableFixtureExpression = "dataGenerator.randomDecimalYearlyTimeseriesData($jsIdentifierArray)",
+                fixtureExpression = "dataGenerator.guaranteedDecimalYearlyTimeseriesData" +
+                    "($jsIdentifierArray, ${uploadBehaviour.yearsIntoPast}, ${uploadBehaviour.yearsIntoFuture})",
+                nullableFixtureExpression = "dataGenerator.randomDecimalYearlyTimeseriesData" +
+                    "($jsIdentifierArray, ${uploadBehaviour.yearsIntoPast}, ${uploadBehaviour.yearsIntoFuture})",
                 nullable = isNullable,
             ),
         )

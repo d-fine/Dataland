@@ -27,6 +27,7 @@ abstract class InDevelopmentPavedRoadFramework(
     label: String,
     explanation: String,
     frameworkTemplateCsvFile: File,
+    enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
 ) :
     PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile) {
 
@@ -69,6 +70,9 @@ abstract class InDevelopmentPavedRoadFramework(
     }
 
     private fun compileDataModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.DataModel)) {
+            return
+        }
         val dataModel = generateDataModel(framework)
         customizeDataModel(dataModel)
 
@@ -81,6 +85,9 @@ abstract class InDevelopmentPavedRoadFramework(
     }
 
     private fun compileViewModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.ViewPage)) {
+            return
+        }
         val viewConfig = generateViewModel(framework)
         customizeViewModel(viewConfig)
 
@@ -93,6 +100,9 @@ abstract class InDevelopmentPavedRoadFramework(
     }
 
     private fun compileFixtureGenerator(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.FakeFixtures)) {
+            return
+        }
         val fixtureGenerator = generateFakeFixtureGenerator(framework)
         customizeFixtureGenerator(fixtureGenerator)
 
@@ -105,6 +115,9 @@ abstract class InDevelopmentPavedRoadFramework(
     }
 
     private fun compileUploadModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.UploadPage)) {
+            return
+        }
         val uploadConfig = generateUploadModel(framework)
         customizeUploadModel(uploadConfig)
 
