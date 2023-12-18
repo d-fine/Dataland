@@ -47,4 +47,36 @@ object GdvUmweltRollingWindowComponents {
             }
         }
     }
+
+    /**
+     * Creates the "Berichterstattung Energieverbrauch" field
+     */
+    fun berichterstattungEnergieverbrauch(componentGroupUmwelt: ComponentGroup, available: FrameworkConditional) {
+        componentGroupUmwelt.edit<ComponentGroup>("energieverbrauch") {
+            create<GdvYearlyDecimalTimeseriesDataComponent>(
+                "berichterstattungEnergieverbrauch",
+                "unternehmensGruppenStrategieBzglEnergieverbrauch",
+            ) {
+                label = "Berichterstattung Energieverbrauch"
+                explanation = "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren " +
+                    "Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle" +
+                    " Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an."
+                decimalRows = mutableListOf(
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "energieverbrauch",
+                        "Energieverbrauch", "GWh",
+                    ),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "prozentDesVerbrauchsErneuerbarerEnergien",
+                        "% des Verbrauchs erneuerbarer Energien", "%",
+                    ),
+                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                        "ggfProzentDerErneuerbarenEnergieerzeugung",
+                        "Gegebenenfalls % der erneuerbaren Energieerzeugung", "%",
+                    ),
+                )
+                availableIf = available
+            }
+        }
+    }
 }

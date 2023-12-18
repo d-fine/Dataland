@@ -60,7 +60,11 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         )
 
         framework.root.edit<ComponentGroup>("umwelt") {
-            GdvUmweltRollingWindowComponents.treibhausgasBerichterstattungUndPrognosen(this, showIfBerichtsPflicht)
+            val umweltGroup = this
+            with(GdvUmweltRollingWindowComponents) {
+                treibhausgasBerichterstattungUndPrognosen(umweltGroup, showIfBerichtsPflicht)
+                berichterstattungEnergieverbrauch(umweltGroup, showIfBerichtsPflicht)
+            }
         }
     }
 
@@ -155,35 +159,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 customizeEuTaxonomieKompassAktivitaetenComponent(this)
             }
 
-        componentGroupUmwelt?.edit<ComponentGroup>("energieverbrauch") {
-            create<GdvYearlyDecimalTimeseriesDataComponent>(
-                "berichterstattungEnergieverbrauch",
-                "unternehmensGruppenStrategieBzglEnergieverbrauch",
-            ) {
-                label = "Berichterstattung Energieverbrauch"
-                explanation = "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren " +
-                    "Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle " +
-                    "Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an."
-                decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "energieverbrauch",
-                        "Energieverbrauch", "GWh",
-                    ),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "prozentDesVerbrauchsErneuerbarerEnergien",
-                        "% des Verbrauchs erneuerbarer Energien", "%",
-                    ),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "ggfProzentDerErneuerbarenEnergieerzeugung",
-                        "Gegebenenfalls % der erneuerbaren Energieerzeugung", "%",
-                    ),
-                )
-                availableIf = DependsOnComponentValue(
-                    berichtsPflicht,
-                    "Yes",
-                )
-            }
-        }
         componentGroupUmwelt?.edit<ComponentGroup>("energieeffizienzImmobilienanlagen") {
             create<GdvYearlyDecimalTimeseriesDataComponent>(
                 "berichterstattungEnergieverbrauchVonImmobilienvermoegen",
