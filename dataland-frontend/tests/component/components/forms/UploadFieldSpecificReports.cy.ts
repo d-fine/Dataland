@@ -43,6 +43,7 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
    */
   function uploadAndReferenceSfdrReferencedReport(fileName: string, contentSize: number): void {
     new UploadDocuments("referencedReports").selectDummyFile(fileName, contentSize);
+    cy.get("div[data-test='scope1GhgEmissionsInTonnes'] [data-test='dataPointToggleButton']").click();
     cy.get("div[data-test='scope1GhgEmissionsInTonnes'] select[name='fileName']").select(fileName);
   }
 
@@ -53,7 +54,7 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
    * @param fieldName name of the field under which the report should be added
    */
   function uploadFieldSpecificDocuments(fileName: string, contentSize: number, fieldName: string): void {
-    cy.get(`[data-test=${fieldName}]`).find('input[value="Yes"]').check();
+    cy.get(`[data-test=BaseDataPointFormField${fieldName}]`).find('input[value="Yes"]').check();
     new UploadDocuments(fieldName).selectDummyFile(fileName, contentSize);
   }
 
@@ -135,11 +136,11 @@ describe("Component tests for the CreateSfdrDataset that test report uploading",
     createSfdrDataset.fillRequiredFields();
     uploadFieldSpecificDocuments("first", 1, "sustainableAgriculturePolicy");
     cy.wait(100);
-    cy.get('div[data-test="sustainableAgriculturePolicy"] button .pi-times').click();
+    cy.get('div[data-test="BaseDataPointFormFieldsustainableAgriculturePolicy"] button .pi-times').click();
     uploadFieldSpecificDocuments("second", 2, "sustainableAgriculturePolicy");
     uploadFieldSpecificDocuments("fourth", 3, "environmentalPolicy");
     cy.wait(100);
-    cy.get('div[data-test="environmentalPolicy"] button .pi-times').click();
+    cy.get('div[data-test="BaseDataPointFormFieldenvironmentalPolicy"] button .pi-times').click();
     cy.wait(100);
     submitButton.buttonAppearsEnabled();
     submitButton.clickButton();

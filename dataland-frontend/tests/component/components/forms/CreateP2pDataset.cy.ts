@@ -109,8 +109,11 @@ describe("Component tests for the CreateP2pDataset that test dependent fields", 
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
       clickOnSectorInSectorsDropdown("Freight Transport by Road");
-      cy.get('div[data-test="driveMixPerFleetSegment"]').should("exist");
-      cy.get('div[data-test="dataPointToggleButton"]').eq(0).click();
+      cy.get('div[data-test="driveMixPerFleetSegment"]')
+        .should("exist")
+        .find('div[data-test="dataPointToggleButton"]')
+        .eq(0)
+        .click();
       cy.get('[name="driveMixPerFleetSegmentInPercent"]').type("133").blur();
       cy.get(".formkit-message").should("contain.text", "must be between 0 and 100");
       cy.get('[name="driveMixPerFleetSegmentInPercent"]').clear().type("22");

@@ -13,6 +13,7 @@
       :validationRules="{ integer }"
       :outer-class="inputClass"
       @input="$emit('update:currentValue', $event)"
+      :data-test="dataTest"
     />
     <div v-if="unit" class="form-field-label pb-4 col-4">
       <span>{{ unit }}</span>
@@ -35,6 +36,10 @@ export default defineComponent({
     ...FormFieldPropsWithPlaceholder,
     unit: String,
     currentValue: String,
+    dataTest: {
+      type: String,
+      default: "",
+    },
   },
   watch: {
     currentValue() {

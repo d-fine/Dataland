@@ -39,7 +39,7 @@
 import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
 import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue";
 import { DropdownDatasetIdentifier, getDataset } from "@/utils/PremadeDropdownDatasets";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
@@ -54,7 +54,7 @@ export default defineComponent({
   },
   components: { NumberFormField, ExtendedDataPointFormField, UploadFormHeader, FormKit },
   props: {
-    ...BaseFormFieldProps,
+    ...FormFieldPropsWithPlaceholder,
     unit: {
       type: String,
     },
