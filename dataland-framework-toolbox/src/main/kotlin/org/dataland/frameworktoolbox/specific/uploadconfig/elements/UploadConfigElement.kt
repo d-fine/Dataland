@@ -6,5 +6,9 @@ package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 sealed interface UploadConfigElement {
     val parentSection: UploadCategoryBuilder?
 
+    /**
+     * When this function passes without errors, it is guaranteed that this config element
+     * is compliant with the limitations of the legacy upload page and code generation can proceed
+     */
     fun assertComplianceWithLegacyUploadPage()
 }

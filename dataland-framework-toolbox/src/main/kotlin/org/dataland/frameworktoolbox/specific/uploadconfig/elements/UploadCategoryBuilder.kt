@@ -23,19 +23,23 @@ data class UploadCategoryBuilder(
 ) : UploadConfigElement {
 
     override fun assertComplianceWithLegacyUploadPage() {
-        require(children.isNotEmpty()) { "It does not make sense to generate an empty upload-page category." }
+        require(children.isNotEmpty()) {
+            "It does not make sense to generate an empty upload-page category."
+        }
         val firstChild = children[0]
 
         if (firstChild is UploadCategoryBuilder) {
-            require(children.all { it is UploadCategoryBuilder })
-                { "You cannot mix and match sections and cells for the legacy upload page. "}
+            require(children.all { it is UploadCategoryBuilder }) {
+                "You cannot mix and match sections and cells for the legacy upload page. "
+            }
         } else {
-            require(children.all { it is CellConfigBuilder })
-                { "You cannot mix and match sections and cells for the legacy upload page. "}
+            require(children.all { it is CellConfigBuilder }) {
+                "You cannot mix and match sections and cells for the legacy upload page. "
+            }
             require(
                 parentSection?.parentSection != null &&
-            parentSection.parentSection.parentSection == null )
-            { "You must comply with the structure Section -> Subsection -> Cell "}
+                    parentSection.parentSection.parentSection == null,
+            ) { "You must comply with the structure Section -> Subsection -> Cell " }
         }
     }
 
