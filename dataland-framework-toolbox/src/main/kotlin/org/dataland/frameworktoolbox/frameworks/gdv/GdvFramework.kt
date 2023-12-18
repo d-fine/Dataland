@@ -74,6 +74,20 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
     }
 
+    private fun createRollingWindowComponentsInCategorySoziales(framework: Framework, berichtsPflicht: ComponentBase) {
+        val showIfBerichtsPflicht = DependsOnComponentValue(
+            berichtsPflicht,
+            "Yes",
+        )
+
+        framework.root.edit<ComponentGroup>("soziales") {
+            val sozialesGroup = this
+            with(GdvSozialesRollingWindowComponents) {
+                auswirkungenAufAnteilBefristerVertraegeUndFluktuation(sozialesGroup)
+            }
+        }
+    }
+
     @Suppress("LongMethod") // t0d0: fix detekt error later!
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setGroupsThatAreExpandedOnPageLoad(framework)
@@ -87,6 +101,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
 
         createRollingWindowComponentsInCategoryUmwelt(framework, berichtsPflicht)
+        createRollingWindowComponentsInCategorySoziales(framework, berichtsPflicht)
 
         val esgBerichte = framework.root
             .getOrNull<ComponentGroup>("allgemein")
@@ -171,41 +186,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         require(einnahmenAusFossilenBrennstoffen != null) {
             "The field with the label \"einnahmenAusFossilenBrennstoffen\" must exist in the " +
                 "gdv framework."
-        }
-
-        val unternehmensstrukturaenderungen = framework.root.getOrNull<ComponentGroup>("soziales")
-            ?.getOrNull<ComponentGroup>("unternehmensstrukturaenderungen")
-        require(unternehmensstrukturaenderungen != null) {
-            "The component group with the label \"unternehmensstrukturaenderungen\" must exist in the gdv framework."
-        }
-
-        val vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur = unternehmensstrukturaenderungen
-            .getOrNull<YesNoComponent>("vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur")
-        require(vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur != null) {
-            "The field with the label \"vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur\" must exist in " +
-                "the gdv framework."
-        }
-        unternehmensstrukturaenderungen.create<GdvYearlyDecimalTimeseriesDataComponent>(
-            "auswirkungenAufAnteilBefristerVertraegeUndFluktuation",
-        ) {
-            label = "Auswirkungen auf Anteil befrister Verträge und Fluktuation"
-            explanation = "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die" +
-                " letzten drei Jahre an."
-            decimalRows = mutableListOf(
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "anzahlDerBefristetenVertraege",
-                    "# der befristeten Verträge", "",
-                ),
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "fluktuation", "Fluktuation",
-                    "%",
-                ),
-            )
-            availableIf = DependsOnComponentValue(
-                vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur,
-                "Yes",
-            )
-            uploadBehaviour = GdvYearlyDecimalTimeseriesDataComponent.UploadBehaviour.ThreeYearPast
         }
 
         val sicherheitUndWeiterbildung = framework.root.getOrNull<ComponentGroup>("soziales")
