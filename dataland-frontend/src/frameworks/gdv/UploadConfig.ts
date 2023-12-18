@@ -5,7 +5,7 @@ export const gdvDataModel = [
   {
     name: "general",
     label: "General",
-    color: " ",
+    color: "",
     showIf: (): boolean => true,
     subcategories: [
       {
@@ -41,7 +41,7 @@ export const gdvDataModel = [
   {
     name: "allgemein",
     label: "Allgemein",
-    color: " ",
+    color: "",
     showIf: (): boolean => true,
     subcategories: [
       {
@@ -782,7 +782,7 @@ export const gdvDataModel = [
   {
     name: "umwelt",
     label: "Umwelt",
-    color: " ",
+    color: "",
     showIf: (): boolean => true,
     subcategories: [
       {
@@ -1234,7 +1234,7 @@ export const gdvDataModel = [
   {
     name: "soziales",
     label: "Soziales",
-    color: " ",
+    color: "",
     showIf: (): boolean => true,
     subcategories: [
       {
@@ -1589,7 +1589,7 @@ export const gdvDataModel = [
   {
     name: "unternehmensfuehrungGovernance",
     label: "Unternehmensführung/ Governance",
-    color: " ",
+    color: "",
     showIf: (): boolean => true,
     subcategories: [
       {

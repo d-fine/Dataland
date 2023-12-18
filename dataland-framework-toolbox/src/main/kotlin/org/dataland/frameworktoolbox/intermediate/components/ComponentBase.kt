@@ -8,7 +8,7 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 
 /**
@@ -34,21 +34,6 @@ open class ComponentBase(
     var explanation: String? = null
 
     /**
-     * The unit of a string component
-     */
-    var unit: String? = null
-
-    /**
-     * The unit of a string component
-     */
-    var uploadComponentName: String? = null
-
-    /**
-     * The unit of a string component
-     */
-    var required: Boolean? = null
-
-    /**
      * The dataModelGenerator allows users to overwrite the DataClass generation of this specific component instance
      */
     var dataModelGenerator: ((dataClassBuilder: DataClassBuilder) -> Unit)? = null
@@ -62,7 +47,7 @@ open class ComponentBase(
      * The uploadConfigGenerator allows users to overwrite the UploadConfig generation of
      * this specific component instance
      */
-    var uploadConfigGenerator: ((sectionUploadConfigBuilder: SectionUploadConfigBuilder) -> Unit)? = null
+    var uploadConfigGenerator: ((uploadCategoryBuilder: UploadCategoryBuilder) -> Unit)? = null
 
     /**
      * The fixtureGeneratorGenerator allows users to overwrite the FixtureGeneration generation
@@ -74,6 +59,13 @@ open class ComponentBase(
      * True iff this component is optional / accepts null values
      */
     var isNullable: Boolean = true
+
+    /**
+     * True iff this component is required (just a pointer to !isNullable for convenience)
+     */
+    var isRequired: Boolean
+        get() = !isNullable
+        set(value) { isNullable = !value }
 
     /**
      * A logical condition that decides whether this component is available / shown to users
@@ -128,7 +120,7 @@ open class ComponentBase(
      * Build this component instance into the provided upload-section configuration
      * using the default generator for this component
      */
-    open fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
+    open fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         throw NotImplementedError("This component did not implement upload config conversion.")
     }
 
@@ -142,9 +134,9 @@ open class ComponentBase(
     /**
      * Build this component instance into the provided upload-section configuration
      */
-    fun generateUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
-        return uploadConfigGenerator?.let { it(sectionUploadConfigBuilder) }
-            ?: generateDefaultUploadConfig(sectionUploadConfigBuilder)
+    fun generateUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        return uploadConfigGenerator?.let { it(uploadCategoryBuilder) }
+            ?: generateDefaultUploadConfig(uploadCategoryBuilder)
     }
 
     /**
