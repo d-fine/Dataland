@@ -168,7 +168,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "scope3", "Scope 3",
                         "tCO2-Äquiv.",
-                    ), // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+                    ),
                 )
                 availableIf = DependsOnComponentValue(
                     berichtsPflicht,
@@ -204,7 +204,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     berichtsPflicht,
                     "Yes",
                 )
-                // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
             }
         }
         componentGroupUmwelt?.edit<ComponentGroup>("energieeffizienzImmobilienanlagen") {
@@ -226,7 +225,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     berichtsPflicht,
                     "Yes",
                 )
-                // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
             }
         }
 
@@ -253,7 +251,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 availableIf = DependsOnComponentValue(
                     berichtsPflicht,
                     "Yes",
-                    // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
                 )
             }
         }
@@ -286,7 +283,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     berichtsPflicht,
                     "Yes",
                 )
-                // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
             }
         }
 
@@ -304,7 +300,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         "prozentRecycelteWerkstoffeImProduktionsprozess",
                         "% Recycelte Werkstoffe im Produktionsprozess",
                         "%",
-                    ), // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
+                    ),
                 )
                 availableIf = DependsOnComponentValue(
                     berichtsPflicht,
@@ -340,7 +336,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "Yes",
                 )
             }
-            // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
             // TODO Emanuel: Die fixtures von dem Ding sind keine vernünftigen Prozentzahlen
         }
 
@@ -382,7 +377,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                     "Yes",
                 )
             }
-            // TODO Emanuel: Das Ding sollte drei Jahre in die Vergangenheit/Zukunft gehen anstatt zwei.
         }
 
         val unternehmensstrukturaenderungen = framework.root.getOrNull<ComponentGroup>("soziales")
@@ -416,7 +410,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             availableIf = DependsOnComponentValue(
                 vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur,
                 "Yes",
-            ) // TODO nur drei Jahre rückwirkend betrachten
+            )
+            uploadBehaviour = GdvYearlyDecimalTimeseriesDataComponent.UploadBehaviour.ThreeYearPast
         }
 
         val sicherheitUndWeiterbildung = framework.root.getOrNull<ComponentGroup>("soziales")
@@ -440,7 +435,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             availableIf = DependsOnComponentValue(
                 berichtsPflicht,
                 "Yes",
-            ) // TODO nur drei Jahre rückwirkend betrachten
+            )
+            uploadBehaviour = GdvYearlyDecimalTimeseriesDataComponent.UploadBehaviour.ThreeYearPast
         }
 
         sicherheitUndWeiterbildung.create<GdvYearlyDecimalTimeseriesDataComponent>(
@@ -459,7 +455,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             availableIf = DependsOnComponentValue(
                 berichtsPflicht,
                 "Yes",
-            ) // TODO nur drei Jahre rückwirkend betrachten
+            )
             uploadBehaviour = GdvYearlyDecimalTimeseriesDataComponent.UploadBehaviour.ThreeYearPast
         }
 
@@ -494,7 +490,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             availableIf = DependsOnComponentValue(
                 berichtsPflicht,
                 "Yes",
-            ) // TODO nur drei Jahre rückwirkend betrachten
+            )
+            uploadBehaviour = GdvYearlyDecimalTimeseriesDataComponent.UploadBehaviour.ThreeYearPast
         }
     }
 

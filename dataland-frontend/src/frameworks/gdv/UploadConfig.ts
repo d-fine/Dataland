@@ -1352,7 +1352,7 @@ export const gdvDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
+            component: "GdvYearlyDecimalTimeseriesThreeYearPastDataFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
@@ -1406,7 +1406,7 @@ export const gdvDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
+            component: "GdvYearlyDecimalTimeseriesThreeYearPastDataFormField",
             required: false,
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
@@ -1437,7 +1437,7 @@ export const gdvDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
+            component: "GdvYearlyDecimalTimeseriesThreeYearPastDataFormField",
             required: false,
             showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             validation: "",
