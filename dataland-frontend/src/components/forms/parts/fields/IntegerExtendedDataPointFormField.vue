@@ -25,7 +25,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
-import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import { FormFieldPropsWithPlaceholder } from "@/components/forms/parts/fields/FormFieldProps";
 import ExtendedDataPointFormField from "@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue";
 import NumberFormField from "@/components/forms/parts/fields/NumberFormField.vue";
 import { hasDataPointProperValue } from "@/utils/DataPoint";
@@ -34,7 +34,7 @@ export default defineComponent({
   name: "IntegerExtendedDataPointFormField",
   components: { NumberFormField, ExtendedDataPointFormField, UploadFormHeader },
   props: {
-    ...BaseFormFieldProps,
+    ...FormFieldPropsWithPlaceholder,
     unit: {
       type: String,
     },
