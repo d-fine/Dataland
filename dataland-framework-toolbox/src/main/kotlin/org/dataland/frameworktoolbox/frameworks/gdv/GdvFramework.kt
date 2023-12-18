@@ -38,17 +38,50 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
     }
 
+    private fun overwriteFakeFixtureGenerationForDataDate(framework: Framework) {
+        framework.root.edit<ComponentGroup>("general") {
+            edit<ComponentGroup>("masterData") {
+                edit<DateComponent>("gueltigkeitsDatum") {
+                    fixtureGeneratorGenerator = {
+                        it.addAtomicExpression(
+                            identifier,
+                            "dataGenerator.dataDate",
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun createRollingWindowComponentsInCategoryUmwelt(framework: Framework, berichtsPflicht: ComponentBase) {
+        val showIfBerichtsPflicht = DependsOnComponentValue(
+            berichtsPflicht,
+            "Yes",
+        )
+
+        framework.root.edit<ComponentGroup>("umwelt") {
+            val umweltGroup = this
+            with(GdvUmweltRollingWindowComponents) {
+                treibhausgasBerichterstattungUndPrognosen(umweltGroup, showIfBerichtsPflicht)
+                berichterstattungEnergieverbrauch(umweltGroup, showIfBerichtsPflicht)
+            }
+        }
+    }
+
     @Suppress("LongMethod") // t0d0: fix detekt error later!
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setGroupsThatAreExpandedOnPageLoad(framework)
-
+        overwriteFakeFixtureGenerationForDataDate(framework)
         val berichtsPflicht = framework.root
             .getOrNull<ComponentGroup>("general")
             ?.getOrNull<ComponentGroup>("masterData")
             ?.getOrNull<YesNoComponent>("berichtsPflicht")
-        require(berichtsPflicht != null) {
+        requireNotNull(berichtsPflicht) {
             "The field with the label \"berichtsPflicht\" must exist in the gdv framework."
         }
+
+        createRollingWindowComponentsInCategoryUmwelt(framework, berichtsPflicht)
+
         val esgBerichte = framework.root
             .getOrNull<ComponentGroup>("allgemein")
             ?.getOrNull<ComponentGroup>("esgBerichte")
@@ -90,10 +123,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
 
         val componentGroupUmwelt: ComponentGroup? = framework.root.getOrNull<ComponentGroup>("umwelt")
-        splitHighLevelIntermediateRepresentationCustumizationPartOne(framework)
         splitHighLevelIntermediateRepresentationCustumizationPartTwo(framework, berichtsPflicht)
         splitHighLevelIntermediateRepresentationCustumizationPartThree(esgBerichte, nachhaltigkeitsberichte)
-        splitHighLevelIntermediateRepresentationCustumizationPartFour(componentGroupUmwelt, berichtsPflicht)
 
         unGlobalConceptPrinzipien.create<GdvListOfBaseDataPointComponent>(
             "richtlinienZurEinhaltungDerUngcp",
@@ -128,36 +159,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 customizeEuTaxonomieKompassAktivitaetenComponent(this)
             }
 
-
-        componentGroupUmwelt?.edit<ComponentGroup>("energieverbrauch") {
-            create<GdvYearlyDecimalTimeseriesDataComponent>(
-                "berichterstattungEnergieverbrauch",
-                "unternehmensGruppenStrategieBzglEnergieverbrauch",
-            ) {
-                label = "Berichterstattung Energieverbrauch"
-                explanation = "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren " +
-                    "Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle " +
-                    "Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an."
-                decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "energieverbrauch",
-                        "Energieverbrauch", "GWh",
-                    ),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "prozentDesVerbrauchsErneuerbarerEnergien",
-                        "% des Verbrauchs erneuerbarer Energien", "%",
-                    ),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "ggfProzentDerErneuerbarenEnergieerzeugung",
-                        "Gegebenenfalls % der erneuerbaren Energieerzeugung", "%",
-                    ),
-                )
-                availableIf = DependsOnComponentValue(
-                    berichtsPflicht,
-                    "Yes",
-                )
-            }
-        }
         componentGroupUmwelt?.edit<ComponentGroup>("energieeffizienzImmobilienanlagen") {
             create<GdvYearlyDecimalTimeseriesDataComponent>(
                 "berichterstattungEnergieverbrauchVonImmobilienvermoegen",
@@ -497,24 +498,11 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
     }
 }
 
-fun splitHighLevelIntermediateRepresentationCustumizationPartOne(framework: Framework) {
-    framework.root.edit<ComponentGroup>("general") {
-        edit<ComponentGroup>("masterData") {
-            edit<DateComponent>("gueltigkeitsDatum") {
-                fixtureGeneratorGenerator = {
-                    it.addAtomicExpression(
-                        identifier,
-                        "dataGenerator.dataDate",
-                    )
-                }
-            }
-        }
-    }
-
-}
-
-fun splitHighLevelIntermediateRepresentationCustumizationPartTwo(framework: Framework, berichtsPflicht:
-ComponentBase) {
+fun splitHighLevelIntermediateRepresentationCustumizationPartTwo(
+    framework: Framework,
+    berichtsPflicht:
+    ComponentBase,
+) {
     framework.root
         .getOrNull<ComponentGroup>("allgemein")
         ?.getOrNull<ComponentGroup>("akkreditierungen")
@@ -530,9 +518,11 @@ ComponentBase) {
         }
 }
 
-fun splitHighLevelIntermediateRepresentationCustumizationPartThree(esgBerichte: ComponentGroup, nachhaltigkeitsberichte:
-ComponentBase) {
-
+fun splitHighLevelIntermediateRepresentationCustumizationPartThree(
+    esgBerichte: ComponentGroup,
+    nachhaltigkeitsberichte:
+    ComponentBase,
+) {
     esgBerichte.create<GdvListOfBaseDataPointComponent>("aktuelleBerichte") {
         label = "Aktuelle Berichte"
         explanation = "Aktuelle Nachhaltigkeits- oder ESG-Berichte"
@@ -543,41 +533,5 @@ ComponentBase) {
             "Yes",
         )
         // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
-    }
-}
-
-fun splitHighLevelIntermediateRepresentationCustumizationPartFour(componentGroupUmwelt:
-ComponentGroup?, berichtsPflicht:ComponentBase) {
-
-    val tCo2UnitString = "tCO2-Äquiv."
-    componentGroupUmwelt?.edit<ComponentGroup>("treibhausgasemissionen") {
-        create<GdvYearlyDecimalTimeseriesDataComponent>(
-            "treibhausgasBerichterstattungUndPrognosen",
-            "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird",
-        ) {
-            label = "Treibhausgas-Berichterstattung und Prognosen"
-            explanation = "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene " +
-                    "berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen" +
-                    "# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die " +
-                    "kommenden drei Jahre an (in tCO2-Äquiv.)."
-            decimalRows = mutableListOf(
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "scope1", "Scope 1",
-                    tCo2UnitString,
-                ),
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "scope2", "Scope 2",
-                    tCo2UnitString,
-                ),
-                GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                    "scope3", "Scope 3",
-                    tCo2UnitString,
-                ),
-            )
-            availableIf = DependsOnComponentValue(
-                berichtsPflicht,
-                "Yes",
-            )
-        }
     }
 }
