@@ -27,6 +27,6 @@ export function formatYesNoValueForDatatable(value: YesNoNa | undefined | null):
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function yesNoValueGetterFactory(path: string): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    return formatYesNoValueForDatatable(getFieldValueFromFrameworkDataset(path, dataset));
+    return formatYesNoValueForDatatable(getFieldValueFromFrameworkDataset(path, dataset) as YesNoNa | null | undefined);
   };
 }

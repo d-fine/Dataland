@@ -24,7 +24,7 @@ import java.io.File
  * Definition of the Heimathafen framework
  */
 @Component
-class GdvFramework : InDevelopmentPavedRoadFramework(
+class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it should implement "PavedRoadFramework" (?)
     identifier = "gdv",
     label = "GDV/VÖB",
     explanation = "Das GDV/VÖB Framework",
