@@ -228,7 +228,6 @@ object GdvUmweltRollingWindowComponents {
                     "Yes",
                 )
             }
-            // TODO Emanuel: Die fixtures von dem Ding sind keine vernünftigen Prozentzahlen
         }
     }
 
