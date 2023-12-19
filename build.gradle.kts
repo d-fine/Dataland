@@ -109,6 +109,8 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
                 "EuTaxonomyForNonFinancialsDisplayDataModel.ts," +
+                "dataland-frontend/src/frameworks/gdv/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/gdv/UploadConfig.ts" +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts",
         )
