@@ -87,6 +87,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             with(GdvListOfBaseDataPointComponents) {
                 aktuelleBerichte(sozialesGroup)
                 weitereAkkreditierungen(sozialesGroup, showIfBerichtsPflicht)
+                richtlinienZurEinhaltungDerUngcp(sozialesGroup)
+                richtlinienZurEinhaltungDerOecdLeitsaetze(sozialesGroup)
             }
         }
     }
@@ -151,32 +153,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         require(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze != null) {
             "The field with the label \"mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze\" " +
                 "must exist in the gdv framework."
-        }
-
-        unGlobalConceptPrinzipien.create<GdvListOfBaseDataPointComponent>(
-            "richtlinienZurEinhaltungDerUngcp",
-            "erklaerungDerEinhaltungDerUngcp",
-        ) {
-            label = "Richtlinien zur Einhaltung der UNGCP"
-            explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
-                "liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht."
-            descriptionColumnHeader = "Beschreibung der Richtlinie"
-            documentColumnHeader = "Richtlinie"
-            availableIf = DependsOnComponentValue(mechanismenZurUeberwachungDerEinhaltungDerUngcp, "Yes")
-            // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
-        }
-
-        oecdLeitsaetze.create<GdvListOfBaseDataPointComponent>(
-            "richtlinienZurEinhaltungDerOecdLeitsaetze",
-            "erklaerungDerEinhaltungDerOecdLeitsaetze",
-        ) {
-            label = "Richtlinien zur Einhaltung der OECD-Leitsätze"
-            explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
-                "liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht."
-            descriptionColumnHeader = "Beschreibung der Richtlinie"
-            documentColumnHeader = "Richtlinie"
-            availableIf = DependsOnComponentValue(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze, "Yes")
-            // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
         }
 
         framework.root

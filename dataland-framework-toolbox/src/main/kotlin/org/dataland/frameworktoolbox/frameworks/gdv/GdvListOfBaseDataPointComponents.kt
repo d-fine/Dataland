@@ -9,6 +9,9 @@ import org.dataland.frameworktoolbox.intermediate.group.getOrNull
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 
+/**
+ * This object contains implementations for the list of base datapoint components of the GDV framework
+ */
 object GdvListOfBaseDataPointComponents {
 
     /**
@@ -48,6 +51,55 @@ object GdvListOfBaseDataPointComponents {
                 descriptionColumnHeader = "Beschreibung der Akkreditierung"
                 documentColumnHeader = "Akkreditierung"
                 availableIf = available
+            }
+        }
+    }
+
+    /**
+     * Creates the "Richtlinien zur Einhaltung der UNGCP" component
+     */
+    fun richtlinienZurEinhaltungDerUngcp(
+        componentGroupAllgemein: ComponentGroup,
+    ) {
+        componentGroupAllgemein.edit<ComponentGroup>("unGlobalConceptPrinzipien") {
+            val mechanismenZurUeberwachungDerEinhaltungDerUngcp =
+                getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerUngcp")
+            requireNotNull(mechanismenZurUeberwachungDerEinhaltungDerUngcp)
+            create<GdvListOfBaseDataPointComponent>(
+                "richtlinienZurEinhaltungDerUngcp",
+                "erklaerungDerEinhaltungDerUngcp",
+            ) {
+                label = "Richtlinien zur Einhaltung der UNGCP"
+                explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
+                    "liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht."
+                descriptionColumnHeader = "Beschreibung der Richtlinie"
+                documentColumnHeader = "Richtlinie"
+                availableIf = DependsOnComponentValue(mechanismenZurUeberwachungDerEinhaltungDerUngcp, "Yes")
+            }
+        }
+    }
+
+    /**
+     * Creates the "Richtlinien zur Einhaltung der OECD-Leitsätze" component
+     */
+    fun richtlinienZurEinhaltungDerOecdLeitsaetze(
+        componentGroupAllgemein: ComponentGroup
+    ) {
+        componentGroupAllgemein.edit<ComponentGroup>("oecdLeitsaetze") {
+            val mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze =
+                getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze")
+            requireNotNull(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze)
+
+            create<GdvListOfBaseDataPointComponent>(
+                "richtlinienZurEinhaltungDerOecdLeitsaetze",
+                "erklaerungDerEinhaltungDerOecdLeitsaetze",
+            ) {
+                label = "Richtlinien zur Einhaltung der OECD-Leitsätze"
+                explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
+                        "liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht."
+                descriptionColumnHeader = "Beschreibung der Richtlinie"
+                documentColumnHeader = "Richtlinie"
+                availableIf = DependsOnComponentValue(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze, "Yes")
             }
         }
     }
