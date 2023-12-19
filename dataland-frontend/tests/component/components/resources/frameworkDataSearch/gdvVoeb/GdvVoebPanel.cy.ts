@@ -23,20 +23,20 @@ const configForGdvVoebPanelWithOneRollingWindow: MLDTConfig<GdvData> = [
     type: "cell",
     label: "Treibhausgas-Berichterstattung und Prognosen",
     explanation:
-        "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert?" +
-        " Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr," +
-        " die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
+      "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert?" +
+      " Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr," +
+      " die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
     shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
     valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-        formatGdvYearlyDecimalTimeseriesDataForTable(
-            dataset.umwelt?.treibhausgasemissionen?.treibhausgasBerichterstattungUndPrognosen,
-            {
-              scope1: { label: "Scope 1", unitSuffix: "tCO2-Äquiv." },
-              scope2: { label: "Scope 2", unitSuffix: "tCO2-Äquiv." },
-              scope3: { label: "Scope 3", unitSuffix: "tCO2-Äquiv." },
-            },
-            "Treibhausgas-Berichterstattung und Prognosen",
-        ),
+      formatGdvYearlyDecimalTimeseriesDataForTable(
+        dataset.umwelt?.treibhausgasemissionen?.treibhausgasBerichterstattungUndPrognosen,
+        {
+          scope1: { label: "Scope 1", unitSuffix: "tCO2-Äquiv." },
+          scope2: { label: "Scope 2", unitSuffix: "tCO2-Äquiv." },
+          scope3: { label: "Scope 3", unitSuffix: "tCO2-Äquiv." },
+        },
+        "Treibhausgas-Berichterstattung und Prognosen",
+      ),
   },
 ];
 
@@ -95,15 +95,9 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     const modalDatasets =
       preparedFixture.t.umwelt?.treibhausgasemissionen?.treibhausgasBerichterstattungUndPrognosen?.yearlyData;
     for (const dataSetOfOneYear in modalDatasets) {
-      cy.get("div").contains(
-        formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear].scope1),
-      );
-      cy.get("div").contains(
-        formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear].scope2),
-      );
-      cy.get("div").contains(
-        formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear].scope3),
-      );
+      cy.get("div").contains(formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear].scope1));
+      cy.get("div").contains(formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear].scope2));
+      cy.get("div").contains(formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear].scope3));
     }
   });
 
