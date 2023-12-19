@@ -10,11 +10,12 @@ import javax.lang.model.SourceVersion
 import kotlin.io.path.div
 
 /**
- * A DataClassBuilder is an in-memory Representation of a Kotlin-DataClass that
+ * A EnumBuilder is an in-memory Representation of a Kotlin-Enum that
  * supports code-generation.
- * @param name the name of the DataClass
- * @param parentPackage the package in which the DataClass resides
- * @param comment a JavaDoc comment for the class
+ * @param name the name of the enum
+ * @param parentPackage the package in which the enum resides
+ * @param comment a JavaDoc comment for the enum
+ * @param options the possible values the enum can take
  */
 data class EnumBuilder(
     override val name: String,
@@ -29,7 +30,7 @@ data class EnumBuilder(
         get() = parentPackage.fullyQualifiedName + "." + name
 
     /**
-     * Create a type-reference for this DataClass
+     * Create a type-reference for this enum
      * @param nullable true iff the reference should allow null values
      */
     fun getTypeReference(nullable: Boolean): TypeReference {

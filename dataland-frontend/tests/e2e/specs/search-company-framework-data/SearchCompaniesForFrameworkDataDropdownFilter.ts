@@ -61,9 +61,9 @@ describe("As a user, I expect the search functionality on the /companies page to
       .get("div.p-multiselect-panel")
       .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials)})`)
       .click();
-      verifySearchResultTableExists();
-      cy.get('.p-multiselect-items-wrapper').scrollTo('bottom');
-      cy.url()
+    verifySearchResultTableExists();
+    cy.get(".p-multiselect-items-wrapper").scrollTo("bottom");
+    cy.url()
       .should("eq", getBaseUrl() + "/companies")
       .get("div.p-multiselect-panel")
       .find(`li.p-highlight:contains(${humanizeStringOrNumber(DataTypeEnum.Sfdr)})`)

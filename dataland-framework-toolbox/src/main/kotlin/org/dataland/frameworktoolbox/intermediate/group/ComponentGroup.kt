@@ -4,12 +4,11 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.LabelBadgeColor as LabelBadgeColorUpload
 
 /**
  * A collection of components (i.e., a section or subsection).
@@ -21,7 +20,7 @@ class ComponentGroup(
 ) : ComponentBase(identifier, parent), FieldNodeParent, ComponentGroupApi by componentGroupApi {
 
     var viewPageLabelBadgeColor: LabelBadgeColor? = null
-    var uploadPageLabelBadgeColor: LabelBadgeColorUpload? = null
+    var uploadPageLabelBadgeColor: LabelBadgeColor? = null
     var viewPageExpandOnPageLoad: Boolean = false
 
     override val children: Sequence<ComponentBase> by componentGroupApi::children
@@ -74,18 +73,16 @@ class ComponentGroup(
         }
     }
 
-    override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
+    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         val localLabel = label
         require(!localLabel.isNullOrBlank()) {
             "You must specify a label for the group $identifier to generate a view configuration"
         }
-        val containerSection = sectionUploadConfigBuilder.addSection(
+        val containerSection = uploadCategoryBuilder.addSubcategory(
             identifier = identifier,
             label = localLabel,
             labelBadgeColor = uploadPageLabelBadgeColor,
-            expandOnPageLoad = viewPageExpandOnPageLoad,
-            shouldDisplay = org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda.TRUE,
-            subcategory = true,
+            shouldDisplay = FrameworkBooleanLambda.TRUE,
         )
 
         children.forEach {

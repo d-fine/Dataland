@@ -30,6 +30,7 @@ abstract class PavedRoadFramework(
     val label: String,
     val explanation: String,
     val frameworkTemplateCsvFile: File,
+    val enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
 ) {
     val framework = Framework(
         identifier = identifier,
@@ -158,6 +159,48 @@ abstract class PavedRoadFramework(
         // Empty as it's just a customization endpoint
     }
 
+    private fun compileDataModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.DataModel)) {
+            return
+        }
+        val dataModel = generateDataModel(framework)
+        customizeDataModel(dataModel)
+
+        @Suppress("TooGenericExceptionCaught")
+        try {
+            dataModel.build(into = datalandProject)
+        } catch (ex: Exception) {
+            logger.error("Could not build framework data-model!", ex)
+        }
+    }
+
+    private fun compileViewModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.ViewPage)) {
+            return
+        }
+        val viewConfig = generateViewModel(framework)
+        customizeViewModel(viewConfig)
+        viewConfig.build(into = datalandProject)
+    }
+
+    private fun compileFixtureGenerator(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.FakeFixtures)) {
+            return
+        }
+        val fixtureGenerator = generateFakeFixtureGenerator(framework)
+        customizeFixtureGenerator(fixtureGenerator)
+        fixtureGenerator.build(into = datalandProject)
+    }
+
+    private fun compileUploadModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.UploadPage)) {
+            return
+        }
+        val uploadConfig = generateUploadModel(framework)
+        customizeUploadModel(uploadConfig)
+        uploadConfig.build(into = datalandProject)
+    }
+
     /**
      * Compiles a framework following the template and integrates it into the dataland repository
      */
@@ -177,21 +220,10 @@ abstract class PavedRoadFramework(
 
         customizeHighLevelIntermediateRepresentation(frameworkIntermediateRepresentation)
 
-        val dataModel = generateDataModel(framework)
-        customizeDataModel(dataModel)
-        dataModel.build(into = datalandProject)
-
-        val viewConfig = generateViewModel(framework)
-        customizeViewModel(viewConfig)
-        viewConfig.build(into = datalandProject)
-
-        val uploadConfig = generateUploadModel(framework)
-        customizeUploadModel(uploadConfig)
-        uploadConfig.build(into = datalandProject)
-
-        val fixtureGenerator = generateFakeFixtureGenerator(framework)
-        customizeFixtureGenerator(fixtureGenerator)
-        fixtureGenerator.build(into = datalandProject)
+        compileDataModel(datalandProject)
+        compileViewModel(datalandProject)
+        compileUploadModel(datalandProject)
+        compileFixtureGenerator(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
         diagnostics.finalizeDiagnosticStream()

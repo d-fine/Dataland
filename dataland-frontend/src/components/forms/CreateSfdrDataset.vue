@@ -142,6 +142,7 @@ import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/Yes
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
+import { getFilledKpis } from "@/utils/DataPoint";
 
 const referenceableReportsFieldId = "referenceableReports";
 
@@ -207,6 +208,7 @@ export default defineComponent({
       checkCustomInputs,
       referencedReportsForPrefill: {} as { [key: string]: CompanyReport },
       climateSectorsForPrefill: [] as Array<string>,
+      listOfFilledKpis: [] as Array<string>,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
     };
@@ -261,6 +263,7 @@ export default defineComponent({
 
       const dataResponse = await sfdrDataControllerApi.getFrameworkData(dataId);
       const sfdrResponseData = dataResponse.data;
+      this.listOfFilledKpis = getFilledKpis(sfdrResponseData.data);
       this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};
       this.climateSectorsForPrefill = sfdrResponseData?.data?.environmental?.energyPerformance
         ?.applicableHighImpactClimateSectors
@@ -346,6 +349,9 @@ export default defineComponent({
       }),
       climateSectorsForPrefill: computed(() => {
         return this.climateSectorsForPrefill;
+      }),
+      listOfFilledKpis: computed(() => {
+        return this.listOfFilledKpis;
       }),
     };
   },

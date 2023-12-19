@@ -5,6 +5,7 @@
       :description="description"
       :label="label"
       :required="required"
+      :options="HumanizedYesNoNa"
       @field-specific-documents-updated="fieldSpecificDocumentsUpdated"
     >
       <YesNoNaFormField
@@ -26,6 +27,7 @@ import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldPro
 import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import YesNoNaFormField from "@/components/forms/parts/fields/YesNoNaFormField.vue";
+import { HumanizedYesNoNa } from "@/utils/YesNoNa";
 
 export default defineComponent({
   name: "YesNoNaBaseDataPointFormField",
@@ -33,6 +35,11 @@ export default defineComponent({
   inheritAttrs: false,
   props: { ...BaseFormFieldProps },
   emits: ["fieldSpecificDocumentsUpdated"],
+  data() {
+    return {
+      HumanizedYesNoNa,
+    };
+  },
   methods: {
     /**
      * Emits event that the selected document changed

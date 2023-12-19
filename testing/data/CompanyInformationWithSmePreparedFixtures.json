@@ -2,54 +2,49 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Dickensmouth",
-			"headquartersPostalCode": "12895",
-			"sector": "relationships",
+			"headquarters": "South Brown",
+			"headquartersPostalCode": "68362-2373",
+			"sector": "e-commerce",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"As5XhePqoYdSVKuSfkLl"
+				],
 				"Isin": [
-					"RrlOyUd7QezK",
-					"5EQF3oMSgo7l"
+					"jCKLf58VrLzP"
 				],
 				"PermId": [
-					"pC0okVa7Ng"
+					"znVixn2dLy"
 				],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"JQtMkrQFT"
-				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"dXu6HK3Vh4qZlYy"
+				]
 			},
-			"countryCode": "BD",
-			"companyAlternativeNames": [
-				"Considine Inc",
-				"Marks and Sons",
-				"Schaefer, Walsh and Smitham"
-			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://juvenile-appreciation.org",
+			"countryCode": "ET",
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": "https://elderly-fillet.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"07.1",
-						"25.94",
-						"32.11",
-						"46.66",
-						"98.20"
+						"01.25",
+						"43.39",
+						"85.41"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Buckridge Forges 9396",
-						"postalCode": "37282-8357",
-						"city": "Hankfort",
-						"state": "Utah",
-						"country": "GG"
+						"streetAndHouseNumber": "E Bridge Street 990",
+						"postalCode": "59471-9292",
+						"city": "Schummworth",
+						"state": "Mississippi",
+						"country": "AT"
 					},
-					"numberOfEmployees": 1149,
-					"fiscalYearStart": "2024-05-23"
+					"numberOfEmployees": 3559,
+					"fiscalYearStart": "2024-06-25"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -61,40 +56,53 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Emard, Lockman and Schuppe",
+							"nameOfProductionSite": "Swaniawski - Turner",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Amelia Flats 3103",
-								"postalCode": "71157-2999",
-								"city": "Ernserboro",
-								"state": "Ohio",
-								"country": "MO"
+								"streetAndHouseNumber": "Elda Route 474",
+								"postalCode": "78018",
+								"city": "Daryltown",
+								"state": "Wisconsin",
+								"country": "CM"
 							},
-							"shareOfTotalRevenueInPercent": 13.37
+							"shareOfTotalRevenueInPercent": 17.24
 						},
 						{
-							"nameOfProductionSite": "Spencer, Fahey and Heaney",
+							"nameOfProductionSite": "Will Group",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kohler Ways 296",
-								"postalCode": "41445",
-								"city": "Fort Lauderdale",
-								"state": "New York",
-								"country": "OM"
+								"streetAndHouseNumber": "Cristian Pine 10968",
+								"postalCode": "88802-9649",
+								"city": "North Evert",
+								"state": "New Jersey",
+								"country": "BE"
+							},
+							"shareOfTotalRevenueInPercent": 78.88
+						},
+						{
+							"nameOfProductionSite": "Kuhn LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "9th Street 278",
+								"postalCode": "41755-7361",
+								"city": "Weston",
+								"state": "New Mexico",
+								"country": "SZ"
 							},
 							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Swift Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Lucy Mountain 31362",
+								"postalCode": null,
+								"city": "McDermottstead",
+								"state": "Maine",
+								"country": "SX"
+							},
+							"shareOfTotalRevenueInPercent": 69.57
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Tasty Cotton Salad",
-							"shareOfTotalRevenueInPercent": 71.93
-						},
-						{
-							"name": "Licensed Soft Ball",
-							"shareOfTotalRevenueInPercent": 0.03
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
@@ -102,20 +110,21 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1380,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 504,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMWh": 1151,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 93,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 25765702,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 35612402,
 					"naturalHazardsCovered": [
 						"Flooding",
-						"EarthQuake"
+						"Wind",
+						"Hail"
 					]
 				}
 			}
@@ -125,38 +134,44 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "West Leopoldstad",
-			"headquartersPostalCode": "12821",
-			"sector": null,
+			"headquarters": "West Retha",
+			"headquartersPostalCode": null,
+			"sector": "markets",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"Hr2tCVPmyYGvJcVuguXw"
+				],
 				"Isin": [
-					"RSJdMYL8fPPr"
+					"hmK3yobfmabD",
+					"dyVxpzMfaIsm"
 				],
-				"PermId": [],
+				"PermId": [
+					"qRTdyTnaqb"
+				],
 				"Ticker": [],
-				"Duns": [
-					"1MnVQsasD"
+				"Duns": [],
+				"VatNumber": [
+					"tR27zLs3P"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"7mEV99gMBMdBYav"
+				]
 			},
-			"countryCode": "TH",
+			"countryCode": "RO",
 			"companyAlternativeNames": [
-				"Hilll LLC",
-				"Kovacek - Dach",
-				"Prohaska Group",
-				"Stehr - Harris"
+				"Gleason, Smith and Corwin",
+				"Monahan - Collier",
+				"Skiles Group"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://warm-view.name/",
+			"companyLegalForm": null,
+			"website": "https://opulent-mayor.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"64.91"
+						"66.30"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -165,62 +180,45 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 6576,
-					"fiscalYearStart": "2024-11-24"
+					"numberOfEmployees": 8713,
+					"fiscalYearStart": "2024-10-14"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 76695307,
-					"operatingCostInEUR": 21993593,
-					"capitalAssetsInEUR": 1869968
+					"revenueInEUR": 99242997,
+					"operatingCostInEUR": 46075963,
+					"capitalAssetsInEUR": 389972
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Bruen, Wyman and Raynor",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "89754-0798",
-								"city": "Richland",
-								"state": "Texas",
-								"country": "LT"
-							},
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Elegant Steel Bike",
-							"shareOfTotalRevenueInPercent": 33.27
-						},
-						{
-							"name": "Luxurious Metal Table",
-							"shareOfTotalRevenueInPercent": 72.53
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
+					"powerConsumptionInMWh": 1982,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 322,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 22133109,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 43531257,
 					"naturalHazardsCovered": [
-						"Avalanche"
+						"Hail",
+						"Avalanche",
+						"EarthQuake",
+						"Flooding",
+						"Wind"
 					]
 				}
 			}
@@ -230,42 +228,44 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Kennethhaven",
-			"headquartersPostalCode": null,
-			"sector": "schemas",
+			"headquarters": "Bednarside",
+			"headquartersPostalCode": "83852",
+			"sector": "systems",
 			"identifiers": {
 				"Lei": [
-					"S1xNCg04v7Yy8sTYwErv"
+					"1ro9ErcR1VRMSGLQrHX8"
 				],
 				"Isin": [
-					"VSqDyLyM6CZE"
+					"0Tz36KNSqAmw",
+					"61c3iEKwevzY"
 				],
-				"PermId": [],
+				"PermId": [
+					"4EWWrbS7Z0"
+				],
 				"Ticker": [
-					"SNYAFvI"
+					"CcmfkC0"
 				],
-				"Duns": [],
-				"VatNumber": [
-					"4RmstDPbH"
+				"Duns": [
+					"j4G5Omx2E"
 				],
-				"CompanyRegistrationNumber": [
-					"vjZ6bdmT32FLBag"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "CZ",
+			"countryCode": "TD",
 			"companyAlternativeNames": [
-				"Fritsch, Senger and Streich",
-				"Leuschke and Sons"
+				"Macejkovic, Mueller and Stokes",
+				"Muller, Orn and Bashirian",
+				"Wisoky, Emmerich and Jast"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://jealous-fen.org/",
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://sugary-invasion.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"46.11"
+						"U"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -274,63 +274,95 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 8449,
-					"fiscalYearStart": "2024-03-02"
+					"numberOfEmployees": 8911,
+					"fiscalYearStart": "2024-10-30"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 51832478,
-					"operatingCostInEUR": 63443785,
-					"capitalAssetsInEUR": 19338318
+					"revenueInEUR": null,
+					"operatingCostInEUR": null,
+					"capitalAssetsInEUR": 45404923
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Schmitt - Olson",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Rebecca Mountains 338",
+								"postalCode": "08293",
+								"city": "Baileeton",
+								"state": null,
+								"country": "BJ"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Bernier, Gerlach and Conroy",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Alexa Plain 9584",
+								"postalCode": "52405",
+								"city": "Schuppehaven",
+								"state": null,
+								"country": "SJ"
+							},
+							"shareOfTotalRevenueInPercent": 25.6
+						},
+						{
+							"nameOfProductionSite": "Sanford - Bradtke",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "The Meadows 93389",
+								"postalCode": null,
+								"city": "Ryanboro",
+								"state": "Washington",
+								"country": "MA"
+							},
+							"shareOfTotalRevenueInPercent": 40.84
+						},
+						{
+							"nameOfProductionSite": "Homenick and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Anissa Harbor 86340",
+								"postalCode": null,
+								"city": "Modesto",
+								"state": "New Jersey",
+								"country": "TT"
+							},
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Licensed Bronze Bacon",
-							"shareOfTotalRevenueInPercent": null
+							"name": "Modern Plastic Towels",
+							"shareOfTotalRevenueInPercent": 63.8
 						},
 						{
-							"name": "Gorgeous Cotton Pizza",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Refined Bronze Keyboard",
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"name": "Small Wooden Chips",
-							"shareOfTotalRevenueInPercent": 14.03
+							"name": "Generic Fresh Chicken",
+							"shareOfTotalRevenueInPercent": 83.8
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 557,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 874,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMWh": 44,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 92,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazards": 19505155,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 24988837,
 					"naturalHazardsCovered": [
-						"Hail",
-						"Flooding",
-						"EarthQuake",
-						"Snow",
-						"Avalanche",
-						"Wind"
+						"EarthQuake"
 					]
 				}
 			}

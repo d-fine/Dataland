@@ -9,4 +9,4 @@ package org.dataland.frameworktoolbox.specific.uploadconfig.functional
 open class FrameworkUploadBase(
         var body: String,
         var imports: Set<String>,
-) {}
+)

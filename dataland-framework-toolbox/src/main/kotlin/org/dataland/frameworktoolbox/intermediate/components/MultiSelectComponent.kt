@@ -6,7 +6,7 @@ import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOp
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
@@ -54,15 +54,15 @@ open class MultiSelectComponent(
         )
     }
 
-    override fun generateDefaultUploadConfig(sectionUploadConfigBuilder: SectionUploadConfigBuilder) {
-        sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
+    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        uploadCategoryBuilder.addStandardUploadConfigCell(
             frameworkUploadOptions = FrameworkUploadOptions(
-                    body = "MSCBODY",
-                    imports = setOf("MSCIMPORTS")
-                ),
-            uploadComponentName = "MultiSelectFormField",
-            options = options,
+                body = "MSCBODY",
+                imports = setOf("MSCIMPORTS"),
+            ),
             component = this,
+            uploadComponentName = "MultiSelectFormField",
+            options = this.options,
         )
     }
 

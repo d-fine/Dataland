@@ -15,13 +15,13 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
   {
     type: "section",
     label: "General",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "Master Data",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {

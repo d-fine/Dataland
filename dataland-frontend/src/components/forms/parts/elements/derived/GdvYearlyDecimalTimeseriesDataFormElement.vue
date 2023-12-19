@@ -18,9 +18,9 @@
             <div class="flex gap-2">
               <div class="flex flex-column justify-content-between" v-for="year of group.yearsInOrder" :key="year">
                 <FormKit type="group" :name="year">
-                  <div v-for="row of options">
-                    <h6>{{ year }}</h6>
-                    <FormKit type="text" :name="row.value" />
+                  <div v-for="row of options" :key="row.value">
+                    <h6 class="mb-1">{{ year }}</h6>
+                    <FormKit type="text" :name="row.value" validation="number" />
                   </div>
                 </FormKit>
               </div>
@@ -53,13 +53,25 @@ interface YearGroup {
 }
 
 export default defineComponent({
-  name: "GdvYearlyDecimalTimeseriesDataFormField",
+  name: "GdvYearlyDecimalTimeseriesDataFormElement",
   components: { UploadFormHeader, FormKit },
   props: {
     ...DropdownOptionFormFieldProps,
     reportingPeriod: {
       type: String,
       required: false,
+    },
+    nYearsIntoFuture: {
+      type: Number,
+      required: true,
+    },
+    nYearsIntoPast: {
+      type: Number,
+      required: true,
+    },
+    showCurrentYear: {
+      type: Boolean,
+      required: true,
     },
   },
   computed: {
@@ -68,35 +80,49 @@ export default defineComponent({
       if (isNaN(parsedNumber)) return undefined;
       else return parsedNumber;
     },
+    pastGroup(): YearGroup | undefined {
+      if (!this.nYearsIntoPast || !this.numericalYearOfDataDate) return undefined;
+
+      const pastGroup: YearGroup = {
+        headerTitle: "Historische Daten",
+        color: "light-gray",
+        icon: "menu_book",
+        yearsInOrder: [],
+      };
+      for (let year = this.numericalYearOfDataDate - this.nYearsIntoPast; year < this.numericalYearOfDataDate; year++) {
+        pastGroup.yearsInOrder.push(year);
+      }
+      return pastGroup;
+    },
+    futureGroup(): YearGroup | undefined {
+      if (!this.nYearsIntoFuture || !this.numericalYearOfDataDate) return undefined;
+      const futureGroup: YearGroup = {
+        headerTitle: "Prognosen",
+        color: "light-gray",
+        icon: "lightbulb",
+        yearsInOrder: [],
+      };
+      for (
+        let year = this.numericalYearOfDataDate + 1;
+        year <= this.numericalYearOfDataDate + this.nYearsIntoFuture;
+        year++
+      ) {
+        futureGroup.yearsInOrder.push(year);
+      }
+      return futureGroup;
+    },
+    currentGroup(): YearGroup | undefined {
+      if (!this.showCurrentYear || !this.numericalYearOfDataDate) return undefined;
+      return {
+        headerTitle: "Aktuelles Jahr",
+        color: "dark-blue",
+        yearsInOrder: [this.numericalYearOfDataDate],
+      };
+    },
     groupsToDisplay(): YearGroup[] {
       if (!this.numericalYearOfDataDate) return [];
-      return [
-        {
-          headerTitle: "Historische Daten",
-          color: "light-gray",
-          icon: "menu_book",
-          yearsInOrder: [
-            this.numericalYearOfDataDate - 3,
-            this.numericalYearOfDataDate - 2,
-            this.numericalYearOfDataDate - 1,
-          ],
-        },
-        {
-          headerTitle: "Jahr der Berichterstattung",
-          color: "dark-blue",
-          yearsInOrder: [this.numericalYearOfDataDate],
-        },
-        {
-          headerTitle: "Prognostizierte Daten",
-          color: "light-gray",
-          icon: "lightbulb",
-          yearsInOrder: [
-            this.numericalYearOfDataDate + 1,
-            this.numericalYearOfDataDate + 2,
-            this.numericalYearOfDataDate + 3,
-          ],
-        },
-      ];
+      const groups = [this.pastGroup, this.currentGroup, this.futureGroup];
+      return groups.filter((it) => !!it);
     },
   },
 });

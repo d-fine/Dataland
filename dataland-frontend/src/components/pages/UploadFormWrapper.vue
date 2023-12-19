@@ -23,6 +23,7 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { DataTypeEnum } from "@clients/backend";
 
+import CreateGdvDataset from "@/components/forms/CreateGdvDataset.vue";
 import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
 import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
@@ -38,7 +39,6 @@ import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import { defineComponent } from "vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
-import CreateGdvDataset from "@/components/forms/CreateGdvDataset.vue";
 
 export default defineComponent({
   name: "UploadFormWrapper",

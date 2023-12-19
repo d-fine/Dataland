@@ -1,5 +1,5 @@
 <template>
-  <div class="form-field">
+  <div class="mb-3">
     <UploadFormHeader :label="label" :description="description" :is-required="required" />
     <div>
       <MultiSelect
@@ -24,31 +24,27 @@
             <div class="grid-2-form-cards">
               <FormKit type="group" :name="`NaceCode${selection}`">
                 <div>
-                  <UploadFormHeader
+                  <BigDecimalExtendedDataPointFormField
                     :label="`Sector ${selection} Energy Consumption`"
                     :description="`Total energy consumption for high impact climate sector ${selection}`"
-                    :is-required="false"
-                  />
-                  <BigDecimalExtendedDataPointFormField
+                    :required="false"
                     unit="GWh"
                     name="highImpactClimateSectorEnergyConsumptionInGWh"
-                    :placeholder="`Sector ${selection} Energy Consumption`"
                     validation-label="Energy Consumption"
                     inputClass="col-8"
+                    :isDataPointToggleable="false"
                   />
                 </div>
                 <div>
-                  <UploadFormHeader
+                  <BigDecimalExtendedDataPointFormField
                     :label="`Sector ${selection} Relative Energy Consumption`"
                     :description="`Energy consumption for high impact climate sector ${selection} per revenue`"
-                    :is-required="false"
-                  />
-                  <BigDecimalExtendedDataPointFormField
+                    :required="false"
                     unit="GWh / €M revenue"
                     name="highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue"
-                    :placeholder="`Sector ${selection} Relative Energy Consumption`"
                     validation-label="Relative Energy Consumption"
                     inputClass="col-8"
+                    :isDataPointToggleable="false"
                   />
                 </div>
               </FormKit>
