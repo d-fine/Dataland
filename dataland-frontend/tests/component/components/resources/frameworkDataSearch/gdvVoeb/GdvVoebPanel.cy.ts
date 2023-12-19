@@ -139,7 +139,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
       cy.get("div").contains(oneListElement.dataSource?.fileName as string);
     }
     cy.wait(100);
-    cy.get('span[data-test="Report-Download-Policy"]').should("exist");
+    cy.get('span[data-test="Report-Download-Certification"]').should("exist");
   });
 });
 
