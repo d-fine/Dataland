@@ -111,8 +111,7 @@ sonar {
                 "EuTaxonomyForNonFinancialsDisplayDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts," +
-                "dataland-frontend/src/frameworks/gdv/UploadConfig.ts," +
-                "dataland-frontend/src/frameworks/gdv/ViewConfig.ts",
+                "dataland-frontend/src/frameworks/gdv/UploadConfig.ts",
         )
         property(
             "sonar.exclusions",
@@ -120,8 +119,8 @@ sonar {
                 "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt," +
                 "dataland-frontend/src/components/general/SlideShow.vue," +
                 "dataland-frontend/src/components/resources/newLandingPage/TheQuotes.vue," +
+                "dataland-frontend/src/frameworks/gdv/ViewConfig.ts," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**",
-
         )
     }
 }
