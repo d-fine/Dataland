@@ -7,6 +7,7 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.*
 import org.dataland.frameworktoolbox.intermediate.group.*
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
+import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -52,12 +53,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
     }
 
-    private fun createRollingWindowComponentsInCategoryUmwelt(framework: Framework, berichtsPflicht: ComponentBase) {
-        val showIfBerichtsPflicht = DependsOnComponentValue(
-            berichtsPflicht,
-            "Yes",
-        )
-
+    private fun createRollingWindowComponentsInCategoryUmwelt(framework: Framework, showIfBerichtsPflicht: FrameworkConditional) {
         framework.root.edit<ComponentGroup>("umwelt") {
             val umweltGroup = this
             with(GdvUmweltRollingWindowComponents) {
@@ -73,12 +69,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
     }
 
-    private fun createRollingWindowComponentsInCategorySoziales(framework: Framework, berichtsPflicht: ComponentBase) {
-        val showIfBerichtsPflicht = DependsOnComponentValue(
-            berichtsPflicht,
-            "Yes",
-        )
-
+    private fun createRollingWindowComponentsInCategorySoziales(framework: Framework, showIfBerichtsPflicht: FrameworkConditional) {
         framework.root.edit<ComponentGroup>("soziales") {
             val sozialesGroup = this
             with(GdvSozialesRollingWindowComponents) {
@@ -86,6 +77,16 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 budgetFuerSchulungAusbildung(sozialesGroup, showIfBerichtsPflicht)
                 unfallrate(sozialesGroup, showIfBerichtsPflicht)
                 massnahmenZurVerbesserungDerEinkommensungleichheit(sozialesGroup, showIfBerichtsPflicht)
+            }
+        }
+    }
+
+    private fun createListOfBaseDatapointComponents(framework: Framework, showIfBerichtsPflicht: FrameworkConditional) {
+        framework.root.edit<ComponentGroup>("allgemein") {
+            val sozialesGroup = this
+            with(GdvListOfBaseDataPointComponents) {
+                aktuelleBerichte(sozialesGroup)
+                weitereAkkreditierungen(sozialesGroup, showIfBerichtsPflicht)
             }
         }
     }
@@ -103,8 +104,14 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             "The field with the label \"berichtsPflicht\" must exist in the gdv framework."
         }
 
-        createRollingWindowComponentsInCategoryUmwelt(framework, berichtsPflicht)
-        createRollingWindowComponentsInCategorySoziales(framework, berichtsPflicht)
+        val showIfBerichtsPflicht = DependsOnComponentValue(
+            berichtsPflicht,
+            "Yes",
+        )
+
+        createRollingWindowComponentsInCategoryUmwelt(framework, showIfBerichtsPflicht)
+        createRollingWindowComponentsInCategorySoziales(framework, showIfBerichtsPflicht)
+        createListOfBaseDatapointComponents(framework, showIfBerichtsPflicht)
 
         val esgBerichte = framework.root
             .getOrNull<ComponentGroup>("allgemein")
@@ -145,9 +152,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             "The field with the label \"mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze\" " +
                 "must exist in the gdv framework."
         }
-
-        splitHighLevelIntermediateRepresentationCustumizationPartTwo(framework, berichtsPflicht)
-        splitHighLevelIntermediateRepresentationCustumizationPartThree(esgBerichte, nachhaltigkeitsberichte)
 
         unGlobalConceptPrinzipien.create<GdvListOfBaseDataPointComponent>(
             "richtlinienZurEinhaltungDerUngcp",
@@ -236,43 +240,5 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 )
             }
         }
-    }
-}
-
-fun splitHighLevelIntermediateRepresentationCustumizationPartTwo(
-    framework: Framework,
-    berichtsPflicht:
-    ComponentBase,
-) {
-    framework.root
-        .getOrNull<ComponentGroup>("allgemein")
-        ?.getOrNull<ComponentGroup>("akkreditierungen")
-        ?.create<GdvListOfBaseDataPointComponent>(
-            "weitereAkkreditierungen",
-        ) {
-            label = "Weitere Akkreditierungen"
-            explanation = "Weitere Akkreditierungen, die noch nicht aufgeführt wurden"
-            descriptionColumnHeader = "Beschreibung der Akkreditierung"
-            documentColumnHeader = "Akkreditierung"
-            availableIf = DependsOnComponentValue(berichtsPflicht, "Yes")
-            // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
-        }
-}
-
-fun splitHighLevelIntermediateRepresentationCustumizationPartThree(
-    esgBerichte: ComponentGroup,
-    nachhaltigkeitsberichte:
-    ComponentBase,
-) {
-    esgBerichte.create<GdvListOfBaseDataPointComponent>("aktuelleBerichte") {
-        label = "Aktuelle Berichte"
-        explanation = "Aktuelle Nachhaltigkeits- oder ESG-Berichte"
-        descriptionColumnHeader = "Beschreibung des Berichts"
-        documentColumnHeader = "Bericht"
-        availableIf = DependsOnComponentValue(
-            nachhaltigkeitsberichte,
-            "Yes",
-        )
-        // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
     }
 }
