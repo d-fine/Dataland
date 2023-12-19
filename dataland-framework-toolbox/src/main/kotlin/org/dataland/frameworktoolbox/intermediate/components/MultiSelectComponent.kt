@@ -59,7 +59,7 @@ open class MultiSelectComponent(
         uploadCategoryBuilder.addStandardUploadConfigCell(
             frameworkUploadOptions = FrameworkUploadOptions(
                 body = generateTsCodeForOptions(this.options),
-                imports = setOf("//MSCIMPORTS"),
+                imports = null,
             ),
             component = this,
             uploadComponentName = "MultiSelectFormField",

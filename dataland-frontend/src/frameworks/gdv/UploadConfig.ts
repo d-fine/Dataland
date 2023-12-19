@@ -1,9 +1,7 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
 import { type GdvData } from "@clients/backend";
 //import {DropdownOption} from "@/utils/PremadeDropdownDatasets";
-//MSCIMPORTS;
 import { Activity } from "@clients/backend";
-//MSCIMPORTS;
 
 export const gdvDataModel = [
   {

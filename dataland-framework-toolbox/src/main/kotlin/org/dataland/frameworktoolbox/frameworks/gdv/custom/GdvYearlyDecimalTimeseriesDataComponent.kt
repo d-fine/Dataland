@@ -101,15 +101,6 @@ class GdvYearlyDecimalTimeseriesDataComponent(
             ),
             component = this,
             uploadComponentName = componentName,
-//            options = decimalRows.map {
-//                var rowLabel = it.label
-//                if (it.unitSuffix.isNotBlank()) {
-//                    rowLabel += " (in ${it.unitSuffix})"
-//                }
-//
-//                SelectionOption(it.identifier, rowLabel)
-//            }.toMutableSet(),
-//            component = this,
         )
     }
 

@@ -2,51 +2,56 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Town 'n' Country",
-			"headquartersPostalCode": "78825",
-			"sector": "initiatives",
+			"headquarters": "Blue Springs",
+			"headquartersPostalCode": "04445-2510",
+			"sector": "systems",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"ryVWPBswag7H"
+					"dz15rAazdjgk",
+					"m3Y8CxoX4XOl"
 				],
-				"PermId": [],
-				"Ticker": [
-					"DJLPDK1"
+				"PermId": [
+					"R0BZlhknc6"
 				],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"wyYYnIFjeJKxkgS"
-				]
+				"Ticker": [],
+				"Duns": [
+					"6Lggfi8OD"
+				],
+				"VatNumber": [
+					"Qncf1RTco"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PA",
+			"countryCode": "FR",
 			"companyAlternativeNames": [
-				"Gulgowski LLC",
-				"Harber Group",
-				"Rosenbaum LLC",
-				"Wintheiser, Kohler and Green"
+				"Barton Group",
+				"Rippin, Waelchi and Sporer",
+				"Wehner, Fay and Anderson"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://stormy-colonialism.net/",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://profitable-banking.info/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"80.1",
-						"95.1"
+						"01.24",
+						"25.50",
+						"26.5",
+						"28.3",
+						"91.04"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Timmothy Pass 883",
-						"postalCode": "13523-6994",
-						"city": "Madelynnborough",
-						"state": "Rhode Island",
-						"country": "AD"
+						"streetAndHouseNumber": "Tremblay Overpass 644",
+						"postalCode": "82800-5636",
+						"city": "Shanystead",
+						"state": "Mississippi",
+						"country": "KP"
 					},
-					"numberOfEmployees": 8162,
-					"fiscalYearStart": "2023-12-23"
+					"numberOfEmployees": 6183,
+					"fiscalYearStart": "2024-10-18"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -56,13 +61,168 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": []
+				},
+				"products": {
+					"listOfProducts": null
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+				},
+				"consumption": {
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 281,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 815309,
+					"naturalHazardsCovered": [
+						"Avalanche"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-maximum-address",
+			"headquarters": "North Jay",
+			"headquartersPostalCode": "34275-6466",
+			"sector": "e-business",
+			"identifiers": {
+				"Lei": [
+					"Q1IWtjVCojKBCa1Zeym3"
+				],
+				"Isin": [
+					"qjzCPxW3AyIw",
+					"eW3el48Sn1h2"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"uHlPnuse6aT3Kf2"
+				]
+			},
+			"countryCode": "SE",
+			"companyAlternativeNames": [
+				"Barrows, Treutel and Streich",
+				"Goyette, Zieme and Rogahn",
+				"Lind and Sons",
+				"Raynor, Bednar and Nienow"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://well-documented-institution.net",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"90.04"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": "Main Street 12",
+						"postalCode": "12345",
+						"city": "Nonexistingen",
+						"state": "Fiction",
+						"country": "Imagination"
+					},
+					"numberOfEmployees": 8386,
+					"fiscalYearStart": "2024-05-11"
+				},
+				"companyFinancials": {
+					"revenueInEUR": 76119039,
+					"operatingCostInEUR": 64140654,
+					"capitalAssetsInEUR": 12589856
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Wilkinson and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Wolff View 44761",
+								"postalCode": "08857-5420",
+								"city": "Aryannachester",
+								"state": null,
+								"country": "BJ"
+							},
+							"shareOfTotalRevenueInPercent": 45.5
+						},
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Zion Stream 469",
+								"postalCode": "46677",
+								"city": "Watsicaland",
+								"state": null,
+								"country": "TV"
+							},
+							"shareOfTotalRevenueInPercent": 73.09
+						},
+						{
+							"nameOfProductionSite": "Johnston, Schaden and Fahey",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Bailey Skyway 26541",
+								"postalCode": "17607",
+								"city": "Bashirianchester",
+								"state": "Alabama",
+								"country": "GF"
+							},
+							"shareOfTotalRevenueInPercent": 72.01
+						},
+						{
+							"nameOfProductionSite": "Conroy, Ratke and Effertz",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Castle Close 58103",
+								"postalCode": "49495",
+								"city": "South Johan",
+								"state": "Michigan",
+								"country": "VN"
+							},
+							"shareOfTotalRevenueInPercent": 34.28
+						},
+						{
+							"nameOfProductionSite": "Runolfsdottir - Parisian",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": null,
+								"city": "Icieville",
+								"state": "Delaware",
+								"country": "UZ"
+							},
+							"shareOfTotalRevenueInPercent": 55.29
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Gorgeous Metal Chair",
-							"shareOfTotalRevenueInPercent": null
+							"name": "Electronic Metal Hat",
+							"shareOfTotalRevenueInPercent": 98.15
+						},
+						{
+							"name": "Handcrafted Frozen Towels",
+							"shareOfTotalRevenueInPercent": 20.5
+						},
+						{
+							"name": "Intelligent Granite Car",
+							"shareOfTotalRevenueInPercent": 36.56
+						},
+						{
+							"name": "Modern Soft Gloves",
+							"shareOfTotalRevenueInPercent": 21.9
 						}
 					]
 				}
@@ -72,124 +232,24 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1239,
+					"powerConsumptionInMWh": 37,
 					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 917,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"energyConsumptionHeatingAndHotWaterInMWh": 767,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 5217232,
-					"naturalHazardsCovered": null
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-maximum-address",
-			"headquarters": "Port Janellechester",
-			"headquartersPostalCode": "89872-8419",
-			"sector": "convergence",
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"IQBsfrNLFbEZ"
-				],
-				"PermId": [
-					"5Ihs6YeRrS"
-				],
-				"Ticker": [
-					"rpi7Nrf"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"LXpfXMX52"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "RW",
-			"companyAlternativeNames": [
-				"Bednar Group",
-				"Luettgen, Anderson and Pollich"
-			],
-			"companyLegalForm": null,
-			"website": "https://crowded-procedure.com",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"80"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Main Street 12",
-						"postalCode": "12345",
-						"city": "Nonexistingen",
-						"state": "Fiction",
-						"country": "Imagination"
-					},
-					"numberOfEmployees": 7202,
-					"fiscalYearStart": "2024-08-15"
-				},
-				"companyFinancials": {
-					"revenueInEUR": 5334986,
-					"operatingCostInEUR": 60461008,
-					"capitalAssetsInEUR": 30249684
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Conroy LLC",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Bechtelar Corners 23847",
-								"postalCode": "49117",
-								"city": "Fort Lamar",
-								"state": "Minnesota",
-								"country": "PE"
-							},
-							"shareOfTotalRevenueInPercent": 96.87
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Electronic Fresh Tuna",
-							"shareOfTotalRevenueInPercent": 64.46
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
-				},
-				"consumption": {
-					"powerConsumptionInMWh": 236,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 41501880,
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
 						"EarthQuake",
-						"Avalanche",
-						"Snow",
+						"Hail",
 						"Wind",
-						"Hail"
+						"Flooding",
+						"Snow",
+						"Avalanche"
 					]
 				}
 			}
@@ -199,41 +259,41 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Jalynfurt",
-			"headquartersPostalCode": "79829",
-			"sector": "portals",
+			"headquarters": "Sunnyvale",
+			"headquartersPostalCode": "89284-2700",
+			"sector": null,
 			"identifiers": {
 				"Lei": [
-					"1sgaE4gTFcUmMA9tffKO"
+					"GA71pxnhhqQbRZvfNtdN"
 				],
 				"Isin": [
-					"dWVErC7GFkcG",
-					"JYkncJKIEQdp"
+					"1slvgEd0l5o2",
+					"GJgtUGjHTMj0"
 				],
-				"PermId": [
-					"VD8zuKHi7F"
-				],
+				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"GLMUcJY4f"
+					"NchrsfMYv"
 				],
-				"VatNumber": [],
+				"VatNumber": [
+					"HpvvO32ek"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "ER",
+			"countryCode": "ET",
 			"companyAlternativeNames": [
-				"Kiehn Inc",
-				"Thiel and Sons"
+				"Hagenes - Smith",
+				"Smitham Group"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://oblong-patina.name",
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"71.1"
+						"20.3"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -242,78 +302,52 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 8294,
-					"fiscalYearStart": "2024-04-13"
+					"numberOfEmployees": 4678,
+					"fiscalYearStart": "2024-05-04"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 28917260,
-					"operatingCostInEUR": 42049071,
-					"capitalAssetsInEUR": 31468583
+					"revenueInEUR": 53925649,
+					"operatingCostInEUR": 58953361,
+					"capitalAssetsInEUR": 57795626
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Roob and Sons",
+							"nameOfProductionSite": "Wiegand - Kutch",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Kub Keys 65754",
-								"postalCode": "10799",
-								"city": "New Liliana",
-								"state": null,
-								"country": "BM"
+								"streetAndHouseNumber": "Bruen Walk 36432",
+								"postalCode": null,
+								"city": "Lake Oceane",
+								"state": "Connecticut",
+								"country": "ML"
 							},
-							"shareOfTotalRevenueInPercent": 92.5
+							"shareOfTotalRevenueInPercent": 49.71
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Rustic Granite Fish",
-							"shareOfTotalRevenueInPercent": 73.71
-						},
-						{
-							"name": "Tasty Metal Table",
-							"shareOfTotalRevenueInPercent": 18.73
-						},
-						{
-							"name": "Generic Cotton Car",
-							"shareOfTotalRevenueInPercent": 11.04
-						},
-						{
-							"name": "Unbranded Concrete Keyboard",
-							"shareOfTotalRevenueInPercent": 77.77
-						},
-						{
-							"name": "Elegant Plastic Pizza",
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 646,
-					"powerFromRenewableSources": "Yes",
+					"powerConsumptionInMWh": 685,
+					"powerFromRenewableSources": "No",
 					"energyConsumptionHeatingAndHotWaterInMWh": null,
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 49208509,
-					"naturalHazardsCovered": [
-						"Hail",
-						"Snow",
-						"Avalanche",
-						"Wind"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 7384307,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
