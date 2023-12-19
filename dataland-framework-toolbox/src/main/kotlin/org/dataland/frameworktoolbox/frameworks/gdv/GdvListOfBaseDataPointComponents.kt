@@ -83,7 +83,7 @@ object GdvListOfBaseDataPointComponents {
      * Creates the "Richtlinien zur Einhaltung der OECD-Leitsätze" component
      */
     fun richtlinienZurEinhaltungDerOecdLeitsaetze(
-        componentGroupAllgemein: ComponentGroup
+        componentGroupAllgemein: ComponentGroup,
     ) {
         componentGroupAllgemein.edit<ComponentGroup>("oecdLeitsaetze") {
             val mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze =
@@ -96,7 +96,7 @@ object GdvListOfBaseDataPointComponents {
             ) {
                 label = "Richtlinien zur Einhaltung der OECD-Leitsätze"
                 explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
-                        "liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht."
+                    "liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht."
                 descriptionColumnHeader = "Beschreibung der Richtlinie"
                 documentColumnHeader = "Richtlinie"
                 availableIf = DependsOnComponentValue(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze, "Yes")

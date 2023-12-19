@@ -2,10 +2,15 @@ package org.dataland.frameworktoolbox.frameworks.gdv
 
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
-import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvListOfBaseDataPointComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
-import org.dataland.frameworktoolbox.intermediate.components.*
-import org.dataland.frameworktoolbox.intermediate.group.*
+import org.dataland.frameworktoolbox.intermediate.components.DateComponent
+import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
+import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
+import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
+import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
+import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
+import org.dataland.frameworktoolbox.intermediate.group.edit
+import org.dataland.frameworktoolbox.intermediate.group.getOrNull
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -53,7 +58,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
     }
 
-    private fun createRollingWindowComponentsInCategoryUmwelt(framework: Framework, showIfBerichtsPflicht: FrameworkConditional) {
+    private fun createRollingWindowComponentsInCategoryUmwelt(
+        framework: Framework,
+        showIfBerichtsPflicht: FrameworkConditional,
+    ) {
         framework.root.edit<ComponentGroup>("umwelt") {
             val umweltGroup = this
             with(GdvUmweltRollingWindowComponents) {
@@ -69,7 +77,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
     }
 
-    private fun createRollingWindowComponentsInCategorySoziales(framework: Framework, showIfBerichtsPflicht: FrameworkConditional) {
+    private fun createRollingWindowComponentsInCategorySoziales(
+        framework: Framework,
+        showIfBerichtsPflicht: FrameworkConditional,
+    ) {
         framework.root.edit<ComponentGroup>("soziales") {
             val sozialesGroup = this
             with(GdvSozialesRollingWindowComponents) {
@@ -93,7 +104,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
     }
 
-    @Suppress("LongMethod") // t0d0: fix detekt error later!
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setGroupsThatAreExpandedOnPageLoad(framework)
         overwriteFakeFixtureGenerationForDataDate(framework)
@@ -115,57 +125,12 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         createRollingWindowComponentsInCategorySoziales(framework, showIfBerichtsPflicht)
         createListOfBaseDatapointComponents(framework, showIfBerichtsPflicht)
 
-        val esgBerichte = framework.root
-            .getOrNull<ComponentGroup>("allgemein")
-            ?.getOrNull<ComponentGroup>("esgBerichte")
-        require(esgBerichte != null) {
-            "The component group with the label \"esgBerichte\" must exist in the gdv framework."
-        }
-
-        val nachhaltigkeitsberichte = esgBerichte.getOrNull<YesNoComponent>("nachhaltigkeitsberichte")
-        require(nachhaltigkeitsberichte != null) {
-            "The field with the label \"nachhaltigkeitsberichte\" must exist in the gdv framework."
-        }
-
-        val unGlobalConceptPrinzipien = framework.root
-            .getOrNull<ComponentGroup>("allgemein")
-            ?.getOrNull<ComponentGroup>("unGlobalConceptPrinzipien")
-        require(unGlobalConceptPrinzipien != null) {
-            "The section with the label \"unGlobalConceptPrinzipien\" must exist in the gdv framework."
-        }
-
-        val mechanismenZurUeberwachungDerEinhaltungDerUngcp =
-            unGlobalConceptPrinzipien.getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerUngcp")
-        require(mechanismenZurUeberwachungDerEinhaltungDerUngcp != null) {
-            "The field with the label \"mechanismenZurUeberwachungDerEinhaltungDerUngcp\" " +
-                "must exist in the gdv framework."
-        }
-
-        val oecdLeitsaetze = framework.root
-            .getOrNull<ComponentGroup>("allgemein")
-            ?.getOrNull<ComponentGroup>("oecdLeitsaetze")
-        require(oecdLeitsaetze != null) {
-            "The section with the label \"oecdLeitsaetze\" must exist in the gdv framework."
-        }
-
-        val mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze =
-            oecdLeitsaetze.getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze")
-        require(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze != null) {
-            "The field with the label \"mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze\" " +
-                "must exist in the gdv framework."
-        }
-
-        framework.root
-            .getOrNull<ComponentGroup>("umwelt")
-            ?.getOrNull<ComponentGroup>("taxonomie")
-            ?.edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
-                customizeEuTaxonomieKompassAktivitaetenComponent(this)
+        framework.root.edit<ComponentGroup>("umwelt") {
+            edit<ComponentGroup>("taxonomie") {
+                edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
+                    customizeEuTaxonomieKompassAktivitaetenComponent(this)
+                }
             }
-
-        val einkommensgleichheit = framework.root.getOrNull<ComponentGroup>("soziales")
-            ?.getOrNull<ComponentGroup>("einkommensgleichheit")
-        require(einkommensgleichheit != null) {
-            "The component group with the label \"einkommensgleichheit\" must exist in the gdv framework."
         }
     }
 
