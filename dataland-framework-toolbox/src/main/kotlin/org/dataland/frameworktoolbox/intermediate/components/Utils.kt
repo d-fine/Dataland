@@ -1,6 +1,5 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
-import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -31,7 +30,6 @@ fun UploadCategoryBuilder.addStandardUploadConfigCell(
     frameworkUploadOptions: FrameworkUploadOptions?,
     component: ComponentBase,
     uploadComponentName: String,
-    options: MutableSet<SelectionOption>? = null,
     unit: String? = null,
 ) {
     addCell(
@@ -44,7 +42,6 @@ fun UploadCategoryBuilder.addStandardUploadConfigCell(
         required = component.isRequired,
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
         uploadComponentName = uploadComponentName,
-        options = options,
         frameworkUploadOptions = frameworkUploadOptions,
     )
 }

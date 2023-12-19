@@ -1,6 +1,5 @@
 package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
-import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 
@@ -21,7 +20,6 @@ class CellConfigBuilder(
     var unit: String?,
     var required: Boolean,
     var uploadComponentName: String,
-    var options: MutableSet<SelectionOption>?,
     var frameworkUploadOptions: FrameworkUploadOptions?,
 ) : UploadConfigElement {
     override fun assertComplianceWithLegacyUploadPage() { /* BLANK */ }

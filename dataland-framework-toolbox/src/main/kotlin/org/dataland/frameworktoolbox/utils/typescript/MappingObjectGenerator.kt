@@ -21,3 +21,21 @@ fun generateTsCodeForSelectOptionsMappingObject(options: MutableSet<SelectionOpt
 
     return codeBuilder.toString()
 }
+
+/**
+ * This turns the options of a component into a formatted string as required by the UploadCongig.ts
+ * This default behaviour is useful for cases where custom population of the option field is not required.
+ * @param options: the options of the respective component
+ */
+fun generateTsCodeForOptions(options: MutableSet<SelectionOption>): String {
+    val optionsString = StringBuilder()
+    optionsString.append(" [\n")
+    for (option in options) {
+        optionsString.append("{ \n")
+        optionsString.append("label: \"" + option.label + "\" ,\n")
+        optionsString.append("value: \"" + option.identifier + "\" ,\n")
+        optionsString.append("}, \n")
+    }
+    optionsString.append(" ],")
+    return optionsString.toString()
+}

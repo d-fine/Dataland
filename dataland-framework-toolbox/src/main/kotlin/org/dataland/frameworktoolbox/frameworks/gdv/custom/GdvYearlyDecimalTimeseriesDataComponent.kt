@@ -12,10 +12,12 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
+import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptions
 
 /**
  * A GdvYearlyDecimalTimeseriesDataComponent is an in-memory representation of a generic field
@@ -84,17 +86,29 @@ class GdvYearlyDecimalTimeseriesDataComponent(
         }
 
         uploadCategoryBuilder.addStandardUploadConfigCell(
-            frameworkUploadOptions = null,
+            frameworkUploadOptions = FrameworkUploadOptions(
+                body = generateTsCodeForOptions(
+                    decimalRows.map {
+                        var rowLabel = it.label
+                        if (it.unitSuffix.isNotBlank()) {
+                            rowLabel += " (in ${it.unitSuffix})"
+                        }
+
+                        SelectionOption(it.identifier, rowLabel)
+                    }.toMutableSet(),
+                ),
+                imports = null,
+            ),
             component = this,
             uploadComponentName = componentName,
-            options = decimalRows.map {
-                var rowLabel = it.label
-                if (it.unitSuffix.isNotBlank()) {
-                    rowLabel += " (in ${it.unitSuffix})"
-                }
-
-                SelectionOption(it.identifier, rowLabel)
-            }.toMutableSet(),
+//            options = decimalRows.map {
+//                var rowLabel = it.label
+//                if (it.unitSuffix.isNotBlank()) {
+//                    rowLabel += " (in ${it.unitSuffix})"
+//                }
+//
+//                SelectionOption(it.identifier, rowLabel)
+//            }.toMutableSet(),
 //            component = this,
         )
     }

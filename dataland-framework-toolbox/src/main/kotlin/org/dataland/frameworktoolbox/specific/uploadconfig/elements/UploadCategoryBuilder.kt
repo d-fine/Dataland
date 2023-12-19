@@ -1,6 +1,5 @@
 package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
-import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
@@ -68,16 +67,15 @@ data class UploadCategoryBuilder(
      * Adds a new cell to this section
      */
     fun addCell(
-            identifier: String,
-            label: String,
-            explanation: String?,
-            shouldDisplay: FrameworkBooleanLambda,
-            unit: String?,
-            required: Boolean,
-            uploadComponentName: String,
-            options: MutableSet<SelectionOption>?,
-            frameworkUploadOptions: FrameworkUploadOptions?,
-            ): CellConfigBuilder {
+        identifier: String,
+        label: String,
+        explanation: String?,
+        shouldDisplay: FrameworkBooleanLambda,
+        unit: String?,
+        required: Boolean,
+        uploadComponentName: String,
+        frameworkUploadOptions: FrameworkUploadOptions?,
+    ): CellConfigBuilder {
         val newCell = CellConfigBuilder(
             parentSection = this,
             label = label,
@@ -87,8 +85,7 @@ data class UploadCategoryBuilder(
             unit = unit,
             required = required,
             uploadComponentName = uploadComponentName,
-            options = options,
-                frameworkUploadOptions = frameworkUploadOptions
+            frameworkUploadOptions = frameworkUploadOptions,
         )
         children.add(newCell)
         return newCell

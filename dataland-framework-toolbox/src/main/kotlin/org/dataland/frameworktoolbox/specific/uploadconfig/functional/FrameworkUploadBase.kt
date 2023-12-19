@@ -7,6 +7,6 @@ package org.dataland.frameworktoolbox.specific.uploadconfig.functional
  * @param imports a set of TS imports required for the operation of the lambda function
  */
 open class FrameworkUploadBase(
-        var body: String,
-        var imports: Set<String>,
+    var body: String,
+    var imports: Set<String>?,
 )

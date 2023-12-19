@@ -2,49 +2,56 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "South Brown",
-			"headquartersPostalCode": "68362-2373",
-			"sector": "e-commerce",
+			"headquarters": "West Makenzieboro",
+			"headquartersPostalCode": null,
+			"sector": "initiatives",
 			"identifiers": {
-				"Lei": [
-					"As5XhePqoYdSVKuSfkLl"
-				],
+				"Lei": [],
 				"Isin": [
-					"jCKLf58VrLzP"
+					"6vYWUc6rkIZP",
+					"KDb4IGRsukeJ"
 				],
-				"PermId": [
-					"znVixn2dLy"
+				"PermId": [],
+				"Ticker": [
+					"A0BXLWW"
 				],
-				"Ticker": [],
-				"Duns": [],
+				"Duns": [
+					"nfWeeV40N"
+				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"dXu6HK3Vh4qZlYy"
+					"fKIJ7RARip4khid"
 				]
 			},
-			"countryCode": "ET",
-			"companyAlternativeNames": [],
+			"countryCode": "KY",
+			"companyAlternativeNames": [
+				"Dooley and Sons",
+				"Glover, Kutch and Runolfsdottir",
+				"Jerde, Fritsch and Casper",
+				"Leannon and Sons"
+			],
 			"companyLegalForm": null,
-			"website": "https://elderly-fillet.name",
+			"website": "https://wise-confusion.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.25",
-						"43.39",
-						"85.41"
+						"45.3",
+						"46.17",
+						"80",
+						"88.9"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "E Bridge Street 990",
-						"postalCode": "59471-9292",
-						"city": "Schummworth",
-						"state": "Mississippi",
-						"country": "AT"
+						"streetAndHouseNumber": "Hessel Trace 5609",
+						"postalCode": "38478",
+						"city": "Raymondchester",
+						"state": "Georgia",
+						"country": "MT"
 					},
-					"numberOfEmployees": 3559,
-					"fiscalYearStart": "2024-06-25"
+					"numberOfEmployees": 6627,
+					"fiscalYearStart": "2024-09-01"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -54,52 +61,7 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Swaniawski - Turner",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Elda Route 474",
-								"postalCode": "78018",
-								"city": "Daryltown",
-								"state": "Wisconsin",
-								"country": "CM"
-							},
-							"shareOfTotalRevenueInPercent": 17.24
-						},
-						{
-							"nameOfProductionSite": "Will Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Cristian Pine 10968",
-								"postalCode": "88802-9649",
-								"city": "North Evert",
-								"state": "New Jersey",
-								"country": "BE"
-							},
-							"shareOfTotalRevenueInPercent": 78.88
-						},
-						{
-							"nameOfProductionSite": "Kuhn LLC",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "9th Street 278",
-								"postalCode": "41755-7361",
-								"city": "Weston",
-								"state": "New Mexico",
-								"country": "SZ"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Swift Group",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Lucy Mountain 31362",
-								"postalCode": null,
-								"city": "McDermottstead",
-								"state": "Maine",
-								"country": "SX"
-							},
-							"shareOfTotalRevenueInPercent": 69.57
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
 					"listOfProducts": null
@@ -110,22 +72,18 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1151,
+					"powerConsumptionInMWh": 188,
 					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 93,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"energyConsumptionHeatingAndHotWaterInMWh": 134,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 35612402,
-					"naturalHazardsCovered": [
-						"Flooding",
-						"Wind",
-						"Hail"
-					]
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 9426745,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -134,44 +92,39 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "West Retha",
-			"headquartersPostalCode": null,
-			"sector": "markets",
+			"headquarters": "East Kristina",
+			"headquartersPostalCode": "01460",
+			"sector": "web services",
 			"identifiers": {
 				"Lei": [
-					"Hr2tCVPmyYGvJcVuguXw"
+					"QSFLMoW1LVIvpArwFeYG"
 				],
 				"Isin": [
-					"hmK3yobfmabD",
-					"dyVxpzMfaIsm"
+					"UyGPsZMlX0kd"
 				],
 				"PermId": [
-					"qRTdyTnaqb"
+					"xyRgRRv6qK"
 				],
 				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"tR27zLs3P"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"7mEV99gMBMdBYav"
+					"HzMKszA4PIMqRsp"
 				]
 			},
-			"countryCode": "RO",
+			"countryCode": "AO",
 			"companyAlternativeNames": [
-				"Gleason, Smith and Corwin",
-				"Monahan - Collier",
-				"Skiles Group"
+				"Rogahn, Mayer and Gibson"
 			],
-			"companyLegalForm": null,
-			"website": "https://opulent-mayor.net/",
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://attentive-niche.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"66.30"
+						"10.61"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -180,18 +133,63 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 8713,
-					"fiscalYearStart": "2024-10-14"
+					"numberOfEmployees": 1657,
+					"fiscalYearStart": "2024-04-02"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 99242997,
-					"operatingCostInEUR": 46075963,
-					"capitalAssetsInEUR": 389972
+					"revenueInEUR": 47891469,
+					"operatingCostInEUR": 6780795,
+					"capitalAssetsInEUR": 68999524
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Conn, Cruickshank and Altenwerth",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Stiedemann Heights 7887",
+								"postalCode": "25048",
+								"city": "Fort Josefaport",
+								"state": "Wisconsin",
+								"country": "HK"
+							},
+							"shareOfTotalRevenueInPercent": 69.74
+						},
+						{
+							"nameOfProductionSite": "Dibbert - Balistreri",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "82083-9021",
+								"city": "West Junius",
+								"state": "Delaware",
+								"country": "RS"
+							},
+							"shareOfTotalRevenueInPercent": 52.09
+						},
+						{
+							"nameOfProductionSite": "Blick LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": null,
+								"city": "New Americashire",
+								"state": "Georgia",
+								"country": "MO"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Pouros - Wisoky",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "46912",
+								"city": "Lake Norbertbury",
+								"state": null,
+								"country": "BG"
+							},
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": []
@@ -202,24 +200,18 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1982,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 322,
+					"powerConsumptionInMWh": 782,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 707,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 43531257,
-					"naturalHazardsCovered": [
-						"Hail",
-						"Avalanche",
-						"EarthQuake",
-						"Flooding",
-						"Wind"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 5285538,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -228,44 +220,37 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Bednarside",
-			"headquartersPostalCode": "83852",
-			"sector": "systems",
+			"headquarters": "Keller",
+			"headquartersPostalCode": "10393-1294",
+			"sector": "mindshare",
 			"identifiers": {
 				"Lei": [
-					"1ro9ErcR1VRMSGLQrHX8"
+					"7HynwT6uz6nfYizA3PFe"
 				],
 				"Isin": [
-					"0Tz36KNSqAmw",
-					"61c3iEKwevzY"
+					"VFTtmippDi3O"
 				],
-				"PermId": [
-					"4EWWrbS7Z0"
-				],
+				"PermId": [],
 				"Ticker": [
-					"CcmfkC0"
+					"voZZRut"
 				],
-				"Duns": [
-					"j4G5Omx2E"
-				],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "TD",
+			"countryCode": "SX",
 			"companyAlternativeNames": [
-				"Macejkovic, Mueller and Stokes",
-				"Muller, Orn and Bashirian",
-				"Wisoky, Emmerich and Jast"
+				"Torp Group"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://sugary-invasion.info/",
+			"companyLegalForm": "GmbH",
+			"website": "https://guilty-calibre.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"U"
+						"80.10"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -274,95 +259,44 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 8911,
-					"fiscalYearStart": "2024-10-30"
+					"numberOfEmployees": 2266,
+					"fiscalYearStart": "2024-02-25"
 				},
 				"companyFinancials": {
 					"revenueInEUR": null,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 45404923
+					"operatingCostInEUR": 68334675,
+					"capitalAssetsInEUR": null
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Schmitt - Olson",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Rebecca Mountains 338",
-								"postalCode": "08293",
-								"city": "Baileeton",
-								"state": null,
-								"country": "BJ"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Bernier, Gerlach and Conroy",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Alexa Plain 9584",
-								"postalCode": "52405",
-								"city": "Schuppehaven",
-								"state": null,
-								"country": "SJ"
-							},
-							"shareOfTotalRevenueInPercent": 25.6
-						},
-						{
-							"nameOfProductionSite": "Sanford - Bradtke",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "The Meadows 93389",
-								"postalCode": null,
-								"city": "Ryanboro",
-								"state": "Washington",
-								"country": "MA"
-							},
-							"shareOfTotalRevenueInPercent": 40.84
-						},
-						{
-							"nameOfProductionSite": "Homenick and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Anissa Harbor 86340",
-								"postalCode": null,
-								"city": "Modesto",
-								"state": "New Jersey",
-								"country": "TT"
-							},
-							"shareOfTotalRevenueInPercent": null
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Modern Plastic Towels",
-							"shareOfTotalRevenueInPercent": 63.8
-						},
-						{
-							"name": "Generic Fresh Chicken",
-							"shareOfTotalRevenueInPercent": 83.8
-						}
-					]
+					"listOfProducts": null
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 44,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 92,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerConsumptionInMWh": 1023,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 986,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 24988837,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"EarthQuake"
+						"EarthQuake",
+						"Snow",
+						"Wind",
+						"Hail"
 					]
 				}
 			}

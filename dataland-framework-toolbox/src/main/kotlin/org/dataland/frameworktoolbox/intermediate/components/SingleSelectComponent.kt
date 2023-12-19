@@ -5,10 +5,12 @@ import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOp
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
+import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptions
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
 
 /**
@@ -60,10 +62,12 @@ open class SingleSelectComponent(
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         uploadCategoryBuilder.addStandardUploadConfigCell(
-            frameworkUploadOptions = null,
+            frameworkUploadOptions = FrameworkUploadOptions(
+                body = generateTsCodeForOptions(this.options),
+                imports = null,
+            ),
             component = this,
             uploadComponentName = "SingleSelectFormField",
-            options = options,
         )
     }
 

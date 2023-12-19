@@ -4,12 +4,12 @@ import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
 import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvListOfBaseDataPointComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
-import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
-import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.DateComponent
 import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
+import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
+import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
@@ -240,7 +240,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
                 sectionUploadConfigBuilder.addStandardUploadConfigCell(
                     frameworkUploadOptions = FrameworkUploadOptions(
-                        body = "Object.values(Activity).map(it) => {value: it.value, label: it.label}",
+                        body = "Object.values(Activity),",
                         imports = setOf("import {Activity} from \"@clients/backend\" "),
                     ),
                     component,
@@ -252,6 +252,9 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
     }
 }
 
+/**
+ * TODO INCLUDE DOCS HERE
+ */
 fun splitHighLevelIntermediateRepresentationCustumizationPartTwo(
     framework: Framework,
     berichtsPflicht:
@@ -272,6 +275,9 @@ fun splitHighLevelIntermediateRepresentationCustumizationPartTwo(
         }
 }
 
+/**
+ * TODO INCLUDE DOCS HERE
+ */
 fun splitHighLevelIntermediateRepresentationCustumizationPartThree(
     esgBerichte: ComponentGroup,
     nachhaltigkeitsberichte:

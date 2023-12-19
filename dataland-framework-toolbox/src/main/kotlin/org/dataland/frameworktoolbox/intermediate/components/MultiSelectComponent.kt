@@ -11,6 +11,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkU
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptions
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
 
 /**
@@ -57,12 +58,11 @@ open class MultiSelectComponent(
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         uploadCategoryBuilder.addStandardUploadConfigCell(
             frameworkUploadOptions = FrameworkUploadOptions(
-                body = "MSCBODY",
-                imports = setOf("MSCIMPORTS"),
+                body = generateTsCodeForOptions(this.options),
+                imports = setOf("//MSCIMPORTS"),
             ),
             component = this,
             uploadComponentName = "MultiSelectFormField",
-            options = this.options,
         )
     }
 
