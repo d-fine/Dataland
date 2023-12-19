@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
@@ -28,6 +29,7 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
  * and a component-specific value-getter
  */
 fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
+    frameworkUploadOptions: FrameworkUploadOptions?,
     uploadComponentName: String?,
     options: MutableSet<SelectionOption>?,
     component: ComponentBase,
@@ -44,5 +46,6 @@ fun SectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
         uploadComponentName = uploadComponentName,
         options = options,
+        frameworkUploadOptions = frameworkUploadOptions,
     )
 }

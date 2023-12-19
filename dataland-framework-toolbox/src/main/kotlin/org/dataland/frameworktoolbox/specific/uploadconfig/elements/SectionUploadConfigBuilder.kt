@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 
 /**
@@ -52,16 +53,17 @@ data class SectionUploadConfigBuilder(
      * Adds a new cell to this section
      */
     fun addCell(
-        identifier: String,
-        label: String,
-        explanation: String?,
-        shouldDisplay: FrameworkBooleanLambda,
-        unit: String?,
-        isNullable: Boolean,
-        required: Boolean?,
-        uploadComponentName: String?,
-        options: MutableSet<SelectionOption>?,
-    ): CellConfigBuilder {
+            identifier: String,
+            label: String,
+            explanation: String?,
+            shouldDisplay: FrameworkBooleanLambda,
+            unit: String?,
+            isNullable: Boolean,
+            required: Boolean?,
+            uploadComponentName: String?,
+            options: MutableSet<SelectionOption>?,
+            frameworkUploadOptions: FrameworkUploadOptions?,
+            ): CellConfigBuilder {
         val newCell = CellConfigBuilder(
             parentSection = this,
             label = label,
@@ -73,6 +75,7 @@ data class SectionUploadConfigBuilder(
             required = required,
             uploadComponentName = uploadComponentName,
             options = options,
+                frameworkUploadOptions = frameworkUploadOptions
         )
         children.add(newCell)
         return newCell

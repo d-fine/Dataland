@@ -1,5 +1,14 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
 import { ${frameworkIdentifier?cap_first}Data } from "@clients/backend";
+import {DropdownOption} from "@/utils/PremadeDropdownDatasets";
+<#list uploadConfig as element><#if element.isSection()><@cats element/></#if></#list>
+<#macro subcats items><#list items as element><#if element.isSubcategory()><@field element/></#if></#list></#macro>
+<#macro loop items><#list items as element><#if element.isCell()><@get element/></#if></#list></#macro>
+<#macro cats categoryConfig><@subcats categoryConfig.children/></#macro>
+<#macro field subcategoryConfig><#if subcategoryConfig.children??><@loop subcategoryConfig.children/></#if></#macro>
+<#macro get fieldConfig><#if fieldConfig.frameworkUploadOptions??>
+    <#list fieldConfig.frameworkUploadOptions.imports?sequence as imp>${imp};
+    </#list></#if></#macro>
 
 export const ${frameworkIdentifier}DataModel = [<@loopCategories uploadConfig/>] as Category[];
 
@@ -47,14 +56,14 @@ export const ${frameworkIdentifier}DataModel = [<@loopCategories uploadConfig/>]
     name: "${fieldConfig.name?js_string}",
     label: "${fieldConfig.label?js_string}",
     <#if fieldConfig.explanation??>description: "${fieldConfig.explanation?js_string}",</#if>
-    <#if fieldConfig.options??>options: [
+    options: <#if fieldConfig.frameworkUploadOptions??>${fieldConfig.frameworkUploadOptions.body}<#elseif fieldConfig.options??> [
         <#list fieldConfig.options?sequence as entry>
             {
                 label: "${entry.label}",
                 value: "${entry.identifier}",
             },
         </#list>
-        ],</#if>
+    ]<#else>""</#if>,
     unit: "<#if fieldConfig.unit??>${fieldConfig.unit?js_string}</#if>",
     component: "${fieldConfig.uploadComponentName?js_string}",
     required: <#if fieldConfig.required??>true<#else>false</#if>,

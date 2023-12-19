@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.specific.uploadconfig.elements
 
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 
 /**
@@ -12,14 +13,15 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBoo
 
 @Suppress("LongParameterList")
 class CellConfigBuilder(
-    override val parentSection: SectionUploadConfigBuilder?,
-    var label: String,
-    var name: String,
-    var explanation: String?,
-    var shouldDisplay: FrameworkBooleanLambda,
-    var unit: String?,
-    var isNullable: Boolean,
-    var required: Boolean?,
-    var uploadComponentName: String?,
-    var options: MutableSet<SelectionOption>?,
-) : UploadConfigElement
+        override val parentSection: SectionUploadConfigBuilder?,
+        var label: String,
+        var name: String,
+        var explanation: String?,
+        var shouldDisplay: FrameworkBooleanLambda,
+        var unit: String?,
+        var isNullable: Boolean,
+        var required: Boolean?,
+        var uploadComponentName: String?,
+        var options: MutableSet<SelectionOption>?,
+        var frameworkUploadOptions: FrameworkUploadOptions?,
+        ) : UploadConfigElement

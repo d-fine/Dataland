@@ -6,6 +6,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -51,6 +52,7 @@ class YesNoComponent(
             "YesNoFormField"
         }
         sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
+                frameworkUploadOptions = null,
             uploadComponentName = uploadComponentNameToUse,
             options = null,
             component = this,

@@ -9,6 +9,7 @@ import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.SectionUploadConfigBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 
 /**
@@ -32,6 +33,11 @@ open class ComponentBase(
      * The explanation of a component is a longer description of the component
      */
     var explanation: String? = null
+
+    /**
+     * A means to add custom TS instead of options in the uploadConfig
+     */
+    var frameworkUploadOptions: FrameworkUploadOptions? = null
 
     /**
      * The unit of a string component

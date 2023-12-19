@@ -14,6 +14,7 @@ import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.dataland.frameworktoolbox.intermediate.group.getOrNull
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
@@ -537,9 +538,13 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             }
             component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
                 sectionUploadConfigBuilder.addStandardCellWithValueGetterFactory(
+                        frameworkUploadOptions = FrameworkUploadOptions(
+                                body = "Object.values(Activity).map(it) => {value: it.value, label: it.label}",
+                                imports = setOf("import {Activity} from \"@clients/backend\" ")
+                        ),
                     uploadComponentName = "MultiSelectFormField",
                     options = null, // TODO Problem:  We cannot make it use the ActivityName.ts file! Limitation!
-                    component,
+                        component = component,
                 )
             }
         }
