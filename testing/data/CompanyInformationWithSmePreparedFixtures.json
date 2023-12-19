@@ -2,56 +2,51 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "West Makenzieboro",
-			"headquartersPostalCode": null,
+			"headquarters": "Town 'n' Country",
+			"headquartersPostalCode": "78825",
 			"sector": "initiatives",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"6vYWUc6rkIZP",
-					"KDb4IGRsukeJ"
+					"ryVWPBswag7H"
 				],
 				"PermId": [],
 				"Ticker": [
-					"A0BXLWW"
+					"DJLPDK1"
 				],
-				"Duns": [
-					"nfWeeV40N"
-				],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"fKIJ7RARip4khid"
+					"wyYYnIFjeJKxkgS"
 				]
 			},
-			"countryCode": "KY",
+			"countryCode": "PA",
 			"companyAlternativeNames": [
-				"Dooley and Sons",
-				"Glover, Kutch and Runolfsdottir",
-				"Jerde, Fritsch and Casper",
-				"Leannon and Sons"
+				"Gulgowski LLC",
+				"Harber Group",
+				"Rosenbaum LLC",
+				"Wintheiser, Kohler and Green"
 			],
-			"companyLegalForm": null,
-			"website": "https://wise-confusion.com/",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://stormy-colonialism.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"45.3",
-						"46.17",
-						"80",
-						"88.9"
+						"80.1",
+						"95.1"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Hessel Trace 5609",
-						"postalCode": "38478",
-						"city": "Raymondchester",
-						"state": "Georgia",
-						"country": "MT"
+						"streetAndHouseNumber": "Timmothy Pass 883",
+						"postalCode": "13523-6994",
+						"city": "Madelynnborough",
+						"state": "Rhode Island",
+						"country": "AD"
 					},
-					"numberOfEmployees": 6627,
-					"fiscalYearStart": "2024-09-01"
+					"numberOfEmployees": 8162,
+					"fiscalYearStart": "2023-12-23"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -64,7 +59,12 @@
 					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Gorgeous Metal Chair",
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
 				}
 			},
 			"power": {
@@ -72,17 +72,17 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 188,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 134,
+					"powerConsumptionInMWh": 1239,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 917,
 					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 9426745,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 5217232,
 					"naturalHazardsCovered": null
 				}
 			}
@@ -92,39 +92,40 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "East Kristina",
-			"headquartersPostalCode": "01460",
-			"sector": "web services",
+			"headquarters": "Port Janellechester",
+			"headquartersPostalCode": "89872-8419",
+			"sector": "convergence",
 			"identifiers": {
-				"Lei": [
-					"QSFLMoW1LVIvpArwFeYG"
-				],
+				"Lei": [],
 				"Isin": [
-					"UyGPsZMlX0kd"
+					"IQBsfrNLFbEZ"
 				],
 				"PermId": [
-					"xyRgRRv6qK"
+					"5Ihs6YeRrS"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"rpi7Nrf"
+				],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"HzMKszA4PIMqRsp"
-				]
+				"VatNumber": [
+					"LXpfXMX52"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "AO",
+			"countryCode": "RW",
 			"companyAlternativeNames": [
-				"Rogahn, Mayer and Gibson"
+				"Bednar Group",
+				"Luettgen, Anderson and Pollich"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://attentive-niche.info",
+			"companyLegalForm": null,
+			"website": "https://crowded-procedure.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"10.61"
+						"80"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -133,85 +134,63 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 1657,
-					"fiscalYearStart": "2024-04-02"
+					"numberOfEmployees": 7202,
+					"fiscalYearStart": "2024-08-15"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 47891469,
-					"operatingCostInEUR": 6780795,
-					"capitalAssetsInEUR": 68999524
+					"revenueInEUR": 5334986,
+					"operatingCostInEUR": 60461008,
+					"capitalAssetsInEUR": 30249684
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Conn, Cruickshank and Altenwerth",
+							"nameOfProductionSite": "Conroy LLC",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Stiedemann Heights 7887",
-								"postalCode": "25048",
-								"city": "Fort Josefaport",
-								"state": "Wisconsin",
-								"country": "HK"
+								"streetAndHouseNumber": "Bechtelar Corners 23847",
+								"postalCode": "49117",
+								"city": "Fort Lamar",
+								"state": "Minnesota",
+								"country": "PE"
 							},
-							"shareOfTotalRevenueInPercent": 69.74
-						},
-						{
-							"nameOfProductionSite": "Dibbert - Balistreri",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "82083-9021",
-								"city": "West Junius",
-								"state": "Delaware",
-								"country": "RS"
-							},
-							"shareOfTotalRevenueInPercent": 52.09
-						},
-						{
-							"nameOfProductionSite": "Blick LLC",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": null,
-								"city": "New Americashire",
-								"state": "Georgia",
-								"country": "MO"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": "Pouros - Wisoky",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": "46912",
-								"city": "Lake Norbertbury",
-								"state": null,
-								"country": "BG"
-							},
-							"shareOfTotalRevenueInPercent": null
+							"shareOfTotalRevenueInPercent": 96.87
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Electronic Fresh Tuna",
+							"shareOfTotalRevenueInPercent": 64.46
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between15And20"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 782,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 707,
+					"powerConsumptionInMWh": 236,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 5285538,
-					"naturalHazardsCovered": null
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 41501880,
+					"naturalHazardsCovered": [
+						"EarthQuake",
+						"Avalanche",
+						"Snow",
+						"Wind",
+						"Hail"
+					]
 				}
 			}
 		},
@@ -220,37 +199,41 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Keller",
-			"headquartersPostalCode": "10393-1294",
-			"sector": "mindshare",
+			"headquarters": "Jalynfurt",
+			"headquartersPostalCode": "79829",
+			"sector": "portals",
 			"identifiers": {
 				"Lei": [
-					"7HynwT6uz6nfYizA3PFe"
+					"1sgaE4gTFcUmMA9tffKO"
 				],
 				"Isin": [
-					"VFTtmippDi3O"
+					"dWVErC7GFkcG",
+					"JYkncJKIEQdp"
 				],
-				"PermId": [],
-				"Ticker": [
-					"voZZRut"
+				"PermId": [
+					"VD8zuKHi7F"
 				],
-				"Duns": [],
+				"Ticker": [],
+				"Duns": [
+					"GLMUcJY4f"
+				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SX",
+			"countryCode": "ER",
 			"companyAlternativeNames": [
-				"Torp Group"
+				"Kiehn Inc",
+				"Thiel and Sons"
 			],
 			"companyLegalForm": "GmbH",
-			"website": "https://guilty-calibre.name",
+			"website": "https://oblong-patina.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"80.10"
+						"71.1"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -259,44 +242,77 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 2266,
-					"fiscalYearStart": "2024-02-25"
+					"numberOfEmployees": 8294,
+					"fiscalYearStart": "2024-04-13"
 				},
 				"companyFinancials": {
-					"revenueInEUR": null,
-					"operatingCostInEUR": 68334675,
-					"capitalAssetsInEUR": null
+					"revenueInEUR": 28917260,
+					"operatingCostInEUR": 42049071,
+					"capitalAssetsInEUR": 31468583
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Roob and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Kub Keys 65754",
+								"postalCode": "10799",
+								"city": "New Liliana",
+								"state": null,
+								"country": "BM"
+							},
+							"shareOfTotalRevenueInPercent": 92.5
+						}
+					]
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Rustic Granite Fish",
+							"shareOfTotalRevenueInPercent": 73.71
+						},
+						{
+							"name": "Tasty Metal Table",
+							"shareOfTotalRevenueInPercent": 18.73
+						},
+						{
+							"name": "Generic Cotton Car",
+							"shareOfTotalRevenueInPercent": 11.04
+						},
+						{
+							"name": "Unbranded Concrete Keyboard",
+							"shareOfTotalRevenueInPercent": 77.77
+						},
+						{
+							"name": "Elegant Plastic Pizza",
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1023,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 986,
-					"primaryEnergySourceForHeatingAndHotWater": "Electric",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
+					"powerConsumptionInMWh": 646,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"insuranceAgainstNaturalHazards": "No",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 49208509,
 					"naturalHazardsCovered": [
-						"EarthQuake",
+						"Hail",
 						"Snow",
-						"Wind",
-						"Hail"
+						"Avalanche",
+						"Wind"
 					]
 				}
 			}

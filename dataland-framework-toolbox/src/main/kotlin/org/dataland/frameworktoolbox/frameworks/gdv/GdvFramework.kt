@@ -2,19 +2,17 @@ package org.dataland.frameworktoolbox.frameworks.gdv
 
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
-import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvListOfBaseDataPointComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
-import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.DateComponent
 import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
-import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.dataland.frameworktoolbox.intermediate.group.getOrNull
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
+import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
@@ -27,7 +25,7 @@ import java.io.File
  * Definition of the Heimathafen framework
  */
 @Component
-class GdvFramework : InDevelopmentPavedRoadFramework(
+class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it should implement "PavedRoadFramework" (?)
     identifier = "gdv",
     label = "GDV/VÖB",
     explanation = "Das GDV/VÖB Framework",
@@ -61,12 +59,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
     }
 
-    private fun createRollingWindowComponentsInCategoryUmwelt(framework: Framework, berichtsPflicht: ComponentBase) {
-        val showIfBerichtsPflicht = DependsOnComponentValue(
-            berichtsPflicht,
-            "Yes",
-        )
-
+    private fun createRollingWindowComponentsInCategoryUmwelt(
+        framework: Framework,
+        showIfBerichtsPflicht: FrameworkConditional,
+    ) {
         framework.root.edit<ComponentGroup>("umwelt") {
             val umweltGroup = this
             with(GdvUmweltRollingWindowComponents) {
@@ -82,12 +78,10 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
     }
 
-    private fun createRollingWindowComponentsInCategorySoziales(framework: Framework, berichtsPflicht: ComponentBase) {
-        val showIfBerichtsPflicht = DependsOnComponentValue(
-            berichtsPflicht,
-            "Yes",
-        )
-
+    private fun createRollingWindowComponentsInCategorySoziales(
+        framework: Framework,
+        showIfBerichtsPflicht: FrameworkConditional,
+    ) {
         framework.root.edit<ComponentGroup>("soziales") {
             val sozialesGroup = this
             with(GdvSozialesRollingWindowComponents) {
@@ -99,7 +93,18 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
         }
     }
 
-    @Suppress("LongMethod") // t0d0: fix detekt error later!
+    private fun createListOfBaseDatapointComponents(framework: Framework, showIfBerichtsPflicht: FrameworkConditional) {
+        framework.root.edit<ComponentGroup>("allgemein") {
+            val sozialesGroup = this
+            with(GdvListOfBaseDataPointComponents) {
+                aktuelleBerichte(sozialesGroup)
+                weitereAkkreditierungen(sozialesGroup, showIfBerichtsPflicht)
+                richtlinienZurEinhaltungDerUngcp(sozialesGroup)
+                richtlinienZurEinhaltungDerOecdLeitsaetze(sozialesGroup)
+            }
+        }
+    }
+
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setGroupsThatAreExpandedOnPageLoad(framework)
         overwriteFakeFixtureGenerationForDataDate(framework)
@@ -112,89 +117,21 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
             "The field with the label \"berichtsPflicht\" must exist in the gdv framework."
         }
 
-        createRollingWindowComponentsInCategoryUmwelt(framework, berichtsPflicht)
-        createRollingWindowComponentsInCategorySoziales(framework, berichtsPflicht)
+        val showIfBerichtsPflicht = DependsOnComponentValue(
+            berichtsPflicht,
+            "Yes",
+        )
 
-        val esgBerichte = framework.root
-            .getOrNull<ComponentGroup>("allgemein")
-            ?.getOrNull<ComponentGroup>("esgBerichte")
-        require(esgBerichte != null) {
-            "The component group with the label \"esgBerichte\" must exist in the gdv framework."
-        }
+        createRollingWindowComponentsInCategoryUmwelt(framework, showIfBerichtsPflicht)
+        createRollingWindowComponentsInCategorySoziales(framework, showIfBerichtsPflicht)
+        createListOfBaseDatapointComponents(framework, showIfBerichtsPflicht)
 
-        val nachhaltigkeitsberichte = esgBerichte.getOrNull<YesNoComponent>("nachhaltigkeitsberichte")
-        require(nachhaltigkeitsberichte != null) {
-            "The field with the label \"nachhaltigkeitsberichte\" must exist in the gdv framework."
-        }
-
-        val unGlobalConceptPrinzipien = framework.root
-            .getOrNull<ComponentGroup>("allgemein")
-            ?.getOrNull<ComponentGroup>("unGlobalConceptPrinzipien")
-        require(unGlobalConceptPrinzipien != null) {
-            "The section with the label \"unGlobalConceptPrinzipien\" must exist in the gdv framework."
-        }
-
-        val mechanismenZurUeberwachungDerEinhaltungDerUngcp =
-            unGlobalConceptPrinzipien.getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerUngcp")
-        require(mechanismenZurUeberwachungDerEinhaltungDerUngcp != null) {
-            "The field with the label \"mechanismenZurUeberwachungDerEinhaltungDerUngcp\" " +
-                "must exist in the gdv framework."
-        }
-
-        val oecdLeitsaetze = framework.root
-            .getOrNull<ComponentGroup>("allgemein")
-            ?.getOrNull<ComponentGroup>("oecdLeitsaetze")
-        require(oecdLeitsaetze != null) {
-            "The section with the label \"oecdLeitsaetze\" must exist in the gdv framework."
-        }
-
-        val mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze =
-            oecdLeitsaetze.getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze")
-        require(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze != null) {
-            "The field with the label \"mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze\" " +
-                "must exist in the gdv framework."
-        }
-
-        splitHighLevelIntermediateRepresentationCustumizationPartTwo(framework, berichtsPflicht)
-        splitHighLevelIntermediateRepresentationCustumizationPartThree(esgBerichte, nachhaltigkeitsberichte)
-
-        unGlobalConceptPrinzipien.create<GdvListOfBaseDataPointComponent>(
-            "richtlinienZurEinhaltungDerUngcp",
-            "erklaerungDerEinhaltungDerUngcp",
-        ) {
-            label = "Richtlinien zur Einhaltung der UNGCP"
-            explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
-                "liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht."
-            descriptionColumnHeader = "Beschreibung der Richtlinie"
-            documentColumnHeader = "Richtlinie"
-            availableIf = DependsOnComponentValue(mechanismenZurUeberwachungDerEinhaltungDerUngcp, "Yes")
-            // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
-        }
-
-        oecdLeitsaetze.create<GdvListOfBaseDataPointComponent>(
-            "richtlinienZurEinhaltungDerOecdLeitsaetze",
-            "erklaerungDerEinhaltungDerOecdLeitsaetze",
-        ) {
-            label = "Richtlinien zur Einhaltung der OECD-Leitsätze"
-            explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
-                "liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht."
-            descriptionColumnHeader = "Beschreibung der Richtlinie"
-            documentColumnHeader = "Richtlinie"
-            availableIf = DependsOnComponentValue(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze, "Yes")
-            // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
-        }
-
-        framework.root
-            .getOrNull<ComponentGroup>("umwelt")
-            ?.getOrNull<ComponentGroup>("taxonomie")
-            ?.edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
-                customizeEuTaxonomieKompassAktivitaetenComponent(this)
+        framework.root.edit<ComponentGroup>("umwelt") {
+            edit<ComponentGroup>("taxonomie") {
+                edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
+                    customizeEuTaxonomieKompassAktivitaetenComponent(this)
+                }
             }
-
-        val einkommensgleichheit = framework.root.getOrNull<ComponentGroup>("soziales")
-            ?.getOrNull<ComponentGroup>("einkommensgleichheit")
-        require(einkommensgleichheit != null) {
-            "The component group with the label \"einkommensgleichheit\" must exist in the gdv framework."
         }
     }
 
@@ -243,55 +180,11 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                         body = "Object.values(Activity),",
                         imports = setOf("import {Activity} from \"@clients/backend\" "),
                     ),
-                    component,
+                    component = component,
                     uploadComponentName = "MultiSelectFormField",
                     // TODO Problem:  We cannot make it use the ActivityName.ts file! Limitation!
                 )
             }
         }
-    }
-}
-
-/**
- * TODO INCLUDE DOCS HERE
- */
-fun splitHighLevelIntermediateRepresentationCustumizationPartTwo(
-    framework: Framework,
-    berichtsPflicht:
-    ComponentBase,
-) {
-    framework.root
-        .getOrNull<ComponentGroup>("allgemein")
-        ?.getOrNull<ComponentGroup>("akkreditierungen")
-        ?.create<GdvListOfBaseDataPointComponent>(
-            "weitereAkkreditierungen",
-        ) {
-            label = "Weitere Akkreditierungen"
-            explanation = "Weitere Akkreditierungen, die noch nicht aufgeführt wurden"
-            descriptionColumnHeader = "Beschreibung der Akkreditierung"
-            documentColumnHeader = "Akkreditierung"
-            availableIf = DependsOnComponentValue(berichtsPflicht, "Yes")
-            // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
-        }
-}
-
-/**
- * TODO INCLUDE DOCS HERE
- */
-fun splitHighLevelIntermediateRepresentationCustumizationPartThree(
-    esgBerichte: ComponentGroup,
-    nachhaltigkeitsberichte:
-    ComponentBase,
-) {
-    esgBerichte.create<GdvListOfBaseDataPointComponent>("aktuelleBerichte") {
-        label = "Aktuelle Berichte"
-        explanation = "Aktuelle Nachhaltigkeits- oder ESG-Berichte"
-        descriptionColumnHeader = "Beschreibung des Berichts"
-        documentColumnHeader = "Bericht"
-        availableIf = DependsOnComponentValue(
-            nachhaltigkeitsberichte,
-            "Yes",
-        )
-        // availableIfUpload =   ...   TODO Emanuel: Cannot be implemented yet.
     }
 }

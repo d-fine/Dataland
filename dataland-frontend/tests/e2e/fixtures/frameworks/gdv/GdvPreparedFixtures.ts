@@ -31,7 +31,7 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
  * Modifies the prepared fixtures
  * @param newFixture generated prepared fixture to modify
  */
-function modifyPreparedFixturesPartOne(newFixture:FixtureData<GdvData>) {
+function modifyPreparedFixturesPartOne(newFixture: FixtureData<GdvData>): void {
   if (newFixture.t.general?.masterData) {
     newFixture.t.general.masterData.berichtsPflicht = YesNo.Yes;
   }
@@ -77,7 +77,7 @@ function modifyPreparedFixturesPartOne(newFixture:FixtureData<GdvData>) {
  * Modifies the prepared fixtures
  * @param newFixture generated prepared fixture to modify
  */
-function modifyPreparedFixturesPartTwo(newFixture: FixtureData<GdvData>)  {
+function modifyPreparedFixturesPartTwo(newFixture: FixtureData<GdvData>): void {
   if (newFixture.t.allgemein?.rating?.ratingbericht) {
     newFixture.t.allgemein.rating.ratingbericht.value = YesNo.Yes;
   }
@@ -103,10 +103,10 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<GdvData>)  {
     newFixture.t.umwelt.fossileBrennstoffe.einnahmenAusFossilenBrennstoffen = YesNo.Yes;
   }
   if (
-      newFixture.t.soziales?.unternehmensstrukturaenderungen?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur
+    newFixture.t.soziales?.unternehmensstrukturaenderungen?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur
   ) {
     newFixture.t.soziales.unternehmensstrukturaenderungen.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur =
-        YesNo.Yes;
+      YesNo.Yes;
   }
   if (newFixture.t.soziales?.audit) {
     newFixture.t.soziales.audit.auditsZurEinhaltungVonArbeitsstandards = YesNo.Yes;
@@ -119,6 +119,6 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<GdvData>)  {
   }
   if (newFixture.t.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten) {
     newFixture.t.unternehmensfuehrungGovernance.lieferantenauswahl.esgKriterienUndUeberwachungDerLieferanten =
-        YesNo.Yes;
+      YesNo.Yes;
   }
 }
