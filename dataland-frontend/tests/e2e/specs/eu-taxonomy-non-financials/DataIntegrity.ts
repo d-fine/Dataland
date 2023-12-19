@@ -122,6 +122,8 @@ describeIf(
                         reuploadedDatasetFromBackend as Record<string, object>,
                       );
                       cy.get('span[data-test="hideEmptyDataToggle"]').should("not.exist"); //this line can be removed once MLDT has been integrated
+                      cy.url().should("eq", getBaseUrl() + "/datasets");
+                      cy.get('[data-test="datasets-table"]').should("be.visible");
                       validateSomeValuesForTheReuploadedDataset(
                         storedCompany,
                         dataMetaInformationOfReuploadedDataset.dataId,
@@ -129,8 +131,6 @@ describeIf(
                     });
                 },
               );
-              cy.url().should("eq", getBaseUrl() + "/datasets");
-              cy.get('[data-test="datasets-table"]').should("be.visible");
             });
           });
         });
