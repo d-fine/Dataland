@@ -129,6 +129,8 @@ describeIf(
                     });
                 },
               );
+              cy.url().should("eq", getBaseUrl() + "/datasets");
+              cy.get('[data-test="datasets-table"]').should("be.visible");
             });
           });
         });
