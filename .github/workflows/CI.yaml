@@ -198,10 +198,11 @@ jobs:
         run: | 
           cd ./dataland-automated-qa-service
           pip install --no-cache-dir -r requirements.txt
+          pip install -e .
       - name: Execute python unit tests
         run: | 
           python --version
-          python -m unittest discover -s ./dataland-automated-qa-service/src/test/ -p *_test.py
+          python -m pytest
         if: always()
 #      - name: Frontend linting
 #        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace

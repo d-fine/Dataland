@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dataland-automated-qa-service"
+version = "1"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+pythonpath = "src/main"
+
+#[tool.ruff]
+#select = ["F", "I"]
+#line-length = 120
