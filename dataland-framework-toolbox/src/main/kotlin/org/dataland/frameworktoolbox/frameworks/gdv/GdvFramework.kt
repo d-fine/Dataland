@@ -185,8 +185,11 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
             component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
                 sectionUploadConfigBuilder.addStandardUploadConfigCell(
                     frameworkUploadOptions = FrameworkUploadOptions(
-                        body = "Object.values(Activity),",
-                        imports = setOf("import {Activity} from \"@clients/backend\" "),
+                        body = "getActivityNamesAsDropdownOptions()",
+                        imports = setOf(
+                            "import { getActivityNamesAsDropdownOptions } from " +
+                                "\"@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName\"\n",
+                        ),
                     ),
                     component = component,
                     uploadComponentName = "MultiSelectFormField",
@@ -195,20 +198,17 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
             }
         }
     }
-
     private fun customizeYesNoComponent(component: YesNoComponent) {
-        if (component.label == "Berichts-Pflicht") {
-            component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
-                sectionUploadConfigBuilder.addStandardUploadConfigCell(
-                    frameworkUploadOptions = null,
-                    component = component,
-                    uploadComponentName = "MultiSelectFormField",
-                    validation = FrameworkUploadOptions(
-                        body = "\"is:YesNo\"",
-                        imports = null,
-                    ),
-                )
-            }
+        component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
+            sectionUploadConfigBuilder.addStandardUploadConfigCell(
+                frameworkUploadOptions = null,
+                component = component,
+                uploadComponentName = "MultiSelectFormField",
+                validation = FrameworkUploadOptions(
+                    body = "\"is:YesNo\"",
+                    imports = null,
+                ),
+            )
         }
     }
 }

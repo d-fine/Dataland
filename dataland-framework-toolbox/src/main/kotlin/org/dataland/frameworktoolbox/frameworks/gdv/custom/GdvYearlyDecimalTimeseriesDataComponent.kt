@@ -17,7 +17,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigB
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
-import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptions
+import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
 
 /**
  * A GdvYearlyDecimalTimeseriesDataComponent is an in-memory representation of a generic field
@@ -87,7 +87,7 @@ class GdvYearlyDecimalTimeseriesDataComponent(
 
         uploadCategoryBuilder.addStandardUploadConfigCell(
             frameworkUploadOptions = FrameworkUploadOptions(
-                body = generateTsCodeForOptions(
+                body = generateTsCodeForOptionsOfSelectionFormFields(
                     decimalRows.map {
                         var rowLabel = it.label
                         if (it.unitSuffix.isNotBlank()) {

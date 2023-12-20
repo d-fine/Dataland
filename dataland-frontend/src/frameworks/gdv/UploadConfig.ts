@@ -1,7 +1,7 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
 import { type GdvData } from "@clients/backend";
 //import {DropdownOption} from "@/utils/PremadeDropdownDatasets";
-import { Activity } from "@clients/backend";
+import { getActivityNamesAsDropdownOptions } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
 
 export const gdvDataModel = [
   {
@@ -1193,7 +1193,7 @@ export const gdvDataModel = [
             name: "euTaxonomieKompassAktivitaeten",
             label: "EU Taxonomie Kompass Aktivitäten",
             description: "Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?",
-            options: Object.values(Activity),
+            options: getActivityNamesAsDropdownOptions(),
             unit: "",
             component: "MultiSelectFormField",
             required: false,
