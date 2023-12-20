@@ -88,8 +88,12 @@ sonar {
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
                 "dataland-frontend/src/main.ts," +
-                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/**," +
-                "dataland-frontend/tests/e2e/fixtures/frameworks/gdv/GdvDataFixtures.ts",
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/gdv/**," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/specific/uploadconfig/**," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/" +
+                "components/MultiSelectComponent.kt," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/" +
+                "components/SingleSelectComponent.kt",
         )
         property(
             "sonar.sources",

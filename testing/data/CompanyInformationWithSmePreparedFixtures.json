@@ -2,50 +2,55 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Port Damionstad",
-			"headquartersPostalCode": null,
-			"sector": null,
+			"headquarters": "Dietrichside",
+			"headquartersPostalCode": "08680",
+			"sector": "initiatives",
 			"identifiers": {
 				"Lei": [
-					"I0I4hUnl16OZTAF7jGnd"
+					"JYbOVLKoyMZaTJrATi5t"
 				],
 				"Isin": [
-					"KLr3TBVTebf4",
-					"4iBzsovwsrb1"
+					"je1pje7e2tZX"
 				],
-				"PermId": [],
+				"PermId": [
+					"UWErTWTiMS"
+				],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"fe7krCJJq"
+				"Duns": [
+					"M72RNLoG2"
 				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"WH1Cg2X1C"
+				],
+				"CompanyRegistrationNumber": [
+					"o67mNtA0cKMjoxI"
+				]
 			},
-			"countryCode": "PY",
+			"countryCode": "GA",
 			"companyAlternativeNames": [
-				"Orn Inc",
-				"West, Hoeger and Davis"
+				"Feil LLC"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://unique-angora.biz/",
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://spiffy-mallet.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"46.21",
-						"77.34"
+						"03.1",
+						"46.3",
+						"80.1"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "London Road 612",
-						"postalCode": "55523-0513",
-						"city": "Madelynborough",
-						"state": "Wyoming",
-						"country": "GY"
+						"streetAndHouseNumber": "Sierra Parkway 1809",
+						"postalCode": "86288",
+						"city": "Cupertino",
+						"state": "Connecticut",
+						"country": "TZ"
 					},
-					"numberOfEmployees": 2497,
-					"fiscalYearStart": "2024-02-11"
+					"numberOfEmployees": 5806,
+					"fiscalYearStart": "2024-04-05"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -55,44 +60,21 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Adrien Stravenue 6208",
-								"postalCode": "84788-3076",
-								"city": "Enriqueworth",
-								"state": "Wyoming",
-								"country": "TZ"
-							},
-							"shareOfTotalRevenueInPercent": 79.19
-						},
-						{
-							"nameOfProductionSite": "Metz and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Eliza Rest 253",
-								"postalCode": "76311",
-								"city": "North Jeff",
-								"state": "Mississippi",
-								"country": "CR"
-							},
-							"shareOfTotalRevenueInPercent": 21.73
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Incredible Concrete Keyboard",
-							"shareOfTotalRevenueInPercent": 14.57
+							"name": "Awesome Plastic Tuna",
+							"shareOfTotalRevenueInPercent": 46.95
 						},
 						{
-							"name": "Oriental Frozen Tuna",
-							"shareOfTotalRevenueInPercent": 73.33
+							"name": "Oriental Granite Bacon",
+							"shareOfTotalRevenueInPercent": 47.91
 						},
 						{
-							"name": "Licensed Rubber Tuna",
-							"shareOfTotalRevenueInPercent": 75.22
+							"name": "Tasty Granite Bike",
+							"shareOfTotalRevenueInPercent": 42.74
 						}
 					]
 				}
@@ -102,22 +84,18 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 151,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMWh": 719,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 527,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazards": 43777002,
-					"naturalHazardsCovered": [
-						"Snow",
-						"Wind",
-						"Hail"
-					]
+					"amountCoveredByInsuranceAgainstNaturalHazards": 13398205,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -126,38 +104,45 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Kaydenworth",
-			"headquartersPostalCode": null,
-			"sector": null,
+			"headquarters": "Davinboro",
+			"headquartersPostalCode": "08930",
+			"sector": "niches",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"7kYXoADmMz67",
-					"2NXi3eDY36pF"
+					"y2FUwVqFv3SJ",
+					"iqCelpz4zT9G"
 				],
 				"PermId": [
-					"WxzZyBNlqV"
+					"OPwNzfEmVM"
 				],
 				"Ticker": [
-					"mp3eLAJ"
+					"ozglyz0"
 				],
-				"Duns": [],
+				"Duns": [
+					"IoMc1eV6B"
+				],
 				"VatNumber": [
-					"SZsAKGXPB"
+					"o327BqEw4"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "KY",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": null,
+			"countryCode": "NR",
+			"companyAlternativeNames": [
+				"Balistreri - Swift",
+				"Dicki, Shields and Stroman",
+				"Hahn - Farrell",
+				"Leannon Group"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://recent-moat.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"07.1"
+						"43.31"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -166,64 +151,52 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 6364,
-					"fiscalYearStart": "2024-04-27"
+					"numberOfEmployees": 4545,
+					"fiscalYearStart": "2024-08-14"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 1673104,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 19370964
+					"revenueInEUR": 6668843,
+					"operatingCostInEUR": 6643700,
+					"capitalAssetsInEUR": 26701007
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Davis Track 16976",
-								"postalCode": "93998-1930",
-								"city": "New Oranfort",
-								"state": "Colorado",
-								"country": "AL"
-							},
-							"shareOfTotalRevenueInPercent": 5.97
-						},
-						{
-							"nameOfProductionSite": "Murphy, Wehner and Gislason",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Western Avenue 836",
-								"postalCode": "61318-0583",
-								"city": "Des Plaines",
-								"state": "Alabama",
-								"country": "CK"
-							},
-							"shareOfTotalRevenueInPercent": 10.26
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Sleek Soft Table",
+							"shareOfTotalRevenueInPercent": 13.36
+						},
+						{
+							"name": "Refined Fresh Car",
+							"shareOfTotalRevenueInPercent": 28.47
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 629,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"powerConsumptionInMWh": 877,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 642,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 41921671,
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Hail"
+						"Wind",
+						"Avalanche",
+						"Snow"
 					]
 				}
 			}
@@ -233,40 +206,37 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Timmothyside",
-			"headquartersPostalCode": null,
-			"sector": "supply-chains",
+			"headquarters": "Sarasota",
+			"headquartersPostalCode": "95518-9883",
+			"sector": "interfaces",
 			"identifiers": {
-				"Lei": [
-					"mBPmEoee0t4rXyQyuq6M"
-				],
+				"Lei": [],
 				"Isin": [
-					"fgoIq2RGfkG4",
-					"Sg4rxC0KqKr8"
+					"XspQ8X3T6eVt"
 				],
-				"PermId": [],
-				"Ticker": [
-					"xn39A7x"
+				"PermId": [
+					"EA9s91uPy8"
 				],
+				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"iPFqyew25"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MP",
+			"countryCode": "US",
 			"companyAlternativeNames": [
-				"Weissnat - Treutel"
+				"Dibbert - Bogisich",
+				"Hills, Romaguera and Schulist",
+				"Mueller - Green"
 			],
 			"companyLegalForm": null,
-			"website": "https://querulous-adobe.name/",
+			"website": "https://burdensome-hiccups.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"50.30"
+						"27.3"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -275,39 +245,50 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 7462,
-					"fiscalYearStart": "2024-12-08"
+					"numberOfEmployees": 7065,
+					"fiscalYearStart": "2024-03-02"
 				},
 				"companyFinancials": {
-					"revenueInEUR": null,
-					"operatingCostInEUR": 43794965,
-					"capitalAssetsInEUR": 38508748
+					"revenueInEUR": 67797219,
+					"operatingCostInEUR": 28158316,
+					"capitalAssetsInEUR": 5802021
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Witting - VonRueden",
+							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "W 5th Street 5477",
-								"postalCode": "80512",
-								"city": "North Fausto",
-								"state": "Maryland",
-								"country": "MF"
+								"streetAndHouseNumber": "Kaelyn Estates 5073",
+								"postalCode": "80176",
+								"city": "Sunrise",
+								"state": "Iowa",
+								"country": "TJ"
 							},
-							"shareOfTotalRevenueInPercent": 89.4
+							"shareOfTotalRevenueInPercent": 0.82
 						},
 						{
-							"nameOfProductionSite": "Carter - DuBuque",
+							"nameOfProductionSite": "Morissette - Hand",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Effertz Trail 668",
-								"postalCode": "71781-1502",
-								"city": "North Emmett",
-								"state": "North Dakota",
-								"country": "LV"
+								"streetAndHouseNumber": "Bahringer Key 536",
+								"postalCode": "19625",
+								"city": "Hamillport",
+								"state": null,
+								"country": "IT"
 							},
-							"shareOfTotalRevenueInPercent": 92.22
+							"shareOfTotalRevenueInPercent": 53.87
+						},
+						{
+							"nameOfProductionSite": "Volkman LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "72149",
+								"city": "Lake Reynoldstead",
+								"state": null,
+								"country": "TJ"
+							},
+							"shareOfTotalRevenueInPercent": 80.37
 						}
 					]
 				},
@@ -317,21 +298,23 @@
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 229,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 729,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMWh": 1654,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 909,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 33468545,
-					"naturalHazardsCovered": null
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"naturalHazardsCovered": [
+						"Hail"
+					]
 				}
 			}
 		},
