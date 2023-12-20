@@ -66,7 +66,6 @@ data class UploadCategoryBuilder(
     /**
      * Adds a new cell to this section
      */
-    @Suppress("LongParameterList")
     fun addCell(
         identifier: String,
         label: String,
