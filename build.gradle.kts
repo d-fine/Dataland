@@ -82,6 +82,7 @@ sonar {
         property("sonar.coverage.jacoco.xmlReportPaths", file("$buildDir/reports/jacoco/test/jacocoTestReport.xml"))
         property("sonar.qualitygate.wait", true)
         property("sonar.javascript.lcov.reportPaths", fileTree("$projectDir/fe-coverage").files)
+        // TODO add reportspath here
         property(
             "sonar.coverage.exclusions",
             "**/test/**," +
