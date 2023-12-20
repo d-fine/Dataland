@@ -21,7 +21,7 @@ export function formatListOfBaseDataPoint(
   descriptionColumnHeader: string,
   documentColumnHeader: string,
 ): AvailableMLDTDisplayObjectTypes {
-  if (!baseDataPoints) {
+  if (!baseDataPoints || baseDataPoints.length === 0) {
     return MLDTDisplayObjectForEmptyString;
   } else {
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
