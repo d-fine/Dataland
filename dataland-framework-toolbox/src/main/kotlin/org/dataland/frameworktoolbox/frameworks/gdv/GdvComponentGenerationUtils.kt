@@ -37,7 +37,7 @@ class GdvComponentGenerationUtils : ComponentGenerationUtils() {
         return getFieldNameFromGermanString(row.fieldName)
     }
 
-    override fun getSelectionOptionsFromOptionColumn(row: TemplateRow): MutableSet<SelectionOption> {
+    override fun getSelectionOptionsFromOptionColumn(row: TemplateRow): Set<SelectionOption> {
         val stringOptions = row.options
             .split(";")
             .map { it.trim() }
@@ -47,7 +47,7 @@ class GdvComponentGenerationUtils : ComponentGenerationUtils() {
                 identifier = getFieldNameFromGermanString(it).capitalizeEn(),
                 label = it,
             )
-        }.toMutableSet()
+        }.toSet()
 
         require(mappedOptions.isNotEmpty()) {
             "Field ${row.fieldIdentifier} does not specify required options for component ${row.component}."

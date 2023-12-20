@@ -95,7 +95,7 @@ class GdvYearlyDecimalTimeseriesDataComponent(
                         }
 
                         SelectionOption(it.identifier, rowLabel)
-                    }.toMutableSet(),
+                    }.toSet(),
                 ),
                 imports = null,
             ),

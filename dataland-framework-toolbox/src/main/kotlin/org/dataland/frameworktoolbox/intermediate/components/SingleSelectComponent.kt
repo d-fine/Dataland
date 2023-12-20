@@ -21,7 +21,7 @@ open class SingleSelectComponent(
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
 
-    var options: MutableSet<SelectionOption> = mutableSetOf()
+    var options: Set<SelectionOption> = mutableSetOf()
     val enumName = "${identifier.capitalizeEn()}Options"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {

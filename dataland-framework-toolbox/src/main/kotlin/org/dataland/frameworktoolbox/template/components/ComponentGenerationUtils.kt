@@ -52,7 +52,7 @@ open class ComponentGenerationUtils {
     /**
      * Loads the options column required for some components (e.g. drop-downs)
      */
-    open fun getSelectionOptionsFromOptionColumn(row: TemplateRow): MutableSet<SelectionOption> {
+    open fun getSelectionOptionsFromOptionColumn(row: TemplateRow): Set<SelectionOption> {
         val stringOptions = row.options
             .split(";")
             .map { it.trim() }
@@ -62,7 +62,7 @@ open class ComponentGenerationUtils {
                 identifier = Naming.getNameFromLabel(it).capitalizeEn(),
                 label = it,
             )
-        }.toMutableSet()
+        }.toSet()
 
         require(mappedOptions.isNotEmpty()) {
             "Field ${row.fieldIdentifier} does not specify required options for component ${row.component}."

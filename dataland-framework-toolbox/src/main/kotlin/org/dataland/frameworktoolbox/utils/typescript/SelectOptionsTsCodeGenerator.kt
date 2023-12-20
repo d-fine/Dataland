@@ -8,7 +8,7 @@ import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOp
 * @param options are the objects that contain info about the select options
 * @returns a string containing the mapping object as typescript code
 */
-fun generateTsCodeForSelectOptionsMappingObject(options: MutableSet<SelectionOption>): String {
+fun generateTsCodeForSelectOptionsMappingObject(options: Set<SelectionOption>): String {
     val codeBuilder = StringBuilder()
     codeBuilder.append("const mappings = {\n")
 
@@ -27,7 +27,7 @@ fun generateTsCodeForSelectOptionsMappingObject(options: MutableSet<SelectionOpt
  * This default behaviour is useful for cases where custom population of the option field is not required.
  * @param options: the options of the respective component
  */
-fun generateTsCodeForOptionsOfSelectionFormFields(options: MutableSet<SelectionOption>): String {
+fun generateTsCodeForOptionsOfSelectionFormFields(options: Set<SelectionOption>): String {
     val codeBuilder = StringBuilder()
     codeBuilder.append(" [\n")
     for (option in options) {

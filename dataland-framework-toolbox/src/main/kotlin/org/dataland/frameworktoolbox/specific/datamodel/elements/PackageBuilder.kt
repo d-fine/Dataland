@@ -62,7 +62,7 @@ data class PackageBuilder(
      * Add a new enum to the package
      * @param name the name of the package
      */
-    fun addEnum(name: String, options: MutableSet<SelectionOption>, comment: String): EnumBuilder {
+    fun addEnum(name: String, options: Set<SelectionOption>, comment: String): EnumBuilder {
         val newEnum = EnumBuilder(
             name = name,
             parentPackage = this,

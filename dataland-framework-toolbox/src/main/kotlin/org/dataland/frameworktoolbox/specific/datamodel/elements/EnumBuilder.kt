@@ -21,7 +21,7 @@ data class EnumBuilder(
     override val name: String,
     override val parentPackage: PackageBuilder,
     val comment: String,
-    val options: MutableSet<SelectionOption>,
+    val options: Set<SelectionOption>,
 ) : DataModelElement {
 
     private val logger by LoggerDelegate()

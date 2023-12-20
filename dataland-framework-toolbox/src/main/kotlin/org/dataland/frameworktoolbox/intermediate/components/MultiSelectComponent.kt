@@ -22,7 +22,7 @@ open class MultiSelectComponent(
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
 
-    var options: MutableSet<SelectionOption> = mutableSetOf()
+    var options: Set<SelectionOption> = mutableSetOf()
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addProperty(
