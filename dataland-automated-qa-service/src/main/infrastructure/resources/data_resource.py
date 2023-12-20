@@ -33,16 +33,16 @@ class DataResource(Resource):
 
 def _get_data_retrieval_method(data_type: DataTypeEnum) -> Callable[[str, AuthenticatedClient], any]:
     if data_type == DataTypeEnum.EUTAXONOMY_FINANCIALS:
-        return lambda data_id, client: get_eu_taxonomy_financials_data(data_id, client=client)
+        return lambda data_id, client: get_eu_taxonomy_financials_data(data_id, client=client).data
     elif data_type == DataTypeEnum.EUTAXONOMY_NON_FINANCIALS:
-        return lambda data_id, client: get_eu_taxonomy_non_financials_data(data_id, client=client)
+        return lambda data_id, client: get_eu_taxonomy_non_financials_data(data_id, client=client).data
     elif data_type == DataTypeEnum.LKSG:
-        return lambda data_id, client: get_lksg_data(data_id, client=client)
+        return lambda data_id, client: get_lksg_data(data_id, client=client).data
     elif data_type == DataTypeEnum.SFDR:
-        return lambda data_id, client: get_sfdr_data(data_id, client=client)
+        return lambda data_id, client: get_sfdr_data(data_id, client=client).data
     elif data_type == DataTypeEnum.P2P:
-        return lambda data_id, client: get_p2p_data(data_id, client=client)
+        return lambda data_id, client: get_p2p_data(data_id, client=client).data
     elif data_type == DataTypeEnum.SME:
-        return lambda data_id, client: get_sme_data(data_id, client=client)
+        return lambda data_id, client: get_sme_data(data_id, client=client).data
     else:
         raise ValueError(f"No client specified for data type {data_type}")
