@@ -173,8 +173,8 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
                             "'${escapeEcmaScript(component.label)}'" +
                             ")",
                         setOf(
-                            "import {activityApiNameToHumanizedName} from " +
-                                "\"@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName\";",
+                            "import { activityApiNameToHumanizedName } from " +
+                                "\"@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames\";",
                             "import { formatListOfStringsForDatatable } from " +
                                 "\"@/components/resources/dataTable/conversion/" +
                                 "MultiSelectValueGetterFactory\";",
@@ -193,7 +193,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
                         body = "getActivityNamesAsDropdownOptions()",
                         imports = setOf(
                             "import { getActivityNamesAsDropdownOptions } from " +
-                                "\"@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName\"\n",
+                                "\"@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames\"",
                         ),
                     ),
                     component = component,

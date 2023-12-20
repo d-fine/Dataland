@@ -1,7 +1,7 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
 import { type GdvData } from "@clients/backend";
 //import {DropdownOption} from "@/utils/PremadeDropdownDatasets";
-import { getActivityNamesAsDropdownOptions } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
+import { getActivityNamesAsDropdownOptions } from "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames";
 
 export const gdvDataModel = [
   {

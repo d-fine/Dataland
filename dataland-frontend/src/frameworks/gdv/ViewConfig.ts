@@ -8,7 +8,7 @@ import { formatListOfStringsForDatatable } from "@/components/resources/dataTabl
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { formatGdvYearlyDecimalTimeseriesDataForTable } from "@/components/resources/dataTable/conversion/gdv/GdvYearlyDecimalTimeseriesDataGetterFactory";
-import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
+import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/gdv/GdvListOfBaseDataPointGetterFactory";
 export const GdvViewConfiguration: MLDTConfig<GdvData> = [
