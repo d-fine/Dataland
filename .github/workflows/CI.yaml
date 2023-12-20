@@ -199,6 +199,10 @@ jobs:
           cd ./dataland-automated-qa-service
           pip install --no-cache-dir -r requirements.txt
           pip install -e .
+          openapi-python-client generate --path ../dataland-document-manager/documentManagerOpenApi.json
+          openapi-python-client generate --path ../dataland-backend/backendOpenApi.json
+          pip install --no-cache-dir ./dataland-backend-api-documentation-client
+          pip install --no-cache-dir ./dataland-document-manager-api-documentation-client
       - name: Execute python unit tests
         if: always()
         run: | 
