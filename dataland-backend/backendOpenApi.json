@@ -9199,7 +9199,7 @@
             "type": "string",
             "nullable": true
           },
-          "ceoVorsitzender": {
+          "trennungVonCeoOderVorsitzenden": {
             "nullable": true,
             "allOf": [
               {
@@ -9207,7 +9207,7 @@
               }
             ]
           },
-          "amtszeit": {
+          "amtszeitBisZurTrennung": {
             "type": "string",
             "nullable": true
           }

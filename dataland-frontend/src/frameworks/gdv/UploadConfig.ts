@@ -1805,8 +1805,8 @@ export const gdvDataModel = [
             validation: "",
           },
           {
-            name: "ceoVorsitzender",
-            label: "CEO/Vorsitzender",
+            name: "trennungVonCeoOderVorsitzenden",
+            label: "Trennung von CEO oder Vorsitzenden",
             description:
               "Hat sich das Unternehmen im aktuellen Jahr der Berichterstattung von CEO/Vorsitzenden getrennt?",
             options: "",
@@ -1817,15 +1817,15 @@ export const gdvDataModel = [
             validation: "",
           },
           {
-            name: "amtszeit",
-            label: "Amtszeit",
+            name: "amtszeitBisZurTrennung",
+            label: "Amtszeit bis zur Trennung",
             description: "Wieviele Jahre war der/die CEO/Vorsitzende(r) im Amt?",
             options: "",
             unit: "",
             component: "InputTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
-              dataset.unternehmensfuehrungGovernance?.sonstige?.ceoVorsitzender == "Yes",
+              dataset.unternehmensfuehrungGovernance?.sonstige?.trennungVonCeoOderVorsitzenden == "Yes",
             validation: "",
           },
         ],

@@ -1692,21 +1692,23 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           },
           {
             type: "cell",
-            label: "CEO/Vorsitzender",
+            label: "Trennung von CEO oder Vorsitzenden",
             explanation:
               "Hat sich das Unternehmen im aktuellen Jahr der Berichterstattung von CEO/Vorsitzenden getrennt?",
             shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.unternehmensfuehrungGovernance?.sonstige?.ceoVorsitzender),
+              formatYesNoValueForDatatable(
+                dataset.unternehmensfuehrungGovernance?.sonstige?.trennungVonCeoOderVorsitzenden,
+              ),
           },
           {
             type: "cell",
-            label: "Amtszeit",
+            label: "Amtszeit bis zur Trennung",
             explanation: "Wieviele Jahre war der/die CEO/Vorsitzende(r) im Amt?",
             shouldDisplay: (dataset: GdvData): boolean =>
-              dataset.unternehmensfuehrungGovernance?.sonstige?.ceoVorsitzender == "Yes",
+              dataset.unternehmensfuehrungGovernance?.sonstige?.trennungVonCeoOderVorsitzenden == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.sonstige?.amtszeit),
+              formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.sonstige?.amtszeitBisZurTrennung),
           },
         ],
       },

@@ -294,8 +294,8 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       },
       sonstige: {
         wirtschaftspruefer: dataGenerator.randomShortString(),
-        ceoVorsitzender: dataGenerator.randomYesNo(),
-        amtszeit: dataGenerator.randomShortString(),
+        trennungVonCeoOderVorsitzenden: dataGenerator.randomYesNo(),
+        amtszeitBisZurTrennung: dataGenerator.randomShortString(),
       },
       stakeholder: {
         einbeziehungVonStakeholdern: dataGenerator.randomYesNo(),

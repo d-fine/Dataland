@@ -111,8 +111,8 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<GdvData>): void {
   if (newFixture.t.soziales?.audit) {
     newFixture.t.soziales.audit.auditsZurEinhaltungVonArbeitsstandards = YesNo.Yes;
   }
-  if (newFixture.t.unternehmensfuehrungGovernance?.sonstige?.ceoVorsitzender) {
-    newFixture.t.unternehmensfuehrungGovernance.sonstige.ceoVorsitzender = YesNo.Yes;
+  if (newFixture.t.unternehmensfuehrungGovernance?.sonstige?.trennungVonCeoOderVorsitzenden) {
+    newFixture.t.unternehmensfuehrungGovernance.sonstige.trennungVonCeoOderVorsitzenden = YesNo.Yes;
   }
   if (newFixture.t.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern) {
     newFixture.t.unternehmensfuehrungGovernance.stakeholder.einbeziehungVonStakeholdern = YesNo.Yes;

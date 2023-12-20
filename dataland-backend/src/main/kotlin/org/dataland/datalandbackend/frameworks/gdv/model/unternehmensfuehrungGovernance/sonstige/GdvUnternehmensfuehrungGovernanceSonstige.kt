@@ -8,6 +8,6 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class GdvUnternehmensfuehrungGovernanceSonstige(
     val wirtschaftspruefer: String?,
-    val ceoVorsitzender: YesNo?,
-    val amtszeit: String?,
+    val trennungVonCeoOderVorsitzenden: YesNo?,
+    val amtszeitBisZurTrennung: String?,
 )
