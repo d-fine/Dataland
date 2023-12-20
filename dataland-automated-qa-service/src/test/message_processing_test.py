@@ -2,10 +2,10 @@ import logging
 import pika
 import unittest
 from unittest.mock import Mock, MagicMock
-from infrastructure.messaging import process_qa_request
-import infrastructure.properties as p
+from main.infrastructure.messaging import process_qa_request
+import main.infrastructure.properties as p
 from dataland_backend_api_documentation_client.models.qa_status import QaStatus
-from infrastructure.qa_exceptions import AutomaticQaNotPossibleError
+from main.infrastructure.qa_exceptions import AutomaticQaNotPossibleError
 
 
 def mock_validate_raise_automated_qa_not_possible_error(resource, correlation_id):
