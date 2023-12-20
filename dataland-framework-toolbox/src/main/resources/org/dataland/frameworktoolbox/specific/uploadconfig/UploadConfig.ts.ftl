@@ -1,6 +1,5 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
 import { ${frameworkIdentifier?cap_first}Data } from "@clients/backend";
-//import {DropdownOption} from "@/utils/PremadeDropdownDatasets";
 <#list uploadConfig as element><@cats element/></#list><#macro subcats items>
 <#list items as element><@loopSubcats element/></#list>
 </#macro><#macro loop items><#list items as element><@loopOptions element/></#list></#macro>
