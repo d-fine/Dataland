@@ -87,7 +87,11 @@ sonar {
             "**/test/**," +
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
-                "dataland-frontend/src/main.ts",
+                "dataland-frontend/src/main.ts," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/gdv/**," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/specific/uploadconfig/**," +
+            "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components/MultiSelectComponent.kt," +
+            "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components/SingleSelectComponent.kt",
         )
         property(
             "sonar.sources",
@@ -109,8 +113,6 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
                 "EuTaxonomyForNonFinancialsDisplayDataModel.ts," +
-                "dataland-frontend/src/frameworks/gdv/ViewConfig.ts," +
-                "dataland-frontend/src/frameworks/gdv/UploadConfig.ts" +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts",
         )
@@ -121,8 +123,8 @@ sonar {
                 "dataland-frontend/src/components/general/SlideShow.vue," +
                 "dataland-frontend/src/components/resources/newLandingPage/TheQuotes.vue," +
                 "dataland-frontend/src/frameworks/gdv/ViewConfig.ts," +
-                "dataland-frontend/src/frameworks/gdv/UploadConfig.ts" +
-                "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**,",
+                "dataland-frontend/src/frameworks/gdv/UploadConfig.ts," +
+                "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**",
         )
     }
 }
