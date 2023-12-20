@@ -1,8 +1,8 @@
 import logging
 
 from .resource import Resource
-from infrastructure.properties import document_manager_api_url
-from infrastructure.keycloak import get_access_token
+from ..properties import document_manager_api_url
+from ..keycloak import get_access_token
 
 from dataland_backend_api_documentation_client.client import AuthenticatedClient
 from dataland_document_manager_api_documentation_client.api.document_controller.get_document import sync as get_document

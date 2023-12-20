@@ -2,8 +2,8 @@ import logging
 from collections.abc import Callable
 
 from .resource import Resource
-from infrastructure.keycloak import get_access_token
-from infrastructure.properties import backend_api_url
+from ..keycloak import get_access_token
+from ..properties import backend_api_url
 
 from dataland_backend_api_documentation_client.api.meta_data_controller.get_data_meta_info import sync as get_data_meta_info
 from dataland_backend_api_documentation_client.api.eu_taxonomy_data_for_financials_controller.get_company_associated_eu_taxonomy_data_for_financials import sync as get_eu_taxonomy_financials_data
