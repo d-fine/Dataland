@@ -4,6 +4,7 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.sdist]
 packages = ["src/main"]
+include = "src/main"
 
 [project]
 name = "dataland-automated-qa-service"
