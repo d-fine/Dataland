@@ -7,7 +7,8 @@ import { GdvApiClient } from "@/frameworks/gdv/ApiClient";
 
 export class BaseGdvFrameworkDefinition implements BaseFrameworkDefinition<GdvData> {
   readonly identifier = "gdv";
-  readonly explanation = "Das GDV/VÖB Framework";
+  readonly explanation =
+    "Das GDV/VÖB Framework ist ein ESG-Fragebogen des Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken";
   readonly label = "GDV/VÖB";
   getFrameworkApiClient(configuration?: Configuration, axiosInstance?: AxiosInstance): FrameworkDataApi<GdvData> {
     return new GdvApiClient(configuration, axiosInstance);
