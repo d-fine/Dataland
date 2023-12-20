@@ -2,53 +2,55 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Port Rosanna",
-			"headquartersPostalCode": "99792-6968",
-			"sector": "schemas",
+			"headquarters": "Dietrichside",
+			"headquartersPostalCode": "08680",
+			"sector": "initiatives",
 			"identifiers": {
 				"Lei": [
-					"yq56iHBxOz7URcmz9K39"
+					"JYbOVLKoyMZaTJrATi5t"
 				],
 				"Isin": [
-					"m1GbaxMQUhMW",
-					"MgagaEgPbhr0"
+					"je1pje7e2tZX"
 				],
-				"PermId": [],
+				"PermId": [
+					"UWErTWTiMS"
+				],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"wpW1h75jI"
+				"Duns": [
+					"M72RNLoG2"
 				],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"WH1Cg2X1C"
+				],
+				"CompanyRegistrationNumber": [
+					"o67mNtA0cKMjoxI"
+				]
 			},
-			"countryCode": "TT",
+			"countryCode": "GA",
 			"companyAlternativeNames": [
-				"Hilpert - Bernhard",
-				"Littel - Kutch",
-				"Parker, Jacobs and Lynch"
+				"Feil LLC"
 			],
-			"companyLegalForm": null,
-			"website": "https://aggressive-in-joke.info",
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://spiffy-mallet.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.5",
-						"18.12",
-						"43.99",
-						"Q"
+						"03.1",
+						"46.3",
+						"80.1"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Watsica Divide 322",
-						"postalCode": "98100-8790",
-						"city": "New Rosinaside",
-						"state": null,
-						"country": "KR"
+						"streetAndHouseNumber": "Sierra Parkway 1809",
+						"postalCode": "86288",
+						"city": "Cupertino",
+						"state": "Connecticut",
+						"country": "TZ"
 					},
-					"numberOfEmployees": 5200,
-					"fiscalYearStart": "2024-10-01"
+					"numberOfEmployees": 5806,
+					"fiscalYearStart": "2024-04-05"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -58,33 +60,23 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Johns, Towne and McDermott",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Tillman Overpass 15285",
-								"postalCode": "99329",
-								"city": "Port Deionburgh",
-								"state": "Arkansas",
-								"country": "TK"
-							},
-							"shareOfTotalRevenueInPercent": 61.5
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Katelynn Canyon 702",
-								"postalCode": null,
-								"city": "West Kayleigh",
-								"state": "Maryland",
-								"country": "LK"
-							},
-							"shareOfTotalRevenueInPercent": 79.11
-						}
-					]
+					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Awesome Plastic Tuna",
+							"shareOfTotalRevenueInPercent": 46.95
+						},
+						{
+							"name": "Oriental Granite Bacon",
+							"shareOfTotalRevenueInPercent": 47.91
+						},
+						{
+							"name": "Tasty Granite Bike",
+							"shareOfTotalRevenueInPercent": 42.74
+						}
+					]
 				}
 			},
 			"power": {
@@ -92,20 +84,18 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 399,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"powerConsumptionInMWh": 719,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 527,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 26904398,
-					"naturalHazardsCovered": [
-						"Wind"
-					]
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 13398205,
+					"naturalHazardsCovered": null
 				}
 			}
 		},
@@ -114,43 +104,45 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "Taureanfurt",
-			"headquartersPostalCode": "59828-0438",
-			"sector": null,
+			"headquarters": "Davinboro",
+			"headquartersPostalCode": "08930",
+			"sector": "niches",
 			"identifiers": {
-				"Lei": [
-					"495WlqXMtsXlTErzmFea"
-				],
+				"Lei": [],
 				"Isin": [
-					"OEnzezeNlDYn"
+					"y2FUwVqFv3SJ",
+					"iqCelpz4zT9G"
 				],
 				"PermId": [
-					"ANQ0R1yFWA"
+					"OPwNzfEmVM"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"ozglyz0"
+				],
 				"Duns": [
-					"oxBpYp8n7"
+					"IoMc1eV6B"
 				],
 				"VatNumber": [
-					"Ma4fD1GBJ"
+					"o327BqEw4"
 				],
-				"CompanyRegistrationNumber": [
-					"Xh2vdBtcvUlIEhV"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "TK",
+			"countryCode": "NR",
 			"companyAlternativeNames": [
-				"Kerluke, Ratke and Lebsack"
+				"Balistreri - Swift",
+				"Dicki, Shields and Stroman",
+				"Hahn - Farrell",
+				"Leannon Group"
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://ecstatic-chili.name",
+			"website": "https://recent-moat.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"19.20"
+						"43.31"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -159,46 +151,52 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 6704,
-					"fiscalYearStart": "2024-04-13"
+					"numberOfEmployees": 4545,
+					"fiscalYearStart": "2024-08-14"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 57329994,
-					"operatingCostInEUR": 17855587,
-					"capitalAssetsInEUR": 54299208
+					"revenueInEUR": 6668843,
+					"operatingCostInEUR": 6643700,
+					"capitalAssetsInEUR": 26701007
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": null
 				},
 				"products": {
-					"listOfProducts": []
+					"listOfProducts": [
+						{
+							"name": "Sleek Soft Table",
+							"shareOfTotalRevenueInPercent": 13.36
+						},
+						{
+							"name": "Refined Fresh Car",
+							"shareOfTotalRevenueInPercent": 28.47
+						}
+					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 879,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"powerConsumptionInMWh": 877,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 642,
 					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 45395467,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
 						"Wind",
-						"EarthQuake",
-						"Flooding",
-						"Snow",
-						"Hail",
-						"Avalanche"
+						"Avalanche",
+						"Snow"
 					]
 				}
 			}
@@ -208,42 +206,37 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Okunevafield",
-			"headquartersPostalCode": "78857-9002",
-			"sector": "action-items",
+			"headquarters": "Sarasota",
+			"headquartersPostalCode": "95518-9883",
+			"sector": "interfaces",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"LQ6l0VmDjS2b"
+					"XspQ8X3T6eVt"
 				],
 				"PermId": [
-					"epLNJxO9R8"
+					"EA9s91uPy8"
 				],
-				"Ticker": [
-					"1pBbLa0"
-				],
+				"Ticker": [],
 				"Duns": [],
-				"VatNumber": [
-					"RIjVPQobc"
-				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "DO",
+			"countryCode": "US",
 			"companyAlternativeNames": [
-				"Dach - Denesik",
-				"Denesik - Tillman",
-				"Shields Group",
-				"Wiza - Rau"
+				"Dibbert - Bogisich",
+				"Hills, Romaguera and Schulist",
+				"Mueller - Green"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://red-rush.name/",
+			"companyLegalForm": null,
+			"website": "https://burdensome-hiccups.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"64.99"
+						"27.3"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -252,50 +245,50 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 7229,
-					"fiscalYearStart": "2024-02-16"
+					"numberOfEmployees": 7065,
+					"fiscalYearStart": "2024-03-02"
 				},
 				"companyFinancials": {
-					"revenueInEUR": null,
-					"operatingCostInEUR": 10795397,
-					"capitalAssetsInEUR": 21897567
+					"revenueInEUR": 67797219,
+					"operatingCostInEUR": 28158316,
+					"capitalAssetsInEUR": 5802021
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Ullrich, Bernier and Stiedemann",
+							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Schuppe Avenue 853",
-								"postalCode": "88748",
-								"city": "Jurupa Valley",
-								"state": "North Dakota",
-								"country": "CX"
+								"streetAndHouseNumber": "Kaelyn Estates 5073",
+								"postalCode": "80176",
+								"city": "Sunrise",
+								"state": "Iowa",
+								"country": "TJ"
 							},
-							"shareOfTotalRevenueInPercent": 30.03
+							"shareOfTotalRevenueInPercent": 0.82
 						},
 						{
-							"nameOfProductionSite": "Ebert LLC",
+							"nameOfProductionSite": "Morissette - Hand",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Jeffery Throughway 31865",
-								"postalCode": "65088-9333",
-								"city": "Elliotborough",
-								"state": "Mississippi",
-								"country": "DO"
+								"streetAndHouseNumber": "Bahringer Key 536",
+								"postalCode": "19625",
+								"city": "Hamillport",
+								"state": null,
+								"country": "IT"
 							},
-							"shareOfTotalRevenueInPercent": null
+							"shareOfTotalRevenueInPercent": 53.87
 						},
 						{
-							"nameOfProductionSite": "Dibbert Group",
+							"nameOfProductionSite": "Volkman LLC",
 							"addressOfProductionSite": {
 								"streetAndHouseNumber": null,
-								"postalCode": "17203",
-								"city": "Port Rileytown",
+								"postalCode": "72149",
+								"city": "Lake Reynoldstead",
 								"state": null,
-								"country": "IL"
+								"country": "TJ"
 							},
-							"shareOfTotalRevenueInPercent": null
+							"shareOfTotalRevenueInPercent": 80.37
 						}
 					]
 				},
@@ -305,27 +298,22 @@
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between5And10"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1234,
+					"powerConsumptionInMWh": 1654,
 					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": 909,
 					"primaryEnergySourceForHeatingAndHotWater": "Electric",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
+					"insuranceAgainstNaturalHazards": null,
 					"amountCoveredByInsuranceAgainstNaturalHazards": null,
 					"naturalHazardsCovered": [
-						"Flooding",
-						"Avalanche",
-						"Snow",
-						"EarthQuake",
-						"Hail",
-						"Wind"
+						"Hail"
 					]
 				}
 			}

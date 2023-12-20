@@ -9,15 +9,6 @@ import {
   type SmeData,
 } from "@clients/backend";
 
-// export function getSelectOptions(): DropdownOption[] {
-//   return [
-//       {label: "Hello", value: "World"},
-//       {label: "Hello2", value: "World2"},
-//       {label: "Hello3", value: "World3"},
-//       {label: "Hello4", value: "World4"},
-//   ]
-// }
-
 export interface Category {
   name: string;
   label: string;

@@ -117,6 +117,14 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
             "The field with the label \"berichtsPflicht\" must exist in the gdv framework."
         }
 
+        framework.root.edit<ComponentGroup>("general") {
+            edit<ComponentGroup>("masterData") {
+                edit<YesNoComponent>("berichtsPflicht") {
+                    customizeBerichtsPflicht(this)
+                }
+            }
+        }
+
         val showIfBerichtsPflicht = DependsOnComponentValue(
             berichtsPflicht,
             "Yes",
@@ -130,14 +138,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
             edit<ComponentGroup>("taxonomie") {
                 edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
                     customizeEuTaxonomieKompassAktivitaetenComponent(this)
-                }
-            }
-        }
-
-        framework.root.edit<ComponentGroup>("general") {
-            edit<ComponentGroup>("masterData") {
-                edit<YesNoComponent>("berichtsPflicht") {
-                    customizeYesNoComponent(this)
                 }
             }
         }
@@ -185,8 +185,11 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
             component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
                 sectionUploadConfigBuilder.addStandardUploadConfigCell(
                     frameworkUploadOptions = FrameworkUploadOptions(
-                        body = "Object.values(Activity),",
-                        imports = setOf("import {Activity} from \"@clients/backend\" "),
+                        body = "getActivityNamesAsDropdownOptions()",
+                        imports = setOf(
+                            "import { getActivityNamesAsDropdownOptions } from " +
+                                "\"@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName\"\n",
+                        ),
                     ),
                     component = component,
                     uploadComponentName = "MultiSelectFormField",
@@ -195,20 +198,17 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
             }
         }
     }
-
-    private fun customizeYesNoComponent(component: YesNoComponent) {
-        if (component.label == "Berichts-Pflicht") {
-            component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
-                sectionUploadConfigBuilder.addStandardUploadConfigCell(
-                    frameworkUploadOptions = null,
-                    component = component,
-                    uploadComponentName = "YesNoFormField",
-                    validation = FrameworkUploadOptions(
-                        body = "\"is:Yes\"",
-                        imports = null,
-                    ),
-                )
-            }
+    private fun customizeBerichtsPflicht(component: YesNoComponent) {
+        component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
+            sectionUploadConfigBuilder.addStandardUploadConfigCell(
+                frameworkUploadOptions = null,
+                component = component,
+                uploadComponentName = "YesNoFormField",
+                validation = FrameworkUploadOptions(
+                    body = "\"is:Yes\"",
+                    imports = null,
+                ),
+            )
         }
     }
 }

@@ -50,7 +50,7 @@ export const ${frameworkIdentifier}DataModel = [<@loopCategories uploadConfig/>]
     name: "${fieldConfig.name?js_string}",
     label: "${fieldConfig.label?js_string}",
     <#if fieldConfig.explanation??>description: "${fieldConfig.explanation?js_string}",</#if>
-    options: <#if fieldConfig.frameworkUploadOptions??>${fieldConfig.frameworkUploadOptions.body}<#else>"",</#if>
+    options: <#if fieldConfig.frameworkUploadOptions??>${fieldConfig.frameworkUploadOptions.body},<#else>"",</#if>
     unit: "<#if fieldConfig.unit??>${fieldConfig.unit?js_string}</#if>",
     component: "${fieldConfig.uploadComponentName?js_string}",
     required: ${fieldConfig.required?c},

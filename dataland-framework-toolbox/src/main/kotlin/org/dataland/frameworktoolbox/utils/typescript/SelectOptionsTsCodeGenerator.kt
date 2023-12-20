@@ -27,15 +27,15 @@ fun generateTsCodeForSelectOptionsMappingObject(options: MutableSet<SelectionOpt
  * This default behaviour is useful for cases where custom population of the option field is not required.
  * @param options: the options of the respective component
  */
-fun generateTsCodeForOptions(options: MutableSet<SelectionOption>): String {
-    val optionsString = StringBuilder()
-    optionsString.append(" [\n")
+fun generateTsCodeForOptionsOfSelectionFormFields(options: MutableSet<SelectionOption>): String {
+    val codeBuilder = StringBuilder()
+    codeBuilder.append(" [\n")
     for (option in options) {
-        optionsString.append("{ \n")
-        optionsString.append("label: \"" + option.label + "\" ,\n")
-        optionsString.append("value: \"" + option.identifier + "\" ,\n")
-        optionsString.append("}, \n")
+        codeBuilder.append("{ \n")
+        codeBuilder.append("label: \"" + option.label + "\" ,\n")
+        codeBuilder.append("value: \"" + option.identifier + "\" ,\n")
+        codeBuilder.append("}, \n")
     }
-    optionsString.append(" ],")
-    return optionsString.toString()
+    codeBuilder.append(" ]")
+    return codeBuilder.toString()
 }
