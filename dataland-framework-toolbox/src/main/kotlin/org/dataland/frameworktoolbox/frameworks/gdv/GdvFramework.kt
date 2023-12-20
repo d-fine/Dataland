@@ -130,9 +130,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
         framework.root.edit<ComponentGroup>("umwelt") {
             edit<ComponentGroup>("taxonomie") {
                 edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
-                    customizeEuTaxonomieKompassAktivitaetenFixtureGenerator(this)
-                    customizeEuTaxonomieKompassAktivitaetenViewConfigGenerator(this)
-                    customizeEuTaxonomieKompassAktivitaetenUploadGenerator(this)
+                    customizeEuTaxonomieKompassAktivitaeten(this)
                 }
             }
         }
@@ -140,6 +138,12 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
         return GdvComponentGenerationUtils()
+    }
+
+    private fun customizeEuTaxonomieKompassAktivitaeten(component: MultiSelectComponent) {
+        customizeEuTaxonomieKompassAktivitaetenFixtureGenerator(component)
+        customizeEuTaxonomieKompassAktivitaetenViewConfigGenerator(component)
+        customizeEuTaxonomieKompassAktivitaetenUploadGenerator(component)
     }
 
     private fun customizeEuTaxonomieKompassAktivitaetenFixtureGenerator(component: MultiSelectComponent) {
