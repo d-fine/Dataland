@@ -200,10 +200,12 @@ jobs:
           pip install --no-cache-dir -r requirements.txt
           pip install -e .
       - name: Execute python unit tests
+        if: always()
         run: | 
           python --version
           python -m pytest
-        if: always()
+        env:
+          DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
 #      - name: Frontend linting
 #        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
 #        if: always()
