@@ -117,6 +117,14 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
             "The field with the label \"berichtsPflicht\" must exist in the gdv framework."
         }
 
+        framework.root.edit<ComponentGroup>("general") {
+            edit<ComponentGroup>("masterData") {
+                edit<YesNoComponent>("berichtsPflicht") {
+                    customizeBerichtsPflicht(this)
+                }
+            }
+        }
+
         val showIfBerichtsPflicht = DependsOnComponentValue(
             berichtsPflicht,
             "Yes",
@@ -130,14 +138,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
             edit<ComponentGroup>("taxonomie") {
                 edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
                     customizeEuTaxonomieKompassAktivitaetenComponent(this)
-                }
-            }
-        }
-
-        framework.root.edit<ComponentGroup>("general") {
-            edit<ComponentGroup>("masterData") {
-                edit<YesNoComponent>("berichtsPflicht") {
-                    customizeYesNoComponent(this)
                 }
             }
         }
@@ -198,7 +198,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
             }
         }
     }
-    private fun customizeYesNoComponent(component: YesNoComponent) {
+    private fun customizeBerichtsPflicht(component: YesNoComponent) {
         component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
             sectionUploadConfigBuilder.addStandardUploadConfigCell(
                 frameworkUploadOptions = null,
