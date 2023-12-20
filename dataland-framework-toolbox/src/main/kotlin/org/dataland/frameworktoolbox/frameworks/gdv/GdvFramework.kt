@@ -133,7 +133,9 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
         framework.root.edit<ComponentGroup>("umwelt") {
             edit<ComponentGroup>("taxonomie") {
                 edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
-                    customizeEuTaxonomieKompassAktivitaetenComponent(this)
+                    customizeEuTaxonomieKompassAktivitaetenFixtureGenerator(this)
+                    customizeEuTaxonomieKompassAktivitaetenViewConfigGenerator(this)
+                    customizeEuTaxonomieKompassAktivitaetenUploadGenerator(this)
                 }
             }
         }
@@ -143,7 +145,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
         return GdvComponentGenerationUtils()
     }
 
-    private fun customizeEuTaxonomieKompassAktivitaetenComponent(component: MultiSelectComponent) {
+    private fun customizeEuTaxonomieKompassAktivitaetenFixtureGenerator(component: MultiSelectComponent) {
         if (component.options.size == 1 && component.options.single().label == "EuTaxonomyActivityOptions") {
             component.fixtureGeneratorGenerator = { sectionConfigBuilder: FixtureSectionBuilder ->
                 sectionConfigBuilder.addAtomicExpression(
@@ -159,6 +161,11 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
                     ),
                 )
             }
+        }
+    }
+
+    private fun customizeEuTaxonomieKompassAktivitaetenViewConfigGenerator(component: MultiSelectComponent) {
+        if (component.options.size == 1 && component.options.single().label == "EuTaxonomyActivityOptions") {
             component.viewConfigGenerator = { sectionConfigBuilder ->
                 sectionConfigBuilder.addStandardCellWithValueGetterFactory(
                     component,
@@ -178,6 +185,11 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
                     ),
                 )
             }
+        }
+    }
+
+    private fun customizeEuTaxonomieKompassAktivitaetenUploadGenerator(component: MultiSelectComponent) {
+        if (component.options.size == 1 && component.options.single().label == "EuTaxonomyActivityOptions") {
             component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
                 sectionUploadConfigBuilder.addStandardUploadConfigCell(
                     frameworkUploadOptions = FrameworkUploadOptions(
@@ -194,6 +206,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
             }
         }
     }
+
     private fun customizeBerichtsPflicht(component: YesNoComponent) {
         component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
             sectionUploadConfigBuilder.addStandardUploadConfigCell(
