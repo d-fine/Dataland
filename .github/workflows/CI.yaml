@@ -194,7 +194,7 @@ jobs:
 #        run: ./gradlew ktlintCheck detekt --no-daemon --stacktrace
 #        if: always()
       - name: Execute python unit tests
-        run: ls; python -m unittest discover -s ./dataland-automated-qa-service/src/test/ -p *_test.py
+        run: pyton --version; python -m unittest discover -s ./dataland-automated-qa-service/src/test/ -p *_test.py
         if: always()
 #      - name: Frontend linting
 #        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
