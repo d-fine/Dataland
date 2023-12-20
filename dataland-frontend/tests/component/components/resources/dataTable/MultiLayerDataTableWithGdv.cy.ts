@@ -18,6 +18,8 @@ import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation
 import MultiLayerDataTableFrameworkPanel from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 
+// TODO use original view config + test name + test location + enable view config in sonar for coverage
+
 const configForGdvVoebPanelWithOneRollingWindow: MLDTConfig<GdvData> = [
   {
     type: "cell",
