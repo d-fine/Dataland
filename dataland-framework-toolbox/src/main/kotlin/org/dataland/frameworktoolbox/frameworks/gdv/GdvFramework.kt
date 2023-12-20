@@ -28,7 +28,8 @@ import java.io.File
 class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it should implement "PavedRoadFramework" (?)
     identifier = "gdv",
     label = "GDV/VÖB",
-    explanation = "Das GDV/VÖB Framework",
+    explanation = "Das GDV/VÖB Framework ist ein ESG-Fragebogen des Gesamtverbands der Versicherer und des " +
+        "Bundesverbands Öffentlicher Banken",
     File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
 ) {
 
@@ -108,7 +109,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setGroupsThatAreExpandedOnPageLoad(framework)
         overwriteFakeFixtureGenerationForDataDate(framework)
-
         val berichtsPflicht = framework.root
             .getOrNull<ComponentGroup>("general")
             ?.getOrNull<ComponentGroup>("masterData")
@@ -117,11 +117,9 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
             "The field with the label \"berichtsPflicht\" must exist in the gdv framework."
         }
         val showIfBerichtsPflicht = DependsOnComponentValue(berichtsPflicht, "Yes")
-
         createRollingWindowComponentsInCategoryUmwelt(framework, showIfBerichtsPflicht)
         createRollingWindowComponentsInCategorySoziales(framework, showIfBerichtsPflicht)
         createListOfBaseDatapointComponents(framework, showIfBerichtsPflicht)
-
         framework.root.edit<ComponentGroup>("general") {
             edit<ComponentGroup>("masterData") {
                 edit<YesNoComponent>("berichtsPflicht") {
