@@ -76,10 +76,12 @@ class CompanyDataController(
 
     override fun getCompaniesBySearchString(
         searchString: String,
+        resultLimit: Int,
     ): ResponseEntity<List<CompanyIdAndName>> {
         return ResponseEntity.ok(
             companyQueryManager.searchCompaniesByNameOrIdentifierAndGetApiModel(
                 searchString,
+                resultLimit,
             ),
         )
     }

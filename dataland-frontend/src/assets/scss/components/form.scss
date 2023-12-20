@@ -470,15 +470,21 @@ input[type="radio"] {
     border: 2px solid $input-checked-color;
     border-radius: 2px;
   }
-  input[type="checkbox"]:checked {
+  input[type="checkbox"]:not(.p-radiobutton):checked {
     background-color: $input-checked-color;
   }
-  input[type="radio"] {
+  input[type="radio"],
+  input.p-radiobutton {
     background-color: white;
     border: 2px solid $input-label-color;
     border-radius: 15px;
     cursor: pointer;
     margin-right: 10px;
+  }
+  input.p-radiobutton:hover,
+  input.p-radiobutton:active,
+  input.p-radiobutton:checked {
+    border: 3px solid $input-label-color;
   }
   input[type="checkbox"]::before,
   input[type="radio"]::before {
@@ -494,7 +500,8 @@ input[type="radio"] {
     border-style: solid;
     border-color: $input-text-bg;
   }
-  input[type="radio"]::before {
+  input[type="radio"]::before,
+  input.p-radiobutton::before {
     border-style: solid;
     border-color: $input-label-color;
   }
@@ -503,7 +510,8 @@ input[type="radio"] {
     display: block;
   }
   label[data-checked="true"] {
-    input[type="radio"]::before {
+    input[type="radio"]::before,
+    input.p-radiobutton::before {
       display: block;
     }
   }
