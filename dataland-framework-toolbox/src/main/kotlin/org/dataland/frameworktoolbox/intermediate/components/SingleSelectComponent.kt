@@ -94,5 +94,3 @@ open class SingleSelectComponent(
             ")\n"
     }
 }
-
-// TODO Emanuel: Check if you have used EcmaString everywhere where you put a val into the generated JS Code

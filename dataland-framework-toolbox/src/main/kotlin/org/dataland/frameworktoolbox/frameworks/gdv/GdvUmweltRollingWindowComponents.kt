@@ -249,30 +249,35 @@ object GdvUmweltRollingWindowComponents {
                     "zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen" +
                     " (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die " +
                     "Prognosen für die kommenden drei Jahre an."
-                decimalRows = mutableListOf(
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "taxonomieGeeignetNachProzentUmsatz",
-                        "Taxonomie geeignet (eligible) nach % Umsatz",
-                        "%",
-                    ),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "taxonomieGeeignetNachProzentCapex",
-                        "Taxonomie geeignet (eligible) nach % Capex",
-                        "%",
-                    ),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "taxonomieKonformNachProzentUmsatz",
-                        "Taxonomie konform (aligned) nach % Umsatz",
-                        "%",
-                    ),
-                    GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
-                        "taxonomieKonformNachProzentCapex",
-                        "Taxonomie konform (aligned) nach % Capex",
-                        "%",
-                    ),
-                )
+                decimalRows = buildDecimalsRowsForUmsatzInvestitionsaufwandFuerNachhaltige()
                 availableIf = available
             }
         }
+    }
+
+    private fun buildDecimalsRowsForUmsatzInvestitionsaufwandFuerNachhaltige():
+        MutableList<GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow> {
+        return mutableListOf(
+            GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                "taxonomieGeeignetNachProzentUmsatz",
+                "Taxonomie geeignet (eligible) nach % Umsatz",
+                "%",
+            ),
+            GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                "taxonomieGeeignetNachProzentCapex",
+                "Taxonomie geeignet (eligible) nach % Capex",
+                "%",
+            ),
+            GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                "taxonomieKonformNachProzentUmsatz",
+                "Taxonomie konform (aligned) nach % Umsatz",
+                "%",
+            ),
+            GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
+                "taxonomieKonformNachProzentCapex",
+                "Taxonomie konform (aligned) nach % Capex",
+                "%",
+            ),
+        )
     }
 }
