@@ -116,6 +116,11 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
         requireNotNull(berichtsPflicht) {
             "The field with the label \"berichtsPflicht\" must exist in the gdv framework."
         }
+        val showIfBerichtsPflicht = DependsOnComponentValue(berichtsPflicht, "Yes")
+
+        createRollingWindowComponentsInCategoryUmwelt(framework, showIfBerichtsPflicht)
+        createRollingWindowComponentsInCategorySoziales(framework, showIfBerichtsPflicht)
+        createListOfBaseDatapointComponents(framework, showIfBerichtsPflicht)
 
         framework.root.edit<ComponentGroup>("general") {
             edit<ComponentGroup>("masterData") {
@@ -124,12 +129,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
                 }
             }
         }
-        val showIfBerichtsPflicht = DependsOnComponentValue(berichtsPflicht, "Yes")
-
-        createRollingWindowComponentsInCategoryUmwelt(framework, showIfBerichtsPflicht)
-        createRollingWindowComponentsInCategorySoziales(framework, showIfBerichtsPflicht)
-        createListOfBaseDatapointComponents(framework, showIfBerichtsPflicht)
-
         framework.root.edit<ComponentGroup>("umwelt") {
             edit<ComponentGroup>("taxonomie") {
                 edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
