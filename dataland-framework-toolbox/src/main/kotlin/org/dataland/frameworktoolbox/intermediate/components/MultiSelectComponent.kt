@@ -63,6 +63,7 @@ open class MultiSelectComponent(
             ),
             component = this,
             uploadComponentName = "MultiSelectFormField",
+            validation = null,
         )
     }
 

@@ -133,6 +133,14 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
                 }
             }
         }
+
+        framework.root.edit<ComponentGroup>("general") {
+            edit<ComponentGroup>("masterData") {
+                edit<YesNoComponent>("berichtsPflicht") {
+                    customizeYesNoComponent(this)
+                }
+            }
+        }
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
@@ -182,7 +190,23 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
                     ),
                     component = component,
                     uploadComponentName = "MultiSelectFormField",
-                    // TODO Problem:  We cannot make it use the ActivityName.ts file! Limitation!
+                    validation = null,
+                )
+            }
+        }
+    }
+
+    private fun customizeYesNoComponent(component: YesNoComponent) {
+        if (component.label == "Berichts-Pflicht") {
+            component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
+                sectionUploadConfigBuilder.addStandardUploadConfigCell(
+                    frameworkUploadOptions = null,
+                    component = component,
+                    uploadComponentName = "MultiSelectFormField",
+                    validation = FrameworkUploadOptions(
+                        body = "\"is:YesNo\"",
+                        imports = null,
+                    ),
                 )
             }
         }

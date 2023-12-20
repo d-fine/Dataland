@@ -31,6 +31,7 @@ fun UploadCategoryBuilder.addStandardUploadConfigCell(
     component: ComponentBase,
     uploadComponentName: String,
     unit: String? = null,
+    validation: FrameworkUploadOptions?,
 ) {
     addCell(
         identifier = component.identifier,
@@ -43,5 +44,6 @@ fun UploadCategoryBuilder.addStandardUploadConfigCell(
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
         uploadComponentName = uploadComponentName,
         frameworkUploadOptions = frameworkUploadOptions,
+        validation = validation,
     )
 }

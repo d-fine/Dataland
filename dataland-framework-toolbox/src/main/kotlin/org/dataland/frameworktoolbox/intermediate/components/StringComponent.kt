@@ -48,6 +48,7 @@ class StringComponent(
             frameworkUploadOptions = null,
             component = this,
             uploadComponentName = "InputTextFormField",
+            validation = null,
         )
     }
 

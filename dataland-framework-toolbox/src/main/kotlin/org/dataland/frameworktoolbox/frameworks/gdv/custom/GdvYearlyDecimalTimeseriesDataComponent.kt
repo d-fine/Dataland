@@ -101,6 +101,7 @@ class GdvYearlyDecimalTimeseriesDataComponent(
             ),
             component = this,
             uploadComponentName = componentName,
+            validation = null,
         )
     }
 

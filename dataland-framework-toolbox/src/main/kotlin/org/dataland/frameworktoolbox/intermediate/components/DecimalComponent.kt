@@ -54,6 +54,7 @@ open class DecimalComponent(
             frameworkUploadOptions = null,
             component = this,
             uploadComponentName = "NumberFormField",
+            validation = null,
         )
     }
 

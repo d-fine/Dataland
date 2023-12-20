@@ -66,6 +66,7 @@ class GdvListOfBaseDataPointComponent(
             frameworkUploadOptions = null,
             component = this,
             uploadComponentName = "ListOfBaseDataPointsFormField",
+            validation = null,
         )
     }
 

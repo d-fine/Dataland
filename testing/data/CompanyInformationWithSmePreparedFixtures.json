@@ -2,56 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Blue Springs",
-			"headquartersPostalCode": "04445-2510",
-			"sector": "systems",
+			"headquarters": "Port Damionstad",
+			"headquartersPostalCode": null,
+			"sector": null,
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"I0I4hUnl16OZTAF7jGnd"
+				],
 				"Isin": [
-					"dz15rAazdjgk",
-					"m3Y8CxoX4XOl"
+					"KLr3TBVTebf4",
+					"4iBzsovwsrb1"
 				],
-				"PermId": [
-					"R0BZlhknc6"
-				],
+				"PermId": [],
 				"Ticker": [],
-				"Duns": [
-					"6Lggfi8OD"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"Qncf1RTco"
+					"fe7krCJJq"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "FR",
+			"countryCode": "PY",
 			"companyAlternativeNames": [
-				"Barton Group",
-				"Rippin, Waelchi and Sporer",
-				"Wehner, Fay and Anderson"
+				"Orn Inc",
+				"West, Hoeger and Davis"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://profitable-banking.info/",
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://unique-angora.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"01.24",
-						"25.50",
-						"26.5",
-						"28.3",
-						"91.04"
+						"46.21",
+						"77.34"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Tremblay Overpass 644",
-						"postalCode": "82800-5636",
-						"city": "Shanystead",
-						"state": "Mississippi",
-						"country": "KP"
+						"streetAndHouseNumber": "London Road 612",
+						"postalCode": "55523-0513",
+						"city": "Madelynborough",
+						"state": "Wyoming",
+						"country": "GY"
 					},
-					"numberOfEmployees": 6183,
-					"fiscalYearStart": "2024-10-18"
+					"numberOfEmployees": 2497,
+					"fiscalYearStart": "2024-02-11"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -61,10 +55,46 @@
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": []
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Adrien Stravenue 6208",
+								"postalCode": "84788-3076",
+								"city": "Enriqueworth",
+								"state": "Wyoming",
+								"country": "TZ"
+							},
+							"shareOfTotalRevenueInPercent": 79.19
+						},
+						{
+							"nameOfProductionSite": "Metz and Sons",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Eliza Rest 253",
+								"postalCode": "76311",
+								"city": "North Jeff",
+								"state": "Mississippi",
+								"country": "CR"
+							},
+							"shareOfTotalRevenueInPercent": 21.73
+						}
+					]
 				},
 				"products": {
-					"listOfProducts": null
+					"listOfProducts": [
+						{
+							"name": "Incredible Concrete Keyboard",
+							"shareOfTotalRevenueInPercent": 14.57
+						},
+						{
+							"name": "Oriental Frozen Tuna",
+							"shareOfTotalRevenueInPercent": 73.33
+						},
+						{
+							"name": "Licensed Rubber Tuna",
+							"shareOfTotalRevenueInPercent": 75.22
+						}
+					]
 				}
 			},
 			"power": {
@@ -74,17 +104,19 @@
 				"consumption": {
 					"powerConsumptionInMWh": null,
 					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 281,
+					"energyConsumptionHeatingAndHotWaterInMWh": 151,
 					"primaryEnergySourceForHeatingAndHotWater": "Oil",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 815309,
+					"insuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 43777002,
 					"naturalHazardsCovered": [
-						"Avalanche"
+						"Snow",
+						"Wind",
+						"Hail"
 					]
 				}
 			}
@@ -94,41 +126,38 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-maximum-address",
-			"headquarters": "North Jay",
-			"headquartersPostalCode": "34275-6466",
-			"sector": "e-business",
+			"headquarters": "Kaydenworth",
+			"headquartersPostalCode": null,
+			"sector": null,
 			"identifiers": {
-				"Lei": [
-					"Q1IWtjVCojKBCa1Zeym3"
-				],
+				"Lei": [],
 				"Isin": [
-					"qjzCPxW3AyIw",
-					"eW3el48Sn1h2"
+					"7kYXoADmMz67",
+					"2NXi3eDY36pF"
 				],
-				"PermId": [],
-				"Ticker": [],
+				"PermId": [
+					"WxzZyBNlqV"
+				],
+				"Ticker": [
+					"mp3eLAJ"
+				],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"uHlPnuse6aT3Kf2"
-				]
+				"VatNumber": [
+					"SZsAKGXPB"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "SE",
-			"companyAlternativeNames": [
-				"Barrows, Treutel and Streich",
-				"Goyette, Zieme and Rogahn",
-				"Lind and Sons",
-				"Raynor, Bednar and Nienow"
-			],
+			"countryCode": "KY",
+			"companyAlternativeNames": [],
 			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://well-documented-institution.net",
+			"website": null,
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"90.04"
+						"07.1"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": "Main Street 12",
@@ -137,119 +166,64 @@
 						"state": "Fiction",
 						"country": "Imagination"
 					},
-					"numberOfEmployees": 8386,
-					"fiscalYearStart": "2024-05-11"
+					"numberOfEmployees": 6364,
+					"fiscalYearStart": "2024-04-27"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 76119039,
-					"operatingCostInEUR": 64140654,
-					"capitalAssetsInEUR": 12589856
+					"revenueInEUR": 1673104,
+					"operatingCostInEUR": null,
+					"capitalAssetsInEUR": 19370964
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Wilkinson and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Wolff View 44761",
-								"postalCode": "08857-5420",
-								"city": "Aryannachester",
-								"state": null,
-								"country": "BJ"
-							},
-							"shareOfTotalRevenueInPercent": 45.5
-						},
-						{
 							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Zion Stream 469",
-								"postalCode": "46677",
-								"city": "Watsicaland",
-								"state": null,
-								"country": "TV"
+								"streetAndHouseNumber": "Davis Track 16976",
+								"postalCode": "93998-1930",
+								"city": "New Oranfort",
+								"state": "Colorado",
+								"country": "AL"
 							},
-							"shareOfTotalRevenueInPercent": 73.09
+							"shareOfTotalRevenueInPercent": 5.97
 						},
 						{
-							"nameOfProductionSite": "Johnston, Schaden and Fahey",
+							"nameOfProductionSite": "Murphy, Wehner and Gislason",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Bailey Skyway 26541",
-								"postalCode": "17607",
-								"city": "Bashirianchester",
+								"streetAndHouseNumber": "Western Avenue 836",
+								"postalCode": "61318-0583",
+								"city": "Des Plaines",
 								"state": "Alabama",
-								"country": "GF"
+								"country": "CK"
 							},
-							"shareOfTotalRevenueInPercent": 72.01
-						},
-						{
-							"nameOfProductionSite": "Conroy, Ratke and Effertz",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Castle Close 58103",
-								"postalCode": "49495",
-								"city": "South Johan",
-								"state": "Michigan",
-								"country": "VN"
-							},
-							"shareOfTotalRevenueInPercent": 34.28
-						},
-						{
-							"nameOfProductionSite": "Runolfsdottir - Parisian",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": null,
-								"postalCode": null,
-								"city": "Icieville",
-								"state": "Delaware",
-								"country": "UZ"
-							},
-							"shareOfTotalRevenueInPercent": 55.29
+							"shareOfTotalRevenueInPercent": 10.26
 						}
 					]
 				},
 				"products": {
-					"listOfProducts": [
-						{
-							"name": "Electronic Metal Hat",
-							"shareOfTotalRevenueInPercent": 98.15
-						},
-						{
-							"name": "Handcrafted Frozen Towels",
-							"shareOfTotalRevenueInPercent": 20.5
-						},
-						{
-							"name": "Intelligent Granite Car",
-							"shareOfTotalRevenueInPercent": 36.56
-						},
-						{
-							"name": "Modern Soft Gloves",
-							"shareOfTotalRevenueInPercent": 21.9
-						}
-					]
+					"listOfProducts": []
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 37,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 767,
-					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": null
+					"powerConsumptionInMWh": 629,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 41921671,
 					"naturalHazardsCovered": [
-						"EarthQuake",
-						"Hail",
-						"Wind",
-						"Flooding",
-						"Snow",
-						"Avalanche"
+						"Hail"
 					]
 				}
 			}
@@ -259,41 +233,40 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Sunnyvale",
-			"headquartersPostalCode": "89284-2700",
-			"sector": null,
+			"headquarters": "Timmothyside",
+			"headquartersPostalCode": null,
+			"sector": "supply-chains",
 			"identifiers": {
 				"Lei": [
-					"GA71pxnhhqQbRZvfNtdN"
+					"mBPmEoee0t4rXyQyuq6M"
 				],
 				"Isin": [
-					"1slvgEd0l5o2",
-					"GJgtUGjHTMj0"
+					"fgoIq2RGfkG4",
+					"Sg4rxC0KqKr8"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"NchrsfMYv"
+				"Ticker": [
+					"xn39A7x"
 				],
+				"Duns": [],
 				"VatNumber": [
-					"HpvvO32ek"
+					"iPFqyew25"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "ET",
+			"countryCode": "MP",
 			"companyAlternativeNames": [
-				"Hagenes - Smith",
-				"Smitham Group"
+				"Weissnat - Treutel"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": null,
+			"companyLegalForm": null,
+			"website": "https://querulous-adobe.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"20.3"
+						"50.30"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -302,28 +275,39 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 4678,
-					"fiscalYearStart": "2024-05-04"
+					"numberOfEmployees": 7462,
+					"fiscalYearStart": "2024-12-08"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 53925649,
-					"operatingCostInEUR": 58953361,
-					"capitalAssetsInEUR": 57795626
+					"revenueInEUR": null,
+					"operatingCostInEUR": 43794965,
+					"capitalAssetsInEUR": 38508748
 				}
 			},
 			"production": {
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Wiegand - Kutch",
+							"nameOfProductionSite": "Witting - VonRueden",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Bruen Walk 36432",
-								"postalCode": null,
-								"city": "Lake Oceane",
-								"state": "Connecticut",
-								"country": "ML"
+								"streetAndHouseNumber": "W 5th Street 5477",
+								"postalCode": "80512",
+								"city": "North Fausto",
+								"state": "Maryland",
+								"country": "MF"
 							},
-							"shareOfTotalRevenueInPercent": 49.71
+							"shareOfTotalRevenueInPercent": 89.4
+						},
+						{
+							"nameOfProductionSite": "Carter - DuBuque",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Effertz Trail 668",
+								"postalCode": "71781-1502",
+								"city": "North Emmett",
+								"state": "North Dakota",
+								"country": "LV"
+							},
+							"shareOfTotalRevenueInPercent": 92.22
 						}
 					]
 				},
@@ -333,20 +317,20 @@
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 685,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
+					"powerConsumptionInMWh": 229,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 729,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 7384307,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 33468545,
 					"naturalHazardsCovered": null
 				}
 			}

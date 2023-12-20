@@ -48,6 +48,7 @@ class DateComponent(
             frameworkUploadOptions = null,
             component = this,
             uploadComponentName = "DateFormField",
+            validation = null,
         )
     }
 

@@ -54,6 +54,7 @@ class YesNoComponent(
             frameworkUploadOptions = null,
             component = this,
             uploadComponentName = uploadComponentNameToUse,
+            validation = null,
         )
     }
 
