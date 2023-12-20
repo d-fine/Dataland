@@ -26,7 +26,9 @@ class MetaDataControllerTest {
     private val listOfTestCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithoutIdentifiers(numberOfCompaniesToPostPerFramework)
     private val listOfOneTestCompanyInformation = listOf(listOfTestCompanyInformation[0])
-
+    companion object {
+        private const val SLEEP_DURATION_MS: Long = 3000
+    }
     fun buildAcceptedAndActiveDataMetaInformation(
         dataId: String,
         companyId: String,
@@ -75,6 +77,7 @@ class MetaDataControllerTest {
             mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation),
             numberOfDataSetsToPostPerCompany,
         )
+        Thread.sleep(SLEEP_DURATION_MS)
         val sizeOfListOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo(showOnlyActive = false)
         val expectedSizeOfDataMetaInfo = initialSizeOfDataMetaInfo + totalNumberOfDataSetsPerFramework
         assertEquals(
@@ -129,6 +132,7 @@ class MetaDataControllerTest {
         val listOfUploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(testDataType to listOfTestCompanyInformation), numberOfDataSetsToPostPerCompany,
         )
+        Thread.sleep(SLEEP_DURATION_MS)
         val sizeOfListOfDataMetaInfoPerCompanyIdAndDataType = apiAccessor.getNumberOfDataMetaInfo(
             listOfUploadInfo[0].actualStoredCompany.companyId,
             testDataType,

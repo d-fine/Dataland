@@ -23,6 +23,9 @@ class QaServiceTest {
     private val apiAccessor = ApiAccessor()
     private val dataController = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
     lateinit var dummyCompanyAssociatedData: CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+    companion object {
+        private const val SLEEP_DURATION_MS: Long = 3000
+    }
 
     @BeforeAll
     fun postCompany() {
@@ -134,8 +137,11 @@ class QaServiceTest {
                 dummyCompanyAssociatedData, false,
             ).dataId
         }
+        Thread.sleep(SLEEP_DURATION_MS)
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
         val reviewQueue = apiAccessor.qaServiceControllerApi.getUnreviewedDatasetsIds()
+        println(reviewQueue)
+        print(listOfDataIdsAsExpectedFromReviewQueue)
         assertTrue(listOfDataIdsAsExpectedFromReviewQueue.toTypedArray().contentDeepEquals(reviewQueue.toTypedArray()))
     }
 
