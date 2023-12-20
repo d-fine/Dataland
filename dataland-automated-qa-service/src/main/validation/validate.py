@@ -1,6 +1,6 @@
 import logging
-from infrastructure.qa_exceptions import AutomaticQaNotPossibleError
-from infrastructure.resources import DataResource, DocumentResource
+from ..infrastructure.qa_exceptions import AutomaticQaNotPossibleError
+from ..infrastructure.resources import DataResource, DocumentResource
 from dataland_backend_api_documentation_client.models import QaStatus
 
 
