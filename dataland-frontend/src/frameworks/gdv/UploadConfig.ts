@@ -20,10 +20,10 @@ export const gdvDataModel = [
             description: "Ist das Unternehmen berichtspflichtig?",
             options: "",
             unit: "",
-            component: "MultiSelectFormField",
+            component: "YesNoFormField",
             required: true,
             showIf: (): boolean => true,
-            validation: "is:YesNo",
+            validation: "is:Yes",
           },
           {
             name: "gueltigkeitsDatum",

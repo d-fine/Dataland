@@ -202,9 +202,9 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
                 sectionUploadConfigBuilder.addStandardUploadConfigCell(
                     frameworkUploadOptions = null,
                     component = component,
-                    uploadComponentName = "MultiSelectFormField",
+                    uploadComponentName = "YesNoFormField",
                     validation = FrameworkUploadOptions(
-                        body = "\"is:YesNo\"",
+                        body = "\"is:Yes\"",
                         imports = null,
                     ),
                 )

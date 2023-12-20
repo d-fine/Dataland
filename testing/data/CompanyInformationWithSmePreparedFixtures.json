@@ -2,50 +2,53 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Port Damionstad",
-			"headquartersPostalCode": null,
-			"sector": null,
+			"headquarters": "Port Rosanna",
+			"headquartersPostalCode": "99792-6968",
+			"sector": "schemas",
 			"identifiers": {
 				"Lei": [
-					"I0I4hUnl16OZTAF7jGnd"
+					"yq56iHBxOz7URcmz9K39"
 				],
 				"Isin": [
-					"KLr3TBVTebf4",
-					"4iBzsovwsrb1"
+					"m1GbaxMQUhMW",
+					"MgagaEgPbhr0"
 				],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [],
 				"VatNumber": [
-					"fe7krCJJq"
+					"wpW1h75jI"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PY",
+			"countryCode": "TT",
 			"companyAlternativeNames": [
-				"Orn Inc",
-				"West, Hoeger and Davis"
+				"Hilpert - Bernhard",
+				"Littel - Kutch",
+				"Parker, Jacobs and Lynch"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://unique-angora.biz/",
+			"companyLegalForm": null,
+			"website": "https://aggressive-in-joke.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"46.21",
-						"77.34"
+						"01.5",
+						"18.12",
+						"43.99",
+						"Q"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "London Road 612",
-						"postalCode": "55523-0513",
-						"city": "Madelynborough",
-						"state": "Wyoming",
-						"country": "GY"
+						"streetAndHouseNumber": "Watsica Divide 322",
+						"postalCode": "98100-8790",
+						"city": "New Rosinaside",
+						"state": null,
+						"country": "KR"
 					},
-					"numberOfEmployees": 2497,
-					"fiscalYearStart": "2024-02-11"
+					"numberOfEmployees": 5200,
+					"fiscalYearStart": "2024-10-01"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -57,257 +60,26 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": null,
+							"nameOfProductionSite": "Johns, Towne and McDermott",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Adrien Stravenue 6208",
-								"postalCode": "84788-3076",
-								"city": "Enriqueworth",
-								"state": "Wyoming",
-								"country": "TZ"
+								"streetAndHouseNumber": "Tillman Overpass 15285",
+								"postalCode": "99329",
+								"city": "Port Deionburgh",
+								"state": "Arkansas",
+								"country": "TK"
 							},
-							"shareOfTotalRevenueInPercent": 79.19
+							"shareOfTotalRevenueInPercent": 61.5
 						},
-						{
-							"nameOfProductionSite": "Metz and Sons",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Eliza Rest 253",
-								"postalCode": "76311",
-								"city": "North Jeff",
-								"state": "Mississippi",
-								"country": "CR"
-							},
-							"shareOfTotalRevenueInPercent": 21.73
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Incredible Concrete Keyboard",
-							"shareOfTotalRevenueInPercent": 14.57
-						},
-						{
-							"name": "Oriental Frozen Tuna",
-							"shareOfTotalRevenueInPercent": 73.33
-						},
-						{
-							"name": "Licensed Rubber Tuna",
-							"shareOfTotalRevenueInPercent": 75.22
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
-				},
-				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 151,
-					"primaryEnergySourceForHeatingAndHotWater": "Oil",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": null,
-					"amountCoveredByInsuranceAgainstNaturalHazards": 43777002,
-					"naturalHazardsCovered": [
-						"Snow",
-						"Wind",
-						"Hail"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-maximum-address",
-			"headquarters": "Kaydenworth",
-			"headquartersPostalCode": null,
-			"sector": null,
-			"identifiers": {
-				"Lei": [],
-				"Isin": [
-					"7kYXoADmMz67",
-					"2NXi3eDY36pF"
-				],
-				"PermId": [
-					"WxzZyBNlqV"
-				],
-				"Ticker": [
-					"mp3eLAJ"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"SZsAKGXPB"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "KY",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": null,
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"07.1"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Main Street 12",
-						"postalCode": "12345",
-						"city": "Nonexistingen",
-						"state": "Fiction",
-						"country": "Imagination"
-					},
-					"numberOfEmployees": 6364,
-					"fiscalYearStart": "2024-04-27"
-				},
-				"companyFinancials": {
-					"revenueInEUR": 1673104,
-					"operatingCostInEUR": null,
-					"capitalAssetsInEUR": 19370964
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
 						{
 							"nameOfProductionSite": null,
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Davis Track 16976",
-								"postalCode": "93998-1930",
-								"city": "New Oranfort",
-								"state": "Colorado",
-								"country": "AL"
-							},
-							"shareOfTotalRevenueInPercent": 5.97
-						},
-						{
-							"nameOfProductionSite": "Murphy, Wehner and Gislason",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Western Avenue 836",
-								"postalCode": "61318-0583",
-								"city": "Des Plaines",
-								"state": "Alabama",
-								"country": "CK"
-							},
-							"shareOfTotalRevenueInPercent": 10.26
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": []
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between1And5"
-				},
-				"consumption": {
-					"powerConsumptionInMWh": 629,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": null,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 41921671,
-					"naturalHazardsCovered": [
-						"Hail"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2021"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-minimum-address",
-			"headquarters": "Timmothyside",
-			"headquartersPostalCode": null,
-			"sector": "supply-chains",
-			"identifiers": {
-				"Lei": [
-					"mBPmEoee0t4rXyQyuq6M"
-				],
-				"Isin": [
-					"fgoIq2RGfkG4",
-					"Sg4rxC0KqKr8"
-				],
-				"PermId": [],
-				"Ticker": [
-					"xn39A7x"
-				],
-				"Duns": [],
-				"VatNumber": [
-					"iPFqyew25"
-				],
-				"CompanyRegistrationNumber": []
-			},
-			"countryCode": "MP",
-			"companyAlternativeNames": [
-				"Weissnat - Treutel"
-			],
-			"companyLegalForm": null,
-			"website": "https://querulous-adobe.name/",
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"50.30"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": null,
-						"postalCode": null,
-						"city": "City 17",
-						"state": null,
-						"country": "Uninspired"
-					},
-					"numberOfEmployees": 7462,
-					"fiscalYearStart": "2024-12-08"
-				},
-				"companyFinancials": {
-					"revenueInEUR": null,
-					"operatingCostInEUR": 43794965,
-					"capitalAssetsInEUR": 38508748
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Witting - VonRueden",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "W 5th Street 5477",
-								"postalCode": "80512",
-								"city": "North Fausto",
+								"streetAndHouseNumber": "Katelynn Canyon 702",
+								"postalCode": null,
+								"city": "West Kayleigh",
 								"state": "Maryland",
-								"country": "MF"
+								"country": "LK"
 							},
-							"shareOfTotalRevenueInPercent": 89.4
-						},
-						{
-							"nameOfProductionSite": "Carter - DuBuque",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Effertz Trail 668",
-								"postalCode": "71781-1502",
-								"city": "North Emmett",
-								"state": "North Dakota",
-								"country": "LV"
-							},
-							"shareOfTotalRevenueInPercent": 92.22
+							"shareOfTotalRevenueInPercent": 79.11
 						}
 					]
 				},
@@ -317,21 +89,244 @@
 			},
 			"power": {
 				"investments": {
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+				},
+				"consumption": {
+					"powerConsumptionInMWh": null,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 399,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 26904398,
+					"naturalHazardsCovered": [
+						"Wind"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-maximum-address",
+			"headquarters": "Taureanfurt",
+			"headquartersPostalCode": "59828-0438",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"495WlqXMtsXlTErzmFea"
+				],
+				"Isin": [
+					"OEnzezeNlDYn"
+				],
+				"PermId": [
+					"ANQ0R1yFWA"
+				],
+				"Ticker": [],
+				"Duns": [
+					"oxBpYp8n7"
+				],
+				"VatNumber": [
+					"Ma4fD1GBJ"
+				],
+				"CompanyRegistrationNumber": [
+					"Xh2vdBtcvUlIEhV"
+				]
+			},
+			"countryCode": "TK",
+			"companyAlternativeNames": [
+				"Kerluke, Ratke and Lebsack"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://ecstatic-chili.name",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"19.20"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": "Main Street 12",
+						"postalCode": "12345",
+						"city": "Nonexistingen",
+						"state": "Fiction",
+						"country": "Imagination"
+					},
+					"numberOfEmployees": 6704,
+					"fiscalYearStart": "2024-04-13"
+				},
+				"companyFinancials": {
+					"revenueInEUR": 57329994,
+					"operatingCostInEUR": 17855587,
+					"capitalAssetsInEUR": 54299208
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": []
+				},
+				"products": {
+					"listOfProducts": []
+				}
+			},
+			"power": {
+				"investments": {
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 229,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 729,
-					"primaryEnergySourceForHeatingAndHotWater": "Gas",
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
+					"powerConsumptionInMWh": 879,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between25And50"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 33468545,
-					"naturalHazardsCovered": null
+					"amountCoveredByInsuranceAgainstNaturalHazards": 45395467,
+					"naturalHazardsCovered": [
+						"Wind",
+						"EarthQuake",
+						"Flooding",
+						"Snow",
+						"Hail",
+						"Avalanche"
+					]
+				}
+			}
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-minimum-address",
+			"headquarters": "Okunevafield",
+			"headquartersPostalCode": "78857-9002",
+			"sector": "action-items",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"LQ6l0VmDjS2b"
+				],
+				"PermId": [
+					"epLNJxO9R8"
+				],
+				"Ticker": [
+					"1pBbLa0"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"RIjVPQobc"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "DO",
+			"companyAlternativeNames": [
+				"Dach - Denesik",
+				"Denesik - Tillman",
+				"Shields Group",
+				"Wiza - Rau"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://red-rush.name/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"64.99"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": null,
+						"postalCode": null,
+						"city": "City 17",
+						"state": null,
+						"country": "Uninspired"
+					},
+					"numberOfEmployees": 7229,
+					"fiscalYearStart": "2024-02-16"
+				},
+				"companyFinancials": {
+					"revenueInEUR": null,
+					"operatingCostInEUR": 10795397,
+					"capitalAssetsInEUR": 21897567
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": "Ullrich, Bernier and Stiedemann",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Schuppe Avenue 853",
+								"postalCode": "88748",
+								"city": "Jurupa Valley",
+								"state": "North Dakota",
+								"country": "CX"
+							},
+							"shareOfTotalRevenueInPercent": 30.03
+						},
+						{
+							"nameOfProductionSite": "Ebert LLC",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Jeffery Throughway 31865",
+								"postalCode": "65088-9333",
+								"city": "Elliotborough",
+								"state": "Mississippi",
+								"country": "DO"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Dibbert Group",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": null,
+								"postalCode": "17203",
+								"city": "Port Rileytown",
+								"state": null,
+								"country": "IL"
+							},
+							"shareOfTotalRevenueInPercent": null
+						}
+					]
+				},
+				"products": {
+					"listOfProducts": null
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": null
+				},
+				"consumption": {
+					"powerConsumptionInMWh": 1234,
+					"powerFromRenewableSources": null,
+					"energyConsumptionHeatingAndHotWaterInMWh": null,
+					"primaryEnergySourceForHeatingAndHotWater": "Electric",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": null,
+					"naturalHazardsCovered": [
+						"Flooding",
+						"Avalanche",
+						"Snow",
+						"EarthQuake",
+						"Hail",
+						"Wind"
+					]
 				}
 			}
 		},

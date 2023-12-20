@@ -90,8 +90,10 @@ sonar {
                 "dataland-frontend/src/main.ts," +
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/gdv/**," +
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/specific/uploadconfig/**," +
-            "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components/MultiSelectComponent.kt," +
-            "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/components/SingleSelectComponent.kt",
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/" +
+                "components/MultiSelectComponent.kt," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/intermediate/" +
+                "components/SingleSelectComponent.kt",
         )
         property(
             "sonar.sources",
