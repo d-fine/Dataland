@@ -124,11 +124,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it shou
                 }
             }
         }
-
-        val showIfBerichtsPflicht = DependsOnComponentValue(
-            berichtsPflicht,
-            "Yes",
-        )
+        val showIfBerichtsPflicht = DependsOnComponentValue(berichtsPflicht, "Yes")
 
         createRollingWindowComponentsInCategoryUmwelt(framework, showIfBerichtsPflicht)
         createRollingWindowComponentsInCategorySoziales(framework, showIfBerichtsPflicht)
