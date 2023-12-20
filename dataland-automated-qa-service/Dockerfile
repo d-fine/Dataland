@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY ./dataland-automated-qa-service/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./dataland-automated-qa-service/src/ ./
+COPY ./dataland-automated-qa-service/src/main/ ./
 
 COPY ./dataland-document-manager/documentManagerOpenApi.json ./dataland-document-manager/documentManagerOpenApi.json
 COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
