@@ -42,7 +42,7 @@
             :file-names-for-prefill="fileNamesForPrefill"
           />
 
-          <FormKit :key="documentName" :ignore="shouldIgnoreDataSource()" type="group" name="dataSource">
+          <FormKit v-if="shouldSendDataSource()" type="group" name="dataSource">
             <FormKit type="hidden" name="fileName" v-model="documentName" />
             <FormKit type="hidden" name="fileReference" v-model="documentReference" />
           </FormKit>
@@ -101,6 +101,12 @@ export default defineComponent({
   mounted() {
     this.updateFileUploadFiles();
     this.isMounted = true;
+    if (this.baseDataPoint.dataSource?.fileName) {
+      this.documentName = this.baseDataPoint.dataSource.fileName;
+    }
+    if (this.baseDataPoint.dataSource?.fileReference) {
+      this.documentReference = this.baseDataPoint.dataSource.fileReference;
+    }
   },
   watch: {
     documentName() {
@@ -161,8 +167,8 @@ export default defineComponent({
      * Determine whether dataSource should be added or blank
      * @returns flase if file name is blank or value of 'None...'
      */
-    shouldIgnoreDataSource() {
-      return this.documentName.length === 0 || this.documentName === "None...";
+    shouldSendDataSource() {
+      return this.documentName.length !== 0 && this.documentName !== "None...";
     },
   },
 });
