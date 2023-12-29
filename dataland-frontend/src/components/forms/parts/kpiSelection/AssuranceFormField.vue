@@ -71,7 +71,7 @@
           <FormKit type="group" name="dataSource" v-if="dataSourceHasValues()">
             <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
             <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
-            <FormKit type="hidden" name="page" :modelValue="reportPageNumber" />
+            <FormKit type="hidden" name="page" v-model="reportPageNumber" />
           </FormKit>
         </div>
       </div>
