@@ -36,42 +36,45 @@
 
     <!-- Data source -->
     <div class="form-field">
-      <FormKit type="group" name="dataSource" :ignore="ignoreDataSource">
-        <h4 class="mt-0">Data source</h4>
-        <div class="next-to-each-other">
-          <div class="flex-1">
-            <UploadFormHeader
-              :label="euTaxonomyKpiNameMappings.report ?? ''"
-              :description="euTaxonomyKpiInfoMappings.report ?? ''"
-              :is-required="true"
-            />
-            <FormKit
-              type="select"
-              name="fileName"
-              v-model="currentReportValue"
-              placeholder="Select a report"
-              :options="[noReportLabel, ...reportsName]"
-            />
-            <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
-          </div>
-          <div>
-            <UploadFormHeader
-              :label="euTaxonomyKpiNameMappings.page ?? ''"
-              :description="euTaxonomyKpiInfoMappings.page ?? ''"
-            />
-            <FormKit
-              outer-class="w-100"
-              type="number"
-              name="page"
-              placeholder="Page"
-              validation-label="Page"
-              validation="min:0"
-              step="1"
-              min="0"
-            />
-          </div>
+      <h4 class="mt-0">Data source</h4>
+      <div class="next-to-each-other">
+        <div class="flex-1">
+          <UploadFormHeader
+            :label="euTaxonomyKpiNameMappings.report ?? ''"
+            :description="euTaxonomyKpiInfoMappings.report ?? ''"
+            :is-required="true"
+          />
+          <FormKit
+            type="select"
+            ignore="true"
+            v-model="currentReportValue"
+            placeholder="Select a report"
+            :options="[noReportLabel, ...reportsName]"
+          />
         </div>
-      </FormKit>
+        <div>
+          <UploadFormHeader
+            :label="euTaxonomyKpiNameMappings.page ?? ''"
+            :description="euTaxonomyKpiInfoMappings.page ?? ''"
+          />
+          <FormKit
+            v-model="reportPageNumber"
+            outer-class="w-100"
+            type="number"
+            placeholder="Page"
+            validation-label="Page"
+            validation="min:0"
+            step="1"
+            min="0"
+            ignore="true"
+          />
+          <FormKit type="group" name="dataSource" v-if="dataSourceHasValues()">
+            <FormKit type="hidden" name="fileName" :modelValue="currentReportValue" />
+            <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
+            <FormKit type="hidden" name="page" :modelValue="reportPageNumber" />
+          </FormKit>
+        </div>
+      </div>
     </div>
   </FormKit>
 </template>
@@ -109,6 +112,7 @@ export default defineComponent({
         ReasonableAssurance: humanizeStringOrNumber(AssuranceDataPointValueEnum.ReasonableAssurance),
       },
       currentReportValue: "",
+      reportPageNumber: undefined as string | undefined,
       noReportLabel: "None...",
     };
   },
@@ -126,8 +130,8 @@ export default defineComponent({
      * Checks whether the Assurance data source has appropriate values
      * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
      */
-    ignoreDataSource(): boolean {
-      return !(this.currentReportValue && this.currentReportValue !== this.noReportLabel);
+    dataSourceHasValues(): boolean {
+      return !!this.currentReportValue && this.currentReportValue !== this.noReportLabel;
     },
   },
 });
