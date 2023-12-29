@@ -50,6 +50,7 @@
             v-model="currentReportValue"
             placeholder="Select a report"
             :options="[noReportLabel, ...reportsName]"
+            name="fileName"
           />
         </div>
         <div>
@@ -58,6 +59,7 @@
             :description="euTaxonomyKpiInfoMappings.page ?? ''"
           />
           <FormKit
+            name="page"
             v-model="reportPageNumber"
             outer-class="w-100"
             type="number"
