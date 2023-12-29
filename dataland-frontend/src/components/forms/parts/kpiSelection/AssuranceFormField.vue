@@ -69,7 +69,7 @@
             ignore="true"
           />
           <FormKit type="group" name="dataSource" v-if="dataSourceHasValues()">
-            <FormKit type="hidden" name="fileName" :modelValue="currentReportValue" />
+            <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
             <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
             <FormKit type="hidden" name="page" :modelValue="reportPageNumber" />
           </FormKit>
@@ -104,6 +104,7 @@ export default defineComponent({
   components: { FormKit, UploadFormHeader },
   data() {
     return {
+      isMounted: false,
       euTaxonomyKpiNameMappings,
       euTaxonomyKpiInfoMappings,
       assuranceData: {
@@ -117,19 +118,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    console.log({
-      currentReportValue: this.currentReportValue,
-      injectReportsNameAndReferences: this.injectReportsNameAndReferences,
-      reportsName: this.reportsName,
-    });
-    // this.updateFileUploadFiles();
-    // this.isMounted = true;
-    // if (this.baseDataPoint.dataSource?.fileName) {
-    //   this.documentName = this.baseDataPoint.dataSource.fileName;
-    // }
-    // if (this.baseDataPoint.dataSource?.fileReference) {
-    //   this.documentReference = this.baseDataPoint.dataSource.fileReference;
-    // }
+    this.isMounted = true;
   },
   computed: {
     reportsName(): string[] {
@@ -146,6 +135,9 @@ export default defineComponent({
      * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
      */
     dataSourceHasValues(): boolean {
+      if (!this.isMounted) {
+        return true;
+      }
       return !!this.currentReportValue && this.currentReportValue !== this.noReportLabel;
     },
   },
