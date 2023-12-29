@@ -116,6 +116,21 @@ export default defineComponent({
       noReportLabel: "None...",
     };
   },
+  mounted() {
+    console.log({
+      currentReportValue: this.currentReportValue,
+      injectReportsNameAndReferences: this.injectReportsNameAndReferences,
+      reportsName: this.reportsName,
+    });
+    // this.updateFileUploadFiles();
+    // this.isMounted = true;
+    // if (this.baseDataPoint.dataSource?.fileName) {
+    //   this.documentName = this.baseDataPoint.dataSource.fileName;
+    // }
+    // if (this.baseDataPoint.dataSource?.fileReference) {
+    //   this.documentReference = this.baseDataPoint.dataSource.fileReference;
+    // }
+  },
   computed: {
     reportsName(): string[] {
       return getFileName(this.injectReportsNameAndReferences);
