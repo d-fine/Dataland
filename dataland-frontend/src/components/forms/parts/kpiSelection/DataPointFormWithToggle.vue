@@ -82,14 +82,7 @@
       </div>
     </div>
     <div class="form-field">
-      <FormKit
-        type="group"
-        v-if="dataPointIsAvailable"
-        name="dataSource"
-        v-model="dataSource"
-        :key="currentReportValue"
-        :ignore="!hasValidDataSource"
-      >
+      <FormKit type="group" v-if="dataPointIsAvailable" name="dataSource" :ignore="true">
         <h4 class="mt-0">Data source</h4>
         <div class="next-to-each-other">
           <div class="flex-1">
@@ -102,6 +95,7 @@
               placeholder="Select a report"
               :options="[noReportLabel, ...reportsName]"
               :plugins="[selectNothingIfNotExistsFormKitPlugin]"
+              :ignore="true"
             />
             <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
           </div>
@@ -118,9 +112,15 @@
               step="1"
               min="0"
               validation="min:0"
+              :ignore="true"
             />
           </div>
         </div>
+      </FormKit>
+      <FormKit v-if="hasValidDataSource()" type="group" name="dataSource">
+        <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
+        <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
+        <FormKit type="hidden" name="page" v-model="currentPageValue" />
       </FormKit>
     </div>
 

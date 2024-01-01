@@ -110,13 +110,7 @@
 
                       <!-- Data source -->
                       <div class="form-field">
-                        <FormKit
-                          type="group"
-                          name="dataSource"
-                          v-model="dataSource"
-                          :key="currentReportValue"
-                          :ignore="!hasValidDataSource"
-                        >
+                        <FormKit type="group" name="dataSource" ignore="true">
                           <h4 class="mt-0">Data source</h4>
                           <div class="next-to-each-other">
                             <div class="flex-1">
@@ -134,14 +128,6 @@
                                 :options="[noReportLabel, ...namesOfAllCompanyReportsForTheDataset]"
                                 :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />
-                              <div v-if="hasValidDataSource()">
-                                <FormKit type="hidden" name="fileName" :modelValue="currentReportValue" />
-                                <FormKit
-                                  type="hidden"
-                                  name="fileReference"
-                                  :modelValue="fileReferenceAccordingToName"
-                                />
-                              </div>
                             </div>
                             <div>
                               <UploadFormHeader
@@ -152,15 +138,21 @@
                                 outer-class="w-100"
                                 type="number"
                                 name="page"
+                                v-model="reportPageNumber"
                                 placeholder="Page"
                                 validation-label="Page"
                                 validation="min:0"
                                 step="1"
                                 min="0"
-                                :ignore="!hasValidDataSource"
+                                ignore="true"
                               />
                             </div>
                           </div>
+                        </FormKit>
+                        <FormKit type="group" name="dataSource" v-if="hasValidDataSource()">
+                          <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
+                          <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
+                          <FormKit type="hidden" name="page" v-model="reportPageNumber" />
                         </FormKit>
                       </div>
                     </FormKit>
@@ -384,6 +376,7 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
+      isMounted: false,
       formId: "createEuTaxonomyForFinancialsForm",
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       fiscalYearEndAsDate: null as Date | null,
@@ -403,6 +396,7 @@ export default defineComponent({
       editMode: false,
       dataSource: undefined as CompanyReport | undefined,
       noReportLabel: "None...",
+      reportPageNumber: undefined as string | undefined,
 
       postEuTaxonomyDataForFinancialsProcessed: false,
       messageCount: 0,
@@ -447,6 +441,9 @@ export default defineComponent({
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       templateDataset: undefined as undefined | EuTaxonomyDataForFinancials,
     };
+  },
+  mounted() {
+    this.isMounted = true;
   },
   computed: {
     reportingPeriodYear(): number {
@@ -513,6 +510,9 @@ export default defineComponent({
           }
           if (companyAssociatedEuTaxonomyData.data?.fiscalYearEnd) {
             this.fiscalYearEndAsDate = new Date(companyAssociatedEuTaxonomyData.data.fiscalYearEnd);
+          }
+          if (companyAssociatedEuTaxonomyData.data?.assurance?.dataSource?.fileName) {
+            this.currentReportValue = companyAssociatedEuTaxonomyData.data.assurance.dataSource.fileName;
           }
           this.templateDataset = companyAssociatedEuTaxonomyData.data;
 
@@ -651,12 +651,6 @@ export default defineComponent({
           ...this.convertKpis(kpiSections as ObjectType),
         };
 
-        if (clonedFormInputsModel.data?.assurance?.dataSource) {
-          clonedFormInputsModel.data.assurance.dataSource = this.pruneDataSource(
-            clonedFormInputsModel.data.assurance.dataSource,
-          );
-        }
-
         checkIfAllUploadedReportsAreReferencedInDataModel(
           this.formInputsModel.data as ObjectType,
           Object.keys(this.namesAndReferencesOfAllCompanyReportsForTheDataset),
@@ -727,10 +721,10 @@ export default defineComponent({
      * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
      */
     hasValidDataSource(): boolean {
-      const hasCurrentReportValue = this.currentReportValue && this.currentReportValue !== this.noReportLabel;
-      const hasFileName = !!this.pruneDataSource(this.dataSource);
-
-      return hasCurrentReportValue || hasFileName;
+      if (!this.isMounted) {
+        return true;
+      }
+      return this.currentReportValue?.length > 0 && this.currentReportValue !== this.noReportLabel;
     },
     /**
      * Check if provided data source has appropriate file name and return undefined if not
@@ -738,6 +732,9 @@ export default defineComponent({
      * @returns unchanged company report or undefined
      */
     pruneDataSource(dataSource: CompanyReport | undefined) {
+      if (!this.isMounted) {
+        return true;
+      }
       return dataSource?.fileName && dataSource?.fileName !== this.noReportLabel ? this.dataSource : undefined;
     },
   },

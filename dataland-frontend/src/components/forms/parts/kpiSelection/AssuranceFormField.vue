@@ -70,7 +70,7 @@
             min="0"
             ignore="true"
           />
-          <FormKit type="group" name="dataSource" v-if="dataSourceHasValues()">
+          <FormKit type="group" name="dataSource" v-if="hasValidDataSource()">
             <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
             <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
             <FormKit type="hidden" name="page" v-model="reportPageNumber" />
@@ -136,7 +136,7 @@ export default defineComponent({
      * Checks whether the Assurance data source has appropriate values
      * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
      */
-    dataSourceHasValues(): boolean {
+    hasValidDataSource(): boolean {
       if (!this.isMounted) {
         return true;
       }

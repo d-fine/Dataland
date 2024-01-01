@@ -85,34 +85,13 @@
               />
             </div>
 
-            <FormKit
-              v-if="
-                (currentReportValue && currentReportValue !== noReportLabel) ||
-                (dataPoint?.dataSource?.fileName && dataPoint?.dataSource?.fileName !== noReportLabel)
-              "
-              type="group"
-              name="dataSource"
-            >
-              <FormKit
-                type="text"
-                name="fileName"
-                v-model="currentReportValue"
-                :outer-class="{ 'hidden-input': true }"
-              />
-              <FormKit
-                type="text"
-                name="fileReference"
-                :modelValue="fileReferenceAccordingToName"
-                :outer-class="{ 'hidden-input': true }"
-              />
-              <FormKit
-                type="number"
-                name="page"
-                v-model="pageForFileReference"
-                :outer-class="{ 'hidden-input': true }"
-              />
+            <FormKit v-if="hasValidDataSource()" type="group" name="dataSource">
+              <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
+              <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
+              <FormKit type="hidden" name="page" v-model="pageForFileReference" />
             </FormKit>
           </div>
+
           <!-- Data quality -->
           <div class="md:col-8 col-12 p-0 mb-4" data-test="dataQuality">
             <UploadFormHeader
@@ -174,20 +153,24 @@ export default defineComponent({
   },
   data() {
     return {
+      isMounted: false,
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
       qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
         label: qualityOption,
         value: qualityOption,
       })),
       qualityValue: "NA",
-      currentReportValue: this.noReportLabel,
+      currentReportValue: "" as string,
       dataPoint: {} as ExtendedDataPoint<unknown>,
       currentValue: null,
       checkboxValue: [] as Array<string>,
       firstAssignmentWhileEditModeWasDone: false,
       noReportLabel: "None...",
-      pageForFileReference: null,
+      pageForFileReference: undefined as string | undefined,
     };
+  },
+  mounted() {
+    this.isMounted = true;
   },
   computed: {
     showDataPointFields(): boolean {
@@ -290,6 +273,16 @@ export default defineComponent({
         this.currentValue = null;
         this.dataPoint = {};
       }
+    },
+    /**
+     * Checks whether the Assurance data source has appropriate values
+     * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
+     */
+    hasValidDataSource(): boolean {
+      if (!this.isMounted) {
+        return true;
+      }
+      return this.currentReportValue?.length > 0 && this.currentReportValue !== this.noReportLabel;
     },
   },
 });

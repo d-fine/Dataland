@@ -42,7 +42,7 @@
             :file-names-for-prefill="fileNamesForPrefill"
           />
 
-          <FormKit v-if="shouldSendDataSource()" type="group" name="dataSource">
+          <FormKit v-if="hasValidDataSource()" type="group" name="dataSource">
             <FormKit type="hidden" name="fileName" v-model="documentName" />
             <FormKit type="hidden" name="fileReference" v-model="documentReference" />
           </FormKit>
@@ -167,7 +167,10 @@ export default defineComponent({
      * Determine whether dataSource should be added or blank
      * @returns flase if file name is blank or value of 'None...'
      */
-    shouldSendDataSource() {
+    hasValidDataSource() {
+      if (!this.isMounted) {
+        return true;
+      }
       return this.documentName.length !== 0 && this.documentName !== "None...";
     },
   },
