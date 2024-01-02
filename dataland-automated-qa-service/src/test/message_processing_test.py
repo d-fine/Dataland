@@ -99,3 +99,4 @@ class MessageProcessingTest(unittest.TestCase):
         self.assertEqual(True, arguments["mandatory"])
         self.assertEqual("dummy-correlation-id", arguments["properties"].headers[p.mq_correlation_id_header])
         self.assertEqual(expected_message_type, arguments["properties"].headers[p.mq_message_type_header])
+        self.assertEqual(2, 1) # TODO to be removed

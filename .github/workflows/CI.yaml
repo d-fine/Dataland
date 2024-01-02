@@ -195,15 +195,27 @@ jobs:
           pip install --no-cache-dir ./dataland-document-manager-api-documentation-client
       - name: Execute python unit tests
         if: always()
-        run: | 
-          python --version
-          python -m pytest
+        run: |
+          pwd
+          coverage run -m pytest
+          coverage report
         env:
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
           RABBITMQ_USER: "dummy"
           RABBITMQ_PASS: "dummy"
           PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
           INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+
+#      - name: Upload JaCoCo Exec Results
+#        if: always()
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: JaCoCoResultsUnitTests
+#          path: ./**/*.exec
+#      - name: Measure coverage
+#        if: always()
+#        run: |
+#          coverage run ./src/test/*.py
 #      - name: Frontend linting
 #        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
 #        if: always()
