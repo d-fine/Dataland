@@ -205,12 +205,12 @@ jobs:
           PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
           INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
 
-#      - name: Upload JaCoCo Exec Results
-#        if: always()
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: JaCoCoResultsUnitTests
-#          path: ./**/*.exec
+      - name: Upload Python Unit Test Coverage Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: PythonUnitTestCoverage
+          path: ./dataland-automated-qa-service/.coverage
 #      - name: Measure coverage
 #        if: always()
 #        run: |
