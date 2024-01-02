@@ -13,6 +13,7 @@ RUN openapi-python-client generate --path ./dataland-document-manager/documentMa
 RUN openapi-python-client generate --path ./dataland-backend/backendOpenApi.json
 RUN pip install --no-cache-dir ./dataland-backend-api-documentation-client
 RUN pip install --no-cache-dir ./dataland-document-manager-api-documentation-client
+RUN pip install -e .
 
 ENTRYPOINT python ./entrypoint.py
 

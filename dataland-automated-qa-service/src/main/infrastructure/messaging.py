@@ -2,10 +2,10 @@ import json
 import logging
 import pika.exceptions
 
-from .qa_exceptions import AutomaticQaNotPossibleError
-from .resources import Resource, DataResource, DocumentResource
-from .properties import *
-from ..validation.validate import validate_data, validate_document
+from main.infrastructure.qa_exceptions import AutomaticQaNotPossibleError
+from main.infrastructure.resources import Resource, DataResource, DocumentResource
+from main.infrastructure.properties import *
+from main.validation.validate import validate_data, validate_document
 
 from dataland_backend_api_documentation_client.models.qa_status import QaStatus
 
