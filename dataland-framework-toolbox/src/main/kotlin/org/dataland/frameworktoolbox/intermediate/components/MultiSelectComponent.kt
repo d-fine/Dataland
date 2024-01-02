@@ -15,7 +15,8 @@ import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOf
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
 
 /**
- * A MultiSelectComponent represents a selection of valid NACE codes
+ * A MultiSelectComponent represents a selection of string-options. Multiple of those string-options
+ * can be selected.
  */
 open class MultiSelectComponent(
     identifier: String,

@@ -15,8 +15,8 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptF
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
 /**
- * A GdvYearlyDecimalTimeseriesDataComponent is an in-memory representation of a generic field
- * that encodes several values across a span of multi years. It is displayed / upload in a matrix
+ * In-memory representation of a field that contains a list of base-data-points.
+ * The base-data-points have strings as their values.
  */
 class GdvListOfBaseDataPointComponent(
     identifier: String,

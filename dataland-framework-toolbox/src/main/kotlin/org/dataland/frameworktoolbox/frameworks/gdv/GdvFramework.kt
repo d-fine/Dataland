@@ -25,7 +25,7 @@ import java.io.File
  * Definition of the Heimathafen framework
  */
 @Component
-class GdvFramework : InDevelopmentPavedRoadFramework( // TODO in the end it should implement "PavedRoadFramework" (?)
+class GdvFramework : InDevelopmentPavedRoadFramework(
     identifier = "gdv",
     label = "GDV/VÖB",
     explanation = "Das GDV/VÖB Framework ist ein ESG-Fragebogen des Gesamtverbands der Versicherer und des " +
