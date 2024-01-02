@@ -196,21 +196,21 @@ jobs:
       - name: Execute python unit tests
         if: always()
         run: |
-          coverage run --source="./dataland-automated-qa-service/src/main" -m pytest
-          coverage report
+          cd ./dataland-automated-qa-service
+          coverage run --source="./src/main" -m pytest
+          coverage xml
         env:
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
           RABBITMQ_USER: "dummy"
           RABBITMQ_PASS: "dummy"
           PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
           INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
-
       - name: Upload Python Unit Test Coverage Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: PythonUnitTestCoverage
-          path: ./dataland-automated-qa-service/.coverage
+          path: ./dataland-automated-qa-service/coverage.xml
 #      - name: Measure coverage
 #        if: always()
 #        run: |
@@ -363,6 +363,7 @@ jobs:
       - e2e-tests
       - gradle-based-tests
       - frontend-component-tests
+      - python-tests
       - framework-toolbox-tests
     steps:
       - uses: actions/checkout@v3
@@ -384,6 +385,10 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
+      - uses: actions/download-artifact@v3
+        name: PythonUnitTestCoverage
+        with:
+          name: PythonUnitTestCoverage
       - uses: actions/download-artifact@v3
         name: JaCoCoResultsUnitTests
         with:
