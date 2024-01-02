@@ -9,6 +9,7 @@ Select a python interpreter and setup a venv.
 
 # Execution
 
+The following describes steps required to run the service on the host machine:
 - You first need to make the modules for the clients to interact with the other Dataland services available:
   - Create the clients by running the `./generate_clients.sh` script. There should be a non-empty folder `./build/clients`
   - Create the modules from these clients: If you went with the venv setup as described above just run 

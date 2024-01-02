@@ -17,4 +17,4 @@ class DocumentResource(Resource):
             token=token
         )
         logging.info(f"Retrieving document data with ID {self.id}")
-        get_document(self.id, client=documents_client)
+        self.bytes = get_document(self.id, client=documents_client)
