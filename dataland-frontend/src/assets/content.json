@@ -61,6 +61,12 @@
                             "date": "\"We believe that open source, reliable and comparable data is the single best way to identify the companies that walk the walk.\""
                         },
                         {
+                            "icon": "rCkISSQreCI",
+                            "title": "Dr. Egbert Schark,",
+                            "text": "Founder and Managing Director\n at d-fine GmbH",
+                            "date": "\"I believe the fascinating idea is worth supporting. Join the mission! Join Dataland!.\""
+                        },
+                        {
                             "icon": "34qs_8D78JY",
                             "title": "Christian Heller,",
                             "text": " CEO of Value Balancing Alliance",
@@ -81,7 +87,7 @@
                         {
                             "icon": "1CArXxrcsvg",
                             "title": "Christoph Benner,",
-                            "text": " CEO of Chom Capital",
+                            "text": "CEO of Chom Capital",
                             "date": "\"Our partnership with Dataland is instrumental in progressively addressing and bridging data gaps.\""
                         }
                     ]
