@@ -40,6 +40,8 @@ const introSection = computed(() => {
   text-align: center;
   margin: 140px auto;
   max-width: 1007px;
+  position: relative;
+  z-index: 1;
   &__img {
     width: 85px;
     height: auto;
@@ -94,6 +96,7 @@ const introSection = computed(() => {
       max-width: 534px;
       letter-spacing: unset;
       margin: 0 auto;
+      font-weight: 600;
       span:last-of-type {
         font-size: 32px;
         line-height: 40px; /* 125% */
@@ -148,13 +151,67 @@ const introSection = computed(() => {
     outline: none;
     padding-left: 40px;
     background: transparent;
+    font-weight: 600;
     &::placeholder {
       font-size: 16px;
       font-style: normal;
-      font-weight: 600;
+
       line-height: 24px; /* 150% */
       letter-spacing: 0.25px;
-      color: var(--grey-tones-400);
+      color: var(--grey-tones-600);
+    }
+    &:focus {
+      box-shadow: none !important;
+      &::placeholder {
+        color: var(--grey-tones-300);
+      }
+    }
+  }
+
+  &__autocomplete {
+    transform-origin: top !important;
+    margin: 27px 0;
+    padding: 20px;
+    top: 47px !important;
+    left: -26px !important;
+    width: 1007px !important;
+    overflow: hidden;
+    border-radius: 16px;
+    border: 2px solid var(--grey-tones-100);
+    background: var(--default-neutral-white);
+    box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(16px);
+    ul.p-autocomplete-items {
+      max-height: 400px;
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 2px solid var(--grey-tones-100);
+      background: var(--default-neutral-white);
+      li.p-autocomplete-item {
+        height: 4rem;
+        position: relative;
+        &:after {
+          content: "";
+          height: 2px;
+          width: calc(100% - 3em);
+          background-color: var(--grey-tones-100);
+          position: absolute;
+          bottom: 0;
+          left: 1.5em;
+        }
+        &:last-child:after {
+          content: none;
+        }
+        &:hover {
+          background-color: var(--grey-tones-100) !important;
+        }
+        i.pi.pi-search.pl-3 {
+          padding-left: 2em !important;
+        }
+      }
+    }
+    ul.p-autocomplete-items.pt-0 {
+      display: none;
     }
   }
 

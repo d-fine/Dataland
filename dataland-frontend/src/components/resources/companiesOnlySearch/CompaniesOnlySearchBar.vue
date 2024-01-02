@@ -11,8 +11,8 @@
       :auto-option-focus="false"
       placeholder="Search company by name or identifier"
       :input-class="inputClass"
-      panel-class="d-framework-searchbar-panel"
-      style="z-index: 10"
+      panel-class="d-framework-searchbar-panel search__autocomplete"
+      append-to="self"
       @complete="searchCompanyName($event)"
       @item-select="$emit('selectCompany', $event.value)"
     >
