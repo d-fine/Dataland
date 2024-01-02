@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the Sonstige section
  */
 data class GdvAllgemeinSonstige(
-    val ausrichtungAufDieUnSdgsUndAktivesVerfolgen: String?,
-    val ausschlusslistenAufBasisVonEsgKriterien: YesNo?,
-    val ausschlusslisten: String?,
+    val ausrichtungAufDieUnSdgsUndAktivesVerfolgen: String? = null,
+    val ausschlusslistenAufBasisVonEsgKriterien: YesNo? = null,
+    val ausschlusslisten: String? = null,
 )

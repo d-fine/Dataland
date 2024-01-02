@@ -9,5 +9,5 @@ import java.time.LocalDate
  */
 data class GdvGeneralMasterData(
     val berichtsPflicht: YesNo,
-    val gueltigkeitsDatum: LocalDate?,
+    val gueltigkeitsDatum: LocalDate? = null,
 )

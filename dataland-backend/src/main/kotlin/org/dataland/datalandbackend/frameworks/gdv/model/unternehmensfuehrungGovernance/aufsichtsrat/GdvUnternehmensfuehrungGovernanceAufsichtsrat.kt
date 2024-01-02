@@ -7,7 +7,7 @@ import java.math.BigDecimal
  * The data-model for the Aufsichtsrat section
  */
 data class GdvUnternehmensfuehrungGovernanceAufsichtsrat(
-    val anzahlDerMitgliederImAufsichtsrat: BigDecimal?,
-    val anzahlUnabhaengigerMitgliederImAufsichtsrat: BigDecimal?,
-    val anzahlVonFrauenImAufsichtsrat: BigDecimal?,
+    val anzahlDerMitgliederImAufsichtsrat: BigDecimal? = null,
+    val anzahlUnabhaengigerMitgliederImAufsichtsrat: BigDecimal? = null,
+    val anzahlVonFrauenImAufsichtsrat: BigDecimal? = null,
 )

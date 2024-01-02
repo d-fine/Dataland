@@ -15,13 +15,13 @@ import org.dataland.datalandbackend.frameworks.gdv.model.unternehmensfuehrungGov
  * The data-model for the UnternehmensfuehrungGovernance section
  */
 data class GdvUnternehmensfuehrungGovernance(
-    val aufsichtsrat: GdvUnternehmensfuehrungGovernanceAufsichtsrat?,
-    val verguetungsausschuss: GdvUnternehmensfuehrungGovernanceVerguetungsausschuss?,
-    val nominierungsausschuss: GdvUnternehmensfuehrungGovernanceNominierungsausschuss?,
-    val pruefungsausschuss: GdvUnternehmensfuehrungGovernancePruefungsausschuss?,
-    val nachhaltigkeitsausschuss: GdvUnternehmensfuehrungGovernanceNachhaltigkeitsausschuss?,
-    val sonstige: GdvUnternehmensfuehrungGovernanceSonstige?,
-    val stakeholder: GdvUnternehmensfuehrungGovernanceStakeholder?,
-    val unternehmensrichtlinien: GdvUnternehmensfuehrungGovernanceUnternehmensrichtlinien?,
-    val lieferantenauswahl: GdvUnternehmensfuehrungGovernanceLieferantenauswahl?,
+    val aufsichtsrat: GdvUnternehmensfuehrungGovernanceAufsichtsrat? = null,
+    val verguetungsausschuss: GdvUnternehmensfuehrungGovernanceVerguetungsausschuss? = null,
+    val nominierungsausschuss: GdvUnternehmensfuehrungGovernanceNominierungsausschuss? = null,
+    val pruefungsausschuss: GdvUnternehmensfuehrungGovernancePruefungsausschuss? = null,
+    val nachhaltigkeitsausschuss: GdvUnternehmensfuehrungGovernanceNachhaltigkeitsausschuss? = null,
+    val sonstige: GdvUnternehmensfuehrungGovernanceSonstige? = null,
+    val stakeholder: GdvUnternehmensfuehrungGovernanceStakeholder? = null,
+    val unternehmensrichtlinien: GdvUnternehmensfuehrungGovernanceUnternehmensrichtlinien? = null,
+    val lieferantenauswahl: GdvUnternehmensfuehrungGovernanceLieferantenauswahl? = null,
 )

@@ -7,10 +7,10 @@ import java.math.BigDecimal
  * The data-model for the Geschlechterdiversitaet section
  */
 data class GdvSozialesGeschlechterdiversitaet(
-    val mitarbeiterAufTopManagementEbene: BigDecimal?,
-    val frauenAufTopManagementEbene: BigDecimal?,
-    val mitgliederGeschaeftsfuehrung: BigDecimal?,
-    val frauenInDerGeschaeftsfuehrung: BigDecimal?,
-    val definitionTopManagement: String?,
-    val einhaltungRechtlicherVorgaben: String?,
+    val mitarbeiterAufTopManagementEbene: BigDecimal? = null,
+    val frauenAufTopManagementEbene: BigDecimal? = null,
+    val mitgliederGeschaeftsfuehrung: BigDecimal? = null,
+    val frauenInDerGeschaeftsfuehrung: BigDecimal? = null,
+    val definitionTopManagement: String? = null,
+    val einhaltungRechtlicherVorgaben: String? = null,
 )

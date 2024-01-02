@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the EsgZiele section
  */
 data class GdvAllgemeinEsgZiele(
-    val existenzVonEsgZielen: YesNo?,
-    val beschreibungDerEsgZiele: String?,
-    val investitionenInZielerreichung: String?,
+    val existenzVonEsgZielen: YesNo? = null,
+    val beschreibungDerEsgZiele: String? = null,
+    val investitionenInZielerreichung: String? = null,
 )

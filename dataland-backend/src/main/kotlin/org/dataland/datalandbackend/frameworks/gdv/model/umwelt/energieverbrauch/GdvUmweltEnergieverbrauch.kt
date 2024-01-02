@@ -7,6 +7,6 @@ import org.dataland.datalandbackend.frameworks.gdv.custom.YearlyTimeseriesData
  * The data-model for the Energieverbrauch section
  */
 data class GdvUmweltEnergieverbrauch(
-    val berichterstattungEnergieverbrauch: YearlyTimeseriesData<BerichterstattungEnergieverbrauchValues?>?,
-    val unternehmensGruppenStrategieBzglEnergieverbrauch: String?,
+    val berichterstattungEnergieverbrauch: YearlyTimeseriesData<BerichterstattungEnergieverbrauchValues?>? = null,
+    val unternehmensGruppenStrategieBzglEnergieverbrauch: String? = null,
 )

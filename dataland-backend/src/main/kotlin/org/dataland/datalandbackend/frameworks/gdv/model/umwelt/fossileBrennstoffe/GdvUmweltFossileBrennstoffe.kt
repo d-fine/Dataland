@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the FossileBrennstoffe section
  */
 data class GdvUmweltFossileBrennstoffe(
-    val einnahmenAusFossilenBrennstoffen: YesNo?,
+    val einnahmenAusFossilenBrennstoffen: YesNo? = null,
     val berichterstattungEinnahmenAusFossilenBrennstoffen:
-    YearlyTimeseriesData<BerichterstattungEinnahmenAusFossilenBrennstoffenValues?>?,
+    YearlyTimeseriesData<BerichterstattungEinnahmenAusFossilenBrennstoffenValues?>? = null,
 )

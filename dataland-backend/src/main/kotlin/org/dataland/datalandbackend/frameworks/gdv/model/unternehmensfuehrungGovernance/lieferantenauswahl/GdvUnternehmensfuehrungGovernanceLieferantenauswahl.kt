@@ -7,6 +7,6 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the Lieferantenauswahl section
  */
 data class GdvUnternehmensfuehrungGovernanceLieferantenauswahl(
-    val esgKriterienUndUeberwachungDerLieferanten: YesNo?,
-    val auswahlkriterien: String?,
+    val esgKriterienUndUeberwachungDerLieferanten: YesNo? = null,
+    val auswahlkriterien: String? = null,
 )

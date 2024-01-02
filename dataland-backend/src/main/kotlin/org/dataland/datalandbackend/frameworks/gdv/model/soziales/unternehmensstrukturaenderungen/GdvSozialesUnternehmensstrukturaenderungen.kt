@@ -9,13 +9,13 @@ import java.math.BigDecimal
  * The data-model for the Unternehmensstrukturaenderungen section
  */
 data class GdvSozialesUnternehmensstrukturaenderungen(
-    val vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur: YesNo?,
-    val anzahlUnbefristeterVertraegeInDeutschland: BigDecimal?,
-    val anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland: BigDecimal?,
-    val anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland: BigDecimal?,
-    val anzahlUnbefristeterVertraegeInDerGesamtgruppe: BigDecimal?,
-    val anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: BigDecimal?,
-    val anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: BigDecimal?,
+    val vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur: YesNo? = null,
+    val anzahlUnbefristeterVertraegeInDeutschland: BigDecimal? = null,
+    val anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland: BigDecimal? = null,
+    val anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland: BigDecimal? = null,
+    val anzahlUnbefristeterVertraegeInDerGesamtgruppe: BigDecimal? = null,
+    val anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: BigDecimal? = null,
+    val anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: BigDecimal? = null,
     val auswirkungenAufAnteilBefristerVertraegeUndFluktuation:
-    YearlyTimeseriesData<AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues?>?,
+    YearlyTimeseriesData<AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues?>? = null,
 )

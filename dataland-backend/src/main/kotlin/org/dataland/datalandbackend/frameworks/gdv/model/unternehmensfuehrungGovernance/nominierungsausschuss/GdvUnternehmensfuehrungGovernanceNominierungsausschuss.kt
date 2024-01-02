@@ -7,7 +7,7 @@ import java.math.BigDecimal
  * The data-model for the Nominierungsausschuss section
  */
 data class GdvUnternehmensfuehrungGovernanceNominierungsausschuss(
-    val anzahlDerMitgliederImNominierungsausschuss: BigDecimal?,
-    val anzahlUnabhaengigerMitgliederImNominierungsausschuss: BigDecimal?,
-    val anzahlVonFrauenImVerguetungsausschuss: BigDecimal?,
+    val anzahlDerMitgliederImNominierungsausschuss: BigDecimal? = null,
+    val anzahlUnabhaengigerMitgliederImNominierungsausschuss: BigDecimal? = null,
+    val anzahlVonFrauenImVerguetungsausschuss: BigDecimal? = null,
 )

@@ -7,8 +7,8 @@ import org.dataland.datalandbackend.frameworks.gdv.custom.YearlyTimeseriesData
  * The data-model for the Taxonomie section
  */
 data class GdvUmweltTaxonomie(
-    val taxonomieBerichterstattung: TaxonomieBerichterstattungOptions?,
-    val euTaxonomieKompassAktivitaeten: List<String>?,
+    val taxonomieBerichterstattung: TaxonomieBerichterstattungOptions? = null,
+    val euTaxonomieKompassAktivitaeten: List<String>? = null,
     val umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten:
-    YearlyTimeseriesData<UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues?>?,
+    YearlyTimeseriesData<UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues?>? = null,
 )

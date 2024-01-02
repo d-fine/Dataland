@@ -13,9 +13,9 @@ import org.dataland.datalandbackend.frameworks.gdv.model.unternehmensfuehrungGov
  */
 @DataType("gdv")
 data class GdvData(
-    val general: GdvGeneral?,
-    val allgemein: GdvAllgemein?,
-    val umwelt: GdvUmwelt?,
-    val soziales: GdvSoziales?,
-    val unternehmensfuehrungGovernance: GdvUnternehmensfuehrungGovernance?,
+    val general: GdvGeneral? = null,
+    val allgemein: GdvAllgemein? = null,
+    val umwelt: GdvUmwelt? = null,
+    val soziales: GdvSoziales? = null,
+    val unternehmensfuehrungGovernance: GdvUnternehmensfuehrungGovernance? = null,
 )

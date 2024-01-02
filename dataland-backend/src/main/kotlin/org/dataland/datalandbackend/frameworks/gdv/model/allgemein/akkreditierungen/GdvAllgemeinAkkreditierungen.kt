@@ -8,9 +8,9 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the Akkreditierungen section
  */
 data class GdvAllgemeinAkkreditierungen(
-    val iso14001: BaseDataPoint<YesNo>?,
-    val iso45001: BaseDataPoint<YesNo>?,
-    val iso27001: BaseDataPoint<YesNo>?,
-    val iso50001: BaseDataPoint<YesNo>?,
-    val weitereAkkreditierungen: List<BaseDataPoint<String>>?,
+    val iso14001: BaseDataPoint<YesNo>? = null,
+    val iso45001: BaseDataPoint<YesNo>? = null,
+    val iso27001: BaseDataPoint<YesNo>? = null,
+    val iso50001: BaseDataPoint<YesNo>? = null,
+    val weitereAkkreditierungen: List<BaseDataPoint<String>>? = null,
 )

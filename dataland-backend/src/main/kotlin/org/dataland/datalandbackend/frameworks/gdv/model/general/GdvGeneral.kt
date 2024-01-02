@@ -7,5 +7,5 @@ import org.dataland.datalandbackend.frameworks.gdv.model.general.masterData.GdvG
  * The data-model for the General section
  */
 data class GdvGeneral(
-    val masterData: GdvGeneralMasterData?,
+    val masterData: GdvGeneralMasterData? = null,
 )

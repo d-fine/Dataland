@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the Stakeholder section
  */
 data class GdvUnternehmensfuehrungGovernanceStakeholder(
-    val einbeziehungVonStakeholdern: YesNo?,
-    val prozessDerEinbeziehungVonStakeholdern: String?,
-    val mechanismenZurAusrichtungAufStakeholder: String?,
+    val einbeziehungVonStakeholdern: YesNo? = null,
+    val prozessDerEinbeziehungVonStakeholdern: String? = null,
+    val mechanismenZurAusrichtungAufStakeholder: String? = null,
 )

@@ -7,5 +7,5 @@ import java.math.BigDecimal
  * Data class for the timeseries data contained in the field unfallrate
  */
 data class UnfallrateValues(
-    val haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust: BigDecimal?,
+    val haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust: BigDecimal? = null,
 )

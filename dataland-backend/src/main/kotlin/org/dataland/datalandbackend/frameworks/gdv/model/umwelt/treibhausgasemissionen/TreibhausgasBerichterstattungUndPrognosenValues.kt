@@ -7,7 +7,7 @@ import java.math.BigDecimal
  * Data class for the timeseries data contained in the field treibhausgasBerichterstattungUndPrognosen
  */
 data class TreibhausgasBerichterstattungUndPrognosenValues(
-    val scope1: BigDecimal?,
-    val scope2: BigDecimal?,
-    val scope3: BigDecimal?,
+    val scope1: BigDecimal? = null,
+    val scope2: BigDecimal? = null,
+    val scope3: BigDecimal? = null,
 )

@@ -7,7 +7,7 @@ import java.math.BigDecimal
  * The data-model for the Nachhaltigkeitsausschuss section
  */
 data class GdvUnternehmensfuehrungGovernanceNachhaltigkeitsausschuss(
-    val anzahlDerMitgliederImNachhaltigkeitsausschuss: BigDecimal?,
-    val anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss: BigDecimal?,
-    val anzahlVonFrauenImNachhaltigkeitsausschuss: BigDecimal?,
+    val anzahlDerMitgliederImNachhaltigkeitsausschuss: BigDecimal? = null,
+    val anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss: BigDecimal? = null,
+    val anzahlVonFrauenImNachhaltigkeitsausschuss: BigDecimal? = null,
 )

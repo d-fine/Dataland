@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.frameworks.gdv.custom.YearlyTimeseriesData
  * The data-model for the SicherheitUndWeiterbildung section
  */
 data class GdvSozialesSicherheitUndWeiterbildung(
-    val sicherheitsmassnahmenFuerMitarbeiter: String?,
-    val unfallrate: YearlyTimeseriesData<UnfallrateValues?>?,
-    val budgetFuerSchulungAusbildung: YearlyTimeseriesData<BudgetFuerSchulungAusbildungValues?>?,
+    val sicherheitsmassnahmenFuerMitarbeiter: String? = null,
+    val unfallrate: YearlyTimeseriesData<UnfallrateValues?>? = null,
+    val budgetFuerSchulungAusbildung: YearlyTimeseriesData<BudgetFuerSchulungAusbildungValues?>? = null,
 )

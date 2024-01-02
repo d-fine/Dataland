@@ -18,16 +18,16 @@ import org.dataland.datalandbackend.frameworks.gdv.model.allgemein.unGlobalConce
  * The data-model for the Allgemein section
  */
 data class GdvAllgemein(
-    val esgZiele: GdvAllgemeinEsgZiele?,
-    val sektoren: GdvAllgemeinSektoren?,
-    val esgBerichte: GdvAllgemeinEsgBerichte?,
-    val akkreditierungen: GdvAllgemeinAkkreditierungen?,
-    val unGlobalConceptPrinzipien: GdvAllgemeinUnGlobalConceptPrinzipien?,
-    val oecdLeitsaetze: GdvAllgemeinOecdLeitsaetze?,
-    val sonstige: GdvAllgemeinSonstige?,
-    val fuehrungsstandards: GdvAllgemeinFuehrungsstandards?,
-    val rechtsstreitigkeiten: GdvAllgemeinRechtsstreitigkeiten?,
-    val rating: GdvAllgemeinRating?,
-    val anleihen: GdvAllgemeinAnleihen?,
-    val risiken: GdvAllgemeinRisiken?,
+    val esgZiele: GdvAllgemeinEsgZiele? = null,
+    val sektoren: GdvAllgemeinSektoren? = null,
+    val esgBerichte: GdvAllgemeinEsgBerichte? = null,
+    val akkreditierungen: GdvAllgemeinAkkreditierungen? = null,
+    val unGlobalConceptPrinzipien: GdvAllgemeinUnGlobalConceptPrinzipien? = null,
+    val oecdLeitsaetze: GdvAllgemeinOecdLeitsaetze? = null,
+    val sonstige: GdvAllgemeinSonstige? = null,
+    val fuehrungsstandards: GdvAllgemeinFuehrungsstandards? = null,
+    val rechtsstreitigkeiten: GdvAllgemeinRechtsstreitigkeiten? = null,
+    val rating: GdvAllgemeinRating? = null,
+    val anleihen: GdvAllgemeinAnleihen? = null,
+    val risiken: GdvAllgemeinRisiken? = null,
 )

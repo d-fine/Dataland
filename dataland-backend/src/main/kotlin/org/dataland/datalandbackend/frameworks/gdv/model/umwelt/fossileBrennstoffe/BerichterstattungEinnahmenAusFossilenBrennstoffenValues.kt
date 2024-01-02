@@ -7,5 +7,5 @@ import java.math.BigDecimal
  * Data class for the timeseries data contained in the field berichterstattungEinnahmenAusFossilenBrennstoffen
  */
 data class BerichterstattungEinnahmenAusFossilenBrennstoffenValues(
-    val prozentDerEinnahmenAusFossilenBrennstoffen: BigDecimal?,
+    val prozentDerEinnahmenAusFossilenBrennstoffen: BigDecimal? = null,
 )

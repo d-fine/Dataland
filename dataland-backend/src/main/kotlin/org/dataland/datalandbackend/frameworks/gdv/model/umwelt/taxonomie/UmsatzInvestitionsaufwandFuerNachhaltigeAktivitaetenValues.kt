@@ -7,8 +7,8 @@ import java.math.BigDecimal
  * Data class for the timeseries data contained in the field umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten
  */
 data class UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues(
-    val taxonomieGeeignetNachProzentUmsatz: BigDecimal?,
-    val taxonomieGeeignetNachProzentCapex: BigDecimal?,
-    val taxonomieKonformNachProzentUmsatz: BigDecimal?,
-    val taxonomieKonformNachProzentCapex: BigDecimal?,
+    val taxonomieGeeignetNachProzentUmsatz: BigDecimal? = null,
+    val taxonomieGeeignetNachProzentCapex: BigDecimal? = null,
+    val taxonomieKonformNachProzentUmsatz: BigDecimal? = null,
+    val taxonomieKonformNachProzentCapex: BigDecimal? = null,
 )

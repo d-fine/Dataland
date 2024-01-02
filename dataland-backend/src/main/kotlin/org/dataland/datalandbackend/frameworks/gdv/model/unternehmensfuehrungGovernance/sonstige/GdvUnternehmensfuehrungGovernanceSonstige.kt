@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the Sonstige section
  */
 data class GdvUnternehmensfuehrungGovernanceSonstige(
-    val wirtschaftspruefer: String?,
-    val trennungVonCeoOderVorsitzenden: YesNo?,
-    val amtszeitBisZurTrennung: String?,
+    val wirtschaftspruefer: String? = null,
+    val trennungVonCeoOderVorsitzenden: YesNo? = null,
+    val amtszeitBisZurTrennung: String? = null,
 )

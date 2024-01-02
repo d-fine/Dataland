@@ -7,6 +7,6 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the Sektoren section
  */
 data class GdvAllgemeinSektoren(
-    val sektorenMitHohenKlimaauswirkungen: YesNo?,
-    val auflistungDerSektoren: List<String>?,
+    val sektorenMitHohenKlimaauswirkungen: YesNo? = null,
+    val auflistungDerSektoren: List<String>? = null,
 )

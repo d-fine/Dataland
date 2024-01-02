@@ -7,7 +7,7 @@ import java.math.BigDecimal
  * The data-model for the Verguetungsausschuss section
  */
 data class GdvUnternehmensfuehrungGovernanceVerguetungsausschuss(
-    val anzahlDerMitgliederImVerguetungsausschuss: BigDecimal?,
-    val anzahlUnabhaengigerMitgliederImVerguetungsausschuss: BigDecimal?,
-    val anzahlVonFrauenImVerguetungsausschuss: BigDecimal?,
+    val anzahlDerMitgliederImVerguetungsausschuss: BigDecimal? = null,
+    val anzahlUnabhaengigerMitgliederImVerguetungsausschuss: BigDecimal? = null,
+    val anzahlVonFrauenImVerguetungsausschuss: BigDecimal? = null,
 )

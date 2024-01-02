@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the Produktion section
  */
 data class GdvUmweltProduktion(
-    val produkteZurVerringerungDerUmweltbelastung: YesNo?,
-    val verringerungenDerUmweltbelastung: String?,
-    val oekologischerMindestStandardFuerProduktionsprozesse: YesNo?,
+    val produkteZurVerringerungDerUmweltbelastung: YesNo? = null,
+    val verringerungenDerUmweltbelastung: String? = null,
+    val oekologischerMindestStandardFuerProduktionsprozesse: YesNo? = null,
 )

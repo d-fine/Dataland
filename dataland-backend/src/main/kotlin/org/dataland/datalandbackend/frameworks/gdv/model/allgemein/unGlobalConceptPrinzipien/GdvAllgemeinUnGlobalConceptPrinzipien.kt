@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the UnGlobalConceptPrinzipien section
  */
 data class GdvAllgemeinUnGlobalConceptPrinzipien(
-    val mechanismenZurUeberwachungDerEinhaltungDerUngcp: YesNo?,
-    val richtlinienZurEinhaltungDerUngcp: List<BaseDataPoint<String>>?,
-    val erklaerungDerEinhaltungDerUngcp: String?,
+    val mechanismenZurUeberwachungDerEinhaltungDerUngcp: YesNo? = null,
+    val richtlinienZurEinhaltungDerUngcp: List<BaseDataPoint<String>>? = null,
+    val erklaerungDerEinhaltungDerUngcp: String? = null,
 )

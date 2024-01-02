@@ -7,5 +7,5 @@ import java.math.BigDecimal
  * Data class for the timeseries data contained in the field berichterstattungEnergieverbrauchVonImmobilienvermoegen
  */
 data class BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues(
-    val engagementAnteilInEnergieineffizientenImmobilienanlagen: BigDecimal?,
+    val engagementAnteilInEnergieineffizientenImmobilienanlagen: BigDecimal? = null,
 )

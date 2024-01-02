@@ -91,4 +91,3 @@ data class DataClassBuilder(
         return "$name.kt:\n" + properties.joinToString("\n") { it.toString().prependIndent("  ") }
     }
 }
-// TODO Emanuel: we need to pass "= null" as default value to each property, that is nullable

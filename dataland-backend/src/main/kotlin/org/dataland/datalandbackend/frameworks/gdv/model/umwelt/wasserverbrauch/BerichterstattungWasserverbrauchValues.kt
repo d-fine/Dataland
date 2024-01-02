@@ -7,6 +7,6 @@ import java.math.BigDecimal
  * Data class for the timeseries data contained in the field berichterstattungWasserverbrauch
  */
 data class BerichterstattungWasserverbrauchValues(
-    val wasserverbrauch: BigDecimal?,
-    val emissionenInWasser: BigDecimal?,
+    val wasserverbrauch: BigDecimal? = null,
+    val emissionenInWasser: BigDecimal? = null,
 )

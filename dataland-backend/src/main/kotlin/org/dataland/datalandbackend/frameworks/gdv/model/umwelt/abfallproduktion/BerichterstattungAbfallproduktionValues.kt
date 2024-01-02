@@ -7,7 +7,7 @@ import java.math.BigDecimal
  * Data class for the timeseries data contained in the field berichterstattungAbfallproduktion
  */
 data class BerichterstattungAbfallproduktionValues(
-    val gesamteAbfallmenge: BigDecimal?,
-    val prozentAbfallRecyclet: BigDecimal?,
-    val prozentGefaehrlicherAbfall: BigDecimal?,
+    val gesamteAbfallmenge: BigDecimal? = null,
+    val prozentAbfallRecyclet: BigDecimal? = null,
+    val prozentGefaehrlicherAbfall: BigDecimal? = null,
 )

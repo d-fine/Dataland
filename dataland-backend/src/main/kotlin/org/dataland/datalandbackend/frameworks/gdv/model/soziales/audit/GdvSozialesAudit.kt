@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the Audit section
  */
 data class GdvSozialesAudit(
-    val auditsZurEinhaltungVonArbeitsstandards: YesNo?,
-    val artDesAudits: ArtDesAuditsOptions?,
-    val auditErgebnisse: String?,
+    val auditsZurEinhaltungVonArbeitsstandards: YesNo? = null,
+    val artDesAudits: ArtDesAuditsOptions? = null,
+    val auditErgebnisse: String? = null,
 )

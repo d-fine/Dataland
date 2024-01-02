@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the OecdLeitsaetze section
  */
 data class GdvAllgemeinOecdLeitsaetze(
-    val mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze: YesNo?,
-    val richtlinienZurEinhaltungDerOecdLeitsaetze: List<BaseDataPoint<String>>?,
-    val erklaerungDerEinhaltungDerOecdLeitsaetze: String?,
+    val mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze: YesNo? = null,
+    val richtlinienZurEinhaltungDerOecdLeitsaetze: List<BaseDataPoint<String>>? = null,
+    val erklaerungDerEinhaltungDerOecdLeitsaetze: String? = null,
 )

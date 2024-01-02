@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the EsgBerichte section
  */
 data class GdvAllgemeinEsgBerichte(
-    val nachhaltigkeitsberichte: YesNo?,
-    val frequenzDerBerichterstattung: FrequenzDerBerichterstattungOptions?,
-    val aktuelleBerichte: List<BaseDataPoint<String>>?,
+    val nachhaltigkeitsberichte: YesNo? = null,
+    val frequenzDerBerichterstattung: FrequenzDerBerichterstattungOptions? = null,
+    val aktuelleBerichte: List<BaseDataPoint<String>>? = null,
 )

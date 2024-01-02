@@ -15,13 +15,13 @@ import org.dataland.datalandbackend.frameworks.gdv.model.umwelt.wasserverbrauch.
  * The data-model for the Umwelt section
  */
 data class GdvUmwelt(
-    val treibhausgasemissionen: GdvUmweltTreibhausgasemissionen?,
-    val produktion: GdvUmweltProduktion?,
-    val energieverbrauch: GdvUmweltEnergieverbrauch?,
-    val energieeffizienzImmobilienanlagen: GdvUmweltEnergieeffizienzImmobilienanlagen?,
-    val wasserverbrauch: GdvUmweltWasserverbrauch?,
-    val abfallproduktion: GdvUmweltAbfallproduktion?,
-    val biodiversitaet: GdvUmweltBiodiversitaet?,
-    val fossileBrennstoffe: GdvUmweltFossileBrennstoffe?,
-    val taxonomie: GdvUmweltTaxonomie?,
+    val treibhausgasemissionen: GdvUmweltTreibhausgasemissionen? = null,
+    val produktion: GdvUmweltProduktion? = null,
+    val energieverbrauch: GdvUmweltEnergieverbrauch? = null,
+    val energieeffizienzImmobilienanlagen: GdvUmweltEnergieeffizienzImmobilienanlagen? = null,
+    val wasserverbrauch: GdvUmweltWasserverbrauch? = null,
+    val abfallproduktion: GdvUmweltAbfallproduktion? = null,
+    val biodiversitaet: GdvUmweltBiodiversitaet? = null,
+    val fossileBrennstoffe: GdvUmweltFossileBrennstoffe? = null,
+    val taxonomie: GdvUmweltTaxonomie? = null,
 )

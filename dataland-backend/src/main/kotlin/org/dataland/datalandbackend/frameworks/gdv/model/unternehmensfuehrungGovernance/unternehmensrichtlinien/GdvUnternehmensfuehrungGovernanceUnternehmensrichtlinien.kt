@@ -5,6 +5,6 @@ package org.dataland.datalandbackend.frameworks.gdv.model.unternehmensfuehrungGo
  * The data-model for the Unternehmensrichtlinien section
  */
 data class GdvUnternehmensfuehrungGovernanceUnternehmensrichtlinien(
-    val veroeffentlichteUnternehmensrichtlinien: List<String>?,
-    val weitereVeroeffentlicheUnternehmensrichtlinien: String?,
+    val veroeffentlichteUnternehmensrichtlinien: List<String>? = null,
+    val weitereVeroeffentlicheUnternehmensrichtlinien: String? = null,
 )

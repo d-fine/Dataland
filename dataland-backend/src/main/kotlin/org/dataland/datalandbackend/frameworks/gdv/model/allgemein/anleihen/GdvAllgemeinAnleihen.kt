@@ -8,8 +8,8 @@ import java.math.BigDecimal
  * The data-model for the Anleihen section
  */
 data class GdvAllgemeinAnleihen(
-    val grueneSozialeUndOderNachhaltigeEmissionen: YesNo?,
-    val ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen: BigDecimal?,
-    val sustainibilityLinkedDebt: YesNo?,
-    val ausstehendeSustainibilityLinkedDebt: BigDecimal?,
+    val grueneSozialeUndOderNachhaltigeEmissionen: YesNo? = null,
+    val ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen: BigDecimal? = null,
+    val sustainibilityLinkedDebt: YesNo? = null,
+    val ausstehendeSustainibilityLinkedDebt: BigDecimal? = null,
 )

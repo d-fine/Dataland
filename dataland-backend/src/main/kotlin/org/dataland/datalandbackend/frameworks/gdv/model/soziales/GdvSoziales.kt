@@ -11,9 +11,9 @@ import org.dataland.datalandbackend.frameworks.gdv.model.soziales.unternehmensst
  * The data-model for the Soziales section
  */
 data class GdvSoziales(
-    val unternehmensstrukturaenderungen: GdvSozialesUnternehmensstrukturaenderungen?,
-    val sicherheitUndWeiterbildung: GdvSozialesSicherheitUndWeiterbildung?,
-    val einkommensgleichheit: GdvSozialesEinkommensgleichheit?,
-    val geschlechterdiversitaet: GdvSozialesGeschlechterdiversitaet?,
-    val audit: GdvSozialesAudit?,
+    val unternehmensstrukturaenderungen: GdvSozialesUnternehmensstrukturaenderungen? = null,
+    val sicherheitUndWeiterbildung: GdvSozialesSicherheitUndWeiterbildung? = null,
+    val einkommensgleichheit: GdvSozialesEinkommensgleichheit? = null,
+    val geschlechterdiversitaet: GdvSozialesGeschlechterdiversitaet? = null,
+    val audit: GdvSozialesAudit? = null,
 )

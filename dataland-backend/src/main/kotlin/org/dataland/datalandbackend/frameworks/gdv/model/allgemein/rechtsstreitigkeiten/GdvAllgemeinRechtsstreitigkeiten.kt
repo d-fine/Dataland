@@ -7,14 +7,14 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the Rechtsstreitigkeiten section
  */
 data class GdvAllgemeinRechtsstreitigkeiten(
-    val esgBezogeneRechtsstreitigkeiten: YesNo?,
-    val rechtsstreitigkeitenMitBezugZuE: YesNo?,
-    val statusZuE: StatusZuEOptions?,
-    val einzelheitenZuDenRechtsstreitigkeitenZuE: String?,
-    val rechtsstreitigkeitenMitBezugZuS: YesNo?,
-    val statusZuS: StatusZuSOptions?,
-    val einzelheitenZuDenRechtsstreitigkeitenZuS: String?,
-    val rechtsstreitigkeitenMitBezugZuG: YesNo?,
-    val statusZuG: StatusZuGOptions?,
-    val einzelheitenZuDenRechtsstreitigkeitenZuG: String?,
+    val esgBezogeneRechtsstreitigkeiten: YesNo? = null,
+    val rechtsstreitigkeitenMitBezugZuE: YesNo? = null,
+    val statusZuE: StatusZuEOptions? = null,
+    val einzelheitenZuDenRechtsstreitigkeitenZuE: String? = null,
+    val rechtsstreitigkeitenMitBezugZuS: YesNo? = null,
+    val statusZuS: StatusZuSOptions? = null,
+    val einzelheitenZuDenRechtsstreitigkeitenZuS: String? = null,
+    val rechtsstreitigkeitenMitBezugZuG: YesNo? = null,
+    val statusZuG: StatusZuGOptions? = null,
+    val einzelheitenZuDenRechtsstreitigkeitenZuG: String? = null,
 )

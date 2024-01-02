@@ -7,7 +7,7 @@ import java.math.BigDecimal
  * The data-model for the Pruefungsausschuss section
  */
 data class GdvUnternehmensfuehrungGovernancePruefungsausschuss(
-    val anzahlDerMitgliederImPruefungsausschuss: BigDecimal?,
-    val anzahlUnabhaengigerMitgliederImPruefungsausschuss: BigDecimal?,
-    val anzahlVonFrauenImPruefungsausschuss: BigDecimal?,
+    val anzahlDerMitgliederImPruefungsausschuss: BigDecimal? = null,
+    val anzahlUnabhaengigerMitgliederImPruefungsausschuss: BigDecimal? = null,
+    val anzahlVonFrauenImPruefungsausschuss: BigDecimal? = null,
 )
