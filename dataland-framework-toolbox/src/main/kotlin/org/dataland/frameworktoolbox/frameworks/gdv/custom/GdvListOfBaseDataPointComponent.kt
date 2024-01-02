@@ -22,8 +22,8 @@ class GdvListOfBaseDataPointComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
-    lateinit var descriptionColumnHeader: String
-    lateinit var documentColumnHeader: String
+    var descriptionColumnHeader: String? = null
+    var documentColumnHeader: String? = null
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addProperty(
@@ -42,6 +42,8 @@ class GdvListOfBaseDataPointComponent(
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+        requireNotNull(descriptionColumnHeader)
+        requireNotNull(documentColumnHeader)
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
