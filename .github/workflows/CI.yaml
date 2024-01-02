@@ -196,7 +196,7 @@ jobs:
       - name: Execute python unit tests
         if: always()
         run: |
-          coverage run --source="./automated-qa-service/src/main" -m pytest
+          coverage run --source="./dataland-automated-qa-service/src/main" -m pytest
           coverage report
         env:
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
