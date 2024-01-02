@@ -389,6 +389,7 @@ jobs:
         name: PythonUnitTestCoverage
         with:
           name: PythonUnitTestCoverage
+          path: python-coverage
       - uses: actions/download-artifact@v3
         name: JaCoCoResultsUnitTests
         with:
@@ -405,6 +406,7 @@ jobs:
       - name: Prepare Repo for Sonar
         if: ${{ !cancelled() }}
         run: |
+          pwd
           ./gradlew compileKotlin compileJava compileTestKotlin compileTestJava npmSetup npmInstall generateClients npm_run_build \
           -x detekt -x ktlintCheck -x jacocoTestReport -x kaptKotlin -x kaptTestKotlin -x kaptGenerateStubsTestKotlin -x kaptGenerateStubsKotlin \
           --no-daemon --stacktrace
