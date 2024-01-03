@@ -29,7 +29,7 @@
         <br />
         Wodianka privacy legal GmbH
         <br />
-        Dockenudener Straße 12a
+        Dockenhudener Straße 12a
         <br />
         22587 Hamburg
         <br />
