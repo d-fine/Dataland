@@ -58,11 +58,11 @@ docker exec dala-e2e-test-community-manager-1 pkill -f java
 timeout 90 sh -c "docker logs dala-e2e-test-community-manager-1 --follow" > /dev/null
 docker cp dala-e2e-test-community-manager-1:/jacoco.exec ./community-manager-bootRun-${CYPRESS_TEST_GROUP}.exec
 
-docker exec dala-e2e-test-automated-qa-service-1 sh -c "top -n 1"
+echo XXXXXXXX 1
 docker exec dala-e2e-test-automated-qa-service-1 pkill -f coverage
-docker exec dala-e2e-test-automated-qa-service-1 sh -c "top -n 1"
+echo XXXXXXXX 2
 timeout 90 sh -c "docker logs dala-e2e-test-automated-qa-service-1 --follow" > /dev/null
-docker exec dala-e2e-test-automated-qa-service-1 sh -c "top -n 1"
+echo XXXXXXXX 3
 docker cp dala-e2e-test-automated-qa-service-1:/app/.coverage ./automated-qa-service-bootRun-${CYPRESS_TEST_GROUP}.coverage
 
 # This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
