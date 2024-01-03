@@ -17,6 +17,7 @@ RUN pip install --no-cache-dir ./dataland-backend-api-documentation-client
 RUN pip install --no-cache-dir ./dataland-document-manager-api-documentation-client
 RUN pip install -e .
 
+COPY ./dataland-automated-qa-service/src/test/measure_coverage.py ./src/test/measure_coverage.py
 CMD ["coverage", "run",  "--source=\"./src/main\"", "-m", "pytest", "./src/test/measure_coverage.py"]
 
 # TODO proper healthcheck with CMD entrypoint now
