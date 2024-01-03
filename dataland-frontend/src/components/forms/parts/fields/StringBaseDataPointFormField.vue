@@ -64,11 +64,7 @@ export default defineComponent({
       this.referencedDocument = updatedDocuments[0];
       this.documentName = this.referencedDocument?.fileNameWithoutSuffix;
       this.documentReference = this.referencedDocument?.fileReference;
-      if (this.documentName !== undefined && this.documentReference !== undefined) {
-        this.$emit("fieldSpecificDocumentsUpdated", this.referencedDocument);
-      } else {
-        throw Error("The document that is being selected does not have a name and reference.");
-      }
+      this.$emit("fieldSpecificDocumentsUpdated", this.referencedDocument);
     },
 
     /**
