@@ -337,7 +337,6 @@ import {
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
   EuTaxonomyDataForFinancialsFinancialServicesTypesEnum,
-  type CompanyReport,
 } from "@clients/backend";
 import { type AxiosResponse } from "axios";
 import { type ObjectType, updateObject } from "@/utils/UpdateObjectUtils";
@@ -394,7 +393,6 @@ export default defineComponent({
       route: useRoute(),
       waitingForData: false,
       editMode: false,
-      dataSource: undefined as CompanyReport | undefined,
       noReportLabel: "None...",
       reportPageNumber: undefined as string | undefined,
 
@@ -443,7 +441,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.isMounted = true;
+    setTimeout(() => (this.isMounted = true));
   },
   computed: {
     reportingPeriodYear(): number {
@@ -612,12 +610,6 @@ export default defineComponent({
         .filter((financialServiceTypeKey) => financialServiceTypeKey !== "assetManagementKpis")
         .map((financialServiceTypeKey) => {
           const kpi = { [financialServiceTypeKey]: kpiSections[financialServiceTypeKey] };
-          Object.values(kpi).forEach((key) =>
-            Object.values(key).forEach(
-              (value: { dataSource: CompanyReport | undefined; value: string; quality: string }) =>
-                (value.dataSource = this.pruneDataSource(value.dataSource)),
-            ),
-          );
           if (kpiSections[financialServiceTypeKey]) {
             const financialServiceType = (euTaxonomyKPIsModel.kpisFieldNameToFinancialServiceType as ObjectType)[
               financialServiceTypeKey
@@ -725,17 +717,6 @@ export default defineComponent({
         return true;
       }
       return this.currentReportValue?.length > 0 && this.currentReportValue !== this.noReportLabel;
-    },
-    /**
-     * Check if provided data source has appropriate file name and return undefined if not
-     * @param dataSource the company report object
-     * @returns unchanged company report or undefined
-     */
-    pruneDataSource(dataSource: CompanyReport | undefined) {
-      if (!this.isMounted) {
-        return true;
-      }
-      return dataSource?.fileName && dataSource?.fileName !== this.noReportLabel ? this.dataSource : undefined;
     },
   },
 });

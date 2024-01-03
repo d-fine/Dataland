@@ -82,41 +82,38 @@
       </div>
     </div>
     <div class="form-field">
-      <FormKit type="group" v-if="dataPointIsAvailable" name="dataSource" :ignore="true">
-        <h4 class="mt-0">Data source</h4>
-        <div class="next-to-each-other">
-          <div class="flex-1">
-            <UploadFormHeader :label="kpiNameMappings.report ?? ''" :description="kpiInfoMappings.report ?? ''" />
-            <FormKit
-              type="select"
-              name="fileName"
-              :disabled="!dataPointIsAvailable"
-              v-model="currentReportValue"
-              placeholder="Select a report"
-              :options="[noReportLabel, ...reportsName]"
-              :plugins="[selectNothingIfNotExistsFormKitPlugin]"
-              :ignore="true"
-            />
-            <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
-          </div>
-          <div>
-            <UploadFormHeader :label="kpiNameMappings.page ?? ''" :description="kpiInfoMappings.page ?? ''" />
-            <FormKit
-              outer-class="w-100"
-              :disabled="!dataPointIsAvailable"
-              v-model="currentPageValue"
-              type="number"
-              name="page"
-              placeholder="Page"
-              validation-label="Page"
-              step="1"
-              min="0"
-              validation="min:0"
-              :ignore="true"
-            />
-          </div>
+      <h4 class="mt-0">Data source</h4>
+      <div class="next-to-each-other">
+        <div class="flex-1">
+          <UploadFormHeader :label="kpiNameMappings.report ?? ''" :description="kpiInfoMappings.report ?? ''" />
+          <FormKit
+            type="select"
+            name="fileName"
+            :disabled="!dataPointIsAvailable"
+            v-model="currentReportValue"
+            placeholder="Select a report"
+            :options="[noReportLabel, ...reportsName]"
+            :plugins="[selectNothingIfNotExistsFormKitPlugin]"
+            ignore="true"
+          />
         </div>
-      </FormKit>
+        <div>
+          <UploadFormHeader :label="kpiNameMappings.page ?? ''" :description="kpiInfoMappings.page ?? ''" />
+          <FormKit
+            outer-class="w-100"
+            :disabled="!dataPointIsAvailable"
+            v-model="currentPageValue"
+            type="number"
+            name="page"
+            placeholder="Page"
+            validation-label="Page"
+            step="1"
+            min="0"
+            validation="min:0"
+            ignore="true"
+          />
+        </div>
+      </div>
       <FormKit v-if="hasValidDataSource()" type="group" name="dataSource">
         <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
         <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
@@ -160,7 +157,7 @@ import { defineComponent } from "vue";
 import InputSwitch from "primevue/inputswitch";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { FormKit } from "@formkit/vue";
-import { type CompanyReport, QualityOptions } from "@clients/backend";
+import { QualityOptions } from "@clients/backend";
 import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
@@ -170,6 +167,7 @@ export default defineComponent({
   components: { DataPointHeader, UploadFormHeader, FormKit, InputSwitch },
   emits: ["dataPointAvailableToggle"],
   data: () => ({
+    isMounted: false,
     dataPointIsAvailable: true,
     qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
       label: qualityOption,
@@ -186,7 +184,6 @@ export default defineComponent({
     pageValueBeforeDataPointWasDisabled: "",
     qualityValueBeforeDataPointWasDisabled: "",
     noReportLabel: "None...",
-    dataSource: undefined as CompanyReport | undefined,
   }),
   watch: {
     dataPointIsAvailable(newValue: boolean) {
@@ -209,6 +206,9 @@ export default defineComponent({
         this.currentAmountValue = this.amountValueBeforeDataPointWasDisabled;
       }
     },
+  },
+  mounted() {
+    setTimeout(() => (this.isMounted = true));
   },
   computed: {
     reportsName(): string[] {
@@ -258,10 +258,10 @@ export default defineComponent({
      * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
      */
     hasValidDataSource(): boolean {
-      const hasCurrentReportValue = this.currentReportValue && this.currentReportValue !== this.noReportLabel;
-      const hasFileName = this.dataSource?.fileName && this.dataSource?.fileName !== this.noReportLabel;
-
-      return hasCurrentReportValue || !!hasFileName;
+      if (!this.isMounted) {
+        return true;
+      }
+      return !!this.currentReportValue && this.currentReportValue !== this.noReportLabel;
     },
   },
 });

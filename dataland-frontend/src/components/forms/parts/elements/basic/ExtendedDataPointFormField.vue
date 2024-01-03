@@ -66,7 +66,7 @@
                 v-model="currentReportValue"
                 placeholder="Select a report"
                 :options="[noReportLabel, ...reportsName]"
-                :ignore="true"
+                ignore="true"
               />
             </div>
             <div class="col-4">
@@ -81,7 +81,7 @@
                 step="1"
                 min="0"
                 validation="min:0"
-                :ignore="true"
+                ignore="true"
               />
             </div>
 
@@ -170,7 +170,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.isMounted = true;
+    setTimeout(() => (this.isMounted = true));
   },
   computed: {
     showDataPointFields(): boolean {
