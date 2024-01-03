@@ -211,7 +211,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: PythonUnitTestCoverage
-          path: ./dataland-automated-qa-service/coverage.xml
+          path: ./dataland-automated-qa-service/python-coverage.xml
 #      - name: Frontend linting
 #        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
 #        if: always()
