@@ -41,12 +41,11 @@
             :more-than-one-document-allowed="false"
             :file-names-for-prefill="fileNamesForPrefill"
           />
-
-          <FormKit v-if="hasValidDataSource()" type="group" name="dataSource">
-            <FormKit type="hidden" name="fileName" v-model="documentName" />
-            <FormKit type="hidden" name="fileReference" v-model="documentReference" />
-          </FormKit>
         </div>
+        <FormKit v-if="hasValidDataSource()" type="group" name="dataSource">
+          <FormKit type="hidden" name="fileName" v-model="documentName" />
+          <FormKit type="hidden" name="fileReference" v-model="documentReference" />
+        </FormKit>
       </FormKit>
     </div>
   </div>
@@ -99,14 +98,10 @@ export default defineComponent({
   },
   emits: ["fieldSpecificDocumentsUpdated"],
   mounted() {
-    this.updateFileUploadFiles();
-    this.isMounted = true;
-    if (this.baseDataPoint.dataSource?.fileName) {
-      this.documentName = this.baseDataPoint.dataSource.fileName;
-    }
-    if (this.baseDataPoint.dataSource?.fileReference) {
-      this.documentReference = this.baseDataPoint.dataSource.fileReference;
-    }
+    setTimeout(() => {
+      this.isMounted = true;
+      this.updateFileUploadFiles();
+    });
   },
   watch: {
     documentName() {

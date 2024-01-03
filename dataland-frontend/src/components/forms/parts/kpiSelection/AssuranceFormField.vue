@@ -120,7 +120,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.isMounted = true;
+    setTimeout(() => (this.isMounted = true));
   },
   computed: {
     reportsName(): string[] {
