@@ -193,11 +193,12 @@ jobs:
           openapi-python-client generate --path ../dataland-backend/backendOpenApi.json
           pip install --no-cache-dir ./dataland-backend-api-documentation-client
           pip install --no-cache-dir ./dataland-document-manager-api-documentation-client
-      - name: Execute python unit tests
+      - name: Execute python unit tests and measure coverage
         if: always()
         run: |
           cd ./dataland-automated-qa-service
-          coverage run --source="./src/main" -m pytest
+          pip install coverage
+          coverage run --source="./src/main" -m unittest discover -v ./src/test
           coverage xml -o python-coverage.xml
         env:
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
@@ -211,11 +212,6 @@ jobs:
         with:
           name: PythonUnitTestCoverage
           path: ./dataland-automated-qa-service/coverage.xml
-      - name: Measure coverage
-        if: always()
-        run: |
-          pip install coverage
-          coverage run ./src/test/*.py -o python-coverage.xml
 #      - name: Frontend linting
 #        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
 #        if: always()
