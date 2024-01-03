@@ -17,6 +17,7 @@ RUN pip install --no-cache-dir ./dataland-backend-api-documentation-client
 RUN pip install --no-cache-dir ./dataland-document-manager-api-documentation-client
 RUN pip install -e .
 
-ENTRYPOINT coverage run --source="./src/main" ./src/main/entrypoint.py
+CMD ["coverage", "run",  "--source=\"./src/main\"", "./src/main/entrypoint.py"]
 
+# TODO proper healthcheck with CMD entrypoint now
 HEALTHCHECK --interval=30s --timeout=3s CMD exit 0
