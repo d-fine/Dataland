@@ -198,7 +198,7 @@ jobs:
         run: |
           cd ./dataland-automated-qa-service
           coverage run --source="./src/main" -m pytest
-          coverage xml
+          coverage xml -o python-coverage.xml
         env:
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
           RABBITMQ_USER: "dummy"
