@@ -211,10 +211,11 @@ jobs:
         with:
           name: PythonUnitTestCoverage
           path: ./dataland-automated-qa-service/coverage.xml
-#      - name: Measure coverage
-#        if: always()
-#        run: |
-#          coverage run ./src/test/*.py
+      - name: Measure coverage
+        if: always()
+        run: |
+          pip install coverage
+          coverage run ./src/test/*.py -o python-coverage.xml
 #      - name: Frontend linting
 #        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
 #        if: always()
