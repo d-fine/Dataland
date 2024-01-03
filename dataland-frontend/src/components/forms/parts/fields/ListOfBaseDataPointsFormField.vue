@@ -18,7 +18,7 @@
           :required="required"
           :validation="validation"
           :validation-label="validationLabel"
-          sub-form-component="UploadDocumentsFormWithComment"
+          sub-form-component="StringBaseDataPointFormField"
           data-test-add-button="addNewProductButton"
           label-add-button="Weiteres Dokument hinzügen"
           data-test-sub-form="productSection"

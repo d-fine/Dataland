@@ -1,5 +1,5 @@
 <template>
-  <div class="form-field" data-test="UploadDocumentsFormWithComment">
+  <div class="form-field">
     <FormKit v-model="baseDataPoint" type="group" name="dataSource">
       <UploadDocumentsForm
         @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
@@ -14,7 +14,7 @@
     <FormKit
       type="textarea"
       :validation-messages="{
-        required: 'Please add a description it is required',
+        required: 'Please add a description.',
       }"
       validation="required"
       name="value"
@@ -30,15 +30,15 @@ import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { type BaseDataPointString } from "@clients/backend";
 
 export default defineComponent({
-  name: "UploadDocumentsFormWithComment",
+  name: "StringBaseDataPointFormField",
   components: { UploadDocumentsForm },
   inheritAttrs: false,
   data() {
     return {
       baseDataPoint: {} as BaseDataPointString,
       referencedDocument: undefined as DocumentToUpload | undefined,
-      documentName: "",
-      documentReference: "",
+      documentName: undefined as string | undefined,
+      documentReference: undefined as string | undefined,
       fileNamesForPrefill: [] as string[],
       isMounted: false,
     };
@@ -62,9 +62,13 @@ export default defineComponent({
      */
     handleDocumentUpdatedEvent(updatedDocuments: DocumentToUpload[]) {
       this.referencedDocument = updatedDocuments[0];
-      this.documentName = this.referencedDocument?.fileNameWithoutSuffix ?? "";
-      this.documentReference = this.referencedDocument?.fileReference ?? "";
-      this.$emit("fieldSpecificDocumentsUpdated", this.referencedDocument);
+      this.documentName = this.referencedDocument?.fileNameWithoutSuffix;
+      this.documentReference = this.referencedDocument?.fileReference;
+      if (this.documentName !== undefined && this.documentReference !== undefined) {
+        this.$emit("fieldSpecificDocumentsUpdated", this.referencedDocument);
+      } else {
+        throw Error("The document that is being selected does not have a name and reference.");
+      }
     },
 
     /**
@@ -72,7 +76,7 @@ export default defineComponent({
      * of the given dataset (in the case of editing a dataset)
      */
     updateFileUploadFiles() {
-      if (this.documentName !== "" && this.referencedDocument === undefined) {
+      if (this.documentName !== undefined && this.referencedDocument === undefined) {
         this.fileNamesForPrefill = [this.documentName];
       }
     },

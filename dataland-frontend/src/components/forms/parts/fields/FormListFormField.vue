@@ -36,7 +36,7 @@ import NonAlignedActivitiesFormElement from "@/components/forms/parts/elements/d
 import ProductionSiteFormElement from "@/components/forms/parts/elements/derived/ProductionSiteFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
-import UploadDocumentsFormWithComment from "@/components/forms/parts/elements/basic/UploadDocumentsFormWithComment.vue";
+import StringBaseDataPointFormField from "@/components/forms/parts/fields/StringBaseDataPointFormField.vue";
 import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 
@@ -49,7 +49,7 @@ export default defineComponent({
     ProductionSiteFormElement,
     AlignedActivitiesFormElements,
     NonAlignedActivitiesFormElement,
-    UploadDocumentsFormWithComment,
+    StringBaseDataPointFormField,
     FormKit,
     PrimeButton,
   },
