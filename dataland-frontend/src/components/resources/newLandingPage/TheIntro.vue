@@ -181,8 +181,12 @@ const introSection = computed(() => {
     background: var(--default-neutral-white);
     box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.08);
     backdrop-filter: blur(16px);
+    @media only screen and (max-width: $large) {
+      max-width: 701px !important;
+      width: calc(100% + 52px) !important;
+    }
     ul.p-autocomplete-items {
-      max-height: 400px;
+      max-height: calc(400px - 27px);
       overflow-y: auto;
       border-radius: 8px;
       border: 2px solid var(--grey-tones-100);
