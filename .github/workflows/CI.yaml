@@ -197,9 +197,9 @@ jobs:
         if: always()
         run: |
           cd ./dataland-automated-qa-service
-          pip install coverage
-          coverage run --source="./src/main" -m unittest discover -v ./src/test
-          coverage xml -o python-coverage.xml
+          pip install pytest
+          pip install pytest-cov
+          pytest --cov=./src/main --cov-report=xml:python-coverage.xml --verbose ./src/test
         env:
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
           RABBITMQ_USER: "dummy"
