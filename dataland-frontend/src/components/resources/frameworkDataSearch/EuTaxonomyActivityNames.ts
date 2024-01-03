@@ -26,7 +26,7 @@ export function getActivityNamesAsDropdownOptions(): DropdownOption[] {
 /**
  * An enum that holds the EU taxonomy activities with their names as values
  */
-enum ActivityName {
+export enum ActivityName {
   Afforestation = "Afforestation",
   RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent = "Rehabilitation and restoration of forests, including reforestation and natural forest regeneration after an extreme event",
   ForestManagement = "Forest management",
