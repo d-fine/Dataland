@@ -331,6 +331,12 @@ jobs:
         with:
           name: JaCoCoResultsE2ETest
           path: ./*.exec
+      - name: Upload Python Coverage Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: PythonE2eCoverage
+          path: ./*.coverage
       - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v3

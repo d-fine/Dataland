@@ -17,6 +17,6 @@ RUN pip install --no-cache-dir ./dataland-backend-api-documentation-client
 RUN pip install --no-cache-dir ./dataland-document-manager-api-documentation-client
 RUN pip install -e .
 
-ENTRYPOINT python ./src/main/entrypoint.py
+ENTRYPOINT coverage run --source="./src/main" ./src/main/entrypoint.py
 
 HEALTHCHECK --interval=30s --timeout=3s CMD exit 0
