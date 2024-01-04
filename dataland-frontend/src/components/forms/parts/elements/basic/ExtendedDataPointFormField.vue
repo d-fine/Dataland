@@ -55,36 +55,43 @@
           />
           <slot v-if="!isYesNoVariant" />
           <div class="grid align-content-end">
-            <FormKit type="group" name="dataSource">
-              <div class="col-8">
-                <UploadFormHeader
-                  :label="`${label} Report`"
-                  description="Select a report as a reference for this data point."
-                />
-                <FormKit
-                  type="select"
-                  name="fileName"
-                  v-model="currentReportValue"
-                  placeholder="Select a report"
-                  :options="['None...', ...reportsName]"
-                />
-                <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
-              </div>
-              <div class="col-4">
-                <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
-                <FormKit
-                  outer-class="w-100"
-                  type="number"
-                  name="page"
-                  placeholder="Page"
-                  validation-label="Page"
-                  step="1"
-                  min="0"
-                  validation="min:0"
-                />
-              </div>
+            <div class="col-8">
+              <UploadFormHeader
+                :label="`${label} Report`"
+                description="Select a report as a reference for this data point."
+              />
+              <FormKit
+                type="select"
+                name="fileName"
+                v-model="currentReportValue"
+                placeholder="Select a report"
+                :options="[noReportLabel, ...reportsName]"
+                ignore="true"
+              />
+            </div>
+            <div class="col-4">
+              <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
+              <FormKit
+                outer-class="w-100"
+                type="number"
+                name="page"
+                placeholder="Page"
+                v-model="pageForFileReference"
+                validation-label="Page"
+                step="1"
+                min="0"
+                validation="min:0"
+                ignore="true"
+              />
+            </div>
+
+            <FormKit v-if="hasValidDataSource()" type="group" name="dataSource">
+              <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
+              <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
+              <FormKit type="hidden" name="page" v-model="pageForFileReference" />
             </FormKit>
           </div>
+
           <!-- Data quality -->
           <div class="md:col-8 col-12 p-0 mb-4" data-test="dataQuality">
             <UploadFormHeader
@@ -146,18 +153,24 @@ export default defineComponent({
   },
   data() {
     return {
+      isMounted: false,
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
       qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
         label: qualityOption,
         value: qualityOption,
       })),
       qualityValue: "NA",
-      currentReportValue: "",
+      currentReportValue: "" as string,
       dataPoint: {} as ExtendedDataPoint<unknown>,
       currentValue: null,
       checkboxValue: [] as Array<string>,
       firstAssignmentWhileEditModeWasDone: false,
+      noReportLabel: "None...",
+      pageForFileReference: undefined as string | undefined,
     };
+  },
+  mounted() {
+    setTimeout(() => (this.isMounted = true));
   },
   computed: {
     showDataPointFields(): boolean {
@@ -186,7 +199,6 @@ export default defineComponent({
       return Object.keys(this.options).length;
     },
   },
-
   props: {
     ...FormFieldPropsWithPlaceholder,
     checkValueValidity: {
@@ -261,6 +273,16 @@ export default defineComponent({
         this.currentValue = null;
         this.dataPoint = {};
       }
+    },
+    /**
+     * Checks whether the Assurance data source has appropriate values
+     * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
+     */
+    hasValidDataSource(): boolean {
+      if (!this.isMounted) {
+        return true;
+      }
+      return this.currentReportValue?.length > 0 && this.currentReportValue !== this.noReportLabel;
     },
   },
 });
