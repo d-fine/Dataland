@@ -37,6 +37,7 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.9.1
 kotlin = "1.9.10"
 ##  ⬆ = "1.9.20"
 ##  ⬆ = "1.9.21"
+##  ⬆ = "1.9.22"
 
 okhttp3 = "4.12.0"
 
@@ -49,6 +50,7 @@ junit-jupiter = "5.10.1"
 [libraries]
 
 gradle-tooling = "org.gradle:gradle-tooling-api:8.5"
+##                                          ⬆ :8.6-milestone-1"
 
 detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:_"
 
@@ -168,6 +170,7 @@ cloudevents-json-jackson = "io.cloudevents:cloudevents-json-jackson:2.5.0"
 cloudevents-core = "io.cloudevents:cloudevents-core:2.5.0"
 
 spring-cloud-function-context = "org.springframework.cloud:spring-cloud-function-context:4.0.5"
+##                                                                                   ⬆ :4.1.0"
 
 spring-amqp = "org.springframework.amqp:spring-amqp:_"
 
