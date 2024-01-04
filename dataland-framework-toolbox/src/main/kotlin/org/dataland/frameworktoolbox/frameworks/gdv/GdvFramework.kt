@@ -111,15 +111,14 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setGroupsThatAreExpandedOnPageLoad(framework)
         overwriteFakeFixtureGenerationForDataDate(framework)
-        val berichtspflichtUndEinwilligungZurVeroeffentlichung = framework.root
+        val berichtsPflicht = framework.root
             .getOrNull<ComponentGroup>("general")
             ?.getOrNull<ComponentGroup>("masterData")
             ?.getOrNull<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung")
-        requireNotNull(berichtspflichtUndEinwilligungZurVeroeffentlichung) {
-            "The field with the label \"berichtspflichtUndEinwilligungZurVeroeffentlichung\" must exist " +
-                "in the gdv framework."
+        requireNotNull(berichtsPflicht) {
+            "The field \"berichtspflichtUndEinwilligungZurVeroeffentlichung\" must exist in the gdv framework."
         }
-        val showIfBerichtsPflicht = DependsOnComponentValue(berichtspflichtUndEinwilligungZurVeroeffentlichung, "Yes")
+        val showIfBerichtsPflicht = DependsOnComponentValue(berichtsPflicht, "Yes")
         createRollingWindowComponentsInCategoryUmwelt(framework, showIfBerichtsPflicht)
         createRollingWindowComponentsInCategorySoziales(framework, showIfBerichtsPflicht)
         createListOfBaseDatapointComponents(framework, showIfBerichtsPflicht)
@@ -137,18 +136,22 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 "euTaxonomieKompassAktivitaeten",
                 "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten",
             ) {
-                label = "EU Taxonomie Kompass Aktivitäten"
-                explanation = "Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?"
-                availableIf = DependsOnComponentValue(berichtspflichtUndEinwilligungZurVeroeffentlichung, "Yes")
-                setEuTaxonomieKompassAktivitaetenFixtureGenerator(this)
-                setEuTaxonomieKompassAktivitaetenViewConfigGenerator(this)
-                setEuTaxonomieKompassAktivitaetenUploadGenerator(this)
-                setEuTaxonomieKompassAktivitaetenDataModelGenerator(this)
+                setEuTaxonomieKompassAktivitaeten(this)
+                this.availableIf = DependsOnComponentValue(berichtsPflicht, "Yes")
             }
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
         return GdvComponentGenerationUtils()
+    }
+
+    private fun setEuTaxonomieKompassAktivitaeten(component: MultiSelectComponent) {
+        component.label = "EU Taxonomie Kompass Aktivitäten"
+        component.explanation = "Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?"
+        setEuTaxonomieKompassAktivitaetenFixtureGenerator(component)
+        setEuTaxonomieKompassAktivitaetenViewConfigGenerator(component)
+        setEuTaxonomieKompassAktivitaetenUploadGenerator(component)
+        setEuTaxonomieKompassAktivitaetenDataModelGenerator(component)
     }
 
     private fun setEuTaxonomieKompassAktivitaetenFixtureGenerator(component: MultiSelectComponent) {
