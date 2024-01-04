@@ -63,7 +63,7 @@ docker exec dala-e2e-test-automated-qa-service-1 pkill -f --signal SIGINT covera
 echo XXXXXXXX 2
 timeout 90 sh -c "docker logs dala-e2e-test-automated-qa-service-1 --follow" > /dev/null
 echo XXXXXXXX 3
-docker cp dala-e2e-test-automated-qa-service-1:/app/.coverage ./automated-qa-service-bootRun-${CYPRESS_TEST_GROUP}.coverage
+docker cp dala-e2e-test-automated-qa-service-1:/usr/src/app/.coverage ./automated-qa-service-bootRun-${CYPRESS_TEST_GROUP}.coverage
 
 # This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
 # This was discovered only after the PR was merged.
