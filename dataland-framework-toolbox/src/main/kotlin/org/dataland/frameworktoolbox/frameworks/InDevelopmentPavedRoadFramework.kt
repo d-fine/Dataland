@@ -11,7 +11,6 @@ import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtil
 import org.dataland.frameworktoolbox.template.components.TemplateComponentFactory
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.dataland.frameworktoolbox.utils.DatalandRepository
-import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
 import org.springframework.beans.factory.getBean
 import org.springframework.context.ApplicationContext
@@ -28,9 +27,9 @@ abstract class InDevelopmentPavedRoadFramework(
     label: String,
     explanation: String,
     frameworkTemplateCsvFile: File,
+    enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
 ) :
     PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile) {
-    private val logger by LoggerDelegate()
 
     override fun convertExcelTemplateToToHighLevelComponentRepresentation(
         context: ApplicationContext,
@@ -71,6 +70,9 @@ abstract class InDevelopmentPavedRoadFramework(
     }
 
     private fun compileDataModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.DataModel)) {
+            return
+        }
         val dataModel = generateDataModel(framework)
         customizeDataModel(dataModel)
 
@@ -83,6 +85,9 @@ abstract class InDevelopmentPavedRoadFramework(
     }
 
     private fun compileViewModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.ViewPage)) {
+            return
+        }
         val viewConfig = generateViewModel(framework)
         customizeViewModel(viewConfig)
 
@@ -95,6 +100,9 @@ abstract class InDevelopmentPavedRoadFramework(
     }
 
     private fun compileFixtureGenerator(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.FakeFixtures)) {
+            return
+        }
         val fixtureGenerator = generateFakeFixtureGenerator(framework)
         customizeFixtureGenerator(fixtureGenerator)
 
@@ -103,6 +111,21 @@ abstract class InDevelopmentPavedRoadFramework(
             fixtureGenerator.build(into = datalandProject)
         } catch (ex: Exception) {
             logger.error("Could not build framework fixture generator", ex)
+        }
+    }
+
+    private fun compileUploadModel(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.UploadPage)) {
+            return
+        }
+        val uploadConfig = generateUploadModel(framework)
+        customizeUploadModel(uploadConfig)
+
+        @Suppress("TooGenericExceptionCaught")
+        try {
+            uploadConfig.build(into = datalandProject)
+        } catch (ex: Exception) {
+            logger.error("Could not build framework upload configuration!", ex)
         }
     }
 
@@ -123,8 +146,10 @@ abstract class InDevelopmentPavedRoadFramework(
 
         compileDataModel(datalandProject)
         compileViewModel(datalandProject)
+        compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
+        logger.info("✔ Framework toolbox finished for framework $identifier ✨")
     }
 }

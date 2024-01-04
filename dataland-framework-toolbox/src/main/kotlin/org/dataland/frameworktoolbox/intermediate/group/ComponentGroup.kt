@@ -4,6 +4,7 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
@@ -19,6 +20,7 @@ class ComponentGroup(
 ) : ComponentBase(identifier, parent), FieldNodeParent, ComponentGroupApi by componentGroupApi {
 
     var viewPageLabelBadgeColor: LabelBadgeColor? = null
+    var uploadPageLabelBadgeColor: LabelBadgeColor? = null
     var viewPageExpandOnPageLoad: Boolean = false
 
     override val children: Sequence<ComponentBase> by componentGroupApi::children
@@ -68,6 +70,23 @@ class ComponentGroup(
 
         children.forEach {
             it.generateViewConfig(containerSection)
+        }
+    }
+
+    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        val localLabel = label
+        require(!localLabel.isNullOrBlank()) {
+            "You must specify a label for the group $identifier to generate a view configuration"
+        }
+        val containerSection = uploadCategoryBuilder.addSubcategory(
+            identifier = identifier,
+            label = localLabel,
+            labelBadgeColor = uploadPageLabelBadgeColor,
+            shouldDisplay = FrameworkBooleanLambda.TRUE,
+        )
+
+        children.forEach {
+            it.generateUploadConfig(containerSection)
         }
     }
 
