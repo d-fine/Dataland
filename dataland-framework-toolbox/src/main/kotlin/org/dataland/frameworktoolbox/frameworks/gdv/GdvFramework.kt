@@ -135,7 +135,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten",
             ) {
                 setEuTaxonomieKompassAktivitaeten(this)
-                this.availableIf = DependsOnComponentValue(berichtsPflicht, "Yes")
+                availableIf = DependsOnComponentValue(berichtsPflicht, "Yes")
             }
     }
 
