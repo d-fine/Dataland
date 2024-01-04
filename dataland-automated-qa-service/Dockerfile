@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir ./dataland-document-manager-api-documentation-cli
 RUN pip install -e .
 
 COPY ./dataland-automated-qa-service/src/test/measure_coverage.py ./src/test/measure_coverage.py
-CMD ["coverage", "run",  "--source=\"./src/main\"", "-m", "pytest", "-o", "log_cli=true", "-o", "log_cli_level=INFO",  "./src/test/measure_coverage.py"]
+CMD ["sh", "-c", "if find .coverage | grep -q . ; then while true; do sleep 1; done; else coverage run --source=\"./src/main\" -m pytest -o log_cli=true -o log_cli_level=INFO ./src/test/measure_coverage.py; fi"]
 
 # TODO proper healthcheck with CMD entrypoint now
 HEALTHCHECK --interval=30s --timeout=3s CMD exit 0
