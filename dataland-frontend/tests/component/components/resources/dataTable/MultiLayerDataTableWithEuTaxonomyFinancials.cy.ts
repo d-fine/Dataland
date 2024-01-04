@@ -31,7 +31,7 @@ describe("Component test for EuTaxonomyFinancialPanel", () => {
    */
   function checkCommonFields(financialCompanyType: string, eligibilityKpis: EligibilityKpis): void {
     getSectionHead(financialCompanyType, true).click();
-    getSectionHead("Eligibility KPIs", true).click();
+    // getSectionHead("Eligibility KPIs", true).click();
     getCellValueContainer(euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent).should(
       "contain",
       formatPercentageNumberAsString(assertDefined(eligibilityKpis.taxonomyEligibleActivityInPercent?.value)),
