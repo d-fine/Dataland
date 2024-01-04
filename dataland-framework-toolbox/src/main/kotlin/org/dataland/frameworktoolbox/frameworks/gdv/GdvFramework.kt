@@ -129,9 +129,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 }
             }
         }
-        framework.root
-            .getOrNull<ComponentGroup>("umwelt")
-            ?.getOrNull<ComponentGroup>("taxonomie")
+        framework.root.getOrNull<ComponentGroup>("umwelt")?.getOrNull<ComponentGroup>("taxonomie")
             ?.create<MultiSelectComponent>(
                 "euTaxonomieKompassAktivitaeten",
                 "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten",
