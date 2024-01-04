@@ -2,13 +2,15 @@
 package org.dataland.datalandbackend.frameworks.gdv.model.umwelt.taxonomie
 
 import org.dataland.datalandbackend.frameworks.gdv.custom.YearlyTimeseriesData
+import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
+import java.util.EnumSet
 
 /**
  * The data-model for the Taxonomie section
  */
 data class GdvUmweltTaxonomie(
     val taxonomieBerichterstattung: TaxonomieBerichterstattungOptions? = null,
-    val euTaxonomieKompassAktivitaeten: List<String>? = null,
+    val euTaxonomieKompassAktivitaeten: EnumSet<Activity>? = null,
     val umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten:
     YearlyTimeseriesData<UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues?>? = null,
 )

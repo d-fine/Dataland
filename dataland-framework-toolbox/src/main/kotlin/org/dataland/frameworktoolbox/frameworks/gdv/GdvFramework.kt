@@ -9,10 +9,12 @@ import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
+import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.dataland.frameworktoolbox.intermediate.group.getOrNull
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
+import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
@@ -128,84 +130,101 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 }
             }
         }
-        framework.root.edit<ComponentGroup>("umwelt") {
-            edit<ComponentGroup>("taxonomie") {
-                edit<MultiSelectComponent>("euTaxonomieKompassAktivitaeten") {
-                    customizeEuTaxonomieKompassAktivitaeten(this)
-                }
+        framework.root
+            .getOrNull<ComponentGroup>("umwelt")
+            ?.getOrNull<ComponentGroup>("taxonomie")
+            ?.create<MultiSelectComponent>(
+                "euTaxonomieKompassAktivitaeten",
+                "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten",
+            ) {
+                label = "EU Taxonomie Kompass Aktivitäten"
+                explanation = "Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?"
+                availableIf = DependsOnComponentValue(berichtspflichtUndEinwilligungZurVeroeffentlichung, "Yes")
+                setEuTaxonomieKompassAktivitaetenFixtureGenerator(this)
+                setEuTaxonomieKompassAktivitaetenViewConfigGenerator(this)
+                setEuTaxonomieKompassAktivitaetenUploadGenerator(this)
+                setEuTaxonomieKompassAktivitaetenDataModelGenerator(this)
             }
-        }
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
         return GdvComponentGenerationUtils()
     }
 
-    private fun customizeEuTaxonomieKompassAktivitaeten(component: MultiSelectComponent) {
-        customizeEuTaxonomieKompassAktivitaetenFixtureGenerator(component)
-        customizeEuTaxonomieKompassAktivitaetenViewConfigGenerator(component)
-        customizeEuTaxonomieKompassAktivitaetenUploadGenerator(component)
+    private fun setEuTaxonomieKompassAktivitaetenFixtureGenerator(component: MultiSelectComponent) {
+        component.fixtureGeneratorGenerator = { sectionConfigBuilder: FixtureSectionBuilder ->
+            sectionConfigBuilder.addAtomicExpression(
+                component.identifier,
+                component.documentSupport.getFixtureExpression(
+                    fixtureExpression = "pickSubsetOfElements(Object.values(Activity))",
+                    nullableFixtureExpression =
+                    "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
+                    nullable = component.isNullable,
+                ),
+                imports = setOf(
+                    "import { Activity } from \"@clients/backend\";",
+                ),
+            )
+        }
     }
 
-    private fun customizeEuTaxonomieKompassAktivitaetenFixtureGenerator(component: MultiSelectComponent) {
-        if (component.options.size == 1 && component.options.single().label == "EuTaxonomyActivityOptions") {
-            component.fixtureGeneratorGenerator = { sectionConfigBuilder: FixtureSectionBuilder ->
-                sectionConfigBuilder.addAtomicExpression(
-                    component.identifier,
-                    component.documentSupport.getFixtureExpression(
-                        fixtureExpression = "pickSubsetOfElements(Object.values(Activity))",
-                        nullableFixtureExpression =
-                        "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
-                        nullable = component.isNullable,
+    private fun setEuTaxonomieKompassAktivitaetenViewConfigGenerator(component: MultiSelectComponent) {
+        component.viewConfigGenerator = { sectionConfigBuilder ->
+            sectionConfigBuilder.addStandardCellWithValueGetterFactory(
+                component,
+                FrameworkDisplayValueLambda(
+                    "formatListOfStringsForDatatable(" +
+                        "${component.getTypescriptFieldAccessor()}?.map(it => {\n" +
+                        "                  return activityApiNameToHumanizedName(it)}), " +
+                        "'${escapeEcmaScript(component.label)}'" +
+                        ")",
+                    setOf(
+                        "import { activityApiNameToHumanizedName } from " +
+                            "\"@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames\";",
+                        "import { formatListOfStringsForDatatable } from " +
+                            "\"@/components/resources/dataTable/conversion/" +
+                            "MultiSelectValueGetterFactory\";",
                     ),
+                ),
+            )
+        }
+    }
+
+    private fun setEuTaxonomieKompassAktivitaetenUploadGenerator(component: MultiSelectComponent) {
+        component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
+            sectionUploadConfigBuilder.addStandardUploadConfigCell(
+                frameworkUploadOptions = FrameworkUploadOptions(
+                    body = "getActivityNamesAsDropdownOptions()",
                     imports = setOf(
-                        "import { Activity } from \"@clients/backend\";",
+                        "import { getActivityNamesAsDropdownOptions } from " +
+                            "\"@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames\"",
                     ),
-                )
-            }
+                ),
+                component = component,
+                uploadComponentName = "MultiSelectFormField",
+                validation = null,
+            )
         }
     }
 
-    private fun customizeEuTaxonomieKompassAktivitaetenViewConfigGenerator(component: MultiSelectComponent) {
-        if (component.options.size == 1 && component.options.single().label == "EuTaxonomyActivityOptions") {
-            component.viewConfigGenerator = { sectionConfigBuilder ->
-                sectionConfigBuilder.addStandardCellWithValueGetterFactory(
-                    component,
-                    FrameworkDisplayValueLambda(
-                        "formatListOfStringsForDatatable(" +
-                            "${component.getTypescriptFieldAccessor()}?.map(it => {\n" +
-                            "                  return activityApiNameToHumanizedName(it)}), " +
-                            "'${escapeEcmaScript(component.label)}'" +
-                            ")",
-                        setOf(
-                            "import { activityApiNameToHumanizedName } from " +
-                                "\"@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames\";",
-                            "import { formatListOfStringsForDatatable } from " +
-                                "\"@/components/resources/dataTable/conversion/" +
-                                "MultiSelectValueGetterFactory\";",
+    private fun setEuTaxonomieKompassAktivitaetenDataModelGenerator(component: MultiSelectComponent) {
+        component.dataModelGenerator = { dataClassBuilder ->
+            dataClassBuilder.addProperty(
+                component.identifier,
+                component.documentSupport.getJvmTypeReference(
+                    TypeReference(
+                        "java.util.EnumSet",
+                        true,
+                        listOf(
+                            TypeReference(
+                                "org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity",
+                                false,
+                            ),
                         ),
                     ),
-                )
-            }
-        }
-    }
-
-    private fun customizeEuTaxonomieKompassAktivitaetenUploadGenerator(component: MultiSelectComponent) {
-        if (component.options.size == 1 && component.options.single().label == "EuTaxonomyActivityOptions") {
-            component.uploadConfigGenerator = { sectionUploadConfigBuilder ->
-                sectionUploadConfigBuilder.addStandardUploadConfigCell(
-                    frameworkUploadOptions = FrameworkUploadOptions(
-                        body = "getActivityNamesAsDropdownOptions()",
-                        imports = setOf(
-                            "import { getActivityNamesAsDropdownOptions } from " +
-                                "\"@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames\"",
-                        ),
-                    ),
-                    component = component,
-                    uploadComponentName = "MultiSelectFormField",
-                    validation = null,
-                )
-            }
+                    true,
+                ),
+            )
         }
     }
 

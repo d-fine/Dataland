@@ -4,7 +4,7 @@ package org.dataland.datalandbackend.frameworks.gdv.model.allgemein.fuehrungssta
 import io.swagger.v3.oas.annotations.media.Schema
 
 /**
- * Enum class for the field anreizmechanismenFuerDasManagementSoziales
+ * Enum class for the single-select-field anreizmechanismenFuerDasManagementSoziales
  */
 @Schema(
     enumAsRef = true,

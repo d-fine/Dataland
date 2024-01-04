@@ -4,7 +4,7 @@ package org.dataland.datalandbackend.frameworks.gdv.model.allgemein.rechtsstreit
 import io.swagger.v3.oas.annotations.media.Schema
 
 /**
- * Enum class for the field statusZuS
+ * Enum class for the single-select-field statusZuS
  */
 @Schema(
     enumAsRef = true,

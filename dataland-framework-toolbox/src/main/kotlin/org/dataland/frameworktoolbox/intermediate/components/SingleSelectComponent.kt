@@ -28,7 +28,7 @@ open class SingleSelectComponent(
         val enum = dataClassBuilder.parentPackage.addEnum(
             name = enumName,
             options = options,
-            comment = "Enum class for the field $identifier",
+            comment = "Enum class for the single-select-field $identifier",
         )
         dataClassBuilder.addProperty(
             identifier,

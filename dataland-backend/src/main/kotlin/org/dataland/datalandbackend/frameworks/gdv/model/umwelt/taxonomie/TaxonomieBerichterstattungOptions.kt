@@ -4,7 +4,7 @@ package org.dataland.datalandbackend.frameworks.gdv.model.umwelt.taxonomie
 import io.swagger.v3.oas.annotations.media.Schema
 
 /**
- * Enum class for the field taxonomieBerichterstattung
+ * Enum class for the single-select-field taxonomieBerichterstattung
  */
 @Schema(
     enumAsRef = true,

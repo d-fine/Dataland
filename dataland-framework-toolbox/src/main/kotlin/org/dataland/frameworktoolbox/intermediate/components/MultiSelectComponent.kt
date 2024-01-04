@@ -11,6 +11,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkU
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
 
@@ -24,12 +25,18 @@ open class MultiSelectComponent(
 ) : ComponentBase(identifier, parent) {
 
     var options: Set<SelectionOption> = mutableSetOf()
+    val enumName = "${identifier.capitalizeEn()}Options"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+        val enum = dataClassBuilder.parentPackage.addEnum(
+            name = enumName,
+            options = options,
+            comment = "Enum class for the multi-select-field $identifier",
+        )
         dataClassBuilder.addProperty(
             identifier,
             documentSupport.getJvmTypeReference(
-                TypeReference("List", isNullable, listOf(TypeReference("String", false))),
+                TypeReference("java.util.EnumSet", isNullable, listOf(enum.getTypeReference(false))),
                 isNullable,
             ),
         )

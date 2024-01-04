@@ -2,11 +2,12 @@
 package org.dataland.datalandbackend.frameworks.gdv.model.allgemein.sektoren
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import java.util.EnumSet
 
 /**
  * The data-model for the Sektoren section
  */
 data class GdvAllgemeinSektoren(
     val sektorenMitHohenKlimaauswirkungen: YesNo? = null,
-    val auflistungDerSektoren: List<String>? = null,
+    val auflistungDerSektoren: EnumSet<AuflistungDerSektorenOptions>? = null,
 )

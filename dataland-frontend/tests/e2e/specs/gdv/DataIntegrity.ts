@@ -71,6 +71,14 @@ describeIf(
                       .then((axiosResponse) => {
                         const frontendSubmittedGdvDataset = axiosResponse.data.data;
 
+                        gdvFixtureForTest.t.allgemein?.sektoren?.auflistungDerSektoren?.sort();
+                        gdvFixtureForTest.t.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten?.sort();
+                        gdvFixtureForTest.t.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort();
+
+                        frontendSubmittedGdvDataset.allgemein?.sektoren?.auflistungDerSektoren?.sort();
+                        frontendSubmittedGdvDataset.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten?.sort();
+                        frontendSubmittedGdvDataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort();
+
                         compareObjectKeysAndValuesDeep(
                           gdvFixtureForTest.t as Record<string, object>,
                           frontendSubmittedGdvDataset as Record<string, object>,
