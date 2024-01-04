@@ -131,6 +131,7 @@ import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBa
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 import { type DocumentToUpload, uploadFiles } from "@/utils/FileUploadUtils";
+import { getFilledKpis } from "@/utils/DataPoint";
 
 export default defineComponent({
   setup() {
@@ -181,6 +182,7 @@ export default defineComponent({
       messageCounter: 0,
       checkCustomInputs,
       fieldSpecificDocuments: new Map() as Map<string, DocumentToUpload>,
+      listOfFilledKpis: [] as Array<string>,
     };
   },
   computed: {
@@ -212,7 +214,7 @@ export default defineComponent({
       required: true,
     },
   },
-  mounted() {
+  created() {
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === "string") {
       void this.loadP2pData(dataId);
@@ -233,6 +235,7 @@ export default defineComponent({
       ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
 
       const p2pDataset = (await p2pDataControllerApi.getFrameworkData(dataId)).data;
+      this.listOfFilledKpis = getFilledKpis(p2pDataset.data);
       const dataDateFromDataset = p2pDataset.data?.general?.general?.dataDate;
       if (dataDateFromDataset) {
         this.dataDate = new Date(dataDateFromDataset);
@@ -309,6 +312,9 @@ export default defineComponent({
           DriveMixType,
           P2pDriveMix
         > | null;
+      }),
+      listOfFilledKpis: computed(() => {
+        return this.listOfFilledKpis;
       }),
     };
   },
