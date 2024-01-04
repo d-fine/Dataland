@@ -26,11 +26,14 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
         children: [
           {
             type: "cell",
-            label: "Berichts-Pflicht",
-            explanation: "Ist das Unternehmen berichtspflichtig?",
+            label: "Berichtspflicht und Einwilligung zur Veröffentlichung",
+            explanation:
+              "Ist das Unternehmen berichtspflichtig und mit der Veröffentlichung des Datensatzes auf Dataland einverstanden? Andernfalls ist eine weitere Dateneingabe nicht möglich.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.general?.masterData?.berichtsPflicht),
+              formatYesNoValueForDatatable(
+                dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung,
+              ),
           },
           {
             type: "cell",
@@ -61,7 +64,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Existenz von ESG-Zielen",
             explanation:
               "Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.esgZiele?.existenzVonEsgZielen),
           },
@@ -95,7 +99,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Sektoren mit hohen Klimaauswirkungen",
             explanation:
               "Kann das Unternehmen einem oder mehreren Sektoren mit hohen Klimaauswirkungen zugeordnet werden?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen),
           },
@@ -138,7 +143,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Nachhaltigkeitsberichte",
             explanation: "Erstellt das Unternehmen Nachhaltigkeits- oder ESG-Berichte?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte),
           },
@@ -193,7 +199,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "ISO 14001",
             explanation:
               "Haben Sie eine ISO 14001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso14001?.value),
@@ -206,7 +213,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "ISO 45001",
             explanation:
               "Haben Sie eine ISO 45001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso45001?.value),
@@ -219,7 +227,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "ISO 27001",
             explanation:
               "Haben Sie eine ISO 27001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso27001?.value),
@@ -232,7 +241,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "ISO 50001",
             explanation:
               "Haben Sie eine ISO 50001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
                 formatYesNoValueForDatatable(dataset.allgemein?.akkreditierungen?.iso50001?.value),
@@ -244,7 +254,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Weitere Akkreditierungen",
             explanation: "Weitere Akkreditierungen, die noch nicht aufgeführt wurden",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
                 "Weitere Akkreditierungen",
@@ -267,7 +278,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Mechanismen zur Überwachung der Einhaltung der UNGCP",
             explanation:
               "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der Prinzipien des UN Global Compact zu überwachen?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp,
@@ -311,7 +323,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Mechanismen zur Überwachung der Einhaltung der OECD-Leitsätze",
             explanation:
               "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der OECD-Leitsätze für multinationale Unternehmen (OECD MNE Guidelines) zu überwachen?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze,
@@ -355,7 +368,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Ausrichtung auf die UN SDGs und aktives Verfolgen",
             explanation:
               "Wie steht das Unternehmen in Einklang mit den 17 UN-Zielen für nachhaltige Entwicklung? Welche dieser Ziele verfolgt das Unternehmen aktiv, entweder durch ihre Geschäftstätigkeit oder durch die Unternehmensführung?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.allgemein?.sonstige?.ausrichtungAufDieUnSdgsUndAktivesVerfolgen),
           },
@@ -364,7 +378,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Ausschlusslisten auf Basis von ESG Kriterien",
             explanation:
               "Führt das Unternehmen Ausschlusslisten? Von besonderem Interesse sind Listen die Ausschlusskriterien, die einen Bezug zu den Bereichen E, S oder G haben.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.sonstige?.ausschlusslistenAufBasisVonEsgKriterien),
           },
@@ -390,7 +405,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Ökologische/soziale Führungsstandards oder -prinzipien",
             explanation:
               "Hat sich das Unternehmen zu ökologischen/sozialen Führungsstandards oder Prinzipien verpflichtet?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien,
@@ -457,7 +473,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "ESG-bezogene Rechtsstreitigkeiten",
             explanation:
               "Ist das Unternehmen in laufende bzw. war das Unternehmen in den letzten 3 Jahren in abgeschlossenen Rechtsstreitigkeiten im Zusammenhang mit ESG involviert?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeiten),
           },
@@ -587,7 +604,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "ESG-Rating",
             explanation: "Hat das Unternehmen bereits ein ESG-Rating einer anerkannten Ratingagentur?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.rating?.esgRating),
           },
@@ -639,7 +657,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Grüne, soziale und/oder nachhaltige Emissionen",
             explanation: "Hat das Unternehmen „grüne“, „soziale“ und/oder „nachhaltige“ Schuldtitel begeben?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.anleihen?.grueneSozialeUndOderNachhaltigeEmissionen),
           },
@@ -660,7 +679,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Sustainibility Linked Debt",
             explanation: "Hat das Unternehmen Sustainability Linked Debt („SLD“) emittiert?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.allgemein?.anleihen?.sustainibilityLinkedDebt),
           },
@@ -687,7 +707,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Wichtigste E-, S- und G-Risiken und Bewertung",
             explanation:
               "Welches sind die wichtigsten von der Gruppe identifizierten E-, S- und G-Risiken? Bitte geben Sie die Details / Bewertung der identifizierten Risiken an.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.allgemein?.risiken?.wichtigsteESUndGRisikenUndBewertung),
           },
@@ -696,7 +717,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Hindernisse beim Umgang mit ESG-Bedenken",
             explanation:
               "Welche grundsätzlichen Hindernisse bestehen für das Unternehmen bei der Berücksichtigung von ESG-Belangen?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.allgemein?.risiken?.hindernisseBeimUmgangMitEsgBedenken),
           },
@@ -721,7 +743,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Treibhausgas-Berichterstattung und Prognosen",
             explanation:
               "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.treibhausgasemissionen?.treibhausgasBerichterstattungUndPrognosen,
@@ -738,7 +761,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investriert wird",
             explanation:
               "THG-Emissionsintensität der Unternehmen, in die investiert wird. Scope 1 + Scope 2 Treibhausgasemissionen ./. Umsatz in Millionen EUR Scope 1 + Scope 2 Treibhausgasemissionen ./. Unternehmensgröße in Mio. EUR",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
                 dataset.umwelt?.treibhausgasemissionen
@@ -750,7 +774,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Strategie und Ziele zur Reduzierung von Treibhausgas-Emissionen",
             explanation:
               "Welchen Entwicklungspfad bzgl. der (Reduktion von) Treibhausgasemissionen verfolgt das Unternehmen. Gibt es einen Zeitplan bzw. konkrete Ziele? Und wie plant das Unternehmen, diesen Kurs zu erreichen? Bitte erläutern Sie, in welchem Bezug dieser Entwicklungspfad zu dem auf dem Pariser Abkommen basierenden Kurs steht.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
                 dataset.umwelt?.treibhausgasemissionen?.strategieUndZieleZurReduzierungVonTreibhausgasEmissionen,
@@ -769,7 +794,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Produkte zur Verringerung der Umweltbelastung",
             explanation:
               "Entwickelt, produziert oder vertreibt das Unternehmen Produkte, die die Umweltbelastung verringern?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.umwelt?.produktion?.produkteZurVerringerungDerUmweltbelastung),
           },
@@ -787,7 +813,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Ökologischer Mindest-Standard für Produktionsprozesse",
             explanation:
               "Verfügt das Unternehmen über interne Richtlinien, die einen Mindestumweltstandard im Produktionsprozess sicherstellen?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.produktion?.oekologischerMindestStandardFuerProduktionsprozesse,
@@ -806,7 +833,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Berichterstattung Energieverbrauch",
             explanation:
               "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.energieverbrauch?.berichterstattungEnergieverbrauch,
@@ -829,7 +857,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Unternehmens/Gruppen Strategie bzgl Energieverbrauch",
             explanation:
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
                 dataset.umwelt?.energieverbrauch?.unternehmensGruppenStrategieBzglEnergieverbrauch,
@@ -848,7 +877,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Berichterstattung Energieverbrauch von Immobilienvermoegen",
             explanation:
               "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.energieeffizienzImmobilienanlagen
@@ -867,7 +897,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Unternehmens/Gruppen Strategie bzgl energieeffizienten Immobilienanlagen",
             explanation:
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
                 dataset.umwelt?.energieeffizienzImmobilienanlagen
@@ -887,7 +918,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Berichterstattung Wasserverbrauch",
             explanation:
               "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.wasserverbrauch?.berichterstattungWasserverbrauch,
@@ -903,7 +935,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Unternehmens/Gruppen Strategie bzgl Wasserverbrauch",
             explanation:
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
                 dataset.umwelt?.wasserverbrauch?.unternehmensGruppenStrategieBzglWasserverbrauch,
@@ -922,7 +955,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Berichterstattung Abfallproduktion",
             explanation:
               "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.abfallproduktion?.berichterstattungAbfallproduktion,
@@ -939,7 +973,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Unternehmens/Gruppen Strategie bzgl Abfallproduktion",
             explanation:
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
                 dataset.umwelt?.abfallproduktion?.unternehmensGruppenStrategieBzglAbfallproduktion,
@@ -950,7 +985,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Recycling im Produktionsprozess",
             explanation:
               "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereitsrecyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.abfallproduktion?.recyclingImProduktionsprozess,
@@ -968,7 +1004,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Gefährlicher Abfall",
             explanation:
               "Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.umwelt?.abfallproduktion?.gefaehrlicherAbfall),
           },
@@ -985,7 +1022,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Negative Aktivitäten für die biologische Vielfalt",
             explanation:
               "Hat das Unternehmen Standorte / Betriebe in oder in der Nähe von biodiversitätssensiblen Gebieten, in denen sich die Aktivitäten des Unternehmens negativ auf diese Gebiete auswirken?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.biodiversitaet?.negativeAktivitaetenFuerDieBiologischeVielfalt,
@@ -1006,7 +1044,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Positive Aktivitäten für die biologische Vielfalt",
             explanation:
               "Hat das Unternehmen Standorte / Betriebe in oder in der Nähe von biodiversitätssensiblen Gebieten, in denen sich die Aktivitäten des Unternehmens positiv auf diese Gebiete auswirken?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.umwelt?.biodiversitaet?.positiveAktivitaetenFuerDieBiologischeVielfalt,
@@ -1035,7 +1074,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Einnahmen aus fossilen Brennstoffen",
             explanation:
               "Erzielt das Unternehmen einen Teil seiner Einnahmen aus Aktivitäten im Bereich fossiler Brennstoffe und/oder besitzt das Unternehmen Immobilien, die an der Gewinnung, Lagerung, dem Transport oder der Herstellung fossiler Brennstoffe beteiligt sind?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.umwelt?.fossileBrennstoffe?.einnahmenAusFossilenBrennstoffen),
           },
@@ -1070,7 +1110,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Taxonomie Berichterstattung",
             explanation: "Wird der EU-Taxonomie Bericht auf Basis NFRD oder auf Basis CSRD erstellt?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
                 Nfrd: "NFRD",
@@ -1087,7 +1128,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "EU Taxonomie Kompass Aktivitäten",
             explanation: "Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatListOfStringsForDatatable(
                 dataset.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten?.map((it) => {
@@ -1101,7 +1143,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
             explanation:
               "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.taxonomie?.umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten,
@@ -1147,7 +1190,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Vorhandensein kürzlicher Änderungen der Unternehmensstruktur",
             explanation:
               "Gab es kürzlich eine Veränderung im Unternehmen / in der Gruppe (Umstrukturierung, Verkauf oder Übernahme)?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.soziales?.unternehmensstrukturaenderungen
@@ -1273,7 +1317,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Sicherheitsmaßnahmen für Mitarbeiter",
             explanation:
               "Welche Maßnahmen werden ergriffen, um die Gesundheit und Sicherheit der Mitarbeiter des Unternehmens zu verbessern?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
                 dataset.soziales?.sicherheitUndWeiterbildung?.sicherheitsmassnahmenFuerMitarbeiter,
@@ -1284,7 +1329,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Unfallrate",
             explanation:
               "Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten drei Jahre?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.soziales?.sicherheitUndWeiterbildung?.unfallrate,
@@ -1302,7 +1348,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Budget für Schulung/Ausbildung",
             explanation:
               "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.soziales?.sicherheitUndWeiterbildung?.budgetFuerSchulungAusbildung,
@@ -1323,7 +1370,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Überwachung der Einkommensungleichheit",
             explanation:
               "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für die letzten drei Jahre an.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatGdvYearlyDecimalTimeseriesDataForTable(
                 dataset.soziales?.einkommensgleichheit?.ueberwachungDerEinkommensungleichheit,
@@ -1346,7 +1394,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Maßnahmen zur Verbesserung der Einkommensungleichheit",
             explanation:
               "Wie überwacht das Unternehmen die Einkommens(un)gleichheit und welche Maßnahmen wurden ergriffen, um die Einkommensungleichheit abzustellen?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
                 dataset.soziales?.einkommensgleichheit?.massnahmenZurVerbesserungDerEinkommensungleichheit,
@@ -1364,7 +1413,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Mitarbeiter auf Top-Management Ebene",
             explanation: "Geben Sie bitte an wieviele Personen eine Top-Management Position innehaben.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.mitarbeiterAufTopManagementEbene, ""),
           },
@@ -1372,7 +1422,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Frauen auf Top-Management-Ebene",
             explanation: "Geben Sie bitte an wieviele Frauen eine Top-Management Position innehaben.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.frauenAufTopManagementEbene, ""),
           },
@@ -1380,7 +1431,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Mitglieder Geschäftsführung",
             explanation: "Geben Sie bitte an wieviele Mitglieder die Geschäftsführung hat.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.mitgliederGeschaeftsfuehrung, ""),
           },
@@ -1388,7 +1440,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Frauen in der Geschäftsführung",
             explanation: "Geben Sie bitte an wieviele Frauen in der Geschäftsführung sind.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(dataset.soziales?.geschlechterdiversitaet?.frauenInDerGeschaeftsfuehrung, ""),
           },
@@ -1396,7 +1449,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Definition Top-Management",
             explanation: 'Bitte geben Sie Ihre Definition von "Top-Management".',
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.soziales?.geschlechterdiversitaet?.definitionTopManagement),
           },
@@ -1405,7 +1459,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Einhaltung rechtlicher Vorgaben",
             explanation:
               "Welche Maßnahmen wurden ergriffen, um das geltende Recht in Bezug auf die Geschlechterdiversität von Exekutivinstanzen einzuhalten?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.soziales?.geschlechterdiversitaet?.einhaltungRechtlicherVorgaben),
           },
@@ -1422,7 +1477,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Audits zur Einhaltung von Arbeitsstandards",
             explanation:
               "Führt das Unternehmen interne oder externe Audits durch, um die Einhaltung der Arbeitsnormen durch das Unternehmen zu bewerten?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards),
           },
@@ -1474,7 +1530,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl der Mitglieder im Aufsichtsrat",
             explanation: "Wieviele Mitglieder hat der Aufsichtsrat?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.aufsichtsrat?.anzahlDerMitgliederImAufsichtsrat,
@@ -1485,7 +1542,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl unabhängiger Mitglieder im Aufsichtsrat",
             explanation: "Wieviele unabhängige Mitglieder hat der Aufsichtsrat?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.aufsichtsrat?.anzahlUnabhaengigerMitgliederImAufsichtsrat,
@@ -1496,7 +1554,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl von Frauen im Aufsichtsrat",
             explanation: "Wieviele Frauen sind im Aufsichtsrat?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.aufsichtsrat?.anzahlVonFrauenImAufsichtsrat,
@@ -1515,7 +1574,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl der Mitglieder im Vergütungsausschuss",
             explanation: "Wieviele Mitglieder hat der Vergütungsausschuss?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.verguetungsausschuss?.anzahlDerMitgliederImVerguetungsausschuss,
@@ -1526,7 +1586,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl unabhängiger Mitglieder im Vergütungsausschuss",
             explanation: "Wieviele unabhängige Mitglieder hat der Vergütungsausschuss?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.verguetungsausschuss
@@ -1538,7 +1599,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl von Frauen im Vergütungsausschuss",
             explanation: "Wieviele Frauen sind im Vergütungsausschuss?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.verguetungsausschuss?.anzahlVonFrauenImVerguetungsausschuss,
@@ -1557,7 +1619,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl der Mitglieder im Nominierungsausschuss",
             explanation: "Wieviele Mitglieder hat der Nominierungsausschuss?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.nominierungsausschuss
@@ -1569,7 +1632,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl unabhängiger Mitglieder im Nominierungsausschuss",
             explanation: "Wieviele unabhängige Mitglieder hat der Nominierungsausschuss?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.nominierungsausschuss
@@ -1581,7 +1645,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl von Frauen im Vergütungsausschuss",
             explanation: "Wieviele Frauen sind im Nominierungsausschuss?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.nominierungsausschuss?.anzahlVonFrauenImVerguetungsausschuss,
@@ -1600,7 +1665,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl der Mitglieder im Prüfungsausschuss",
             explanation: "Wieviele Mitglieder hat der Prüfungsausschuss?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.pruefungsausschuss?.anzahlDerMitgliederImPruefungsausschuss,
@@ -1611,7 +1677,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl unabhängiger Mitglieder im Prüfungsausschuss",
             explanation: "Wieviele unabhängige Mitglieder hat der Prüfungsausschuss?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.pruefungsausschuss
@@ -1623,7 +1690,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl von Frauen im Prüfungsausschuss",
             explanation: "Wieviele Frauen sind im Prüfungsausschuss?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.pruefungsausschuss?.anzahlVonFrauenImPruefungsausschuss,
@@ -1642,7 +1710,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl der Mitglieder im Nachhaltigkeitsausschuss",
             explanation: "Wieviele Mitglieder hat der Nachhaltigkeitsausschuss?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.nachhaltigkeitsausschuss
@@ -1654,7 +1723,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl unabhängiger Mitglieder im Nachhaltigkeitsausschuss",
             explanation: "Wieviele unabhängige Mitglieder hat der Nachhaltigkeitsausschuss?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.nachhaltigkeitsausschuss
@@ -1666,7 +1736,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl von Frauen im Nachhaltigkeitsausschuss",
             explanation: "Wieviele Frauen sind im Nachhaltigkeitsausschuss?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.unternehmensfuehrungGovernance?.nachhaltigkeitsausschuss
@@ -1686,7 +1757,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Wirtschaftsprüfer",
 
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.sonstige?.wirtschaftspruefer),
           },
@@ -1695,7 +1767,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Trennung von CEO oder Vorsitzenden",
             explanation:
               "Hat sich das Unternehmen im aktuellen Jahr der Berichterstattung von CEO/Vorsitzenden getrennt?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.unternehmensfuehrungGovernance?.sonstige?.trennungVonCeoOderVorsitzenden,
@@ -1723,7 +1796,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "Einbeziehung von Stakeholdern",
             explanation:
               "Gibt es einen kontinuierlichen Prozess des Dialogs mit den Stakeholdern des Unternehmens? Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern,
@@ -1765,7 +1839,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Veröffentlichte Unternehmensrichtlinien",
             explanation: "Welche Richtlinien sind im Unternehmen veröffentlicht?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
                 AntiKorruption: "Anti-Korruption",
@@ -1793,7 +1868,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Weitere veröffentliche Unternehmensrichtlinien",
             explanation: "Bitte nennen Sie weitere wichtige Richtlinien, falls diese nicht angegeben sind.",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
                 dataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien
@@ -1813,7 +1889,8 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             label: "ESG-Kriterien und Überwachung der Lieferanten",
             explanation:
               "Wendet das Unternehmen ESG-Kriterien bei der Auswahl seiner Lieferanten an, einschließlich einer Bestandsaufnahme der Lieferkette?",
-            shouldDisplay: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            shouldDisplay: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
                 dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten,

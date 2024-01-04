@@ -33,7 +33,7 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<GdvData>
  */
 function modifyPreparedFixturesPartOne(newFixture: FixtureData<GdvData>): void {
   if (newFixture.t.general?.masterData) {
-    newFixture.t.general.masterData.berichtsPflicht = YesNo.Yes;
+    newFixture.t.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung = YesNo.Yes;
   }
   if (newFixture.t.allgemein?.esgZiele?.existenzVonEsgZielen) {
     newFixture.t.allgemein.esgZiele.existenzVonEsgZielen = YesNo.Yes;

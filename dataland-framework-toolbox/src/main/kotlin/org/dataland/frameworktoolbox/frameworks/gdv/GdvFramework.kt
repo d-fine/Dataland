@@ -109,20 +109,21 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setGroupsThatAreExpandedOnPageLoad(framework)
         overwriteFakeFixtureGenerationForDataDate(framework)
-        val berichtsPflicht = framework.root
+        val berichtspflichtUndEinwilligungZurVeroeffentlichung = framework.root
             .getOrNull<ComponentGroup>("general")
             ?.getOrNull<ComponentGroup>("masterData")
-            ?.getOrNull<YesNoComponent>("berichtsPflicht")
-        requireNotNull(berichtsPflicht) {
-            "The field with the label \"berichtsPflicht\" must exist in the gdv framework."
+            ?.getOrNull<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung")
+        requireNotNull(berichtspflichtUndEinwilligungZurVeroeffentlichung) {
+            "The field with the label \"berichtspflichtUndEinwilligungZurVeroeffentlichung\" must exist " +
+                "in the gdv framework."
         }
-        val showIfBerichtsPflicht = DependsOnComponentValue(berichtsPflicht, "Yes")
+        val showIfBerichtsPflicht = DependsOnComponentValue(berichtspflichtUndEinwilligungZurVeroeffentlichung, "Yes")
         createRollingWindowComponentsInCategoryUmwelt(framework, showIfBerichtsPflicht)
         createRollingWindowComponentsInCategorySoziales(framework, showIfBerichtsPflicht)
         createListOfBaseDatapointComponents(framework, showIfBerichtsPflicht)
         framework.root.edit<ComponentGroup>("general") {
             edit<ComponentGroup>("masterData") {
-                edit<YesNoComponent>("berichtsPflicht") {
+                edit<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung") {
                     customizeBerichtsPflicht(this)
                 }
             }

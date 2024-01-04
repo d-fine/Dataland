@@ -8549,11 +8549,11 @@
       },
       "GdvGeneralMasterData": {
         "required": [
-          "berichtsPflicht"
+          "berichtspflichtUndEinwilligungZurVeroeffentlichung"
         ],
         "type": "object",
         "properties": {
-          "berichtsPflicht": {
+          "berichtspflichtUndEinwilligungZurVeroeffentlichung": {
             "$ref": "#/components/schemas/YesNo"
           },
           "gueltigkeitsDatum": {

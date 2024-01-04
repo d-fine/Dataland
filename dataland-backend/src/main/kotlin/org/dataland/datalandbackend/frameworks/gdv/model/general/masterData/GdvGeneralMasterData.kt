@@ -8,6 +8,6 @@ import java.time.LocalDate
  * The data-model for the MasterData section
  */
 data class GdvGeneralMasterData(
-    val berichtsPflicht: YesNo,
+    val berichtspflichtUndEinwilligungZurVeroeffentlichung: YesNo,
     val gueltigkeitsDatum: LocalDate? = null,
 )

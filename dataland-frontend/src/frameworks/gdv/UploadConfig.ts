@@ -14,9 +14,10 @@ export const gdvDataModel = [
         label: "Master Data",
         fields: [
           {
-            name: "berichtsPflicht",
-            label: "Berichts-Pflicht",
-            description: "Ist das Unternehmen berichtspflichtig?",
+            name: "berichtspflichtUndEinwilligungZurVeroeffentlichung",
+            label: "Berichtspflicht und Einwilligung zur Veröffentlichung",
+            description:
+              "Ist das Unternehmen berichtspflichtig und mit der Veröffentlichung des Datensatzes auf Dataland einverstanden? Andernfalls ist eine weitere Dateneingabe nicht möglich.",
             options: "",
             unit: "",
             component: "YesNoFormField",
@@ -58,7 +59,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -99,7 +101,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -166,7 +169,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -223,7 +227,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoBaseDataPointFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -235,7 +240,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoBaseDataPointFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -247,7 +253,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoBaseDataPointFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -259,7 +266,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoBaseDataPointFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -270,7 +278,8 @@ export const gdvDataModel = [
             unit: "",
             component: "ListOfBaseDataPointsFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -288,7 +297,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -331,7 +341,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -374,7 +385,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -386,7 +398,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -416,7 +429,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -494,7 +508,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -646,7 +661,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -707,7 +723,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -731,7 +748,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -761,7 +779,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -773,7 +792,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -812,7 +832,8 @@ export const gdvDataModel = [
             unit: "",
             component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -824,7 +845,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -836,7 +858,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -854,7 +877,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -878,7 +902,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -909,7 +934,8 @@ export const gdvDataModel = [
             unit: "",
             component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -921,7 +947,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -944,7 +971,8 @@ export const gdvDataModel = [
             unit: "",
             component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -956,7 +984,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -983,7 +1012,8 @@ export const gdvDataModel = [
             unit: "",
             component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -995,7 +1025,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -1026,7 +1057,8 @@ export const gdvDataModel = [
             unit: "",
             component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1038,7 +1070,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1055,7 +1088,8 @@ export const gdvDataModel = [
             unit: "",
             component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1067,7 +1101,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -1085,7 +1120,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1110,7 +1146,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1141,7 +1178,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1185,7 +1223,8 @@ export const gdvDataModel = [
             unit: "",
             component: "SingleSelectFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1196,7 +1235,8 @@ export const gdvDataModel = [
             unit: "",
             component: "MultiSelectFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1225,7 +1265,8 @@ export const gdvDataModel = [
             unit: "",
             component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -1251,7 +1292,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1375,7 +1417,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1392,7 +1435,8 @@ export const gdvDataModel = [
             unit: "",
             component: "GdvYearlyDecimalTimeseriesThreeYearPastDataFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1409,7 +1453,8 @@ export const gdvDataModel = [
             unit: "",
             component: "GdvYearlyDecimalTimeseriesThreeYearPastDataFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -1440,7 +1485,8 @@ export const gdvDataModel = [
             unit: "",
             component: "GdvYearlyDecimalTimeseriesThreeYearPastDataFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1452,7 +1498,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -1469,7 +1516,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1480,7 +1528,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1491,7 +1540,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1502,7 +1552,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1513,7 +1564,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1525,7 +1577,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -1543,7 +1596,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1605,7 +1659,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1616,7 +1671,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1627,7 +1683,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -1644,7 +1701,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1655,7 +1713,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1666,7 +1725,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -1683,7 +1743,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1694,7 +1755,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1705,7 +1767,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -1722,7 +1785,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1733,7 +1797,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1744,7 +1809,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -1761,7 +1827,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1772,7 +1839,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1783,7 +1851,8 @@ export const gdvDataModel = [
             unit: "",
             component: "NumberFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -1800,7 +1869,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1812,7 +1882,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1842,7 +1913,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1934,7 +2006,8 @@ export const gdvDataModel = [
             unit: "",
             component: "MultiSelectFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
@@ -1945,7 +2018,8 @@ export const gdvDataModel = [
             unit: "",
             component: "InputTextFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
         ],
@@ -1963,7 +2037,8 @@ export const gdvDataModel = [
             unit: "",
             component: "YesNoFormField",
             required: false,
-            showIf: (dataset: GdvData): boolean => dataset.general?.masterData?.berichtsPflicht == "Yes",
+            showIf: (dataset: GdvData): boolean =>
+              dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             validation: "",
           },
           {
