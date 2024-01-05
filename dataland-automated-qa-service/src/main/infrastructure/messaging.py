@@ -47,11 +47,15 @@ def process_qa_request(
             validation_result = validate(resource, correlation_id)
             assert_status_is_valid_for_qa_completion(validation_result)
             send_qa_completed_message(channel, routing_key, resource.id, validation_result, correlation_id)
-        except AutomaticQaNotPossibleError:
+        except AutomaticQaNotPossibleError as e:
+            message_to_send = {
+                "identifier": resource.id,
+                "comment": e.comment
+            }
             channel.basic_publish(
                 exchange=mq_manual_qa_requested_exchange,
                 routing_key=routing_key,
-                body=resource.id,
+                body=json.dumps(message_to_send),
                 properties=pika.BasicProperties(
                     headers={
                         mq_correlation_id_header: correlation_id,
