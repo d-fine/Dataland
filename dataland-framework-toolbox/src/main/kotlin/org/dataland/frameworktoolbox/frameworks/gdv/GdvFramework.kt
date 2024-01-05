@@ -203,7 +203,6 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 ),
                 component = component,
                 uploadComponentName = "MultiSelectFormField",
-                validation = null,
             )
         }
     }

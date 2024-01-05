@@ -33,7 +33,7 @@ data class UploadCategoryBuilder(
                 "You cannot mix and match sections and cells for the legacy upload page. "
             }
         } else {
-            require(children.all { it is CellConfigBuilder }) {
+            require(children.all { it is UploadCellConfigBuilder }) {
                 "You cannot mix and match sections and cells for the legacy upload page. "
             }
             require(
@@ -66,7 +66,7 @@ data class UploadCategoryBuilder(
     /**
      * Adds a new cell to this section
      */
-    fun addCell(
+    fun addUploadCell(
         identifier: String,
         label: String,
         explanation: String?,
@@ -76,8 +76,9 @@ data class UploadCategoryBuilder(
         uploadComponentName: String,
         frameworkUploadOptions: FrameworkUploadOptions?,
         validation: FrameworkUploadOptions?,
-    ): CellConfigBuilder {
-        val newCell = CellConfigBuilder(
+        validationMessages: String?,
+    ): UploadCellConfigBuilder {
+        val newCell = UploadCellConfigBuilder(
             parentSection = this,
             label = label,
             name = identifier,
@@ -88,6 +89,7 @@ data class UploadCategoryBuilder(
             uploadComponentName = uploadComponentName,
             frameworkUploadOptions = frameworkUploadOptions,
             validation = validation,
+            validationMessages = validationMessages,
         )
         children.add(newCell)
         return newCell

@@ -11,7 +11,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBoo
  */
 
 @Suppress("LongParameterList")
-class CellConfigBuilder(
+class UploadCellConfigBuilder(
     override val parentSection: UploadCategoryBuilder,
     var label: String,
     var name: String,
@@ -22,6 +22,7 @@ class CellConfigBuilder(
     var uploadComponentName: String,
     var frameworkUploadOptions: FrameworkUploadOptions?,
     var validation: FrameworkUploadOptions?,
+    var validationMessages: String?,
 ) : UploadConfigElement {
     override fun assertComplianceWithLegacyUploadPage() { /* BLANK */ }
 }

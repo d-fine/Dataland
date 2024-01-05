@@ -51,10 +51,8 @@ open class DecimalComponent(
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         uploadCategoryBuilder.addStandardUploadConfigCell(
-            frameworkUploadOptions = null,
             component = this,
             uploadComponentName = "NumberFormField",
-            validation = null,
         )
     }
 

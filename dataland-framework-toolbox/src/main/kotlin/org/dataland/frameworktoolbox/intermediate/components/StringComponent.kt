@@ -45,10 +45,8 @@ class StringComponent(
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         uploadCategoryBuilder.addStandardUploadConfigCell(
-            frameworkUploadOptions = null,
             component = this,
             uploadComponentName = "InputTextFormField",
-            validation = null,
         )
     }
 

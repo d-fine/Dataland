@@ -51,10 +51,8 @@ class YesNoComponent(
             "YesNoFormField"
         }
         uploadCategoryBuilder.addStandardUploadConfigCell(
-            frameworkUploadOptions = null,
             component = this,
             uploadComponentName = uploadComponentNameToUse,
-            validation = null,
         )
     }
 

@@ -68,7 +68,6 @@ open class SingleSelectComponent(
             ),
             component = this,
             uploadComponentName = "SingleSelectFormField",
-            validation = null,
         )
     }
 
