@@ -15,6 +15,13 @@ addopts = [
 ]
 pythonpath = "src/main"
 
+[tool.coverage.run]
+relative_files = true
+
+[tool.coverage.paths]
+source = ["./src/main"]
+
+
 #[tool.ruff]
 #select = ["F", "I"]
 #line-length = 120
