@@ -113,15 +113,17 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
               dataset.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
-                A: "A",
-                B: "B",
-                C: "C",
-                D: "D",
-                E: "E",
-                F: "F",
-                G: "G",
-                H: "H",
-                L: "L",
+                ALandwirtschaftForstwirtschaftUndFischerei: "A - Landwirtschaft, Forstwirtschaft und Fischerei",
+                BBergbauUndGewinnungVonSteinenUndErden: "B - Bergbau und Gewinnung von Steinen und Erden",
+                CVerarbeitendesGewerbeHerstellungVonWaren: "C - Verarbeitendes Gewerbe / Herstellung von Waren",
+                DEnergieversorgung: "D - Energieversorgung",
+                EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen:
+                  "E - Wasserversorgung; Abwasser & Abfallentsorgung; Beseitigungen von Umweltverschmutzungen",
+                FBaugewerbeBau: "F - Baugewerbe/Bau",
+                GHandelInstandhaltungUndReparaturVonKraftfahrzeugen:
+                  "G - Handel; Instandhaltung und Reparatur von Kraftfahrzeugen",
+                HVerkehrUndLagerhaltung: "H - Verkehr und Lagerhaltung",
+                LGrundstuecksUndWohnungswesen: "L - Grundstücks- und Wohnungswesen",
               };
               return formatListOfStringsForDatatable(
                 dataset.allgemein?.sektoren?.auflistungDerSektoren?.map((it) =>

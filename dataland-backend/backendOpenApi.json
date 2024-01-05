@@ -8012,15 +8012,15 @@
       "AuflistungDerSektorenOptions": {
         "type": "string",
         "enum": [
-          "A",
-          "B",
-          "C",
-          "D",
-          "E",
-          "F",
-          "G",
-          "H",
-          "L"
+          "ALandwirtschaftForstwirtschaftUndFischerei",
+          "BBergbauUndGewinnungVonSteinenUndErden",
+          "CVerarbeitendesGewerbeHerstellungVonWaren",
+          "DEnergieversorgung",
+          "EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen",
+          "FBaugewerbeBau",
+          "GHandelInstandhaltungUndReparaturVonKraftfahrzeugen",
+          "HVerkehrUndLagerhaltung",
+          "LGrundstuecksUndWohnungswesen"
         ]
       },
       "AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues": {
@@ -10696,10 +10696,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

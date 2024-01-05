@@ -53,7 +53,17 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       sektoren: {
         sektorenMitHohenKlimaauswirkungen: dataGenerator.randomYesNo(),
         auflistungDerSektoren: dataGenerator.valueOrNull(
-          pickSubsetOfElements(["A", "B", "C", "D", "E", "F", "G", "H", "L"]),
+          pickSubsetOfElements([
+            "ALandwirtschaftForstwirtschaftUndFischerei",
+            "BBergbauUndGewinnungVonSteinenUndErden",
+            "CVerarbeitendesGewerbeHerstellungVonWaren",
+            "DEnergieversorgung",
+            "EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen",
+            "FBaugewerbeBau",
+            "GHandelInstandhaltungUndReparaturVonKraftfahrzeugen",
+            "HVerkehrUndLagerhaltung",
+            "LGrundstuecksUndWohnungswesen",
+          ]),
         ),
       },
       esgBerichte: {

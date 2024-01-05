@@ -112,40 +112,40 @@ export const gdvDataModel = [
               "Bitte geben Sie an, zu welchen Sektoren (mit hohen Klimaauswirkungen) das Unternehmen zugeordnet werden kann.",
             options: [
               {
-                label: "A",
-                value: "A",
+                label: "A - Landwirtschaft, Forstwirtschaft und Fischerei",
+                value: "ALandwirtschaftForstwirtschaftUndFischerei",
               },
               {
-                label: "B",
-                value: "B",
+                label: "B - Bergbau und Gewinnung von Steinen und Erden",
+                value: "BBergbauUndGewinnungVonSteinenUndErden",
               },
               {
-                label: "C",
-                value: "C",
+                label: "C - Verarbeitendes Gewerbe / Herstellung von Waren",
+                value: "CVerarbeitendesGewerbeHerstellungVonWaren",
               },
               {
-                label: "D",
-                value: "D",
+                label: "D - Energieversorgung",
+                value: "DEnergieversorgung",
               },
               {
-                label: "E",
-                value: "E",
+                label: "E - Wasserversorgung; Abwasser & Abfallentsorgung; Beseitigungen von Umweltverschmutzungen",
+                value: "EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen",
               },
               {
-                label: "F",
-                value: "F",
+                label: "F - Baugewerbe/Bau",
+                value: "FBaugewerbeBau",
               },
               {
-                label: "G",
-                value: "G",
+                label: "G - Handel; Instandhaltung und Reparatur von Kraftfahrzeugen",
+                value: "GHandelInstandhaltungUndReparaturVonKraftfahrzeugen",
               },
               {
-                label: "H",
-                value: "H",
+                label: "H - Verkehr und Lagerhaltung",
+                value: "HVerkehrUndLagerhaltung",
               },
               {
-                label: "L",
-                value: "L",
+                label: "L - Grundstücks- und Wohnungswesen",
+                value: "LGrundstuecksUndWohnungswesen",
               },
             ],
             unit: "",
