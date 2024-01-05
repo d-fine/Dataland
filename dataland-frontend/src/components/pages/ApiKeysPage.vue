@@ -39,15 +39,6 @@
           />
         </div>
 
-        <div class="col-12 md:col-4 lg:col-4 api-doc">
-          <div class="text-900 font-medium text-xl text-left">API Documentation</div>
-          <div class="api-doc_links">
-            <a href="https://dataland.com/api/swagger-ui/index.html" target="_blank">Datasets</a>
-            <a href="https://dataland.com/documents/swagger-ui/index.html" target="_blank">Documents</a>
-            <a href="https://dataland.com/community/swagger-ui/index.html" target="_blank">Requests</a>
-          </div>
-        </div>
-
         <div
           data-test="apiKeyInfo"
           class="apiKeyInfo"
@@ -103,6 +94,15 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div class="col-12 md:col-4 lg:col-4 api-doc">
+          <div class="text-900 font-medium text-xl text-left">API Documentation</div>
+          <div class="api-doc_links">
+            <a href="https://dataland.com/api/swagger-ui/index.html" target="_blank">Datasets</a>
+            <a href="https://dataland.com/documents/swagger-ui/index.html" target="_blank">Documents</a>
+            <a href="https://dataland.com/community/swagger-ui/index.html" target="_blank">Requests</a>
           </div>
         </div>
       </div>
