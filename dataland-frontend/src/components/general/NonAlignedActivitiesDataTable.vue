@@ -28,7 +28,7 @@ import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
+import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames";
 import { type EuTaxonomyAlignedActivity } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
 import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatter";
 
