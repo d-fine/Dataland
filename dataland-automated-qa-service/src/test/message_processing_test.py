@@ -33,7 +33,7 @@ def build_qa_completed_message_body(qa_result: QaStatus) -> str:
 
 qa_forwarded_message_body = json.dumps({
     "identifier": "dummy-id",
-    "validationResult": "Test"
+    "comment": "Test"
 })
 
 
