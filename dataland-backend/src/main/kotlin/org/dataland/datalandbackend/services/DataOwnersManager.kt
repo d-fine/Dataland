@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+
 /**
  * Implementation of a (company) data ownership manager for Dataland
  * @param dataOwnerRepository  JPA for data ownership relations
@@ -20,6 +21,15 @@ class DataOwnersManager(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
+     * UUID format checker function
+     * @param checkString the Input string which should be validated whether it matches the UUID format
+     * @return Boolean value depending on the outcome
+     */
+    fun isValidUUID(checkString: String): Boolean {
+        val regexPattern = Regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
+        return regexPattern.matches(checkString)
+    }
+    /**
      * Method to add a data owner to a given company
      * @param companyId the ID of the company to which the data owner is to be added
      * @param uploadUserId the ID of the user who is to become a data owner
@@ -27,6 +37,13 @@ class DataOwnersManager(
      */
     @Transactional
     fun addDataOwnerToCompany(companyId: String, uploadUserId: String): CompanyDataOwnersEntity {
+        if (!isValidUUID(uploadUserId)) {
+            throw IllegalArgumentException("The userId '$uploadUserId' is not a valid UUID.")
+        }
+        if (!isValidUUID(companyId)) {
+            throw IllegalArgumentException("The companyId '$companyId' is not a valid UUID.")
+        }
+
         if (dataOwnerRepository.existsById(companyId)) {
             val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
             return if (dataOwnersForCompany.dataOwners.contains(uploadUserId)) {

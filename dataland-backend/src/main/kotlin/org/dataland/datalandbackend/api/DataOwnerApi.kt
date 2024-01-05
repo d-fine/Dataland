@@ -36,7 +36,7 @@ interface DataOwnerApi {
     )
     @PostMapping(
         produces = ["application/json"],
-        consumes = ["application/json"],
+
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postDataOwner(
@@ -44,4 +44,6 @@ interface DataOwnerApi {
         @RequestParam userId: String,
     ):
         ResponseEntity<CompanyDataOwners>
+
+
 }
