@@ -218,23 +218,6 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `post dummy companies with frontendExcluded framework data and check if the distinct endpoint ignores`() {
-        val mapOfAllBackendOnlyDataTypesToListOfOneCompanyInformation = apiAccessor.generalTestDataProvider
-            .generateOneCompanyInformationPerBackendOnlyFramework()
-        apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOfAllBackendOnlyDataTypesToListOfOneCompanyInformation,
-            1,
-        )
-        val distinctValues = apiAccessor.companyDataControllerApi.getAvailableCompanySearchFilters()
-        assertTrue(
-            distinctValues.sectors.intersect(
-                mapOfAllBackendOnlyDataTypesToListOfOneCompanyInformation.map { it.value[0].sector }.toSet(),
-            ).isEmpty(),
-            "At least one sector of the frontend-excluded data sets appears in the distinct sector value list.",
-        )
-    }
-
-    @Test
     fun `post a dummy company as teaser company and test if it is retrievable by company ID as unauthorized user`() {
         val uploadInfo = apiAccessor.uploadOneCompanyWithoutIdentifiersWithExplicitTeaserConfig(true)
         val getCompanyByIdResponse = apiAccessor.unauthorizedCompanyDataControllerApi.getCompanyById(
@@ -378,6 +361,7 @@ class CompanyDataControllerTest {
         uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
         sleep(100)
         val expectedMap = mapOf(
+            DataTypeEnum.gdv.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
             DataTypeEnum.eutaxonomyMinusFinancials.toString() to AggregatedFrameworkDataSummary(
                 numberOfProvidedReportingPeriods = 0,
             ),
@@ -388,6 +372,7 @@ class CompanyDataControllerTest {
             DataTypeEnum.p2p.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
             DataTypeEnum.sfdr.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
             DataTypeEnum.sme.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
+
         )
         val aggregatedFrameworkDataSummary = apiAccessor.companyDataControllerApi.getAggregatedFrameworkDataSummary(
             companyId = companyId,
