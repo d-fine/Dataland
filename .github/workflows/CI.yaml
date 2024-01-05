@@ -199,7 +199,7 @@ jobs:
           cd ./dataland-automated-qa-service
           pip install pytest
           pip install pytest-cov
-          pytest --cov=./src/main --cov-report=xml:python-coverage.xml --verbose ./src/test
+          pytest --cov=./src/main --cov-report=xml:python-coverage.xml
         env:
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
           RABBITMQ_USER: "dummy"
@@ -387,18 +387,6 @@ jobs:
         with:
           name: PythonUnitTestCoverage
           path: python-coverage
-      - name: debugLogging
-        if: always()
-        run: |
-          ls
-          echo "----first ls done----" 
-          cd ./dataland-automated-qa-service/src/main
-          echo "----ls of ./dataland-automated-qa-service/src/main start----" 
-          ls
-          echo "----ls of ./dataland-automated-qa-service/src/main done!!!----" 
-          cd ./python-coverage
-          echo "ls of python-coverage"
-          ls
       - uses: actions/download-artifact@v3
         name: JaCoCoResultsUnitTests
         with:
@@ -412,6 +400,14 @@ jobs:
         with:
           name: lcovResults
           path: fe-coverage
+      - name: debugLogging
+        if: always()
+        run: |
+          ls
+          echo "----first ls done----" 
+          cd ./python-coverage
+          echo "ls of python-coverage"
+          ls
       - name: Prepare Repo for Sonar
         if: ${{ !cancelled() }}
         run: |
