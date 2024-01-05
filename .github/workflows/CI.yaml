@@ -400,6 +400,14 @@ jobs:
         with:
           name: lcovResults
           path: fe-coverage
+      - name: debugLogging
+        if: always()
+        run: |
+          ls
+          echo "----first ls done----" 
+          cd ./python-coverage
+          echo "ls of python-coverage"
+          ls
       - name: Prepare Repo for Sonar
         if: ${{ !cancelled() }}
         run: |
