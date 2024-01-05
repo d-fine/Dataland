@@ -38,6 +38,11 @@ class QaService(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    data class ForwardedQaMessage(
+        val identifier: String,
+        val comment: String,
+    )
+
     /**
      * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
      * @param dataId the data ID
@@ -62,25 +67,29 @@ class QaService(
     )
     @Transactional
     fun addDataToQueue(
-        @Payload dataId: String,
+        @Payload messageAsJsonString: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.ManualQaRequested)
+        val message = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
+        val dataId = message.identifier
+        val comment = message.comment
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         messageUtils.rejectMessageOnException {
             logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
-            storeDatasetAsToBeReviewed(dataId)
+            storeDatasetAsToBeReviewed(dataId, comment)
         }
     }
 
-    private fun storeDatasetAsToBeReviewed(dataId: String) {
+    private fun storeDatasetAsToBeReviewed(dataId: String, comment: String) {
         reviewQueueRepository.save(
             ReviewQueueEntity(
                 dataId = dataId,
                 receptionTime = Instant.now().toEpochMilli(),
+                comment = comment,
             ),
         )
     }
@@ -108,11 +117,13 @@ class QaService(
         ],
     )
     fun assureQualityOfDocument(
-        @Payload documentId: String,
+        @Payload messageAsJsonString: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.ManualQaRequested)
+        val message = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
+        val documentId = message.identifier
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
@@ -120,11 +131,11 @@ class QaService(
             logger.info(
                 "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
             )
-            val message = objectMapper.writeValueAsString(
+            val messageToSend = objectMapper.writeValueAsString(
                 QaCompletedMessage(documentId, QaStatus.Accepted),
             )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,
+                messageToSend, MessageType.QaCompleted, correlationId, ExchangeName.DataQualityAssured,
                 RoutingKeyNames.document,
             )
         }

@@ -5,7 +5,6 @@
     :name="name"
     v-model="checkboxValue"
     :options="options"
-    :validation="validation"
     :outer-class="{
       'yes-no-radio': true,
     }"

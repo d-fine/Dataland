@@ -13,8 +13,8 @@ class FixtureSectionBuilder(
     val elements: MutableList<FixtureGeneratorElement>,
 ) : FixtureGeneratorElement {
 
-    override val imports: Set<String> =
-        elements.foldRight(emptySet()) {
+    override val imports: Set<String>
+        get() = elements.foldRight(emptySet()) {
                 element, imports ->
             imports + element.imports
         }

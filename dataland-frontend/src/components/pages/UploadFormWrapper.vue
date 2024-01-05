@@ -1,9 +1,9 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <TheContent>
+    <TheContent class="paper-section">
       <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
-        <MarginWrapper class="mb-2">
+        <MarginWrapper class="mb-2 bg-white">
           <BackButton id="backButton" class="mt-2" />
           <CompanyInformation :companyId="companyID" />
         </MarginWrapper>
@@ -23,6 +23,7 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { DataTypeEnum } from "@clients/backend";
 
+import CreateGdvDataset from "@/components/forms/CreateGdvDataset.vue";
 import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
 import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
@@ -74,6 +75,8 @@ export default defineComponent({
           return CreateP2pDataset;
         case `${DataTypeEnum.Sfdr}`:
           return CreateSfdrDataset;
+        case `${DataTypeEnum.Gdv}`:
+          return CreateGdvDataset;
         default:
           return null;
       }

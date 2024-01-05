@@ -31,6 +31,12 @@ def build_qa_completed_message_body(qa_result: QaStatus) -> str:
     })
 
 
+qa_forwarded_message_body = json.dumps({
+    "identifier": "dummy-id",
+    "comment": "Test"
+})
+
+
 class MessageProcessingTest(unittest.TestCase):
     def test_should_send_accepted_message_when_qa_should_be_bypassed(self):
         self.validate_process_qa_request(
@@ -48,7 +54,7 @@ class MessageProcessingTest(unittest.TestCase):
             False,
             p.mq_manual_qa_requested_exchange,
             p.mq_manual_qa_requested_type,
-            "dummy-id",
+            qa_forwarded_message_body,
             mock_validate_raise_automated_qa_not_possible_error
         )
 

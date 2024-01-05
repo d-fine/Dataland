@@ -193,12 +193,13 @@ jobs:
           openapi-python-client generate --path ../dataland-backend/backendOpenApi.json
           pip install --no-cache-dir ./dataland-backend-api-documentation-client
           pip install --no-cache-dir ./dataland-document-manager-api-documentation-client
-      - name: Execute python unit tests
+      - name: Execute python unit tests and measure coverage
         if: always()
         run: |
           cd ./dataland-automated-qa-service
-          coverage run --source="./src/main" -m pytest
-          coverage xml
+          pip install pytest
+          pip install pytest-cov
+          pytest --cov=./src/main --cov-report=xml:python-coverage.xml
         env:
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
           RABBITMQ_USER: "dummy"
@@ -210,11 +211,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: PythonUnitTestCoverage
-          path: ./dataland-automated-qa-service/coverage.xml
-#      - name: Measure coverage
-#        if: always()
-#        run: |
-#          coverage run ./src/test/*.py
+          path: ./dataland-automated-qa-service/python-coverage.xml
 #      - name: Frontend linting
 #        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
 #        if: always()
@@ -409,6 +406,14 @@ jobs:
         with:
           name: lcovResults
           path: fe-coverage
+      - name: debugLogging
+        if: always()
+        run: |
+          ls
+          echo "----first ls done----" 
+          cd ./python-coverage
+          echo "ls of python-coverage"
+          ls
       - name: Prepare Repo for Sonar
         if: ${{ !cancelled() }}
         run: |
