@@ -59,7 +59,7 @@ timeout 90 sh -c "docker logs dala-e2e-test-community-manager-1 --follow" > /dev
 docker cp dala-e2e-test-community-manager-1:/jacoco.exec ./community-manager-bootRun-${CYPRESS_TEST_GROUP}.exec
 
 echo XXXXXXXX 1
-docker exec dala-e2e-test-automated-qa-service-1 "pkill -f --signal SIGINT coverage && sleep 90"
+docker exec dala-e2e-test-automated-qa-service-1 pkill -f --signal SIGINT coverage && sleep 1
 echo XXXXXXXX 2
 timeout 90 sh -c "docker logs dala-e2e-test-automated-qa-service-1 --follow" > /dev/null
 echo XXXXXXXX 3
