@@ -92,15 +92,7 @@ sonar {
         )
         property(
             "sonar.sources",
-            subprojects.flatMap { project ->
-                when (project.name) {
-                    "dataland-automated-qa-service" -> { println("___auto qa reached___")
-                        listOf("dataland-automated-qa-service") }
-                    else -> { println(project.name)
-                        println("xxxxxxxxxxxxxxxxxxxxxxxxxx")
-                        project.properties["sonarSources"] as Iterable<*> }
-                }
-            },
+            subprojects.flatMap { project -> project.properties["sonarSources"] as Iterable<*> },
         )
         property("sonar.verbose", "true")
         property("sonar.scanner.metadataFilePath", "$projectDir/build/reports/report_task.txt")
