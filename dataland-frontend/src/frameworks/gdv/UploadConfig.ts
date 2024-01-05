@@ -23,7 +23,7 @@ export const gdvDataModel = [
             component: "YesNoFormField",
             required: true,
             showIf: (): boolean => true,
-            validation: "is:Yes",
+            validation: "required|is:Yes",
           },
           {
             name: "gueltigkeitsDatum",

@@ -236,7 +236,7 @@ class GdvFramework : InDevelopmentPavedRoadFramework(
                 component = component,
                 uploadComponentName = "YesNoFormField",
                 validation = FrameworkUploadOptions(
-                    body = "\"is:Yes\"",
+                    body = "\"required|is:Yes\"",
                     imports = null,
                 ),
             )
