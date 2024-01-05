@@ -81,14 +81,14 @@ describeIf(
     });
 
     /**
-     * Chose framewors
+     * Chose frameworks
      */
     function choseFramewors(): void {
       cy.get('[data-test="selectFrameworkSelect"] .p-multiselect')
         .should("exist")
         .click()
         .get(".p-multiselect-panel ul.p-multiselect-items li.p-multiselect-item")
-        .should("have.length", 6)
+        .should("have.length", 7)
         .eq(3)
         .click()
         .get("div[data-test='addedFrameworks'] span")

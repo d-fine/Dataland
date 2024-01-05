@@ -1,5 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
@@ -18,5 +20,30 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
         explanation = component.explanation,
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
         valueGetter = valueGetter,
+    )
+}
+
+/**
+ * Add a cell to the upload-config section with configuration shared between components
+ */
+fun UploadCategoryBuilder.addStandardUploadConfigCell(
+    frameworkUploadOptions: FrameworkUploadOptions?,
+    component: ComponentBase,
+    uploadComponentName: String,
+    unit: String? = null,
+    validation: FrameworkUploadOptions?,
+) {
+    addCell(
+        identifier = component.identifier,
+        label = component.label ?: throw IllegalStateException(
+            "You must specify a label for ${component.identifier} to generate a view configuration",
+        ),
+        explanation = component.explanation,
+        unit = unit,
+        required = component.isRequired,
+        shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
+        uploadComponentName = uploadComponentName,
+        frameworkUploadOptions = frameworkUploadOptions,
+        validation = validation,
     )
 }

@@ -237,6 +237,3 @@ export default defineComponent({
   },
 });
 </script>
-
-// TODO Emanuel: Reminder for the very end: I have seen some debug console.log statements all over the code. // Let's
-search and delete those.
