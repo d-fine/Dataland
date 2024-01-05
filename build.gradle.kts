@@ -82,7 +82,7 @@ sonar {
         property("sonar.coverage.jacoco.xmlReportPaths", file("$buildDir/reports/jacoco/test/jacocoTestReport.xml"))
         property("sonar.qualitygate.wait", true)
         property("sonar.javascript.lcov.reportPaths", fileTree("$projectDir/fe-coverage").files)
-        property("sonar.python.coverage.reportPaths", fileTree("$projectDir/python-coverage").files)
+        property("sonar.python.coverage.reportPaths", fileTree("$projectDir/python-coverage.xml").files)
         property(
             "sonar.coverage.exclusions",
             "**/test/**," +
@@ -93,15 +93,7 @@ sonar {
         )
         property(
             "sonar.sources",
-            subprojects.flatMap { project ->
-                when (project.name) {
-                    "dataland-automated-qa-service" -> { println("___auto qa reached___")
-                        listOf("dataland-automated-qa-service") }
-                    else -> { println(project.name)
-                        println("xxxxxxxxxxxxxxxxxxxxxxxxxx")
-                        project.properties["sonarSources"] as Iterable<*> }
-                }
-            },
+            subprojects.flatMap { project -> project.properties["sonarSources"] as Iterable<*> },
         )
         property("sonar.verbose", "true")
         property("sonar.scanner.metadataFilePath", "$projectDir/build/reports/report_task.txt")

@@ -391,9 +391,13 @@ jobs:
         if: always()
         run: |
           ls
-          cd ./dataland-automated-qa-service
+          echo "----first ls done----" 
+          cd ./dataland-automated-qa-service/src/main
+          echo "----ls of ./dataland-automated-qa-service/src/main start----" 
           ls
-          cd python-coverage
+          echo "----ls of ./dataland-automated-qa-service/src/main done!!!----" 
+          cd ./python-coverage
+          echo "ls of python-coverage"
           ls
       - uses: actions/download-artifact@v3
         name: JaCoCoResultsUnitTests
