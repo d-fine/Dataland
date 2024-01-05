@@ -100,9 +100,15 @@
         <div class="col-12 md:col-4 lg:col-4 api-doc">
           <div class="text-900 font-medium text-xl text-left">API Documentation</div>
           <div class="api-doc_links">
-            <a href="https://dataland.com/api/swagger-ui/index.html" target="_blank">Datasets</a>
-            <a href="https://dataland.com/documents/swagger-ui/index.html" target="_blank">Documents</a>
-            <a href="https://dataland.com/community/swagger-ui/index.html" target="_blank">Requests</a>
+            <a href="https://dataland.com/api/swagger-ui/index.html" target="_blank" rel="noopener noreferrer"
+              >Datasets</a
+            >
+            <a href="https://dataland.com/documents/swagger-ui/index.html" target="_blank" rel="noopener noreferrer"
+              >Documents</a
+            >
+            <a href="https://dataland.com/community/swagger-ui/index.html" target="_blank" rel="noopener noreferrer"
+              >Requests</a
+            >
           </div>
         </div>
       </div>
