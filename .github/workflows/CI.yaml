@@ -196,7 +196,6 @@ jobs:
       - name: Execute python unit tests and measure coverage
         if: always()
         run: |
-          cd ./dataland-automated-qa-service
           pip install pytest
           pip install pytest-cov
           pytest --cov=./src/main --cov-report=xml:python-coverage.xml --verbose ./src/test
