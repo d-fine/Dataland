@@ -75,8 +75,7 @@ data class UploadCategoryBuilder(
         required: Boolean,
         uploadComponentName: String,
         frameworkUploadOptions: FrameworkUploadOptions?,
-        validation: FrameworkUploadOptions?,
-        validationMessages: String?,
+        validation: String?,
     ): UploadCellConfigBuilder {
         val newCell = UploadCellConfigBuilder(
             parentSection = this,
@@ -89,7 +88,6 @@ data class UploadCategoryBuilder(
             uploadComponentName = uploadComponentName,
             frameworkUploadOptions = frameworkUploadOptions,
             validation = validation,
-            validationMessages = validationMessages,
         )
         children.add(newCell)
         return newCell
