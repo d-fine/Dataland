@@ -1,8 +1,7 @@
 ARG DATALAND_AUTOMATED_QA_SERVICE_BASE_VERSION
 FROM ghcr.io/d-fine/dataland/dataland_automated_qa_service_base:${DATALAND_AUTOMATED_QA_SERVICE_BASE_VERSION}
 
-COPY ./dataland-automated-qa-service/src/test/measure_coverage.py ./src/test/measure_coverage.py
-CMD ["sh", "-c", "if find .coverage | grep -q . ; then while true; do sleep 1; done; else coverage run -m pytest -o log_cli=true -o log_cli_level=INFO ./src/test/measure_coverage.py; fi"]
+CMD ["sh", "-c", "python ./src/main/entrypoint.py"]
 
 # TODO proper healthcheck with CMD entrypoint now
 HEALTHCHECK --interval=30s --timeout=3s CMD exit 0

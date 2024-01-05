@@ -372,7 +372,7 @@ services:
   automated-qa-service:
     restart: always
     profiles: ["production", "testing", "development"]
-    image: ${AUTOMATED_QA_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_automated_qa_service:${DATALAND_AUTOMATED_QA_SERVICE_VERSION}}
+    image: ${AUTOMATED_QA_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_automated_qa_service_test:${DATALAND_AUTOMATED_QA_SERVICE_TEST_VERSION}}
     networks:
       - internal
     expose:
