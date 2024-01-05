@@ -192,6 +192,13 @@ check that all ssh-keys are set and erased from people that have left
 - [ ] After(!) the cypress tests have passed locally, execute the backend-e2e-tests `./gradlew dataland-e2etests:test`
 - [ ] Locally: Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your
   authorization has worked by assuring that you get a 200 response
+- [ ] It is assured that deploying this feature branch over the current main does not break anything
+  - [ ] Deploy the version of main currently active on prod to a dev server with `Reset non-user related Docker Volumes & Re-populate` turned on
+  - [ ] Verify that the CD run is green
+  - [ ] Migrate the data from prod to the dev server using `./migrateData.sh dataland.com <SOURCE_API_KEY> <TARGET> <TARGET_API_KEY>`
+  - [ ] Deploy the feature branch to the same server with `Reset non-user related Docker Volumes & Re-populate` turned off
+  - [ ] Verify that the CD run is green
+  - [ ] Verify that everything seems to be working fine by manually using the website
 - [ ] Merge using Squash Commit. The Merge Commit Message needs to contain "Manual Maintenance"
 - [ ] After merge check SonarQube state of main branch at https://sonarcloud.io/summary/new_code?id=d-fine_Dataland. 
   The full scan might reveal new issues (e.g. deprecation) on old code which is generally not detected on the branch.

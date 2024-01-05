@@ -16,7 +16,7 @@ import { roundNumber } from "@/utils/NumberConversionUtils";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
 import { getViewModelWithIdentityApiModel } from "@/components/resources/ViewModel";
 import { formatValueForDisplay } from "@/components/resources/frameworkDataSearch/p2p/P2pFormatValueForDisplay";
-import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/euTaxonomy/ActivityName";
+import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames";
 
 describe("Component test for ThreeLayerDataTable", () => {
   let mockedDataForTest: Array<DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel>;

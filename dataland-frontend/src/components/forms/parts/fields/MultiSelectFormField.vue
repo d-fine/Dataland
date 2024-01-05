@@ -8,7 +8,7 @@
       :validation-label="validationLabel ?? label"
       :placeholder="placeholder"
       :options="options"
-      :inputClass="inputClass"
+      inputClass="long"
       :emptyMessage="emptyMessage"
     />
   </div>
@@ -24,6 +24,7 @@ import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/Fo
 export default defineComponent({
   name: "MultiSelectFormField",
   components: { MultiSelectFormElement, UploadFormHeader },
+  inheritAttrs: false,
   props: {
     ...DropdownOptionFormFieldProps,
     dataTest: {
