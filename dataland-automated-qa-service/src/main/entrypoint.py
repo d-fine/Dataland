@@ -1,7 +1,7 @@
 import sys
 import os
-import logging
 import pika.exceptions
+import logging
 
 from infrastructure.rabbitmq import RabbitMq
 from infrastructure.messaging import qa_data, qa_document
