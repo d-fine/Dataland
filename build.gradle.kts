@@ -94,12 +94,12 @@ sonar {
         property(
             "sonar.sources",
             subprojects.flatMap { project ->
-                print("XXX ${project.name}")
+                println("XXX ${project.name}")
                 (project.properties["sonarSources"] as Iterable<*>).forEach {
-                    print("YYY ${it}")
+                    println("YYY ${it}")
                 }
                 project.properties["sonarSources"] as Iterable<*>
-                                },
+                                } + fileTree("$projectDir/dataland-automated-qa-service").files,
         )
         property("sonar.verbose", "true")
         property("sonar.scanner.metadataFilePath", "$projectDir/build/reports/report_task.txt")
