@@ -325,4 +325,20 @@ class DataManager(
         val associatedCompanyId = metaDataManager.getDataMetaInformationByDataId(dataId).company.companyId
         return companyQueryManager.isCompanyPublic(associatedCompanyId)
     }
+
+    fun deleteDataFromStorageService(dataId: String): String {
+        val dataAsString = ""
+        logger.info("Deleting data from internal storage. Data ID: $dataId")
+        try {
+//            TODO deleteDataById not implemeneted
+//            dataAsString = storageClient.deleteDataById(dataId)
+        } catch (e: ServerException) {
+            logger.error(
+                "Error deleting data. Received ServerException with Message:" +
+                        " ${e.message}. Data ID: $dataId",
+            )
+            throw e
+        }
+        return dataAsString
+    }
 }
