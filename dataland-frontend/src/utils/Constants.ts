@@ -1,16 +1,17 @@
 import { DataTypeEnum } from "@clients/backend";
 
 // - Available frameworks settings
-export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE: DataTypeEnum[] = Object.values(DataTypeEnum);
 
-export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM: DataTypeEnum[] = [
+export const ARRAY_OF_SUPPORTED_FRAMEWORKS = putGdvAtTheEndOfList(Object.values(DataTypeEnum));
+export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = putGdvAtTheEndOfList(Object.values(DataTypeEnum));
+export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = putGdvAtTheEndOfList([
   DataTypeEnum.P2p,
   DataTypeEnum.EutaxonomyFinancials,
   DataTypeEnum.Sfdr,
   DataTypeEnum.Lksg,
   DataTypeEnum.EutaxonomyNonFinancials,
   DataTypeEnum.Gdv,
-];
+]);
 
 // - Keycloak and session management related settings
 
@@ -36,3 +37,22 @@ export const REGEX_FOR_FILE_NAMES = /^[^<>:"|?/*\\\s][^<>:"|?/*\\]{0,252}[^<>:"|
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 export const NO_DATA_PROVIDED = "No data provided";
+
+/**
+ * Changes the sorting of a list of data type enums by putting the gdv/vöb framework at the very end.
+ * @param frameworksToInclude a unsorted list of data type enums
+ * @returns the list of data type enums sorted in a way, that gdv/vöb framework is the last element
+ */
+function putGdvAtTheEndOfList(frameworksToInclude: DataTypeEnum[]): DataTypeEnum[] {
+  // TODO unit test?
+  const customSort = (a: DataTypeEnum, b: DataTypeEnum): number => {
+    return a === DataTypeEnum.Gdv && b !== DataTypeEnum.Gdv
+      ? 1
+      : a !== DataTypeEnum.Gdv && b === DataTypeEnum.Gdv
+        ? -1
+        : 0;
+  };
+  return frameworksToInclude.includes(DataTypeEnum.Gdv)
+    ? [...frameworksToInclude].sort(customSort)
+    : frameworksToInclude;
+}
