@@ -14,6 +14,7 @@ data class SfdrSocial(
     @field:Valid
     val socialAndEmployeeMatters: SfdrSocialSocialAndEmployeeMatters? = null,
 
+    @field:Valid
     val greenSecurities: SfdrSocialGreenSecurities? = null,
 
     @field:Valid
