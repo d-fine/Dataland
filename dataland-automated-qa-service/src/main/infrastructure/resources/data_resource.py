@@ -12,6 +12,7 @@ from dataland_backend_api_documentation_client.api.lksg_data_controller.get_comp
 from dataland_backend_api_documentation_client.api.sfdr_data_controller.get_company_associated_sfdr_data import sync as get_sfdr_data
 from dataland_backend_api_documentation_client.api.p_2p_data_controller.get_company_associated_p2_p_data import sync as get_p2p_data
 from dataland_backend_api_documentation_client.api.sme_data_controller.get_company_associated_sme_data import sync as get_sme_data
+from dataland_backend_api_documentation_client.api.gdv_data_controller.get_company_associated_gdv_data import sync as get_gdv_data
 from dataland_backend_api_documentation_client.client import AuthenticatedClient
 from dataland_backend_api_documentation_client.models.data_meta_information import DataTypeEnum
 
@@ -44,5 +45,7 @@ def _get_data_retrieval_method(data_type: DataTypeEnum) -> Callable[[str, Authen
         return lambda data_id, client: get_p2p_data(data_id, client=client).data
     elif data_type == DataTypeEnum.SME:
         return lambda data_id, client: get_sme_data(data_id, client=client).data
+    elif data_type == DataTypeEnum.GDV:
+        return lambda data_id, client: get_gdv_data(data_id, client=client).data
     else:
         raise ValueError(f"No client specified for data type {data_type}")
