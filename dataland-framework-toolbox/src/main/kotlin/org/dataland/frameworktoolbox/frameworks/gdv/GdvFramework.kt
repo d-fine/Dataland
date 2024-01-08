@@ -11,7 +11,7 @@ import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadCo
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
-import org.dataland.frameworktoolbox.intermediate.group.getOrNull
+import org.dataland.frameworktoolbox.intermediate.group.get
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
@@ -133,12 +133,10 @@ class GdvFramework : PavedRoadFramework(
         setGroupsThatAreExpandedOnPageLoad(framework)
         overwriteFakeFixtureGenerationForDataDate(framework)
         val berichtsPflicht = framework.root
-            .getOrNull<ComponentGroup>("general")
-            ?.getOrNull<ComponentGroup>("masterData")
-            ?.getOrNull<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung")
-        requireNotNull(berichtsPflicht) {
-            "The field \"berichtspflichtUndEinwilligungZurVeroeffentlichung\" must exist in the gdv framework."
-        }
+            .get<ComponentGroup>("general")
+            .get<ComponentGroup>("masterData")
+            .get<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung")
+
         val showIfBerichtsPflicht = DependsOnComponentValue(berichtsPflicht, "Yes")
         createRollingWindowComponentsInCategoryUmwelt(framework, showIfBerichtsPflicht)
         createRollingWindowComponentsInCategorySoziales(framework, showIfBerichtsPflicht)
@@ -150,8 +148,8 @@ class GdvFramework : PavedRoadFramework(
                 }
             }
         }
-        framework.root.getOrNull<ComponentGroup>("umwelt")?.getOrNull<ComponentGroup>("taxonomie")
-            ?.create<MultiSelectComponent>(
+        framework.root.get<ComponentGroup>("umwelt").get<ComponentGroup>("taxonomie")
+            .create<MultiSelectComponent>(
                 "euTaxonomieKompassAktivitaeten",
                 "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten",
             ) {

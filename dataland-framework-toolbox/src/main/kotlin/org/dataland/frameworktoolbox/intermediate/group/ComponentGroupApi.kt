@@ -33,6 +33,12 @@ interface ComponentGroupApi {
     fun <T : ComponentBase> getOrNull(identifier: String, clazz: KClass<T>): T?
 
     /**
+     * Get an existing subcomponent. Throws an exception when the identified element has a different type
+     * than specified or does not exist.
+     */
+    fun <T : ComponentBase> get(identifier: String, clazz: KClass<T>): T
+
+    /**
      * Delete an existing subcomponent. Throws an exception when the identifier is not existent or
      * the identified element has a different type than specified.
      */
@@ -70,10 +76,18 @@ inline fun <reified T : ComponentBase> ComponentGroupApi.delete(identifier: Stri
     return this.delete(identifier, T::class)
 }
 
-/**
+/**getOrNull
  * Get an existing subcomponent or null. Throws an exception when the identified element has a different type
  * than specified
  */
 inline fun <reified T : ComponentBase> ComponentGroupApi.getOrNull(identifier: String): T? {
     return this.getOrNull(identifier, T::class)
+}
+
+/**
+ * Get an existing subcomponent. Throws an exception when the identified element has a different type
+ * than specified or does not exist.getOrNull
+ */
+inline fun <reified T : ComponentBase> ComponentGroupApi.get(identifier: String): T {
+    return this.get(identifier, T::class)
 }

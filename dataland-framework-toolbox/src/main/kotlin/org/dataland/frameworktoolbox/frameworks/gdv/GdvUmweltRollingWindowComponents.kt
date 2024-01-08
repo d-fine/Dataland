@@ -5,7 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
-import org.dataland.frameworktoolbox.intermediate.group.getOrNull
+import org.dataland.frameworktoolbox.intermediate.group.get
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 
@@ -202,12 +202,8 @@ object GdvUmweltRollingWindowComponents {
      */
     fun berichterstattungEinnahmenAusFossilenBrennstoffen(componentGroupUmwelt: ComponentGroup) {
         val profitFromFossilFuels = componentGroupUmwelt
-            .getOrNull<ComponentGroup>("fossileBrennstoffe")
-            ?.getOrNull<YesNoComponent>("einnahmenAusFossilenBrennstoffen")
-        requireNotNull(profitFromFossilFuels) {
-            "The field with the label \"einnahmenAusFossilenBrennstoffen\" must exist in the " +
-                "gdv framework."
-        }
+            .get<ComponentGroup>("fossileBrennstoffe")
+            .get<YesNoComponent>("einnahmenAusFossilenBrennstoffen")
 
         componentGroupUmwelt.edit<ComponentGroup>("fossileBrennstoffe") {
             create<GdvYearlyDecimalTimeseriesDataComponent>(
