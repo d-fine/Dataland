@@ -41,10 +41,10 @@
 
         <div
           data-test="apiKeyInfo"
-          class="apiKeyInfo"
+          class="apiKeyInfo col-12 md:col-8 lg:col-6"
           v-if="userAlreadyHasApiKey && !waitingForData && pageState === 'view'"
         >
-          <div class="col-12 md:col-8 lg:col-6">
+          <div class="">
             <MessageComponent
               data-test="newKeyHolder"
               v-if="newKey.length"
