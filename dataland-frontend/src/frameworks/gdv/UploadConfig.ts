@@ -54,7 +54,7 @@ export const gdvDataModel = [
             name: "existenzVonEsgZielen",
             label: "Existenz von ESG-Zielen",
             description:
-              "Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
+              "Hat das Unternehmen spezifische ESG-Ziele / Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
             options: "",
             unit: "",
             component: "YesNoFormField",
@@ -837,10 +837,10 @@ export const gdvDataModel = [
             validation: "",
           },
           {
-            name: "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird",
-            label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investriert wird",
+            name: "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird",
+            label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investiert wird",
             description:
-              "THG-Emissionsintensität der Unternehmen, in die investiert wird. Scope 1 + Scope 2 Treibhausgasemissionen ./. Umsatz in Millionen EUR Scope 1 + Scope 2 Treibhausgasemissionen ./. Unternehmensgröße in Mio. EUR",
+              "THG-Emissionsintensität der Unternehmen, in die investiert wird. (1) Scope 1 + Scope 2 Treibhausgasemissionen / Umsatz in Millionen EUR, (2) Scope 1 + Scope 2 Treibhausgasemissionen / Unternehmensgröße in Mio. EUR",
             options: "",
             unit: "",
             component: "InputTextFormField",
@@ -1307,7 +1307,7 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland",
@@ -1321,7 +1321,7 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland",
@@ -1335,13 +1335,13 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlUnbefristeterVertraegeInDerGesamtgruppe",
             label: "Anzahl unbefristeter Verträge in der Gesamtgruppe",
             description:
-              "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in der Gesamtgruppe gibt",
+              "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in der Gesamtgruppe gibt.",
             options: "",
             unit: "",
             component: "NumberFormField",
@@ -1349,7 +1349,7 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe",
@@ -1363,7 +1363,7 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe",
@@ -1377,7 +1377,7 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "auswirkungenAufAnteilBefristerVertraegeUndFluktuation",
@@ -1518,7 +1518,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "frauenAufTopManagementEbene",
@@ -1530,7 +1530,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "mitgliederGeschaeftsfuehrung",
@@ -1542,7 +1542,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "frauenInDerGeschaeftsfuehrung",
@@ -1554,7 +1554,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "definitionTopManagement",
@@ -1661,7 +1661,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlUnabhaengigerMitgliederImAufsichtsrat",
@@ -1673,7 +1673,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlVonFrauenImAufsichtsrat",
@@ -1685,7 +1685,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
         ],
       },
@@ -1703,7 +1703,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlUnabhaengigerMitgliederImVerguetungsausschuss",
@@ -1715,7 +1715,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlVonFrauenImVerguetungsausschuss",
@@ -1727,7 +1727,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
         ],
       },
@@ -1745,7 +1745,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlUnabhaengigerMitgliederImNominierungsausschuss",
@@ -1757,7 +1757,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlVonFrauenImVerguetungsausschuss",
@@ -1769,7 +1769,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
         ],
       },
@@ -1787,7 +1787,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlUnabhaengigerMitgliederImPruefungsausschuss",
@@ -1799,7 +1799,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlVonFrauenImPruefungsausschuss",
@@ -1811,7 +1811,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
         ],
       },
@@ -1829,7 +1829,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss",
@@ -1841,7 +1841,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlVonFrauenImNachhaltigkeitsausschuss",
@@ -1853,7 +1853,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
         ],
       },

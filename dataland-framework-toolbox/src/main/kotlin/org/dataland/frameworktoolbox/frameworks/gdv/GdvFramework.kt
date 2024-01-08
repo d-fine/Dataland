@@ -41,12 +41,12 @@ class GdvFramework : PavedRoadFramework(
         diagnosticManager.suppress("IgnoredRow-9-0fb5f681")
         diagnosticManager.suppress("IgnoredRow-10.1.1-dcf255e8")
         diagnosticManager.suppress("IgnoredRow-10.2.1-7ac5f737")
-        diagnosticManager.suppress("IgnoredRow-19-a95add2a")
+        diagnosticManager.suppress("IgnoredRow-19-ef4b454f")
         diagnosticManager.suppress("IgnoredRow-24-333a7d76")
         diagnosticManager.suppress("IgnoredRow-26-c26c04ec")
         diagnosticManager.suppress("IgnoredRow-28-6bc8e802")
         diagnosticManager.suppress("IgnoredRow-30-a4b12703")
-        diagnosticManager.suppress("IgnoredRow-32-2b48572d")
+        diagnosticManager.suppress("IgnoredRow-32-8fd53831")
         diagnosticManager.suppress("IgnoredRow-36.1-8c0cd201")
         diagnosticManager.suppress("IgnoredRow-38-0c3c46b4")
         diagnosticManager.suppress("IgnoredRow-39-84e1ebe8")
@@ -253,7 +253,7 @@ class GdvFramework : PavedRoadFramework(
                 frameworkUploadOptions = null,
                 component = component,
                 uploadComponentName = "YesNoFormField",
-                validation = "\"required|is:Yes\"",
+                validation = "required|is:Yes",
             )
         }
     }
