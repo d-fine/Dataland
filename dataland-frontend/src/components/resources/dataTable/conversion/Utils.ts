@@ -37,3 +37,16 @@ export function getFieldValueFromDataModel(identifier: string, dataModel: any): 
   }
   return currentObject;
 }
+
+/**
+ * Maps the technical name of a select option to the respective original name
+ * @param technicalName of a select option
+ * @param mappingObject that contains the mappings
+ * @returns original name that matches the technical name
+ */
+export function getOriginalNameFromTechnicalName<T extends string>(
+  technicalName: T,
+  mappingObject: { [key in T]: string },
+): string {
+  return mappingObject[technicalName];
+}

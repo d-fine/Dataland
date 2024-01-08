@@ -30,8 +30,8 @@ import { type FormKitNode } from "@formkit/core";
 
 export default defineComponent({
   name: "NumberFormField",
-
   components: { FormKit, UploadFormHeader },
+  inheritAttrs: false,
   props: {
     ...FormFieldPropsWithPlaceholder,
     unit: String,

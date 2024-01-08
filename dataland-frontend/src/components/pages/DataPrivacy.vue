@@ -24,6 +24,9 @@
       </p>
       <p>Sie erreichen unseren Datenschutzbeauftragten unter</p>
       <p class="indent">
+        Dr. Volker Wodianka
+        <br />
+        <br />
         Wodianka privacy legal GmbH
         <br />
         Dockenhudener Straße 12a

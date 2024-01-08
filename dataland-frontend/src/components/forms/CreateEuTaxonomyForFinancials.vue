@@ -110,7 +110,7 @@
 
                       <!-- Data source -->
                       <div class="form-field">
-                        <FormKit type="group" name="dataSource">
+                        <FormKit type="group" name="dataSource" ignore="true">
                           <h4 class="mt-0">Data source</h4>
                           <div class="next-to-each-other">
                             <div class="flex-1">
@@ -121,14 +121,13 @@
                               />
                               <FormKit
                                 type="select"
-                                name="fileName"
+                                ignore="true"
                                 placeholder="Select a report"
                                 validation-label="Selecting a report"
                                 v-model="currentReportValue"
-                                :options="['None...', ...namesOfAllCompanyReportsForTheDataset]"
+                                :options="[noReportLabel, ...namesOfAllCompanyReportsForTheDataset]"
                                 :plugins="[selectNothingIfNotExistsFormKitPlugin]"
                               />
-                              <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
                             </div>
                             <div>
                               <UploadFormHeader
@@ -139,14 +138,21 @@
                                 outer-class="w-100"
                                 type="number"
                                 name="page"
+                                v-model="reportPageNumber"
                                 placeholder="Page"
                                 validation-label="Page"
                                 validation="min:0"
                                 step="1"
                                 min="0"
+                                ignore="true"
                               />
                             </div>
                           </div>
+                        </FormKit>
+                        <FormKit type="group" name="dataSource" v-if="hasValidDataSource()">
+                          <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
+                          <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
+                          <FormKit type="hidden" name="page" v-model="reportPageNumber" />
                         </FormKit>
                       </div>
                     </FormKit>
@@ -369,11 +375,12 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
+      isMounted: false,
       formId: "createEuTaxonomyForFinancialsForm",
       formInputsModel: {} as CompanyAssociatedDataEuTaxonomyDataForFinancials,
       fiscalYearEndAsDate: null as Date | null,
       fiscalYearEnd: "",
-      currentReportValue: "",
+      currentReportValue: "" as string,
       reportingPeriod: undefined as undefined | Date,
       assuranceData: {
         None: humanizeStringOrNumber(AssuranceDataPointValueEnum.None),
@@ -386,6 +393,8 @@ export default defineComponent({
       route: useRoute(),
       waitingForData: false,
       editMode: false,
+      noReportLabel: "None...",
+      reportPageNumber: undefined as string | undefined,
 
       postEuTaxonomyDataForFinancialsProcessed: false,
       messageCount: 0,
@@ -430,6 +439,9 @@ export default defineComponent({
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       templateDataset: undefined as undefined | EuTaxonomyDataForFinancials,
     };
+  },
+  mounted() {
+    setTimeout(() => (this.isMounted = true));
   },
   computed: {
     reportingPeriodYear(): number {
@@ -496,6 +508,9 @@ export default defineComponent({
           }
           if (companyAssociatedEuTaxonomyData.data?.fiscalYearEnd) {
             this.fiscalYearEndAsDate = new Date(companyAssociatedEuTaxonomyData.data.fiscalYearEnd);
+          }
+          if (companyAssociatedEuTaxonomyData.data?.assurance?.dataSource?.fileName) {
+            this.currentReportValue = companyAssociatedEuTaxonomyData.data.assurance.dataSource.fileName;
           }
           this.templateDataset = companyAssociatedEuTaxonomyData.data;
 
@@ -618,10 +633,12 @@ export default defineComponent({
         this.messageCount++;
 
         // JSON.parse/stringify used to clone the formInputsModel in order to stop Proxy refreneces
-        const clonedFormInputsModel = JSON.parse(JSON.stringify(this.formInputsModel)) as ObjectType;
+        const clonedFormInputsModel = JSON.parse(
+          JSON.stringify(this.formInputsModel),
+        ) as unknown as CompanyAssociatedDataEuTaxonomyDataForFinancials;
         const kpiSections = (clonedFormInputsModel.data as ObjectType).kpiSections;
         delete (clonedFormInputsModel.data as ObjectType).kpiSections;
-        clonedFormInputsModel.data = {
+        (clonedFormInputsModel.data as ObjectType) = {
           ...(clonedFormInputsModel.data as ObjectType),
           ...this.convertKpis(kpiSections as ObjectType),
         };
@@ -639,9 +656,8 @@ export default defineComponent({
         const euTaxonomyDataForFinancialsControllerApi = new ApiClientProvider(
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyFinancials);
-        this.postEuTaxonomyDataForFinancialsResponse = await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(
-          clonedFormInputsModel as CompanyAssociatedDataEuTaxonomyDataForFinancials,
-        );
+        this.postEuTaxonomyDataForFinancialsResponse =
+          await euTaxonomyDataForFinancialsControllerApi.postFrameworkData(clonedFormInputsModel);
         this.$emit("datasetCreated");
       } catch (error) {
         this.messageCount++;
@@ -690,6 +706,17 @@ export default defineComponent({
      */
     handleChangeOfReferenceableReportNamesAndReferences(reportNamesAndReferences: object) {
       this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportNamesAndReferences;
+    },
+
+    /**
+     * Checks whether the Assurance data source has appropriate values
+     * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
+     */
+    hasValidDataSource(): boolean {
+      if (!this.isMounted) {
+        return true;
+      }
+      return this.currentReportValue?.length > 0 && this.currentReportValue !== this.noReportLabel;
     },
   },
 });

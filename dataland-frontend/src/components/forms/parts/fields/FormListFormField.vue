@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <UploadFormHeader :label="label" :description="description" :is-required="required" />
+    <UploadFormHeader :label="label" v-if="description" :description="description" :is-required="required" />
     <FormKit
       type="list"
       :name="name"
@@ -12,7 +12,7 @@
       <FormKit type="group" v-for="id in listOfElementIds" :key="id">
         <div :data-test="dataTestSubForm" class="formListSection">
           <em :data-test="dataTestRemoveButton" @click="removeItem(id)" class="material-icons close-section">close</em>
-          <component :is="subFormComponent" />
+          <component :is="subFormComponent" @fieldSpecificDocumentsUpdated="fieldSpecificDocumentsUpdated" />
         </div>
       </FormKit>
       <PrimeButton
@@ -36,15 +36,20 @@ import NonAlignedActivitiesFormElement from "@/components/forms/parts/elements/d
 import ProductionSiteFormElement from "@/components/forms/parts/elements/derived/ProductionSiteFormElement.vue";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { BaseFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
+import StringBaseDataPointFormField from "@/components/forms/parts/fields/StringBaseDataPointFormField.vue";
+import BaseDataPointFormField from "@/components/forms/parts/elements/basic/BaseDataPointFormField.vue";
+import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 
 export default defineComponent({
   name: "FormListFormField",
   components: {
+    BaseDataPointFormField,
     UploadFormHeader,
     ProductFormElement,
     ProductionSiteFormElement,
     AlignedActivitiesFormElements,
     NonAlignedActivitiesFormElement,
+    StringBaseDataPointFormField,
     FormKit,
     PrimeButton,
   },
@@ -55,6 +60,7 @@ export default defineComponent({
       idCounter: 0,
     };
   },
+  inheritAttrs: false,
   props: {
     ...BaseFormFieldProps,
     subFormComponent: {
@@ -88,6 +94,13 @@ export default defineComponent({
     }
   },
   methods: {
+    /**
+     * Emits event that the selected document changed
+     * @param referencedDocument the new referenced document
+     */
+    fieldSpecificDocumentsUpdated(referencedDocument: DocumentToUpload | undefined) {
+      this.$emit("fieldSpecificDocumentsUpdated", referencedDocument);
+    },
     /**
      * Adds a new Object to the array
      */
