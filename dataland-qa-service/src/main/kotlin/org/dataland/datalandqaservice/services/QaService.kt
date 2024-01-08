@@ -38,14 +38,14 @@ class QaService(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    data class ForwardedQaMessage(
+    private data class ForwardedQaMessage(
         val identifier: String,
         val comment: String,
     )
 
     /**
      * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
-     * @param dataId the data ID
+     * @param messageAsJsonString the message body as a json string
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
@@ -96,7 +96,7 @@ class QaService(
 
     /**
      * Method to retrieve message from dataStored exchange and constructing new one for quality_Assured exchange
-     * @param documentId the Hash of the document to be QAed
+     * @param messageAsJsonString the message body as json string
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
