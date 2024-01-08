@@ -1,7 +1,12 @@
+import logging
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s: %(name)s: %(message)s",
+    level=logging.INFO
+)
+
 import sys
 import os
 import pika.exceptions
-import logging
 
 from infrastructure.rabbitmq import RabbitMq
 from infrastructure.messaging import qa_data, qa_document
