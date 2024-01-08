@@ -67,6 +67,12 @@ class DataOwnersManager(
         }
     }
 
+    /**
+     * Method to delete a data owner from a given company
+     * @param companyId the ID of the company to which the data owner is to be deleted from
+     * @param userId the ID of the user who is to be removed as a data owner
+     * @return an entity holding the data ownership relations for the given company
+     */
     @Transactional
     fun deleteDataOwnerFromCompany(companyId: String, userId: String): CompanyDataOwnersEntity? {
         checkIdsAreValid(companyId, userId)
