@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-set -euxo pipefail
+set -eux
 
 if find .coverage | grep -q . ; then
   mv .coverage .coverage.old

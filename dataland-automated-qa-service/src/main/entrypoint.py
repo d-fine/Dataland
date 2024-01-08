@@ -14,10 +14,6 @@ import infrastructure.properties as p
 
 
 def main():
-    logging.basicConfig(
-        format="%(asctime)s %(levelname)s: %(name)s: %(message)s",
-        level=logging.INFO
-    )
     logging.info("Starting service")
     while True:
         try:
