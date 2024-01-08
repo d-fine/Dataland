@@ -41,11 +41,11 @@
             :more-than-one-document-allowed="false"
             :file-names-for-prefill="fileNamesForPrefill"
           />
-          <FormKit type="group" name="dataSource">
-            <FormKit type="hidden" name="fileName" v-model="documentName" />
-            <FormKit type="hidden" name="fileReference" v-model="documentReference" />
-          </FormKit>
         </div>
+        <FormKit v-if="hasValidDataSource()" type="group" name="dataSource">
+          <FormKit type="hidden" name="fileName" v-model="documentName" />
+          <FormKit type="hidden" name="fileReference" v-model="documentReference" />
+        </FormKit>
       </FormKit>
     </div>
   </div>
@@ -98,8 +98,10 @@ export default defineComponent({
   },
   emits: ["fieldSpecificDocumentsUpdated"],
   mounted() {
-    this.updateFileUploadFiles();
-    this.isMounted = true;
+    setTimeout(() => {
+      this.isMounted = true;
+      this.updateFileUploadFiles();
+    });
   },
   watch: {
     documentName() {
@@ -154,6 +156,17 @@ export default defineComponent({
       } else {
         this.dataPointIsAvailable = false;
       }
+    },
+
+    /**
+     * Determine whether dataSource should be added or blank
+     * @returns flase if file name is blank or value of 'None...'
+     */
+    hasValidDataSource() {
+      if (!this.isMounted) {
+        return true;
+      }
+      return this.documentName.length !== 0 && this.documentName !== "None...";
     },
   },
 });

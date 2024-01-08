@@ -180,7 +180,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
       {
         type: "section",
         label: "Eligibility KPIs",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -338,7 +338,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
       {
         type: "section",
         label: "Eligibility KPIs",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -458,7 +458,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
       {
         type: "section",
         label: "Eligibility KPIs",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -563,7 +563,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
       {
         type: "section",
         label: "Eligibility KPIs",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
