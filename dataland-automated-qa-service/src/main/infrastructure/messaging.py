@@ -18,8 +18,8 @@ def qa_data(channel, method, properties, body):
     process_qa_request(channel, method, properties, mq_data_key, "data", bypass_qa, data, validate_data)
 
 
-def qa_document(channel, method, properties, body):
-    document = DocumentResource(body)
+def qa_document(channel, method, properties, body: bytes):
+    document = DocumentResource(body.decode("UTF-8"))
     process_qa_request(channel, method, properties, mq_document_key, "document", False, document, validate_document)
 
 
