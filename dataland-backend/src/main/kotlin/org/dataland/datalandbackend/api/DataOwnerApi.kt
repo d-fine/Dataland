@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import java.util.UUID
 
 /**
  * Defines the restful dataland-backend API regarding (company) data ownership.
@@ -41,8 +42,8 @@ interface DataOwnerApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postDataOwner(
-        @RequestParam companyId: String,
-        @RequestParam userId: String,
+        @RequestParam companyId: UUID,
+        @RequestParam userId: UUID,
     ):
         ResponseEntity<CompanyDataOwners>
 
@@ -65,13 +66,11 @@ interface DataOwnerApi {
     @DeleteMapping(
         produces = ["application/json"],
 
-        )
-
+    )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun deleteDataOwner(
         @RequestParam companyId: String,
         @RequestParam userId: String,
     ):
-            ResponseEntity<CompanyDataOwners>?
-
+        ResponseEntity<CompanyDataOwners>?
 }

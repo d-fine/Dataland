@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 /**
  * Controller for the (company) data ownership endpoints
@@ -18,9 +19,9 @@ class DataOwnerController(
 ) : DataOwnerApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun postDataOwner(companyId: String, userId: String): ResponseEntity<CompanyDataOwners> {
+    override fun postDataOwner(companyId: UUID, userId: UUID): ResponseEntity<CompanyDataOwners> {
         logger.info("Received a request to post a data owner with Id $userId to company with Id $companyId.")
-        val companyDataOwnersEntity = dataOwnersManager.addDataOwnerToCompany(companyId, userId)
+        val companyDataOwnersEntity = dataOwnersManager.addDataOwnerToCompany(companyId.toString(), userId.toString())
         return ResponseEntity.ok(
             CompanyDataOwners(
                 companyId = companyDataOwnersEntity.companyId,
@@ -39,7 +40,8 @@ class DataOwnerController(
                     dataOwners = companyDataOwnersEntity.dataOwners,
                 ),
             )
+        } else {
+            null
         }
-        else null
     }
 }
