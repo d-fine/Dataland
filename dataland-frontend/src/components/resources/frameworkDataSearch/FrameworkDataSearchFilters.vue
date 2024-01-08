@@ -69,7 +69,7 @@ import {
   type FrameworkSelectableItem,
   type SelectableItem,
 } from "@/utils/FrameworkDataSearchDropDownFilterTypes";
-import { getFrameworkDefinition } from "@/frameworks/FrameworkRegistry";
+import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 
 export default defineComponent({
   name: "FrameworkDataSearchFilters",
@@ -196,7 +196,7 @@ export default defineComponent({
     retrieveAvailableFrameworks() {
       this.availableFrameworks = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
         let displayName = humanizeStringOrNumber(dataTypeEnum);
-        const frameworkDefinition = getFrameworkDefinition(dataTypeEnum);
+        const frameworkDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
         if (frameworkDefinition) {
           displayName = frameworkDefinition.label;
         }

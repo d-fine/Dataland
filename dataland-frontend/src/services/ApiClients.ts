@@ -65,9 +65,7 @@ export class ApiClientProvider {
     return {
       actuator: backendClientFactory(backendApis.ActuatorApi),
       companyDataController: backendClientFactory(backendApis.CompanyDataControllerApi),
-      metaDataController: backendClientFactory(
-        backendApis.MetaDataControllerApi,
-      ) as backendApis.MetaDataControllerApiInterface,
+      metaDataController: backendClientFactory(backendApis.MetaDataControllerApi),
     };
   }
 

@@ -1,4 +1,5 @@
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 
 /**
  * @param target the camel case string we want to format
@@ -9,9 +10,23 @@ export function activityApiNameToHumanizedName(target: string): string {
 }
 
 /**
+ * @returns the activities as dropdown options
+ */
+export function getActivityNamesAsDropdownOptions(): DropdownOption[] {
+  return Object.values(ActivityName).map((it) => {
+    const indexOfActivity = Object.values(ActivityName).indexOf(it);
+    const keyOfActivity = Object.keys(ActivityName)[indexOfActivity];
+    return {
+      label: it,
+      value: keyOfActivity,
+    };
+  });
+}
+
+/**
  * An enum that holds the EU taxonomy activities with their names as values
  */
-enum ActivityName {
+export enum ActivityName {
   Afforestation = "Afforestation",
   RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent = "Rehabilitation and restoration of forests, including reforestation and natural forest regeneration after an extreme event",
   ForestManagement = "Forest management",

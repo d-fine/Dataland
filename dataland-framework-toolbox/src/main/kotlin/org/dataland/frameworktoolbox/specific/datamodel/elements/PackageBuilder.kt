@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.specific.datamodel.elements
 
+import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
@@ -55,6 +56,21 @@ data class PackageBuilder(
         )
         childElements.add(newPackage)
         return newPackage
+    }
+
+    /**
+     * Add a new enum to the package
+     * @param name the name of the package
+     */
+    fun addEnum(name: String, options: Set<SelectionOption>, comment: String): EnumBuilder {
+        val newEnum = EnumBuilder(
+            name = name,
+            parentPackage = this,
+            options = options,
+            comment = comment,
+        )
+        childElements.add(newEnum)
+        return newEnum
     }
 
     override fun toString(): String {
