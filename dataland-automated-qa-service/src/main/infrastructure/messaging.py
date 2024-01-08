@@ -48,6 +48,9 @@ def process_qa_request(
             assert_status_is_valid_for_qa_completion(validation_result)
             send_qa_completed_message(channel, routing_key, resource.id, validation_result, correlation_id)
         except AutomaticQaNotPossibleError as e:
+            logging.warning("ABCDEFG")
+            logging.warning(f"itentifier: \"{resource.id}\" \"{type(resource.id)}\"")
+            logging.warning(f"comment: \"{e.comment}\" \"{type(e.comment)}\"")
             message_to_send = {
                 "identifier": resource.id,
                 "comment": e.comment
