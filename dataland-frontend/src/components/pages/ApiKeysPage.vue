@@ -41,7 +41,7 @@
 
         <div
           data-test="apiKeyInfo"
-          class="apiKeyInfo col-12 md:col-8 lg:col-6"
+          class="apiKeyInfo col-12 md:col-7 lg:col-7"
           v-if="userAlreadyHasApiKey && !waitingForData && pageState === 'view'"
         >
           <div class="">
