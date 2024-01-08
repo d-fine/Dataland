@@ -53,12 +53,11 @@ interface DataOwnerApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully deleted data owner."),
-            ApiResponse(responseCode = "400", description = "Data owner doesn't exist for the specified company."),
+            ApiResponse(responseCode = "404", description = "Data owner doesn't exist for the specified company."),
         ],
     )
     @DeleteMapping(
         produces = ["application/json"],
-        consumes = ["application/json"],
 
         )
 
