@@ -94,6 +94,7 @@ import TheFooter from "@/components/generics/TheFooter.vue";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
+import { ARRAY_OF_SUPPORTED_FRAMEWORKS } from "@/utils/Constants";
 
 export default defineComponent({
   name: "ChooseFramework",
@@ -121,12 +122,12 @@ export default defineComponent({
 
   data() {
     return {
-      allFrameworksExceptEuTaxonomy: Object.values(DataTypeEnum).filter(
+      allFrameworksExceptEuTaxonomy: ARRAY_OF_SUPPORTED_FRAMEWORKS.filter(
         (frameworkName) =>
           [DataTypeEnum.EutaxonomyFinancials as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(
             frameworkName,
           ) === -1,
-      ) as DataTypeEnum[],
+      ),
       waitingForData: true,
       DataTypeEnum,
       humanizeString: humanizeStringOrNumber,
