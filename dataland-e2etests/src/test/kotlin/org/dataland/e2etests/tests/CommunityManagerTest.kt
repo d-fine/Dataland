@@ -36,10 +36,6 @@ class CommunityManagerTest {
     private val apiAccessor = ApiAccessor()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
-    private fun authenticateAsTechnicalUser(technicalUser: TechnicalUser) {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
-    }
-
     private fun getIdForUploadedCompanyWithIdentifiers(
         lei: String? = null,
         isins: List<String>? = null,
@@ -56,7 +52,7 @@ class CommunityManagerTest {
 
     @BeforeAll
     fun authenticateAsReader() {
-        authenticateAsTechnicalUser(TechnicalUser.Reader)
+        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Reader)
     }
 
     @Test
@@ -225,7 +221,7 @@ class CommunityManagerTest {
         identifiers: List<String>,
         frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
     ) {
-        authenticateAsTechnicalUser(technicalUser)
+        apiAccessor.authenticateAsTechnicalUser(technicalUser)
         val responseForReader = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiers, frameworks),
         )

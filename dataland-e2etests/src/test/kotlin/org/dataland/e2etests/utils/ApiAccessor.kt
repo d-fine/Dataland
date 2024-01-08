@@ -45,6 +45,10 @@ class ApiAccessor {
 
     val jwtHelper = JwtAuthenticationHelper()
 
+    fun authenticateAsTechnicalUser(technicalUser: TechnicalUser) {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
+    }
+
     val generalTestDataProvider = GeneralTestDataProvider()
 
     val dataControllerApiForEuTaxonomyNonFinancials =
