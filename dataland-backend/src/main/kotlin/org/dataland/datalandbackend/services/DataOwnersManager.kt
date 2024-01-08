@@ -68,7 +68,7 @@ class DataOwnersManager(
     }
 
     @Transactional
-    fun deleteDataOwnerFromCompany(companyId: String, userId: String) {
+    fun deleteDataOwnerFromCompany(companyId: String, userId: String): CompanyDataOwnersEntity? {
         checkIdsAreValid(companyId, userId)
         if (dataOwnerRepository.existsById(companyId)) {
             val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
@@ -78,12 +78,19 @@ class DataOwnersManager(
                 throw ResourceNotFoundApiException("Company not found",
                     "User with Id $userId has not been data owner of company $companyId")
             }
-            if (dataOwnersForCompany.dataOwners.isEmpty()) {
+            return if (dataOwnersForCompany.dataOwners.isEmpty()) {
                 dataOwnerRepository.deleteById(companyId)
+                null
             }
+            else {
+                dataOwnerRepository.save(CompanyDataOwnersEntity(companyId = companyId,
+                    dataOwners = dataOwnersForCompany.dataOwners))
+            }
+
         }
         else {
-            throw ResourceNotFoundApiException("", "The companyId '$companyId' does not have any data owners.")
+            throw ResourceNotFoundApiException("No data owners found",
+                "The companyId '$companyId' does not have any data owners.")
         }
     }
 }
