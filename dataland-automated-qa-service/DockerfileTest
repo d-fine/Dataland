@@ -3,7 +3,7 @@ FROM ghcr.io/d-fine/dataland/dataland_automated_qa_service_base:${DATALAND_AUTOM
 
 COPY ./dataland-automated-qa-service/src/test/measure_coverage.py ./src/test/measure_coverage.py
 COPY ./dataland-automated-qa-service/start_test.sh ./start.sh
-ENTRYPOINT ["start.sh"]
+ENTRYPOINT ["./start.sh"]
 #CMD ["sh", "-c", "if find .coverage | grep -q . ; then mv .coverage .coverage.old; fi; coverage run -m pytest -o log_cli=true -o log_cli_level=INFO ./src/test/measure_coverage.py"]
 #CMD ["coverage", "run", "-m", "pytest", "-o", "log_cli=true", "-o", "log_cli_level=INFO", "./src/test/measure_coverage.py"]
 
