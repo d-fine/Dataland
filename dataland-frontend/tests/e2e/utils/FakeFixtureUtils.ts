@@ -156,7 +156,7 @@ export class Generator {
   }
 
   guaranteedParagraph(): string {
-    return faker.lorem.paragraph({ min: 1, max: 10 });
+    return faker.lorem.paragraphs({ min: 1, max: 5 });
   }
 
   /**
