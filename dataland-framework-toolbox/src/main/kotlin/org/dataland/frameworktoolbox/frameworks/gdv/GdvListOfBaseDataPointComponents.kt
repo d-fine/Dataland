@@ -63,7 +63,6 @@ object GdvListOfBaseDataPointComponents {
         componentGroupAllgemein.edit<ComponentGroup>("unGlobalConceptPrinzipien") {
             val mechanismenZurUeberwachungDerEinhaltungDerUngcp =
                 get<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerUngcp")
-            requireNotNull(mechanismenZurUeberwachungDerEinhaltungDerUngcp)
             create<GdvListOfBaseDataPointComponent>(
                 "richtlinienZurEinhaltungDerUngcp",
                 "erklaerungDerEinhaltungDerUngcp",
