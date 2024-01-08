@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.template
 import org.dataland.frameworktoolbox.intermediate.components.DateComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.DemoComponentGroupApiImpl
+import org.dataland.frameworktoolbox.intermediate.group.get
 import org.dataland.frameworktoolbox.intermediate.group.getOrNull
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.dataland.frameworktoolbox.template.components.DateComponentFactory
@@ -12,7 +13,6 @@ import org.dataland.frameworktoolbox.template.model.TemplateYesNo
 import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
 import org.junit.jupiter.api.Test
 import kotlin.test.assertFails
-import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class TemplateComponentBuilderTest {
@@ -50,11 +50,9 @@ class TemplateComponentBuilderTest {
 
         templateComponentBuilder.build(targetGroup)
 
-        val category = targetGroup.getOrNull<ComponentGroup>("theCategory")
-        assertNotNull(category)
-        val subcategory = category.getOrNull<ComponentGroup>("theSubCategory")
-        assertNotNull(subcategory)
-        val dateField = subcategory.getOrNull<DateComponent>("theNameOfTheField")
+        val category = targetGroup.get<ComponentGroup>("theCategory")
+        val subcategory = category.get<ComponentGroup>("theSubCategory")
+        val dateField = subcategory.get<DateComponent>("theNameOfTheField")
         assertTrue(dateField is DateComponent)
     }
 
@@ -77,9 +75,8 @@ class TemplateComponentBuilderTest {
 
         templateComponentBuilder.build(targetGroup)
 
-        val containingGroup = targetGroup.getOrNull<ComponentGroup>("theCategory")
-        assertNotNull(containingGroup)
-        val dateField = containingGroup.getOrNull<DateComponent>("theNameOfTheField")
+        val containingGroup = targetGroup.get<ComponentGroup>("theCategory")
+        val dateField = containingGroup.get<DateComponent>("theNameOfTheField")
         assertTrue(dateField is DateComponent)
     }
 
