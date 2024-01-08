@@ -1,7 +1,7 @@
 package org.dataland.frameworktoolbox.frameworks.gdv
 
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
-import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.DateComponent
 import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
@@ -20,6 +20,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkU
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
+import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -27,13 +28,33 @@ import java.io.File
  * Definition of the Heimathafen framework
  */
 @Component
-class GdvFramework : InDevelopmentPavedRoadFramework(
+class GdvFramework : PavedRoadFramework(
     identifier = "gdv",
     label = "GDV/VÖB",
     explanation = "Das GDV/VÖB Framework ist ein ESG-Fragebogen des Gesamtverbands der Versicherer und des " +
         "Bundesverbands Öffentlicher Banken",
     File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
 ) {
+
+    override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
+        diagnosticManager.suppress("IgnoredRow-4.2-d76402cd")
+        diagnosticManager.suppress("IgnoredRow-9-0fb5f681")
+        diagnosticManager.suppress("IgnoredRow-10.1.1-dcf255e8")
+        diagnosticManager.suppress("IgnoredRow-10.2.1-7ac5f737")
+        diagnosticManager.suppress("IgnoredRow-19-a95add2a")
+        diagnosticManager.suppress("IgnoredRow-24-333a7d76")
+        diagnosticManager.suppress("IgnoredRow-26-c26c04ec")
+        diagnosticManager.suppress("IgnoredRow-28-6bc8e802")
+        diagnosticManager.suppress("IgnoredRow-30-a4b12703")
+        diagnosticManager.suppress("IgnoredRow-32-2b48572d")
+        diagnosticManager.suppress("IgnoredRow-36.1-8c0cd201")
+        diagnosticManager.suppress("IgnoredRow-38-0c3c46b4")
+        diagnosticManager.suppress("IgnoredRow-39-84e1ebe8")
+        diagnosticManager.suppress("IgnoredRow-40.3-c921451e")
+        diagnosticManager.suppress("IgnoredRow-42-059b81e2")
+        diagnosticManager.suppress("IgnoredRow-43-b7b83dcb")
+        diagnosticManager.suppress("IgnoredRow-44-107a06aa")
+    }
 
     private fun setGroupsThatAreExpandedOnPageLoad(framework: Framework) {
         framework.root.edit<ComponentGroup>("allgemein") {
