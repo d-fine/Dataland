@@ -326,19 +326,24 @@ class DataManager(
         return companyQueryManager.isCompanyPublic(associatedCompanyId)
     }
 
-    fun deleteDataFromStorageService(dataId: String): String {
-        val dataAsString = ""
-        logger.info("Deleting data from internal storage. Data ID: $dataId")
+    /**
+     * Method to remove a dataset from the dataland data store
+     *
+     */
+    fun deleteCompanyAssociatedDataByDataId(dataId: String, correlationId: String): String {
         try {
-//            TODO deleteDataById not implemeneted
-//            dataAsString = storageClient.deleteDataById(dataId)
+            metaDataManager.deleteDataMetaInfo(dataId)
+            logger.info(
+                "Received deletion request for dataset with DataId: " +
+                    "$dataId with Correlation Id: $correlationId",
+            )
+            return "Deleted dataset with dataId $dataId"
         } catch (e: ServerException) {
             logger.error(
                 "Error deleting data. Received ServerException with Message:" +
-                        " ${e.message}. Data ID: $dataId",
+                    " ${e.message}. Data ID: $dataId",
             )
             throw e
         }
-        return dataAsString
     }
 }
