@@ -66,6 +66,6 @@ interface DataOwnerApi {
         @RequestParam companyId: String,
         @RequestParam userId: String,
     ):
-            ResponseEntity<CompanyDataOwners>
+            ResponseEntity<CompanyDataOwners>?
 
 }
