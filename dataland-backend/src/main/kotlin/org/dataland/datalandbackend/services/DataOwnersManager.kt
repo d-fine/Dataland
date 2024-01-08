@@ -66,4 +66,28 @@ class DataOwnersManager(
             }
         }
     }
+
+    @Transactional
+    fun deleteDataOwnerFromCompany(companyId: String, userId: String): CompanyDataOwnersEntity {
+        //checkIdsAreValid(companyId, userId)
+        if (dataOwnerRepository.existsById(companyId)) {
+            val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
+            if (dataOwnersForCompany.dataOwners.contains(userId)) {
+                dataOwnersForCompany.dataOwners.remove(userId)
+            }
+            else {
+                logger.info(
+                    "User with Id $userId has not been data owner of company $companyId",
+                )
+            }
+            if (dataOwnersForCompany.dataOwners.isEmpty()) {
+                dataOwnerRepository.deleteById(companyId)
+            }
+            return dataOwnerRepository.save(CompanyDataOwnersEntity(companyId = companyId,
+                dataOwners = dataOwnersForCompany.dataOwners))
+            }
+        else {
+            throw IllegalArgumentException("The companyId '$companyId' does not have any data owners.")
+        }
+    }
 }
