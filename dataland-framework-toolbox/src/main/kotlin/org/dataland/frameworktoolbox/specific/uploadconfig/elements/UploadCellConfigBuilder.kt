@@ -21,8 +21,7 @@ class UploadCellConfigBuilder(
     var required: Boolean,
     var uploadComponentName: String,
     var frameworkUploadOptions: FrameworkUploadOptions?,
-    var validation: FrameworkUploadOptions?,
-    var validationMessages: String?,
+    var validation: String?,
 ) : UploadConfigElement {
     override fun assertComplianceWithLegacyUploadPage() { /* BLANK */ }
 }

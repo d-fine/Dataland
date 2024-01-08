@@ -253,10 +253,7 @@ class GdvFramework : PavedRoadFramework(
                 frameworkUploadOptions = null,
                 component = component,
                 uploadComponentName = "YesNoFormField",
-                validation = FrameworkUploadOptions(
-                    body = "\"required|is:Yes\"",
-                    imports = null,
-                ),
+                validation = "\"required|is:Yes\"",
             )
         }
     }
