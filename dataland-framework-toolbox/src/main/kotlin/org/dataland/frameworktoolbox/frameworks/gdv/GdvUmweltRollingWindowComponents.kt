@@ -25,7 +25,7 @@ object GdvUmweltRollingWindowComponents {
         componentGroupUmwelt.edit<ComponentGroup>("treibhausgasemissionen") {
             create<GdvYearlyDecimalTimeseriesDataComponent>(
                 "treibhausgasBerichterstattungUndPrognosen",
-                "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird",
+                "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird",
             ) {
                 label = "Treibhausgas-Berichterstattung und Prognosen"
                 explanation = "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene " +

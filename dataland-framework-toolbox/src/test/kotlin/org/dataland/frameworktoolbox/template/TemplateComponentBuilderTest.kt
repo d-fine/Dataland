@@ -52,8 +52,7 @@ class TemplateComponentBuilderTest {
 
         val category = targetGroup.get<ComponentGroup>("theCategory")
         val subcategory = category.get<ComponentGroup>("theSubCategory")
-        val dateField = subcategory.get<DateComponent>("theNameOfTheField")
-        assertTrue(dateField is DateComponent)
+        subcategory.get<DateComponent>("theNameOfTheField")
     }
 
     @Test
@@ -76,8 +75,7 @@ class TemplateComponentBuilderTest {
         templateComponentBuilder.build(targetGroup)
 
         val containingGroup = targetGroup.get<ComponentGroup>("theCategory")
-        val dateField = containingGroup.get<DateComponent>("theNameOfTheField")
-        assertTrue(dateField is DateComponent)
+        containingGroup.get<DateComponent>("theNameOfTheField")
     }
 
     @Test

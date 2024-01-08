@@ -63,7 +63,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Existenz von ESG-Zielen",
             explanation:
-              "Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
+              "Hat das Unternehmen spezifische ESG-Ziele / Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
@@ -760,15 +760,15 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           },
           {
             type: "cell",
-            label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investriert wird",
+            label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investiert wird",
             explanation:
-              "THG-Emissionsintensität der Unternehmen, in die investiert wird. Scope 1 + Scope 2 Treibhausgasemissionen ./. Umsatz in Millionen EUR Scope 1 + Scope 2 Treibhausgasemissionen ./. Unternehmensgröße in Mio. EUR",
+              "THG-Emissionsintensität der Unternehmen, in die investiert wird. (1) Scope 1 + Scope 2 Treibhausgasemissionen / Umsatz in Millionen EUR, (2) Scope 1 + Scope 2 Treibhausgasemissionen / Unternehmensgröße in Mio. EUR",
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
                 dataset.umwelt?.treibhausgasemissionen
-                  ?.treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird,
+                  ?.treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird,
               ),
           },
           {
@@ -1247,7 +1247,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             type: "cell",
             label: "Anzahl unbefristeter Verträge in der Gesamtgruppe",
             explanation:
-              "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in der Gesamtgruppe gibt",
+              "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in der Gesamtgruppe gibt.",
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
