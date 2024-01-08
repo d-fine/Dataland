@@ -151,6 +151,14 @@ export class Generator {
     return faker.company.buzzNoun();
   }
 
+  randomParagraph(): string | null {
+    return this.valueOrNull(this.guaranteedParagraph());
+  }
+
+  guaranteedParagraph(): string {
+    return faker.lorem.paragraph({ min: 1, max: 10 });
+  }
+
   /**
    * Generates a random non-empty set of reports that can be referenced
    * @param requiredReportNames reports with names that must occur

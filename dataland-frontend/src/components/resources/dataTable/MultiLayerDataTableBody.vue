@@ -7,7 +7,11 @@
         :data-cell-label="cellOrSectionConfig.label"
         :class="cellOrSectionConfig.class ?? null"
       >
-        <td class="headers-bg pl-4" :data-cell-label="cellOrSectionConfig.label" data-row-header="true">
+        <td
+          class="headers-bg pl-4 vertical-align-top"
+          :data-cell-label="cellOrSectionConfig.label"
+          data-row-header="true"
+        >
           <span class="table-left-label">{{ cellOrSectionConfig.label }}</span>
           <em
             v-if="cellOrSectionConfig.explanation"
@@ -25,6 +29,7 @@
           :key="idx"
           :data-cell-label="cellOrSectionConfig.label"
           :data-dataset-index="idx"
+          class="vertical-align-top"
         >
           <MultiLayerDataTableCell :content="cellOrSectionConfig.valueGetter(mldtDataset.dataset)" />
         </td>
@@ -68,6 +73,12 @@
     </template>
   </template>
 </template>
+
+<style scoped>
+.vertical-align-top {
+  vertical-align: top;
+}
+</style>
 
 <script setup lang="ts" generic="T">
 import {

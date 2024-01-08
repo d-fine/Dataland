@@ -1,6 +1,5 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
-import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
@@ -11,19 +10,19 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptF
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
 /**
- * A IntegerComponent represents a numeric value from the integer domain
+ * A FreeTextComponent represents an arbitrary textual value that may contain multiple lines or even
+ * paragraphs
  */
-open class IntegerComponent(
+class FreeTextComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
-    open var constantUnitSuffix: String? = null
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addProperty(
             this.identifier,
             documentSupport.getJvmTypeReference(
-                TypeReference("java.math.BigInteger", isNullable),
+                TypeReference("String", isNullable),
                 isNullable,
             ),
         )
@@ -34,11 +33,10 @@ open class IntegerComponent(
             this,
             documentSupport.getFrameworkDisplayValueLambda(
                 FrameworkDisplayValueLambda(
-                    "formatNumberForDatatable(${getTypescriptFieldAccessor(true)}," +
-                        " \"${StringEscapeUtils.escapeEcmaScript(constantUnitSuffix ?: "")}\")",
+                    "formatFreeTextForDatatable(${getTypescriptFieldAccessor(true)})",
                     setOf(
-                        "import { formatNumberForDatatable } from " +
-                            "\"@/components/resources/dataTable/conversion/NumberValueGetterFactory\";",
+                        "import { formatFreeTextForDatatable } from " +
+                            "\"@/components/resources/dataTable/conversion/FreeTextValueGetterFactory\";",
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
@@ -49,9 +47,7 @@ open class IntegerComponent(
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "NumberFormField",
-            validation = "integer",
-            unit = constantUnitSuffix,
+            uploadComponentName = "FreeTextFormField",
         )
     }
 
@@ -59,8 +55,8 @@ open class IntegerComponent(
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
-                fixtureExpression = "dataGenerator.guaranteedInt()",
-                nullableFixtureExpression = "dataGenerator.randomInt()",
+                fixtureExpression = "dataGenerator.guaranteedParagraph()",
+                nullableFixtureExpression = "dataGenerator.randomParagraph()",
                 nullable = isNullable,
             ),
         )
