@@ -44,7 +44,6 @@ export const NO_DATA_PROVIDED = "No data provided";
  * @returns the list of data type enums sorted in a way, that gdv/vöb framework is the last element
  */
 export function putGdvAtTheEndOfList(frameworksToInclude: DataTypeEnum[]): DataTypeEnum[] {
-  // TODO unit test?
   const customSort = (a: DataTypeEnum, b: DataTypeEnum): number => {
     if (a === DataTypeEnum.Gdv && b !== DataTypeEnum.Gdv) {
       return 1;
