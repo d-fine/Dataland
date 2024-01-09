@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping
  */
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-@RequestMapping("/data/{dataId}")
+@RequestMapping("/admin/data/{dataId}")
 fun interface AdminDataManipulationApi {
 
     /**
@@ -36,7 +36,7 @@ fun interface AdminDataManipulationApi {
     )
     @DeleteMapping(
         produces = ["application/json"],
-        consumes = ["application/json"],
+
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun deleteCompanyAssociatedData(
