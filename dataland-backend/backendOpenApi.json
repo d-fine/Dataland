@@ -9290,7 +9290,7 @@
             ]
           },
           "amtszeitBisZurTrennung": {
-            "type": "string",
+            "type": "integer",
             "nullable": true
           }
         }

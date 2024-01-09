@@ -47,8 +47,8 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
     allgemein: {
       esgZiele: {
         existenzVonEsgZielen: dataGenerator.randomYesNo(),
-        beschreibungDerEsgZiele: dataGenerator.randomShortString(),
-        investitionenInZielerreichung: dataGenerator.randomShortString(),
+        beschreibungDerEsgZiele: dataGenerator.randomParagraph(),
+        investitionenInZielerreichung: dataGenerator.randomParagraph(),
       },
       sektoren: {
         sektorenMitHohenKlimaauswirkungen: dataGenerator.randomYesNo(),
@@ -89,19 +89,19 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         richtlinienZurEinhaltungDerUngcp: dataGenerator.valueOrNull(
           generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0),
         ),
-        erklaerungDerEinhaltungDerUngcp: dataGenerator.randomShortString(),
+        erklaerungDerEinhaltungDerUngcp: dataGenerator.randomParagraph(),
       },
       oecdLeitsaetze: {
         mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze: dataGenerator.randomYesNo(),
         richtlinienZurEinhaltungDerOecdLeitsaetze: dataGenerator.valueOrNull(
           generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0),
         ),
-        erklaerungDerEinhaltungDerOecdLeitsaetze: dataGenerator.randomShortString(),
+        erklaerungDerEinhaltungDerOecdLeitsaetze: dataGenerator.randomParagraph(),
       },
       sonstige: {
-        ausrichtungAufDieUnSdgsUndAktivesVerfolgen: dataGenerator.randomShortString(),
+        ausrichtungAufDieUnSdgsUndAktivesVerfolgen: dataGenerator.randomParagraph(),
         ausschlusslistenAufBasisVonEsgKriterien: dataGenerator.randomYesNo(),
-        ausschlusslisten: dataGenerator.randomShortString(),
+        ausschlusslisten: dataGenerator.randomParagraph(),
       },
       fuehrungsstandards: {
         oekologischeSozialeFuehrungsstandardsOderPrinzipien: dataGenerator.randomYesNo(),
@@ -116,20 +116,20 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         esgBezogeneRechtsstreitigkeiten: dataGenerator.randomYesNo(),
         rechtsstreitigkeitenMitBezugZuE: dataGenerator.randomYesNo(),
         statusZuE: dataGenerator.valueOrNull(pickOneElement(Object.values(StatusZuEOptions))),
-        einzelheitenZuDenRechtsstreitigkeitenZuE: dataGenerator.randomShortString(),
+        einzelheitenZuDenRechtsstreitigkeitenZuE: dataGenerator.randomParagraph(),
         rechtsstreitigkeitenMitBezugZuS: dataGenerator.randomYesNo(),
         statusZuS: dataGenerator.valueOrNull(pickOneElement(Object.values(StatusZuSOptions))),
-        einzelheitenZuDenRechtsstreitigkeitenZuS: dataGenerator.randomShortString(),
+        einzelheitenZuDenRechtsstreitigkeitenZuS: dataGenerator.randomParagraph(),
         rechtsstreitigkeitenMitBezugZuG: dataGenerator.randomYesNo(),
         statusZuG: dataGenerator.valueOrNull(pickOneElement(Object.values(StatusZuGOptions))),
-        einzelheitenZuDenRechtsstreitigkeitenZuG: dataGenerator.randomShortString(),
+        einzelheitenZuDenRechtsstreitigkeitenZuG: dataGenerator.randomParagraph(),
       },
       rating: {
         esgRating: dataGenerator.randomYesNo(),
         agentur: dataGenerator.randomShortString(),
         ergebnis: dataGenerator.randomShortString(),
         ratingbericht: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-        kritischePunkte: dataGenerator.randomShortString(),
+        kritischePunkte: dataGenerator.randomParagraph(),
       },
       anleihen: {
         grueneSozialeUndOderNachhaltigeEmissionen: dataGenerator.randomYesNo(),
@@ -138,8 +138,8 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         ausstehendeSustainibilityLinkedDebt: dataGenerator.randomFloat(),
       },
       risiken: {
-        wichtigsteESUndGRisikenUndBewertung: dataGenerator.randomShortString(),
-        hindernisseBeimUmgangMitEsgBedenken: dataGenerator.randomShortString(),
+        wichtigsteESUndGRisikenUndBewertung: dataGenerator.randomParagraph(),
+        hindernisseBeimUmgangMitEsgBedenken: dataGenerator.randomParagraph(),
       },
     },
     umwelt: {
@@ -149,12 +149,12 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
           3,
           3,
         ),
-        treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird: dataGenerator.randomShortString(),
-        strategieUndZieleZurReduzierungVonTreibhausgasEmissionen: dataGenerator.randomShortString(),
+        treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird: dataGenerator.randomParagraph(),
+        strategieUndZieleZurReduzierungVonTreibhausgasEmissionen: dataGenerator.randomParagraph(),
       },
       produktion: {
         produkteZurVerringerungDerUmweltbelastung: dataGenerator.randomYesNo(),
-        verringerungenDerUmweltbelastung: dataGenerator.randomShortString(),
+        verringerungenDerUmweltbelastung: dataGenerator.randomParagraph(),
         oekologischerMindestStandardFuerProduktionsprozesse: dataGenerator.randomYesNo(),
       },
       energieverbrauch: {
@@ -163,7 +163,7 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
           3,
           3,
         ),
-        unternehmensGruppenStrategieBzglEnergieverbrauch: dataGenerator.randomShortString(),
+        unternehmensGruppenStrategieBzglEnergieverbrauch: dataGenerator.randomParagraph(),
       },
       energieeffizienzImmobilienanlagen: {
         berichterstattungEnergieverbrauchVonImmobilienvermoegen: dataGenerator.randomDecimalYearlyTimeseriesData(
@@ -171,7 +171,7 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
           3,
           3,
         ),
-        unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen: dataGenerator.randomShortString(),
+        unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen: dataGenerator.randomParagraph(),
       },
       wasserverbrauch: {
         berichterstattungWasserverbrauch: dataGenerator.randomDecimalYearlyTimeseriesData(
@@ -179,7 +179,7 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
           3,
           3,
         ),
-        unternehmensGruppenStrategieBzglWasserverbrauch: dataGenerator.randomShortString(),
+        unternehmensGruppenStrategieBzglWasserverbrauch: dataGenerator.randomParagraph(),
       },
       abfallproduktion: {
         berichterstattungAbfallproduktion: dataGenerator.randomDecimalYearlyTimeseriesData(
@@ -187,19 +187,19 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
           3,
           3,
         ),
-        unternehmensGruppenStrategieBzglAbfallproduktion: dataGenerator.randomShortString(),
+        unternehmensGruppenStrategieBzglAbfallproduktion: dataGenerator.randomParagraph(),
         recyclingImProduktionsprozess: dataGenerator.randomDecimalYearlyTimeseriesData(
           ["prozentRecycelteWerkstoffeImProduktionsprozess"],
           3,
           3,
         ),
-        gefaehrlicherAbfall: dataGenerator.randomShortString(),
+        gefaehrlicherAbfall: dataGenerator.randomParagraph(),
       },
       biodiversitaet: {
         negativeAktivitaetenFuerDieBiologischeVielfalt: dataGenerator.randomYesNo(),
-        negativeMassnahmenFuerDieBiologischeVielfalt: dataGenerator.randomShortString(),
+        negativeMassnahmenFuerDieBiologischeVielfalt: dataGenerator.randomParagraph(),
         positiveAktivitaetenFuerDieBiologischeVielfalt: dataGenerator.randomYesNo(),
-        positiveMassnahmenFuerDieBiologischeVielfalt: dataGenerator.randomShortString(),
+        positiveMassnahmenFuerDieBiologischeVielfalt: dataGenerator.randomParagraph(),
       },
       fossileBrennstoffe: {
         einnahmenAusFossilenBrennstoffen: dataGenerator.randomYesNo(),
@@ -242,7 +242,7 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
         ),
       },
       sicherheitUndWeiterbildung: {
-        sicherheitsmassnahmenFuerMitarbeiter: dataGenerator.randomShortString(),
+        sicherheitsmassnahmenFuerMitarbeiter: dataGenerator.randomParagraph(),
         unfallrate: dataGenerator.randomDecimalYearlyTimeseriesData(
           ["haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust"],
           3,
@@ -260,20 +260,20 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
           3,
           0,
         ),
-        massnahmenZurVerbesserungDerEinkommensungleichheit: dataGenerator.randomShortString(),
+        massnahmenZurVerbesserungDerEinkommensungleichheit: dataGenerator.randomParagraph(),
       },
       geschlechterdiversitaet: {
         mitarbeiterAufTopManagementEbene: dataGenerator.randomInt(),
         frauenAufTopManagementEbene: dataGenerator.randomInt(),
         mitgliederGeschaeftsfuehrung: dataGenerator.randomInt(),
         frauenInDerGeschaeftsfuehrung: dataGenerator.randomInt(),
-        definitionTopManagement: dataGenerator.randomShortString(),
-        einhaltungRechtlicherVorgaben: dataGenerator.randomShortString(),
+        definitionTopManagement: dataGenerator.randomParagraph(),
+        einhaltungRechtlicherVorgaben: dataGenerator.randomParagraph(),
       },
       audit: {
         auditsZurEinhaltungVonArbeitsstandards: dataGenerator.randomYesNo(),
         artDesAudits: dataGenerator.valueOrNull(pickOneElement(Object.values(ArtDesAuditsOptions))),
-        auditErgebnisse: dataGenerator.randomShortString(),
+        auditErgebnisse: dataGenerator.randomParagraph(),
       },
     },
     unternehmensfuehrungGovernance: {
@@ -305,12 +305,12 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       sonstige: {
         wirtschaftspruefer: dataGenerator.randomShortString(),
         trennungVonCeoOderVorsitzenden: dataGenerator.randomYesNo(),
-        amtszeitBisZurTrennung: dataGenerator.randomShortString(),
+        amtszeitBisZurTrennung: dataGenerator.randomInt(),
       },
       stakeholder: {
         einbeziehungVonStakeholdern: dataGenerator.randomYesNo(),
-        prozessDerEinbeziehungVonStakeholdern: dataGenerator.randomShortString(),
-        mechanismenZurAusrichtungAufStakeholder: dataGenerator.randomShortString(),
+        prozessDerEinbeziehungVonStakeholdern: dataGenerator.randomParagraph(),
+        mechanismenZurAusrichtungAufStakeholder: dataGenerator.randomParagraph(),
       },
       unternehmensrichtlinien: {
         veroeffentlichteUnternehmensrichtlinien: dataGenerator.valueOrNull(
@@ -333,7 +333,7 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       },
       lieferantenauswahl: {
         esgKriterienUndUeberwachungDerLieferanten: dataGenerator.randomYesNo(),
-        auswahlkriterien: dataGenerator.randomShortString(),
+        auswahlkriterien: dataGenerator.randomParagraph(),
       },
     },
   };

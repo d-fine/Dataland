@@ -2,6 +2,7 @@
 package org.dataland.datalandbackend.frameworks.gdv.model.unternehmensfuehrungGovernance.sonstige
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import java.math.BigInteger
 
 /**
  * The data-model for the Sonstige section
@@ -9,5 +10,5 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class GdvUnternehmensfuehrungGovernanceSonstige(
     val wirtschaftspruefer: String? = null,
     val trennungVonCeoOderVorsitzenden: YesNo? = null,
-    val amtszeitBisZurTrennung: String? = null,
+    val amtszeitBisZurTrennung: BigInteger? = null,
 )
