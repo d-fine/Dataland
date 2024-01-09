@@ -32,7 +32,7 @@ import { defineComponent } from "vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { type BaseDataPointString } from "@clients/backend";
-import { isValidFileName, noReportLabel } from "@/utils/DataSource";
+import { isValidFileName } from "@/utils/DataSource";
 
 export default defineComponent({
   name: "StringBaseDataPointFormField",
@@ -46,7 +46,6 @@ export default defineComponent({
       documentReference: undefined as string | undefined,
       fileNamesForPrefill: [] as string[],
       isMounted: false,
-      noReportLabel: noReportLabel,
       isValidFileName: isValidFileName,
     };
   },
