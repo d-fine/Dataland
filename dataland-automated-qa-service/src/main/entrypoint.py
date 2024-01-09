@@ -1,7 +1,7 @@
 import logging
+
 logging.basicConfig(
-    format="%(asctime)s %(levelname)s: %(name)s: %(message)s",
-    level=logging.INFO
+    format="%(asctime)s %(levelname)s: %(name)s: %(message)s", level=logging.INFO
 )
 
 import pika.exceptions
@@ -17,8 +17,15 @@ def main():
         try:
             mq = RabbitMq(p.rabbit_mq_connection_parameters)
             mq.connect()
-            mq.register_receiver(p.mq_receiving_exchange, p.mq_data_key, "dataStored", qa_data)
-            mq.register_receiver(p.mq_receiving_exchange, p.mq_document_key, "documentStored", qa_document)
+            mq.register_receiver(
+                p.mq_receiving_exchange, p.mq_data_key, "dataStored", qa_data
+            )
+            mq.register_receiver(
+                p.mq_receiving_exchange,
+                p.mq_document_key,
+                "documentStored",
+                qa_document,
+            )
             mq.consume_loop()
         except pika.exceptions.ConnectionClosedByBroker:
             continue

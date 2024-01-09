@@ -53,5 +53,7 @@ def _update_token():
     global _current_access_token
     global _current_access_token_expire_time
     _current_access_token = parsed_response_body["access_token"]
-    _current_access_token_expire_time = datetime.datetime.now() + datetime.timedelta(seconds=parsed_response_body["expires_in"])
+    _current_access_token_expire_time = datetime.datetime.now() + datetime.timedelta(
+        seconds=parsed_response_body["expires_in"]
+    )
     logging.info("Acquired new access token!")

@@ -5,10 +5,14 @@ import main.infrastructure.resources.data_resource as data_resources
 import main.infrastructure.resources.document_resource as document_resources
 from main.infrastructure.resources import Resource, DataResource, DocumentResource
 
-from dataland_backend_api_documentation_client.models.data_meta_information import DataMetaInformation
+from dataland_backend_api_documentation_client.models.data_meta_information import (
+    DataMetaInformation,
+)
 from dataland_backend_api_documentation_client.models.data_type_enum import DataTypeEnum
 from dataland_backend_api_documentation_client.models.qa_status import QaStatus
-from dataland_backend_api_documentation_client.models.company_associated_data_sme_data import CompanyAssociatedDataSmeData
+from dataland_backend_api_documentation_client.models.company_associated_data_sme_data import (
+    CompanyAssociatedDataSmeData,
+)
 
 
 class TestResource(Resource):
@@ -28,16 +32,14 @@ def get_data_meta_info_mock(data_id: str, client) -> DataMetaInformation:
         upload_time=0,
         reporting_period="reporting period",
         currently_active=True,
-        qa_status=QaStatus.ACCEPTED
+        qa_status=QaStatus.ACCEPTED,
     )
 
 
 def get_sme_data_mock(data_id: str, client):
     data = dict({"dummy": "exists"})
     return CompanyAssociatedDataSmeData(
-        company_id="company-id",
-        reporting_period="reporting period",
-        data=data
+        company_id="company-id", reporting_period="reporting period", data=data
     )
 
 
@@ -62,6 +64,3 @@ class ResourceTest(unittest.TestCase):
         document_resource = DocumentResource("document-id")
         self.assertEqual("document-id", document_resource.id)
         self.assertEqual(42, document_resource.bytes)
-
-
-

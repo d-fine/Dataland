@@ -25,16 +25,10 @@ def mock_resource():
 
 
 def build_qa_completed_message_body(qa_result: QaStatus) -> str:
-    return json.dumps({
-        "identifier": "dummy-id",
-        "validationResult": qa_result
-    })
+    return json.dumps({"identifier": "dummy-id", "validationResult": qa_result})
 
 
-qa_forwarded_message_body = json.dumps({
-    "identifier": "dummy-id",
-    "comment": "Test"
-})
+qa_forwarded_message_body = json.dumps({"identifier": "dummy-id", "comment": "Test"})
 
 
 class MessageProcessingTest(unittest.TestCase):
@@ -45,7 +39,7 @@ class MessageProcessingTest(unittest.TestCase):
             p.mq_quality_assured_exchange,
             p.mq_qa_completed_type,
             build_qa_completed_message_body(QaStatus.ACCEPTED),
-            lambda resource, correlation_id: QaStatus.REJECTED
+            lambda resource, correlation_id: QaStatus.REJECTED,
         )
 
     def test_should_send_qa_requested_message_when_automated_qa_not_possible(self):
@@ -55,7 +49,7 @@ class MessageProcessingTest(unittest.TestCase):
             p.mq_manual_qa_requested_exchange,
             p.mq_manual_qa_requested_type,
             qa_forwarded_message_body,
-            mock_validate_raise_automated_qa_not_possible_error
+            mock_validate_raise_automated_qa_not_possible_error,
         )
 
     def test_should_send_accepted_message_when_validation_accepts(self):
@@ -65,7 +59,7 @@ class MessageProcessingTest(unittest.TestCase):
             p.mq_quality_assured_exchange,
             p.mq_qa_completed_type,
             build_qa_completed_message_body(QaStatus.ACCEPTED),
-            lambda resource, correlation_id: QaStatus.ACCEPTED
+            lambda resource, correlation_id: QaStatus.ACCEPTED,
         )
 
     def test_should_send_rejected_message_when_validation_rejects(self):
@@ -75,17 +69,17 @@ class MessageProcessingTest(unittest.TestCase):
             p.mq_quality_assured_exchange,
             p.mq_qa_completed_type,
             build_qa_completed_message_body(QaStatus.REJECTED),
-            lambda resource, correlation_id: QaStatus.REJECTED
+            lambda resource, correlation_id: QaStatus.REJECTED,
         )
 
     def validate_process_qa_request(
-            self,
-            routing_key: str,
-            bypass_qa: bool,
-            expected_exchange: str,
-            expected_message_type: str,
-            expected_message_body: str,
-            validate
+        self,
+        routing_key: str,
+        bypass_qa: bool,
+        expected_exchange: str,
+        expected_message_type: str,
+        expected_message_body: str,
+        validate,
     ):
         channel_mock = Mock()
         process_qa_request(
@@ -103,5 +97,11 @@ class MessageProcessingTest(unittest.TestCase):
         self.assertEqual(p.mq_data_key, arguments["routing_key"])
         self.assertEqual(expected_message_body, arguments["body"])
         self.assertTrue(arguments["mandatory"])
-        self.assertEqual("dummy-correlation-id", arguments["properties"].headers[p.mq_correlation_id_header])
-        self.assertEqual(expected_message_type, arguments["properties"].headers[p.mq_message_type_header])
+        self.assertEqual(
+            "dummy-correlation-id",
+            arguments["properties"].headers[p.mq_correlation_id_header],
+        )
+        self.assertEqual(
+            expected_message_type,
+            arguments["properties"].headers[p.mq_message_type_header],
+        )
