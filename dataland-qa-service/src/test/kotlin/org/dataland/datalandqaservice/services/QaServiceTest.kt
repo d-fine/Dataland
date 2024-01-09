@@ -87,7 +87,7 @@ class QaServiceTest(
     fun `check an exception is thrown in reading out message from document stored queue when dataId is empty`() {
         val correlationId = "correlationId"
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
-            qaService.assureQualityOfDocument(noIdPayload, correlationId, MessageType.ManualQaRequested,)
+            qaService.assureQualityOfDocument(noIdPayload, correlationId, MessageType.ManualQaRequested)
         }
         Assertions.assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
     }
