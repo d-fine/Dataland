@@ -4,6 +4,6 @@ from main.entrypoint import main
 
 
 class MeasureCoverage(unittest.TestCase):
-    def run_regular_entrypoint(self):
+    def test_start_entrypoint(self):
         main()
         self.assertEqual(1, 2)
