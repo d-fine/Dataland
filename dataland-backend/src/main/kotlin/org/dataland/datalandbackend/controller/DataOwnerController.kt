@@ -44,4 +44,9 @@ class DataOwnerController(
             null
         }
     }
+
+    override fun isUserDataOwnerForCompany(companyId: UUID, userId: UUID) {
+        logger.info("Received a request to check if user with Id $userId is data owner of company with Id $companyId.")
+        dataOwnersManager.checkUserCompanyCombinationForDataOwnership(companyId.toString(), userId.toString())
+    }
 }

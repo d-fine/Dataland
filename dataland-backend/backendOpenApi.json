@@ -949,6 +949,75 @@
         ]
       }
     },
+    "/data-owners/{companyId}/{userId}": {
+      "head": {
+        "tags": [
+          "data-owner-controller"
+        ],
+        "summary": "Validation of a user-company combination wrt. to data ownership.",
+        "description": "Checks whether a user is data owner of a company.",
+        "operationId": "isUserDataOwnerForCompany",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The specified user is data owner of the given company."
+          },
+          "404": {
+            "description": "The specified user isn\u0027t data owner of the given company."
+          },
+          "400": {
+            "description": "The specified company does not exist on Dataland."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies/identifiers/{identifierType}/{identifier}": {
       "get": {
         "tags": [

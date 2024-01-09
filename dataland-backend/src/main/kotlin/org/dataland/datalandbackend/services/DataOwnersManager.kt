@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,28 +34,36 @@ class DataOwnersManager(
                 "Company not found",
                 "There is no company corresponding to the provided Id $companyId stored on Dataland.",
             )
-        } else {
-            if (dataOwnerRepository.existsById(companyId)) {
-                val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
-                return if (dataOwnersForCompany.dataOwners.contains(userId)) {
-                    logger.info(
-                        "User with Id $userId is already data owner of company with Id $companyId.",
-                    )
-                    dataOwnersForCompany
-                } else {
-                    logger.info("New data owner with Id $userId added to company with Id $companyId.")
-                    dataOwnersForCompany.dataOwners.add(userId)
-                    dataOwnerRepository.save(dataOwnersForCompany)
-                }
-            } else {
-                logger.info("A first data owner with Id $userId is added to company with Id $companyId.")
-                return dataOwnerRepository.save(
-                    CompanyDataOwnersEntity(
-                        companyId = companyId,
-                        dataOwners = mutableListOf(userId),
-                    ),
+        }
+        if (dataOwnerRepository.existsById(companyId)) {
+            val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
+            return if (dataOwnersForCompany.dataOwners.contains(userId)) {
+                logger.info(
+                    "User with Id $userId is already data owner of company with Id $companyId.",
                 )
+                dataOwnersForCompany
+            } else {
+                logger.info("New data owner with Id $userId added to company with Id $companyId.")
+                dataOwnersForCompany.dataOwners.add(userId)
+                dataOwnerRepository.save(dataOwnersForCompany)
             }
+        } else {
+            logger.info("A first data owner with Id $userId is added to company with Id $companyId.")
+            return dataOwnerRepository.save(
+                CompanyDataOwnersEntity(
+                    companyId = companyId,
+                    dataOwners = mutableListOf(userId),
+                ),
+            )
+        }
+    }
+
+    private fun checkIfCompanyIsValid(companyId: String) {
+        if (!companyRepository.existsById(companyId)) {
+            throw InvalidInputApiException(
+                "Company is invalid",
+                "There is no company corresponding to the provided Id $companyId stored on Dataland.",
+            )
         }
     }
 
@@ -93,5 +102,22 @@ class DataOwnersManager(
                 "The companyId '$companyId' does not have any data owners.",
             )
         }
+    }
+
+    /**
+     * Method to check whether a specified user is a data owner of a given company, which throws an exception if not
+     * @param companyId the ID of the company
+     * @param userId the ID of the user
+     */
+    @Transactional
+    fun checkUserCompanyCombinationForDataOwnership(companyId: String, userId: String) {
+        checkIfCompanyIsValid(companyId)
+        val failException = ResourceNotFoundApiException(
+            "User is not a data owner",
+            "The user with Id $userId is not a data owner of the company with Id $companyId.",
+        )
+        if (!dataOwnerRepository.existsById(companyId)) {
+            throw failException
+        } else if (!dataOwnerRepository.getReferenceById(companyId).dataOwners.contains(userId)) throw failException
     }
 }

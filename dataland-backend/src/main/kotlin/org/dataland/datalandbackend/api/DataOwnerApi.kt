@@ -8,8 +8,10 @@ import org.dataland.datalandbackend.model.companies.CompanyDataOwners
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import java.util.UUID
 
@@ -73,4 +75,30 @@ interface DataOwnerApi {
         @RequestParam userId: String,
     ):
         ResponseEntity<CompanyDataOwners>?
+
+    /**
+     * A method to check if a user specified via his/her ID is data owner for a certain company
+     * @param companyId the ID of the company
+     * @param userId the ID of the user
+     */
+    @Operation(
+        summary = "Validation of a user-company combination wrt. to data ownership.",
+        description = "Checks whether a user is data owner of a company.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "The specified user is data owner of the company."),
+            ApiResponse(responseCode = "400", description = "The specified company does not exist on Dataland."),
+            ApiResponse(responseCode = "404", description = "The specified user isn't data owner of the company."),
+        ],
+    )
+    @RequestMapping(
+        method = [RequestMethod.HEAD],
+        value = ["/{companyId}/{userId}"],
+    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun isUserDataOwnerForCompany(
+        @PathVariable("companyId") companyId: UUID,
+        @PathVariable("userId") userId: UUID,
+    )
 }
