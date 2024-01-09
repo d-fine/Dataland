@@ -11,10 +11,10 @@ class RabbitMq:
         self._channel: pika.adapters.blocking_connection.BlockingChannel | None = None
 
     def connect(self):
-        logging.info(f"Connecting to RabbitMQ")
+        logging.info("Connecting to RabbitMQ...")
         self._connection = pika.BlockingConnection(self._connection_parameters)
         self._channel = self._connection.channel()
-        logging.info(f"Connection established")
+        logging.info("Connection established")
 
     def disconnect(self):
         try:

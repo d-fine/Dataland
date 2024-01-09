@@ -102,6 +102,6 @@ class MessageProcessingTest(unittest.TestCase):
         self.assertEqual(expected_exchange, arguments["exchange"])
         self.assertEqual(p.mq_data_key, arguments["routing_key"])
         self.assertEqual(expected_message_body, arguments["body"])
-        self.assertEqual(True, arguments["mandatory"])
+        self.assertTrue(arguments["mandatory"])
         self.assertEqual("dummy-correlation-id", arguments["properties"].headers[p.mq_correlation_id_header])
         self.assertEqual(expected_message_type, arguments["properties"].headers[p.mq_message_type_header])
