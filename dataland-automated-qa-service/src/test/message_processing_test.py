@@ -24,11 +24,11 @@ def mock_resource():
     return resource_mock
 
 
-def build_qa_completed_message_body(qa_result: QaStatus) -> str:
-    return json.dumps({"identifier": "dummy-id", "validationResult": qa_result})
+def build_qa_completed_message_body(qa_result: QaStatus) -> bytes:
+    return json.dumps({"identifier": "dummy-id", "validationResult": qa_result}).encode("UTF-8")
 
 
-qa_forwarded_message_body = json.dumps({"identifier": "dummy-id", "comment": "Test"})
+qa_forwarded_message_body = json.dumps({"identifier": "dummy-id", "comment": "Test"}).encode("UTF-8")
 
 
 class MessageProcessingTest(unittest.TestCase):
@@ -78,7 +78,7 @@ class MessageProcessingTest(unittest.TestCase):
         bypass_qa: bool,
         expected_exchange: str,
         expected_message_type: str,
-        expected_message_body: str,
+        expected_message_body: bytes,
         validate,
     ):
         channel_mock = Mock()
