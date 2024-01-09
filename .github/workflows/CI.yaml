@@ -201,6 +201,7 @@ jobs:
           pip install pytest-cov
           pytest --cov=./src/main --cov-report=xml:python-coverage.xml
           sed -i "s%src/main%/home/runner/work/Dataland/Dataland/dataland-automated-qa-service/src/main%g" ./python-coverage.xml
+          sed -i "s%.//home%/home%g" ./python-coverage.xml
         env:
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
           RABBITMQ_USER: "dummy"
