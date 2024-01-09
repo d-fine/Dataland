@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <FormKit v-model="baseDataPoint" type="group" name="dataSource">
+    <FormKit v-model="baseDataPoint" type="group" ignore="true">
       <UploadDocumentsForm
         @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
         ref="uploadDocumentsForm"
@@ -8,9 +8,13 @@
         :more-than-one-document-allowed="false"
         :file-names-for-prefill="fileNamesForPrefill"
       />
-      <FormKit type="hidden" name="fileName" v-model="documentName" />
-      <FormKit type="hidden" name="fileReference" v-model="documentReference" />
     </FormKit>
+
+    <FormKit v-if="isValidFileName(isMounted, documentName)" type="group" name="dataSource">
+      <FormKit type="hidden" name="fileName" v-model="documentName" />
+      <FormKit type="hidden" name="fileReference" :modelValue="documentReference" />
+    </FormKit>
+
     <FormKit
       type="textarea"
       :validation-messages="{
@@ -28,6 +32,7 @@ import { defineComponent } from "vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { type BaseDataPointString } from "@clients/backend";
+import { isValidFileName } from "@/utils/DataSource";
 
 export default defineComponent({
   name: "StringBaseDataPointFormField",
@@ -41,12 +46,15 @@ export default defineComponent({
       documentReference: undefined as string | undefined,
       fileNamesForPrefill: [] as string[],
       isMounted: false,
+      isValidFileName: isValidFileName,
     };
   },
   emits: ["fieldSpecificDocumentsUpdated"],
   mounted() {
-    this.updateFileUploadFiles();
-    this.isMounted = true;
+    setTimeout(() => {
+      this.updateFileUploadFiles();
+      this.isMounted = true;
+    });
   },
   watch: {
     documentName() {
