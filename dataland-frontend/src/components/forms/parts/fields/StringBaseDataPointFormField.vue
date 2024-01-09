@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <FormKit v-model="baseDataPoint" type="group" name="dataSource">
+    <FormKit v-model="baseDataPoint" type="group" ignore="true">
       <UploadDocumentsForm
         @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
         ref="uploadDocumentsForm"
@@ -8,9 +8,13 @@
         :more-than-one-document-allowed="false"
         :file-names-for-prefill="fileNamesForPrefill"
       />
-      <FormKit type="hidden" name="fileName" v-model="documentName" />
-      <FormKit type="hidden" name="fileReference" v-model="documentReference" />
     </FormKit>
+
+    <FormKit v-if="hasValidDataSource()" type="group" name="dataSource">
+      <FormKit type="hidden" name="fileName" v-model="documentName" />
+      <FormKit type="hidden" name="fileReference" :modelValue="documentReference" />
+    </FormKit>
+
     <FormKit
       type="textarea"
       :validation-messages="{
@@ -41,12 +45,15 @@ export default defineComponent({
       documentReference: undefined as string | undefined,
       fileNamesForPrefill: [] as string[],
       isMounted: false,
+      noReportLabel: "None...",
     };
   },
   emits: ["fieldSpecificDocumentsUpdated"],
   mounted() {
-    this.updateFileUploadFiles();
-    this.isMounted = true;
+    setTimeout(() => {
+      this.updateFileUploadFiles();
+      this.isMounted = true;
+    });
   },
   watch: {
     documentName() {
@@ -75,6 +82,17 @@ export default defineComponent({
       if (this.documentName !== undefined && this.referencedDocument === undefined) {
         this.fileNamesForPrefill = [this.documentName];
       }
+    },
+
+    /**
+     * Checks whether the Assurance data source has appropriate values
+     * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
+     */
+    hasValidDataSource(): boolean {
+      if (!this.isMounted) {
+        return true;
+      }
+      return !!this.documentName && this.documentName?.length > 0 && this.documentName !== this.noReportLabel;
     },
   },
 });
