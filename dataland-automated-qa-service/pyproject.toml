@@ -19,7 +19,7 @@ pythonpath = "src/main"
 relative_files = true
 
 [tool.coverage.paths]
-source = ["./src/main"]
+source = ["./src/main", "./dataland-automated-qa-service/src/main"]
 
 
 #[tool.ruff]
