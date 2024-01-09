@@ -200,8 +200,6 @@ jobs:
           pip install pytest
           pip install pytest-cov
           pytest --cov=./src/main --cov-report=xml:python-coverage.xml
-          sed -i "s%src/main%/home/runner/work/Dataland/Dataland/dataland-automated-qa-service/src/main%g" ./python-coverage.xml
-          sed -i "s%.//home%/home%g" ./python-coverage.xml
         env:
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
           RABBITMQ_USER: "dummy"
@@ -334,7 +332,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: PythonE2eCoverage
+          name: PythonE2eTestCoverage
           path: ./*.coverage
       - name: Upload lcov Exec Results
         if: always()
@@ -395,6 +393,17 @@ jobs:
         with:
           name: PythonUnitTestCoverage
           path: python-coverage
+      - uses: actions/download-artifact@v3
+        name: PythonE2eTestCoverage
+        with:
+          name: PythonE2eTestCoverage
+          path: python-coverage
+      - name: Convert Python coverage paths
+        if: always()
+        run: |
+          cd ./python-coverage
+          sed -i "s%src/main%/home/runner/work/Dataland/Dataland/dataland-automated-qa-service/src/main%g" ./*.xml
+          sed -i "s%.//home%/home%g" ./*.xml
       - uses: actions/download-artifact@v3
         name: JaCoCoResultsUnitTests
         with:
