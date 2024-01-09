@@ -62,7 +62,7 @@ class DatabaseStringDataStore(
                     ],
                 ),
                 exchange = Exchange(ExchangeName.DataReceived, declare = "false"),
-                key = [""],
+                key = [RoutingKeyNames.storeData],
             ),
         ],
     )
@@ -110,5 +110,54 @@ class DatabaseStringDataStore(
                 "No dataset with the ID: $dataId could be found in the data store.",
             )
         }.data
+    }
+
+    /**
+     * Reads data from a database
+     * @param dataId the ID of the data to be retrieved
+     * @return the data as json string with ID dataId
+     */
+    // TODO Try using existing queue
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value = Queue(
+                    "dataReceivedInternalStorageDatabaseDataStore2",
+                    arguments = [
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                        Argument(name = "defaultRequeueRejected", value = "false"),
+                    ],
+                ),
+                exchange = Exchange(ExchangeName.DataReceived, declare = "false"),
+                key = [RoutingKeyNames.deleteData],
+            ),
+        ],
+    )
+    fun deleteDataSet(
+        @Payload payload: String,
+        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+        @Header(MessageHeaderKey.Type) type: String,
+    ) {
+        messageUtils.validateMessageType(type, MessageType.DataReceived)
+        val dataId = JSONObject(payload).getString("dataId")
+        if (dataId.isEmpty()) {
+            throw MessageQueueRejectException("Provided data ID is empty.")
+        }
+        deleteDataItemWithoutTransaction(dataId)
+        messageUtils.rejectMessageOnException {
+            logger.info("Received DataID $dataId and CorrelationId: $correlationId")
+            logger.info("Deleting data from database with data ID: $dataId and correlation ID: $correlationId.")
+        }
+    }
+
+    /**
+     * Deletes a Data Item while ensuring that there is no active transaction. This will guarantee that the write
+     * is commited after exit of this method.
+     * @param dataId the DataItem to be stored
+     */
+    @Transactional(propagation = Propagation.NEVER)
+    fun deleteDataItemWithoutTransaction(dataId: String) {
+        dataItemRepository.deleteById(dataId)
     }
 }

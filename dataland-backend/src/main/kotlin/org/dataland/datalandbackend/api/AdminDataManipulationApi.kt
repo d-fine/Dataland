@@ -36,7 +36,7 @@ fun interface AdminDataManipulationApi {
     )
     @DeleteMapping(
         produces = ["application/json"],
-
+// TODO response type should be adapted, right now its a string that can not be parsed as json
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun deleteCompanyAssociatedData(

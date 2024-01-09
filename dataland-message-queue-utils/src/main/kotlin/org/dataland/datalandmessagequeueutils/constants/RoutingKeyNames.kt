@@ -7,4 +7,6 @@ package org.dataland.datalandmessagequeueutils.constants
 object RoutingKeyNames {
     const val document = "document"
     const val data = "data"
+    const val deleteData = "deleteData"
+    const val storeData = "storeData"
 }

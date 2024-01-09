@@ -202,7 +202,7 @@ class DataManager(
         val payload = JSONObject(mapOf("dataId" to dataId, "bypassQa" to bypassQa)).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.DataReceived, correlationId,
-            ExchangeName.DataReceived,
+            ExchangeName.DataReceived, RoutingKeyNames.storeData,
         )
         logger.info(
             "Stored StorableDataSet of type '${storableDataSet.dataType}' " +
@@ -333,6 +333,11 @@ class DataManager(
     fun deleteCompanyAssociatedDataByDataId(dataId: String, correlationId: String): String {
         try {
             metaDataManager.deleteDataMetaInfo(dataId)
+            val payload = JSONObject(mapOf("dataId" to dataId, "bypassQa" to false)).toString()
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                payload, MessageType.DataReceived, correlationId,
+                ExchangeName.DataReceived, RoutingKeyNames.deleteData,
+            )
             logger.info(
                 "Received deletion request for dataset with DataId: " +
                     "$dataId with Correlation Id: $correlationId",
