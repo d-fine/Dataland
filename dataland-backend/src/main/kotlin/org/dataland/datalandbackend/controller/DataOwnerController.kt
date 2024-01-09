@@ -29,7 +29,10 @@ class DataOwnerController(
             ),
         )
     }
-
+    override fun getDataOwners(companyId: UUID): ResponseEntity<List<String>> {
+        val companyDataOwnersEntity = dataOwnersManager.getDataOwnerFromCompany(companyId.toString())
+        return ResponseEntity.ok(companyDataOwnersEntity.dataOwners)
+    }
     override fun deleteDataOwner(companyId: String, userId: String): ResponseEntity<CompanyDataOwners>? {
         logger.info("Received a request to delete a data owner with Id $userId to company with Id $companyId.")
         val companyDataOwnersEntity = dataOwnersManager.deleteDataOwnerFromCompany(companyId, userId)

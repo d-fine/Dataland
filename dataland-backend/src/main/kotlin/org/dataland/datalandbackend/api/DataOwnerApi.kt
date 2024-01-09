@@ -7,12 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.model.companies.CompanyDataOwners
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
 /**
@@ -48,6 +43,28 @@ interface DataOwnerApi {
         @RequestParam userId: UUID,
     ):
         ResponseEntity<CompanyDataOwners>
+
+    /**
+     * A method to retrieve a  data owner information from companies in dataland
+     * @param companyId the ID of the company to which a new data owner is to be added
+     * @return userId of the data owner(s) of a specified company
+     */
+    @Operation(
+        summary = "Retrieve the data owner(s) to a company.",
+        description = "Get a list of data owner(s) for the specified company.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data owner."),
+        ],
+    )
+    @GetMapping(
+        produces = ["application/json"],
+    )
+    fun getDataOwners(
+        @RequestParam companyId: UUID,
+    ):
+            ResponseEntity<List<String>>
 
     /**
      * A method to delete a new data ownership relation in dataland

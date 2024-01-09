@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import kotlin.jvm.optionals.getOrElse
 
 /**
  * Implementation of a (company) data ownership manager for Dataland
@@ -65,6 +66,22 @@ class DataOwnersManager(
                 "There is no company corresponding to the provided Id $companyId stored on Dataland.",
             )
         }
+    }
+
+    /**
+     * Method to get a data owner from a given company
+     * @param companyId the ID of the company to which the data owner is requested
+     * @return the userId(s) holding the data ownership relations for the given company
+     */
+    @Transactional
+    fun getDataOwnerFromCompany(companyId: String): CompanyDataOwnersEntity{
+        val dataOwnersOfCompany = dataOwnerRepository.findById(companyId).getOrElse {
+                    throw ResourceNotFoundApiException(
+                "No data owners found",
+                "The companyId '$companyId' does not have any data owners."
+            )
+        }
+        return  dataOwnersOfCompany
     }
 
     /**
