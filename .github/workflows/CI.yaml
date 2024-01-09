@@ -333,7 +333,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: PythonE2eTestCoverage
-          path: ./*.coverage
+          path: ./*.xml
       - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@v3
