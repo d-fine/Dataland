@@ -16,3 +16,8 @@ The following describes steps required to run the service on the host machine:
 `pip install ./build/clients/<client_module>` (if your terminal's working directory is the subproject root) for each of the clients.
 - To run the module locally run `./src/main/entrypoint.py` using the `python` command 
 (e.g. `python ./src/main/entrypoint.py`, depending on your terminal's working directory)
+
+# Auto Formatting (for Linter)
+
+Currently, you can run `./python_auto_formatting.sh` from /dataland-automated-qa-service
+This will automatically fix some formatting issues and make the python linter happier
