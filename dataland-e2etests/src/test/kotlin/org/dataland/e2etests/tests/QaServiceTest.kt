@@ -140,8 +140,6 @@ class QaServiceTest {
         Thread.sleep(SLEEP_DURATION_MS)
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
         val reviewQueue = apiAccessor.qaServiceControllerApi.getUnreviewedDatasetsIds()
-        println(reviewQueue)
-        print(listOfDataIdsAsExpectedFromReviewQueue)
         assertTrue(listOfDataIdsAsExpectedFromReviewQueue.toTypedArray().contentDeepEquals(reviewQueue.toTypedArray()))
     }
 
