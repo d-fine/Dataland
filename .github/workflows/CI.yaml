@@ -193,6 +193,11 @@ jobs:
           openapi-python-client generate --path ../dataland-backend/backendOpenApi.json
           pip install --no-cache-dir ./dataland-backend-api-documentation-client
           pip install --no-cache-dir ./dataland-document-manager-api-documentation-client
+      - name: Python linting
+        if: always()
+        run: |
+          pip install ruff
+          ruff check ./dataland-automated-qa-service/src
       - name: Execute python unit tests and measure coverage
         if: always()
         run: |
