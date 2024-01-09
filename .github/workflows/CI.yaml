@@ -197,9 +197,9 @@ jobs:
         if: always()
         run: |
           cd ./dataland-automated-qa-service
-          pip install pytest
-          pip install pytest-cov
-          pytest --cov=./src/main --cov-report=xml:python-coverage.xml
+          coverage run --source="./src/main" -m pytest -o log_cli=true -o log_cli_level=INFO
+          coverage xml
+          mv ./coverage.xml ./automated-qa-service-unit-test.xml
         env:
           DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
           RABBITMQ_USER: "dummy"
@@ -211,7 +211,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: PythonUnitTestCoverage
-          path: ./dataland-automated-qa-service/python-coverage.xml
+          path: ./dataland-automated-qa-service/automated-qa-service-unit-test.xml
 #      TODO linter validation
   e2e-tests:
     runs-on: ubuntu-latest
