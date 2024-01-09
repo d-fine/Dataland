@@ -10,7 +10,7 @@
       />
     </FormKit>
 
-    <FormKit v-if="hasValidDataSource()" type="group" name="dataSource">
+    <FormKit v-if="isValidFileName(isMounted, documentName)" type="group" name="dataSource">
       <FormKit type="hidden" name="fileName" v-model="documentName" />
       <FormKit type="hidden" name="fileReference" :modelValue="documentReference" />
     </FormKit>
@@ -32,6 +32,7 @@ import { defineComponent } from "vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { type BaseDataPointString } from "@clients/backend";
+import { isValidFileName, noReportLabel } from "@/utils/DataSource";
 
 export default defineComponent({
   name: "StringBaseDataPointFormField",
@@ -45,7 +46,8 @@ export default defineComponent({
       documentReference: undefined as string | undefined,
       fileNamesForPrefill: [] as string[],
       isMounted: false,
-      noReportLabel: "None...",
+      noReportLabel: noReportLabel,
+      isValidFileName: isValidFileName,
     };
   },
   emits: ["fieldSpecificDocumentsUpdated"],
@@ -82,17 +84,6 @@ export default defineComponent({
       if (this.documentName !== undefined && this.referencedDocument === undefined) {
         this.fileNamesForPrefill = [this.documentName];
       }
-    },
-
-    /**
-     * Checks whether the Assurance data source has appropriate values
-     * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
-     */
-    hasValidDataSource(): boolean {
-      if (!this.isMounted) {
-        return true;
-      }
-      return !!this.documentName && this.documentName?.length > 0 && this.documentName !== this.noReportLabel;
     },
   },
 });

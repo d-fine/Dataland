@@ -114,7 +114,7 @@
           />
         </div>
       </div>
-      <FormKit v-if="hasValidDataSource()" type="group" name="dataSource">
+      <FormKit v-if="isValidFileName(isMounted, currentAmountValue)" type="group" name="dataSource">
         <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
         <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
         <FormKit type="hidden" name="page" v-model="currentPageValue" />
@@ -161,6 +161,7 @@ import { QualityOptions } from "@clients/backend";
 import DataPointHeader from "@/components/forms/parts/kpiSelection/DataPointHeader.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
+import { isValidFileName, noReportLabel } from "@/utils/DataSource";
 
 export default defineComponent({
   name: "DataPointFormWithToggle",
@@ -183,7 +184,8 @@ export default defineComponent({
     reportValueBeforeDataPointWasDisabled: "",
     pageValueBeforeDataPointWasDisabled: "",
     qualityValueBeforeDataPointWasDisabled: "",
-    noReportLabel: "None...",
+    noReportLabel: noReportLabel,
+    isValidFileName: isValidFileName,
   }),
   watch: {
     dataPointIsAvailable(newValue: boolean) {
@@ -252,16 +254,6 @@ export default defineComponent({
      */
     dataPointAvailableToggle(): void {
       this.dataPointIsAvailable = !this.dataPointIsAvailable;
-    },
-    /**
-     * Checks whether the Assurance data source has appropriate values
-     * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
-     */
-    hasValidDataSource(): boolean {
-      if (!this.isMounted) {
-        return true;
-      }
-      return !!this.currentReportValue && this.currentReportValue !== this.noReportLabel;
     },
   },
 });
