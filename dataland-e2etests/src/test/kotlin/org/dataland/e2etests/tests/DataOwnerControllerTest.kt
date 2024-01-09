@@ -18,25 +18,27 @@ class DataOwnerControllerTest {
     private val dataOwnerApi = DataOwnerControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
     private fun validateDataOwnersForCompany(
-        companyId: String,
-        userIds: List<String>,
+        companyId: UUID,
+        userIds: List<UUID>,
         dataOwnersForCompany: CompanyDataOwners,
     ) {
         val dataOwners = dataOwnersForCompany.dataOwners
-        assertEquals(companyId, dataOwnersForCompany.companyId)
+        assertEquals(companyId.toString(), dataOwnersForCompany.companyId)
         assertEquals(userIds.size, dataOwners.size)
-        userIds.forEach { assertTrue(dataOwners.contains(it)) }
+        userIds.map { it.toString() }.forEach { assertTrue(dataOwners.contains(it)) }
     }
 
     @Test
     fun `post data owners to a known company and check happy paths`() {
-        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val companyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Admin)
-        val userId = UUID.randomUUID().toString()
+        val userId = UUID.randomUUID()
         val dataOwnersForCompany = dataOwnerApi.postDataOwner(companyId, userId)
         validateDataOwnersForCompany(companyId, listOf(userId), dataOwnersForCompany)
 
-        val anotherUserId = UUID.randomUUID().toString()
+        val anotherUserId = UUID.randomUUID()
         val dataOwnersForCompanyAfterSecondRequest = dataOwnerApi.postDataOwner(companyId, anotherUserId)
         validateDataOwnersForCompany(companyId, listOf(userId, anotherUserId), dataOwnersForCompanyAfterSecondRequest)
 
@@ -44,7 +46,7 @@ class DataOwnerControllerTest {
         assertEquals(dataOwnersForCompanyAfterSecondRequest, dataOwnersForCompanyAfterDuplicateRequest)
     }
 
-    private fun checkErrorMessageForClientException(clientException: ClientException, companyId: String) {
+    private fun checkErrorMessageForClientException(clientException: ClientException, companyId: UUID) {
         assertEquals("Client error : 404 ", clientException.message)
         val responseBody = (clientException.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("Company not found"))
@@ -65,14 +67,16 @@ class DataOwnerControllerTest {
     @Test
     fun `post data owners either to an unknown company or as a non-admin and check exceptions`() {
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Admin)
-        val randomCompanyId = UUID.randomUUID().toString()
-        val userId = UUID.randomUUID().toString()
+        val randomCompanyId = UUID.randomUUID()
+        val userId = UUID.randomUUID()
         val exceptionForUnknownCompany = assertThrows<ClientException> {
             dataOwnerApi.postDataOwner(randomCompanyId, userId)
         }
         checkErrorMessageForClientException(exceptionForUnknownCompany, randomCompanyId)
 
-        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val companyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.values().filter { it != TechnicalUser.Admin }.random())
         val exceptionForUnauthorizedRequest = assertThrows<ClientException> {
             dataOwnerApi.postDataOwner(companyId, userId)
