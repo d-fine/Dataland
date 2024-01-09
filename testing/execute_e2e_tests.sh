@@ -59,8 +59,7 @@ timeout 90 sh -c "docker logs dala-e2e-test-community-manager-1 --follow" > /dev
 docker cp dala-e2e-test-community-manager-1:/jacoco.exec ./community-manager-bootRun-${CYPRESS_TEST_GROUP}.exec
 
 docker exec dala-e2e-test-automated-qa-service-1 pkill -f --signal SIGINT coverage
-sleep 100
-docker cp dala-e2e-test-automated-qa-service-1:/usr/src/app/coverage.xml ./automated-qa-service-bootRun-${CYPRESS_TEST_GROUP}.xml
+while ! docker cp dala-e2e-test-automated-qa-service-1:/usr/src/app/coverage.xml ./automated-qa-service-bootRun-${CYPRESS_TEST_GROUP}.xml ; do echo Coverage file not yet found; sleep 5; done
 
 # This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
 # This was discovered only after the PR was merged.
