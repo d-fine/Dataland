@@ -212,30 +212,7 @@ jobs:
         with:
           name: PythonUnitTestCoverage
           path: ./dataland-automated-qa-service/python-coverage.xml
-#      - name: Frontend linting
-#        run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
-#        if: always()
-#      - name: Execute Frontend Scripts to check if they run successfully
-#        if: always()
-#        run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
-#      - name: Upload Test and Coverage Reports
-#        if: always()
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: GradleReports
-#          path: |
-#            ./**/build/reports
-#            ./**/coverage
-#      - name: Upload JaCoCo Exec Results
-#        if: always()
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: JaCoCoResultsUnitTests
-#          path: ./**/*.exec
-#      - uses: ./.github/workflows/dockerLogs
-#        if: always()
-#        with:
-#          subfolder: 'unit-tests-backend'
+#      TODO linter validation
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
