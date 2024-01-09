@@ -10,6 +10,7 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.util.UUID
 
@@ -37,6 +38,7 @@ class DataOwnerControllerTest {
         val userId = UUID.randomUUID()
         val dataOwnersForCompany = dataOwnerApi.postDataOwner(companyId, userId)
         validateDataOwnersForCompany(companyId, listOf(userId), dataOwnersForCompany)
+        assertDoesNotThrow { dataOwnerApi.isUserDataOwnerForCompany(companyId, userId) }
 
         val anotherUserId = UUID.randomUUID()
         val dataOwnersForCompanyAfterSecondRequest = dataOwnerApi.postDataOwner(companyId, anotherUserId)
@@ -46,8 +48,12 @@ class DataOwnerControllerTest {
         assertEquals(dataOwnersForCompanyAfterSecondRequest, dataOwnersForCompanyAfterDuplicateRequest)
     }
 
-    private fun checkErrorMessageForClientException(clientException: ClientException, companyId: UUID) {
-        assertEquals("Client error : 404 ", clientException.message)
+    private fun assertErrorCodeForClientException(clientException: ClientException, statusCode: Number) {
+        assertEquals("Client error : $statusCode ", clientException.message)
+    }
+
+    private fun checkErrorMessageForUnknownCompanyException(clientException: ClientException, companyId: UUID) {
+        assertErrorCodeForClientException(clientException, 404)
         val responseBody = (clientException.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("Company not found"))
         assertTrue(
@@ -59,7 +65,7 @@ class DataOwnerControllerTest {
     }
 
     private fun checkErrorMessageForUnauthorizedException(clientException: ClientException) {
-        assertEquals("Client error : 403 ", clientException.message)
+        assertErrorCodeForClientException(clientException, 403)
         val responseBody = (clientException.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("Access Denied"))
     }
@@ -69,18 +75,31 @@ class DataOwnerControllerTest {
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Admin)
         val randomCompanyId = UUID.randomUUID()
         val userId = UUID.randomUUID()
-        val exceptionForUnknownCompany = assertThrows<ClientException> {
+        val postExceptionForUnknownCompany = assertThrows<ClientException> {
             dataOwnerApi.postDataOwner(randomCompanyId, userId)
         }
-        checkErrorMessageForClientException(exceptionForUnknownCompany, randomCompanyId)
+        checkErrorMessageForUnknownCompanyException(postExceptionForUnknownCompany, randomCompanyId)
+        val headExceptionForInvalidCompany = assertThrows<ClientException> {
+            dataOwnerApi.isUserDataOwnerForCompany(randomCompanyId, userId)
+        }
+        assertErrorCodeForClientException(headExceptionForInvalidCompany, 400)
 
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
+        val headExceptionForNotFoundDataOwner = assertThrows<ClientException> {
+            dataOwnerApi.isUserDataOwnerForCompany(companyId, userId)
+        }
+        assertErrorCodeForClientException(headExceptionForNotFoundDataOwner, 404)
+
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.values().filter { it != TechnicalUser.Admin }.random())
-        val exceptionForUnauthorizedRequest = assertThrows<ClientException> {
+        val postExceptionForUnauthorizedRequest = assertThrows<ClientException> {
             dataOwnerApi.postDataOwner(companyId, userId)
         }
-        checkErrorMessageForUnauthorizedException(exceptionForUnauthorizedRequest)
+        checkErrorMessageForUnauthorizedException(postExceptionForUnauthorizedRequest)
+        val headExceptionForUnauthorizedRequest = assertThrows<ClientException> {
+            dataOwnerApi.isUserDataOwnerForCompany(companyId, userId)
+        }
+        assertErrorCodeForClientException(headExceptionForUnauthorizedRequest, 403)
     }
 }
