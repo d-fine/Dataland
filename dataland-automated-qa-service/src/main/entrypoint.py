@@ -1,14 +1,12 @@
+import infrastructure.properties as p
+from infrastructure.messaging import qa_data, qa_document
+from infrastructure.rabbitmq import RabbitMq
+import pika.exceptions
 import logging
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s: %(name)s: %(message)s", level=logging.INFO
 )
-
-import pika.exceptions
-
-from infrastructure.rabbitmq import RabbitMq
-from infrastructure.messaging import qa_data, qa_document
-import infrastructure.properties as p
 
 
 def main():
