@@ -84,7 +84,7 @@ sonar {
         property("sonar.javascript.lcov.reportPaths", fileTree("$projectDir/fe-coverage").files)
         println("SHOULD BE REVERTED XXXXXXX")
         println(projectDir)
-        property("sonar.python.coverage.reportPaths", listOf(file("$projectDir/python-coverage/python-coverage.xml")))
+        property("sonar.python.coverage.reportPaths", file("$projectDir/python-coverage/python-coverage.xml"))
         property(
             "sonar.coverage.exclusions",
             "**/test/**," +
