@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 /**
  * Implementation of a (company) data ownership manager for Dataland
@@ -74,32 +75,34 @@ class DataOwnersManager(
      * @return an entity holding the data ownership relations for the given company
      */
     @Transactional
-    fun deleteDataOwnerFromCompany(companyId: String, userId: String): CompanyDataOwnersEntity? {
-        if (dataOwnerRepository.existsById(companyId)) {
-            val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
-            if (dataOwnersForCompany.dataOwners.contains(userId)) {
-                dataOwnersForCompany.dataOwners.remove(userId)
+    fun deleteDataOwnerFromCompany(companyId: String, userId: String): CompanyDataOwnersEntity {
+        val validCompanyId = UUID.fromString(companyId).toString()
+        val validUserId = UUID.fromString(userId).toString()
+        if (dataOwnerRepository.existsById(validCompanyId)) {
+            val dataOwnersForCompany = dataOwnerRepository.findById(validCompanyId).get()
+            if (dataOwnersForCompany.dataOwners.contains(validUserId)) {
+                dataOwnersForCompany.dataOwners.remove(validUserId)
             } else {
                 throw ResourceNotFoundApiException(
-                    "Company not found",
-                    "User with Id $userId has not been data owner of company $companyId",
+                    "No data owners found",
+                    "User with Id $validUserId has not been data owner of company $validCompanyId",
                 )
             }
             return if (dataOwnersForCompany.dataOwners.isEmpty()) {
-                dataOwnerRepository.deleteById(companyId)
-                null
+                dataOwnerRepository.deleteById(validCompanyId)
+                CompanyDataOwnersEntity(validCompanyId, dataOwnersForCompany.dataOwners)
             } else {
                 dataOwnerRepository.save(
                     CompanyDataOwnersEntity(
-                        companyId = companyId,
+                        companyId = validCompanyId,
                         dataOwners = dataOwnersForCompany.dataOwners,
                     ),
                 )
             }
         } else {
-            throw ResourceNotFoundApiException(
-                "No data owners found",
-                "The companyId '$companyId' does not have any data owners.",
+            throw InvalidInputApiException(
+                "Company not found",
+                "The companyId '$validCompanyId' does not exist and therefore doesn't have any data owners.",
             )
         }
     }
@@ -110,14 +113,16 @@ class DataOwnersManager(
      * @param userId the ID of the user
      */
     @Transactional
-    fun checkUserCompanyCombinationForDataOwnership(companyId: String, userId: String) {
-        checkIfCompanyIsValid(companyId)
+    fun checkUserCompanyCombinationForDataOwnership(companyId: UUID, userId: UUID) {
+        checkIfCompanyIsValid(companyId.toString())
         val failException = ResourceNotFoundApiException(
             "User is not a data owner",
             "The user with Id $userId is not a data owner of the company with Id $companyId.",
         )
-        if (!dataOwnerRepository.existsById(companyId)) {
+        if (!dataOwnerRepository.existsById(companyId.toString())) {
             throw failException
-        } else if (!dataOwnerRepository.getReferenceById(companyId).dataOwners.contains(userId)) throw failException
+        } else if (!dataOwnerRepository.getReferenceById(companyId.toString()).dataOwners.contains(userId.toString())) {
+            throw failException
+        }
     }
 }

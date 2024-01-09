@@ -74,7 +74,7 @@ interface DataOwnerApi {
         @RequestParam companyId: String,
         @RequestParam userId: String,
     ):
-        ResponseEntity<CompanyDataOwners>?
+        ResponseEntity<CompanyDataOwners>
 
     /**
      * A method to check if a user specified via his/her ID is data owner for a certain company

@@ -30,6 +30,21 @@ class DataOwnerControllerTest {
     }
 
     @Test
+    fun `test functionality with post get head and delete endpoint`() {
+        val companyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
+        val dataReaderUserId = "18b67ecc-1176-4506-8414-1e81661017ca"
+        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Reader)
+
+        // testen dass die rechte nicht vorhanden sind () post companyA no und companyB no
+        dataOwnerApi.postDataOwner(companyId, UUID.fromString(dataReaderUserId))
+        // testen dass die rechte vorhanden sind companyA yes companyB no
+        dataOwnerApi.deleteDataOwner(companyId.toString(), dataReaderUserId)
+        // testen dass die rechte nicht vohanden sind () company A no companyB no
+    }
+
+    @Test
     fun `post data owners to a known company and check happy paths`() {
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
@@ -46,6 +61,18 @@ class DataOwnerControllerTest {
 
         val dataOwnersForCompanyAfterDuplicateRequest = dataOwnerApi.postDataOwner(companyId, userId)
         assertEquals(dataOwnersForCompanyAfterSecondRequest, dataOwnersForCompanyAfterDuplicateRequest)
+
+        val dataOwnersForCompanyAfterRemovingLastUser = dataOwnerApi.deleteDataOwner(
+            companyId.toString(),
+            anotherUserId.toString(),
+        )
+        validateDataOwnersForCompany(companyId, listOf(userId), dataOwnersForCompanyAfterRemovingLastUser)
+
+        val dataOwnersAfterRemovingBothUsers = dataOwnerApi.deleteDataOwner(
+            companyId.toString(),
+            userId.toString(),
+        )
+        assertEquals(dataOwnersAfterRemovingBothUsers, CompanyDataOwners(companyId.toString(), mutableListOf()))
     }
 
     private fun assertErrorCodeForClientException(clientException: ClientException, statusCode: Number) {
@@ -92,7 +119,7 @@ class DataOwnerControllerTest {
         }
         assertErrorCodeForClientException(headExceptionForNotFoundDataOwner, 404)
 
-        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.values().filter { it != TechnicalUser.Admin }.random())
+        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.entries.filter { it != TechnicalUser.Admin }.random())
         val postExceptionForUnauthorizedRequest = assertThrows<ClientException> {
             dataOwnerApi.postDataOwner(companyId, userId)
         }
@@ -101,5 +128,22 @@ class DataOwnerControllerTest {
             dataOwnerApi.isUserDataOwnerForCompany(companyId, userId)
         }
         assertErrorCodeForClientException(headExceptionForUnauthorizedRequest, 403)
+    }
+
+    @Test
+    fun `delete unknown data owner from an existing company`() {
+        val companyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
+        val userId = UUID.randomUUID()
+        val unknownUserId = UUID.randomUUID()
+        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Admin)
+        val dataOwnersForCompany = dataOwnerApi.postDataOwner(companyId, userId)
+        validateDataOwnersForCompany(companyId, listOf(userId), dataOwnersForCompany)
+        val dataOwnersAfterInvalidDeleteRequest =
+            assertThrows<ClientException> {
+                dataOwnerApi.deleteDataOwner(companyId.toString(), unknownUserId.toString())
+            }
+        assertErrorCodeForClientException(dataOwnersAfterInvalidDeleteRequest, 404)
     }
 }
