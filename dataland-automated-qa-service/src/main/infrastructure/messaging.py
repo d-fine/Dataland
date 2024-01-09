@@ -109,7 +109,7 @@ def process_qa_request(
             channel.basic_publish(
                 exchange=p.mq_manual_qa_requested_exchange,
                 routing_key=routing_key,
-                body=json.dumps(message_to_send),
+                body=json.dumps(message_to_send).encode("UTF-8"),
                 properties=pika.BasicProperties(
                     headers={
                         p.mq_correlation_id_header: correlation_id,
@@ -133,7 +133,7 @@ def _send_qa_completed_message(
     channel.basic_publish(
         exchange=p.mq_quality_assured_exchange,
         routing_key=routing_key,
-        body=json.dumps(message_to_send),
+        body=json.dumps(message_to_send).encode("UTF-8"),
         properties=pika.BasicProperties(
             headers={
                 p.mq_correlation_id_header: correlation_id,
