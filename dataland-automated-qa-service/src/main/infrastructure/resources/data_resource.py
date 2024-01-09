@@ -36,6 +36,9 @@ from dataland_backend_api_documentation_client.models.data_meta_information impo
 
 
 class DataResource(Resource):
+    """
+    This class represents a dataset
+    """
     def _load(self):
         logging.info(f"Loading data resource with ID {self.id}")
         token = get_access_token()

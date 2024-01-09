@@ -20,6 +20,9 @@ _current_access_token_expire_time = None
 
 
 def get_access_token():
+    """
+    :returns: a valid access token which is guaranteed to be valid for at least 30 seconds
+    """
     if _current_access_token is None or _is_close_to_invalidation():
         _update_token()
     return _current_access_token

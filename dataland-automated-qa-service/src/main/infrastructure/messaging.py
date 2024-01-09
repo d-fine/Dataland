@@ -11,6 +11,14 @@ from dataland_backend_api_documentation_client.models.qa_status import QaStatus
 
 
 def qa_data(channel, method, properties, body):
+    """
+    Handler for data stored messages
+
+    :param channel: the channel on which the message was received
+    :param method: the delivery method
+    :param properties: message properties
+    :param body: the message body
+    """
     received_message = json.loads(body)
     bypass_qa = received_message["bypassQa"]
     data_id = received_message["dataId"]
@@ -28,6 +36,14 @@ def qa_data(channel, method, properties, body):
 
 
 def qa_document(channel, method, properties, body: bytes):
+    """
+    Handler for document stored messages
+
+    :param channel: the channel on which the message was received
+    :param method: the delivery method
+    :param properties: message properties
+    :param body: the message body
+    """
     document = DocumentResource(body.decode("UTF-8"))
     process_qa_request(
         channel,
@@ -51,6 +67,19 @@ def process_qa_request(
     resource: Resource,
     validate,
 ):
+    """
+    This method is a wrapper for the validation.
+    Messages on how other services should proceed on the to be reviewed resource are sent.
+
+    :param channel: the channel on which the message was received
+    :param method: the delivery method
+    :param properties: message properties
+    :param routing_key: the routing key of the message
+    :param resource_type: the type of resource to be processed here
+    :param bypass_qa: True iff no review should be performed at all and the resource should just be accepted
+    :param resource: the resource to be reviewed
+    :param validate: the validation function to call on the resource
+    """
     correlation_id = properties.headers["cloudEvents:id"]
     logging.info(
         f"Received {resource_type} with ID {resource.id} for automated review. (Correlation ID: {correlation_id})"
@@ -59,7 +88,7 @@ def process_qa_request(
         logging.info(
             f"Bypassing QA for {resource_type} with ID {resource.id}. (Correlation ID: {correlation_id})"
         )
-        send_qa_completed_message(
+        _send_qa_completed_message(
             channel, routing_key, resource.id, QaStatus.ACCEPTED, correlation_id
         )
     else:
@@ -68,8 +97,8 @@ def process_qa_request(
         )
         try:
             validation_result = validate(resource, correlation_id)
-            assert_status_is_valid_for_qa_completion(validation_result)
-            send_qa_completed_message(
+            _assert_status_is_valid_for_qa_completion(validation_result)
+            _send_qa_completed_message(
                 channel, routing_key, resource.id, validation_result, correlation_id
             )
         except AutomaticQaNotPossibleError as e:
@@ -92,14 +121,14 @@ def process_qa_request(
     channel.basic_ack(delivery_tag=method.delivery_tag)
 
 
-def send_qa_completed_message(
+def _send_qa_completed_message(
     channel: pika.adapters.blocking_connection.BlockingChannel,
     routing_key: str,
     resource_id: str,
     status: QaStatus,
     correlation_id: str,
 ):
-    assert_status_is_valid_for_qa_completion(status)
+    _assert_status_is_valid_for_qa_completion(status)
     message_to_send = {"identifier": resource_id, "validationResult": status}
     channel.basic_publish(
         exchange=p.mq_quality_assured_exchange,
@@ -115,7 +144,7 @@ def send_qa_completed_message(
     )
 
 
-def assert_status_is_valid_for_qa_completion(status: QaStatus):
+def _assert_status_is_valid_for_qa_completion(status: QaStatus):
     if status != QaStatus.ACCEPTED and status != QaStatus.REJECTED:
         raise ValueError(
             f'Argument "status" with value "{status}" must be in range [QaStatus.ACCEPTED, QaStatus.REJECTED]'

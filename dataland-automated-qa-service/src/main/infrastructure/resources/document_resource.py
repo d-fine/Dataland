@@ -11,6 +11,9 @@ from dataland_document_manager_api_documentation_client.api.document_controller.
 
 
 class DocumentResource(Resource):
+    """
+    This class represents a document
+    """
     def _load(self):
         logging.info(f"Loading document resource with ID {self.id}")
         token = get_access_token()
