@@ -21,7 +21,8 @@ relative_files = true
 [tool.coverage.paths]
 source = ["./src/main"]
 
+[tool.ruff]
+line-length = 100
 
-#[tool.ruff]
 #select = ["F", "I"]
 #line-length = 120
