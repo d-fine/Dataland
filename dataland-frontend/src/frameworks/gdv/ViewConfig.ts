@@ -2,8 +2,9 @@
 import { type GdvData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
+import { formatFreeTextForDatatable } from "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
+import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
@@ -75,7 +76,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             explanation: "Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.",
             shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.esgZiele?.existenzVonEsgZielen == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.esgZiele?.beschreibungDerEsgZiele),
+              formatFreeTextForDatatable(dataset.allgemein?.esgZiele?.beschreibungDerEsgZiele),
           },
           {
             type: "cell",
@@ -84,7 +85,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
               "Bitte geben Sie an wieviele Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele zugewiesen wurden.",
             shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.esgZiele?.existenzVonEsgZielen == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.esgZiele?.investitionenInZielerreichung),
+              formatFreeTextForDatatable(dataset.allgemein?.esgZiele?.investitionenInZielerreichung),
           },
         ],
       },
@@ -310,7 +311,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.unGlobalConceptPrinzipien?.erklaerungDerEinhaltungDerUngcp),
+              formatFreeTextForDatatable(dataset.allgemein?.unGlobalConceptPrinzipien?.erklaerungDerEinhaltungDerUngcp),
           },
         ],
       },
@@ -355,7 +356,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.oecdLeitsaetze?.erklaerungDerEinhaltungDerOecdLeitsaetze),
+              formatFreeTextForDatatable(dataset.allgemein?.oecdLeitsaetze?.erklaerungDerEinhaltungDerOecdLeitsaetze),
           },
         ],
       },
@@ -373,7 +374,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.sonstige?.ausrichtungAufDieUnSdgsUndAktivesVerfolgen),
+              formatFreeTextForDatatable(dataset.allgemein?.sonstige?.ausrichtungAufDieUnSdgsUndAktivesVerfolgen),
           },
           {
             type: "cell",
@@ -392,7 +393,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.allgemein?.sonstige?.ausschlusslistenAufBasisVonEsgKriterien == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.sonstige?.ausschlusslisten),
+              formatFreeTextForDatatable(dataset.allgemein?.sonstige?.ausschlusslisten),
           },
         ],
       },
@@ -514,7 +515,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuE == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.allgemein?.rechtsstreitigkeiten?.einzelheitenZuDenRechtsstreitigkeitenZuE,
               ),
           },
@@ -552,7 +553,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuS == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.allgemein?.rechtsstreitigkeiten?.einzelheitenZuDenRechtsstreitigkeitenZuS,
               ),
           },
@@ -590,7 +591,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuG == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.allgemein?.rechtsstreitigkeiten?.einzelheitenZuDenRechtsstreitigkeitenZuG,
               ),
           },
@@ -645,7 +646,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             explanation: "Was waren die kritischen Punkte beim ESG-Rating?",
             shouldDisplay: (dataset: GdvData): boolean => dataset.allgemein?.rating?.esgRating == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.rating?.kritischePunkte),
+              formatFreeTextForDatatable(dataset.allgemein?.rating?.kritischePunkte),
           },
         ],
       },
@@ -712,7 +713,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.risiken?.wichtigsteESUndGRisikenUndBewertung),
+              formatFreeTextForDatatable(dataset.allgemein?.risiken?.wichtigsteESUndGRisikenUndBewertung),
           },
           {
             type: "cell",
@@ -722,7 +723,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.allgemein?.risiken?.hindernisseBeimUmgangMitEsgBedenken),
+              formatFreeTextForDatatable(dataset.allgemein?.risiken?.hindernisseBeimUmgangMitEsgBedenken),
           },
         ],
       },
@@ -766,7 +767,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.umwelt?.treibhausgasemissionen
                   ?.treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird,
               ),
@@ -779,7 +780,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.umwelt?.treibhausgasemissionen?.strategieUndZieleZurReduzierungVonTreibhausgasEmissionen,
               ),
           },
@@ -808,7 +809,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.umwelt?.produktion?.produkteZurVerringerungDerUmweltbelastung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.umwelt?.produktion?.verringerungenDerUmweltbelastung),
+              formatFreeTextForDatatable(dataset.umwelt?.produktion?.verringerungenDerUmweltbelastung),
           },
           {
             type: "cell",
@@ -862,7 +863,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.umwelt?.energieverbrauch?.unternehmensGruppenStrategieBzglEnergieverbrauch,
               ),
           },
@@ -902,7 +903,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.umwelt?.energieeffizienzImmobilienanlagen
                   ?.unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen,
               ),
@@ -940,7 +941,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.umwelt?.wasserverbrauch?.unternehmensGruppenStrategieBzglWasserverbrauch,
               ),
           },
@@ -978,7 +979,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.umwelt?.abfallproduktion?.unternehmensGruppenStrategieBzglAbfallproduktion,
               ),
           },
@@ -1009,7 +1010,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.umwelt?.abfallproduktion?.gefaehrlicherAbfall),
+              formatFreeTextForDatatable(dataset.umwelt?.abfallproduktion?.gefaehrlicherAbfall),
           },
         ],
       },
@@ -1039,7 +1040,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.umwelt?.biodiversitaet?.negativeAktivitaetenFuerDieBiologischeVielfalt == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.umwelt?.biodiversitaet?.negativeMassnahmenFuerDieBiologischeVielfalt),
+              formatFreeTextForDatatable(dataset.umwelt?.biodiversitaet?.negativeMassnahmenFuerDieBiologischeVielfalt),
           },
           {
             type: "cell",
@@ -1061,7 +1062,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.umwelt?.biodiversitaet?.positiveAktivitaetenFuerDieBiologischeVielfalt == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.umwelt?.biodiversitaet?.positiveMassnahmenFuerDieBiologischeVielfalt),
+              formatFreeTextForDatatable(dataset.umwelt?.biodiversitaet?.positiveMassnahmenFuerDieBiologischeVielfalt),
           },
         ],
       },
@@ -1322,7 +1323,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.soziales?.sicherheitUndWeiterbildung?.sicherheitsmassnahmenFuerMitarbeiter,
               ),
           },
@@ -1399,7 +1400,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.soziales?.einkommensgleichheit?.massnahmenZurVerbesserungDerEinkommensungleichheit,
               ),
           },
@@ -1454,7 +1455,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.soziales?.geschlechterdiversitaet?.definitionTopManagement),
+              formatFreeTextForDatatable(dataset.soziales?.geschlechterdiversitaet?.definitionTopManagement),
           },
           {
             type: "cell",
@@ -1464,7 +1465,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.soziales?.geschlechterdiversitaet?.einhaltungRechtlicherVorgaben),
+              formatFreeTextForDatatable(dataset.soziales?.geschlechterdiversitaet?.einhaltungRechtlicherVorgaben),
           },
         ],
       },
@@ -1510,7 +1511,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.soziales?.audit?.auditErgebnisse),
+              formatFreeTextForDatatable(dataset.soziales?.audit?.auditErgebnisse),
           },
         ],
       },
@@ -1783,7 +1784,10 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.unternehmensfuehrungGovernance?.sonstige?.trennungVonCeoOderVorsitzenden == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.sonstige?.amtszeitBisZurTrennung),
+              formatNumberForDatatable(
+                dataset.unternehmensfuehrungGovernance?.sonstige?.amtszeitBisZurTrennung,
+                "Jahre",
+              ),
           },
         ],
       },
@@ -1796,8 +1800,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
           {
             type: "cell",
             label: "Einbeziehung von Stakeholdern",
-            explanation:
-              "Gibt es einen kontinuierlichen Prozess des Dialogs mit den Stakeholdern des Unternehmens? Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.",
+            explanation: "Gibt es einen kontinuierlichen Prozess des Dialogs mit den Stakeholdern des Unternehmens?",
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
@@ -1813,7 +1816,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.unternehmensfuehrungGovernance?.stakeholder?.prozessDerEinbeziehungVonStakeholdern,
               ),
           },
@@ -1825,7 +1828,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
             shouldDisplay: (dataset: GdvData): boolean =>
               dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.unternehmensfuehrungGovernance?.stakeholder?.mechanismenZurAusrichtungAufStakeholder,
               ),
           },
@@ -1907,7 +1910,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
               dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten ==
               "Yes",
             valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.auswahlkriterien),
+              formatFreeTextForDatatable(dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.auswahlkriterien),
           },
         ],
       },

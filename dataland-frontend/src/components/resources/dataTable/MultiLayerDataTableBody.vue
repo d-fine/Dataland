@@ -7,7 +7,11 @@
         :data-cell-label="cellOrSectionConfig.label"
         :class="cellOrSectionConfig.class ?? null"
       >
-        <td class="headers-bg pl-4" :data-cell-label="cellOrSectionConfig.label" data-row-header="true">
+        <td
+          class="headers-bg pl-4 vertical-align-top header-column-width"
+          :data-cell-label="cellOrSectionConfig.label"
+          data-row-header="true"
+        >
           <span class="table-left-label">{{ cellOrSectionConfig.label }}</span>
           <em
             v-if="cellOrSectionConfig.explanation"
@@ -25,6 +29,8 @@
           :key="idx"
           :data-cell-label="cellOrSectionConfig.label"
           :data-dataset-index="idx"
+          :style="columnWidthStyle"
+          class="vertical-align-top"
         >
           <MultiLayerDataTableCell :content="cellOrSectionConfig.valueGetter(mldtDataset.dataset)" />
         </td>
@@ -69,6 +75,15 @@
   </template>
 </template>
 
+<style scoped>
+.vertical-align-top {
+  vertical-align: top;
+}
+.header-column-width {
+  width: 30%;
+}
+</style>
+
 <script setup lang="ts" generic="T">
 import {
   isCellOrSectionVisible,
@@ -79,7 +94,7 @@ import {
 import ChevronDownIcon from "primevue/icons/chevrondown";
 import ChevronLeftIcon from "primevue/icons/chevronleft";
 import MultiLayerDataTableBody from "@/components/resources/dataTable/MultiLayerDataTableBody.vue";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import MultiLayerDataTableCell from "@/components/resources/dataTable/MultiLayerDataTableCell.vue";
 import Tooltip from "primevue/tooltip";
 
@@ -109,6 +124,10 @@ function expandSectionsOnPageLoad(): void {
     }
   }
 }
+
+const columnWidthStyle = computed(() => {
+  return `width: ${70 / props.mldtDatasets.length}%`;
+});
 
 /**
  * Check if a crossed-eye-symbol shall be added to a section label to express to a reviewer that this section is
