@@ -67,6 +67,7 @@ export function getDataModelFieldCellConfig(path: string, field: Field): MLDTCel
       type: "cell",
       label: field.label,
       explanation: field.description,
+      showIfCondition: (dataset: FrameworkData) => field.showIf(dataset),
       shouldDisplay: (dataset: FrameworkData) =>
         field.showIf(dataset) && shouldValueBeDisplayed(valueGetter(dataset).displayValue),
       valueGetter: valueGetter,

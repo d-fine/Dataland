@@ -14,6 +14,7 @@ export type BadgeColor = "yellow" | "green" | "red" | "blue" | "purple" | "gray"
 export interface MLDTCellConfig<FrameworkDataType> {
   type: "cell";
   label: string;
+  showIfCondition: (dataset: FrameworkDataType) => boolean;
   shouldDisplay: (dataset: FrameworkDataType) => boolean;
   valueGetter: (dataset: FrameworkDataType) => AvailableMLDTDisplayObjectTypes;
   explanation?: string;

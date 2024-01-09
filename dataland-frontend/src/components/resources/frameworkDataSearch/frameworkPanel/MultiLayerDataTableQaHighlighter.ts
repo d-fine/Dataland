@@ -12,18 +12,33 @@ import {
  * This function edits a standard view-configuration in a way that it displays all cells but highlights cells that would
  * not be displayed to a user on the view-page.
  * @param config the input view configuration
+ * @param inReviewMode
  * @param displayStatusGettersOfAllParents a list of all the showDisplay-functions of the parents of the section or
  * cell that this function is currently looking at
  * @returns the modified hidden-highlighting view-config
  */
 export function editMultiLayerDataTableConfigForHighlightingHiddenFields<T>(
   config: MLDTConfig<T>,
+  inReviewMode: boolean,
   displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>,
 ): MLDTConfig<T> {
+  console.log('1++++++++', config)
+  console.log('22++++++++', inReviewMode)
+  console.log('33++++++++', displayStatusGettersOfAllParents)
   return config.map((cellOrSectionConfig) => {
-    if (cellOrSectionConfig.type == "cell")
-      return editCellConfigForHighlightingHiddenFields(cellOrSectionConfig, displayStatusGettersOfAllParents);
-    else return editSectionConfigForHighlightingHiddenFields(cellOrSectionConfig, displayStatusGettersOfAllParents);
+    if (cellOrSectionConfig.type == "cell") {
+      return editCellConfigForHighlightingHiddenFields(
+        cellOrSectionConfig,
+        inReviewMode,
+        displayStatusGettersOfAllParents,
+      );
+    } else {
+      return editSectionConfigForHighlightingHiddenFields(
+        cellOrSectionConfig,
+        inReviewMode,
+        displayStatusGettersOfAllParents,
+      );
+    }
   });
 }
 
@@ -36,6 +51,7 @@ export function editMultiLayerDataTableConfigForHighlightingHiddenFields<T>(
  */
 function editSectionConfigForHighlightingHiddenFields<T>(
   sectionConfig: MLDTSectionConfig<T>,
+  inReviewMode: boolean,
   displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>,
 ): MLDTSectionConfig<T> {
   const displayStatusGetterOfThisSection = sectionConfig.shouldDisplay;
@@ -68,6 +84,7 @@ function editSectionConfigForHighlightingHiddenFields<T>(
     shouldDisplay: () => true,
     children: editMultiLayerDataTableConfigForHighlightingHiddenFields(
       sectionConfig.children,
+        inReviewMode,
       displayStatusGettersToPassDownToChildren,
     ),
     areThisSectionAndAllParentSectionsDisplayedForTheDataset: areThisSectionAndAllParentSectionsDisplayedForTheDataset,
@@ -77,18 +94,30 @@ function editSectionConfigForHighlightingHiddenFields<T>(
 /**
  * Edits a single cell to the show-always directive
  * @param cellConfig the cell config to convert
+ * @param inReviewMode
  * @param displayStatusGettersOfAllParents a list of all the showDisplay-functions of the parents of the cell that this
  * function is currently looking at
  * @returns the modified cell config
  */
 function editCellConfigForHighlightingHiddenFields<T>(
   cellConfig: MLDTCellConfig<T>,
+  inReviewMode: boolean,
   displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>,
 ): MLDTCellConfig<T> {
   const cellHasAtLeastOneParent = !!displayStatusGettersOfAllParents && displayStatusGettersOfAllParents.length > 0;
   return {
     ...cellConfig,
-    shouldDisplay: () => true,
+    shouldDisplay: (dataset: T): boolean => {
+      if (inReviewMode) {
+        return true;
+      } else {
+        return cellConfig.showIfCondition(dataset)
+      }
+      // console.log("label", cellConfig?.label);
+      // console.log("inReviewMode--->", JSON.stringify(inReviewMode));
+      // console.log("cellConfig", JSON.stringify(cellConfig.shouldDisplay(dataset)));
+      return cellConfig.shouldDisplay(dataset);
+    },
     valueGetter: (dataset: T): AvailableMLDTDisplayObjectTypes => {
       const originalDisplayValue = cellConfig.valueGetter(dataset);
       const areAllParentSectionsDisplayed = (): boolean => {
