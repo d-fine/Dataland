@@ -1,8 +1,6 @@
 import logging
 import pika.exceptions
 
-from .properties import *
-
 
 class RabbitMq:
     def __init__(self, connection_parameters: pika.connection.Parameters):
