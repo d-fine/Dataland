@@ -39,6 +39,7 @@ class QaServiceTest(
     lateinit var qaService: QaService
 
     val dataId = "TestDataId"
+    val noIdPayload = JSONObject(mapOf("identifier" to "", "comment" to "test")).toString()
 
     @BeforeEach
     fun resetMocks() {
@@ -56,7 +57,7 @@ class QaServiceTest(
         val correlationId = "correlationId"
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             qaService.addDataToQueue(
-                "{\"identifier\": \"\", \"comment\": \"test\"}",
+                noIdPayload,
                 correlationId,
                 MessageType.ManualQaRequested,
             )
@@ -91,7 +92,7 @@ class QaServiceTest(
         val correlationId = "correlationId"
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
             qaService.assureQualityOfDocument(
-                "{\"identifier\": \"\", \"comment\": \"test\"}",
+                noIdPayload,
                 correlationId,
                 MessageType.ManualQaRequested,
             )
