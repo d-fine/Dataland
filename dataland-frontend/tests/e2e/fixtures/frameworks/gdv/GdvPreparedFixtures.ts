@@ -1,5 +1,5 @@
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type GdvData, YesNo } from "@clients/backend";
+import { type BerichterstattungEnergieverbrauchValues, type GdvData, YesNo } from "@clients/backend";
 import { generateGdvFixtures } from "./GdvDataFixtures";
 
 /**
@@ -93,6 +93,11 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<GdvData>): void {
   if (newFixture.t.umwelt?.produktion?.oekologischerMindestStandardFuerProduktionsprozesse) {
     newFixture.t.umwelt.produktion.oekologischerMindestStandardFuerProduktionsprozesse = YesNo.Yes;
   }
+  if (newFixture.t.umwelt?.energieverbrauch?.berichterstattungEnergieverbrauch) {
+    const currentYear = newFixture.t.umwelt.energieverbrauch.berichterstattungEnergieverbrauch.currentYear;
+    newFixture.t.umwelt.energieverbrauch.berichterstattungEnergieverbrauch.yearlyData =
+      createEnergieverbrauchWithNullNumbers(currentYear);
+  }
   if (newFixture.t.umwelt?.biodiversitaet?.negativeAktivitaetenFuerDieBiologischeVielfalt) {
     newFixture.t.umwelt.biodiversitaet.negativeAktivitaetenFuerDieBiologischeVielfalt = YesNo.Yes;
   }
@@ -121,4 +126,23 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<GdvData>): void {
     newFixture.t.unternehmensfuehrungGovernance.lieferantenauswahl.esgKriterienUndUeberwachungDerLieferanten =
       YesNo.Yes;
   }
+}
+
+/**
+ * Creates the contents for a time series based on a current year value and sets null for all numbers
+ * @param currentYear is the base year for the time series
+ * @returns the map of years to time series data objects
+ */
+function createEnergieverbrauchWithNullNumbers(currentYear: number): {
+  [p: string]: BerichterstattungEnergieverbrauchValues;
+} {
+  const objectToReturn: { [p: string]: BerichterstattungEnergieverbrauchValues } = {};
+  for (let i = -3; i <= 3; i++) {
+    objectToReturn[(currentYear + i).toString()] = {
+      energieverbrauch: null,
+      prozentDesVerbrauchsErneuerbarerEnergien: null,
+      ggfProzentDerErneuerbarenEnergieerzeugung: null,
+    };
+  }
+  return objectToReturn;
 }
