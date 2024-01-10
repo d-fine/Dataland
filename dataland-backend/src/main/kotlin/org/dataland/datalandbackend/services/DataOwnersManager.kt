@@ -32,31 +32,32 @@ class DataOwnersManager(
      */
     @Transactional
     fun addDataOwnerToCompany(companyId: String, userId: String): CompanyDataOwnersEntity {
-        if (!companyRepository.existsById(companyId)) {
+        return if (companyRepository.existsById(companyId)) {
+            if (dataOwnerRepository.existsById(companyId)) {
+                val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
+                if (dataOwnersForCompany.dataOwners.contains(userId)) {
+                    logger.info(
+                        "User with Id $userId is already data owner of company with Id $companyId.",
+                    )
+                    dataOwnersForCompany
+                } else {
+                    logger.info("New data owner with Id $userId added to company with Id $companyId.")
+                    dataOwnersForCompany.dataOwners.add(userId)
+                    dataOwnerRepository.save(dataOwnersForCompany)
+                }
+            } else {
+                logger.info("A first data owner with Id $userId is added to company with Id $companyId.")
+                dataOwnerRepository.save(
+                    CompanyDataOwnersEntity(
+                        companyId = companyId,
+                        dataOwners = mutableListOf(userId),
+                    ),
+                )
+            }
+        } else {
             throw ResourceNotFoundApiException(
                 "Company not found",
                 "There is no company corresponding to the provided Id $companyId stored on Dataland.",
-            )
-        }
-        if (dataOwnerRepository.existsById(companyId)) {
-            val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
-            return if (dataOwnersForCompany.dataOwners.contains(userId)) {
-                logger.info(
-                    "User with Id $userId is already data owner of company with Id $companyId.",
-                )
-                dataOwnersForCompany
-            } else {
-                logger.info("New data owner with Id $userId added to company with Id $companyId.")
-                dataOwnersForCompany.dataOwners.add(userId)
-                dataOwnerRepository.save(dataOwnersForCompany)
-            }
-        } else {
-            logger.info("A first data owner with Id $userId is added to company with Id $companyId.")
-            return dataOwnerRepository.save(
-                CompanyDataOwnersEntity(
-                    companyId = companyId,
-                    dataOwners = mutableListOf(userId),
-                ),
             )
         }
     }
@@ -80,7 +81,7 @@ class DataOwnersManager(
         val dataOwnersOfCompany = dataOwnerRepository.findById(companyId).getOrElse {
             throw ResourceNotFoundApiException(
                 "No data owners found",
-                "The companyId '$companyId' does not have any data owners.",
+                "The companyId '$companyId' do not have any data owners.",
             )
         }
         return dataOwnersOfCompany

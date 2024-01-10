@@ -138,7 +138,7 @@ class DataOwnerControllerTest {
     }
 
     @Test
-    fun `post data owners either to an unknown company or as a non-admin and check exceptions`() {
+    fun `post data owners either to an unknown company or not as an admin and check exceptions`() {
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Admin)
         val randomCompanyId = UUID.randomUUID()
         val userId = UUID.randomUUID()
