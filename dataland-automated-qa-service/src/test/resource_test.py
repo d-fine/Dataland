@@ -38,9 +38,7 @@ def get_data_meta_info_mock(data_id: str, client) -> DataMetaInformation:
 
 def get_sme_data_mock(data_id: str, client):
     data = dict({"dummy": "exists"})
-    return CompanyAssociatedDataSmeData(
-        company_id="company-id", reporting_period="reporting period", data=data
-    )
+    return CompanyAssociatedDataSmeData(company_id="company-id", reporting_period="reporting period", data=data)
 
 
 class ResourceTest(unittest.TestCase):

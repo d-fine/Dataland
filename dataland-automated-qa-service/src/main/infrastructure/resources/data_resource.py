@@ -57,9 +57,7 @@ def _get_data_retrieval_method(
     if data_type == DataTypeEnum.EUTAXONOMY_FINANCIALS:
         return lambda data_id, client: get_eu_taxonomy_financials_data(data_id, client=client).data
     elif data_type == DataTypeEnum.EUTAXONOMY_NON_FINANCIALS:
-        return lambda data_id, client: get_eu_taxonomy_non_financials_data(
-            data_id, client=client
-        ).data
+        return lambda data_id, client: get_eu_taxonomy_non_financials_data(data_id, client=client).data
     elif data_type == DataTypeEnum.LKSG:
         return lambda data_id, client: get_lksg_data(data_id, client=client).data
     elif data_type == DataTypeEnum.SFDR:

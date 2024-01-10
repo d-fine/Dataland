@@ -115,22 +115,14 @@ def process_qa_request(
         f"Received {resource_type} with ID {resource.id} for automated review. (Correlation ID: {correlation_id})"
     )
     if bypass_qa:
-        logging.info(
-            f"Bypassing QA for {resource_type} with ID {resource.id}. (Correlation ID: {correlation_id})"
-        )
-        _send_qa_completed_message(
-            channel, routing_key, resource.id, QaStatus.ACCEPTED, correlation_id
-        )
+        logging.info(f"Bypassing QA for {resource_type} with ID {resource.id}. (Correlation ID: {correlation_id})")
+        _send_qa_completed_message(channel, routing_key, resource.id, QaStatus.ACCEPTED, correlation_id)
     else:
-        logging.info(
-            f"Evaluating {resource_type} with ID {resource.id}. (Correlation ID: {correlation_id})"
-        )
+        logging.info(f"Evaluating {resource_type} with ID {resource.id}. (Correlation ID: {correlation_id})")
         try:
             validation_result = validate(resource, correlation_id)
             _assert_status_is_valid_for_qa_completion(validation_result)
-            _send_qa_completed_message(
-                channel, routing_key, resource.id, validation_result, correlation_id
-            )
+            _send_qa_completed_message(channel, routing_key, resource.id, validation_result, correlation_id)
         except AutomaticQaNotPossibleError as e:
             logging.warning("ABCDEFG")
             logging.warning(f'itentifier: "{resource.id}" "{type(resource.id)}"')

@@ -9,4 +9,4 @@ ruff format src
 pip install autopep8
 
 # Run autopep8 on your project files
-autopep8 --in-place --recursive --max-line-length 100 src
+autopep8 --in-place --recursive --max-line-length 120 src

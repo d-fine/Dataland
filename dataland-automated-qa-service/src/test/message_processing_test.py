@@ -28,9 +28,7 @@ def build_qa_completed_message_body(qa_result: QaStatus) -> bytes:
     return json.dumps({"identifier": "dummy-id", "validationResult": qa_result}).encode("UTF-8")
 
 
-qa_forwarded_message_body = json.dumps({"identifier": "dummy-id", "comment": "Test"}).encode(
-    "UTF-8"
-)
+qa_forwarded_message_body = json.dumps({"identifier": "dummy-id", "comment": "Test"}).encode("UTF-8")
 
 
 class MessageProcessingTest(unittest.TestCase):

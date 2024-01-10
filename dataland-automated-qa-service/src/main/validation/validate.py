@@ -14,9 +14,7 @@ def validate_data(resource: DataResource, correlation_id: str) -> QaStatus:
     and the data should be manually reviewed
     :returns: the result of the review (must be either Accepted or Rejected)
     """
-    logging.info(
-        f"Auto-forwarding data with id {resource.id} to manual Qa. (Correlation ID: {correlation_id})"
-    )
+    logging.info(f"Auto-forwarding data with id {resource.id} to manual Qa. (Correlation ID: {correlation_id})")
     raise AutomaticQaNotPossibleError("dummy implementation")
 
 
@@ -30,7 +28,5 @@ def validate_document(resource: DocumentResource, correlation_id: str) -> QaStat
     and the document should be manually reviewed
     :returns: the result of the review (must be either Accepted or Rejected)
     """
-    logging.info(
-        f"Auto-forwarding document with id {resource.id} to manual Qa. (Correlation ID: {correlation_id})"
-    )
+    logging.info(f"Auto-forwarding document with id {resource.id} to manual Qa. (Correlation ID: {correlation_id})")
     raise AutomaticQaNotPossibleError("dummy implementation")

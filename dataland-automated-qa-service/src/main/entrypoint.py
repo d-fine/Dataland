@@ -7,9 +7,7 @@ import logging
 
 def main():
     """This is the entrypoint function"""
-    logging.basicConfig(
-        format="%(asctime)s %(levelname)s: %(name)s: %(message)s", level=logging.INFO
-    )
+    logging.basicConfig(format="%(asctime)s %(levelname)s: %(name)s: %(message)s", level=logging.INFO)
     logging.info("Starting service")
     while True:
         try:
