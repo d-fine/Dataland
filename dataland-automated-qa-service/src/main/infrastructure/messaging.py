@@ -57,6 +57,36 @@ def qa_document(channel, method, properties, body: bytes):
     )
 
 
+def _assert_status_is_valid_for_qa_completion(status: QaStatus):
+    if status != QaStatus.ACCEPTED and status != QaStatus.REJECTED:
+        raise ValueError(
+            f'Argument "status" with value "{status}" must be in range [QaStatus.ACCEPTED, QaStatus.REJECTED]'
+        )
+
+
+def _send_qa_completed_message(
+        channel: pika.adapters.blocking_connection.BlockingChannel,
+        routing_key: str,
+        resource_id: str,
+        status: QaStatus,
+        correlation_id: str,
+):
+    _assert_status_is_valid_for_qa_completion(status)
+    message_to_send = {"identifier": resource_id, "validationResult": status}
+    channel.basic_publish(
+        exchange=p.mq_quality_assured_exchange,
+        routing_key=routing_key,
+        body=json.dumps(message_to_send).encode("UTF-8"),
+        properties=pika.BasicProperties(
+            headers={
+                p.mq_correlation_id_header: correlation_id,
+                p.mq_message_type_header: p.mq_qa_completed_type,
+            }
+        ),
+        mandatory=True,
+    )
+
+
 def process_qa_request(
     channel: pika.adapters.blocking_connection.BlockingChannel,
     method,
@@ -119,33 +149,3 @@ def process_qa_request(
                 mandatory=True,
             )
     channel.basic_ack(delivery_tag=method.delivery_tag)
-
-
-def _send_qa_completed_message(
-    channel: pika.adapters.blocking_connection.BlockingChannel,
-    routing_key: str,
-    resource_id: str,
-    status: QaStatus,
-    correlation_id: str,
-):
-    _assert_status_is_valid_for_qa_completion(status)
-    message_to_send = {"identifier": resource_id, "validationResult": status}
-    channel.basic_publish(
-        exchange=p.mq_quality_assured_exchange,
-        routing_key=routing_key,
-        body=json.dumps(message_to_send).encode("UTF-8"),
-        properties=pika.BasicProperties(
-            headers={
-                p.mq_correlation_id_header: correlation_id,
-                p.mq_message_type_header: p.mq_qa_completed_type,
-            }
-        ),
-        mandatory=True,
-    )
-
-
-def _assert_status_is_valid_for_qa_completion(status: QaStatus):
-    if status != QaStatus.ACCEPTED and status != QaStatus.REJECTED:
-        raise ValueError(
-            f'Argument "status" with value "{status}" must be in range [QaStatus.ACCEPTED, QaStatus.REJECTED]'
-        )
