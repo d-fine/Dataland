@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.DataOwnerControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyDataOwners
+import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -31,21 +32,34 @@ class DataOwnerControllerTest {
 
     @Test
     fun `test functionality of the data owner`() {
-        val companyId = UUID.fromString(
+        val firstCompanyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
-        val dataReaderUserId = "18b67ecc-1176-4506-8414-1e81661017ca"
+        val secondCompanyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
+
+        val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Reader)
-        // testen dass die rechte nicht vorhanden sind () post companyA no und companyB no
-        // post request
+        val frameworkSampleData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+            .getTData(1)[0]
+
+        assertFailingApiUploadToCompany(firstCompanyId, frameworkSampleData)
+        assertFailingApiUploadToCompany(secondCompanyId, frameworkSampleData)
+
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Admin)
-        dataOwnerApi.postDataOwner(companyId, UUID.fromString(dataReaderUserId))
+        dataOwnerApi.postDataOwner(firstCompanyId, dataReaderUserId)
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Reader)
-        // testen dass die rechte vorhanden sind companyA yes companyB no
+
+        assertSucceedingApiUploadToCompany(firstCompanyId, frameworkSampleData)
+        assertFailingApiUploadToCompany(secondCompanyId, frameworkSampleData)
+
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Admin)
-        dataOwnerApi.deleteDataOwner(companyId.toString(), dataReaderUserId)
+        dataOwnerApi.deleteDataOwner(firstCompanyId, dataReaderUserId)
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Reader)
-        // testen dass die rechte nicht vohanden sind () company A no companyB no
+
+        assertFailingApiUploadToCompany(firstCompanyId, frameworkSampleData)
+        assertFailingApiUploadToCompany(secondCompanyId, frameworkSampleData)
     }
 
     @Test
@@ -67,14 +81,14 @@ class DataOwnerControllerTest {
         assertEquals(dataOwnersForCompanyAfterSecondRequest, dataOwnersForCompanyAfterDuplicateRequest)
 
         val dataOwnersForCompanyAfterRemovingLastUser = dataOwnerApi.deleteDataOwner(
-            companyId.toString(),
-            anotherUserId.toString(),
+            companyId,
+            anotherUserId,
         )
         validateDataOwnersForCompany(companyId, listOf(userId), dataOwnersForCompanyAfterRemovingLastUser)
 
         val dataOwnersAfterRemovingBothUsers = dataOwnerApi.deleteDataOwner(
-            companyId.toString(),
-            userId.toString(),
+            companyId,
+            userId,
         )
         assertEquals(dataOwnersAfterRemovingBothUsers, CompanyDataOwners(companyId.toString(), mutableListOf()))
     }
@@ -92,6 +106,28 @@ class DataOwnerControllerTest {
                 "There is no company corresponding to the provided Id $companyId stored on " +
                     "Dataland.",
             ),
+        )
+    }
+
+    private fun assertFailingApiUploadToCompany(companyId: UUID, dataSet: EuTaxonomyDataForNonFinancials) {
+        val reportingPeriod = "2022"
+        val unauthorizedRequestResponse = assertThrows<ClientException> {
+            apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
+                companyId.toString(),
+                dataSet,
+                reportingPeriod,
+            )
+        }
+        assertErrorCodeForClientException(unauthorizedRequestResponse, 403)
+    }
+
+    private fun assertSucceedingApiUploadToCompany(companyId: UUID, dataSet: EuTaxonomyDataForNonFinancials) {
+        val reportingPeriod = "2022"
+        apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
+            companyId.toString(),
+            dataSet,
+            reportingPeriod,
+            false,
         )
     }
 
@@ -146,7 +182,7 @@ class DataOwnerControllerTest {
         validateDataOwnersForCompany(companyId, listOf(userId), dataOwnersForCompany)
         val dataOwnersAfterInvalidDeleteRequest =
             assertThrows<ClientException> {
-                dataOwnerApi.deleteDataOwner(companyId.toString(), unknownUserId.toString())
+                dataOwnerApi.deleteDataOwner(companyId, unknownUserId)
             }
         assertErrorCodeForClientException(dataOwnersAfterInvalidDeleteRequest, 404)
     }

@@ -17,7 +17,7 @@ open class InsufficientRightsApiException(
             errorType = "insufficient-rights",
             summary = summary,
             message = message,
-            httpStatus = HttpStatus.UNAUTHORIZED,
+            httpStatus = HttpStatus.FORBIDDEN,
         )
     }
 }
