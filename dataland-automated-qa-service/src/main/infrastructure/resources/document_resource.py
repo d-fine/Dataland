@@ -1,5 +1,7 @@
 import logging
 
+from typing_extensions import override
+
 from .resource import Resource
 from ..properties import document_manager_api_url
 from ..keycloak import get_access_token
@@ -15,6 +17,7 @@ class DocumentResource(Resource):
     This class represents a document
     """
 
+    @override
     def _load(self) -> None:
         logging.info(f"Loading document resource with ID {self.id}")
         token = get_access_token()

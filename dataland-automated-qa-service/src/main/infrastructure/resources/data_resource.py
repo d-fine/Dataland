@@ -3,6 +3,7 @@ from typing import Any, cast
 from http import HTTPStatus
 
 from dataland_backend_api_documentation_client import errors
+from typing_extensions import override
 
 from .resource import Resource
 from ..keycloak import get_access_token
@@ -46,6 +47,7 @@ class DataResource(Resource):
     This class represents a dataset
     """
 
+    @override
     def _load(self) -> None:
         logging.info(f"Loading data resource with ID {self.id}")
         token = get_access_token()

@@ -1,6 +1,8 @@
 import unittest
 from unittest.mock import Mock
 
+from typing_extensions import override
+
 import main.infrastructure.resources.data_resource as data_resources
 import main.infrastructure.resources.document_resource as document_resources
 from main.infrastructure.resources import Resource, DataResource, DocumentResource
@@ -22,6 +24,7 @@ class TestResource(Resource):
 
     counter = 0
 
+    @override
     def _load(self) -> None:
         TestResource.counter += 1
 
