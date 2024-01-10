@@ -61,7 +61,7 @@ def qa_document(channel: BlockingChannel, method: Basic.Deliver, properties: Bas
 
 
 def _assert_status_is_valid_for_qa_completion(status: QaStatus) -> None:
-    if status != QaStatus.ACCEPTED and status != QaStatus.REJECTED:
+    if status not in {QaStatus.ACCEPTED, QaStatus.REJECTED}:
         raise ValueError(
             f'Argument "status" with value "{status}" must be in range [QaStatus.ACCEPTED, QaStatus.REJECTED]'
         )
