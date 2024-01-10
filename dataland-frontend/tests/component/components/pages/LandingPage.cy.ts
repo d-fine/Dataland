@@ -82,9 +82,9 @@ function checkNewFooter(): void {
   cy.get(".footer__copyright").should("contain.text", expectedCopyrightText);
 
   const essentialLinks = [
-    { href: "/imprint", text: "Imprint" },
-    { href: "/dataprivacy", text: "Data Privacy" },
-    { href: "/terms", text: "Legal" },
+    { href: "/imprint", text: "IMPRINT" },
+    { href: "/dataprivacy", text: "DATA PRIVACY" },
+    { href: "/terms", text: "LEGAL" },
   ];
 
   essentialLinks.forEach((link) => {
