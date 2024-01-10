@@ -15,7 +15,10 @@ The following describes steps required to run the service on the host machine:
   - Create the modules from these clients: If you went with the venv setup as described above just run 
 `pip install ./build/clients/<client_module>` (if your terminal's working directory is the subproject root) for each of the clients.
 - Also, the package needs to be available for itself. Run `pip install -e .` to install the code as a package.
-- To run the module locally run `./src/main/entrypoint.py` using the `python` command 
+- To run the module locally you need to change some entries in `properties.py`:
+  - `host` in the `ConnectionParameters` must be set to `"localhost"`
+  - `document_manager_api_url` must be set to `"https://local-dev.dataland.com/documents"`
+- Then run `./src/main/entrypoint.py` using the `python` command 
 (e.g. `python ./src/main/entrypoint.py`, depending on your terminal's working directory)
 
 # Auto Formatting (for Linter)
