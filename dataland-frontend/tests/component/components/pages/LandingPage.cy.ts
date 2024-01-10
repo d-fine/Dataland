@@ -1,4 +1,4 @@
-import { checkButton, checkImage, checkAnchorByContent, checkAnchorByTarget } from "@ct/testUtils/ExistenceChecks";
+import { checkButton, checkImage, checkAnchorByContent } from "@ct/testUtils/ExistenceChecks";
 import NewLandingPage from "@/components/pages/NewLandingPage.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import content from "@/assets/content.json";
