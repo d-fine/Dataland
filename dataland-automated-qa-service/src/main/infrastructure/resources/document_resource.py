@@ -2,9 +2,9 @@ import logging
 
 from typing_extensions import override
 
-from .resource import Resource
-from ..properties import document_manager_api_url
-from ..keycloak import get_access_token
+from main.infrastructure.resources import Resource
+from main.infrastructure.properties import document_manager_api_url
+from main.infrastructure.keycloak import get_access_token
 
 from dataland_backend_api_documentation_client.client import AuthenticatedClient
 from dataland_document_manager_api_documentation_client.api.document_controller.get_document import (

@@ -1,6 +1,6 @@
 [tool.ruff]
 
 extend = "../../pyproject.toml"
-select = ["E", "F", "C90", "W", "N", "ASYNC",
+select = ["E", "F", "C90", "W", "N", "ASYNC", "TID",
     "ANN001", "ANN002", "ANN003", "ANN102", "ANN201", "ANN202", "ANN204", "ANN205", "ANN206", "ANN401",
     "C4", "PIE", "T20", "Q", "RSE", "RET", "SLF", "SIM", "ARG", "FIX", "ERA", "PL", "PERF", "FURB", "LOG", "RUF"]

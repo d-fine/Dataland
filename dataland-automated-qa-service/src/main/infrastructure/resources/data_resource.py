@@ -5,9 +5,9 @@ from http import HTTPStatus
 from dataland_backend_api_documentation_client import errors
 from typing_extensions import override
 
-from .resource import Resource
-from ..keycloak import get_access_token
-from ..properties import backend_api_url
+from main.infrastructure.resources import Resource
+from main.infrastructure.keycloak import get_access_token
+from main.infrastructure.properties import backend_api_url
 
 from dataland_backend_api_documentation_client.api.meta_data_controller.get_data_meta_info import (
     sync as get_data_meta_info,
