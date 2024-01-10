@@ -9,12 +9,14 @@ from ..properties import backend_api_url
 from dataland_backend_api_documentation_client.api.meta_data_controller.get_data_meta_info import (
     sync as get_data_meta_info,
 )
-from dataland_backend_api_documentation_client.api.eu_taxonomy_data_for_financials_controller.get_company_associated_eu_taxonomy_data_for_financials import (
-    sync as get_eu_taxonomy_financials_data,
-)
-from dataland_backend_api_documentation_client.api.eu_taxonomy_data_for_non_financials_controller.get_company_associated_eu_taxonomy_data_for_non_financials import (
-    sync as get_eu_taxonomy_non_financials_data,
-)
+from dataland_backend_api_documentation_client.api.eu_taxonomy_data_for_financials_controller\
+    .get_company_associated_eu_taxonomy_data_for_financials import (
+        sync as get_eu_taxonomy_financials_data,
+    )
+from dataland_backend_api_documentation_client.api.eu_taxonomy_data_for_non_financials_controller\
+    .get_company_associated_eu_taxonomy_data_for_non_financials import (
+        sync as get_eu_taxonomy_non_financials_data,
+    )
 from dataland_backend_api_documentation_client.api.lksg_data_controller.get_company_associated_lksg_data import (
     sync as get_lksg_data,
 )
@@ -57,17 +59,16 @@ def _get_data_retrieval_method(
 ) -> Callable[[str, AuthenticatedClient], any]:
     if data_type == DataTypeEnum.EUTAXONOMY_FINANCIALS:
         return lambda data_id, client: get_eu_taxonomy_financials_data(data_id, client=client).data
-    elif data_type == DataTypeEnum.EUTAXONOMY_NON_FINANCIALS:
+    if data_type == DataTypeEnum.EUTAXONOMY_NON_FINANCIALS:
         return lambda data_id, client: get_eu_taxonomy_non_financials_data(data_id, client=client).data
-    elif data_type == DataTypeEnum.LKSG:
+    if data_type == DataTypeEnum.LKSG:
         return lambda data_id, client: get_lksg_data(data_id, client=client).data
-    elif data_type == DataTypeEnum.SFDR:
+    if data_type == DataTypeEnum.SFDR:
         return lambda data_id, client: get_sfdr_data(data_id, client=client).data
-    elif data_type == DataTypeEnum.P2P:
+    if data_type == DataTypeEnum.P2P:
         return lambda data_id, client: get_p2p_data(data_id, client=client).data
-    elif data_type == DataTypeEnum.SME:
+    if data_type == DataTypeEnum.SME:
         return lambda data_id, client: get_sme_data(data_id, client=client).data
-    elif data_type == DataTypeEnum.GDV:
+    if data_type == DataTypeEnum.GDV:
         return lambda data_id, client: get_gdv_data(data_id, client=client).data
-    else:
-        raise ValueError(f"No client specified for data type {data_type}")
+    raise ValueError(f"No client specified for data type {data_type}")
