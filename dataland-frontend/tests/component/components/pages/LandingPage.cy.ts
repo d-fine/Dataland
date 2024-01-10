@@ -4,6 +4,7 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import content from "@/assets/content.json";
 import { type Page, type Section } from "@/types/ContentTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { setMobileDeviceViewport } from "@sharedUtils/TestSetupUtils";
 
 describe("Component test for the landing page", () => {
   it("Check if essential elements are present", () => {
@@ -26,6 +27,9 @@ describe("Component test for the landing page", () => {
       cy.get("button.joincampaign__button").should("exist");
       cy.get("button.getintouch__text-button").should("exist");
       checkNewFooter();
+
+      setMobileDeviceViewport();
+      validateTheHeader();
     });
   });
 });
