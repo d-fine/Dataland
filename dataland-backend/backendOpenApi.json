@@ -631,6 +631,68 @@
       }
     },
     "/data-owners": {
+      "get": {
+        "tags": [
+          "data-owner-controller"
+        ],
+        "summary": "Retrieve the data owner(s) to a company.",
+        "description": "Get a list of data owner(s) for the specified company.",
+        "operationId": "getDataOwners",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data owner.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
       "post": {
         "tags": [
           "data-owner-controller"
@@ -712,7 +774,8 @@
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             }
           },
           {
@@ -720,7 +783,8 @@
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
@@ -979,13 +1043,13 @@
         ],
         "responses": {
           "200": {
-            "description": "The specified user is data owner of the given company."
-          },
-          "404": {
-            "description": "The specified user isn\u0027t data owner of the given company."
+            "description": "The specified user is data owner of the company."
           },
           "400": {
             "description": "The specified company does not exist on Dataland."
+          },
+          "404": {
+            "description": "The specified user isn\u0027t data owner of the company."
           },
           "default": {
             "description": "An error occurred",

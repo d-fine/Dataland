@@ -43,7 +43,7 @@ class DataOwnerControllerTest {
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Reader)
         // testen dass die rechte vorhanden sind companyA yes companyB no
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Admin)
-        dataOwnerApi.deleteDataOwner(companyId.toString(), dataReaderUserId)
+        dataOwnerApi.deleteDataOwner(companyId, UUID.fromString(dataReaderUserId))
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Reader)
         // testen dass die rechte nicht vohanden sind () company A no companyB no
     }
@@ -66,16 +66,10 @@ class DataOwnerControllerTest {
         val dataOwnersForCompanyAfterDuplicateRequest = dataOwnerApi.postDataOwner(companyId, userId)
         assertEquals(dataOwnersForCompanyAfterSecondRequest, dataOwnersForCompanyAfterDuplicateRequest)
 
-        val dataOwnersForCompanyAfterRemovingLastUser = dataOwnerApi.deleteDataOwner(
-            companyId.toString(),
-            anotherUserId.toString(),
-        )
+        val dataOwnersForCompanyAfterRemovingLastUser = dataOwnerApi.deleteDataOwner(companyId, anotherUserId)
         validateDataOwnersForCompany(companyId, listOf(userId), dataOwnersForCompanyAfterRemovingLastUser)
 
-        val dataOwnersAfterRemovingBothUsers = dataOwnerApi.deleteDataOwner(
-            companyId.toString(),
-            userId.toString(),
-        )
+        val dataOwnersAfterRemovingBothUsers = dataOwnerApi.deleteDataOwner(companyId, userId)
         assertEquals(dataOwnersAfterRemovingBothUsers, CompanyDataOwners(companyId.toString(), mutableListOf()))
     }
 
@@ -123,7 +117,7 @@ class DataOwnerControllerTest {
         }
         assertErrorCodeForClientException(headExceptionForNotFoundDataOwner, 404)
 
-        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.entries.filter { it != TechnicalUser.Admin }.random())
+        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.values().filter { it != TechnicalUser.Admin }.random())
         val postExceptionForUnauthorizedRequest = assertThrows<ClientException> {
             dataOwnerApi.postDataOwner(companyId, userId)
         }
@@ -146,7 +140,7 @@ class DataOwnerControllerTest {
         validateDataOwnersForCompany(companyId, listOf(userId), dataOwnersForCompany)
         val dataOwnersAfterInvalidDeleteRequest =
             assertThrows<ClientException> {
-                dataOwnerApi.deleteDataOwner(companyId.toString(), unknownUserId.toString())
+                dataOwnerApi.deleteDataOwner(companyId, unknownUserId)
             }
         assertErrorCodeForClientException(dataOwnersAfterInvalidDeleteRequest, 404)
     }
