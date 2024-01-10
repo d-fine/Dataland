@@ -30,12 +30,11 @@ fun interface AdminDataManipulationApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully checked that identifier exists."),
-            ApiResponse(responseCode = "404", description = "Successfully checked that identifier does not exist."),
+            ApiResponse(responseCode = "200", description = "Successfully deleted the dataset."),
+            ApiResponse(responseCode = "404", description = "Dataset does not exist."),
         ],
     )
     @DeleteMapping(
-// TODO response type should be adapted, right now its a string that can not be parsed as json
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun deleteCompanyAssociatedData(

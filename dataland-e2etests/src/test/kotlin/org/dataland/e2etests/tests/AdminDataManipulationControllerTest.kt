@@ -1,7 +1,6 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -18,28 +17,24 @@ class AdminDataManipulationControllerTest {
     private val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithoutIdentifiers(1).first()
 
-   /* @Test
+    @Test
     fun `post a dummy company and a data set for it and check if that dummy data set can be deleted`() {
         val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
             testCompanyInformation,
             testDataEuTaxonomyNonFinancials,
         )
-        val companyAssociatedDataEuTaxonomyDataForNonFinancials =
-            apiAccessor.adminDataManipulationControllerApi.deleteCompanyAssociatedData(
-                mapOfIds.getValue("dataId"),
-            )
-
-        assertEquals(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
-                mapOfIds.getValue("companyId"),
-                "",
-                testDataEuTaxonomyNonFinancials,
-            ),
-            companyAssociatedDataEuTaxonomyDataForNonFinancials,
-            "The posted and the received eu taxonomy data sets and/or their company IDs are not equal.",
+        apiAccessor.adminDataManipulationControllerApi.deleteCompanyAssociatedData(
+            mapOfIds.getValue("dataId"),
         )
+
+        val exception =
+            assertThrows<ClientException> {
+                apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+                    .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
+            }
+        assertEquals("Client error : 404 ", exception.message)
     }
-*/
+
     @Test
     fun `delete data as a user type which does not have the rights to do so and receive an error code 403`() {
         val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(

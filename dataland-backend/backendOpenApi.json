@@ -2748,24 +2748,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully checked that identifier exists.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Successfully deleted the dataset."
           },
           "404": {
-            "description": "Successfully checked that identifier does not exist.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": "Dataset does not exist."
           },
           "default": {
             "description": "An error occurred",
