@@ -69,16 +69,27 @@ function validateBrandsSection(): void {
 }
 
 /**
- * Check the new footer
+ * Check the new footer for long-term sustainability.
  */
 function checkNewFooter(): void {
   cy.get("footer").should("exist");
 
-  checkImage("Copyright ©   Dataland", getSingleImageNameInSection("Footer"));
-  cy.get(".footer__copyright").should("contain.text", `Copyright © ${new Date().getFullYear()} Dataland`);
+  cy.get(".footer__logo").should("exist");
 
-  checkAnchorByTarget("/imprint", "Imprint");
-  checkAnchorByTarget("/dataprivacy", "Data Privacy");
+  const currentYear = new Date().getFullYear();
+  const expectedCopyrightText = `Copyright © ${currentYear} Dataland`;
+
+  cy.get(".footer__copyright").should("contain.text", expectedCopyrightText);
+
+  const essentialLinks = [
+    { href: "/imprint", text: "Imprint" },
+    { href: "/dataprivacy", text: "Data Privacy" },
+    { href: "/terms", text: "Legal" },
+  ];
+
+  essentialLinks.forEach((link) => {
+    cy.get(`footer a[href='${link.href}']`).should("contain.text", link.text);
+  });
 }
 
 /**
