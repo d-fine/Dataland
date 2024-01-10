@@ -22,7 +22,7 @@ class TestResource(Resource):
 
     counter = 0
 
-    def _load(self) -> None:  # noqa: PLR6301
+    def _load(self) -> None:
         TestResource.counter += 1
 
 
