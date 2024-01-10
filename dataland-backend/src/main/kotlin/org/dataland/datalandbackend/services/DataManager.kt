@@ -338,7 +338,7 @@ class DataManager(
      * @param dataId the dataId of the dataset to be removed
      * @param correlationId the correlationId of the deletion request
      */
-    fun deleteCompanyAssociatedDataByDataId(dataId: String, correlationId: String): String {
+    fun deleteCompanyAssociatedDataByDataId(dataId: String, correlationId: String) {
         try {
             metaDataManager.deleteDataMetaInfo(dataId)
             val payload = JSONObject(
@@ -356,7 +356,6 @@ class DataManager(
                 "Received deletion request for dataset with DataId: " +
                     "$dataId with Correlation Id: $correlationId",
             )
-            return "Deleted dataset with dataId $dataId"
         } catch (e: ServerException) {
             logger.error(
                 "Error deleting data. Received ServerException with Message:" +

@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -31,11 +30,11 @@ fun interface AdminDataManipulationApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully removed data from the data store."),
+            ApiResponse(responseCode = "200", description = "Successfully checked that identifier exists."),
+            ApiResponse(responseCode = "404", description = "Successfully checked that identifier does not exist."),
         ],
     )
     @DeleteMapping(
-        produces = ["application/json"],
 // TODO response type should be adapted, right now its a string that can not be parsed as json
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -44,6 +43,5 @@ fun interface AdminDataManipulationApi {
         @Valid
         @RequestBody
         dataId: String,
-    ):
-        ResponseEntity<String>
+    )
 }

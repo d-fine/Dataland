@@ -2748,9 +2748,19 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully removed data from the data store.",
+            "description": "Successfully checked that identifier exists.",
             "content": {
-              "application/json": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Successfully checked that identifier does not exist.",
+            "content": {
+              "*/*": {
                 "schema": {
                   "type": "string"
                 }
@@ -10753,10 +10763,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
