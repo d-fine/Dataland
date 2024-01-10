@@ -23,9 +23,7 @@ source = ["./src/main"]
 
 [tool.ruff]
 line-length = 120
-select = ["E", "F" , "C90" , "W" , "N" , "ANN", "ASYNC"]
+select = ["E", "F" , "C90" , "W" , "N" , "ANN", "ASYNC" , "D101", "D102", "D103", "D106", "D107", "D417", "D419"]
 
-#sele
-# = ["D101", "D102", "D103", "D106", "D107", "D417", "D419"]
 #select = ["F", "I"]
 #line-length = 120

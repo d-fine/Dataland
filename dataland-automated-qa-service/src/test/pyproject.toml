@@ -1,0 +1,4 @@
+[tool.ruff]
+
+extend = "../../pyproject.toml"
+select = ["E", "F" , "C90" , "W" , "N" , "ANN", "ASYNC"]
