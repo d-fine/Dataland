@@ -53,7 +53,7 @@ class DataResource(Resource):
         logging.info(f"Retrieving meta information for dataset with ID {self.id}")
         self.meta_info = get_data_meta_info(self.id, client=backend_client)
         logging.info(f"Retrieving dataset with ID {self.id}")
-        self.data = _get_data(data_type=self.meta_info.data_type, data_id=self.id, client=backend_client)
+        self.data = _get_data(data_type=self.meta_info.data_type, data_id=self.id, client=backend_client).data
 
 
 def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient) -> any:

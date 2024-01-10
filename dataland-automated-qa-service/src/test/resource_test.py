@@ -14,6 +14,7 @@ from dataland_backend_api_documentation_client.models.qa_status import QaStatus
 from dataland_backend_api_documentation_client.models.company_associated_data_sme_data import (
     CompanyAssociatedDataSmeData,
 )
+from dataland_backend_api_documentation_client.models.sme_data import SmeData
 
 
 class TestResource(Resource):
@@ -37,9 +38,23 @@ def get_data_meta_info_mock(data_id: str, client: AuthenticatedClient) -> DataMe
     )
 
 
-def get_sme_data_mock(data_id: str, client: AuthenticatedClient) -> CompanyAssociatedDataSmeData:
-    data = dict({"dummy": "exists"})
-    return CompanyAssociatedDataSmeData(company_id="company-id", reporting_period="reporting period", data=data)
+def get_sme_data_mock(
+    data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient
+) -> CompanyAssociatedDataSmeData:
+    return CompanyAssociatedDataSmeData(
+        company_id="company-id",
+        reporting_period="reporting period",
+        data=SmeData.from_dict({
+            "general": {
+                "basicInformation": {
+                    "sector": ["dummy"],
+                    "addressOfHeadquarters": {"city": "something", "country": "else"},
+                    "numberOfEmployees": 42,
+                    "fiscalYearStart": "2024-01-01",
+                }
+            }
+        }),
+    )
 
 
 class ResourceTest(unittest.TestCase):
@@ -51,11 +66,12 @@ class ResourceTest(unittest.TestCase):
     def test_data_is_fetched_correctly(self) -> None:
         data_resources.get_access_token = Mock()
         data_resources.get_data_meta_info = get_data_meta_info_mock
-        data_resources.get_sme_data = get_sme_data_mock
+        data_resources._get_data = get_sme_data_mock
         data_resource = DataResource("data-id")
         self.assertEqual("data-id", data_resource.id)
         self.assertEqual(DataTypeEnum.SME, data_resource.meta_info.data_type)
-        self.assertEqual("exists", data_resource.data["dummy"])
+        self.assertIsInstance(data_resource.data, SmeData)
+        self.assertEqual("dummy", data_resource.data.general.basic_information.sector[0])
 
     def test_document_is_fetched_correctly(self) -> None:
         document_resources.get_access_token = Mock()
