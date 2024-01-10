@@ -186,7 +186,7 @@ class DataOwnerControllerTest {
         checkErrorMessageForUnauthorizedException(postExceptionForUnauthorizedRequest)
         // Checks unauthorized access to get endpoint
         val anotherCompanyId = UUID.randomUUID()
-        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.values().filter { it != TechnicalUser.Admin }.random())
+        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.entries.filter { it != TechnicalUser.Admin }.random())
         val getExceptionForUnauthorizedRequest = assertThrows<ClientException> {
             dataOwnerApi.getDataOwners(anotherCompanyId)
         }
