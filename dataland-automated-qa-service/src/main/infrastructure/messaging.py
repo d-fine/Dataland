@@ -65,11 +65,11 @@ def _assert_status_is_valid_for_qa_completion(status: QaStatus):
 
 
 def _send_qa_completed_message(
-        channel: pika.adapters.blocking_connection.BlockingChannel,
-        routing_key: str,
-        resource_id: str,
-        status: QaStatus,
-        correlation_id: str,
+    channel: pika.adapters.blocking_connection.BlockingChannel,
+    routing_key: str,
+    resource_id: str,
+    status: QaStatus,
+    correlation_id: str,
 ):
     _assert_status_is_valid_for_qa_completion(status)
     message_to_send = {"identifier": resource_id, "validationResult": status}

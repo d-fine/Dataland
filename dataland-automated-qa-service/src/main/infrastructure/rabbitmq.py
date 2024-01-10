@@ -6,6 +6,7 @@ class RabbitMq:
     """
     A wrapper for message queue interactions
     """
+
     def __init__(self, connection_parameters: pika.connection.Parameters):
         self._connection_parameters = connection_parameters
         self._connection: pika.adapters.blocking_connection.BlockingConnection | None = None
@@ -32,9 +33,7 @@ class RabbitMq:
         except pika.exceptions.ConnectionWrongStateError:
             logging.error("Could not close connection.")
 
-    def register_receiver(
-        self, exchange: str, routing_key: str, queue_name_prefix: str, callback
-    ):
+    def register_receiver(self, exchange: str, routing_key: str, queue_name_prefix: str, callback):
         """
         Registers a receiver callback on a specific queue
 
@@ -45,9 +44,7 @@ class RabbitMq:
         """
         queue = f"{queue_name_prefix}AutomatedQaService"
         self._channel.queue_declare(queue=queue, durable=True)
-        self._channel.queue_bind(
-            queue=queue, exchange=exchange, routing_key=routing_key
-        )
+        self._channel.queue_bind(queue=queue, exchange=exchange, routing_key=routing_key)
         self._channel.basic_consume(queue=queue, on_message_callback=callback)
 
     def consume_loop(self):
