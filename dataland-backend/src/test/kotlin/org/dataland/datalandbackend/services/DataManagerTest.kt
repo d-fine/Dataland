@@ -203,7 +203,7 @@ class DataManagerTest(
         val payload = JSONObject(mapOf("dataId" to dataUUId, "bypassQa" to false)).toString()
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                payload, MessageType.DataReceived, correlationId, ExchangeName.DataReceived,
+                payload, MessageType.DataReceived, correlationId, ExchangeName.RequestReceived,
             ),
         ).thenThrow(
             AmqpException::class.java,
