@@ -87,6 +87,12 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<GdvData>): void {
   if (newFixture.t.allgemein?.anleihen?.sustainibilityLinkedDebt) {
     newFixture.t.allgemein.anleihen.sustainibilityLinkedDebt = YesNo.Yes;
   }
+  if (newFixture.t.allgemein?.esgBerichte?.aktuelleBerichte) {
+    newFixture.t.allgemein?.esgBerichte?.aktuelleBerichte.push({
+      value: "Report with null data source",
+      dataSource: null,
+    });
+  }
   if (newFixture.t.umwelt?.produktion?.produkteZurVerringerungDerUmweltbelastung) {
     newFixture.t.umwelt.produktion.produkteZurVerringerungDerUmweltbelastung = YesNo.Yes;
   }
