@@ -17,7 +17,7 @@ export const gdvDataModel = [
             name: "berichtspflichtUndEinwilligungZurVeroeffentlichung",
             label: "Berichtspflicht und Einwilligung zur Veröffentlichung",
             description:
-              "Ist das Unternehmen berichtspflichtig und mit der Veröffentlichung des Datensatzes auf Dataland einverstanden? Andernfalls ist eine weitere Dateneingabe nicht möglich.",
+              "Ist das Unternehmen berichtspflichtig im Rahmen der CSRD-Richtlinie bzw. ist es gemäß den Offenlegungspflichten der Artikel 19a und 29a der Richtilinie 2023/34/EU zur Nachhaltigkeitsberichtserstattung verpflichtet? Ist das Unternehmen außerdem mit einer Veröffentlichung des Datensatzes auf Dataland einverstanden? Anderenfalls ist eine Dateneineingabe nicht möglich.",
             options: "",
             unit: "",
             component: "YesNoFormField",
