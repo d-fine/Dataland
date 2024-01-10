@@ -22,11 +22,11 @@ class TestResource(Resource):
 
     counter = 0
 
-    def _load(self) -> None:
+    def _load(self) -> None:  # noqa: PLR6301
         TestResource.counter += 1
 
 
-def get_data_meta_info_mock(data_id: str, client: AuthenticatedClient) -> DataMetaInformation:
+def get_data_meta_info_mock(data_id: str, client: AuthenticatedClient) -> DataMetaInformation:  # noqa: ARG001
     return DataMetaInformation(
         data_id="data-id",
         company_id="company-id",
@@ -39,7 +39,7 @@ def get_data_meta_info_mock(data_id: str, client: AuthenticatedClient) -> DataMe
 
 
 def get_sme_data_mock(
-    data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient
+    data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient  # noqa: ARG001
 ) -> CompanyAssociatedDataSmeData:
     return CompanyAssociatedDataSmeData(
         company_id="company-id",
@@ -66,7 +66,7 @@ class ResourceTest(unittest.TestCase):
     def test_data_is_fetched_correctly(self) -> None:
         data_resources.get_access_token = Mock()
         data_resources.get_data_meta_info = get_data_meta_info_mock
-        data_resources._get_data = get_sme_data_mock
+        data_resources._get_data = get_sme_data_mock  # noqa: SLF001
         data_resource = DataResource("data-id")
         self.assertEqual("data-id", data_resource.id)
         self.assertEqual(DataTypeEnum.SME, data_resource.meta_info.data_type)
@@ -75,7 +75,7 @@ class ResourceTest(unittest.TestCase):
 
     def test_document_is_fetched_correctly(self) -> None:
         document_resources.get_access_token = Mock()
-        document_resources.get_document = lambda document_id, client: 42
+        document_resources.get_document = lambda document_id, client: 42  # noqa: ARG005
         document_resource = DocumentResource("document-id")
         self.assertEqual("document-id", document_resource.id)
         self.assertEqual(42, document_resource.bytes)

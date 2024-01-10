@@ -10,7 +10,7 @@ from dataland_backend_api_documentation_client.models.qa_status import QaStatus
 from main.infrastructure.qa_exceptions import AutomaticQaNotPossibleError
 
 
-def mock_validate_raise_automated_qa_not_possible_error(resource: Resource, correlation_id: str) -> QaStatus:
+def mock_validate_raise_automated_qa_not_possible_error(resource: Resource, correlation_id: str) -> QaStatus:  # noqa: ARG001
     raise AutomaticQaNotPossibleError("Test")
 
 
@@ -41,7 +41,7 @@ class MessageProcessingTest(unittest.TestCase):
             p.mq_quality_assured_exchange,
             p.mq_qa_completed_type,
             build_qa_completed_message_body(QaStatus.ACCEPTED),
-            lambda resource, correlation_id: QaStatus.REJECTED,
+            lambda resource, correlation_id: QaStatus.REJECTED,  # noqa: ARG005
         )
 
     def test_should_send_qa_requested_message_when_automated_qa_not_possible(self) -> None:
@@ -61,7 +61,7 @@ class MessageProcessingTest(unittest.TestCase):
             p.mq_quality_assured_exchange,
             p.mq_qa_completed_type,
             build_qa_completed_message_body(QaStatus.ACCEPTED),
-            lambda resource, correlation_id: QaStatus.ACCEPTED,
+            lambda resource, correlation_id: QaStatus.ACCEPTED,  # noqa: ARG005
         )
 
     def test_should_send_rejected_message_when_validation_rejects(self) -> None:
@@ -71,7 +71,7 @@ class MessageProcessingTest(unittest.TestCase):
             p.mq_quality_assured_exchange,
             p.mq_qa_completed_type,
             build_qa_completed_message_body(QaStatus.REJECTED),
-            lambda resource, correlation_id: QaStatus.REJECTED,
+            lambda resource, correlation_id: QaStatus.REJECTED,  # noqa: ARG005
         )
 
     def validate_process_qa_request(
