@@ -15,7 +15,7 @@ class DocumentResource(Resource):
     This class represents a document
     """
 
-    def _load(self):
+    def _load(self) -> None:
         logging.info(f"Loading document resource with ID {self.id}")
         token = get_access_token()
         documents_client = AuthenticatedClient(base_url=document_manager_api_url, token=token)

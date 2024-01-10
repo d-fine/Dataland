@@ -5,7 +5,7 @@ import pika.exceptions
 import logging
 
 
-def main():
+def main() -> None:
     """This is the entrypoint function"""
     logging.basicConfig(format="%(asctime)s %(levelname)s: %(name)s: %(message)s", level=logging.INFO)
     logging.info("Starting service")

@@ -8,17 +8,17 @@ from dataland_backend_api_documentation_client.models.qa_status import QaStatus
 from main.infrastructure.qa_exceptions import AutomaticQaNotPossibleError
 
 
-def mock_validate_raise_automated_qa_not_possible_error(resource, correlation_id):
+def mock_validate_raise_automated_qa_not_possible_error(resource, correlation_id) -> None:
     raise AutomaticQaNotPossibleError("Test")
 
 
-def mock_properties():
+def mock_properties() -> Mock:
     properties_mock = Mock()
     properties_mock.headers = {"cloudEvents:id": "dummy-correlation-id"}
     return properties_mock
 
 
-def mock_resource():
+def mock_resource() -> Mock:
     resource_mock = Mock()
     resource_mock.id = "dummy-id"
     return resource_mock
@@ -32,7 +32,7 @@ qa_forwarded_message_body = json.dumps({"identifier": "dummy-id", "comment": "Te
 
 
 class MessageProcessingTest(unittest.TestCase):
-    def test_should_send_accepted_message_when_qa_should_be_bypassed(self):
+    def test_should_send_accepted_message_when_qa_should_be_bypassed(self) -> None:
         self.validate_process_qa_request(
             p.mq_data_key,
             True,
@@ -42,7 +42,7 @@ class MessageProcessingTest(unittest.TestCase):
             lambda resource, correlation_id: QaStatus.REJECTED,
         )
 
-    def test_should_send_qa_requested_message_when_automated_qa_not_possible(self):
+    def test_should_send_qa_requested_message_when_automated_qa_not_possible(self) -> None:
         self.validate_process_qa_request(
             p.mq_data_key,
             False,
@@ -52,7 +52,7 @@ class MessageProcessingTest(unittest.TestCase):
             mock_validate_raise_automated_qa_not_possible_error,
         )
 
-    def test_should_send_accepted_message_when_validation_accepts(self):
+    def test_should_send_accepted_message_when_validation_accepts(self) -> None:
         self.validate_process_qa_request(
             p.mq_data_key,
             False,
@@ -62,7 +62,7 @@ class MessageProcessingTest(unittest.TestCase):
             lambda resource, correlation_id: QaStatus.ACCEPTED,
         )
 
-    def test_should_send_rejected_message_when_validation_rejects(self):
+    def test_should_send_rejected_message_when_validation_rejects(self) -> None:
         self.validate_process_qa_request(
             p.mq_data_key,
             False,
@@ -80,7 +80,7 @@ class MessageProcessingTest(unittest.TestCase):
         expected_message_type: str,
         expected_message_body: bytes,
         validate,
-    ):
+    ) -> None:
         channel_mock = Mock()
         process_qa_request(
             channel=channel_mock,
