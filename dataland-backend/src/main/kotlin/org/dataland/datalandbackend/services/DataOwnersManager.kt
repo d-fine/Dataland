@@ -3,20 +3,21 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
 import kotlin.jvm.optionals.getOrElse
 
 /**
  * Implementation of a (company) data ownership manager for Dataland
  * @param dataOwnerRepository  JPA for data ownership relations
  */
-@Service("DataRequestManager")
+@Service("DataOwnersManager")
 class DataOwnersManager(
     @Autowired private val dataOwnerRepository: DataOwnerRepository,
     @Autowired private val companyRepository: StoredCompanyRepository,
@@ -128,16 +129,41 @@ class DataOwnersManager(
      * @param userId the ID of the user
      */
     @Transactional
-    fun checkUserCompanyCombinationForDataOwnership(companyId: UUID, userId: UUID) {
-        checkIfCompanyIsValid(companyId.toString())
+    fun checkUserCompanyCombinationForDataOwnership(companyId: String, userId: String) {
+        checkIfCompanyIsValid(companyId)
         val failException = ResourceNotFoundApiException(
             "User is not a data owner",
             "The user with Id $userId is not a data owner of the company with Id $companyId.",
         )
-        if (!dataOwnerRepository.existsById(companyId.toString())) {
+        if (!dataOwnerRepository.existsById(companyId)) {
             throw failException
-        } else if (!dataOwnerRepository.getReferenceById(companyId.toString()).dataOwners.contains(userId.toString())) {
+        } else if (!dataOwnerRepository.getReferenceById(companyId).dataOwners.contains(userId)) {
             throw failException
+        }
+    }
+
+    /**
+     * Method to check whether the user currently authenticated user is data owner of a specified company and therefore
+     * has uploader rights for this company
+     * @param companyId the ID of the company
+     * @return a Boolean indicating whether the user is data owner or not
+     */
+    @Transactional(readOnly = true)
+    fun isCurrentUserDataOwner(companyId: String): Boolean {
+        val userId = DatalandAuthentication.fromContext().userId
+        fun exceptionToThrow(cause: Throwable?) = InsufficientRightsApiException(
+            "Neither uploader nor data owner",
+            "You don't seem be a data owner of company $companyId, which would be required for uploading this data " +
+                "set without general uploader rights.",
+            cause,
+        )
+        try {
+            checkUserCompanyCombinationForDataOwnership(companyId, userId)
+            return true
+        } catch (invalidInputApiException: InvalidInputApiException) {
+            throw exceptionToThrow(invalidInputApiException)
+        } catch (resourceNotFoundApiException: ResourceNotFoundApiException) {
+            throw exceptionToThrow(resourceNotFoundApiException)
         }
     }
 }
