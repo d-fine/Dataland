@@ -30,17 +30,21 @@ class DataOwnerControllerTest {
     }
 
     @Test
-    fun `test functionality with post get head and delete endpoint`() {
+    fun `test functionality of the data owner`() {
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
         val dataReaderUserId = "18b67ecc-1176-4506-8414-1e81661017ca"
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Reader)
-
         // testen dass die rechte nicht vorhanden sind () post companyA no und companyB no
+        // post request
+        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Admin)
         dataOwnerApi.postDataOwner(companyId, UUID.fromString(dataReaderUserId))
+        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Reader)
         // testen dass die rechte vorhanden sind companyA yes companyB no
+        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Admin)
         dataOwnerApi.deleteDataOwner(companyId.toString(), dataReaderUserId)
+        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Reader)
         // testen dass die rechte nicht vohanden sind () company A no companyB no
     }
 
