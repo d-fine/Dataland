@@ -81,7 +81,8 @@ class DatabaseStringDataStore(
         messageUtils.rejectMessageOnException {
             if (actionType == ActionType.StoreData) {
                 persistentlyStoreDataAndSendMessage(dataId, correlationId, payload)
-            } else if (actionType == ActionType.DeleteData) {
+            }
+            if (actionType == ActionType.DeleteData) {
                 deleteDataItemWithoutTransaction(dataId, correlationId)
             }
         }
