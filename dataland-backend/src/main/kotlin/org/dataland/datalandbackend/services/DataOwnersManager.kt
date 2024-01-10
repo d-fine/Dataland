@@ -93,25 +93,23 @@ class DataOwnersManager(
      */
     @Transactional
     fun deleteDataOwnerFromCompany(companyId: String, userId: String): CompanyDataOwnersEntity {
-        val validCompanyId = UUID.fromString(companyId).toString()
-        val validUserId = UUID.fromString(userId).toString()
-        if (dataOwnerRepository.existsById(validCompanyId)) {
-            val dataOwnersForCompany = dataOwnerRepository.findById(validCompanyId).get()
-            if (dataOwnersForCompany.dataOwners.contains(validUserId)) {
-                dataOwnersForCompany.dataOwners.remove(validUserId)
+        if (dataOwnerRepository.existsById(companyId)) {
+            val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
+            if (dataOwnersForCompany.dataOwners.contains(userId)) {
+                dataOwnersForCompany.dataOwners.remove(userId)
             } else {
                 throw ResourceNotFoundApiException(
                     "No data owners found",
-                    "User with Id $validUserId has not been data owner of company $validCompanyId",
+                    "User with Id $userId has not been data owner of company $companyId",
                 )
             }
             return if (dataOwnersForCompany.dataOwners.isEmpty()) {
-                dataOwnerRepository.deleteById(validCompanyId)
-                CompanyDataOwnersEntity(validCompanyId, dataOwnersForCompany.dataOwners)
+                dataOwnerRepository.deleteById(companyId)
+                CompanyDataOwnersEntity(companyId, dataOwnersForCompany.dataOwners)
             } else {
                 dataOwnerRepository.save(
                     CompanyDataOwnersEntity(
-                        companyId = validCompanyId,
+                        companyId = companyId,
                         dataOwners = dataOwnersForCompany.dataOwners,
                     ),
                 )
@@ -119,7 +117,7 @@ class DataOwnersManager(
         } else {
             throw InvalidInputApiException(
                 "Company not found",
-                "The companyId '$validCompanyId' does not exist and therefore doesn't have any data owners.",
+                "The companyId '$companyId' does not exist and therefore doesn't have any data owners.",
             )
         }
     }

@@ -94,8 +94,8 @@ interface DataOwnerApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun deleteDataOwner(
-        @RequestParam companyId: String,
-        @RequestParam userId: String,
+        @RequestParam companyId: UUID,
+        @RequestParam userId: UUID,
     ):
         ResponseEntity<CompanyDataOwners>
 
