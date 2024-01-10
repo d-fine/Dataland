@@ -22,7 +22,8 @@ relative_files = true
 source = ["./src/main"]
 
 [tool.ruff]
-line-length = 100
+line-length = 120
+select = ["E", "F" , "C90" , "W" , "N" , "ANN", "ASYNC" , "D101", "D102", "D103", "D106", "D107", "D417", "D419"]
 
 #select = ["F", "I"]
 #line-length = 120
