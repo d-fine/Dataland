@@ -12,6 +12,10 @@ class RabbitMq:
     """
 
     def __init__(self: Self, connection_parameters: Parameters) -> None:
+        """
+        Initializes the instance
+        :param connection_parameters: The parameters that will be used to establish a connection to the message queue
+        """
         self._connection_parameters = connection_parameters
         self._connection: BlockingConnection | None = None
         self._channel: BlockingChannel | None = None
