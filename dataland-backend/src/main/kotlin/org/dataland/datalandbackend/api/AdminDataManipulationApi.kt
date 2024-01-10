@@ -34,8 +34,7 @@ fun interface AdminDataManipulationApi {
             ApiResponse(responseCode = "404", description = "Dataset does not exist."),
         ],
     )
-    @DeleteMapping(
-    )
+    @DeleteMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun deleteCompanyAssociatedData(
         @PathVariable("dataId")
