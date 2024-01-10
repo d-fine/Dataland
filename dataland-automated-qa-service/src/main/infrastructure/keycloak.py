@@ -15,11 +15,11 @@ _lifetime_threshold_in_seconds = 30
 
 _seconds_in_a_day = 24 * 60 * 60
 
-_current_access_token = None
-_current_access_token_expire_time = None
+_current_access_token: str | None = None
+_current_access_token_expire_time: datetime.datetime | None = None
 
 
-def get_access_token():
+def get_access_token() -> str | None:
     """
     :returns: a valid access token which is guaranteed to be valid for at least 30 seconds
     """
@@ -36,7 +36,7 @@ def _is_close_to_invalidation() -> bool:
     return time_delta_in_seconds < _lifetime_threshold_in_seconds
 
 
-def _update_token():
+def _update_token() -> None:
     logging.info("Updating Keycloak Access Token.")
     credentials = f"{_client_id}:{_client_secret}"
     encoded_credentials = credentials.encode("utf-8")

@@ -10,7 +10,7 @@ from main.validation.validate import validate_data, validate_document
 from dataland_backend_api_documentation_client.models.qa_status import QaStatus
 
 
-def qa_data(channel, method, properties, body):
+def qa_data(channel, method, properties, body) -> None:
     """
     Handler for data stored messages
 
@@ -35,7 +35,7 @@ def qa_data(channel, method, properties, body):
     )
 
 
-def qa_document(channel, method, properties, body: bytes):
+def qa_document(channel, method, properties, body: bytes) -> None:
     """
     Handler for document stored messages
 
@@ -57,7 +57,7 @@ def qa_document(channel, method, properties, body: bytes):
     )
 
 
-def _assert_status_is_valid_for_qa_completion(status: QaStatus):
+def _assert_status_is_valid_for_qa_completion(status: QaStatus) -> None:
     if status != QaStatus.ACCEPTED and status != QaStatus.REJECTED:
         raise ValueError(
             f'Argument "status" with value "{status}" must be in range [QaStatus.ACCEPTED, QaStatus.REJECTED]'
@@ -70,7 +70,7 @@ def _send_qa_completed_message(
     resource_id: str,
     status: QaStatus,
     correlation_id: str,
-):
+) -> None:
     _assert_status_is_valid_for_qa_completion(status)
     message_to_send = {"identifier": resource_id, "validationResult": status}
     channel.basic_publish(
@@ -96,7 +96,7 @@ def process_qa_request(
     bypass_qa: bool,
     resource: Resource,
     validate,
-):
+) -> None:
     """
     This method is a wrapper for the validation.
     Messages on how other services should proceed on the to be reviewed resource are sent.

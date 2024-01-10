@@ -40,7 +40,7 @@ class DataResource(Resource):
     This class represents a dataset
     """
 
-    def _load(self):
+    def _load(self) -> None:
         logging.info(f"Loading data resource with ID {self.id}")
         token = get_access_token()
         backend_client = AuthenticatedClient(base_url=backend_api_url, token=token)
