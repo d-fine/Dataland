@@ -1,10 +1,13 @@
+from typing import Self
+
+
 class AutomaticQaNotPossibleError(Exception):
     """
     This error is supposed to be raised during validation
     and indicates that an automatic review was not possible
     """
 
-    def __init__(self, comment: str) -> None:
+    def __init__(self: Self, comment: str) -> None:
         """
         :param comment: details on the failure of the automatic review
         """

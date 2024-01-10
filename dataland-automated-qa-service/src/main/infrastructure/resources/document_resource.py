@@ -1,4 +1,5 @@
 import logging
+from typing import Self
 
 from .resource import Resource
 from ..properties import document_manager_api_url
@@ -15,7 +16,7 @@ class DocumentResource(Resource):
     This class represents a document
     """
 
-    def _load(self) -> None:
+    def _load(self: Self) -> None:
         logging.info(f"Loading document resource with ID {self.id}")
         token = get_access_token()
         documents_client = AuthenticatedClient(base_url=document_manager_api_url, token=token)

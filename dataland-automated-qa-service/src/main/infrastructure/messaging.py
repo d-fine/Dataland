@@ -1,6 +1,9 @@
 import json
 import logging
-import pika.exceptions
+from pika.adapters.blocking_connection import BlockingChannel
+from pika.spec import Basic, BasicProperties
+from typing import Callable
+
 
 from main.infrastructure.qa_exceptions import AutomaticQaNotPossibleError
 from main.infrastructure.resources import Resource, DataResource, DocumentResource
@@ -10,7 +13,7 @@ from main.validation.validate import validate_data, validate_document
 from dataland_backend_api_documentation_client.models.qa_status import QaStatus
 
 
-def qa_data(channel, method, properties, body) -> None:
+def qa_data(channel: BlockingChannel, method: Basic.Deliver, properties: BasicProperties, body: bytes) -> None:
     """
     Handler for data stored messages
 
@@ -35,7 +38,7 @@ def qa_data(channel, method, properties, body) -> None:
     )
 
 
-def qa_document(channel, method, properties, body: bytes) -> None:
+def qa_document(channel: BlockingChannel, method: Basic.Deliver, properties: BasicProperties, body: bytes) -> None:
     """
     Handler for document stored messages
 
@@ -65,7 +68,7 @@ def _assert_status_is_valid_for_qa_completion(status: QaStatus) -> None:
 
 
 def _send_qa_completed_message(
-    channel: pika.adapters.blocking_connection.BlockingChannel,
+    channel: BlockingChannel,
     routing_key: str,
     resource_id: str,
     status: QaStatus,
@@ -77,7 +80,7 @@ def _send_qa_completed_message(
         exchange=p.mq_quality_assured_exchange,
         routing_key=routing_key,
         body=json.dumps(message_to_send).encode("UTF-8"),
-        properties=pika.BasicProperties(
+        properties=BasicProperties(
             headers={
                 p.mq_correlation_id_header: correlation_id,
                 p.mq_message_type_header: p.mq_qa_completed_type,
@@ -88,14 +91,14 @@ def _send_qa_completed_message(
 
 
 def process_qa_request(
-    channel: pika.adapters.blocking_connection.BlockingChannel,
-    method,
-    properties: pika.BasicProperties,
+    channel: BlockingChannel,
+    method: Basic.Deliver,
+    properties: BasicProperties,
     routing_key: str,
     resource_type: str,
     bypass_qa: bool,
     resource: Resource,
-    validate,
+    validate: Callable[[Resource, str], QaStatus],
 ) -> None:
     """
     This method is a wrapper for the validation.
@@ -124,15 +127,12 @@ def process_qa_request(
             _assert_status_is_valid_for_qa_completion(validation_result)
             _send_qa_completed_message(channel, routing_key, resource.id, validation_result, correlation_id)
         except AutomaticQaNotPossibleError as e:
-            logging.warning("ABCDEFG")
-            logging.warning(f'itentifier: "{resource.id}" "{type(resource.id)}"')
-            logging.warning(f'comment: "{e.comment}" "{type(e.comment)}"')
             message_to_send = {"identifier": resource.id, "comment": e.comment}
             channel.basic_publish(
                 exchange=p.mq_manual_qa_requested_exchange,
                 routing_key=routing_key,
                 body=json.dumps(message_to_send).encode("UTF-8"),
-                properties=pika.BasicProperties(
+                properties=BasicProperties(
                     headers={
                         p.mq_correlation_id_header: correlation_id,
                         p.mq_message_type_header: p.mq_manual_qa_requested_type,

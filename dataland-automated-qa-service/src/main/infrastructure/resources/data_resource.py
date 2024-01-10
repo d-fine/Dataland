@@ -1,5 +1,6 @@
 import logging
 from collections.abc import Callable
+from typing import Self
 
 from .resource import Resource
 from ..keycloak import get_access_token
@@ -40,7 +41,7 @@ class DataResource(Resource):
     This class represents a dataset
     """
 
-    def _load(self) -> None:
+    def _load(self: Self) -> None:
         logging.info(f"Loading data resource with ID {self.id}")
         token = get_access_token()
         backend_client = AuthenticatedClient(base_url=backend_api_url, token=token)
