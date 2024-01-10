@@ -2728,7 +2728,7 @@
         }
       }
     },
-    "/data/{dataId}": {
+    "/admin/data/{dataId}": {
       "delete": {
         "tags": [
           "admin-data-manipulation-controller"
@@ -10753,10 +10753,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
