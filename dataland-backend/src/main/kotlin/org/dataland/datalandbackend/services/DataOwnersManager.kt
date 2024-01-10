@@ -76,10 +76,10 @@ class DataOwnersManager(
      */
     @Transactional
     fun getDataOwnerFromCompany(companyId: String): CompanyDataOwnersEntity {
-        val dataOwnersOfCompany = dataOwnerRepository.findById(companyId).getOrElse {
+       val dataOwnersOfCompany = dataOwnerRepository.findById(companyId).getOrElse {
             throw ResourceNotFoundApiException(
                 "No data owners found",
-                "The companyId '$companyId' does not have any data owners.",
+                "The companyId '$companyId' do not have any data owners.",
             )
         }
         return dataOwnersOfCompany

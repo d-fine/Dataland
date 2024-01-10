@@ -30,6 +30,7 @@ class DataOwnerController(
         )
     }
     override fun getDataOwners(companyId: UUID): ResponseEntity<List<String>> {
+        logger.info("Received a request to get a data owner from company Id $companyId.")
         val companyDataOwnersEntity = dataOwnersManager.getDataOwnerFromCompany(companyId.toString())
         return ResponseEntity.ok(companyDataOwnersEntity.dataOwners)
     }

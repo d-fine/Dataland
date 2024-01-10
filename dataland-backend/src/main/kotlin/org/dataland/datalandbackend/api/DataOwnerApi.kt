@@ -56,17 +56,19 @@ interface DataOwnerApi {
      * @return userId of the data owner(s) of a specified company
      */
     @Operation(
-        summary = "Retrieve the data owner(s) to a company.",
+        summary = "Retrieve data owner(s) of a company.",
         description = "Get a list of data owner(s) for the specified company.",
     )
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved data owner."),
+            ApiResponse(responseCode = "400", description = "The specified company does not exist on Dataland."),
         ],
     )
     @GetMapping(
         produces = ["application/json"],
     )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDataOwners(
         @RequestParam companyId: UUID,
     ):
