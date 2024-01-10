@@ -3,7 +3,7 @@ import pika.exceptions
 from pika.connection import Parameters
 from pika.adapters.blocking_connection import BlockingChannel, BlockingConnection
 from pika.spec import Basic, BasicProperties
-from typing import Self, Callable
+from typing import Callable
 
 
 class RabbitMq:
@@ -11,7 +11,7 @@ class RabbitMq:
     A wrapper for message queue interactions
     """
 
-    def __init__(self: Self, connection_parameters: Parameters) -> None:
+    def __init__(self, connection_parameters: Parameters) -> None:
         """
         Initializes the instance
         :param connection_parameters: The parameters that will be used to establish a connection to the message queue
@@ -20,7 +20,7 @@ class RabbitMq:
         self._connection: BlockingConnection | None = None
         self._channel: BlockingChannel | None = None
 
-    def connect(self: Self) -> None:
+    def connect(self) -> None:
         """
         Establishes a connection to the message queue using the specified connection_parameters
         """
@@ -29,7 +29,7 @@ class RabbitMq:
         self._channel = self._connection.channel()
         logging.info("Connection established")
 
-    def disconnect(self: Self) -> None:
+    def disconnect(self) -> None:
         """
         Closes the connection to the message queue
         """
@@ -42,7 +42,7 @@ class RabbitMq:
             logging.error("Could not close connection.")
 
     def register_receiver(
-        self: Self,
+        self,
         exchange: str,
         routing_key: str,
         queue_name_prefix: str,
@@ -61,7 +61,7 @@ class RabbitMq:
         self._channel.queue_bind(queue=queue, exchange=exchange, routing_key=routing_key)
         self._channel.basic_consume(queue=queue, on_message_callback=callback)
 
-    def consume_loop(self: Self) -> None:
+    def consume_loop(self) -> None:
         """
         Starts the loop for consuming messages.
         """

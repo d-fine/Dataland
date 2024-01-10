@@ -1,6 +1,5 @@
 import unittest
 from unittest.mock import Mock
-from typing import Self
 
 import main.infrastructure.resources.data_resource as data_resources
 import main.infrastructure.resources.document_resource as document_resources
@@ -22,7 +21,7 @@ class TestResource(Resource):
 
     counter = 0
 
-    def _load(self: Self) -> None:
+    def _load(self) -> None:
         TestResource.counter += 1
 
 
@@ -44,12 +43,12 @@ def get_sme_data_mock(data_id: str, client: AuthenticatedClient) -> CompanyAssoc
 
 
 class ResourceTest(unittest.TestCase):
-    def test_resource_is_loaded_on_creation(self: Self) -> None:
+    def test_resource_is_loaded_on_creation(self) -> None:
         self.assertEqual(0, TestResource.counter)
         TestResource("resource-id")
         self.assertEqual(1, TestResource.counter)
 
-    def test_data_is_fetched_correctly(self: Self) -> None:
+    def test_data_is_fetched_correctly(self) -> None:
         data_resources.get_access_token = Mock()
         data_resources.get_data_meta_info = get_data_meta_info_mock
         data_resources.get_sme_data = get_sme_data_mock
@@ -58,7 +57,7 @@ class ResourceTest(unittest.TestCase):
         self.assertEqual(DataTypeEnum.SME, data_resource.meta_info.data_type)
         self.assertEqual("exists", data_resource.data["dummy"])
 
-    def test_document_is_fetched_correctly(self: Self) -> None:
+    def test_document_is_fetched_correctly(self) -> None:
         document_resources.get_access_token = Mock()
         document_resources.get_document = lambda document_id, client: 42
         document_resource = DocumentResource("document-id")

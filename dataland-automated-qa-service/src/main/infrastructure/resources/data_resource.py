@@ -1,5 +1,5 @@
 import logging
-from typing import Self, Any, cast
+from typing import Any, cast
 from http import HTTPStatus
 
 from dataland_backend_api_documentation_client import errors
@@ -46,7 +46,7 @@ class DataResource(Resource):
     This class represents a dataset
     """
 
-    def _load(self: Self) -> None:
+    def _load(self) -> None:
         logging.info(f"Loading data resource with ID {self.id}")
         token = get_access_token()
         backend_client = AuthenticatedClient(base_url=backend_api_url, token=token)
