@@ -62,7 +62,7 @@ interface DataOwnerApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved data owner."),
-            ApiResponse(responseCode = "400", description = "The specified company does not exist on Dataland."),
+            ApiResponse(responseCode = "404", description = "The specified company does not exist on Dataland."),
         ],
     )
     @GetMapping(
