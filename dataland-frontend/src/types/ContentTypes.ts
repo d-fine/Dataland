@@ -21,4 +21,8 @@ export interface Card {
   text: string;
   title?: string;
   date?: string;
+  links?: Array<{
+    text: string;
+    url: string;
+  }>;
 }

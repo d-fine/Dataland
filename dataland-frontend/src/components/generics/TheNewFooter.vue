@@ -1,25 +1,40 @@
 <template>
-  <footer class="footer">
-    <div class="footer__left">
-      <div class="footer__logo" role="img" aria-label="Footer Logo">
-        <img
-          v-for="(img, index) in footerSection?.image ?? []"
-          :key="index"
-          :src="img"
-          :alt="footerSection?.text.join(' ')"
-          class="footer__logo-img"
-        />
+  <footer class="footer" role="contentinfo">
+    <div class="footer__row footer__row--top">
+      <div class="footer__section footer__section--logo">
+        <img v-if="footerLogo" :src="footerLogo" alt="Dataland Logo" class="footer__logo" />
       </div>
-      <div class="footer__copyright">{{ footerText }}</div>
+      <div class="footer__section footer__section--columns" aria-labelledby="footer-navigation">
+        <nav class="footer__column" v-for="card in nonLegalCards" :key="card.title" :aria-labelledby="card.title">
+          <h3 :id="card.title" class="footer__column-title">{{ card.title }}</h3>
+          <ul class="footer__column-list">
+            <li v-for="link in card.links" :key="link.text">
+              <a
+                v-if="isExternalLink(link.url)"
+                :href="link.url"
+                class="footer__column-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                >{{ link.text }}</a
+              >
+              <router-link v-else :to="link.url" class="footer__column-link">{{ link.text }}</router-link>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
-
-    <nav class="footer__right" role="navigation" aria-label="Footer Navigation">
-      <router-link to="/imprint" class="footer__right-link" aria-label="Imprint">Imprint</router-link>
-      <router-link to="/dataprivacy" class="footer__right-link" aria-label="Data Privacy">Data Privacy</router-link>
-      <router-link to="/terms" class="footer__right-link" aria-label="Terms and Conditions">
-        Terms and Conditions
-      </router-link>
-    </nav>
+    <div class="footer__row footer__row--bottom">
+      <div class="footer__section footer__section--legal">
+        <ul class="footer__legal-list" v-if="legalLinks.length">
+          <li v-for="link in legalLinks" :key="link.text">
+            <router-link :to="link.url" class="footer__legal-list-link">{{ link.text }}</router-link>
+          </li>
+        </ul>
+      </div>
+      <div class="footer__copyright">
+        {{ copyrightText }}
+      </div>
+    </div>
   </footer>
 </template>
 
@@ -27,13 +42,28 @@
 import { computed } from "vue";
 import type { Section } from "@/types/ContentTypes";
 
-const { sections } = defineProps<{ sections?: Section[] }>();
+const props = defineProps<{
+  sections?: Section[];
+}>();
 
 const footerSection = computed(() => {
-  return sections?.find((section) => section.title === "Footer") ?? null;
+  return props.sections?.find((section) => section.title === "Footer") ?? null;
 });
 
-const footerText = computed(() => {
+const footerLogo = computed(() => footerSection.value?.image?.[0] ?? "");
+
+const nonLegalCards = computed(() => footerSection.value?.cards?.filter((card) => card.title !== "Legal") ?? []);
+
+const legalLinks = computed(() => {
+  const legalCard = footerSection.value?.cards?.find((card) => card.title === "Legal");
+  return legalCard?.links ?? [];
+});
+
+const isExternalLink = (url: string): boolean => {
+  return !url.startsWith("/");
+};
+
+const copyrightText = computed(() => {
   if (!footerSection.value?.text) return "";
   const currentYear = new Date().getFullYear();
   return `${footerSection.value.text[0]}${currentYear}${footerSection.value.text[1]}`;
@@ -42,66 +72,141 @@ const footerText = computed(() => {
 
 <style scoped lang="scss">
 .footer {
-  display: flex;
-  justify-content: space-between;
   background-color: var(--basic-dark);
   color: var(--default-neutral-white);
-  padding: 80px 120px 140px;
+  padding: 96px 64px 48px;
+  &__row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    &--bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 40px;
+      border-top: 2px solid var(--grey-tones-900);
+      margin-top: 16px;
+    }
+  }
 
-  &__logo-img {
-    margin-bottom: 32px;
-    height: 32px;
+  &__section {
+    &--logo {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      img {
+        height: auto;
+      }
+    }
+
+    &--columns {
+      flex: 3;
+      display: flex;
+      justify-content: flex-end;
+      gap: 96px;
+      text-align: left;
+    }
+
+    &--legal {
+      flex: 1;
+      display: flex;
+      justify-content: flex-start;
+    }
+  }
+
+  &__column {
+    &-title {
+      color: var(--grey-tones-300);
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px;
+      letter-spacing: 0.25px;
+      margin: 0 0 28px;
+    }
+    &-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    li {
+      margin-bottom: 16px;
+    }
+    &:not(:last-of-type) &-link::after {
+      content: "";
+      display: inline-block;
+      top: 3px;
+      width: 16px;
+      height: 16px;
+      background-image: url(/static/icons/Arrow--up-right.svg);
+      background-size: cover;
+      position: relative;
+      margin-left: 8px;
+      filter: invert(1);
+    }
+    &:last-of-type &-link {
+      top: -3px;
+      position: relative;
+      &::before {
+        content: "";
+        display: inline-block;
+        top: 3px;
+        width: 24px;
+        height: 21px;
+        background-image: url(/static/icons/Logo--linkedin.svg);
+        background-size: cover;
+        position: relative;
+        margin-right: 6px;
+      }
+    }
+    &-link {
+      color: var(--default-neutral-white);
+      font-weight: 600;
+      line-height: 24px;
+      letter-spacing: 0.75px;
+      text-transform: uppercase;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        text-decoration-thickness: 2px;
+      }
+    }
+  }
+
+  &__legal-list {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    gap: 48px;
+    &-link {
+      color: var(--default-neutral-white);
+      font-weight: 600;
+      line-height: 24px;
+      letter-spacing: 0.75px;
+      text-transform: uppercase;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        text-decoration-thickness: 2px;
+      }
+    }
   }
 
   &__copyright {
-    font-size: 16px;
-    font-style: normal;
     font-weight: 400;
     line-height: normal;
     letter-spacing: 0.25px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-
-  &__right {
-    display: flex;
-    flex-direction: column;
-    height: 108px;
-    justify-content: center;
-    width: 320px;
-
-    &-link {
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 32px;
-      letter-spacing: 0.75px;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--default-neutral-white);
-      border-bottom: 2px solid transparent;
-      width: -moz-fit-content;
-      width: -webkit-fit-content;
-      width: fit-content;
-
-      &:hover {
-        border-bottom: 2px solid var(--default-neutral-white);
-      }
-    }
+    text-align: right;
+    flex: 1;
   }
 }
 @media only screen and (max-width: $large) {
   .footer {
-    grid-template-columns: repeat(12, 1fr);
-    gap: 48px 22px;
-    display: grid;
-    padding: 80px 22px 140px;
-    &__left {
-      grid-column: 1 / 6;
-    }
-    &__right {
-      grid-column: 7 / -1;
-    }
   }
 }
 @media only screen and (max-width: $small) {

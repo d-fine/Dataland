@@ -241,6 +241,60 @@
                     ],
                     "image": [
                         "/static/logos/gfx_logo_dataland_orange_S.svg"
+                    ],
+                    "cards": [
+                        {
+                            "title": "Tech Hub",
+                            "links": [
+                                {
+                                    "text": "DATASETS",
+                                    "url": "/api/swagger-ui/index.html"
+                                },
+                                {
+                                    "text": "DOCUMENTS",
+                                    "url": "/documents/swagger-ui/index.html"
+                                },
+                                {
+                                    "text": "REQUESTS",
+                                    "url": "/community/swagger-ui/index.html"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "ESG Frameworks",
+                            "links": [
+                                {
+                                    "text": "OVERVIEW",
+                                    "url": "https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Follow Dataland",
+                            "links": [
+                                {
+                                    "text": "LINKEDIN",
+                                    "url": "https://www.linkedin.com/company/dataland-gmbh/"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Legal",
+                            "links": [
+                                {
+                                    "text": "LEGAL",
+                                    "url": "/legal"
+                                },
+                                {
+                                    "text": "IMPRINT",
+                                    "url": "/imprint"
+                                },
+                                {
+                                    "text": "DATA PRIVACY",
+                                    "url": "/dataprivacy"
+                                }
+                            ]
+                        }
                     ]
                 }
             ]
