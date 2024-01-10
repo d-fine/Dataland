@@ -8,6 +8,7 @@ packages = ["src/main", "src/main/infrastructure"]
 [project]
 name = "dataland-automated-qa-service"
 version = "1"
+requires-python = ">= 3.11"
 
 [tool.pytest.ini_options]
 addopts = [
