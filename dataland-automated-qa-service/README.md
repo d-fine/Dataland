@@ -19,6 +19,6 @@ The following describes steps required to run the service on the host machine:
 
 # Auto Formatting (for Linter)
 
-- running `ruff check src` from /dataland-automated-qa-service will show you the linting messages
+- running `ruff check --preview src` from /dataland-automated-qa-service will show you the linting messages
 - Currently, you can run `./python_auto_formatting.sh` from /dataland-automated-qa-service to automatically
 fix some formatting issues and make the python linter happier

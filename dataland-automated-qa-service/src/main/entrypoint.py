@@ -21,7 +21,7 @@ def main() -> None:
                 qa_document,
             )
             mq.consume_loop()
-        except pika.exceptions.ConnectionClosedByBroker:
+        except pika.exceptions.ConnectionClosedByBroker:  # noqa: PERF203
             continue
         except pika.exceptions.AMQPChannelError as err:
             logging.error(f"Caught a channel error: {err}, stopping...")

@@ -1,6 +1,8 @@
 import logging
-from collections.abc import Callable
-from typing import Self
+from typing import Self, Any, cast
+from http import HTTPStatus
+
+from dataland_backend_api_documentation_client import errors
 
 from .resource import Resource
 from ..keycloak import get_access_token
@@ -9,29 +11,30 @@ from ..properties import backend_api_url
 from dataland_backend_api_documentation_client.api.meta_data_controller.get_data_meta_info import (
     sync as get_data_meta_info,
 )
-from dataland_backend_api_documentation_client.api.eu_taxonomy_data_for_financials_controller\
-    .get_company_associated_eu_taxonomy_data_for_financials import (
-        sync as get_eu_taxonomy_financials_data,
+
+from dataland_backend_api_documentation_client.models.company_associated_data_eu_taxonomy_data_for_financials import (
+    CompanyAssociatedDataEuTaxonomyDataForFinancials,
+)
+from dataland_backend_api_documentation_client.models.company_associated_data_eu_taxonomy_data_for_non_financials \
+    import (
+        CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
     )
-from dataland_backend_api_documentation_client.api.eu_taxonomy_data_for_non_financials_controller\
-    .get_company_associated_eu_taxonomy_data_for_non_financials import (
-        sync as get_eu_taxonomy_non_financials_data,
-    )
-from dataland_backend_api_documentation_client.api.lksg_data_controller.get_company_associated_lksg_data import (
-    sync as get_lksg_data,
+from dataland_backend_api_documentation_client.models.company_associated_data_lksg_data import (
+    CompanyAssociatedDataLksgData,
 )
-from dataland_backend_api_documentation_client.api.sfdr_data_controller.get_company_associated_sfdr_data import (
-    sync as get_sfdr_data,
+from dataland_backend_api_documentation_client.models.company_associated_data_sfdr_data import (
+    CompanyAssociatedDataSfdrData,
 )
-from dataland_backend_api_documentation_client.api.p_2p_data_controller.get_company_associated_p2_p_data import (
-    sync as get_p2p_data,
+from dataland_backend_api_documentation_client.models.company_associated_data_pathways_to_paris_data import (
+    CompanyAssociatedDataPathwaysToParisData,
 )
-from dataland_backend_api_documentation_client.api.sme_data_controller.get_company_associated_sme_data import (
-    sync as get_sme_data,
+from dataland_backend_api_documentation_client.models.company_associated_data_sme_data import (
+    CompanyAssociatedDataSmeData,
 )
-from dataland_backend_api_documentation_client.api.gdv_data_controller.get_company_associated_gdv_data import (
-    sync as get_gdv_data,
+from dataland_backend_api_documentation_client.models.company_associated_data_gdv_data import (
+    CompanyAssociatedDataGdvData,
 )
+
 from dataland_backend_api_documentation_client.client import AuthenticatedClient
 from dataland_backend_api_documentation_client.models.data_meta_information import (
     DataTypeEnum,
@@ -50,25 +53,24 @@ class DataResource(Resource):
         logging.info(f"Retrieving meta information for dataset with ID {self.id}")
         self.meta_info = get_data_meta_info(self.id, client=backend_client)
         logging.info(f"Retrieving dataset with ID {self.id}")
-        retrieve_data = _get_data_retrieval_method(self.meta_info.data_type)
-        self.data = retrieve_data(self.id, backend_client)
+        self.data = _get_data(data_type=self.meta_info.data_type, data_id=self.id, client=backend_client)
 
 
-def _get_data_retrieval_method(
-    data_type: DataTypeEnum,
-) -> Callable[[str, AuthenticatedClient], any]:
-    if data_type == DataTypeEnum.EUTAXONOMY_FINANCIALS:
-        return lambda data_id, client: get_eu_taxonomy_financials_data(data_id, client=client).data
-    if data_type == DataTypeEnum.EUTAXONOMY_NON_FINANCIALS:
-        return lambda data_id, client: get_eu_taxonomy_non_financials_data(data_id, client=client).data
-    if data_type == DataTypeEnum.LKSG:
-        return lambda data_id, client: get_lksg_data(data_id, client=client).data
-    if data_type == DataTypeEnum.SFDR:
-        return lambda data_id, client: get_sfdr_data(data_id, client=client).data
-    if data_type == DataTypeEnum.P2P:
-        return lambda data_id, client: get_p2p_data(data_id, client=client).data
-    if data_type == DataTypeEnum.SME:
-        return lambda data_id, client: get_sme_data(data_id, client=client).data
-    if data_type == DataTypeEnum.GDV:
-        return lambda data_id, client: get_gdv_data(data_id, client=client).data
-    raise ValueError(f"No client specified for data type {data_type}")
+def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient) -> any:
+    type_to_company_associated_data = {
+        DataTypeEnum.EUTAXONOMY_FINANCIALS: CompanyAssociatedDataEuTaxonomyDataForFinancials,
+        DataTypeEnum.EUTAXONOMY_NON_FINANCIALS: CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+        DataTypeEnum.LKSG: CompanyAssociatedDataLksgData,
+        DataTypeEnum.SFDR: CompanyAssociatedDataSfdrData,
+        DataTypeEnum.P2P: CompanyAssociatedDataPathwaysToParisData,
+        DataTypeEnum.SME: CompanyAssociatedDataSmeData,
+        DataTypeEnum.GDV: CompanyAssociatedDataGdvData,
+    }
+    response = client.get_httpx_client().request(method="get", url=f"/data/{data_type}/{data_id}")
+    if response.status_code == HTTPStatus.OK:
+        return type_to_company_associated_data.get(data_type).from_dict(response.json())
+    if response.status_code == HTTPStatus.UNAUTHORIZED:
+        return cast(Any, None)
+    if client.raise_on_unexpected_status:
+        raise errors.UnexpectedStatus(response.status_code, response.content)
+    return None

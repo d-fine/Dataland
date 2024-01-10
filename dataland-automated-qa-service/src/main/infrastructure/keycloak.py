@@ -53,8 +53,8 @@ def _update_token() -> None:
     )
     response = urllib.request.urlopen(request)
     parsed_response_body = json.loads(response.read())
-    global _current_access_token
-    global _current_access_token_expire_time
+    global _current_access_token  # noqa: PLW0603
+    global _current_access_token_expire_time  # noqa: PLW0603
     _current_access_token = parsed_response_body["access_token"]
     _current_access_token_expire_time = datetime.datetime.now() + datetime.timedelta(
         seconds=parsed_response_body["expires_in"]
