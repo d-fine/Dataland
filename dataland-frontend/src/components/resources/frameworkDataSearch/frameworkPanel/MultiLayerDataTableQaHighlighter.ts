@@ -5,8 +5,8 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import {
   type AvailableMLDTDisplayObjectTypes,
-  MLDTDisplayComponentName,
-  MLDTDisplayComponentTypes,
+  type MLDTDisplayComponentName,
+  type MLDTDisplayComponentTypes,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { NO_DATA_PROVIDED } from "@/utils/Constants";
 /**
@@ -175,7 +175,6 @@ function editCellConfigForHighlightingHiddenFields<T>(
  * @returns boolean to set hidden to true or false
  */
 function checkShouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDisplayComponentName]): boolean {
-  console.log("value", value);
   switch (typeof value) {
     case "string":
       return !!(value && value != NO_DATA_PROVIDED);
@@ -184,11 +183,11 @@ function checkShouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDispla
         return !!(
           value &&
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          (value.modalOptions?.data?.listOfRowContents?.length ||
+          (value?.modalOptions?.data?.listOfRowContents?.length ||
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            value.modalOptions?.data?.input ||
+            value?.modalOptions?.data?.input ||
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            value.modalOptions?.data?.value?.length)
+            value?.modalOptions?.data?.value?.length)
         );
       } else {
         return !!value;

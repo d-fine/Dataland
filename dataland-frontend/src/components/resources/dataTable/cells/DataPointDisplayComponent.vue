@@ -1,9 +1,9 @@
 <template>
-  <p>{{ content.displayValue }}</p>
-  <a @click="$dialog.open(DataPointDataTable, modalOptions)" class="link"
+  <a @click="$dialog.open(DataPointDataTable, modalOptions)" v-if="hasAuxiliaryData || hasValidValue" class="link"
     >{{ contentDisplayValue }}
     <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
   </a>
+  <span v-else>{{ NO_DATA_PROVIDED }}</span>
 </template>
 
 <script lang="ts">
@@ -26,6 +26,7 @@ export default defineComponent({
   data() {
     return {
       DataPointDataTable,
+      NO_DATA_PROVIDED: NO_DATA_PROVIDED,
     };
   },
   computed: {
@@ -43,13 +44,13 @@ export default defineComponent({
     },
     hasAuxiliaryData() {
       return (
-        this.content.displayValue?.dataSource?.fileName ||
-        this.content.displayValue?.dataSource?.fileReference ||
-        this.content.displayValue?.comment
+        this.content?.displayValue?.dataSource?.fileName ||
+        this.content?.displayValue?.dataSource?.fileReference ||
+        this.content?.displayValue?.comment
       );
     },
     hasValidValue() {
-      return this.content.displayValue?.value && this.content.displayValue?.value !== NO_DATA_PROVIDED;
+      return this.content?.displayValue?.value && this.content?.displayValue?.value !== NO_DATA_PROVIDED;
     },
     contentDisplayValue() {
       return this.hasAuxiliaryData && !this.hasValidValue
