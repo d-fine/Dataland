@@ -6,6 +6,7 @@ import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdentifierType
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
+import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.checkErrorMessageForClientException
@@ -34,6 +35,7 @@ import org.junit.jupiter.api.assertThrows
 class CommunityManagerTest {
 
     private val apiAccessor = ApiAccessor()
+    val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
     private fun getIdForUploadedCompanyWithIdentifiers(
@@ -52,7 +54,7 @@ class CommunityManagerTest {
 
     @BeforeAll
     fun authenticateAsReader() {
-        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Reader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
     }
 
     @Test
@@ -221,7 +223,7 @@ class CommunityManagerTest {
         identifiers: List<String>,
         frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
     ) {
-        apiAccessor.authenticateAsTechnicalUser(technicalUser)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val responseForReader = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiers, frameworks),
         )
@@ -239,7 +241,7 @@ class CommunityManagerTest {
             )
             ).toMutableMap()
         val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
-        TechnicalUser.values().forEach { technicalUser ->
+        TechnicalUser.entries.forEach { technicalUser ->
             authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
                 technicalUser, identifierMap.values.toList(), frameworks,
             )
@@ -253,7 +255,7 @@ class CommunityManagerTest {
                     framework,
                     identifierType,
                     identifierValue,
-                    TechnicalUser.values().size.toLong(),
+                    TechnicalUser.entries.size.toLong(),
                 )
             }
         }
