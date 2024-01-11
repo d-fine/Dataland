@@ -6,13 +6,16 @@ import {
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
+  MLDTDisplayComponentTypes,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import { NO_DATA_PROVIDED } from "@/utils/Constants";
 /**
  * For QA it is desirable that all fields are displayed to a reviewer even if they should normally not be visible.
  * This function edits a standard view-configuration in a way that it displays all cells but highlights cells that would
  * not be displayed to a user on the view-page.
  * @param config the input view configuration
  * @param inReviewMode
+ * @param hideEmptyFields
  * @param displayStatusGettersOfAllParents a list of all the showDisplay-functions of the parents of the section or
  * cell that this function is currently looking at
  * @returns the modified hidden-highlighting view-config
@@ -20,22 +23,22 @@ import {
 export function editMultiLayerDataTableConfigForHighlightingHiddenFields<T>(
   config: MLDTConfig<T>,
   inReviewMode: boolean,
+  hideEmptyFields: boolean,
   displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>,
 ): MLDTConfig<T> {
-  console.log('1++++++++', config)
-  console.log('22++++++++', inReviewMode)
-  console.log('33++++++++', displayStatusGettersOfAllParents)
   return config.map((cellOrSectionConfig) => {
     if (cellOrSectionConfig.type == "cell") {
       return editCellConfigForHighlightingHiddenFields(
         cellOrSectionConfig,
         inReviewMode,
+        hideEmptyFields,
         displayStatusGettersOfAllParents,
       );
     } else {
       return editSectionConfigForHighlightingHiddenFields(
         cellOrSectionConfig,
         inReviewMode,
+        hideEmptyFields,
         displayStatusGettersOfAllParents,
       );
     }
@@ -52,6 +55,7 @@ export function editMultiLayerDataTableConfigForHighlightingHiddenFields<T>(
 function editSectionConfigForHighlightingHiddenFields<T>(
   sectionConfig: MLDTSectionConfig<T>,
   inReviewMode: boolean,
+  hideEmptyFields: boolean,
   displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>,
 ): MLDTSectionConfig<T> {
   const displayStatusGetterOfThisSection = sectionConfig.shouldDisplay;
@@ -84,7 +88,8 @@ function editSectionConfigForHighlightingHiddenFields<T>(
     shouldDisplay: () => true,
     children: editMultiLayerDataTableConfigForHighlightingHiddenFields(
       sectionConfig.children,
-        inReviewMode,
+      inReviewMode,
+      hideEmptyFields,
       displayStatusGettersToPassDownToChildren,
     ),
     areThisSectionAndAllParentSectionsDisplayedForTheDataset: areThisSectionAndAllParentSectionsDisplayedForTheDataset,
@@ -95,6 +100,7 @@ function editSectionConfigForHighlightingHiddenFields<T>(
  * Edits a single cell to the show-always directive
  * @param cellConfig the cell config to convert
  * @param inReviewMode
+ * @param hideEmptyFields
  * @param displayStatusGettersOfAllParents a list of all the showDisplay-functions of the parents of the cell that this
  * function is currently looking at
  * @returns the modified cell config
@@ -102,21 +108,32 @@ function editSectionConfigForHighlightingHiddenFields<T>(
 function editCellConfigForHighlightingHiddenFields<T>(
   cellConfig: MLDTCellConfig<T>,
   inReviewMode: boolean,
+  hideEmptyFields: boolean,
   displayStatusGettersOfAllParents?: Array<(dataset: T) => boolean>,
 ): MLDTCellConfig<T> {
   const cellHasAtLeastOneParent = !!displayStatusGettersOfAllParents && displayStatusGettersOfAllParents.length > 0;
   return {
     ...cellConfig,
     shouldDisplay: (dataset: T): boolean => {
-      if (inReviewMode) {
-        return true;
+      if (hideEmptyFields) {
+        if (inReviewMode) {
+          return (
+            cellConfig.shouldDisplay(dataset) &&
+            checkShouldValueBeDisplayed(cellConfig.valueGetter(dataset).displayValue)
+          );
+        } else {
+          return (
+            cellConfig.shouldDisplay(dataset) &&
+            checkShouldValueBeDisplayed(cellConfig.valueGetter(dataset).displayValue)
+          );
+        }
       } else {
-        return cellConfig.showIfCondition(dataset)
+        if (inReviewMode) {
+          return true;
+        } else {
+          return cellConfig.shouldDisplay(dataset);
+        }
       }
-      // console.log("label", cellConfig?.label);
-      // console.log("inReviewMode--->", JSON.stringify(inReviewMode));
-      // console.log("cellConfig", JSON.stringify(cellConfig.shouldDisplay(dataset)));
-      return cellConfig.shouldDisplay(dataset);
     },
     valueGetter: (dataset: T): AvailableMLDTDisplayObjectTypes => {
       const originalDisplayValue = cellConfig.valueGetter(dataset);
@@ -132,7 +149,11 @@ function editCellConfigForHighlightingHiddenFields<T>(
           return true;
         }
       };
-      if (areAllParentSectionsDisplayed() && cellConfig.shouldDisplay(dataset)) {
+      if (
+        areAllParentSectionsDisplayed() &&
+        cellConfig.shouldDisplay(dataset) &&
+        checkShouldValueBeDisplayed(cellConfig.valueGetter(dataset).displayValue)
+      ) {
         return originalDisplayValue;
       } else {
         return {
@@ -144,4 +165,33 @@ function editCellConfigForHighlightingHiddenFields<T>(
       }
     },
   };
+}
+
+/**
+ * Checks if fields with null values should be shown or not
+ * @param value This is the displayValue parsed from the field config
+ * @returns boolean to set hidden to true or false
+ */
+function checkShouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDisplayComponentName]): boolean {
+  console.log("value", value);
+  switch (typeof value) {
+    case "string":
+      return !!(value && value != NO_DATA_PROVIDED);
+    case "object":
+      if (value && "modalOptions" in value) {
+        return !!(
+          value &&
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          (value.modalOptions?.data?.listOfRowContents?.length ||
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            value.modalOptions?.data?.input ||
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            value.modalOptions?.data?.value?.length)
+        );
+      } else {
+        return !!value;
+      }
+    default:
+      return !!value;
+  }
 }

@@ -2,8 +2,6 @@ import { type Field, type FrameworkData } from "@/utils/GenericFrameworkTypes";
 import { type MLDTCellConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import {
   type AvailableMLDTDisplayObjectTypes,
-  type MLDTDisplayComponentName,
-  type MLDTDisplayComponentTypes,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { plainStringValueGetterFactory } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { yesNoValueGetterFactory } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
@@ -20,7 +18,6 @@ import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSear
 import { lksgProcurementCategoriesValueGetterFactory } from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
 import { p2pDriveMixValueGetterFactory } from "@/components/resources/dataTable/conversion/p2p/P2pDriveMixValueGetterFactory";
 import { highImpactClimateGetterFactory } from "@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory";
-import { NO_DATA_PROVIDED } from "@/utils/Constants";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
 /* eslint @typescript-eslint/no-explicit-any: 0 */
@@ -67,9 +64,7 @@ export function getDataModelFieldCellConfig(path: string, field: Field): MLDTCel
       type: "cell",
       label: field.label,
       explanation: field.description,
-      showIfCondition: (dataset: FrameworkData) => field.showIf(dataset),
-      shouldDisplay: (dataset: FrameworkData) =>
-        field.showIf(dataset) && shouldValueBeDisplayed(valueGetter(dataset).displayValue),
+      shouldDisplay: (dataset: FrameworkData) => field.showIf(dataset),
       valueGetter: valueGetter,
     };
   } else if (field.component == "UploadReports") {
@@ -78,13 +73,4 @@ export function getDataModelFieldCellConfig(path: string, field: Field): MLDTCel
     console.log(`!WARNING! - Could not translate component of type ${field.component}`);
     return undefined;
   }
-}
-
-/**
- * Checks if fields with null values should be shown or not
- * @param value This is the displayValue parsed from the field config
- * @returns boolean to set hidden to true or false
- */
-function shouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDisplayComponentName]): boolean {
-  return !!(value && value != NO_DATA_PROVIDED);
 }

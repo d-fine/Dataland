@@ -1,6 +1,7 @@
 <template>
+  <p>{{ content.displayValue }}</p>
   <a @click="$dialog.open(DataPointDataTable, modalOptions)" class="link"
-    >{{ content.displayValue?.value ?? NO_DATA_PROVIDED }}
+    >{{ contentDisplayValue }}
     <em class="pl-2 material-icons" aria-hidden="true" title=""> dataset </em>
   </a>
 </template>
@@ -12,7 +13,7 @@ import {
   type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
-import { NO_DATA_PROVIDED } from "@/utils/Constants";
+import { NO_DATA_PROVIDED, ONLY_AUXILIARY_DATA_PROVIDED } from "@/utils/Constants";
 
 export default defineComponent({
   name: "DataPointDisplayComponent",
@@ -40,6 +41,21 @@ export default defineComponent({
           dataPointDisplay: this.convertedValueForModal,
         },
       };
+    },
+    hasAuxiliaryData() {
+      return (
+        this.content.displayValue?.dataSource?.fileName ||
+        this.content.displayValue?.dataSource?.fileReference ||
+        this.content.displayValue?.comment
+      );
+    },
+    hasValidValue() {
+      return this.content.displayValue?.value && this.content.displayValue?.value !== NO_DATA_PROVIDED;
+    },
+    contentDisplayValue() {
+      return this.hasAuxiliaryData && !this.hasValidValue
+        ? ONLY_AUXILIARY_DATA_PROVIDED
+        : this.content.displayValue?.value || NO_DATA_PROVIDED;
     },
     convertedValueForModal() {
       const content = this.content.displayValue;
