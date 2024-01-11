@@ -1,5 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
+import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
+import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -45,5 +47,18 @@ fun UploadCategoryBuilder.addStandardUploadConfigCell(
         uploadComponentName = uploadComponentName,
         frameworkUploadOptions = frameworkUploadOptions,
         validation = validation,
+    )
+}
+
+/**
+ * A default data model generator for text fields.
+ */
+fun buildStringDataClass(dataClassBuilder: DataClassBuilder, component: ComponentBase) {
+    dataClassBuilder.addProperty(
+        component.identifier,
+        component.documentSupport.getJvmTypeReference(
+            TypeReference("String", component.isNullable),
+            component.isNullable,
+        ),
     )
 }
