@@ -87,6 +87,7 @@ interface DataOwnerApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully deleted data owner."),
+            ApiResponse(responseCode = "400", description = "The specified company doesn't exist on Dataland."),
             ApiResponse(responseCode = "404", description = "Data owner doesn't exist for the specified company."),
         ],
     )
