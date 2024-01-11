@@ -635,7 +635,7 @@
         "tags": [
           "data-owner-controller"
         ],
-        "summary": "Retrieve the data owner(s) to a company.",
+        "summary": "Retrieve data owner(s) of a company.",
         "description": "Get a list of data owner(s) for the specified company.",
         "operationId": "getDataOwners",
         "parameters": [
@@ -650,6 +650,19 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "The specified company does not exist on Dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
           "200": {
             "description": "Successfully retrieved data owner.",
             "content": {
