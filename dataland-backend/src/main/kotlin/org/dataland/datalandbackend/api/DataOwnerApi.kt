@@ -75,7 +75,7 @@ interface DataOwnerApi {
         ResponseEntity<List<String>>
 
     /**
-     * A method to delete a new data ownership relation in dataland
+     * A method to delete a data ownership relation in dataland
      * @param companyId the ID of the company to which the data ownership should be removed from
      * @param userId the ID of the user who is to be removed as company data owner
      * @return information about the deleted company data ownership relation
