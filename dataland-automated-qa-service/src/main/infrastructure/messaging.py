@@ -25,7 +25,7 @@ def qa_data(channel: BlockingChannel, method: Basic.Deliver, properties: BasicPr
     received_message = json.loads(body)
     bypass_qa = received_message["bypassQa"]
     data_id = received_message["dataId"]
-    data = DataResource(data_id)
+    data = None if bypass_qa else DataResource(data_id)
     process_qa_request(
         channel,
         method,
@@ -97,7 +97,7 @@ def process_qa_request(
     routing_key: str,
     resource_type: str,
     bypass_qa: bool,
-    resource: Resource,
+    resource: Resource | None,
     validate: Callable[[Resource, str], QaStatus],
 ) -> None:
     """

@@ -42,7 +42,9 @@ def get_data_meta_info_mock(data_id: str, client: AuthenticatedClient) -> DataMe
 
 
 def get_sme_data_mock(
-    data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient  # noqa: ARG001
+    data_type: DataTypeEnum,  # noqa: ARG001
+    data_id: str,  # noqa: ARG001
+    client: AuthenticatedClient,  # noqa: ARG001
 ) -> CompanyAssociatedDataSmeData:
     return CompanyAssociatedDataSmeData(
         company_id="company-id",

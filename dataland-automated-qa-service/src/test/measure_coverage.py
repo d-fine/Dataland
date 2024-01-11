@@ -4,6 +4,5 @@ from main.entrypoint import main
 
 
 class MeasureCoverage(unittest.TestCase):
-    def test_something(self) -> None:
+    def test_entrypoint(self) -> None:  # noqa: PLR6301
         main()
-        self.assertEqual(1, 2)

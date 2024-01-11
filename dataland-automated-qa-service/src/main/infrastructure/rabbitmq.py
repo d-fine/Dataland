@@ -1,5 +1,4 @@
 import logging
-import pika.exceptions
 from pika.connection import Parameters
 from pika.adapters.blocking_connection import BlockingChannel, BlockingConnection
 from pika.spec import Basic, BasicProperties
@@ -28,18 +27,6 @@ class RabbitMq:
         self._connection = BlockingConnection(self._connection_parameters)
         self._channel = self._connection.channel()
         logging.info("Connection established")
-
-    def disconnect(self) -> None:
-        """
-        Closes the connection to the message queue
-        """
-        try:
-            self._channel.close()
-            self._connection.close()
-        except pika.exceptions.ChannelWrongStateError:
-            logging.error("Could not close channel.")
-        except pika.exceptions.ConnectionWrongStateError:
-            logging.error("Could not close connection.")
 
     def register_receiver(
         self,
