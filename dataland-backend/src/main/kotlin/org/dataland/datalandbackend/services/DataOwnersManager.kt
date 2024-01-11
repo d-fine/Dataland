@@ -66,6 +66,8 @@ class DataOwnersManager(
     private fun checkIfCompanyIsValid(companyId: String) {
         if (!companyRepository.existsById(companyId)) {
             throw InvalidInputApiException(
+                // TODO do we want to distinguish between "company not found on dataland" and
+                // "user is not data owner of valid company"
                 "Company is invalid",
                 "There is no company corresponding to the provided Id $companyId stored on Dataland.",
             )
@@ -106,7 +108,7 @@ class DataOwnersManager(
             }
             return if (dataOwnersForCompany.dataOwners.isEmpty()) {
                 dataOwnerRepository.deleteById(companyId)
-                CompanyDataOwnersEntity(companyId, dataOwnersForCompany.dataOwners)
+                CompanyDataOwnersEntity(companyId = companyId, dataOwners = dataOwnersForCompany.dataOwners)
             } else {
                 dataOwnerRepository.save(
                     CompanyDataOwnersEntity(
@@ -143,7 +145,7 @@ class DataOwnersManager(
     }
 
     /**
-     * Method to check whether the user currently authenticated user is data owner of a specified company and therefore
+     * Method to check whether the currently authenticated user is data owner of a specified company and therefore
      * has uploader rights for this company
      * @param companyId the ID of the company
      * @return a Boolean indicating whether the user is data owner or not

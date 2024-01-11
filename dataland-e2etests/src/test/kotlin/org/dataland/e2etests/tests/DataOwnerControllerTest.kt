@@ -139,17 +139,6 @@ class DataOwnerControllerTest {
         assertTrue(responseBody.contains("Access Denied"))
     }
 
-    private fun checkErrorMessageForUnknownDataOwnerException(clientException: ClientException, companyId: UUID) {
-        assertErrorCodeForClientException(clientException, 404)
-        val responseBody = (clientException.response as ClientError<*>).body as String
-        assertTrue(responseBody.contains("No data owners found"))
-        assertTrue(
-            responseBody.contains(
-                "The companyId '$companyId' do not have any data owners.",
-            ),
-        )
-    }
-
     @Test
     fun `post data owners either to an unknown company or as a non admin and check exceptions`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -228,10 +217,8 @@ class DataOwnerControllerTest {
     fun `get endpoint unknown company and unauthorized user exception `() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val anotherRandomCompanyId = UUID.randomUUID()
-        val getExceptionForUnknownCompany = assertThrows<ClientException> {
-            dataOwnerApi.getDataOwners(anotherRandomCompanyId)
-        }
-        checkErrorMessageForUnknownDataOwnerException(getExceptionForUnknownCompany, anotherRandomCompanyId)
+        val getResultForUnknownCompany = dataOwnerApi.getDataOwners(anotherRandomCompanyId)
+        assertEquals(getResultForUnknownCompany, mutableListOf<String>())
         val anotherCompanyId = UUID.randomUUID()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(
             TechnicalUser.entries.filter
