@@ -68,6 +68,7 @@ class DataOwnersManager(
             throw InvalidInputApiException(
                 // TODO do we want to distinguish between "company not found on dataland" and
                 // "user is not data owner of valid company"
+                // if both should be 404 this function can be added to the "addDataOwner" request
                 "Company is invalid",
                 "There is no company corresponding to the provided Id $companyId stored on Dataland.",
             )
