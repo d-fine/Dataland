@@ -26,7 +26,6 @@ export default defineComponent({
   data() {
     return {
       DataPointDataTable,
-      NO_DATA_PROVIDED: NO_DATA_PROVIDED,
     };
   },
   computed: {

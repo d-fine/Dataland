@@ -14,8 +14,8 @@ import { NO_DATA_PROVIDED } from "@/utils/Constants";
  * This function edits a standard view-configuration in a way that it displays all cells but highlights cells that would
  * not be displayed to a user on the view-page.
  * @param config the input view configuration
- * @param inReviewMode
- * @param hideEmptyFields
+ * @param inReviewMode Specifies whether we are in reviewMode
+ * @param hideEmptyFields Specifies whether empty fields should be visible at the beginning
  * @param displayStatusGettersOfAllParents a list of all the showDisplay-functions of the parents of the section or
  * cell that this function is currently looking at
  * @returns the modified hidden-highlighting view-config
@@ -48,6 +48,8 @@ export function editMultiLayerDataTableConfigForHighlightingHiddenFields<T>(
 /**
  * Edits a single section (and all it's children) to the show-always directive
  * @param sectionConfig the section config to convert
+ * @param inReviewMode Specifies whether we are in reviewMode
+ * @param hideEmptyFields Specifies whether empty fields should be visible at the beginning
  * @param displayStatusGettersOfAllParents a list of all the showDisplay-functions of the parents of the section that
  * this function is currently looking at
  * @returns the modified section config
@@ -99,8 +101,8 @@ function editSectionConfigForHighlightingHiddenFields<T>(
 /**
  * Edits a single cell to the show-always directive
  * @param cellConfig the cell config to convert
- * @param inReviewMode
- * @param hideEmptyFields
+ * @param inReviewMode Specifies whether we are in reviewMode
+ * @param hideEmptyFields Specifies whether empty fields should be visible at the beginning
  * @param displayStatusGettersOfAllParents a list of all the showDisplay-functions of the parents of the cell that this
  * function is currently looking at
  * @returns the modified cell config
