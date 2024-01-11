@@ -2,8 +2,8 @@ import CreateGdvDataset from "@/components/forms/CreateGdvDataset.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 
-describe("Component tests for the CreateP2pDataset that test dependent fields", () => {
-  it("On the upload page, ensure that sectors can be selected and deselected and the submit looks as expected", () => {
+describe("Component tests for the gdv upload page", () => {
+  it("Ensure that the customized validation message appears if a user selects No in the first question ", () => {
     cy.mountWithPlugins(CreateGdvDataset, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
