@@ -189,6 +189,7 @@ class DataOwnerControllerTest {
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
+        val unknownCompanyId = UUID.randomUUID()
         val userId = UUID.randomUUID()
         val unknownUserId = UUID.randomUUID()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -199,6 +200,11 @@ class DataOwnerControllerTest {
                 dataOwnerApi.deleteDataOwner(companyId, unknownUserId)
             }
         assertErrorCodeForClientException(dataOwnersAfterInvalidDeleteRequest, 404)
+
+        val responseFromInvalidCompanyDeleteRequest = assertThrows<ClientException> {
+            dataOwnerApi.deleteDataOwner(unknownCompanyId, userId)
+        }
+        assertErrorCodeForClientException(responseFromInvalidCompanyDeleteRequest, 400)
     }
 
     @Test
