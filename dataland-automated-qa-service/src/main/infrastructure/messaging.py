@@ -6,7 +6,7 @@ from typing import Callable
 
 
 from main.infrastructure.qa_exceptions import AutomaticQaNotPossibleError
-from main.infrastructure.resources import Resource, DataResource, DocumentResource
+from main.infrastructure.resources import Resource, DataResource, DocumentResource, UnloadedResource
 import main.infrastructure.properties as p
 from main.validation.validate import validate_data, validate_document
 
@@ -25,7 +25,7 @@ def qa_data(channel: BlockingChannel, method: Basic.Deliver, properties: BasicPr
     received_message = json.loads(body)
     bypass_qa = received_message["bypassQa"]
     data_id = received_message["dataId"]
-    data = None if bypass_qa else DataResource(data_id)
+    data = UnloadedResource(data_id) if bypass_qa else DataResource(data_id)
     process_qa_request(
         channel,
         method,
@@ -97,7 +97,7 @@ def process_qa_request(
     routing_key: str,
     resource_type: str,
     bypass_qa: bool,
-    resource: Resource | None,
+    resource: Resource,
     validate: Callable[[Resource, str], QaStatus],
 ) -> None:
     """

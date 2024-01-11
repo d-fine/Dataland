@@ -197,7 +197,7 @@ jobs:
         if: always()
         run: |
           pip install ruff
-          ruff check ./dataland-automated-qa-service/src
+          ruff check --preview ./dataland-automated-qa-service/src
       - name: Execute python unit tests and measure coverage
         if: always()
         run: |
