@@ -177,6 +177,10 @@ class DataOwnerControllerTest {
             dataOwnerApi.postDataOwner(companyId, userId)
         }
         checkErrorMessageForUnauthorizedException(postExceptionForUnauthorizedRequest)
+        checkHeadException(companyId, userId)
+    }
+
+    private fun checkHeadException(companyId: UUID, userId: UUID) {
         val headExceptionForUnauthorizedRequest = assertThrows<ClientException> {
             dataOwnerApi.isUserDataOwnerForCompany(companyId, userId)
         }
