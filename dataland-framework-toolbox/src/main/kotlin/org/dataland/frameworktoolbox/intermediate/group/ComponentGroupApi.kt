@@ -76,7 +76,7 @@ inline fun <reified T : ComponentBase> ComponentGroupApi.delete(identifier: Stri
     return this.delete(identifier, T::class)
 }
 
-/**getOrNull
+/**
  * Get an existing subcomponent or null. Throws an exception when the identified element has a different type
  * than specified
  */
