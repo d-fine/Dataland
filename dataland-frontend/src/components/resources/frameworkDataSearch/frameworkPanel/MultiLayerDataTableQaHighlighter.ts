@@ -117,17 +117,9 @@ function editCellConfigForHighlightingHiddenFields<T>(
   return {
     ...cellConfig,
     shouldDisplay: (dataset: T): boolean => {
-      if (hideEmptyFields) {
-        return (
-          cellConfig.shouldDisplay(dataset) && checkShouldValueBeDisplayed(cellConfig.valueGetter(dataset).displayValue)
-        );
-      } else {
-        if (inReviewMode) {
-          return true;
-        } else {
-          return cellConfig.shouldDisplay(dataset);
-        }
-      }
+      return hideEmptyFields
+        ? cellConfig.shouldDisplay(dataset) && checkShouldValueBeDisplayed(cellConfig.valueGetter(dataset).displayValue)
+        : inReviewMode || cellConfig.shouldDisplay(dataset);
     },
     valueGetter: (dataset: T): AvailableMLDTDisplayObjectTypes => {
       const originalDisplayValue = cellConfig.valueGetter(dataset);

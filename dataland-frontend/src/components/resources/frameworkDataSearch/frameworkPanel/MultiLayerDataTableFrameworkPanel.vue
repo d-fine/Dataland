@@ -21,7 +21,9 @@
     <MultiLayerDataTable
       :mldtDatasets="mldtDatasets"
       :inReviewMode="inReviewMode"
-      :config="editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration, inReviewMode, hideEmptyFields)"
+      :config="
+        editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration, inReviewMode, hideEmptyFields)
+      "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
     />
   </div>
