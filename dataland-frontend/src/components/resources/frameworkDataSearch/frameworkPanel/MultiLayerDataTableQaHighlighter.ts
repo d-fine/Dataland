@@ -163,7 +163,7 @@ function checkShouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDispla
     case "string":
       return !!(value && value != NO_DATA_PROVIDED);
     case "object":
-      if (value && "modalOptions" in value) {
+      if (!!value && "modalOptions" in value) {
         return !!(
           value &&
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

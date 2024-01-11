@@ -44,9 +44,9 @@ export default defineComponent({
     },
     hasAuxiliaryData() {
       return (
-        this.content?.displayValue?.dataSource?.fileName ||
-        this.content?.displayValue?.dataSource?.fileReference ||
-        this.content?.displayValue?.comment
+        this.content.displayValue?.dataSource?.fileName ??
+        this.content.displayValue?.dataSource?.fileReference ??
+        this.content.displayValue?.comment
       );
     },
     hasValidValue() {
