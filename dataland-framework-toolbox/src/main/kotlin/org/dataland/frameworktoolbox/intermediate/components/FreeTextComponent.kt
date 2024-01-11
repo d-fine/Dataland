@@ -48,8 +48,8 @@ class FreeTextComponent(
         sectionBuilder.addAtomicExpression(
             identifier,
             documentSupport.getFixtureExpression(
-                fixtureExpression = "dataGenerator.guaranteedParagraph()",
-                nullableFixtureExpression = "dataGenerator.randomParagraph()",
+                fixtureExpression = "dataGenerator.guaranteedParagraphs()",
+                nullableFixtureExpression = "dataGenerator.randomParagraphs()",
                 nullable = isNullable,
             ),
         )

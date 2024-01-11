@@ -151,11 +151,11 @@ export class Generator {
     return faker.company.buzzNoun();
   }
 
-  randomParagraph(): string | null {
-    return this.valueOrNull(this.guaranteedParagraph());
+  randomParagraphs(): string | null {
+    return this.valueOrNull(this.guaranteedParagraphs());
   }
 
-  guaranteedParagraph(): string {
+  guaranteedParagraphs(): string {
     return faker.lorem.paragraphs({ min: 1, max: 5 });
   }
 
