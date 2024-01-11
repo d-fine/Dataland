@@ -111,22 +111,10 @@ const register = (): void => {
 }
 @media only screen and (max-width: $small) {
   .header {
-    &__authsection {
-      display: none;
-      flex-direction: row-reverse;
-      &-login {
-        font-size: 0;
-        color: transparent;
-        &:hover {
-          font-size: 0;
-          color: transparent;
-          border-bottom: 2px solid transparent;
-          &::before {
-            content: "";
-          }
-        }
-      }
-    }
+    padding: 16px;
+    margin: 0;
+    width: 100%;
+    border-radius: 0;
   }
 }
 </style>

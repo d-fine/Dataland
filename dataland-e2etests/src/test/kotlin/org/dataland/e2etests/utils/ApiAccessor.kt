@@ -246,6 +246,9 @@ class ApiAccessor {
                 testDataProvider = testDataProviderForP2pData,
                 frameworkDataUploadFunction = this::p2pUploaderFunction,
             )
+            else -> {
+                throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
+            }
         }
     }
 
