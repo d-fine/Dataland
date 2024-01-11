@@ -26,7 +26,7 @@ class AdminDataManipulationControllerTest {
         apiAccessor.adminDataManipulationControllerApi.deleteCompanyAssociatedData(
             mapOfIds.getValue("dataId"),
         )
-
+// TODO It would be better to check on a 200 code from the deletion request to save one test step
         val exception =
             assertThrows<ClientException> {
                 apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
