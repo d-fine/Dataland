@@ -165,7 +165,7 @@ function checkShouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDispla
     case "object":
       if (!!value && "modalOptions" in value) {
         return !!(
-          value &&
+          // prettier-ignore
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           (value.modalOptions?.data?.listOfRowContents?.length ||
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
