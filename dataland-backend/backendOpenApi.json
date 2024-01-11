@@ -881,6 +881,16 @@
               }
             }
           },
+          "400": {
+            "description": "The specified company doesn\u0027t exist on Dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyDataOwners"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Successfully deleted data owner.",
             "content": {
@@ -1100,7 +1110,7 @@
         "tags": [
           "data-owner-controller"
         ],
-        "summary": "Validation of a user-company combination wrt. to data ownership.",
+        "summary": "Validation of a user-company combination with regards to data ownership.",
         "description": "Checks whether a user is data owner of a company.",
         "operationId": "isUserDataOwnerForCompany",
         "parameters": [
