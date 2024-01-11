@@ -185,7 +185,7 @@ class DataOwnerControllerTest {
     }
 
     @Test
-    fun `delete unknown data owner from an existing company`() {
+    fun `delete unknown data owner from an existing and from a non existing company`() {
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
