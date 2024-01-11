@@ -5,7 +5,7 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import {
   type AvailableMLDTDisplayObjectTypes,
-  type MLDTDisplayComponentName,
+  MLDTDisplayComponentName,
   type MLDTDisplayComponentTypes,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { NO_DATA_PROVIDED } from "@/utils/Constants";
@@ -118,17 +118,9 @@ function editCellConfigForHighlightingHiddenFields<T>(
     ...cellConfig,
     shouldDisplay: (dataset: T): boolean => {
       if (hideEmptyFields) {
-        if (inReviewMode) {
-          return (
-            cellConfig.shouldDisplay(dataset) &&
-            checkShouldValueBeDisplayed(cellConfig.valueGetter(dataset).displayValue)
-          );
-        } else {
-          return (
-            cellConfig.shouldDisplay(dataset) &&
-            checkShouldValueBeDisplayed(cellConfig.valueGetter(dataset).displayValue)
-          );
-        }
+        return (
+          cellConfig.shouldDisplay(dataset) && checkShouldValueBeDisplayed(cellConfig.valueGetter(dataset).displayValue)
+        );
       } else {
         if (inReviewMode) {
           return true;
@@ -183,11 +175,11 @@ function checkShouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDispla
         return !!(
           value &&
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          (value?.modalOptions?.data?.listOfRowContents?.length ||
+          (value.modalOptions?.data?.listOfRowContents?.length ||
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            value?.modalOptions?.data?.input ||
+            value.modalOptions?.data?.input ||
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            value?.modalOptions?.data?.value?.length)
+            value.modalOptions?.data?.value?.length)
         );
       } else {
         return !!value;

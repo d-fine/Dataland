@@ -21,7 +21,7 @@
     <MultiLayerDataTable
       :mldtDatasets="mldtDatasets"
       :inReviewMode="inReviewMode"
-      :config="displayConfigAfterEdit"
+      :config="editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration, inReviewMode, hideEmptyFields)"
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
     />
   </div>
@@ -74,14 +74,6 @@ const mldtDatasets = computed(() => {
     headerLabel: singleDataSet.metaInfo.reportingPeriod,
     dataset: singleDataSet.data,
   }));
-});
-
-const displayConfigAfterEdit = computed(() => {
-  return editMultiLayerDataTableConfigForHighlightingHiddenFields(
-    props.displayConfiguration,
-    props.inReviewMode,
-    <boolean>hideEmptyFields,
-  );
 });
 
 const sortedReportingPeriods = computed(() => {
