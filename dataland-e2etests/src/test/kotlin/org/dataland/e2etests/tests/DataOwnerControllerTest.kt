@@ -104,7 +104,7 @@ class DataOwnerControllerTest {
         assertTrue(
             responseBody.contains(
                 "There is no company corresponding to the provided Id $companyId stored on " +
-                        "Dataland.",
+                    "Dataland.",
             ),
         )
     }
@@ -208,7 +208,8 @@ class DataOwnerControllerTest {
         assertDoesNotThrow { dataOwnerApi.isUserDataOwnerForCompany(companyId, userId) }
         val dataOwnerFromGetRequest = dataOwnerApi.getDataOwners(companyId)
         assertEquals(listOf(userId), dataOwnerFromGetRequest.map { UUID.fromString(it) })
-        }
+    }
+
     @Test
     fun `get endpoint unknown company and unauthorized user exception `() {
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Admin)
@@ -216,7 +217,7 @@ class DataOwnerControllerTest {
         val getExceptionForUnknownCompany = assertThrows<ClientException> {
             dataOwnerApi.getDataOwners(anotherRandomCompanyId)
         }
-        checkErrorMessageForUnknownDataOwnerException(getExceptionForUnknownCompany , anotherRandomCompanyId)
+        checkErrorMessageForUnknownDataOwnerException(getExceptionForUnknownCompany, anotherRandomCompanyId)
         val anotherCompanyId = UUID.randomUUID()
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.entries.filter { it != TechnicalUser.Admin }.random())
         val getExceptionForUnauthorizedRequest = assertThrows<ClientException> {
@@ -224,5 +225,4 @@ class DataOwnerControllerTest {
         }
         checkErrorMessageForUnauthorizedException(getExceptionForUnauthorizedRequest)
     }
-
 }
