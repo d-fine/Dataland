@@ -13,7 +13,7 @@ export function isValidFileName(
   if (!isMounted) {
     return true;
   }
-  return !!fileName && fileName?.length > 0 && !invalidFileNames.includes(fileName);
+  return !!fileName && !invalidFileNames.includes(fileName);
 }
 
 export const noReportLabel = "None...";
