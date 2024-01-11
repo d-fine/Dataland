@@ -149,8 +149,7 @@ class DataOwnerControllerTest {
     }
 
     @Test
-    fun `checks invalid inputs, operations as unauthorized user and the corresponding exceptions`() {
-        //Post endpoint: using unknown companyID
+    fun `post data owners either to an unknown company or as a non-admin and check exceptions`() {
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Admin)
         val randomCompanyId = UUID.randomUUID()
         val userId = UUID.randomUUID()
@@ -158,19 +157,10 @@ class DataOwnerControllerTest {
             dataOwnerApi.postDataOwner(randomCompanyId, userId)
         }
         checkErrorMessageForUnknownCompanyException(postExceptionForUnknownCompany, randomCompanyId)
-        //Get endpoint: using unknown companyID
-        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Admin)
-        val anotherRandomCompanyId = UUID.randomUUID()
-        val getExceptionForUnknownCompany = assertThrows<ClientException> {
-            dataOwnerApi.getDataOwners(anotherRandomCompanyId)
-        }
-        checkErrorMessageForUnknownDataOwnerException(getExceptionForUnknownCompany , anotherRandomCompanyId)
-        // Check invalid company exceptions
         val headExceptionForInvalidCompany = assertThrows<ClientException> {
             dataOwnerApi.isUserDataOwnerForCompany(randomCompanyId, userId)
         }
         assertErrorCodeForClientException(headExceptionForInvalidCompany, 400)
-        //  Checks not existing data owner exception
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
@@ -178,19 +168,11 @@ class DataOwnerControllerTest {
             dataOwnerApi.isUserDataOwnerForCompany(companyId, userId)
         }
         assertErrorCodeForClientException(headExceptionForNotFoundDataOwner, 404)
-        // Checks unauthorized access to post endpoint
         apiAccessor.authenticateAsTechnicalUser(TechnicalUser.entries.filter { it != TechnicalUser.Admin }.random())
         val postExceptionForUnauthorizedRequest = assertThrows<ClientException> {
             dataOwnerApi.postDataOwner(companyId, userId)
         }
         checkErrorMessageForUnauthorizedException(postExceptionForUnauthorizedRequest)
-        // Checks unauthorized access to get endpoint
-        val anotherCompanyId = UUID.randomUUID()
-        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.entries.filter { it != TechnicalUser.Admin }.random())
-        val getExceptionForUnauthorizedRequest = assertThrows<ClientException> {
-            dataOwnerApi.getDataOwners(anotherCompanyId)
-        }
-        checkErrorMessageForUnauthorizedException(getExceptionForUnauthorizedRequest)
         val headExceptionForUnauthorizedRequest = assertThrows<ClientException> {
             dataOwnerApi.isUserDataOwnerForCompany(companyId, userId)
         }
@@ -216,7 +198,6 @@ class DataOwnerControllerTest {
 
     @Test
     fun `get data owner from an existing company as authorized user`() {
-        // post data owners to an existing company
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
@@ -225,9 +206,23 @@ class DataOwnerControllerTest {
         val dataOwnersForCompany = dataOwnerApi.postDataOwner(companyId, userId)
         validateDataOwnersForCompany(companyId, listOf(userId), dataOwnersForCompany)
         assertDoesNotThrow { dataOwnerApi.isUserDataOwnerForCompany(companyId, userId) }
-        // get data owner of existing company
         val dataOwnerFromGetRequest = dataOwnerApi.getDataOwners(companyId)
         assertEquals(listOf(userId), dataOwnerFromGetRequest.map { UUID.fromString(it) })
+        }
+    @Test
+    fun `get endpoint unknown company and unauthorized user exception `() {
+        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.Admin)
+        val anotherRandomCompanyId = UUID.randomUUID()
+        val getExceptionForUnknownCompany = assertThrows<ClientException> {
+            dataOwnerApi.getDataOwners(anotherRandomCompanyId)
+        }
+        checkErrorMessageForUnknownDataOwnerException(getExceptionForUnknownCompany , anotherRandomCompanyId)
+        val anotherCompanyId = UUID.randomUUID()
+        apiAccessor.authenticateAsTechnicalUser(TechnicalUser.entries.filter { it != TechnicalUser.Admin }.random())
+        val getExceptionForUnauthorizedRequest = assertThrows<ClientException> {
+            dataOwnerApi.getDataOwners(anotherCompanyId)
+        }
+        checkErrorMessageForUnauthorizedException(getExceptionForUnauthorizedRequest)
     }
 
 }
