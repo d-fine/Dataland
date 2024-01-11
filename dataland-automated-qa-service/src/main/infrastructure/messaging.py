@@ -74,7 +74,6 @@ def _send_qa_completed_message(
     status: QaStatus,
     correlation_id: str,
 ) -> None:
-    _assert_status_is_valid_for_qa_completion(status)
     message_to_send = {"identifier": resource_id, "validationResult": status}
     channel.basic_publish(
         exchange=p.mq_quality_assured_exchange,
