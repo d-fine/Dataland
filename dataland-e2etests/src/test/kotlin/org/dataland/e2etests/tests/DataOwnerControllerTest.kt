@@ -198,7 +198,6 @@ class DataOwnerControllerTest {
 
     @Test
     fun `get data owner from an existing company as authorized user`() {
-        // post data owners to an existing company
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
@@ -207,7 +206,6 @@ class DataOwnerControllerTest {
         val dataOwnersForCompany = dataOwnerApi.postDataOwner(companyId, userId)
         validateDataOwnersForCompany(companyId, listOf(userId), dataOwnersForCompany)
         assertDoesNotThrow { dataOwnerApi.isUserDataOwnerForCompany(companyId, userId) }
-        // get data owner of existing company
         val dataOwnerFromGetRequest = dataOwnerApi.getDataOwners(companyId)
         assertEquals(listOf(userId), dataOwnerFromGetRequest.map { UUID.fromString(it) })
         }
