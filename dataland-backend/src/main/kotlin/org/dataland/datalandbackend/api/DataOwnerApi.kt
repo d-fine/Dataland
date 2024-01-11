@@ -102,12 +102,12 @@ interface DataOwnerApi {
         ResponseEntity<CompanyDataOwners>
 
     /**
-     * A method to check if a user specified via his/her ID is data owner for a certain company
+     * A method to check if a user specified via their ID is data owner for a certain company
      * @param companyId the ID of the company
      * @param userId the ID of the user
      */
     @Operation(
-        summary = "Validation of a user-company combination wrt. to data ownership.",
+        summary = "Validation of a user-company combination with regards to data ownership.",
         description = "Checks whether a user is data owner of a company.",
     )
     @ApiResponses(
