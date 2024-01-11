@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 import kotlin.jvm.optionals.getOrElse
 
 /**
@@ -79,10 +80,7 @@ class DataOwnersManager(
     @Transactional
     fun getDataOwnerFromCompany(companyId: String): CompanyDataOwnersEntity {
         val dataOwnersOfCompany = dataOwnerRepository.findById(companyId).getOrElse {
-            throw ResourceNotFoundApiException(
-                "No data owners found",
-                "The companyId '$companyId' do not have any data owners.",
-            )
+            CompanyDataOwnersEntity(companyId, mutableListOf())
         }
         return dataOwnersOfCompany
     }
