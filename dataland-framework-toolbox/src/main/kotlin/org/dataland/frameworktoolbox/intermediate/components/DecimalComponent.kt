@@ -9,7 +9,6 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
-import java.math.BigDecimal
 
 /**
  * A DecimalComponent represents a numeric decimal value
@@ -18,8 +17,6 @@ open class DecimalComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
-    open var minimumValue: BigDecimal? = null
-    open var maximumValue: BigDecimal? = null
     open var constantUnitSuffix: String? = null
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {

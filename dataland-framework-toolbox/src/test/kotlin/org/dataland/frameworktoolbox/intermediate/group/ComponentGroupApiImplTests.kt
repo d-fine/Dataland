@@ -6,7 +6,6 @@ import org.dataland.frameworktoolbox.intermediate.components.DateComponent
 import org.dataland.frameworktoolbox.intermediate.components.DecimalComponent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
 import kotlin.test.assertContains
 import kotlin.test.assertFails
 
@@ -49,12 +48,12 @@ class ComponentGroupApiImplTests {
     fun `it should be possible to edit components dynamically`() {
         val componentGroup = DemoComponentGroupApiImpl()
         val component = componentGroup.create<DecimalComponent>("testNumber") {
-            minimumValue = BigDecimal.ZERO
+            constantUnitSuffix = "unit A"
         }
         componentGroup.edit<DecimalComponent>("testNumber") {
-            minimumValue = BigDecimal.ONE
+            constantUnitSuffix = "Unit B"
         }
-        assertEquals(BigDecimal.ONE, component.minimumValue)
+        assertEquals("Unit B", component.constantUnitSuffix)
     }
 
     @Test
