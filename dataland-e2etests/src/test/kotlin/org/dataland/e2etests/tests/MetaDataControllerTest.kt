@@ -27,7 +27,7 @@ class MetaDataControllerTest {
         .getCompanyInformationWithoutIdentifiers(numberOfCompaniesToPostPerFramework)
     private val listOfOneTestCompanyInformation = listOf(listOfTestCompanyInformation[0])
     companion object {
-        private const val SLEEP_DURATION_MS: Long = 1000
+        private const val SLEEP_DURATION_MS: Long = 200
     }
     fun buildAcceptedAndActiveDataMetaInformation(
         dataId: String,
