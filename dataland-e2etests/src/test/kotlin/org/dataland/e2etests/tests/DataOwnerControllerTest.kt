@@ -82,11 +82,11 @@ class DataOwnerControllerTest {
         val dataOwnersForCompanyAfterDuplicateRequest = dataOwnerApi.postDataOwner(companyId, userId)
         assertEquals(dataOwnersForCompanyAfterSecondRequest, dataOwnersForCompanyAfterDuplicateRequest)
 
-        val dataOwnersForCompanyAfterRemovingLastUser = dataOwnerApi.deleteDataOwner(
+        val dataOwnersForCompanyAfterRemovingLatestUser = dataOwnerApi.deleteDataOwner(
             companyId,
             anotherUserId,
         )
-        validateDataOwnersForCompany(companyId, listOf(userId), dataOwnersForCompanyAfterRemovingLastUser)
+        validateDataOwnersForCompany(companyId, listOf(userId), dataOwnersForCompanyAfterRemovingLatestUser)
 
         val dataOwnersAfterRemovingBothUsers = dataOwnerApi.deleteDataOwner(
             companyId,
