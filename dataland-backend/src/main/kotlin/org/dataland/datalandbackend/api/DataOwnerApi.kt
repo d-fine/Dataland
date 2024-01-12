@@ -95,7 +95,7 @@ interface DataOwnerApi {
     )
     @DeleteMapping(
         produces = ["application/json"],
-        value = ["/{companyId}/{userId}"],
+        value = ["/{companyId}/data-owners/{userId}"],
 
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
