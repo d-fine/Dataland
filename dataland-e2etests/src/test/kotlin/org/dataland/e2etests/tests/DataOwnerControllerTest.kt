@@ -140,7 +140,7 @@ class DataOwnerControllerTest {
     }
 
     @Test
-    fun `post data owners either to an unknown company or as a non admin and check exceptions`() {
+    fun `post data owners to an unknown company`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val randomCompanyId = UUID.randomUUID()
         val userId = UUID.randomUUID()
@@ -152,6 +152,12 @@ class DataOwnerControllerTest {
             dataOwnerApi.isUserDataOwnerForCompany(randomCompanyId, userId)
         }
         assertErrorCodeForClientException(headExceptionForInvalidCompany, 400)
+    }
+
+    @Test
+    fun `post data owners as a non admin and check exceptions`() {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val userId = UUID.randomUUID()
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
