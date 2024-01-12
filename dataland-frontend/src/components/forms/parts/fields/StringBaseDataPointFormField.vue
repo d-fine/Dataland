@@ -10,7 +10,7 @@
 
     <FormKit v-if="isValidFileName(isMounted, documentName)" type="group" name="dataSource">
       <FormKit type="hidden" name="fileName" v-model="documentName" />
-      <FormKit type="hidden" name="fileReference" :modelValue="documentReference" />
+      <FormKit type="hidden" name="fileReference" v-model="documentReference" />
     </FormKit>
 
     <FormKit
