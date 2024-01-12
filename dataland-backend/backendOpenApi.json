@@ -1049,14 +1049,11 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "The specified user is data owner of the company."
-          },
-          "400": {
-            "description": "The specified company does not exist on Dataland."
-          },
           "404": {
             "description": "The specified user isn\u0027t data owner of the company."
+          },
+          "200": {
+            "description": "The specified user is data owner of the company."
           },
           "default": {
             "description": "An error occurred",
