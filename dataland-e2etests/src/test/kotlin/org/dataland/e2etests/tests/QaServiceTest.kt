@@ -24,7 +24,7 @@ class QaServiceTest {
     private val dataController = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
     lateinit var dummyCompanyAssociatedData: CompanyAssociatedDataEuTaxonomyDataForNonFinancials
     companion object {
-        private const val SLEEP_DURATION_MS: Long = 3000
+        private const val SLEEP_DURATION_MS: Long = 1000
     }
 
     @BeforeAll
