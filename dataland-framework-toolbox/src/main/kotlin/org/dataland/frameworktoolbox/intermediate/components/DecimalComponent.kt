@@ -17,6 +17,7 @@ open class DecimalComponent(
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = "NumberFormField",
+            unit = constantUnitSuffix,
         )
     }
 
@@ -31,3 +32,4 @@ open class DecimalComponent(
         )
     }
 }
+// TODO slashes bei sektorenbeschreibungen, spaces drumherum raus
