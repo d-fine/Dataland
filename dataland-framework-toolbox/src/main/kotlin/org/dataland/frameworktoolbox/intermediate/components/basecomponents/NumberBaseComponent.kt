@@ -1,11 +1,11 @@
-package org.dataland.frameworktoolbox.intermediate.components
+package org.dataland.frameworktoolbox.intermediate.components.basecomponents
 
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
-import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
-import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -45,13 +45,5 @@ open class NumberBaseComponent(
                 label, getTypescriptFieldAccessor(),
             ),
         )
-    }
-
-    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        throw NotImplementedError("This number component did not implement view config conversion.")
-    }
-
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        throw NotImplementedError("This component did not implement fixture code-generation.")
     }
 }
