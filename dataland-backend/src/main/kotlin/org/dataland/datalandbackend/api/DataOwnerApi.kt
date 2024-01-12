@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
 import java.util.UUID
 
 /**
@@ -41,12 +40,13 @@ interface DataOwnerApi {
     )
     @PostMapping(
         produces = ["application/json"],
+        value = ["/{companyId}/data-owners/{userId}"],
 
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postDataOwner(
-        @RequestParam companyId: UUID,
-        @RequestParam userId: UUID,
+        @PathVariable("companyId") companyId: UUID,
+        @PathVariable("userId") userId: UUID,
     ):
         ResponseEntity<CompanyDataOwners>
 
@@ -67,10 +67,12 @@ interface DataOwnerApi {
     )
     @GetMapping(
         produces = ["application/json"],
+        value = ["/{companyId}"],
+
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDataOwners(
-        @RequestParam companyId: UUID,
+        @PathVariable("companyId") companyId: UUID,
     ):
         ResponseEntity<List<String>>
 
@@ -93,12 +95,13 @@ interface DataOwnerApi {
     )
     @DeleteMapping(
         produces = ["application/json"],
+        value = ["/{companyId}/{userId}"],
 
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun deleteDataOwner(
-        @RequestParam companyId: UUID,
-        @RequestParam userId: UUID,
+        @PathVariable("companyId") companyId: UUID,
+        @PathVariable("userId") userId: UUID,
     ):
         ResponseEntity<CompanyDataOwners>
 
