@@ -11,6 +11,7 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -199,10 +200,16 @@ class DataManager(
         correlationId: String,
     ) {
         dataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
-        val payload = JSONObject(mapOf("dataId" to dataId, "bypassQa" to bypassQa)).toString()
+        val payload = JSONObject(
+            mapOf(
+                "dataId" to dataId, "bypassQa" to bypassQa,
+                "actionType" to
+                    ActionType.StoreData,
+            ),
+        ).toString()
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.DataReceived, correlationId,
-            ExchangeName.DataReceived,
+            ExchangeName.RequestReceived,
         )
         logger.info(
             "Stored StorableDataSet of type '${storableDataSet.dataType}' " +
@@ -324,5 +331,37 @@ class DataManager(
     fun isDataSetPublic(dataId: String): Boolean {
         val associatedCompanyId = metaDataManager.getDataMetaInformationByDataId(dataId).company.companyId
         return companyQueryManager.isCompanyPublic(associatedCompanyId)
+    }
+
+    /**
+     * Method to remove a dataset from the dataland data store
+     * @param dataId the dataId of the dataset to be removed
+     * @param correlationId the correlationId of the deletion request
+     */
+    fun deleteCompanyAssociatedDataByDataId(dataId: String, correlationId: String) {
+        try {
+            metaDataManager.deleteDataMetaInfo(dataId)
+            val payload = JSONObject(
+                mapOf(
+                    "dataId" to dataId, "bypassQa" to false,
+                    "actionType" to
+                        ActionType.DeleteData,
+                ),
+            ).toString()
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                payload, MessageType.DataReceived, correlationId,
+                ExchangeName.RequestReceived,
+            )
+            logger.info(
+                "Received deletion request for dataset with DataId: " +
+                    "$dataId with Correlation Id: $correlationId",
+            )
+        } catch (e: ServerException) {
+            logger.error(
+                "Error deleting data. Received ServerException with Message:" +
+                    " ${e.message}. Data ID: $dataId",
+            )
+            throw e
+        }
     }
 }
