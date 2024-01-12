@@ -2728,7 +2728,7 @@
         }
       }
     },
-    "/admin/data/{dataId}": {
+    "/data/{dataId}": {
       "delete": {
         "tags": [
           "admin-data-manipulation-controller"

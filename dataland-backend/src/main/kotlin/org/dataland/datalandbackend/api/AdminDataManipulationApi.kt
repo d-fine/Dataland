@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping
  */
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-@RequestMapping("/admin/data/{dataId}")
+@RequestMapping("/data/{dataId}")
 fun interface AdminDataManipulationApi {
 
     /**
