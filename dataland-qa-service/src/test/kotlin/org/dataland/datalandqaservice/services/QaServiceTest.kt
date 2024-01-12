@@ -39,6 +39,7 @@ class QaServiceTest(
     lateinit var qaService: QaService
 
     val dataId = "TestDataId"
+    val noIdPayload = JSONObject(mapOf("identifier" to "", "comment" to "test")).toString()
 
     @BeforeEach
     fun resetMocks() {
@@ -54,9 +55,8 @@ class QaServiceTest(
     @Test
     fun `check an exception is thrown in reading out message from data stored queue when dataId is empty`() {
         val correlationId = "correlationId"
-        val dummyPayload = JSONObject(mapOf("dataId" to "", "bypassQa" to true.toString())).toString()
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
-            qaService.addDataToQueue(dummyPayload, correlationId, MessageType.DataStored)
+            qaService.addDataToQueue(noIdPayload, correlationId, MessageType.ManualQaRequested)
         }
         Assertions.assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
     }
@@ -87,7 +87,7 @@ class QaServiceTest(
     fun `check an exception is thrown in reading out message from document stored queue when dataId is empty`() {
         val correlationId = "correlationId"
         val thrown = assertThrows<AmqpRejectAndDontRequeueException> {
-            qaService.assureQualityOfDocument("", correlationId, MessageType.DocumentStored)
+            qaService.assureQualityOfDocument(noIdPayload, correlationId, MessageType.ManualQaRequested)
         }
         Assertions.assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
     }
