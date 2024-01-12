@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -18,7 +19,13 @@ class FreeTextComponent(
 ) : ComponentBase(identifier, parent) {
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        buildStringDataClass(dataClassBuilder, this)
+        dataClassBuilder.addProperty(
+            identifier,
+            documentSupport.getJvmTypeReference(
+                TypeReference("String", isNullable),
+                isNullable,
+            ),
+        )
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
