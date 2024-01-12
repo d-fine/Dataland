@@ -36,8 +36,8 @@ class PercentageComponent(
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = "NumberFormField",
+            validation = "between:0,100",
             unit = "%",
-            // TODO add validation here?
         )
     }
 
