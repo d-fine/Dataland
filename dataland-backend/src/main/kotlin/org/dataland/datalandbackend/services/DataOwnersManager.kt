@@ -33,42 +33,33 @@ class DataOwnersManager(
      */
     @Transactional
     fun addDataOwnerToCompany(companyId: String, userId: String): CompanyDataOwnersEntity {
-        return if (companyRepository.existsById(companyId)) {
-            if (dataOwnerRepository.existsById(companyId)) {
-                val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
-                if (dataOwnersForCompany.dataOwners.contains(userId)) {
-                    logger.info(
-                        "User with Id $userId is already data owner of company with Id $companyId.",
-                    )
-                    dataOwnersForCompany
-                } else {
-                    logger.info("New data owner with Id $userId added to company with Id $companyId.")
-                    dataOwnersForCompany.dataOwners.add(userId)
-                    dataOwnerRepository.save(dataOwnersForCompany)
-                }
-            } else {
-                logger.info("A first data owner with Id $userId is added to company with Id $companyId.")
-                dataOwnerRepository.save(
-                    CompanyDataOwnersEntity(
-                        companyId = companyId,
-                        dataOwners = mutableListOf(userId),
-                    ),
+        checkIfCompanyIsValid(companyId)
+        return if (dataOwnerRepository.existsById(companyId)) {
+            val dataOwnersForCompany = dataOwnerRepository.findById(companyId).get()
+            if (dataOwnersForCompany.dataOwners.contains(userId)) {
+                logger.info(
+                    "User with Id $userId is already data owner of company with Id $companyId.",
                 )
+                dataOwnersForCompany
+            } else {
+                logger.info("New data owner with Id $userId added to company with Id $companyId.")
+                dataOwnersForCompany.dataOwners.add(userId)
+                dataOwnerRepository.save(dataOwnersForCompany)
             }
         } else {
-            throw ResourceNotFoundApiException(
-                "Company not found",
-                "There is no company corresponding to the provided Id $companyId stored on Dataland.",
+            logger.info("A first data owner with Id $userId is added to company with Id $companyId.")
+            dataOwnerRepository.save(
+                CompanyDataOwnersEntity(
+                    companyId = companyId,
+                    dataOwners = mutableListOf(userId),
+                ),
             )
         }
     }
 
     private fun checkIfCompanyIsValid(companyId: String) {
         if (!companyRepository.existsById(companyId)) {
-            throw InvalidInputApiException(
-                // TODO do we want to distinguish between "company not found on dataland" and
-                // "user is not data owner of valid company"
-                // if both should be 404 this function can be added to the "addDataOwner" request
+            throw ResourceNotFoundApiException(
                 "Company is invalid",
                 "There is no company corresponding to the provided Id $companyId stored on Dataland.",
             )
