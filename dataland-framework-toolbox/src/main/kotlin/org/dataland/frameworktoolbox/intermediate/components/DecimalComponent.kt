@@ -32,4 +32,3 @@ open class DecimalComponent(
         )
     }
 }
-// TODO slashes bei sektorenbeschreibungen, spaces drumherum raus

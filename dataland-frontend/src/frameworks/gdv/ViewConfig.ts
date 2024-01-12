@@ -120,7 +120,7 @@ export const GdvViewConfiguration: MLDTConfig<GdvData> = [
                 DEnergieversorgung: "D - Energieversorgung",
                 EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen:
                   "E - Wasserversorgung; Abwasser & Abfallentsorgung; Beseitigungen von Umweltverschmutzungen",
-                FBaugewerbeBau: "F - Baugewerbe/Bau",
+                FBaugewerbeBau: "F - Baugewerbe / Bau",
                 GHandelInstandhaltungUndReparaturVonKraftfahrzeugen:
                   "G - Handel; Instandhaltung und Reparatur von Kraftfahrzeugen",
                 HVerkehrUndLagerhaltung: "H - Verkehr und Lagerhaltung",

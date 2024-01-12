@@ -132,7 +132,7 @@ export const gdvDataModel = [
                 value: "EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen",
               },
               {
-                label: "F - Baugewerbe/Bau",
+                label: "F - Baugewerbe / Bau",
                 value: "FBaugewerbeBau",
               },
               {
