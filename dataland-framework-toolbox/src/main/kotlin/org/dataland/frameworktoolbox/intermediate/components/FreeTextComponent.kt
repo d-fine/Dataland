@@ -1,7 +1,6 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
-import org.dataland.frameworktoolbox.intermediate.components.basecomponents.TextBaseComponent
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -15,7 +14,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 class FreeTextComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : TextBaseComponent(identifier, parent) {
+) : ComponentBase(identifier, parent, "String") {
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(

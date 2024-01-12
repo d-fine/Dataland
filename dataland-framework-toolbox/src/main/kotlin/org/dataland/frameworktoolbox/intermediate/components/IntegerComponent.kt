@@ -2,8 +2,6 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
-import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
-import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 
@@ -13,17 +11,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 open class IntegerComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : NumberBaseComponent(identifier, parent) {
-
-    override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addProperty(
-            this.identifier,
-            documentSupport.getJvmTypeReference(
-                TypeReference("java.math.BigInteger", isNullable),
-                isNullable,
-            ),
-        )
-    }
+) : NumberBaseComponent(identifier, parent, "java.math.BigInteger") {
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         uploadCategoryBuilder.addStandardUploadConfigCell(

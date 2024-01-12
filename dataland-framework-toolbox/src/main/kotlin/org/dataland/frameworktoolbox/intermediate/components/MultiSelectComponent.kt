@@ -22,7 +22,7 @@ import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOpt
 open class MultiSelectComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(identifier, parent) {
+) : ComponentBase(identifier, parent, "java.util.EnumSet") {
 
     var options: Set<SelectionOption> = mutableSetOf()
     val enumName = "${identifier.capitalizeEn()}Options"
@@ -36,7 +36,7 @@ open class MultiSelectComponent(
         dataClassBuilder.addProperty(
             identifier,
             documentSupport.getJvmTypeReference(
-                TypeReference("java.util.EnumSet", isNullable, listOf(enum.getTypeReference(false))),
+                TypeReference(fullyQualifiedNameOfKotlinType, isNullable, listOf(enum.getTypeReference(false))),
                 isNullable,
             ),
         )

@@ -4,8 +4,6 @@ import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
-import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
-import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -17,18 +15,9 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 open class NumberBaseComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(identifier, parent) {
+    fullyQualifiedNameOfKotlinType: String = "java.math.BigDecimal",
+) : ComponentBase(identifier, parent, fullyQualifiedNameOfKotlinType) {
     open var constantUnitSuffix: String? = null
-
-    override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addProperty(
-            this.identifier,
-            documentSupport.getJvmTypeReference(
-                TypeReference("java.math.BigDecimal", isNullable),
-                isNullable,
-            ),
-        )
-    }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(

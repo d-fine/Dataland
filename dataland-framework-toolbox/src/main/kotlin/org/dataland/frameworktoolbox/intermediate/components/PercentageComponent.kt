@@ -35,7 +35,9 @@ class PercentageComponent(
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "PercentageFormField",
+            uploadComponentName = "NumberFormField",
+            unit = "%",
+            // TODO add validation here?
         )
     }
 
