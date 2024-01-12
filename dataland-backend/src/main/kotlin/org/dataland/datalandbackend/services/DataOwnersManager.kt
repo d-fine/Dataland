@@ -131,7 +131,7 @@ class DataOwnersManager(
      * @param companyId the ID of the company
      * @param userId the ID of the user
      */
-    @Transactional
+    @Transactional(readOnly = true)
     fun checkUserCompanyCombinationForDataOwnership(companyId: String, userId: String) {
         checkIfCompanyIsValid(companyId)
         val failException = ResourceNotFoundApiException(
