@@ -1,14 +1,12 @@
 <template>
   <div class="form-field">
-    <FormKit type="group" ignore="true">
-      <UploadDocumentsForm
-        @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
-        ref="uploadDocumentsForm"
-        name="name"
-        :more-than-one-document-allowed="false"
-        :file-names-for-prefill="fileNamesForPrefill"
-      />
-    </FormKit>
+    <UploadDocumentsForm
+      @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
+      ref="uploadDocumentsForm"
+      name="name"
+      :more-than-one-document-allowed="false"
+      :file-names-for-prefill="fileNamesForPrefill"
+    />
 
     <FormKit v-if="isValidFileName(isMounted, documentName)" type="group" name="dataSource">
       <FormKit type="hidden" name="fileName" v-model="documentName" />
