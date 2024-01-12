@@ -1,6 +1,6 @@
 <template>
   <div class="form-field">
-    <FormKit v-model="baseDataPoint" type="group" ignore="true">
+    <FormKit type="group" ignore="true">
       <UploadDocumentsForm
         @updatedDocumentsSelectedForUpload="handleDocumentUpdatedEvent"
         ref="uploadDocumentsForm"
@@ -31,7 +31,6 @@
 import { defineComponent } from "vue";
 import UploadDocumentsForm from "@/components/forms/parts/elements/basic/UploadDocumentsForm.vue";
 import { type DocumentToUpload } from "@/utils/FileUploadUtils";
-import { type BaseDataPointString } from "@clients/backend";
 import { isValidFileName } from "@/utils/DataSource";
 
 export default defineComponent({
@@ -40,7 +39,6 @@ export default defineComponent({
   inheritAttrs: false,
   data() {
     return {
-      baseDataPoint: {} as BaseDataPointString,
       referencedDocument: undefined as DocumentToUpload | undefined,
       documentName: undefined as string | undefined,
       documentReference: undefined as string | undefined,
