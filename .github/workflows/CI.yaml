@@ -217,7 +217,6 @@ jobs:
         with:
           name: PythonUnitTestCoverage
           path: ./dataland-automated-qa-service/automated-qa-service-unit-test.xml
-#      TODO linter validation
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'

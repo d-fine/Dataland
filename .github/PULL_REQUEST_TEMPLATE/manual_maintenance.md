@@ -92,6 +92,7 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-qa-service/Dockerfile`
 - [ ] `./dataland-qa-service/DockerfileBase`
 - [ ] `./dataland-qa-service/DockerfileTest`
+- [ ] `./dataland-automated-qa-service/DockerfileBase`
 - [ ] `./dataland-rabbitmq/Dockerfile`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
 - [ ] `./dataland-inbound-proxy/Dockerfile`
