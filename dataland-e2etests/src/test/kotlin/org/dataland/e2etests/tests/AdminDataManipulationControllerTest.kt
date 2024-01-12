@@ -27,7 +27,6 @@ class AdminDataManipulationControllerTest {
             mapOfIds.getValue("dataId"),
         )
         assertEquals("200", response.statusCode.toString())
-
     }
 
     @Test
