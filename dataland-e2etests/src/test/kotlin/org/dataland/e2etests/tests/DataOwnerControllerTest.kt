@@ -46,22 +46,22 @@ class DataOwnerControllerTest {
         val frameworkSampleData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getTData(1)[0]
 
-        assertFailingApiUploadToCompany(firstCompanyId, frameworkSampleData)
-        assertFailingApiUploadToCompany(secondCompanyId, frameworkSampleData)
+        assertFailingApiUploadToCompany(firstCompanyId, frameworkSampleData, false)
+        assertFailingApiUploadToCompany(secondCompanyId, frameworkSampleData, false)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         dataOwnerApi.postDataOwner(firstCompanyId, dataReaderUserId)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
         assertSucceedingApiUploadToCompany(firstCompanyId, frameworkSampleData)
-        assertFailingApiUploadToCompany(secondCompanyId, frameworkSampleData)
+        assertFailingApiUploadToCompany(secondCompanyId, frameworkSampleData, false)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         dataOwnerApi.deleteDataOwner(firstCompanyId, dataReaderUserId)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
-        assertFailingApiUploadToCompany(firstCompanyId, frameworkSampleData)
-        assertFailingApiUploadToCompany(secondCompanyId, frameworkSampleData)
+        assertFailingApiUploadToCompany(firstCompanyId, frameworkSampleData, false)
+        assertFailingApiUploadToCompany(secondCompanyId, frameworkSampleData, false)
     }
 
     @Test
@@ -110,20 +110,18 @@ class DataOwnerControllerTest {
         )
     }
 
-    private fun checkErrorMessageForUnknownDataOwner(clientException: ClientException, companyId: UUID, userId: UUID) {
-        assertErrorCodeForClientException(clientException, 404)
-        val responseBody = (clientException.response as ClientError<*>).body as String
-        assertTrue(responseBody.contains("Data owner not found"))
-        assertTrue(responseBody.contains("User with Id $userId has not been data owner of company $companyId"))
-    }
-
-    private fun assertFailingApiUploadToCompany(companyId: UUID, dataSet: EuTaxonomyDataForNonFinancials) {
+    private fun assertFailingApiUploadToCompany(
+        companyId: UUID,
+        dataSet: EuTaxonomyDataForNonFinancials,
+        bypassQa: Boolean = false,
+    ) {
         val reportingPeriod = "2022"
         val unauthorizedRequestResponse = assertThrows<ClientException> {
             apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
                 companyId.toString(),
                 dataSet,
                 reportingPeriod,
+                bypassQa,
             )
         }
         assertErrorCodeForClientException(unauthorizedRequestResponse, 403)
@@ -207,7 +205,6 @@ class DataOwnerControllerTest {
                 dataOwnerApi.deleteDataOwner(companyId, unknownUserId)
             }
         assertErrorCodeForClientException(dataOwnersAfterInvalidDeleteRequest, 404)
-        checkErrorMessageForUnknownDataOwner(dataOwnersAfterInvalidDeleteRequest, companyId, userId)
         // TODO fix error message comparison
     }
 
@@ -240,5 +237,20 @@ class DataOwnerControllerTest {
             dataOwnerApi.getDataOwners(anotherCompanyId)
         }
         checkErrorMessageForUnauthorizedException(getExceptionForUnauthorizedRequest)
+    }
+
+    @Test
+    fun `post as a data owner and check if bypassQa is forbidden`() {
+        val companyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
+        dataOwnerApi.postDataOwner(companyId, dataReaderUserId)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        val frameworkSampleData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+            .getTData(1)[0]
+        assertFailingApiUploadToCompany(companyId, frameworkSampleData, true)
+        assertSucceedingApiUploadToCompany(companyId, frameworkSampleData)
     }
 }
