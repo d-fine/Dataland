@@ -144,7 +144,7 @@ class DataOwnerControllerTest {
     }
 
     @Test
-    fun `post and delete data owners to an unknown company`() {
+    fun `post get head and delete data owners to an unknown company`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val randomCompanyId = UUID.randomUUID()
         val userId = UUID.randomUUID()
@@ -156,6 +156,8 @@ class DataOwnerControllerTest {
             apiAccessor.companyDataControllerApi.isUserDataOwnerForCompany(randomCompanyId, userId)
         }
         assertErrorCodeForClientException(headExceptionForInvalidCompany, 404)
+        val getResultForUnknownCompany = apiAccessor.companyDataControllerApi.getDataOwners(randomCompanyId)
+        assertEquals(getResultForUnknownCompany, mutableListOf<String>())
         val responseFromInvalidCompanyDeleteRequest = assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.deleteDataOwner(randomCompanyId, userId)
         }
@@ -227,14 +229,6 @@ class DataOwnerControllerTest {
         assertDoesNotThrow { apiAccessor.companyDataControllerApi.isUserDataOwnerForCompany(companyId, userId) }
         val dataOwnerFromGetRequest = apiAccessor.companyDataControllerApi.getDataOwners(companyId)
         assertEquals(listOf(userId), dataOwnerFromGetRequest.map { UUID.fromString(it) })
-    }
-
-    @Test
-    fun `get endpoint unknown company`() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val anotherRandomCompanyId = UUID.randomUUID()
-        val getResultForUnknownCompany = apiAccessor.companyDataControllerApi.getDataOwners(anotherRandomCompanyId)
-        assertEquals(getResultForUnknownCompany, mutableListOf<String>())
     }
 
     @Test
