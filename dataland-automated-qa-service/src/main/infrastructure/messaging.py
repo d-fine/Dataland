@@ -67,6 +67,28 @@ def _assert_status_is_valid_for_qa_completion(status: QaStatus) -> None:
         )
 
 
+def _send_message(
+        channel: BlockingChannel,
+        exchange: str,
+        routing_key: str,
+        message_type: str,
+        message: dict[str, str | QaStatus],
+        correlation_id: str,
+) -> None:
+    channel.basic_publish(
+        exchange=exchange,
+        routing_key=routing_key,
+        body=json.dumps(message).encode("UTF-8"),
+        properties=BasicProperties(
+            headers={
+                p.mq_correlation_id_header: correlation_id,
+                p.mq_message_type_header: message_type,
+            }
+        ),
+        mandatory=True,
+    )
+
+
 def _send_qa_completed_message(
     channel: BlockingChannel,
     routing_key: str,
@@ -75,17 +97,13 @@ def _send_qa_completed_message(
     correlation_id: str,
 ) -> None:
     message_to_send = {"identifier": resource_id, "validationResult": status}
-    channel.basic_publish(
+    _send_message(
+        channel=channel,
         exchange=p.mq_quality_assured_exchange,
         routing_key=routing_key,
-        body=json.dumps(message_to_send).encode("UTF-8"),
-        properties=BasicProperties(
-            headers={
-                p.mq_correlation_id_header: correlation_id,
-                p.mq_message_type_header: p.mq_qa_completed_type,
-            }
-        ),
-        mandatory=True,
+        message_type=p.mq_qa_completed_type,
+        message=message_to_send,
+        correlation_id=correlation_id,
     )
 
 
@@ -127,16 +145,12 @@ def process_qa_request(
             _send_qa_completed_message(channel, routing_key, resource.id, validation_result, correlation_id)
         except AutomaticQaNotPossibleError as e:
             message_to_send = {"identifier": resource.id, "comment": e.comment}
-            channel.basic_publish(
+            _send_message(
+                channel=channel,
                 exchange=p.mq_manual_qa_requested_exchange,
                 routing_key=routing_key,
-                body=json.dumps(message_to_send).encode("UTF-8"),
-                properties=BasicProperties(
-                    headers={
-                        p.mq_correlation_id_header: correlation_id,
-                        p.mq_message_type_header: p.mq_manual_qa_requested_type,
-                    }
-                ),
-                mandatory=True,
+                message_type=p.mq_manual_qa_requested_type,
+                message=message_to_send,
+                correlation_id=correlation_id,
             )
     channel.basic_ack(delivery_tag=method.delivery_tag)

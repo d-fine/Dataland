@@ -13,8 +13,6 @@ _client_secret = os.environ["DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET"]
 
 _lifetime_threshold_in_seconds = 30
 
-_seconds_in_a_day = 24 * 60 * 60
-
 _current_access_token: str | None = None
 _current_access_token_expire_time: datetime.datetime | None = None
 
@@ -32,8 +30,7 @@ def _is_close_to_invalidation() -> bool:
     if _current_access_token_expire_time is None:
         return True
     time_delta = _current_access_token_expire_time - datetime.datetime.now()
-    time_delta_in_seconds = time_delta.days * _seconds_in_a_day + time_delta.seconds
-    return time_delta_in_seconds < _lifetime_threshold_in_seconds
+    return time_delta.total_seconds() < _lifetime_threshold_in_seconds
 
 
 def _update_token() -> None:
