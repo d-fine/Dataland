@@ -42,7 +42,7 @@
   ],
   "exchanges": [
     {
-      "name": "dataReceived",
+      "name": "requestReceived",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,
