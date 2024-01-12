@@ -29,6 +29,8 @@ class DataOwnerControllerTest {
         userIds.map { it.toString() }.forEach { assertTrue(dataOwners.contains(it)) }
     }
 
+    private val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
+
     @Test
     fun `test functionality of the data owner`() {
         val firstCompanyId = UUID.fromString(
@@ -38,7 +40,6 @@ class DataOwnerControllerTest {
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
 
-        val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val frameworkSampleData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getTData(1)[0]
@@ -242,7 +243,6 @@ class DataOwnerControllerTest {
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val dataReaderUserId = UUID.fromString("18b67ecc-1176-4506-8414-1e81661017ca")
         apiAccessor.companyDataControllerApi.postDataOwner(companyId, dataReaderUserId)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val frameworkSampleData = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
