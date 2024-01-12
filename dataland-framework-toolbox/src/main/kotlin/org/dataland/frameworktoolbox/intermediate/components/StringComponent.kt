@@ -1,8 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
-import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
-import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
+import org.dataland.frameworktoolbox.intermediate.components.basecomponents.TextBaseComponent
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -15,17 +14,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 class StringComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(identifier, parent) {
-
-    override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addProperty(
-            identifier,
-            documentSupport.getJvmTypeReference(
-                TypeReference("String", isNullable),
-                isNullable,
-            ),
-        )
-    }
+) : TextBaseComponent(identifier, parent) {
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
