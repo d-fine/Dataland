@@ -62,7 +62,7 @@ class DataOwnerControllerTest {
     }
 
     @Test
-    fun `post data owners to a known company and check happy paths`() {
+    fun `post and delete data owners to a known company and check happy paths`() {
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
