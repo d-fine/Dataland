@@ -23,16 +23,11 @@ class AdminDataManipulationControllerTest {
             testCompanyInformation,
             testDataEuTaxonomyNonFinancials,
         )
-        apiAccessor.adminDataManipulationControllerApi.deleteCompanyAssociatedData(
+        val response = apiAccessor.adminDataManipulationControllerApi.deleteCompanyAssociatedDataWithHttpInfo(
             mapOfIds.getValue("dataId"),
         )
-// TODO It would be better to check on a 200 code from the deletion request to save one test step
-        val exception =
-            assertThrows<ClientException> {
-                apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-                    .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
-            }
-        assertEquals("Client error : 404 ", exception.message)
+        assertEquals("200", response.statusCode.toString())
+
     }
 
     @Test
