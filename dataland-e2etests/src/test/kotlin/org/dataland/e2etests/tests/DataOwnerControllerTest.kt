@@ -162,7 +162,7 @@ class DataOwnerControllerTest {
     }
 
     @Test
-    fun `post data owners as a non admin and check exceptions`() {
+    fun `post head and get data owners as a non admin and check exceptions`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val userId = UUID.randomUUID()
         val companyId = UUID.fromString(
@@ -180,6 +180,7 @@ class DataOwnerControllerTest {
         }
         checkErrorMessageForUnauthorizedException(postExceptionForUnauthorizedRequest)
         checkHeadException(companyId, userId)
+        checkGetException(companyId)
     }
 
     private fun checkHeadException(companyId: UUID, userId: UUID) {
@@ -187,6 +188,13 @@ class DataOwnerControllerTest {
             apiAccessor.companyDataControllerApi.isUserDataOwnerForCompany(companyId, userId)
         }
         assertErrorCodeForClientException(headExceptionForUnauthorizedRequest, 403)
+    }
+
+    private fun checkGetException(companyId: UUID) {
+        val getExceptionForUnauthorizedRequest = assertThrows<ClientException> {
+            apiAccessor.companyDataControllerApi.getDataOwners(companyId)
+        }
+        assertErrorCodeForClientException(getExceptionForUnauthorizedRequest, 403)
     }
 
     @Test
@@ -204,7 +212,6 @@ class DataOwnerControllerTest {
                 apiAccessor.companyDataControllerApi.deleteDataOwner(companyId, unknownUserId)
             }
         assertErrorCodeForClientException(dataOwnersAfterInvalidDeleteRequest, 404)
-        // TODO fix error message comparison
     }
 
     @Test
@@ -222,20 +229,11 @@ class DataOwnerControllerTest {
     }
 
     @Test
-    fun `get endpoint unknown company and unauthorized user exception `() {
+    fun `get endpoint unknown company`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val anotherRandomCompanyId = UUID.randomUUID()
         val getResultForUnknownCompany = apiAccessor.companyDataControllerApi.getDataOwners(anotherRandomCompanyId)
         assertEquals(getResultForUnknownCompany, mutableListOf<String>())
-        val anotherCompanyId = UUID.randomUUID()
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(
-            TechnicalUser.entries.filter
-                { it != TechnicalUser.Admin }.random(),
-        )
-        val getExceptionForUnauthorizedRequest = assertThrows<ClientException> {
-            apiAccessor.companyDataControllerApi.getDataOwners(anotherCompanyId)
-        }
-        checkErrorMessageForUnauthorizedException(getExceptionForUnauthorizedRequest)
     }
 
     @Test
