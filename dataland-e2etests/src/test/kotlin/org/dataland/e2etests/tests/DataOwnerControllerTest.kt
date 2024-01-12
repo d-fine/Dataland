@@ -110,6 +110,13 @@ class DataOwnerControllerTest {
         )
     }
 
+    private fun checkErrorMessageForUnknownDataOwner(clientException: ClientException, companyId: UUID, userId: UUID) {
+        assertErrorCodeForClientException(clientException, 404)
+        val responseBody = (clientException.response as ClientError<*>).body as String
+        assertTrue(responseBody.contains("Data owner not found"))
+        assertTrue(responseBody.contains("User with Id $userId has not been data owner of company $companyId"))
+    }
+
     private fun assertFailingApiUploadToCompany(companyId: UUID, dataSet: EuTaxonomyDataForNonFinancials) {
         val reportingPeriod = "2022"
         val unauthorizedRequestResponse = assertThrows<ClientException> {
@@ -200,7 +207,8 @@ class DataOwnerControllerTest {
                 dataOwnerApi.deleteDataOwner(companyId, unknownUserId)
             }
         assertErrorCodeForClientException(dataOwnersAfterInvalidDeleteRequest, 404)
-        // TODO check explicit error message
+        checkErrorMessageForUnknownDataOwner(dataOwnersAfterInvalidDeleteRequest, companyId, userId)
+        // TODO fix error message comparison
     }
 
     @Test
