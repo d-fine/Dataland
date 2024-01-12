@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.controller
-
 import org.dataland.datalandbackend.api.CompanyApi
+import org.dataland.datalandbackend.api.DataOwnerApi
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
@@ -39,7 +39,7 @@ class CompanyDataController(
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
     @Autowired private val dataOwnersManager: DataOwnersManager,
-) : CompanyApi {
+) : CompanyApi, DataOwnerApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun postCompany(companyInformation: CompanyInformation): ResponseEntity<StoredCompany> {
