@@ -34,6 +34,7 @@ import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedEuTaxonomyDa
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedMetaDataControllerApi
 
 class ApiAccessor {
+
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
 

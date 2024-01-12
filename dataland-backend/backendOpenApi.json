@@ -699,164 +699,6 @@
         ]
       }
     },
-    "/data-owners/{companyId}/data-owners/{userId}": {
-      "post": {
-        "tags": [
-          "data-owner-controller"
-        ],
-        "summary": "Add a new data owner to a company.",
-        "description": "A new data owner is added to the existing list for the specified company.",
-        "operationId": "postDataOwner",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully added data owner.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyDataOwners"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      },
-      "delete": {
-        "tags": [
-          "data-owner-controller"
-        ],
-        "summary": "Delete a data owner from a specified company.",
-        "description": "An existing data owner is deleted from the existing list for the specified company.",
-        "operationId": "deleteDataOwner",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "Data owner doesn\u0027t exist for the specified company.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyDataOwners"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The specified company doesn\u0027t exist on Dataland.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyDataOwners"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Successfully deleted data owner.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyDataOwners"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/companies": {
       "get": {
         "tags": [
@@ -1030,10 +872,158 @@
         ]
       }
     },
-    "/data-owners/{companyId}/{userId}": {
+    "/companies/{companyId}/data-owners/{userId}": {
+      "post": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Add a new data owner to a company.",
+        "description": "A new data owner is added to the existing list for the specified company.",
+        "operationId": "postDataOwner",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully added data owner.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyDataOwners"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Delete a data owner from a specified company.",
+        "description": "An existing data owner is deleted from the existing list for the specified company.",
+        "operationId": "deleteDataOwner",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "The specified company doesn\u0027t exist on Dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyDataOwners"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Successfully deleted data owner.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyDataOwners"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/companies/{companyId}/{userId}": {
       "head": {
         "tags": [
-          "data-owner-controller"
+          "company-data-controller"
         ],
         "summary": "Validation of a user-company combination with regards to data ownership.",
         "description": "Checks whether a user is data owner of a company.",
@@ -2434,10 +2424,70 @@
         ]
       }
     },
-    "/data-owners/{companyId}": {
+    "/companies/{companyId}/info": {
       "get": {
         "tags": [
-          "data-owner-controller"
+          "company-data-controller"
+        ],
+        "summary": "Retrieve company information.",
+        "description": "Company information behind the given company ID is retrieved.",
+        "operationId": "getCompanyInfo",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved company information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/companies/{companyId}/data-owners": {
+      "get": {
+        "tags": [
+          "company-data-controller"
         ],
         "summary": "Retrieve data owner(s) of a company.",
         "description": "Get a list of data owner(s) for the specified company.",
@@ -2476,66 +2526,6 @@
                   "items": {
                     "type": "string"
                   }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/companies/{companyId}/info": {
-      "get": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "summary": "Retrieve company information.",
-        "description": "Company information behind the given company ID is retrieved.",
-        "operationId": "getCompanyInfo",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved company information.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyInformation"
                 }
               }
             }
