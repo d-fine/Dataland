@@ -68,12 +68,12 @@ def _assert_status_is_valid_for_qa_completion(status: QaStatus) -> None:
 
 
 def _send_message(
-        channel: BlockingChannel,
-        exchange: str,
-        routing_key: str,
-        message_type: str,
-        message: dict[str, str | QaStatus],
-        correlation_id: str,
+    channel: BlockingChannel,
+    exchange: str,
+    routing_key: str,
+    message_type: str,
+    message: dict[str, str | QaStatus],
+    correlation_id: str,
 ) -> None:
     channel.basic_publish(
         exchange=exchange,
