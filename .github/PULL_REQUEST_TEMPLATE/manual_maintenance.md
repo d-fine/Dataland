@@ -16,26 +16,31 @@ https://jira.d-fine.dev/browse/DALA-3137
 The following known issues need to be reviewed in case a compatible version is available. Add new known issues as they
 appear.
 
-- [ ] There were two 2 messages found in RabbitMQ dead letter queue on dev1 and dev2 respectively, details added in ticket
 - [ ] JDK/JRE must remain at 17, upgrading it to 21 caused too many errors, also Kotlin 1.9.10 is not compatible with Java 21
 - [ ] kotlin to remain at 1.9.10 instead of 1.9.20, which caused error
 - [ ] eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI, we're using 17.
-- [ ] some sec fixes or updates to `package.json` in /frontend and /keycloak break the build
-- [ ] Update keycloak to >=22.0.3 is skipped due to failing all e2e tests
+- [ ] some sec fixes or updates to `package.json` in /frontend and /keycloak break the build:
+  - frontend:
+    - [ ] axios > 1.6.2
+    - [ ] keycloak-js > 22.0.5
+    - [ ] primevue > 3.44.0
+    - [ ] vue > 3.4.5
+    - [ ] @vue/tsconfig > 0.1.3 (Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
+      project and unresolved imports that are hard to fix))
+    - [ ]  cypress > 12.11.0 (Update Cypress to >= 12.12.0 introduces an issue with the usage of `$route` in component test
+      `DatasetOverview.cy.ts`. Issue with Cypress has been created to hopefully resolve this from the side of Cypress:
+      https://github.com/cypress-io/cypress/issues/26902)
+  - keycloak:
+    - [ ] @zxcvbn-ts/language-common > 2.0.1 (issues in rebuilding keycloak Docker images)
+    - [ ] @zxcvbn-ts/language-en > 2.1.0(issues in rebuilding keycloak Docker images)
+    - [ ] vite > 4.5.1
 - [ ] Update e2etests/Dockerfile update breaks the build
-- [ ] Update "@vue/tsconfig" to >=0.2.0 introduces major changes in typescript rules (~500 TS Errors throughout the
-  project and unresolved imports that are hard to fix), skipped.
-- [ ] Update Cypress to >= 12.12.0 introduces an issue with the usage of `$route` in component test 
-  `DatasetOverview.cy.ts`. Issue with Cypress has been created to hopefully resolve this from the side of Cypress:
-  https://github.com/cypress-io/cypress/issues/26902
 - [ ] Update Ktlint to >= 49.0 breaks the ktlint tasks (issue described here: 
   https://github.com/JLLeitschuh/ktlint-gradle/issues/665 and possible fix here: 
   https://github.com/JLLeitschuh/ktlint-gradle/pull/667)
-- [ ] Update @zxcvbn-ts/language-common to 3.0.3 is skipped due to issues in rebuilding keycloak Docker images
-- [ ] Update @zxcvbn-ts/language-en to 3.0.1 is skipped due to issues in rebuilding keycloak Docker images
 - [ ] Update Postgres in Docker-compose.yml to 16.0 causes CD to fail. Postgres can't be upgraded to 16 as existing data is not compatible.
 - [ ] The docker-compose-plugin v.2.19.1 causes connection issues:
-- [ ] Check that it is still valid for `**/CompanyApi.kt', '**/CompanyDataController.kt` to be excluded from detekt, 
+- [ ] Check that it is still valid for `**/CompanyApi.kt', '**/CompanyDataController.kt` to be excluded from `config/detekt.yml`, 
       at latest once the refactoring of the APIs is done this must be reevaluated
 ### Gradle update
 
@@ -48,7 +53,7 @@ appear.
 
 - [ ] Update node version in `dataland-frontend/build.gradle.kts`
 - [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
-  package.json
+  `package.json`
 - [ ] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
   for security issues
 
@@ -56,7 +61,7 @@ appear.
 
 - [ ] Update node version in `dataland-keycloak/dataland_theme/login/build.gradle.kts`
 - [ ] Update node packages: run the `updatepackages` script, e.g. by  `npm run updatepackages` to update versions in
-  package.json
+  `package.json`
 - [ ] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
   for security issues
 
