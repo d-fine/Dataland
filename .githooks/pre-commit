@@ -26,7 +26,7 @@ else
 fi
 
 echo "Auto-formatting python code"
-./dataland-automated-qa-service/python_auto_formatting.sh
+#ruff format --preview dataland-automated-qa-service/src
 
 echo "Starting eslint hook"
 npx --prefix ./dataland-frontend lint-staged

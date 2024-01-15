@@ -53,9 +53,7 @@ class DataOwnerControllerTest {
             dataReaderUserId,
         )
         validateDataOwnersForCompany(firstCompanyId, listOf(dataReaderUserId), dataOwnersAfterPostRequest)
-        val dataOwnersAfterDuplicatePostRequest = apiAccessor.companyDataControllerApi
-            .postDataOwner(firstCompanyId, dataReaderUserId)
-        validateDataOwnersForCompany(firstCompanyId, listOf(dataReaderUserId), dataOwnersAfterDuplicatePostRequest)
+        checkDuplicateRequest(firstCompanyId)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
@@ -71,6 +69,12 @@ class DataOwnerControllerTest {
         assertFailingApiUploadToCompany(secondCompanyId, frameworkSampleData, false)
 
         assertEquals(dataOwnersAfterRemovingUser, CompanyDataOwners(firstCompanyId.toString(), mutableListOf()))
+    }
+
+    private fun checkDuplicateRequest(companyId: UUID) {
+        val dataOwnersAfterDuplicatePostRequest = apiAccessor.companyDataControllerApi
+            .postDataOwner(companyId, dataReaderUserId)
+        validateDataOwnersForCompany(companyId, listOf(dataReaderUserId), dataOwnersAfterDuplicatePostRequest)
     }
 
     private fun assertErrorCodeForClientException(clientException: ClientException, statusCode: Number) {
