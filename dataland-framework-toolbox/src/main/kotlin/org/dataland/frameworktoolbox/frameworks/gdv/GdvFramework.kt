@@ -29,10 +29,11 @@ import java.io.File
  */
 @Component
 class GdvFramework : PavedRoadFramework(
-    identifier = "gdv",
-    label = "GDV/VÖB",
-    explanation = "Das GDV/VÖB Framework ist ein ESG-Fragebogen des Gesamtverbands der Versicherer und des " +
-        "Bundesverbands Öffentlicher Banken",
+    identifier = "esgquestionnaire",
+    apiEndpoint = "esg-questionnaire",
+    label = "ESG Questionnaire für Corporate Schuldscheindarlehen",
+    explanation = "Der ESG Questionnaire für Corporate Schuldscheindarlehen ist ein ESG-Fragebogen des " +
+            "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
     File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
 ) {
 

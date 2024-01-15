@@ -16,12 +16,13 @@ import java.io.File
  */
 abstract class InDevelopmentPavedRoadFramework(
     identifier: String,
+    apiEndpoint: String = identifier,
     label: String,
     explanation: String,
     frameworkTemplateCsvFile: File,
     enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
 ) :
-    PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile) {
+    PavedRoadFramework(identifier, apiEndpoint, label, explanation, frameworkTemplateCsvFile) {
 
     private fun compileDataModel(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.DataModel)) {

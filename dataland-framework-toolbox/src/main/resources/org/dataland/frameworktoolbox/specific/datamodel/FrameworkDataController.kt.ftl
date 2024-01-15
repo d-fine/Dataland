@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController
  * @param myDataManager data manager to be used
  * @param myObjectMapper object mapper used for converting data classes to strings and vice versa
  */
-@RequestMapping("/data/${frameworkIdentifier}")
+@RequestMapping("/data/${frameworkApiEndpoint}")
 @RestController
 class ${frameworkDataType.shortenedQualifier}Controller(
     @Autowired var myDataManager: DataManager,
