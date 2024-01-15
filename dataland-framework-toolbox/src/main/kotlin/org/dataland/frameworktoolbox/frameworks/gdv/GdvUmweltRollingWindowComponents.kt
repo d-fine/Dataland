@@ -5,7 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
-import org.dataland.frameworktoolbox.intermediate.group.getOrNull
+import org.dataland.frameworktoolbox.intermediate.group.get
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 
@@ -25,12 +25,12 @@ object GdvUmweltRollingWindowComponents {
         componentGroupUmwelt.edit<ComponentGroup>("treibhausgasemissionen") {
             create<GdvYearlyDecimalTimeseriesDataComponent>(
                 "treibhausgasBerichterstattungUndPrognosen",
-                "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird",
+                "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird",
             ) {
                 label = "Treibhausgas-Berichterstattung und Prognosen"
                 explanation = "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene " +
                     "berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen" +
-                    "# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die " +
+                    "# für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die " +
                     "kommenden drei Jahre an (in tCO2-Äquiv.)."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
@@ -63,7 +63,7 @@ object GdvUmweltRollingWindowComponents {
                 label = "Berichterstattung Energieverbrauch"
                 explanation = "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren " +
                     "Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle" +
-                    " Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an."
+                    " Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "energieverbrauch",
@@ -94,7 +94,7 @@ object GdvUmweltRollingWindowComponents {
             ) {
                 label = "Berichterstattung Energieverbrauch von Immobilienvermoegen"
                 explanation = "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) " +
-                    "für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die " +
+                    "für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die " +
                     "kommenden drei Jahre an."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
@@ -118,7 +118,7 @@ object GdvUmweltRollingWindowComponents {
             ) {
                 label = "Berichterstattung Wasserverbrauch"
                 explanation = "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser " +
-                    "(in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen " +
+                    "(in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen " +
                     "für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
@@ -151,7 +151,7 @@ object GdvUmweltRollingWindowComponents {
                 label = "Berichterstattung Abfallproduktion"
                 explanation = "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) " +
                     "der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der " +
-                    "gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahren sowie " +
+                    "gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahre sowie " +
                     "die Prognosen für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
@@ -184,7 +184,7 @@ object GdvUmweltRollingWindowComponents {
                 label = "Recycling im Produktionsprozess"
                 explanation = "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereits" +
                     "recyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, " +
-                    "die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre."
+                    "die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "prozentRecycelteWerkstoffeImProduktionsprozess",
@@ -202,12 +202,8 @@ object GdvUmweltRollingWindowComponents {
      */
     fun berichterstattungEinnahmenAusFossilenBrennstoffen(componentGroupUmwelt: ComponentGroup) {
         val profitFromFossilFuels = componentGroupUmwelt
-            .getOrNull<ComponentGroup>("fossileBrennstoffe")
-            ?.getOrNull<YesNoComponent>("einnahmenAusFossilenBrennstoffen")
-        requireNotNull(profitFromFossilFuels) {
-            "The field with the label \"einnahmenAusFossilenBrennstoffen\" must exist in the " +
-                "gdv framework."
-        }
+            .get<ComponentGroup>("fossileBrennstoffe")
+            .get<YesNoComponent>("einnahmenAusFossilenBrennstoffen")
 
         componentGroupUmwelt.edit<ComponentGroup>("fossileBrennstoffe") {
             create<GdvYearlyDecimalTimeseriesDataComponent>(
@@ -215,7 +211,7 @@ object GdvUmweltRollingWindowComponents {
             ) {
                 label = "Berichterstattung Einnahmen aus fossilen Brennstoffen"
                 explanation = "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den " +
-                    "gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die " +
+                    "gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die " +
                     "Prognosen für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
                     GdvYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
@@ -247,7 +243,7 @@ object GdvUmweltRollingWindowComponents {
                 explanation = "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen " +
                     "Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben " +
                     "zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen" +
-                    " (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die " +
+                    " (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die " +
                     "Prognosen für die kommenden drei Jahre an."
                 decimalRows = buildDecimalsRowsForUmsatzInvestitionsaufwandFuerNachhaltige()
                 availableIf = available

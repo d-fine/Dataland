@@ -149,7 +149,7 @@
                             </div>
                           </div>
                         </FormKit>
-                        <FormKit type="group" name="dataSource" v-if="hasValidDataSource()">
+                        <FormKit type="group" name="dataSource" v-if="isValidFileName(isMounted, currentReportValue)">
                           <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
                           <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
                           <FormKit type="hidden" name="page" v-model="reportPageNumber" />
@@ -348,6 +348,7 @@ import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 import { selectNothingIfNotExistsFormKitPlugin } from "@/utils/FormKitPlugins";
 import { uploadFiles, type DocumentToUpload, getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
+import { isValidFileName, noReportLabel } from "@/utils/DataSource";
 
 export default defineComponent({
   setup() {
@@ -393,7 +394,7 @@ export default defineComponent({
       route: useRoute(),
       waitingForData: false,
       editMode: false,
-      noReportLabel: "None...",
+      noReportLabel: noReportLabel,
       reportPageNumber: undefined as string | undefined,
 
       postEuTaxonomyDataForFinancialsProcessed: false,
@@ -438,6 +439,7 @@ export default defineComponent({
       message: "",
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       templateDataset: undefined as undefined | EuTaxonomyDataForFinancials,
+      isValidFileName: isValidFileName,
     };
   },
   mounted() {
@@ -706,17 +708,6 @@ export default defineComponent({
      */
     handleChangeOfReferenceableReportNamesAndReferences(reportNamesAndReferences: object) {
       this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportNamesAndReferences;
-    },
-
-    /**
-     * Checks whether the Assurance data source has appropriate values
-     * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
-     */
-    hasValidDataSource(): boolean {
-      if (!this.isMounted) {
-        return true;
-      }
-      return this.currentReportValue?.length > 0 && this.currentReportValue !== this.noReportLabel;
     },
   },
 });

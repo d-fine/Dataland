@@ -54,7 +54,7 @@ export const ${frameworkIdentifier}DataModel = [<@loopCategories uploadConfig/>]
     component: "${fieldConfig.uploadComponentName?js_string}",
     required: ${fieldConfig.required?c},
     showIf: <@frameworklambda fieldConfig.shouldDisplay/>,
-    validation: <#if fieldConfig.validation??>${fieldConfig.validation.body}<#elseif fieldConfig.required>"required"<#else>""</#if>,
+    validation: "<#if fieldConfig.required>required<#if fieldConfig.validation??>|</#if></#if><#if fieldConfig.validation??>${fieldConfig.validation}</#if>",
     },
 </#macro>
 <#macro frameworklambda lambda>(<#if lambda.usesDataset>dataset: ${frameworkDataType}</#if>):${lambda.returnParameter} => ${lambda.lambdaBody}</#macro>

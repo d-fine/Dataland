@@ -85,7 +85,7 @@
               />
             </div>
 
-            <FormKit v-if="hasValidDataSource()" type="group" name="dataSource">
+            <FormKit v-if="isValidFileName(isMounted, currentReportValue)" type="group" name="dataSource">
               <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
               <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
               <FormKit type="hidden" name="page" v-model="pageForFileReference" />
@@ -137,6 +137,7 @@ import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
 import { type ExtendedDataPoint } from "@/utils/DataPoint";
+import { isValidFileName, noReportLabel } from "@/utils/DataSource";
 
 export default defineComponent({
   name: "ExtendedDataPointFormField",
@@ -165,8 +166,9 @@ export default defineComponent({
       currentValue: null,
       checkboxValue: [] as Array<string>,
       firstAssignmentWhileEditModeWasDone: false,
-      noReportLabel: "None...",
+      noReportLabel: noReportLabel,
       pageForFileReference: undefined as string | undefined,
+      isValidFileName: isValidFileName,
     };
   },
   mounted() {
@@ -273,16 +275,6 @@ export default defineComponent({
         this.currentValue = null;
         this.dataPoint = {};
       }
-    },
-    /**
-     * Checks whether the Assurance data source has appropriate values
-     * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
-     */
-    hasValidDataSource(): boolean {
-      if (!this.isMounted) {
-        return true;
-      }
-      return this.currentReportValue?.length > 0 && this.currentReportValue !== this.noReportLabel;
     },
   },
 });

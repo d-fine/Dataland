@@ -9,6 +9,6 @@ import org.dataland.datalandbackend.frameworks.gdv.custom.YearlyTimeseriesData
 data class GdvUmweltTreibhausgasemissionen(
     val treibhausgasBerichterstattungUndPrognosen:
     YearlyTimeseriesData<TreibhausgasBerichterstattungUndPrognosenValues?>? = null,
-    val treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird: String? = null,
+    val treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird: String? = null,
     val strategieUndZieleZurReduzierungVonTreibhausgasEmissionen: String? = null,
 )

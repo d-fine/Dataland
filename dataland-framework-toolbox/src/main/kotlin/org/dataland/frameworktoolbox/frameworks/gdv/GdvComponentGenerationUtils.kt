@@ -21,7 +21,8 @@ class GdvComponentGenerationUtils : ComponentGenerationUtils() {
                 .replace("ü", "ue")
                 .replace("ß", "ss")
                 .replace("\"", "")
-                .replace(".", ""),
+                .replace(".", "")
+                .replace(";", ""),
         )
     }
 
@@ -39,7 +40,7 @@ class GdvComponentGenerationUtils : ComponentGenerationUtils() {
 
     override fun getSelectionOptionsFromOptionColumn(row: TemplateRow): Set<SelectionOption> {
         val stringOptions = row.options
-            .split(";")
+            .split("|")
             .map { it.trim() }
 
         val mappedOptions = stringOptions.map {

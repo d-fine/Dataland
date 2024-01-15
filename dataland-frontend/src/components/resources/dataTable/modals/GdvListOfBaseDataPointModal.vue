@@ -29,10 +29,10 @@ const tableData = computed(() => {
     <Column :header="dialogData.documentColumnHeader" headerStyle="width: 15vw;">
       <template #body="{ data }">
         <DocumentLink
+          :show-icon="!(data.dataSource == undefined)"
           :label="data.dataSource?.fileName"
           :download-name="data.dataSource?.fileName"
           :file-reference="data.dataSource?.fileReference"
-          show-icon
         />
       </template>
     </Column>

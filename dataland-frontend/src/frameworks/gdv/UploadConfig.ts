@@ -17,13 +17,13 @@ export const gdvDataModel = [
             name: "berichtspflichtUndEinwilligungZurVeroeffentlichung",
             label: "Berichtspflicht und Einwilligung zur Veröffentlichung",
             description:
-              "Ist das Unternehmen berichtspflichtig und mit der Veröffentlichung des Datensatzes auf Dataland einverstanden? Andernfalls ist eine weitere Dateneingabe nicht möglich.",
+              "Ist das Unternehmen berichtspflichtig im Rahmen der CSRD-Richtlinie bzw. ist es gemäß den Offenlegungspflichten der Artikel 19a und 29a der Richtilinie 2023/34/EU zur Nachhaltigkeitsberichtserstattung verpflichtet? Ist das Unternehmen außerdem mit einer Veröffentlichung des Datensatzes auf Dataland einverstanden? Anderenfalls ist eine Dateneineingabe nicht möglich.",
             options: "",
             unit: "",
             component: "YesNoFormField",
             required: true,
             showIf: (): boolean => true,
-            validation: "is:Yes",
+            validation: "required|is:Yes",
           },
           {
             name: "gueltigkeitsDatum",
@@ -54,7 +54,7 @@ export const gdvDataModel = [
             name: "existenzVonEsgZielen",
             label: "Existenz von ESG-Zielen",
             description:
-              "Hat das Unternehmen spezifische ESG-Ziele/Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
+              "Hat das Unternehmen spezifische ESG-Ziele / Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
             options: "",
             unit: "",
             component: "YesNoFormField",
@@ -69,7 +69,7 @@ export const gdvDataModel = [
             description: "Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean => dataset.allgemein?.esgZiele?.existenzVonEsgZielen == "Yes",
             validation: "",
@@ -81,7 +81,7 @@ export const gdvDataModel = [
               "Bitte geben Sie an wieviele Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele zugewiesen wurden.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean => dataset.allgemein?.esgZiele?.existenzVonEsgZielen == "Yes",
             validation: "",
@@ -112,40 +112,40 @@ export const gdvDataModel = [
               "Bitte geben Sie an, zu welchen Sektoren (mit hohen Klimaauswirkungen) das Unternehmen zugeordnet werden kann.",
             options: [
               {
-                label: "A",
-                value: "A",
+                label: "A - Landwirtschaft, Forstwirtschaft und Fischerei",
+                value: "ALandwirtschaftForstwirtschaftUndFischerei",
               },
               {
-                label: "B",
-                value: "B",
+                label: "B - Bergbau und Gewinnung von Steinen und Erden",
+                value: "BBergbauUndGewinnungVonSteinenUndErden",
               },
               {
-                label: "C",
-                value: "C",
+                label: "C - Verarbeitendes Gewerbe / Herstellung von Waren",
+                value: "CVerarbeitendesGewerbeHerstellungVonWaren",
               },
               {
-                label: "D",
-                value: "D",
+                label: "D - Energieversorgung",
+                value: "DEnergieversorgung",
               },
               {
-                label: "E",
-                value: "E",
+                label: "E - Wasserversorgung; Abwasser & Abfallentsorgung; Beseitigungen von Umweltverschmutzungen",
+                value: "EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen",
               },
               {
-                label: "F",
-                value: "F",
+                label: "F - Baugewerbe / Bau",
+                value: "FBaugewerbeBau",
               },
               {
-                label: "G",
-                value: "G",
+                label: "G - Handel; Instandhaltung und Reparatur von Kraftfahrzeugen",
+                value: "GHandelInstandhaltungUndReparaturVonKraftfahrzeugen",
               },
               {
-                label: "H",
-                value: "H",
+                label: "H - Verkehr und Lagerhaltung",
+                value: "HVerkehrUndLagerhaltung",
               },
               {
-                label: "L",
-                value: "L",
+                label: "L - Grundstücks- und Wohnungswesen",
+                value: "LGrundstuecksUndWohnungswesen",
               },
             ],
             unit: "",
@@ -320,7 +320,7 @@ export const gdvDataModel = [
             description: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == "Yes",
@@ -364,7 +364,7 @@ export const gdvDataModel = [
             description: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == "Yes",
@@ -383,7 +383,7 @@ export const gdvDataModel = [
               "Wie steht das Unternehmen in Einklang mit den 17 UN-Zielen für nachhaltige Entwicklung? Welche dieser Ziele verfolgt das Unternehmen aktiv, entweder durch ihre Geschäftstätigkeit oder durch die Unternehmensführung?",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -408,7 +408,7 @@ export const gdvDataModel = [
             description: "Bitte nennen Sie die Ausschlusslisten auf Basis von ESG Kriterien.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.allgemein?.sonstige?.ausschlusslistenAufBasisVonEsgKriterien == "Yes",
@@ -551,7 +551,7 @@ export const gdvDataModel = [
             description: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuE == "Yes",
@@ -596,7 +596,7 @@ export const gdvDataModel = [
             description: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuS == "Yes",
@@ -641,7 +641,7 @@ export const gdvDataModel = [
             description: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuG == "Yes",
@@ -704,7 +704,7 @@ export const gdvDataModel = [
             description: "Was waren die kritischen Punkte beim ESG-Rating?",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean => dataset.allgemein?.rating?.esgRating == "Yes",
             validation: "",
@@ -774,10 +774,10 @@ export const gdvDataModel = [
             name: "wichtigsteESUndGRisikenUndBewertung",
             label: "Wichtigste E-, S- und G-Risiken und Bewertung",
             description:
-              "Welches sind die wichtigsten von der Gruppe identifizierten E-, S- und G-Risiken? Bitte geben Sie die Details / Bewertung der identifizierten Risiken an.",
+              "Welche sind die wichtigsten von der Gruppe identifizierten E-, S- und G-Risiken? Bitte geben Sie die Details / Bewertung der identifizierten Risiken an.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -790,7 +790,7 @@ export const gdvDataModel = [
               "Welche grundsätzlichen Hindernisse bestehen für das Unternehmen bei der Berücksichtigung von ESG-Belangen?",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -814,7 +814,7 @@ export const gdvDataModel = [
             name: "treibhausgasBerichterstattungUndPrognosen",
             label: "Treibhausgas-Berichterstattung und Prognosen",
             description:
-              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
+              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
             options: [
               {
                 label: "Scope 1 (in tCO2-Äquiv.)",
@@ -837,13 +837,13 @@ export const gdvDataModel = [
             validation: "",
           },
           {
-            name: "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestriertWird",
-            label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investriert wird",
+            name: "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird",
+            label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investiert wird",
             description:
-              "THG-Emissionsintensität der Unternehmen, in die investiert wird. Scope 1 + Scope 2 Treibhausgasemissionen ./. Umsatz in Millionen EUR Scope 1 + Scope 2 Treibhausgasemissionen ./. Unternehmensgröße in Mio. EUR",
+              "THG-Emissionsintensität der Unternehmen, in die investiert wird. (1) Scope 1 + Scope 2 Treibhausgasemissionen / Umsatz in Millionen EUR, (2) Scope 1 + Scope 2 Treibhausgasemissionen / Unternehmensgröße in Mio. EUR",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -856,7 +856,7 @@ export const gdvDataModel = [
               "Welchen Entwicklungspfad bzgl. der (Reduktion von) Treibhausgasemissionen verfolgt das Unternehmen. Gibt es einen Zeitplan bzw. konkrete Ziele? Und wie plant das Unternehmen, diesen Kurs zu erreichen? Bitte erläutern Sie, in welchem Bezug dieser Entwicklungspfad zu dem auf dem Pariser Abkommen basierenden Kurs steht.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -887,7 +887,7 @@ export const gdvDataModel = [
             description: "Bitte beschreiben Sie möglichst genau, wie die Produkte die Umweltbelastung reduzieren.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.umwelt?.produktion?.produkteZurVerringerungDerUmweltbelastung == "Yes",
@@ -916,7 +916,7 @@ export const gdvDataModel = [
             name: "berichterstattungEnergieverbrauch",
             label: "Berichterstattung Energieverbrauch",
             description:
-              "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+              "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
                 label: "Energieverbrauch (in GWh)",
@@ -945,7 +945,7 @@ export const gdvDataModel = [
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -961,7 +961,7 @@ export const gdvDataModel = [
             name: "berichterstattungEnergieverbrauchVonImmobilienvermoegen",
             label: "Berichterstattung Energieverbrauch von Immobilienvermoegen",
             description:
-              "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+              "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
                 label: "Engagement/Anteil in energieineffizienten Immobilienanlagen",
@@ -982,7 +982,7 @@ export const gdvDataModel = [
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -998,7 +998,7 @@ export const gdvDataModel = [
             name: "berichterstattungWasserverbrauch",
             label: "Berichterstattung Wasserverbrauch",
             description:
-              "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+              "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
                 label: "Wasserverbrauch (in l)",
@@ -1023,7 +1023,7 @@ export const gdvDataModel = [
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -1039,7 +1039,7 @@ export const gdvDataModel = [
             name: "berichterstattungAbfallproduktion",
             label: "Berichterstattung Abfallproduktion",
             description:
-              "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+              "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
                 label: "Gesamte Abfallmenge (in t)",
@@ -1068,7 +1068,7 @@ export const gdvDataModel = [
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -1078,7 +1078,7 @@ export const gdvDataModel = [
             name: "recyclingImProduktionsprozess",
             label: "Recycling im Produktionsprozess",
             description:
-              "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereitsrecyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre.",
+              "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereitsrecyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre.",
             options: [
               {
                 label: "% Recycelte Werkstoffe im Produktionsprozess (in %)",
@@ -1099,7 +1099,7 @@ export const gdvDataModel = [
               "Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -1131,7 +1131,7 @@ export const gdvDataModel = [
               "Bitte erläutern Sie Aktivitäten, die sich negativ auf die Biodiversität auswirken. Teilen Sie bitte auch den von der Gruppe/Unternehmen definierte Entwicklungspfad für den Umgang mit diesen Maßnahmen (Zeitplan und Ziel - falls vorhanden) mit uns und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.umwelt?.biodiversitaet?.negativeAktivitaetenFuerDieBiologischeVielfalt == "Yes",
@@ -1157,7 +1157,7 @@ export const gdvDataModel = [
               "Bitte erläutern Sie Aktivitäten, die sich positiv auf die Biodiversität auswirken. Teilen Sie bitte auch den von der Gruppe/Unternehmen definierte Entwicklungspfad für die Weiterentwicklung dieser Maßnahmen (Zeitplan und Ziel - falls vorhanden) mit uns und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.umwelt?.biodiversitaet?.positiveAktivitaetenFuerDieBiologischeVielfalt == "Yes",
@@ -1186,7 +1186,7 @@ export const gdvDataModel = [
             name: "berichterstattungEinnahmenAusFossilenBrennstoffen",
             label: "Berichterstattung Einnahmen aus fossilen Brennstoffen",
             description:
-              "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+              "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
                 label: "% der Einnahmen aus fossilen Brennstoffen (in %)",
@@ -1243,7 +1243,7 @@ export const gdvDataModel = [
             name: "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten",
             label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
             description:
-              "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+              "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
                 label: "Taxonomie geeignet (eligible) nach % Umsatz (in %)",
@@ -1307,7 +1307,7 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland",
@@ -1321,7 +1321,7 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland",
@@ -1335,13 +1335,13 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlUnbefristeterVertraegeInDerGesamtgruppe",
             label: "Anzahl unbefristeter Verträge in der Gesamtgruppe",
             description:
-              "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in der Gesamtgruppe gibt",
+              "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in der Gesamtgruppe gibt.",
             options: "",
             unit: "",
             component: "NumberFormField",
@@ -1349,7 +1349,7 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe",
@@ -1363,7 +1363,7 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe",
@@ -1377,7 +1377,7 @@ export const gdvDataModel = [
             showIf: (dataset: GdvData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "auswirkungenAufAnteilBefristerVertraegeUndFluktuation",
@@ -1415,7 +1415,7 @@ export const gdvDataModel = [
               "Welche Maßnahmen werden ergriffen, um die Gesundheit und Sicherheit der Mitarbeiter des Unternehmens zu verbessern?",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -1496,7 +1496,7 @@ export const gdvDataModel = [
               "Wie überwacht das Unternehmen die Einkommens(un)gleichheit und welche Maßnahmen wurden ergriffen, um die Einkommensungleichheit abzustellen?",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -1518,7 +1518,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "frauenAufTopManagementEbene",
@@ -1530,7 +1530,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "mitgliederGeschaeftsfuehrung",
@@ -1542,7 +1542,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "frauenInDerGeschaeftsfuehrung",
@@ -1554,7 +1554,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "definitionTopManagement",
@@ -1562,7 +1562,7 @@ export const gdvDataModel = [
             description: 'Bitte geben Sie Ihre Definition von "Top-Management".',
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -1575,7 +1575,7 @@ export const gdvDataModel = [
               "Welche Maßnahmen wurden ergriffen, um das geltende Recht in Bezug auf die Geschlechterdiversität von Exekutivinstanzen einzuhalten?",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -1631,7 +1631,7 @@ export const gdvDataModel = [
             description: "Bitte geben Sie Informationen über das letzte Audit an.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes",
@@ -1661,7 +1661,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlUnabhaengigerMitgliederImAufsichtsrat",
@@ -1673,7 +1673,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlVonFrauenImAufsichtsrat",
@@ -1685,7 +1685,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
         ],
       },
@@ -1703,7 +1703,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlUnabhaengigerMitgliederImVerguetungsausschuss",
@@ -1715,7 +1715,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlVonFrauenImVerguetungsausschuss",
@@ -1727,7 +1727,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
         ],
       },
@@ -1745,7 +1745,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlUnabhaengigerMitgliederImNominierungsausschuss",
@@ -1757,7 +1757,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlVonFrauenImVerguetungsausschuss",
@@ -1769,7 +1769,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
         ],
       },
@@ -1787,7 +1787,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlUnabhaengigerMitgliederImPruefungsausschuss",
@@ -1799,7 +1799,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlVonFrauenImPruefungsausschuss",
@@ -1811,7 +1811,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
         ],
       },
@@ -1829,7 +1829,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss",
@@ -1841,7 +1841,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
           {
             name: "anzahlVonFrauenImNachhaltigkeitsausschuss",
@@ -1853,7 +1853,7 @@ export const gdvDataModel = [
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
+            validation: "integer",
           },
         ],
       },
@@ -1891,12 +1891,12 @@ export const gdvDataModel = [
             label: "Amtszeit bis zur Trennung",
             description: "Wieviele Jahre war der/die CEO/Vorsitzende(r) im Amt?",
             options: "",
-            unit: "",
-            component: "InputTextFormField",
+            unit: "Jahre",
+            component: "NumberFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.unternehmensfuehrungGovernance?.sonstige?.trennungVonCeoOderVorsitzenden == "Yes",
-            validation: "",
+            validation: "integer",
           },
         ],
       },
@@ -1907,8 +1907,7 @@ export const gdvDataModel = [
           {
             name: "einbeziehungVonStakeholdern",
             label: "Einbeziehung von Stakeholdern",
-            description:
-              "Gibt es einen kontinuierlichen Prozess des Dialogs mit den Stakeholdern des Unternehmens? Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.",
+            description: "Gibt es einen kontinuierlichen Prozess des Dialogs mit den Stakeholdern des Unternehmens?",
             options: "",
             unit: "",
             component: "YesNoFormField",
@@ -1924,7 +1923,7 @@ export const gdvDataModel = [
               "Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == "Yes",
@@ -1937,7 +1936,7 @@ export const gdvDataModel = [
               "Welche Mechanismen gibt es derzeit, um sicherzustellen, dass die Stakeholder im besten Interesse des Unternehmens handeln? Bitte erläutern Sie (falls zutreffend) die Beteiligungsmechanismen, verschiedene Anreizsysteme usw.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == "Yes",
@@ -2016,7 +2015,7 @@ export const gdvDataModel = [
             description: "Bitte nennen Sie weitere wichtige Richtlinien, falls diese nicht angegeben sind.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -2048,7 +2047,7 @@ export const gdvDataModel = [
               "Bitte nennen Sie die Auswahlkriterien und erläutern Sie, wie diese Kriterien im Laufe der Zeit überwacht/geprüft werden. Bezieht das Unternehmen beispielsweise Rohstoffe aus Gebieten, in denen umstrittene Abholzungsaktivitäten stattfinden (z.B. Soja, Palmöl, Tropenholz, Holz oder industrielle Viehzucht)?",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten ==

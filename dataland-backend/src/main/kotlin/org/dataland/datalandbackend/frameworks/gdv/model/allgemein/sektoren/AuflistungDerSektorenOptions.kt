@@ -10,13 +10,13 @@ import io.swagger.v3.oas.annotations.media.Schema
     enumAsRef = true,
 )
 enum class AuflistungDerSektorenOptions {
-    A,
-    B,
-    C,
-    D,
-    E,
-    F,
-    G,
-    H,
-    L,
+    ALandwirtschaftForstwirtschaftUndFischerei,
+    BBergbauUndGewinnungVonSteinenUndErden,
+    CVerarbeitendesGewerbeHerstellungVonWaren,
+    DEnergieversorgung,
+    EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen,
+    FBaugewerbeBau,
+    GHandelInstandhaltungUndReparaturVonKraftfahrzeugen,
+    HVerkehrUndLagerhaltung,
+    LGrundstuecksUndWohnungswesen,
 }
