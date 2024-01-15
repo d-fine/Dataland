@@ -70,7 +70,7 @@ class GdvYearlyDecimalTimeseriesDataComponent(
             this.identifier,
             documentSupport.getJvmTypeReference(
                 TypeReference(
-                    "org.dataland.datalandbackend.frameworks.gdv.custom.YearlyTimeseriesData",
+                    "org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTimeseriesData",
                     isNullable,
                     listOf(fieldDataClass.getTypeReference(isNullable)),
                 ),
