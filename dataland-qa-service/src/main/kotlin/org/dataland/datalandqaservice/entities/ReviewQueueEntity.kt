@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
@@ -13,4 +14,6 @@ data class ReviewQueueEntity(
     @Id
     val dataId: String,
     val receptionTime: Long,
+    @Column(columnDefinition = "TEXT")
+    val comment: String?,
 )
