@@ -27,7 +27,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     });
   });
 
-  it.only("Check that on the GDV-VÖB view Page the rolling window component works properly", () => {
+  it("Check that on the GDV-VÖB view Page the rolling window component works properly", () => {
     cy.intercept("/api/data/gdv/mock-data-id", {
       companyId: companyId,
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
