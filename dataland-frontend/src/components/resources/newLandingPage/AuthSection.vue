@@ -1,10 +1,10 @@
 <template>
   <template v-if="isLandingPage">
     <div class="header__authsection">
-      <a aria-label="Login to preview account" class="header__authsection-login" @click="login"> Login </a>
+      <a aria-label="Login to account" class="header__authsection-login" @click="login"> Login </a>
       <ButtonComponent
         label="Sign Up"
-        ariaLabel="Sign up to preview account"
+        ariaLabel="Sign up to account"
         name="signup_dataland_button"
         @click="register"
       />
@@ -15,14 +15,14 @@
       <ButtonComponent
         label="Log in"
         buttonType="login-button"
-        ariaLabel="Login to preview account"
+        ariaLabel="Login to account"
         name="login_dataland_button"
         @click="login"
       />
       <ButtonComponent
         label="Sign Up"
         buttonType="registration-button"
-        ariaLabel="Sign up to preview account"
+        ariaLabel="Sign up to account"
         name="signup_dataland_button"
         @click="register"
       />
