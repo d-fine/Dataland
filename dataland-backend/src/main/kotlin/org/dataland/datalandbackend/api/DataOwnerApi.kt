@@ -89,11 +89,6 @@ interface DataOwnerApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully deleted data owner."),
-            ApiResponse(
-                responseCode = "404",
-                description = "Either the specified company doesn't exist on Dataland or the user isn't data owner " +
-                    "of that company.",
-            ),
         ],
     )
     @DeleteMapping(
