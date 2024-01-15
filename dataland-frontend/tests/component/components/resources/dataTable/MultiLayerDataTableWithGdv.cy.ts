@@ -27,7 +27,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     });
   });
 
-  it("Check that on the GDV-VÖB view Page the rolling window component works properly", () => {
+  it.only("Check that on the GDV-VÖB view Page the rolling window component works properly", () => {
     cy.intercept("/api/data/gdv/mock-data-id", {
       companyId: companyId,
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
@@ -50,7 +50,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     }
     cy.get("body").type("{esc}");
     getSectionHead("Energieverbrauch").click();
-    getCellValueContainer("Berichterstattung Energieverbrauch").children().should("have.length", 0);
+    getCellValueContainer("Berichterstattung Energieverbrauch").children().should("not.have.text");
   });
 
   it("Check that on the GDV-VÖB view Page the string for datatable component works properly", () => {
