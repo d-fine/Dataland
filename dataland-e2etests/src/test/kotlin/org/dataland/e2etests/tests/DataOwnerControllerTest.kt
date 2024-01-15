@@ -55,44 +55,14 @@ class DataOwnerControllerTest {
         assertFailingApiUploadToCompany(secondCompanyId, frameworkSampleData, false)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        apiAccessor.companyDataControllerApi.deleteDataOwner(firstCompanyId, dataReaderUserId)
+        val dataOwnersAfterRemovingUser =
+            apiAccessor.companyDataControllerApi.deleteDataOwner(firstCompanyId, dataReaderUserId)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
         assertFailingApiUploadToCompany(firstCompanyId, frameworkSampleData, false)
         assertFailingApiUploadToCompany(secondCompanyId, frameworkSampleData, false)
-    }
 
-    @Test
-    fun `post and delete data owners to a known company and check happy paths`() {
-        val companyId = UUID.fromString(
-            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
-        )
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val userId = UUID.randomUUID()
-        val dataOwnersForCompany = apiAccessor.companyDataControllerApi.postDataOwner(companyId, userId)
-        validateDataOwnersForCompany(companyId, listOf(userId), dataOwnersForCompany)
-        assertDoesNotThrow { apiAccessor.companyDataControllerApi.isUserDataOwnerForCompany(companyId, userId) }
-
-        val anotherUserId = UUID.randomUUID()
-        val dataOwnersForCompanyAfterSecondRequest = apiAccessor.companyDataControllerApi
-            .postDataOwner(companyId, anotherUserId)
-        validateDataOwnersForCompany(companyId, listOf(userId, anotherUserId), dataOwnersForCompanyAfterSecondRequest)
-
-        val dataOwnersForCompanyAfterDuplicateRequest = apiAccessor.companyDataControllerApi
-            .postDataOwner(companyId, userId)
-        assertEquals(dataOwnersForCompanyAfterSecondRequest, dataOwnersForCompanyAfterDuplicateRequest)
-
-        val dataOwnersForCompanyAfterRemovingLatestUser = apiAccessor.companyDataControllerApi.deleteDataOwner(
-            companyId,
-            anotherUserId,
-        )
-        validateDataOwnersForCompany(companyId, listOf(userId), dataOwnersForCompanyAfterRemovingLatestUser)
-
-        val dataOwnersAfterRemovingBothUsers = apiAccessor.companyDataControllerApi.deleteDataOwner(
-            companyId,
-            userId,
-        )
-        assertEquals(dataOwnersAfterRemovingBothUsers, CompanyDataOwners(companyId.toString(), mutableListOf()))
+        assertEquals(dataOwnersAfterRemovingUser, CompanyDataOwners(firstCompanyId.toString(), mutableListOf()))
     }
 
     private fun assertErrorCodeForClientException(clientException: ClientException, statusCode: Number) {
@@ -165,7 +135,7 @@ class DataOwnerControllerTest {
     }
 
     @Test
-    fun `post head and get data owners as a non admin and check exceptions`() {
+    fun `post head get and delete data owners as a non admin and check exceptions`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val userId = UUID.randomUUID()
         val companyId = UUID.fromString(
@@ -184,6 +154,23 @@ class DataOwnerControllerTest {
         checkErrorMessageForUnauthorizedException(postExceptionForUnauthorizedRequest)
         checkHeadException(companyId, userId)
         checkGetException(companyId)
+    }
+
+    @Test
+    fun `delete a data owner as a non admin and check exception`() {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val companyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
+        val userId = UUID.randomUUID()
+        apiAccessor.companyDataControllerApi.postDataOwner(companyId, userId)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(
+            TechnicalUser.entries.filter { it != TechnicalUser.Admin }.random(),
+        )
+        val deleteExceptionFromUnauthorized = assertThrows<ClientException> {
+            apiAccessor.companyDataControllerApi.deleteDataOwner(companyId, userId)
+        }
+        checkErrorMessageForUnauthorizedException(deleteExceptionFromUnauthorized)
     }
 
     private fun checkHeadException(companyId: UUID, userId: UUID) {

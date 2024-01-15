@@ -969,16 +969,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Either the specified company doesn\u0027t exist on Dataland or the user isn\u0027t data owner of that company.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyDataOwners"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Successfully deleted data owner.",
             "content": {
