@@ -699,6 +699,75 @@
         ]
       }
     },
+    "/data/esg-questionnaire": {
+      "post": {
+        "tags": [
+          "esgquestionnaire-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedEsgquestionnaireData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataEsgquestionnaireData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies": {
       "get": {
         "tags": [
@@ -2171,6 +2240,142 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationEuTaxonomyDataForFinancials"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/esg-questionnaire/{dataId}": {
+      "get": {
+        "tags": [
+          "esgquestionnaire-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedEsgquestionnaireData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEsgquestionnaireData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/esg-questionnaire/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "esgquestionnaire-data-controller"
+        ],
+        "operationId": "getAllCompanyEsgquestionnaireData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationEsgquestionnaireData"
                   }
                 }
               }
@@ -10549,6 +10754,1263 @@
           }
         }
       },
+      "CompanyAssociatedDataEsgquestionnaireData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EsgquestionnaireData"
+          }
+        }
+      },
+      "EsgquestionnaireAllgemein": {
+        "type": "object",
+        "properties": {
+          "esgZiele": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinEsgZiele"
+              }
+            ]
+          },
+          "sektoren": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinSektoren"
+              }
+            ]
+          },
+          "esgBerichte": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinEsgBerichte"
+              }
+            ]
+          },
+          "akkreditierungen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinAkkreditierungen"
+              }
+            ]
+          },
+          "unGlobalConceptPrinzipien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinUnGlobalConceptPrinzipien"
+              }
+            ]
+          },
+          "oecdLeitsaetze": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinOecdLeitsaetze"
+              }
+            ]
+          },
+          "sonstige": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinSonstige"
+              }
+            ]
+          },
+          "fuehrungsstandards": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinFuehrungsstandards"
+              }
+            ]
+          },
+          "rechtsstreitigkeiten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinRechtsstreitigkeiten"
+              }
+            ]
+          },
+          "rating": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinRating"
+              }
+            ]
+          },
+          "anleihen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinAnleihen"
+              }
+            ]
+          },
+          "risiken": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinRisiken"
+              }
+            ]
+          }
+        }
+      },
+      "EsgquestionnaireAllgemeinAkkreditierungen": {
+        "type": "object",
+        "properties": {
+          "iso14001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso45001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso27001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso50001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "weitereAkkreditierungen": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          }
+        }
+      },
+      "EsgquestionnaireAllgemeinAnleihen": {
+        "type": "object",
+        "properties": {
+          "grueneSozialeUndOderNachhaltigeEmissionen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen": {
+            "type": "number",
+            "nullable": true
+          },
+          "sustainibilityLinkedDebt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "ausstehendeSustainibilityLinkedDebt": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireAllgemeinEsgBerichte": {
+        "type": "object",
+        "properties": {
+          "nachhaltigkeitsberichte": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "frequenzDerBerichterstattung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FrequenzDerBerichterstattungOptions"
+              }
+            ]
+          },
+          "aktuelleBerichte": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          }
+        }
+      },
+      "EsgquestionnaireAllgemeinEsgZiele": {
+        "type": "object",
+        "properties": {
+          "existenzVonEsgZielen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "beschreibungDerEsgZiele": {
+            "type": "string",
+            "nullable": true
+          },
+          "investitionenInZielerreichung": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireAllgemeinFuehrungsstandards": {
+        "type": "object",
+        "properties": {
+          "oekologischeSozialeFuehrungsstandardsOderPrinzipien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "anreizmechanismenFuerDasManagementUmwelt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementUmweltOptions"
+              }
+            ]
+          },
+          "anreizmechanismenFuerDasManagementSoziales": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementSozialesOptions"
+              }
+            ]
+          }
+        }
+      },
+      "EsgquestionnaireAllgemeinOecdLeitsaetze": {
+        "type": "object",
+        "properties": {
+          "mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "richtlinienZurEinhaltungDerOecdLeitsaetze": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          },
+          "erklaerungDerEinhaltungDerOecdLeitsaetze": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireAllgemeinRating": {
+        "type": "object",
+        "properties": {
+          "esgRating": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "agentur": {
+            "type": "string",
+            "nullable": true
+          },
+          "ergebnis": {
+            "type": "string",
+            "nullable": true
+          },
+          "ratingbericht": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "kritischePunkte": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireAllgemeinRechtsstreitigkeiten": {
+        "type": "object",
+        "properties": {
+          "esgBezogeneRechtsstreitigkeiten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "rechtsstreitigkeitenMitBezugZuE": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "statusZuE": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusZuEOptions"
+              }
+            ]
+          },
+          "einzelheitenZuDenRechtsstreitigkeitenZuE": {
+            "type": "string",
+            "nullable": true
+          },
+          "rechtsstreitigkeitenMitBezugZuS": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "statusZuS": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusZuSOptions"
+              }
+            ]
+          },
+          "einzelheitenZuDenRechtsstreitigkeitenZuS": {
+            "type": "string",
+            "nullable": true
+          },
+          "rechtsstreitigkeitenMitBezugZuG": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "statusZuG": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusZuGOptions"
+              }
+            ]
+          },
+          "einzelheitenZuDenRechtsstreitigkeitenZuG": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireAllgemeinRisiken": {
+        "type": "object",
+        "properties": {
+          "wichtigsteESUndGRisikenUndBewertung": {
+            "type": "string",
+            "nullable": true
+          },
+          "hindernisseBeimUmgangMitEsgBedenken": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireAllgemeinSektoren": {
+        "type": "object",
+        "properties": {
+          "sektorenMitHohenKlimaauswirkungen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "auflistungDerSektoren": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/AuflistungDerSektorenOptions"
+            }
+          }
+        }
+      },
+      "EsgquestionnaireAllgemeinSonstige": {
+        "type": "object",
+        "properties": {
+          "ausrichtungAufDieUnSdgsUndAktivesVerfolgen": {
+            "type": "string",
+            "nullable": true
+          },
+          "ausschlusslistenAufBasisVonEsgKriterien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "ausschlusslisten": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireAllgemeinUnGlobalConceptPrinzipien": {
+        "type": "object",
+        "properties": {
+          "mechanismenZurUeberwachungDerEinhaltungDerUngcp": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "richtlinienZurEinhaltungDerUngcp": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          },
+          "erklaerungDerEinhaltungDerUngcp": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireGeneral"
+              }
+            ]
+          },
+          "allgemein": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireAllgemein"
+              }
+            ]
+          },
+          "umwelt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUmwelt"
+              }
+            ]
+          },
+          "soziales": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireSoziales"
+              }
+            ]
+          },
+          "unternehmensfuehrungGovernance": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernance"
+              }
+            ]
+          }
+        }
+      },
+      "EsgquestionnaireGeneral": {
+        "type": "object",
+        "properties": {
+          "masterData": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireGeneralMasterData"
+              }
+            ]
+          }
+        }
+      },
+      "EsgquestionnaireGeneralMasterData": {
+        "required": [
+          "berichtspflichtUndEinwilligungZurVeroeffentlichung"
+        ],
+        "type": "object",
+        "properties": {
+          "berichtspflichtUndEinwilligungZurVeroeffentlichung": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "gueltigkeitsDatum": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireSoziales": {
+        "type": "object",
+        "properties": {
+          "unternehmensstrukturaenderungen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireSozialesUnternehmensstrukturaenderungen"
+              }
+            ]
+          },
+          "sicherheitUndWeiterbildung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireSozialesSicherheitUndWeiterbildung"
+              }
+            ]
+          },
+          "einkommensgleichheit": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireSozialesEinkommensgleichheit"
+              }
+            ]
+          },
+          "geschlechterdiversitaet": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireSozialesGeschlechterdiversitaet"
+              }
+            ]
+          },
+          "audit": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireSozialesAudit"
+              }
+            ]
+          }
+        }
+      },
+      "EsgquestionnaireSozialesAudit": {
+        "type": "object",
+        "properties": {
+          "auditsZurEinhaltungVonArbeitsstandards": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "artDesAudits": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ArtDesAuditsOptions"
+              }
+            ]
+          },
+          "auditErgebnisse": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireSozialesEinkommensgleichheit": {
+        "type": "object",
+        "properties": {
+          "ueberwachungDerEinkommensungleichheit": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataUeberwachungDerEinkommensungleichheitValues"
+              }
+            ]
+          },
+          "massnahmenZurVerbesserungDerEinkommensungleichheit": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireSozialesGeschlechterdiversitaet": {
+        "type": "object",
+        "properties": {
+          "mitarbeiterAufTopManagementEbene": {
+            "type": "integer",
+            "nullable": true
+          },
+          "frauenAufTopManagementEbene": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mitgliederGeschaeftsfuehrung": {
+            "type": "integer",
+            "nullable": true
+          },
+          "frauenInDerGeschaeftsfuehrung": {
+            "type": "integer",
+            "nullable": true
+          },
+          "definitionTopManagement": {
+            "type": "string",
+            "nullable": true
+          },
+          "einhaltungRechtlicherVorgaben": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireSozialesSicherheitUndWeiterbildung": {
+        "type": "object",
+        "properties": {
+          "sicherheitsmassnahmenFuerMitarbeiter": {
+            "type": "string",
+            "nullable": true
+          },
+          "unfallrate": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataUnfallrateValues"
+              }
+            ]
+          },
+          "budgetFuerSchulungAusbildung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataBudgetFuerSchulungAusbildungValues"
+              }
+            ]
+          }
+        }
+      },
+      "EsgquestionnaireSozialesUnternehmensstrukturaenderungen": {
+        "type": "object",
+        "properties": {
+          "vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "anzahlUnbefristeterVertraegeInDeutschland": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlUnbefristeterVertraegeInDerGesamtgruppe": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": {
+            "type": "integer",
+            "nullable": true
+          },
+          "auswirkungenAufAnteilBefristerVertraegeUndFluktuation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataAuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues"
+              }
+            ]
+          }
+        }
+      },
+      "EsgquestionnaireUmwelt": {
+        "type": "object",
+        "properties": {
+          "treibhausgasemissionen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUmweltTreibhausgasemissionen"
+              }
+            ]
+          },
+          "produktion": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUmweltProduktion"
+              }
+            ]
+          },
+          "energieverbrauch": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUmweltEnergieverbrauch"
+              }
+            ]
+          },
+          "energieeffizienzImmobilienanlagen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUmweltEnergieeffizienzImmobilienanlagen"
+              }
+            ]
+          },
+          "wasserverbrauch": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUmweltWasserverbrauch"
+              }
+            ]
+          },
+          "abfallproduktion": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUmweltAbfallproduktion"
+              }
+            ]
+          },
+          "biodiversitaet": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUmweltBiodiversitaet"
+              }
+            ]
+          },
+          "fossileBrennstoffe": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUmweltFossileBrennstoffe"
+              }
+            ]
+          },
+          "taxonomie": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUmweltTaxonomie"
+              }
+            ]
+          }
+        }
+      },
+      "EsgquestionnaireUmweltAbfallproduktion": {
+        "type": "object",
+        "properties": {
+          "berichterstattungAbfallproduktion": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungAbfallproduktionValues"
+              }
+            ]
+          },
+          "unternehmensGruppenStrategieBzglAbfallproduktion": {
+            "type": "string",
+            "nullable": true
+          },
+          "recyclingImProduktionsprozess": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataRecyclingImProduktionsprozessValues"
+              }
+            ]
+          },
+          "gefaehrlicherAbfall": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireUmweltBiodiversitaet": {
+        "type": "object",
+        "properties": {
+          "negativeAktivitaetenFuerDieBiologischeVielfalt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "negativeMassnahmenFuerDieBiologischeVielfalt": {
+            "type": "string",
+            "nullable": true
+          },
+          "positiveAktivitaetenFuerDieBiologischeVielfalt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "positiveMassnahmenFuerDieBiologischeVielfalt": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireUmweltEnergieeffizienzImmobilienanlagen": {
+        "type": "object",
+        "properties": {
+          "berichterstattungEnergieverbrauchVonImmobilienvermoegen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungEnergieverbrauchVonImmobilienvermoegenValues"
+              }
+            ]
+          },
+          "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireUmweltEnergieverbrauch": {
+        "type": "object",
+        "properties": {
+          "berichterstattungEnergieverbrauch": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungEnergieverbrauchValues"
+              }
+            ]
+          },
+          "unternehmensGruppenStrategieBzglEnergieverbrauch": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireUmweltFossileBrennstoffe": {
+        "type": "object",
+        "properties": {
+          "einnahmenAusFossilenBrennstoffen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "berichterstattungEinnahmenAusFossilenBrennstoffen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungEinnahmenAusFossilenBrennstoffenValues"
+              }
+            ]
+          }
+        }
+      },
+      "EsgquestionnaireUmweltProduktion": {
+        "type": "object",
+        "properties": {
+          "produkteZurVerringerungDerUmweltbelastung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "verringerungenDerUmweltbelastung": {
+            "type": "string",
+            "nullable": true
+          },
+          "oekologischerMindestStandardFuerProduktionsprozesse": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          }
+        }
+      },
+      "EsgquestionnaireUmweltTaxonomie": {
+        "type": "object",
+        "properties": {
+          "taxonomieBerichterstattung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaxonomieBerichterstattungOptions"
+              }
+            ]
+          },
+          "euTaxonomieKompassAktivitaeten": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Activity"
+            }
+          },
+          "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataUmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues"
+              }
+            ]
+          }
+        }
+      },
+      "EsgquestionnaireUmweltTreibhausgasemissionen": {
+        "type": "object",
+        "properties": {
+          "treibhausgasBerichterstattungUndPrognosen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataTreibhausgasBerichterstattungUndPrognosenValues"
+              }
+            ]
+          },
+          "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird": {
+            "type": "string",
+            "nullable": true
+          },
+          "strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireUmweltWasserverbrauch": {
+        "type": "object",
+        "properties": {
+          "berichterstattungWasserverbrauch": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungWasserverbrauchValues"
+              }
+            ]
+          },
+          "unternehmensGruppenStrategieBzglWasserverbrauch": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireUnternehmensfuehrungGovernance": {
+        "type": "object",
+        "properties": {
+          "aufsichtsrat": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceAufsichtsrat"
+              }
+            ]
+          },
+          "verguetungsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceVerguetungsausschuss"
+              }
+            ]
+          },
+          "nominierungsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceNominierungsausschuss"
+              }
+            ]
+          },
+          "pruefungsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernancePruefungsausschuss"
+              }
+            ]
+          },
+          "nachhaltigkeitsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceNachhaltigkeitsausschuss"
+              }
+            ]
+          },
+          "sonstige": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceSonstige"
+              }
+            ]
+          },
+          "stakeholder": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceStakeholder"
+              }
+            ]
+          },
+          "unternehmensrichtlinien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceUnternehmensrichtlinien"
+              }
+            ]
+          },
+          "lieferantenauswahl": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceLieferantenauswahl"
+              }
+            ]
+          }
+        }
+      },
+      "EsgquestionnaireUnternehmensfuehrungGovernanceAufsichtsrat": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImAufsichtsrat": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImAufsichtsrat": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlVonFrauenImAufsichtsrat": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireUnternehmensfuehrungGovernanceLieferantenauswahl": {
+        "type": "object",
+        "properties": {
+          "esgKriterienUndUeberwachungDerLieferanten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "auswahlkriterien": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireUnternehmensfuehrungGovernanceNachhaltigkeitsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImNachhaltigkeitsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlVonFrauenImNachhaltigkeitsausschuss": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireUnternehmensfuehrungGovernanceNominierungsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImNominierungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImNominierungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlVonFrauenImVerguetungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireUnternehmensfuehrungGovernancePruefungsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImPruefungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImPruefungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlVonFrauenImPruefungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireUnternehmensfuehrungGovernanceSonstige": {
+        "type": "object",
+        "properties": {
+          "wirtschaftspruefer": {
+            "type": "string",
+            "nullable": true
+          },
+          "trennungVonCeoOderVorsitzenden": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "amtszeitBisZurTrennung": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireUnternehmensfuehrungGovernanceStakeholder": {
+        "type": "object",
+        "properties": {
+          "einbeziehungVonStakeholdern": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "prozessDerEinbeziehungVonStakeholdern": {
+            "type": "string",
+            "nullable": true
+          },
+          "mechanismenZurAusrichtungAufStakeholder": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireUnternehmensfuehrungGovernanceUnternehmensrichtlinien": {
+        "type": "object",
+        "properties": {
+          "veroeffentlichteUnternehmensrichtlinien": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/VeroeffentlichteUnternehmensrichtlinienOptions"
+            }
+          },
+          "weitereVeroeffentlicheUnternehmensrichtlinien": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgquestionnaireUnternehmensfuehrungGovernanceVerguetungsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImVerguetungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImVerguetungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlVonFrauenImVerguetungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
       "CompanyInformationPatch": {
         "type": "object",
         "properties": {
@@ -10731,6 +12193,21 @@
           }
         }
       },
+      "DataAndMetaInformationEsgquestionnaireData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EsgquestionnaireData"
+          }
+        }
+      },
       "AggregatedFrameworkDataSummary": {
         "required": [
           "numberOfProvidedReportingPeriods"
@@ -10808,6 +12285,7 @@
       "DataTypeEnum": {
         "type": "string",
         "enum": [
+          "esgquestionnaire",
           "gdv",
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
