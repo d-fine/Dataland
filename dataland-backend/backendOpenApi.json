@@ -970,7 +970,7 @@
         ],
         "responses": {
           "404": {
-            "description": "The specified company doesn\u0027t exist on Dataland.",
+            "description": "Either the specified company doesn\u0027t exist on Dataland or the user isn\u0027t data owner of that company.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1018,9 +1018,7 @@
             "default-bearer-auth": []
           }
         ]
-      }
-    },
-    "/companies/{companyId}/{userId}": {
+      },
       "head": {
         "tags": [
           "company-data-controller"
@@ -1049,11 +1047,11 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "The specified user isn\u0027t data owner of the company."
-          },
           "200": {
             "description": "The specified user is data owner of the company."
+          },
+          "404": {
+            "description": "Either the specified company does not exist on Dataland or the user isn\u0027t data owner of that company."
           },
           "default": {
             "description": "An error occurred",
