@@ -31,7 +31,6 @@ fun interface AdminDataManipulationApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully deleted the dataset."),
-            ApiResponse(responseCode = "404", description = "Dataset does not exist."),
         ],
     )
     @DeleteMapping()
