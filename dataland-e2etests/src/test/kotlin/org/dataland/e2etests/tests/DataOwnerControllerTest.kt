@@ -50,7 +50,8 @@ class DataOwnerControllerTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val dataOwnersAfterPostRequest = apiAccessor.companyDataControllerApi.postDataOwner(
             firstCompanyId,
-            dataReaderUserId)
+            dataReaderUserId,
+        )
         validateDataOwnersForCompany(firstCompanyId, listOf(dataReaderUserId), dataOwnersAfterPostRequest)
         val dataOwnersAfterDuplicatePostRequest = apiAccessor.companyDataControllerApi
             .postDataOwner(firstCompanyId, dataReaderUserId)
@@ -182,7 +183,9 @@ class DataOwnerControllerTest {
 
     private fun checkHeadException(companyId: UUID, userId: UUID) {
         val headExceptionForUnauthorizedRequest = assertThrows<ClientException> {
-            apiAccessor.companyDataControllerApi.isUserDataOwnerForCompany(companyId, userId)
+            apiAccessor.companyDataControllerApi.isUserDataOwnerForCompany(
+                companyId, userId,
+            )
         }
         assertErrorCodeForClientException(headExceptionForUnauthorizedRequest, 403)
     }
