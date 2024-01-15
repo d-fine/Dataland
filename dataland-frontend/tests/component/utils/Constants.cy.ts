@@ -13,8 +13,12 @@ describe("Unit test for the data type sorting in the Constants", () => {
   });
 
   it("Check if the order stays the same if a list of data type enums does not contain esgquestionnaire", () => {
-    const allDataTypeEnumsButEsgquestionnaire = Object.values(DataTypeEnum).filter((it) => it !== DataTypeEnum.Esgquestionnaire);
-    const sortedAllDataTypeEnumsButEsgquestionnaire = putEsgQuestionnaireAtTheEndOfList(allDataTypeEnumsButEsgquestionnaire);
+    const allDataTypeEnumsButEsgquestionnaire = Object.values(DataTypeEnum).filter(
+      (it) => it !== DataTypeEnum.Esgquestionnaire,
+    );
+    const sortedAllDataTypeEnumsButEsgquestionnaire = putEsgQuestionnaireAtTheEndOfList(
+      allDataTypeEnumsButEsgquestionnaire,
+    );
     expect(sortedAllDataTypeEnumsButEsgquestionnaire.length).to.equal(allDataTypeEnumsButEsgquestionnaire.length);
     for (let i = 0; i < allDataTypeEnumsButEsgquestionnaire.length; i++) {
       expect(allDataTypeEnumsButEsgquestionnaire[i]).to.equal(sortedAllDataTypeEnumsButEsgquestionnaire[i]);

@@ -2,10 +2,11 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import {
-    Configuration,
-    type DataMetaInformation,
-    DataTypeEnum,
-    type EsgquestionnaireData, EsgquestionnaireDataControllerApi,
+  Configuration,
+  type DataMetaInformation,
+  DataTypeEnum,
+  type EsgquestionnaireData,
+  EsgquestionnaireDataControllerApi,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadGenericFrameworkData } from "@e2e/utils/FrameworkUpload";
@@ -18,7 +19,10 @@ let esgquestionnaireFixtureForTest: FixtureData<EsgquestionnaireData>;
 before(function () {
   cy.fixture("CompanyInformationWithEsgquestionnairePreparedFixtures").then(function (jsonContent) {
     const preparedFixturesEsgquestionnaire = jsonContent as Array<FixtureData<EsgquestionnaireData>>;
-    esgquestionnaireFixtureForTest = getPreparedFixture("Esgquestionnaire-dataset-with-no-null-fields", preparedFixturesEsgquestionnaire);
+    esgquestionnaireFixtureForTest = getPreparedFixture(
+      "Esgquestionnaire-dataset-with-no-null-fields",
+      preparedFixturesEsgquestionnaire,
+    );
   });
 });
 
@@ -37,14 +41,21 @@ describeIf(
         "assure that the re-uploaded dataset equals the pre-uploaded one",
       () => {
         const uniqueCompanyMarkerWithDate = Date.now().toString();
-        const testCompanyNameEsgquestionnaire = "Company-Created-In-Esgquestionnaire-Blanket-Test-" + uniqueCompanyMarkerWithDate;
+        const testCompanyNameEsgquestionnaire =
+          "Company-Created-In-Esgquestionnaire-Blanket-Test-" + uniqueCompanyMarkerWithDate;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameEsgquestionnaire)).then(
             (storedCompany) => {
-              return uploadGenericFrameworkData(token, storedCompany.companyId, "2021", esgquestionnaireFixtureForTest.t, (config) =>
-                getBaseFrameworkDefinition(DataTypeEnum.Esgquestionnaire)!.getFrameworkApiClient(config),
+              return uploadGenericFrameworkData(
+                token,
+                storedCompany.companyId,
+                "2021",
+                esgquestionnaireFixtureForTest.t,
+                (config) => getBaseFrameworkDefinition(DataTypeEnum.Esgquestionnaire)!.getFrameworkApiClient(config),
               ).then((dataMetaInformation) => {
-                cy.intercept(`**/api/data/${DataTypeEnum.Esgquestionnaire}/${dataMetaInformation.dataId}`).as("fetchDataForPrefill");
+                cy.intercept(`**/api/data/${DataTypeEnum.Esgquestionnaire}/${dataMetaInformation.dataId}`).as(
+                  "fetchDataForPrefill",
+                );
                 cy.visitAndCheckAppMount(
                   "/companies/" +
                     storedCompany.companyId +

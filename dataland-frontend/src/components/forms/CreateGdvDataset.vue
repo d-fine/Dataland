@@ -9,12 +9,12 @@
       <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
-            v-model="companyAssociatedGdvData"
+            v-model="companyAssociatedEsgquestionnaireData"
             :actions="false"
             type="form"
             :id="formId"
             :name="formId"
-            @submit="postGdvData"
+            @submit="postEsgquestionnaireData"
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" />
@@ -23,7 +23,7 @@
             <FormKit type="group" name="data" label="data">
               <FormKit
                 type="group"
-                v-for="category in gdvDataModel"
+                v-for="category in esgquestionnaireDataModel"
                 :key="category"
                 :label="category.label"
                 :name="category.name"
@@ -41,7 +41,7 @@
                       <div class="col-9 formFields">
                         <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
                           <component
-                            v-if="field.showIf(companyAssociatedGdvData.data)"
+                            v-if="field.showIf(companyAssociatedEsgquestionnaireData.data)"
                             :is="field.component"
                             :label="field.label"
                             :placeholder="field.placeholder"
@@ -71,14 +71,14 @@
         </div>
         <SubmitSideBar>
           <SubmitButton :formId="formId" />
-          <div v-if="postGdvDataProcessed">
+          <div v-if="postEsgquestionnaireDataProcessed">
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
             <FailMessage v-else :message="message" :messageId="messageCounter" />
           </div>
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in gdvDataModel" :key="category">
+            <li v-for="category in esgquestionnaireDataModel" :key="category">
               <ul>
                 <li v-for="subcategory in category.subcategories" :key="subcategory">
                   <a
@@ -109,7 +109,11 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { type CompanyAssociatedDataGdvData, DataTypeEnum, type GdvData } from "@clients/backend";
+import {
+  type CompanyAssociatedDataEsgquestionnaireData,
+  DataTypeEnum,
+  type EsgquestionnaireData,
+} from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -144,7 +148,7 @@ import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBa
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField from "@/components/forms/parts/fields/GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField.vue";
 import GdvYearlyDecimalTimeseriesThreeYearPastDataFormField from "@/components/forms/parts/fields/GdvYearlyDecimalTimeseriesThreeYearPastDataFormField.vue";
-import { gdvDataModel } from "@/frameworks/gdv/UploadConfig";
+import { esgquestionnaireDataModel } from "@/frameworks/esgquestionnaire/UploadConfig";
 import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
@@ -203,14 +207,14 @@ export default defineComponent({
       formId: "createGDVForm",
       waitingForData: true,
       dataDate: undefined as Date | undefined,
-      companyAssociatedGdvData: {} as CompanyAssociatedDataGdvData,
-      gdvDataModel: gdvDataModel,
+      companyAssociatedEsgquestionnaireData: {} as CompanyAssociatedDataEsgquestionnaireData,
+      esgquestionnaireDataModel,
       route: useRoute(),
       message: "",
       listOfFilledKpis: [] as Array<string>,
       smoothScroll: smoothScroll,
       uploadSucceded: false,
-      postGdvDataProcessed: false,
+      postEsgquestionnaireDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
       fieldSpecificDocuments: new Map() as Map<string, DocumentToUpload>,
@@ -219,7 +223,7 @@ export default defineComponent({
   computed: {
     yearOfDataDate: {
       get(): string {
-        const currentDate = this.companyAssociatedGdvData.data?.general?.masterData?.gueltigkeitsDatum;
+        const currentDate = this.companyAssociatedEsgquestionnaireData.data?.general?.masterData?.gueltigkeitsDatum;
         if (currentDate === undefined) {
           return "";
         } else {
@@ -232,7 +236,10 @@ export default defineComponent({
       },
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
-      return createSubcategoryVisibilityMap(this.gdvDataModel, this.companyAssociatedGdvData.data);
+      return createSubcategoryVisibilityMap(
+        this.esgquestionnaireDataModel,
+        this.companyAssociatedEsgquestionnaireData.data,
+      );
     },
   },
   props: {
@@ -244,7 +251,7 @@ export default defineComponent({
   created() {
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === "string") {
-      void this.loadGdvData(dataId);
+      void this.loadEsgquestionnaireData(dataId);
     } else {
       this.waitingForData = false;
     }
@@ -255,36 +262,44 @@ export default defineComponent({
      * from the dataset
      * @param dataId the id of the dataset to load
      */
-    async loadGdvData(dataId: string): Promise<void> {
+    async loadEsgquestionnaireData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Gdv);
-      let gdvDataControllerApi: FrameworkDataApi<GdvData>;
+      const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Esgquestionnaire);
+      let esgqestionnaireDataControllerApi: FrameworkDataApi<EsgquestionnaireData>;
       if (frameworkDefinition) {
-        gdvDataControllerApi = frameworkDefinition?.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-        const dataResponse = await gdvDataControllerApi.getFrameworkData(dataId);
-        const gdvResponseData = dataResponse.data;
-        this.listOfFilledKpis = getFilledKpis(gdvResponseData.data);
-        this.companyAssociatedGdvData = objectDropNull(gdvResponseData as ObjectType) as CompanyAssociatedDataGdvData;
+        esgqestionnaireDataControllerApi = frameworkDefinition?.getFrameworkApiClient(
+          undefined,
+          apiClientProvider.axiosInstance,
+        );
+        const dataResponse = await esgqestionnaireDataControllerApi.getFrameworkData(dataId);
+        const esgquestionnaireResponseData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(esgquestionnaireResponseData.data);
+        this.companyAssociatedEsgquestionnaireData = objectDropNull(
+          esgquestionnaireResponseData as ObjectType,
+        ) as CompanyAssociatedDataEsgquestionnaireData;
       }
 
       this.waitingForData = false;
     },
     /**
-     * Sends data to add GDV data
+     * Sends data to add esg questionnaire data
      */
-    async postGdvData(): Promise<void> {
+    async postEsgquestionnaireData(): Promise<void> {
       this.messageCounter++;
       try {
         if (this.fieldSpecificDocuments.size > 0) {
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-        const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Gdv);
-        let gdvDataControllerApi: FrameworkDataApi<GdvData>;
+        const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Esgquestionnaire);
+        let esgquestionnaireDataControllerApi: FrameworkDataApi<EsgquestionnaireData>;
         if (frameworkDefinition) {
-          gdvDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-          await gdvDataControllerApi.postFrameworkData(this.companyAssociatedGdvData);
+          esgquestionnaireDataControllerApi = frameworkDefinition.getFrameworkApiClient(
+            undefined,
+            apiClientProvider.axiosInstance,
+          );
+          await esgquestionnaireDataControllerApi.postFrameworkData(this.companyAssociatedEsgquestionnaireData);
         }
         this.$emit("datasetCreated");
         this.dataDate = undefined;
@@ -300,7 +315,7 @@ export default defineComponent({
         }
         this.uploadSucceded = false;
       } finally {
-        this.postGdvDataProcessed = true;
+        this.postEsgquestionnaireDataProcessed = true;
       }
     },
 
@@ -317,13 +332,13 @@ export default defineComponent({
       }
     },
     /**
-     * If the passed field is the first field of the gdv frameworks first category and subcategory, a custom
+     * If the passed field is the first field of the esg questionnaire frameworks first category and subcategory, a custom
      * validation message is returned for the "is"-validation for that field.
-     * @param field that potentially could be the first field of the gdv framework
+     * @param field that potentially could be the first field of the esg questionnaire framework
      * @returns an object expected by FormKit in order to customize the validation message of a field
      */
     getValidationMessageForFirstQuestion(field: Field): { is: string } | undefined {
-      if (field.name === gdvDataModel[0].subcategories[0].fields[0].name) {
+      if (field.name === esgquestionnaireDataModel[0].subcategories[0].fields[0].name) {
         return { is: 'Sie müssen "Ja" wählen, um den Datensatz abschicken zu können.' };
       }
     },
