@@ -54,7 +54,7 @@ open class ComponentGenerationUtils {
      */
     open fun getSelectionOptionsFromOptionColumn(row: TemplateRow): Set<SelectionOption> {
         val stringOptions = row.options
-            .split(";")
+            .split("|")
             .map { it.trim() }
 
         val mappedOptions = stringOptions.map {

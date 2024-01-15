@@ -70,7 +70,7 @@
             min="0"
             ignore="true"
           />
-          <FormKit type="group" name="dataSource" v-if="hasValidDataSource()">
+          <FormKit type="group" name="dataSource" v-if="isValidFileName(isMounted, currentReportValue)">
             <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
             <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
             <FormKit type="hidden" name="page" v-model="reportPageNumber" />
@@ -94,6 +94,7 @@ import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
 import { AssuranceDataPointValueEnum } from "@clients/backend";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";
+import { isValidFileName, noReportLabel } from "@/utils/DataSource";
 
 export default defineComponent({
   name: "AssuranceFormField",
@@ -116,7 +117,8 @@ export default defineComponent({
       },
       currentReportValue: "",
       reportPageNumber: undefined as string | undefined,
-      noReportLabel: "None...",
+      noReportLabel: noReportLabel,
+      isValidFileName: isValidFileName,
     };
   },
   mounted() {
@@ -131,17 +133,5 @@ export default defineComponent({
     },
   },
   props: BaseFormFieldProps,
-  methods: {
-    /**
-     * Checks whether the Assurance data source has appropriate values
-     * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
-     */
-    hasValidDataSource(): boolean {
-      if (!this.isMounted) {
-        return true;
-      }
-      return !!this.currentReportValue && this.currentReportValue !== this.noReportLabel;
-    },
-  },
 });
 </script>
