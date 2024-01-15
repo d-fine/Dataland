@@ -1,5 +1,5 @@
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import {BerichterstattungEnergieverbrauchValues, type EsgquestionnaireData, YesNo} from "@clients/backend";
+import { type BerichterstattungEnergieverbrauchValues, type EsgquestionnaireData, YesNo } from "@clients/backend";
 import { generateEsgquestionnaireFixtures } from "./EsgquestionnaireDataFixtures";
 
 /**
@@ -102,7 +102,7 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgquestionnaireD
   if (newFixture.t.umwelt?.energieverbrauch?.berichterstattungEnergieverbrauch) {
     const currentYear = newFixture.t.umwelt.energieverbrauch.berichterstattungEnergieverbrauch.currentYear;
     newFixture.t.umwelt.energieverbrauch.berichterstattungEnergieverbrauch.yearlyData =
-        createEnergieverbrauchWithNullNumbers(currentYear);
+      createEnergieverbrauchWithNullNumbers(currentYear);
   }
   if (newFixture.t.umwelt?.biodiversitaet?.negativeAktivitaetenFuerDieBiologischeVielfalt) {
     newFixture.t.umwelt.biodiversitaet.negativeAktivitaetenFuerDieBiologischeVielfalt = YesNo.Yes;
@@ -114,10 +114,10 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgquestionnaireD
     newFixture.t.umwelt.fossileBrennstoffe.einnahmenAusFossilenBrennstoffen = YesNo.Yes;
   }
   if (
-      newFixture.t.soziales?.unternehmensstrukturaenderungen?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur
+    newFixture.t.soziales?.unternehmensstrukturaenderungen?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur
   ) {
     newFixture.t.soziales.unternehmensstrukturaenderungen.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur =
-        YesNo.Yes;
+      YesNo.Yes;
   }
   if (newFixture.t.soziales?.audit) {
     newFixture.t.soziales.audit.auditsZurEinhaltungVonArbeitsstandards = YesNo.Yes;
@@ -130,7 +130,7 @@ function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgquestionnaireD
   }
   if (newFixture.t.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten) {
     newFixture.t.unternehmensfuehrungGovernance.lieferantenauswahl.esgKriterienUndUeberwachungDerLieferanten =
-        YesNo.Yes;
+      YesNo.Yes;
   }
 }
 
