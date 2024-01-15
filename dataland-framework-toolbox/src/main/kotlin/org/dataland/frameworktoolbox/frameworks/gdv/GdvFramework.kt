@@ -4,10 +4,13 @@ import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.DateComponent
+import org.dataland.frameworktoolbox.intermediate.components.DecimalComponent
 import org.dataland.frameworktoolbox.intermediate.components.MultiSelectComponent
 import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
+import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
@@ -145,6 +148,27 @@ class GdvFramework : PavedRoadFramework(
             edit<ComponentGroup>("masterData") {
                 edit<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung") {
                     customizeBerichtsPflicht(this)
+                }
+                // TODO: ONLY FOR TESTING. REMOVE IN IMPLEMENTATION
+                create<DecimalComponent>("testNumberWithoutValidation") {
+                    label = "Test Number"
+                    documentSupport = NoDocumentSupport
+                }
+                create<DecimalComponent>("testNumberWithMinValue") {
+                    label = "Test Number With Minimum Value"
+                    minimumValue = 123L
+                    documentSupport = ExtendedDocumentSupport
+                }
+                create<DecimalComponent>("testNumberWithMaxValue") {
+                    label = "Test Number With Maximum Value"
+                    maximumValue = 123L
+                    documentSupport = ExtendedDocumentSupport
+                }
+                create<DecimalComponent>("testNumberWithMinAndMaxValue") {
+                    label = "Test Number With Minimum and Maximum Value"
+                    minimumValue = 500L
+                    maximumValue = 1000L
+                    documentSupport = ExtendedDocumentSupport
                 }
             }
         }

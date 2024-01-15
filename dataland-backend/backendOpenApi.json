@@ -8699,6 +8699,34 @@
             "type": "string",
             "format": "date",
             "nullable": true
+          },
+          "testNumberWithoutValidation": {
+            "type": "number",
+            "nullable": true
+          },
+          "testNumberWithMinValue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "testNumberWithMaxValue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "testNumberWithMinAndMaxValue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
           }
         }
       },

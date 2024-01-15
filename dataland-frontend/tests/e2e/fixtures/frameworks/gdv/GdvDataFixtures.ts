@@ -42,6 +42,10 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
       masterData: {
         berichtspflichtUndEinwilligungZurVeroeffentlichung: dataGenerator.guaranteedYesNo(),
         gueltigkeitsDatum: dataGenerator.dataDate,
+        testNumberWithoutValidation: dataGenerator.randomFloat(),
+        testNumberWithMinValue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(123)),
+        testNumberWithMaxValue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0, 123)),
+        testNumberWithMinAndMaxValue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(500, 1000)),
       },
     },
     allgemein: {
