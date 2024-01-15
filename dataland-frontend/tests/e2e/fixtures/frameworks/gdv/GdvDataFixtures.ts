@@ -329,7 +329,7 @@ export function generateGdvData(nullProbability = DEFAULT_PROBABILITY): GdvData 
             "Other",
           ]),
         ),
-        weitereVeroeffentlicheUnternehmensrichtlinien: dataGenerator.randomShortString(),
+        weitereVeroeffentlicheUnternehmensrichtlinien: dataGenerator.randomParagraphs(),
       },
       lieferantenauswahl: {
         esgKriterienUndUeberwachungDerLieferanten: dataGenerator.randomYesNo(),

@@ -774,7 +774,7 @@ export const gdvDataModel = [
             name: "wichtigsteESUndGRisikenUndBewertung",
             label: "Wichtigste E-, S- und G-Risiken und Bewertung",
             description:
-              "Welches sind die wichtigsten von der Gruppe identifizierten E-, S- und G-Risiken? Bitte geben Sie die Details / Bewertung der identifizierten Risiken an.",
+              "Welche sind die wichtigsten von der Gruppe identifizierten E-, S- und G-Risiken? Bitte geben Sie die Details / Bewertung der identifizierten Risiken an.",
             options: "",
             unit: "",
             component: "FreeTextFormField",
@@ -814,7 +814,7 @@ export const gdvDataModel = [
             name: "treibhausgasBerichterstattungUndPrognosen",
             label: "Treibhausgas-Berichterstattung und Prognosen",
             description:
-              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
+              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
             options: [
               {
                 label: "Scope 1 (in tCO2-Äquiv.)",
@@ -916,7 +916,7 @@ export const gdvDataModel = [
             name: "berichterstattungEnergieverbrauch",
             label: "Berichterstattung Energieverbrauch",
             description:
-              "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+              "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
                 label: "Energieverbrauch (in GWh)",
@@ -961,7 +961,7 @@ export const gdvDataModel = [
             name: "berichterstattungEnergieverbrauchVonImmobilienvermoegen",
             label: "Berichterstattung Energieverbrauch von Immobilienvermoegen",
             description:
-              "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+              "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
                 label: "Engagement/Anteil in energieineffizienten Immobilienanlagen",
@@ -998,7 +998,7 @@ export const gdvDataModel = [
             name: "berichterstattungWasserverbrauch",
             label: "Berichterstattung Wasserverbrauch",
             description:
-              "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+              "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
                 label: "Wasserverbrauch (in l)",
@@ -1039,7 +1039,7 @@ export const gdvDataModel = [
             name: "berichterstattungAbfallproduktion",
             label: "Berichterstattung Abfallproduktion",
             description:
-              "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+              "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
                 label: "Gesamte Abfallmenge (in t)",
@@ -1078,7 +1078,7 @@ export const gdvDataModel = [
             name: "recyclingImProduktionsprozess",
             label: "Recycling im Produktionsprozess",
             description:
-              "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereitsrecyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre.",
+              "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereitsrecyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre.",
             options: [
               {
                 label: "% Recycelte Werkstoffe im Produktionsprozess (in %)",
@@ -1186,7 +1186,7 @@ export const gdvDataModel = [
             name: "berichterstattungEinnahmenAusFossilenBrennstoffen",
             label: "Berichterstattung Einnahmen aus fossilen Brennstoffen",
             description:
-              "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+              "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
                 label: "% der Einnahmen aus fossilen Brennstoffen (in %)",
@@ -1243,7 +1243,7 @@ export const gdvDataModel = [
             name: "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten",
             label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
             description:
-              "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahren sowie die Prognosen für die kommenden drei Jahre an.",
+              "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
               {
                 label: "Taxonomie geeignet (eligible) nach % Umsatz (in %)",
@@ -2015,7 +2015,7 @@ export const gdvDataModel = [
             description: "Bitte nennen Sie weitere wichtige Richtlinien, falls diese nicht angegeben sind.",
             options: "",
             unit: "",
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: GdvData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
