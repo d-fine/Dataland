@@ -3029,9 +3029,6 @@
           "200": {
             "description": "Successfully deleted the dataset."
           },
-          "404": {
-            "description": "Dataset does not exist."
-          },
           "default": {
             "description": "An error occurred",
             "content": {
