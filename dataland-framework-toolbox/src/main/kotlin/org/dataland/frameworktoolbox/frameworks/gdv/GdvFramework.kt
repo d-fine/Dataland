@@ -33,7 +33,7 @@ class GdvFramework : PavedRoadFramework(
     apiEndpoint = "esg-questionnaire",
     label = "ESG Questionnaire für Corporate Schuldscheindarlehen",
     explanation = "Der ESG Questionnaire für Corporate Schuldscheindarlehen ist ein ESG-Fragebogen des " +
-            "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
+        "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
     File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
 ) {
 

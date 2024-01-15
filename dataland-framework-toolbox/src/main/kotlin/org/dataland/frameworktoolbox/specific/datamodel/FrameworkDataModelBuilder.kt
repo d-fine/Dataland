@@ -52,7 +52,7 @@ class FrameworkDataModelBuilder(
                 "frameworkDataType" to rootDataModelClass.getTypeReference(false),
                 "frameworkCapitalizedName" to framework.identifier.capitalizeEn(),
                 "frameworkIdentifier" to framework.identifier,
-                "frameworkApiEndpoint" to framework.apiEndpoint
+                "frameworkApiEndpoint" to framework.apiEndpoint,
             ),
             writer,
         )
