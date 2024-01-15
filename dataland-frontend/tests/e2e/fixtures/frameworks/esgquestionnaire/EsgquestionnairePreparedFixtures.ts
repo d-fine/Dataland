@@ -11,7 +11,8 @@ export function generateEsgquestionnairePreparedFixtures(): Array<FixtureData<Es
   const preparedFixtures = [];
   // Note: Put the code for prepared fixture generation below. This file will not be overwritten automatically
 
-  const manipulatorFunctions: Array<(input: FixtureData<EsgquestionnaireData>) => FixtureData<EsgquestionnaireData>> = [];
+  const manipulatorFunctions: Array<(input: FixtureData<EsgquestionnaireData>) => FixtureData<EsgquestionnaireData>> =
+    [];
   const preparedFixturesBeforeManipulation = generateEsgquestionnaireFixtures(manipulatorFunctions.length);
 
   for (let i = 0; i < manipulatorFunctions.length; i++) {
