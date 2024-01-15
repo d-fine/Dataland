@@ -5,7 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
-import org.dataland.frameworktoolbox.intermediate.group.getOrNull
+import org.dataland.frameworktoolbox.intermediate.group.get
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 
@@ -19,8 +19,7 @@ object GdvListOfBaseDataPointComponents {
      */
     fun aktuelleBerichte(componentGroupAllgemein: ComponentGroup) {
         componentGroupAllgemein.edit<ComponentGroup>("esgBerichte") {
-            val nachhaltigkeitsberichte = getOrNull<YesNoComponent>("nachhaltigkeitsberichte")
-            requireNotNull(nachhaltigkeitsberichte)
+            val nachhaltigkeitsberichte = get<YesNoComponent>("nachhaltigkeitsberichte")
 
             create<GdvListOfBaseDataPointComponent>("aktuelleBerichte") {
                 label = "Aktuelle Berichte"
@@ -63,8 +62,7 @@ object GdvListOfBaseDataPointComponents {
     ) {
         componentGroupAllgemein.edit<ComponentGroup>("unGlobalConceptPrinzipien") {
             val mechanismenZurUeberwachungDerEinhaltungDerUngcp =
-                getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerUngcp")
-            requireNotNull(mechanismenZurUeberwachungDerEinhaltungDerUngcp)
+                get<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerUngcp")
             create<GdvListOfBaseDataPointComponent>(
                 "richtlinienZurEinhaltungDerUngcp",
                 "erklaerungDerEinhaltungDerUngcp",
@@ -87,8 +85,7 @@ object GdvListOfBaseDataPointComponents {
     ) {
         componentGroupAllgemein.edit<ComponentGroup>("oecdLeitsaetze") {
             val mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze =
-                getOrNull<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze")
-            requireNotNull(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze)
+                get<YesNoComponent>("mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze")
 
             create<GdvListOfBaseDataPointComponent>(
                 "richtlinienZurEinhaltungDerOecdLeitsaetze",

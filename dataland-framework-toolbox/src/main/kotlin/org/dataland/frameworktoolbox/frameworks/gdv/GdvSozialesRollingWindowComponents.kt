@@ -5,7 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
-import org.dataland.frameworktoolbox.intermediate.group.getOrNull
+import org.dataland.frameworktoolbox.intermediate.group.get
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 
@@ -21,7 +21,7 @@ object GdvSozialesRollingWindowComponents {
     ) {
         componentGroupSoziales.edit<ComponentGroup>("unternehmensstrukturaenderungen") {
             val vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur =
-                getOrNull<YesNoComponent>("vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur")!!
+                get<YesNoComponent>("vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur")
 
             create<GdvYearlyDecimalTimeseriesDataComponent>(
                 "auswirkungenAufAnteilBefristerVertraegeUndFluktuation",

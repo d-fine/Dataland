@@ -26,6 +26,7 @@
     v-model="currentValue"
     :validation="validation"
     :validation-label="validationLabel"
+    :validation-messages="validationMessages"
     v-if="!shouldBeIgnored"
     :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
   />
@@ -97,6 +98,9 @@ export default defineComponent({
     validationLabel: {
       type: String,
       default: "",
+    },
+    validationMessages: {
+      type: Object as () => { is: string },
     },
     fieldName: {
       type: String,

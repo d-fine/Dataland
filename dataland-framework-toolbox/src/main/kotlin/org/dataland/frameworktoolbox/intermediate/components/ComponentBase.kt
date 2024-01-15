@@ -6,6 +6,7 @@ import org.dataland.frameworktoolbox.intermediate.TreeNode
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
+import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -21,6 +22,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigB
 open class ComponentBase(
     var identifier: String,
     override var parent: FieldNodeParent,
+    var fullyQualifiedNameOfKotlinType: String = "",
 ) : TreeNode<FieldNodeParent> {
 
     /**
@@ -95,10 +97,16 @@ open class ComponentBase(
 
     /**
      * Build this component instance into the provided Kotlin DataClass using the default
-     * generator for this component
+     * generator
      */
     open fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        throw NotImplementedError("This component did not implement data model conversion.")
+        dataClassBuilder.addProperty(
+            identifier,
+            documentSupport.getJvmTypeReference(
+                TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
+                isNullable,
+            ),
+        )
     }
 
     /**
