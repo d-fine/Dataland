@@ -65,6 +65,10 @@ appear.
 - [ ] Run the `updatepackagelock`, e.g. by  `npm run updatepackagelock` script to update `package-lock.json` and check
   for security issues
 
+### Dataland automated QA service
+
+- [ ] Update package versions in `dataland-automated-qa-service/requirements.txt`
+
 ### Dockerfile updates
 
 Update versions in the following dockerfiles
@@ -88,6 +92,7 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-qa-service/Dockerfile`
 - [ ] `./dataland-qa-service/DockerfileBase`
 - [ ] `./dataland-qa-service/DockerfileTest`
+- [ ] `./dataland-automated-qa-service/DockerfileBase`
 - [ ] `./dataland-rabbitmq/Dockerfile`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
 - [ ] `./dataland-inbound-proxy/Dockerfile`

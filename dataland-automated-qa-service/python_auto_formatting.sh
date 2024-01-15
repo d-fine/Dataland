@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd dataland-automated-qa-service
+
+# Run Ruff formatter on dataland-automated-qa-service src
+ruff format --preview src
+
+# more info about ruff here: https://github.com/astral-sh/ruff

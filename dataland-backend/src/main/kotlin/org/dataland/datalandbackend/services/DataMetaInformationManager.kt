@@ -89,4 +89,19 @@ class DataMetaInformationManager(
 
         return dataMetaInformationRepositoryInterface.searchDataMetaInformation(filter)
     }
+
+    /**
+     * Method to make the data manager search for meta info
+     * @param companyId if not empty, it filters the requested meta info to a specific company
+     * @param dataType if not empty, it filters the requested meta info to a specific data type
+     * @param reportingPeriod if not empty, it filters the requested meta info to a specific reporting period
+     * @param showOnlyActive if true, it will only return datasets marked "active"
+     * @return a list of meta info about data depending on the filters
+     */
+    fun deleteDataMetaInfo(
+        dataId: String,
+    ) {
+        val dataMetaInformation = getDataMetaInformationByDataId(dataId)
+        dataMetaInformationRepositoryInterface.delete(dataMetaInformation)
+    }
 }
