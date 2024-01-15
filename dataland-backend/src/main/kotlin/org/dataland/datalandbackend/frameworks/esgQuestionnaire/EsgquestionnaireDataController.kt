@@ -38,7 +38,10 @@ class EsgquestionnaireDataController(
     }
 
     @Operation(operationId = "postCompanyAssociatedEsgquestionnaireData")
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<EsgquestionnaireData>, bypassQa: Boolean):
+    override fun postCompanyAssociatedData(
+        companyAssociatedData: CompanyAssociatedData<EsgquestionnaireData>,
+        bypassQa: Boolean,
+    ):
         ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }

@@ -19,7 +19,8 @@ class OpenApiEsgQuestionnaireExampleCustomizer(
         return esgQuestionnaireExampleJsonResource.getContentAsString(Charsets.UTF_8)
     }
     override fun customise(openApi: OpenAPI) {
-        val companyAssociatedEsgquestionnaireDataSchema = openApi.components.schemas["CompanyAssociatedDataEsgquestionnaireData"]
+        val companyAssociatedEsgquestionnaireDataSchema =
+            openApi.components.schemas["CompanyAssociatedDataEsgquestionnaireData"]
         requireNotNull(companyAssociatedEsgquestionnaireDataSchema)
         companyAssociatedEsgquestionnaireDataSchema.example = readGdvOpenApiExample()
     }

@@ -39,7 +39,10 @@ class ${frameworkDataType.shortenedQualifier}Controller(
     }
 
     @Operation(operationId = "postCompanyAssociated${frameworkDataType.shortenedQualifier}")
-    override fun postCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>, bypassQa: Boolean):
+    override fun postCompanyAssociatedData(
+            companyAssociatedData: CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>,
+            bypassQa: Boolean
+        ):
         ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }
