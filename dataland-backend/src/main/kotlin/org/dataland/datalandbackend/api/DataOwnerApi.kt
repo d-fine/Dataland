@@ -89,8 +89,11 @@ interface DataOwnerApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully deleted data owner."),
-            ApiResponse(responseCode = "404", description = "The specified company doesn't exist on Dataland."),
-            ApiResponse(responseCode = "404", description = "Data owner doesn't exist for the specified company."),
+            ApiResponse(
+                responseCode = "404",
+                description = "Either the specified company doesn't exist on Dataland or the user isn't data owner " +
+                    "of that company.",
+            ),
         ],
     )
     @DeleteMapping(
@@ -117,13 +120,16 @@ interface DataOwnerApi {
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "The specified user is data owner of the company."),
-            ApiResponse(responseCode = "404", description = "The specified company does not exist on Dataland."),
-            ApiResponse(responseCode = "404", description = "The specified user isn't data owner of the company."),
+            ApiResponse(
+                responseCode = "404",
+                description = "Either the specified company does not exist on Dataland or the user isn't data owner " +
+                    "of that company.",
+            ),
         ],
     )
     @RequestMapping(
         method = [RequestMethod.HEAD],
-        value = ["/{companyId}/{userId}"],
+        value = ["/{companyId}/data-owners/{userId}"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun isUserDataOwnerForCompany(
