@@ -48,7 +48,9 @@ class DataOwnerControllerTest {
         assertFailingApiUploadToCompany(secondCompanyId, frameworkSampleData, false)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val dataOwnersAfterPostRequest = apiAccessor.companyDataControllerApi.postDataOwner(firstCompanyId, dataReaderUserId)
+        val dataOwnersAfterPostRequest = apiAccessor.companyDataControllerApi.postDataOwner(
+            firstCompanyId,
+            dataReaderUserId)
         validateDataOwnersForCompany(firstCompanyId, listOf(dataReaderUserId), dataOwnersAfterPostRequest)
         val dataOwnersAfterDuplicatePostRequest = apiAccessor.companyDataControllerApi
             .postDataOwner(firstCompanyId, dataReaderUserId)
