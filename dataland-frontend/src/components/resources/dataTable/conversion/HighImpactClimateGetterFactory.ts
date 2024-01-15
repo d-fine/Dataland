@@ -1,6 +1,7 @@
 import {
   type AvailableMLDTDisplayObjectTypes,
   MLDTDisplayComponentName,
+  MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
 import { type Field } from "@/utils/GenericFrameworkTypes";
@@ -72,6 +73,7 @@ export function highImpactClimateGetterFactory(
   return (dataset) => {
     const highImpactClimateSectors = ["A", "B", "C", "D", "E", "F", "G", "H", "L"];
     let accumulatedData: HighImpactClimateValueObject = {};
+    let doesAccumulatedDataContainData = false;
     highImpactClimateSectors.forEach((sector: string) => {
       accumulatedData = {
         ...accumulatedData,
@@ -86,7 +88,13 @@ export function highImpactClimateGetterFactory(
           ) as ExtendedDataPointBigDecimal,
         },
       };
+      doesAccumulatedDataContainData = Object.values(accumulatedData).some((obj) =>
+        Object.values(obj).some((value) => value !== undefined),
+      );
     });
+    if (!doesAccumulatedDataContainData) {
+      return MLDTDisplayObjectForEmptyString;
+    }
     return {
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
