@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer" role="contentinfo">
+  <footer :class="['footer', { 'footer--light': isLightVersion }]" role="contentinfo">
     <div class="footer__row footer__row--top">
       <div class="footer__section footer__section--logo">
         <img v-if="footerLogo" :src="footerLogo" alt="Dataland Logo" class="footer__logo" />
@@ -44,6 +44,7 @@ import type { Section } from "@/types/ContentTypes";
 
 const props = defineProps<{
   sections?: Section[];
+  isLightVersion: boolean;
 }>();
 
 const footerSection = computed(() => {
@@ -203,6 +204,26 @@ const copyrightText = computed(() => {
     -moz-osx-font-smoothing: grayscale;
     text-align: right;
     flex: 1;
+  }
+  // Modifier class for light version
+  &--light {
+    background-color: #f6f5f0;
+    color: #0b191f;
+    .footer__column {
+      &-title,
+      &-link {
+        color: #0b191f;
+        &::after {
+          filter: invert(0) !important;
+        }
+        &::before {
+          filter: invert(1);
+        }
+      }
+    }
+    .footer__legal-list-link {
+      color: #0b191f;
+    }
   }
 }
 @media only screen and (max-width: $large) {
