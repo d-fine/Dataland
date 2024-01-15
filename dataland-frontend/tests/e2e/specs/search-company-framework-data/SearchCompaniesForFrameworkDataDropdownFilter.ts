@@ -51,12 +51,12 @@ describe("As a user, I expect the search functionality on the /companies page to
         "eq",
         getBaseUrl() +
           "/companies?" +
-          `framework=${DataTypeEnum.Gdv}` +
-          `&framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
+          `framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
           `&framework=${DataTypeEnum.Lksg}` +
           `&framework=${DataTypeEnum.P2p}` +
           `&framework=${DataTypeEnum.Sfdr}` +
-          `&framework=${DataTypeEnum.Sme}`,
+          `&framework=${DataTypeEnum.Sme}` +
+          `&framework=${DataTypeEnum.Gdv}`,
       )
       .get("div.p-multiselect-panel")
       .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials)})`)
@@ -73,12 +73,12 @@ describe("As a user, I expect the search functionality on the /companies page to
       "eq",
       getBaseUrl() +
         "/companies?" +
-        `framework=${DataTypeEnum.Gdv}` +
-        `&framework=${DataTypeEnum.EutaxonomyFinancials}` +
+        `framework=${DataTypeEnum.EutaxonomyFinancials}` +
         `&framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
         `&framework=${DataTypeEnum.Lksg}` +
         `&framework=${DataTypeEnum.P2p}` +
-        `&framework=${DataTypeEnum.Sme}`,
+        `&framework=${DataTypeEnum.Sme}` +
+        `&framework=${DataTypeEnum.Gdv}`,
     );
   });
 

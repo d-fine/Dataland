@@ -4,6 +4,7 @@ import { type DataPointDisplay } from "@/utils/DataPoint";
 
 export enum MLDTDisplayComponentName {
   StringDisplayComponent = "StringDisplayComponent",
+  FreeTextDisplayComponent = "FreeTextDisplayComponent",
   DocumentLinkDisplayComponent = "DocumentLinkDisplayComponent",
   ModalLinkDisplayComponent = "ModalLinkDisplayComponent",
   HighlightHiddenCellDisplay = "HighlightHiddenCellDisplay",
@@ -13,6 +14,7 @@ export enum MLDTDisplayComponentName {
 
 export type MLDTDisplayComponentTypes = {
   [MLDTDisplayComponentName.StringDisplayComponent]: string | undefined | null;
+  [MLDTDisplayComponentName.FreeTextDisplayComponent]: string;
   [MLDTDisplayComponentName.DocumentLinkDisplayComponent]: { label: string; dataSource: BaseDocumentReference };
   [MLDTDisplayComponentName.DataPointDisplayComponent]: {
     fieldLabel: string;

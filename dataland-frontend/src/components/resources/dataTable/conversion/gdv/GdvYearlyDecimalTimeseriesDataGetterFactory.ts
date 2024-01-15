@@ -24,7 +24,13 @@ export function formatGdvYearlyDecimalTimeseriesDataForTable<KeyList extends str
   options: GdvYearlyDecimalTimeseriesDataConfiguration<KeyList>,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
-  if (!input?.yearlyData || !input?.currentYear || Object.keys(input.yearlyData).length == 0) {
+  const yearlyData = input?.yearlyData;
+  if (
+    !yearlyData ||
+    !input?.currentYear ||
+    Object.keys(yearlyData).length == 0 ||
+    areAllTimeSeriesNumbersNull(yearlyData)
+  ) {
     return MLDTDisplayObjectForEmptyString;
   } else {
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
@@ -47,4 +53,26 @@ export function formatGdvYearlyDecimalTimeseriesDataForTable<KeyList extends str
       },
     };
   }
+}
+
+/**
+ * Checks if a timeseries object has null-values for all of its numbers
+ * @param yearlyData contains the timeseries data as map of years to objects that contain number properties
+ * @returns a boolean stating if all numbers are null
+ */
+function areAllTimeSeriesNumbersNull<KeyList extends string>(
+  yearlyData: { [key: string]: MappedOptionalDecimal<KeyList> } | null | undefined,
+): boolean {
+  for (const year in yearlyData) {
+    const mappedOptionDecimalForOneYear = yearlyData[year];
+    if (mappedOptionDecimalForOneYear !== null && typeof mappedOptionDecimalForOneYear === "object") {
+      for (const key in mappedOptionDecimalForOneYear) {
+        const singleValue = mappedOptionDecimalForOneYear[key];
+        if (singleValue !== null) {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
 }

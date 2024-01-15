@@ -3,19 +3,19 @@ package org.dataland.datalandbackend.frameworks.gdv.model.soziales.unternehmenss
 
 import org.dataland.datalandbackend.frameworks.gdv.custom.YearlyTimeseriesData
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import java.math.BigDecimal
+import java.math.BigInteger
 
 /**
  * The data-model for the Unternehmensstrukturaenderungen section
  */
 data class GdvSozialesUnternehmensstrukturaenderungen(
     val vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur: YesNo? = null,
-    val anzahlUnbefristeterVertraegeInDeutschland: BigDecimal? = null,
-    val anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland: BigDecimal? = null,
-    val anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland: BigDecimal? = null,
-    val anzahlUnbefristeterVertraegeInDerGesamtgruppe: BigDecimal? = null,
-    val anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: BigDecimal? = null,
-    val anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: BigDecimal? = null,
+    val anzahlUnbefristeterVertraegeInDeutschland: BigInteger? = null,
+    val anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland: BigInteger? = null,
+    val anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland: BigInteger? = null,
+    val anzahlUnbefristeterVertraegeInDerGesamtgruppe: BigInteger? = null,
+    val anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: BigInteger? = null,
+    val anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe: BigInteger? = null,
     val auswirkungenAufAnteilBefristerVertraegeUndFluktuation:
     YearlyTimeseriesData<AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues?>? = null,
 )

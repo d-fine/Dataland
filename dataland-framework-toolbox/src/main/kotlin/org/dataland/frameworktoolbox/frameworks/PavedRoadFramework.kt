@@ -9,13 +9,13 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.FrameworkUploadConfig
 import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuilder
 import org.dataland.frameworktoolbox.template.ExcelTemplate
 import org.dataland.frameworktoolbox.template.TemplateComponentBuilder
+import org.dataland.frameworktoolbox.template.components.ComponentFactoryContainer
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.dataland.frameworktoolbox.template.components.TemplateComponentFactory
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
 import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
 import org.springframework.beans.factory.getBean
-import org.springframework.beans.factory.getBeansOfType
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.io.File
@@ -69,7 +69,8 @@ abstract class PavedRoadFramework(
     open fun getComponentFactoriesForIntermediateRepresentation(
         context: ApplicationContext,
     ): List<TemplateComponentFactory> {
-        return context.getBeansOfType<TemplateComponentFactory>().values.toList()
+        val containerBean = context.getBean<ComponentFactoryContainer>()
+        return containerBean.factories.reversed()
     }
 
     /**
@@ -166,12 +167,7 @@ abstract class PavedRoadFramework(
         val dataModel = generateDataModel(framework)
         customizeDataModel(dataModel)
 
-        @Suppress("TooGenericExceptionCaught")
-        try {
-            dataModel.build(into = datalandProject)
-        } catch (ex: Exception) {
-            logger.error("Could not build framework data-model!", ex)
-        }
+        dataModel.build(into = datalandProject)
     }
 
     private fun compileViewModel(datalandProject: DatalandRepository) {
