@@ -1,6 +1,5 @@
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import {
-  type BaseDataPointString,
   type CompanyAssociatedDataGdvData,
   type DataMetaInformation,
   DataTypeEnum,
@@ -16,6 +15,7 @@ import {
   getCellValueContainer,
   getSectionHead,
 } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 describe("Component Test for the GDV-VÖB view Page with its componenets", () => {
   let preparedFixtureForTest: FixtureData<GdvData>;
@@ -48,6 +48,9 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
       cy.get("div").contains(formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear].scope2));
       cy.get("div").contains(formatNumberToReadableFormat(modalDatasets[dataSetOfOneYear].scope3));
     }
+    cy.get("body").type("{esc}");
+    getSectionHead("Energieverbrauch").click();
+    getCellValueContainer("Berichterstattung Energieverbrauch").children().should("have.length", 0);
   });
 
   it("Check that on the GDV-VÖB view Page the string for datatable component works properly", () => {
@@ -60,7 +63,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     getSectionHead("Unternehmensführung/ Governance").click();
     getSectionHead("Sonstige").eq(1).click();
     getCellValueContainer("Wirtschaftsprüfer").contains(
-      preparedFixtureForTest.t.unternehmensfuehrungGovernance?.sonstige?.wirtschaftspruefer as string,
+      assertDefined(preparedFixtureForTest.t.unternehmensfuehrungGovernance?.sonstige?.wirtschaftspruefer),
     );
   });
 
@@ -71,19 +74,18 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
       data: preparedFixtureForTest.t,
     } as CompanyAssociatedDataGdvData);
     mountGDVFrameworkFromFakeFixture([preparedFixtureForTest]);
-
-    const esgBerichte: Array<BaseDataPointString> = preparedFixtureForTest.t.allgemein?.esgBerichte
-      ?.aktuelleBerichte as Array<BaseDataPointString>;
-
     getSectionHead("ESG Berichte").click();
     getCellValueContainer("Aktuelle Berichte").click();
-
     cy.get("span").contains("Beschreibung des Berichts");
-    for (const singleEsgBericht of esgBerichte) {
-      cy.get("div").contains(singleEsgBericht.value as string);
-      cy.get("div").contains(singleEsgBericht.dataSource?.fileName as string);
+    const aktuelleBerichte = assertDefined(preparedFixtureForTest.t.allgemein?.esgBerichte?.aktuelleBerichte);
+
+    for (const singleEsgBericht of aktuelleBerichte) {
+      cy.get("div").contains(assertDefined(singleEsgBericht.value));
+      if (singleEsgBericht.dataSource) {
+        cy.get("div").contains(assertDefined(singleEsgBericht.dataSource.fileName));
+      }
     }
-    cy.get('span[data-test="Report-Download-Policy"]').should("exist");
+    cy.get('div.p-dialog-content i[data-test="download-icon"]').should("have.length", aktuelleBerichte.length - 1);
   });
 });
 
@@ -91,20 +93,15 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
  *
  * Mounts the MultiLayerDataTableFrameworkPanel with the given dataset for the GDV framework
  * @param fixtureDatasetsForDisplay the datasets from the fixtures to mount
- * @param companyId company ID of the mocked requests
- * @param reviewMode toggles the reviewer mode
  * @returns the component mounting chainable
  */
-function mountGDVFrameworkFromFakeFixture(
-  fixtureDatasetsForDisplay: Array<FixtureData<GdvData>>,
-  companyId = "mock-company-id",
-  reviewMode = false,
-): Cypress.Chainable {
+function mountGDVFrameworkFromFakeFixture(fixtureDatasetsForDisplay: Array<FixtureData<GdvData>>): Cypress.Chainable {
+  const dummyCompanyId = "mock-company-id";
   const convertedDataAndMetaInformation: Array<DataAndMetaInformation<GdvData>> = fixtureDatasetsForDisplay.map(
     (it, idx) => {
       const metaInformation: DataMetaInformation = {
         dataId: `data-id-${idx}`,
-        companyId: companyId,
+        companyId: dummyCompanyId,
         dataType: DataTypeEnum.Gdv,
         uploadTime: 0,
         reportingPeriod: it.reportingPeriod,
@@ -118,7 +115,7 @@ function mountGDVFrameworkFromFakeFixture(
     },
   );
 
-  return mountMLDTForGdvPanel(convertedDataAndMetaInformation, companyId, reviewMode);
+  return mountMLDTForGdvPanel(convertedDataAndMetaInformation, dummyCompanyId, false);
 }
 
 /**
@@ -130,8 +127,8 @@ function mountGDVFrameworkFromFakeFixture(
  */
 export function mountMLDTForGdvPanel(
   datasetsToDisplay: Array<DataAndMetaInformation<GdvData>>,
-  companyId = "mock-company-id",
-  reviewMode = false,
+  companyId: string,
+  reviewMode: boolean,
 ): Cypress.Chainable {
   cy.intercept(`/api/data/${DataTypeEnum.Gdv}/companies/${companyId}`, datasetsToDisplay);
   return cy.mountWithDialog(

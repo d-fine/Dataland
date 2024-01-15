@@ -88,6 +88,10 @@ class ComponentGroupApiImpl(var parent: FieldNodeParent? = null) : ComponentGrou
         return component
     }
 
+    override fun <T : ComponentBase> get(identifier: String, clazz: KClass<T>): T {
+        return getComponentWithIdentifierAndType(identifier, clazz)
+    }
+
     override fun <T : ComponentBase> getOrNull(identifier: String, clazz: KClass<T>): T? {
         val componentWithIdentifier = components.find { it.identifier == identifier } ?: return null
 

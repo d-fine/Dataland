@@ -1,5 +1,6 @@
 package org.dataland.e2etests.utils
 
+import org.dataland.datalandbackend.openApiClient.api.AdminDataManipulationControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
@@ -53,6 +54,7 @@ class ApiAccessor {
     val unauthorizedEuTaxonomyDataNonFinancialsControllerApi = UnauthorizedEuTaxonomyDataNonFinancialsControllerApi()
     val testDataProviderForEuTaxonomyDataForNonFinancials =
         FrameworkTestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
+    val adminDataManipulationControllerApi = AdminDataManipulationControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     fun euTaxonomyNonFinancialsUploaderFunction(
         companyId: String,
         euTaxonomyNonFinancialsData: EuTaxonomyDataForNonFinancials,

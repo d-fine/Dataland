@@ -9,4 +9,5 @@ object MessageType {
     const val DocumentReceived = "Document received"
     const val DocumentStored = "Document stored"
     const val QaCompleted = "QA completed"
+    const val ManualQaRequested = "Manual QA requested"
 }

@@ -65,10 +65,8 @@ class GdvListOfBaseDataPointComponent(
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         uploadCategoryBuilder.addStandardUploadConfigCell(
-            frameworkUploadOptions = null,
             component = this,
             uploadComponentName = "ListOfBaseDataPointsFormField",
-            validation = null,
         )
     }
 
