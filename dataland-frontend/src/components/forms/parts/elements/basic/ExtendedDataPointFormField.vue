@@ -46,7 +46,7 @@
           :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
           v-if="isYesNoVariant"
         />
-        <div class="col-12" v-if="dataPoint.value === 'Yes' || (showDataPointFields && !isYesNoVariant)">
+        <div class="col-12" v-if="showDataPointFields">
           <UploadFormHeader
             v-if="!isDataPointToggleable && !isYesNoVariant"
             :label="label"
@@ -176,7 +176,7 @@ export default defineComponent({
   },
   computed: {
     showDataPointFields(): boolean {
-      return this.dataPointIsAvailable || (!this.isDataPointToggleable && !this.isYesNoVariant);
+      return this.dataPointIsAvailable || !this.isDataPointToggleable;
     },
     isDataValueProvided(): boolean {
       return (assertDefined(this.checkValueValidity) as (dataPoint: unknown) => boolean)(this.dataPoint);
