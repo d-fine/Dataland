@@ -2,12 +2,7 @@
   <template v-if="isLandingPage">
     <div class="header__authsection">
       <a aria-label="Login to account" class="header__authsection-login" @click="login"> Login </a>
-      <ButtonComponent
-        label="Sign Up"
-        ariaLabel="Sign up to account"
-        name="signup_dataland_button"
-        @click="register"
-      />
+      <ButtonComponent label="Sign Up" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" />
     </div>
   </template>
   <template v-else>
