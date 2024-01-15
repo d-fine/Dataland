@@ -8,6 +8,9 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class GdvAllgemeinEsgZiele(
     val existenzVonEsgZielen: YesNo? = null,
+
     val beschreibungDerEsgZiele: String? = null,
+
     val investitionenInZielerreichung: String? = null,
+
 )

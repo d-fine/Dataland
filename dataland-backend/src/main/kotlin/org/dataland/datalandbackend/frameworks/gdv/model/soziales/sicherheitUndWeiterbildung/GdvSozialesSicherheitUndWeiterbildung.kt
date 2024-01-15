@@ -8,6 +8,9 @@ import org.dataland.datalandbackend.frameworks.gdv.custom.YearlyTimeseriesData
  */
 data class GdvSozialesSicherheitUndWeiterbildung(
     val sicherheitsmassnahmenFuerMitarbeiter: String? = null,
+
     val unfallrate: YearlyTimeseriesData<UnfallrateValues?>? = null,
+
     val budgetFuerSchulungAusbildung: YearlyTimeseriesData<BudgetFuerSchulungAusbildungValues?>? = null,
+
 )

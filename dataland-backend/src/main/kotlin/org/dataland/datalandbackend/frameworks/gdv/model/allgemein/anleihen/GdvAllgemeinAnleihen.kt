@@ -9,7 +9,11 @@ import java.math.BigDecimal
  */
 data class GdvAllgemeinAnleihen(
     val grueneSozialeUndOderNachhaltigeEmissionen: YesNo? = null,
+
     val ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen: BigDecimal? = null,
+
     val sustainibilityLinkedDebt: YesNo? = null,
+
     val ausstehendeSustainibilityLinkedDebt: BigDecimal? = null,
+
 )

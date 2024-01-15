@@ -6,5 +6,7 @@ package org.dataland.datalandbackend.frameworks.gdv.model.allgemein.risiken
  */
 data class GdvAllgemeinRisiken(
     val wichtigsteESUndGRisikenUndBewertung: String? = null,
+
     val hindernisseBeimUmgangMitEsgBedenken: String? = null,
+
 )

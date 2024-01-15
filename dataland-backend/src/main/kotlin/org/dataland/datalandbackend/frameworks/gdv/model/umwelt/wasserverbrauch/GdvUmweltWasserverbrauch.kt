@@ -8,5 +8,7 @@ import org.dataland.datalandbackend.frameworks.gdv.custom.YearlyTimeseriesData
  */
 data class GdvUmweltWasserverbrauch(
     val berichterstattungWasserverbrauch: YearlyTimeseriesData<BerichterstattungWasserverbrauchValues?>? = null,
+
     val unternehmensGruppenStrategieBzglWasserverbrauch: String? = null,
+
 )

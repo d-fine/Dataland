@@ -10,7 +10,10 @@ import java.util.EnumSet
  */
 data class GdvUmweltTaxonomie(
     val taxonomieBerichterstattung: TaxonomieBerichterstattungOptions? = null,
+
     val euTaxonomieKompassAktivitaeten: EnumSet<Activity>? = null,
+
     val umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten:
     YearlyTimeseriesData<UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues?>? = null,
+
 )

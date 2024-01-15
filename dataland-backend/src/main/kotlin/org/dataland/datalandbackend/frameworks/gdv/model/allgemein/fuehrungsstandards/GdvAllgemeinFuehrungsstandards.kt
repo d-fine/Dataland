@@ -8,6 +8,9 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class GdvAllgemeinFuehrungsstandards(
     val oekologischeSozialeFuehrungsstandardsOderPrinzipien: YesNo? = null,
+
     val anreizmechanismenFuerDasManagementUmwelt: AnreizmechanismenFuerDasManagementUmweltOptions? = null,
+
     val anreizmechanismenFuerDasManagementSoziales: AnreizmechanismenFuerDasManagementSozialesOptions? = null,
+
 )

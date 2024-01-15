@@ -9,5 +9,7 @@ import java.util.EnumSet
  */
 data class GdvAllgemeinSektoren(
     val sektorenMitHohenKlimaauswirkungen: YesNo? = null,
+
     val auflistungDerSektoren: EnumSet<AuflistungDerSektorenOptions>? = null,
+
 )

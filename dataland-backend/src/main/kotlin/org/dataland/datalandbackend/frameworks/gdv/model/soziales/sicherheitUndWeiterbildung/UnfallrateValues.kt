@@ -8,4 +8,5 @@ import java.math.BigDecimal
  */
 data class UnfallrateValues(
     val haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust: BigDecimal? = null,
+
 )

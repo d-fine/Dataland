@@ -8,5 +8,7 @@ import org.dataland.datalandbackend.frameworks.gdv.custom.YearlyTimeseriesData
  */
 data class GdvUmweltEnergieverbrauch(
     val berichterstattungEnergieverbrauch: YearlyTimeseriesData<BerichterstattungEnergieverbrauchValues?>? = null,
+
     val unternehmensGruppenStrategieBzglEnergieverbrauch: String? = null,
+
 )

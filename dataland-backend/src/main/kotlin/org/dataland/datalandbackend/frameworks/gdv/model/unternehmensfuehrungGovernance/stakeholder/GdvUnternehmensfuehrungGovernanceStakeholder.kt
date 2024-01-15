@@ -8,6 +8,9 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class GdvUnternehmensfuehrungGovernanceStakeholder(
     val einbeziehungVonStakeholdern: YesNo? = null,
+
     val prozessDerEinbeziehungVonStakeholdern: String? = null,
+
     val mechanismenZurAusrichtungAufStakeholder: String? = null,
+
 )

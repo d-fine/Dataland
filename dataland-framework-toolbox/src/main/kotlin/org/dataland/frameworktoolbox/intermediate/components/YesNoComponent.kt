@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -33,6 +34,9 @@ class YesNoComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        require(documentSupport is NoDocumentSupport || documentSupport is SimpleDocumentSupport) {
+            "Upload-Page generation for this component does not support extended document support"
+        }
         val uploadComponentNameToUse = if (documentSupport is SimpleDocumentSupport) {
             "YesNoBaseDataPointFormField"
         } else {

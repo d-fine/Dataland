@@ -8,7 +8,11 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class GdvUmweltBiodiversitaet(
     val negativeAktivitaetenFuerDieBiologischeVielfalt: YesNo? = null,
+
     val negativeMassnahmenFuerDieBiologischeVielfalt: String? = null,
+
     val positiveAktivitaetenFuerDieBiologischeVielfalt: YesNo? = null,
+
     val positiveMassnahmenFuerDieBiologischeVielfalt: String? = null,
+
 )

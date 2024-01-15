@@ -8,6 +8,9 @@ import java.math.BigInteger
  */
 data class GdvUnternehmensfuehrungGovernanceNachhaltigkeitsausschuss(
     val anzahlDerMitgliederImNachhaltigkeitsausschuss: BigInteger? = null,
+
     val anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss: BigInteger? = null,
+
     val anzahlVonFrauenImNachhaltigkeitsausschuss: BigInteger? = null,
+
 )

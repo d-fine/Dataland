@@ -8,7 +8,11 @@ import java.math.BigDecimal
  */
 data class UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues(
     val taxonomieGeeignetNachProzentUmsatz: BigDecimal? = null,
+
     val taxonomieGeeignetNachProzentCapex: BigDecimal? = null,
+
     val taxonomieKonformNachProzentUmsatz: BigDecimal? = null,
+
     val taxonomieKonformNachProzentCapex: BigDecimal? = null,
+
 )

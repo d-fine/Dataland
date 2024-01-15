@@ -8,5 +8,7 @@ import java.math.BigDecimal
  */
 data class BerichterstattungWasserverbrauchValues(
     val wasserverbrauch: BigDecimal? = null,
+
     val emissionenInWasser: BigDecimal? = null,
+
 )

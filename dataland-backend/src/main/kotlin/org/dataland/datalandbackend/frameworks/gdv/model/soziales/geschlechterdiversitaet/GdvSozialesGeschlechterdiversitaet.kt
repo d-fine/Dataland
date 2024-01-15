@@ -8,9 +8,15 @@ import java.math.BigInteger
  */
 data class GdvSozialesGeschlechterdiversitaet(
     val mitarbeiterAufTopManagementEbene: BigInteger? = null,
+
     val frauenAufTopManagementEbene: BigInteger? = null,
+
     val mitgliederGeschaeftsfuehrung: BigInteger? = null,
+
     val frauenInDerGeschaeftsfuehrung: BigInteger? = null,
+
     val definitionTopManagement: String? = null,
+
     val einhaltungRechtlicherVorgaben: String? = null,
+
 )

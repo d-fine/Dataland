@@ -9,6 +9,9 @@ import java.math.BigInteger
  */
 data class GdvUnternehmensfuehrungGovernanceSonstige(
     val wirtschaftspruefer: String? = null,
+
     val trennungVonCeoOderVorsitzenden: YesNo? = null,
+
     val amtszeitBisZurTrennung: BigInteger? = null,
+
 )

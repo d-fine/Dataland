@@ -8,5 +8,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class GdvUnternehmensfuehrungGovernanceLieferantenauswahl(
     val esgKriterienUndUeberwachungDerLieferanten: YesNo? = null,
+
     val auswahlkriterien: String? = null,
+
 )

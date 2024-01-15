@@ -9,8 +9,13 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class GdvAllgemeinRating(
     val esgRating: YesNo? = null,
+
     val agentur: String? = null,
+
     val ergebnis: String? = null,
+
     val ratingbericht: BaseDataPoint<YesNo>? = null,
+
     val kritischePunkte: String? = null,
+
 )

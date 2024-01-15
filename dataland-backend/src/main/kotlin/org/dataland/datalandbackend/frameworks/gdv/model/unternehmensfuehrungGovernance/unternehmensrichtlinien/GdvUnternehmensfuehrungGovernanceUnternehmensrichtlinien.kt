@@ -8,5 +8,7 @@ import java.util.EnumSet
  */
 data class GdvUnternehmensfuehrungGovernanceUnternehmensrichtlinien(
     val veroeffentlichteUnternehmensrichtlinien: EnumSet<VeroeffentlichteUnternehmensrichtlinienOptions>? = null,
+
     val weitereVeroeffentlicheUnternehmensrichtlinien: String? = null,
+
 )

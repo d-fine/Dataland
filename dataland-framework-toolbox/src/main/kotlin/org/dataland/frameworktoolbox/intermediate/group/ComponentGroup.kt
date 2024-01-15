@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate.group
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -53,6 +54,7 @@ class ComponentGroup(
         dataClassBuilder.addProperty(
             identifier,
             groupClass.getTypeReference(nullable = isNullable),
+            listOf(ValidAnnotation),
         )
     }
 
