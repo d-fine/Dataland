@@ -19,11 +19,8 @@ set -euxo pipefail
 # false - Remove spaces --> No
 # -1 - Export all sheets
 
-
-# If you are on a Linux machine, you can write the first line of the command as:
-# libreoffice --headless \
-
-"/c/Program Files/LibreOffice/program"/scalc.exe --headless \
+echo "Starting csv-conversion"
+libreoffice --headless \
   --convert-to csv:"Text - txt - csv (StarCalc)":44,34,UTF8,1,,1033,false,true,false,false,false,-1 \
   --outdir "$2" \
   "$1"
