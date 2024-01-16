@@ -384,6 +384,8 @@ services:
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
     depends_on:
       - qa-service
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   qa-service:
     restart: always
     profiles: ["production", "testing", "development"]
