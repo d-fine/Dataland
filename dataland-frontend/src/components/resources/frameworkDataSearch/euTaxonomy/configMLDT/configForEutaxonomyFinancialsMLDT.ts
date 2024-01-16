@@ -457,7 +457,7 @@ export const configForEuTaxonomyFinancialsMLDT = [
               ),
             valueGetter: getSpecifiedDataPointGetterFactory(
               "eligibilityKpis.AssetManagement.taxonomyEligibleActivityInPercent",
-              euTaxonomyKpiNameMappings.taxonomyNonEligibleActivityInPercent,
+              euTaxonomyKpiNameMappings.taxonomyEligibleActivityInPercent,
               specifiedFormatter,
             ),
           },
