@@ -20,7 +20,7 @@ class HeimathafenFramework : InDevelopmentPavedRoadFramework(
     identifier = "heimathafen",
     label = "Heimathafen",
     explanation = "Das Heimathafen Framework",
-    File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
+    File("./dataland-framework-toolbox/inputs/heimathafen/dataDictionary-Heimathafen.csv"),
 ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
         return HeimathafenComponentGenerationUtils()
