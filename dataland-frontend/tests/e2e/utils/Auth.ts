@@ -13,7 +13,7 @@ export function logout(): void {
     .click()
     .url()
     .should("eq", getBaseUrl() + "/")
-    .get("a[aria-label='Login to preview account']")
+    .get("a[aria-label='Login to account']")
     .should("exist")
     .should("be.visible");
 }
@@ -30,7 +30,7 @@ export function login(username = reader_name, password = reader_pw, otpGenerator
   cy.intercept({ url: "https://www.youtube.com/**" }, { forceNetworkError: false }).as("youtube");
   cy.intercept({ times: 1, url: "/api/companies*" }).as("getCompanies");
   cy.visitAndCheckAppMount("/")
-    .get("a[aria-label='Login to preview account']")
+    .get("a[aria-label='Login to account']")
     .click()
     .get("#username")
     .should("exist")
