@@ -37,6 +37,7 @@ export const REGEX_FOR_FILE_NAMES = /^[^<>:"|?/*\\\s][^<>:"|?/*\\]{0,252}[^<>:"|
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 export const NO_DATA_PROVIDED = "No data provided";
+export const ONLY_AUXILIARY_DATA_PROVIDED = "Only auxiliary data provided";
 
 /**
  * Changes the sorting of a list of data type enums by putting the esg-questionnaire framework at the very end.

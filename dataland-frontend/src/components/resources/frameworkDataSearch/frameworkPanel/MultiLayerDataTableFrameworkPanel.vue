@@ -20,10 +20,9 @@
     />
     <MultiLayerDataTable
       :mldtDatasets="mldtDatasets"
+      :inReviewMode="inReviewMode"
       :config="
-        hideEmptyFields
-          ? displayConfiguration
-          : editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration)
+        editMultiLayerDataTableConfigForHighlightingHiddenFields(displayConfiguration, inReviewMode, hideEmptyFields)
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
     />

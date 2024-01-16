@@ -32,7 +32,10 @@
           :style="columnWidthStyle"
           class="vertical-align-top"
         >
-          <MultiLayerDataTableCell :content="cellOrSectionConfig.valueGetter(mldtDataset.dataset)" />
+          <MultiLayerDataTableCell
+            :content="cellOrSectionConfig.valueGetter(mldtDataset.dataset)"
+            :inReviewMode="inReviewMode"
+          />
         </td>
       </tr>
       <template v-else-if="cellOrSectionConfig.type == 'section'">
@@ -51,7 +54,7 @@
             <ChevronDownIcon v-if="expandedSections.has(idx)" class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
             <ChevronLeftIcon v-else class="p-icon p-row-toggler-icon absolute right-0 mr-3" />
             <i
-              v-if="shouldAddCrossedEyeSymbolToSectionLabel(cellOrSectionConfig)"
+              v-if="shouldAddCrossedEyeSymbolToSectionLabel(cellOrSectionConfig) && inReviewMode"
               class="pi pi-eye-slash pr-1 text-red-500"
               aria-hidden="true"
               data-test="hidden-icon"
@@ -69,6 +72,7 @@
           :mldtDatasets="mldtDatasets"
           :isTopLevel="false"
           :isVisible="isVisible && expandedSections.has(idx)"
+          :inReviewMode="inReviewMode"
         />
       </template>
     </template>
@@ -147,6 +151,7 @@ const props = defineProps<{
   mldtDatasets: Array<MLDTDataset<T>>;
   isTopLevel: boolean;
   isVisible: boolean;
+  inReviewMode: boolean;
 }>();
 
 onMounted(() => {
