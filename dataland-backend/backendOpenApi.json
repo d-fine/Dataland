@@ -11102,7 +11102,7 @@
       "DataTypeEnum": {
         "type": "string",
         "enum": [
-          "esgquestionnaire",
+          "esg-questionnaire",
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "lksg",
