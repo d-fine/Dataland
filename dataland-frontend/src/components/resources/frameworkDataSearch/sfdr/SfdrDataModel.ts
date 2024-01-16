@@ -155,7 +155,7 @@ export const sfdrDataModel = [
             name: "scope3GhgEmissionsInTonnes",
             label: "Scope 3 GHG emissions",
             description:
-              "Scope 3 carbon emissions, namely all indirect emissions that are not covered by scope 1 and 2, that occur in the value chain of the reporting company, including both upstream and downstream emissions, in particular for sectors with a high impact on climate change and its mitigation",
+              "Scope 3 carbon emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2",
             unit: "tonnes",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -174,7 +174,7 @@ export const sfdrDataModel = [
             name: "enterpriseValue",
             label: "Enterprise Value",
             description:
-              "Enterprise value calculated as the sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, and the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents",
+              "The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, and the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation, Annex I top (4).",
             unit: "",
             component: "CurrencyDataPointFormField",
             required: false,
@@ -184,7 +184,7 @@ export const sfdrDataModel = [
             name: "totalRevenue",
             label: "Total Revenue",
             description:
-              "Total revenue for the financial year. i.e., income arising in the course of an entity's ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time",
+              "Total revenue for the financial year. i.e., income arising in the course of an entity's ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time (millions)",
             unit: "",
             component: "CurrencyDataPointFormField",
             required: false,
@@ -193,8 +193,7 @@ export const sfdrDataModel = [
           {
             name: "carbonFootprintInTonnesPerMillionEURRevenue",
             label: "Carbon footprint",
-            description:
-              'Carbon footprint computed according to the Principal Adverse Sustainability Impacts Statement\'s "carbon footprint" formula (incl. scope 1, 2, and 3 carbon emissions)',
+            description: "Tonnes GHG emissions / EUR million enterprise value",
             unit: "tonnes / €M revenue",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -203,8 +202,7 @@ export const sfdrDataModel = [
           {
             name: "ghgIntensityInTonnesPerMillionEURRevenue",
             label: "GHG intensity",
-            description:
-              'GHG intensity computed according to the Principal Adverse Sustainability Impacts Statement\'s "GHG intensity of investee companies" formula (incl. scope 1, 2, and 3 carbon emissions)',
+            description: "Tonnes of GHG emissions / EUR million revenue",
             unit: "tonnes / €M revenue",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -214,7 +212,7 @@ export const sfdrDataModel = [
             name: "fossilFuelSectorExposure",
             label: "Fossil Fuel Sector Exposure",
             description:
-              "Are you active in the fossil fuel sector? This includes (i) companies that derive any revenues from exploration, mining, extraction, distribution or refining of hard coal and lignite; (ii) companies that derive any revenues from the exploration, extraction, distribution (including transportation, storage and trade) or refining of liquid fossil fuels; and (iii) companies that derive any revenues from exploring and extracting fossil gaseous fuels or from their dedicated distribution (including transportation, storage and trade)",
+              "Do you derive any revenues from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels as defined in Article 2, point (62), of Regulation (EU) 2018/1999 of the European Parliament and of the Council? See also Regulation, Annex I, top (5).",
             unit: "",
             component: "YesNoExtendedDataPointFormField",
             required: false,
@@ -230,7 +228,7 @@ export const sfdrDataModel = [
             name: "renewableEnergyProductionInGWh",
             label: "Renewable Energy Production",
             description:
-              "Value of renewable energy produced . 'Energy from renewable sources' or 'renewable energy' means energy from renewable non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas.",
+              "Total value of renewable energy produced, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation, Annex I, top (6).",
             unit: "GWh",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -240,7 +238,7 @@ export const sfdrDataModel = [
             name: "renewableEnergyConsumptionInGWh",
             label: "Renewable Energy Consumption",
             description:
-              "Value of energy consumed from renewable energy sources. 'Energy from renewable sources' or 'renewable energy' means energy from renewable non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas.",
+              "Total value of renewable energy consumed, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation, Annex I, top (6).",
             unit: "GWh",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -250,7 +248,7 @@ export const sfdrDataModel = [
             name: "nonRenewableEnergyProductionInGWh",
             label: "Non-Renewable Energy Production",
             description:
-              "Value of non-renewable energy produced. 'Non-renewable energy sources' means energy sources other than energy from renewable non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas.",
+              "Total value of non-renewable energy produced, meaning energy from sources other than non-fossil sources. See also Regulation, Annex I, top (7).",
             unit: "GWh",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -260,18 +258,18 @@ export const sfdrDataModel = [
             name: "relativeNonRenewableEnergyProductionInPercent",
             label: "Relative Non-Renewable Energy Production",
             description:
-              "Share of non-renewable energy production from non-renewable energy sources compared to renewable energy sources",
+              "Share of non-renewable energy production from total energy production (i.e. renewable plus non-renewable).",
             unit: "%",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "between:0,100",
+            validation: "min:0",
           },
           {
             name: "nonRenewableEnergyConsumptionInGWh",
             label: "Non-Renewable Energy Consumption",
             description:
-              "Value of energy consumed from non-renewable energy sources. 'Non-renewable energy sources' means energy sources other than energy from renewable non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas.",
+              "Total value of non-renewable energy consumed, meaning energy from sources other than non-fossil sources.",
             unit: "GWh",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -281,17 +279,17 @@ export const sfdrDataModel = [
             name: "relativeNonRenewableEnergyConsumptionInPercent",
             label: "Relative Non-Renewable Energy Consumption",
             description:
-              "Share of non-renewable energy consumption from non-renewable energy sources compared to renewable energy sources",
+              "Share of non-renewal energy consumption from total energy consumption (i.e. renewable plus non-renewable).",
             unit: "%",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "between:0,100",
+            validation: "min:0",
           },
           {
             name: "applicableHighImpactClimateSectors",
             label: "Applicable High Impact Climate Sectors",
-            description: "Please select any sector(s) applicable to your activities",
+            description: "Please select any sector(s) applicable activities (NACE Codes A-H, L)",
             unit: "",
             component: "HighImpactClimateSectorsFormField",
             required: false,
@@ -311,7 +309,7 @@ export const sfdrDataModel = [
             name: "nonRenewableEnergyConsumptionFossilFuelsInGWh",
             label: "Non-Renewable Energy Consumption Fossil Fuels",
             description:
-              "Energy consumption from fossil fuels (sum of crude oil, natural gas, lignite and coal) (non-renewable energy source)",
+              "Energy consumption from fossil fuels (sum of crude oil, natural gas, nuclear energy, lignite and coal) (non-renewable energy source)",
             unit: "GWh",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -365,7 +363,7 @@ export const sfdrDataModel = [
           {
             name: "nonRenewableEnergyConsumptionOtherInGWh",
             label: "Non-Renewable Energy Consumption Other",
-            description: "Energy consumption from any other available (used) non-renewable source of energy",
+            description: "Energy consumption from any other available (used) non-renewable source of energy ",
             unit: "GWh",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -381,7 +379,7 @@ export const sfdrDataModel = [
             name: "primaryForestAndWoodedLandOfNativeSpeciesExposure",
             label: "Primary Forest And Wooded Land Of Native Species Exposure",
             description:
-              "Do you have sites/operations located in primary forest and other wooded land, that is forest and other wooded land of native species, where there is no clearly visible indication of human activity and the ecological processes are not significantly disturbed?",
+              "Do you have sites/operations located in or near to primary forest and other wooded areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).",
             unit: "",
             component: "YesNoExtendedDataPointFormField",
             required: false,
@@ -391,7 +389,7 @@ export const sfdrDataModel = [
             name: "protectedAreasExposure",
             label: "Protected Areas Exposure",
             description:
-              "Do you have sites/operations located in areas designated by law or by the relevant competent authority for nature protection purposes, unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes?",
+              "Do you have sites/operations located in or near protected areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).",
             unit: "",
             component: "YesNoExtendedDataPointFormField",
             required: false,
@@ -401,7 +399,7 @@ export const sfdrDataModel = [
             name: "rareOrEndangeredEcosystemsExposure",
             label: "Rare Or Endangered Ecosystems Exposure",
             description:
-              "Do you have sites/operations located in areas designated for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature, subject to their recognition by the Commission (Commission may also recognise areas for the protection of rare, threatened or endangered ecosystems or species recognised by international agreements or included in lists drawn up by intergovernmental organisations or the International Union for the Conservation of Nature), unless evidence is provided that the production of that raw material did not interfere with those nature protection purposes?",
+              "Do you have sites/operations in or near areas designated for the protection of species (including flora and fauna) and where the activities of those sites/operations lead to the deterioration of natural habitats and the habitats of those species and disturb the species for which the protected area has been designated? See also Regulation, Annex I, table 1, indicator nr. 7 and Annex I, definition 18(a).",
             unit: "",
             component: "YesNoExtendedDataPointFormField",
             required: false,
@@ -427,7 +425,7 @@ export const sfdrDataModel = [
             name: "emissionsToWaterInTonnes",
             label: "Emissions To Water",
             description:
-              "Tonnes of emissions (direct nitrates, direct phosphate emissions, direct pesticides) to water",
+              "Emissions to water (direct nitrates, direct phosphate emissions, direct pesticides) to water (tonnes)",
             unit: "tonnes",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -445,7 +443,8 @@ export const sfdrDataModel = [
           {
             name: "waterReusedInCubicMeters",
             label: "Water Reused",
-            description: "Amount of water reused/reclaimed by the company",
+            description:
+              "Amount of water recycled and reused by the company. Linked to Regulation, Annex I, Table 2, metric 6.2.",
             unit: "m³",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -454,7 +453,7 @@ export const sfdrDataModel = [
           {
             name: "relativeWaterUsageInCubicMetersPerMillionEURRevenue",
             label: "Relative Water Usage",
-            description: "Average amount in cubic metres of fresh water used per million EUR revenue",
+            description: "Average amount in cubic meters of fresh water used per million EUR revenue",
             unit: "m³ / €M revenue",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -474,7 +473,7 @@ export const sfdrDataModel = [
             name: "highWaterStressAreaExposure",
             label: "High Water Stress Area Exposure",
             description:
-              'Do you have sites located in "areas of high water stress", i.e. regions where the percentage of total water withdrawn is high (60%) or extremely high (80%), without a water management policy?',
+              "Do you have sites/operations in or near ‘areas of high water stress’, meaning regions where the percentage of total water withdrawn is high (40-80 %) or extremely high (greater than 80 %) where the activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, definition 13.",
             unit: "",
             component: "YesNoExtendedDataPointFormField",
             required: false,
@@ -490,7 +489,7 @@ export const sfdrDataModel = [
             name: "hazardousAndRadioactiveWasteInTonnes",
             label: "Hazardous and Radioactive Waste",
             description:
-              "Tonnes of hazardous waste and radioactive waste generated, which are Explosives, Oxidizing substances, Highly flammable, Flammable, Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding substance which possesses any of the characteristics listed above.",
+              "Tonnes of hazardous waste and radioactive waste generated, which are Explosives, Oxidizing substances, Highly flammable, Flammable, Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding substance which possesses any of the characteristics listed above (tonnes)",
             unit: "tonnes",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -500,7 +499,7 @@ export const sfdrDataModel = [
             name: "manufactureOfAgrochemicalPesticidesProducts",
             label: "Manufacture Of Agrochemical Pesticides Products",
             description:
-              "Are you involved in manufacture of pesticides and other agrochemical products? (see activities which fall under Division 20.2 of Annex I to Regulation (EC) No 1893/2006)",
+              "Are you involved in the manufacturing of pesticides and other agrochemical products? (see activities which fall under Division 20.2 of Annex I to Regulation (EC) No 1893/2006)",
             unit: "",
             component: "YesNoExtendedDataPointFormField",
             required: false,
@@ -510,7 +509,7 @@ export const sfdrDataModel = [
             name: "landDegradationDesertificationSoilSealingExposure",
             label: "Land Degradation Desertification Soil Sealing Exposure",
             description:
-              "Are you involved in activities which cause land degradation, desertification or soil sealing?",
+              "Is the company involved in activities which cause land degradation, desertification or soil sealing? See also Regulation, Annex I, Table 2, indicator 10.",
             unit: "",
             component: "YesNoExtendedDataPointFormField",
             required: false,
@@ -540,7 +539,7 @@ export const sfdrDataModel = [
             name: "nonRecycledWasteInTonnes",
             label: "Non-Recycled Waste",
             description:
-              'Amount of non-recycled waste generated. "Non-recycled waste" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC.',
+              'Value of non-recycled waste generated. "Non-recycled waste" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC.',
             unit: "tonnes",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -559,7 +558,7 @@ export const sfdrDataModel = [
             name: "biodiversityProtectionPolicy",
             label: "Biodiversity Protection Policy",
             description:
-              "Do you have biodiversity protection policy covering operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas? If yes, please share the policy with us.",
+              "Do you have a biodiversity protection policy covering operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas? If yes, please share the policy with us.",
             unit: "",
             component: "YesNoBaseDataPointFormField",
             required: false,
@@ -569,7 +568,7 @@ export const sfdrDataModel = [
             name: "deforestationPolicy",
             label: "Deforestation Policy",
             description:
-              'Do you have policy to address deforestation? If yes, please share the policy with us. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council.',
+              'Do you have a policy to address deforestation? If yes, please share the policy with us. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council.',
             unit: "",
             component: "YesNoBaseDataPointFormField",
             required: false,
@@ -585,7 +584,7 @@ export const sfdrDataModel = [
             name: "emissionsOfInorganicPollutantsInTonnes",
             label: "Emissions of Inorganic Pollutants",
             description:
-              "Tonnes of inorganic pollutants such as those arising due to radiant energy and noise, heat, or light, including arsenic, cadmium, lead, mercury, chromium, aluminum, nitrates, nitrites, and fluorides or contaminants of water such as arsenic, fluoride, iron, nitrate, heavy metals, etc.",
+              "Inorganic pollutants such as those arising due to radiant energy and noise, heat, or light, including arsenic, cadmium, lead, mercury, chromium, aluminum, nitrates, nitrites, and fluorides or contaminants of water such as arsenic, fluoride, iron, nitrate, heavy metals, etc.",
             unit: "tonnes",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -595,7 +594,7 @@ export const sfdrDataModel = [
             name: "emissionsOfAirPollutantsInTonnes",
             label: "Emissions of Air Pollutants",
             description:
-              "Tonnes of air pollutants (Direct Sulphur dioxides (Sox/SO2) emissions, direct nitrogen oxides (NOx/NO2) emissions, direct ammonia (NH3) emissions, direct particulate matter (PM2.5) emissions, direct non-methane volatile organic compounds (NMVOC) emissions, direct total heavy metals (HM) emissions (encompassing cadmium, mercury and lead)",
+              "Air pollutants (Direct Sulphur dioxides (Sox/SO2) emissions, direct nitrogen oxides (NOx/NO2) emissions, direct ammonia (NH3) emissions, direct particulate matter (PM2.5) emissions, direct non-methane volatile organic compounds (NMVOC) emissions, direct total heavy metals (HM) emissions (encompassing cadmium, mercury and lead)",
             unit: "tonnes",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -724,7 +723,8 @@ export const sfdrDataModel = [
           {
             name: "iso14001Certificate",
             label: "ISO 14001 Certificate",
-            description: "Do you have an ISO 14001 certificate? If yes, please share the certificate with us.",
+            description:
+              "Is your company ISO 14001 certified (Environmental Management)? If yes, please share the certificate with us.",
             unit: "",
             component: "YesNoBaseDataPointFormField",
             required: false,
@@ -744,7 +744,7 @@ export const sfdrDataModel = [
             name: "fairBusinessMarketingAdvertisingPolicy",
             label: "Fair Business Marketing Advertising Policy",
             description:
-              "Do you have policies and procedures in place to to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services? If yes, please share the relevant documents with us.",
+              "Do you have policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services? If yes, please share the relevant documents with us.",
             unit: "",
             component: "YesNoExtendedDataPointFormField",
             required: false,
@@ -826,13 +826,13 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "between:0,100",
+            validation: "between:-100,100",
           },
           {
             name: "femaleBoardMembers",
             label: "Female Board Members",
             description:
-              "Number of females on the board, i.e. means the administrative, management or supervisory body of a company.",
+              "Number of females on the board, i.e. means the administrative, management or supervisory body of a company",
             unit: "",
             component: "IntegerExtendedDataPointFormField",
             required: false,
@@ -881,7 +881,7 @@ export const sfdrDataModel = [
           {
             name: "rateOfAccidentsInPercent",
             label: "Rate Of Accidents",
-            description: "Rate of accidents expressed as a weighted average",
+            description: "(number of accidents * 200,000) / number of hours worked by all employees",
             unit: "%",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -949,7 +949,7 @@ export const sfdrDataModel = [
             name: "ceoToEmployeePayGapRatio",
             label: "CEO to Employee Pay Gap Ratio",
             description:
-              "Ratio of the annual total compensation for the highest compensated individual to the median annual total compensation for all employees (excluding the highest-compensated individual)",
+              "Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual).",
             unit: "",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
@@ -964,7 +964,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "between:0,100",
+            validation: "min:0",
           },
         ],
       },
