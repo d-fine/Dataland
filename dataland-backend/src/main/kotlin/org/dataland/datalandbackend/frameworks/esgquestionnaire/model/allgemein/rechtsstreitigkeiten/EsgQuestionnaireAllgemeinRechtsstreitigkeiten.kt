@@ -2,9 +2,6 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.rechtsstreitigkeiten
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.rechtsstreitigkeiten.StatusZuEOptions
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.rechtsstreitigkeiten.StatusZuSOptions
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.rechtsstreitigkeiten.StatusZuGOptions
 
 /**
  * The data-model for the Rechtsstreitigkeiten section

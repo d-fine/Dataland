@@ -2,7 +2,6 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.energieeffizienzImmobilienanlagen
 
 import org.dataland.datalandbackend.frameworks.esgQuestionnaire.custom.YearlyTimeseriesData
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.energieeffizienzImmobilienanlagen.BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues
 
 /**
  * The data-model for the EnergieeffizienzImmobilienanlagen section

@@ -2,7 +2,6 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.einkommensgleichheit
 
 import org.dataland.datalandbackend.frameworks.esgQuestionnaire.custom.YearlyTimeseriesData
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.soziales.einkommensgleichheit.UeberwachungDerEinkommensungleichheitValues
 
 /**
  * The data-model for the Einkommensgleichheit section

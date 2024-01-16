@@ -2,7 +2,6 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehmensfuehrungGovernance.unternehmensrichtlinien
 
 import java.util.EnumSet
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehmensfuehrungGovernance.unternehmensrichtlinien.VeroeffentlichteUnternehmensrichtlinienOptions
 
 /**
  * The data-model for the Unternehmensrichtlinien section

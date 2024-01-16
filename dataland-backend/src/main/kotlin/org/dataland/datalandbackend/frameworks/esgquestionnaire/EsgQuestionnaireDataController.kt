@@ -4,6 +4,7 @@ package org.dataland.datalandbackend.frameworks.esgQuestionnaire
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandbackend.controller.DataController
+import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.EsgQuestionnaireData
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.EsgQuestionnaireData
 
 /**
  * Controller for the Esg-questionnaire framework endpoints
@@ -39,9 +39,9 @@ class EsgQuestionnaireDataController(
 
     @Operation(operationId = "postCompanyAssociatedEsgQuestionnaireData")
     override fun postCompanyAssociatedData(
-            companyAssociatedData: CompanyAssociatedData<EsgQuestionnaireData>,
-            bypassQa: Boolean
-        ):
+        companyAssociatedData: CompanyAssociatedData<EsgQuestionnaireData>,
+        bypassQa: Boolean,
+    ):
         ResponseEntity<DataMetaInformation> {
         return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }

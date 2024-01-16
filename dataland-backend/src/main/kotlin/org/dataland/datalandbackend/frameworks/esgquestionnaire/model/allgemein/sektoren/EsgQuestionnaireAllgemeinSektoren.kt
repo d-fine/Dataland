@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.util.EnumSet
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.sektoren.AuflistungDerSektorenOptions
 
 /**
  * The data-model for the Sektoren section

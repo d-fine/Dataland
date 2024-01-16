@@ -2,8 +2,6 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.abfallproduktion
 
 import org.dataland.datalandbackend.frameworks.esgQuestionnaire.custom.YearlyTimeseriesData
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.abfallproduktion.BerichterstattungAbfallproduktionValues
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.abfallproduktion.RecyclingImProduktionsprozessValues
 
 /**
  * The data-model for the Abfallproduktion section

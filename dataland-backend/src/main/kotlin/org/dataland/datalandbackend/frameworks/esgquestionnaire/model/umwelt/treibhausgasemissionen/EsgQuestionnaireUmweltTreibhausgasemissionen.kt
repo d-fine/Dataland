@@ -2,7 +2,6 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.treibhausgasemissionen
 
 import org.dataland.datalandbackend.frameworks.esgQuestionnaire.custom.YearlyTimeseriesData
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.treibhausgasemissionen.TreibhausgasBerichterstattungUndPrognosenValues
 
 /**
  * The data-model for the Treibhausgasemissionen section

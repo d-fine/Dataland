@@ -2,8 +2,6 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.fuehrungsstandards
 
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.fuehrungsstandards.AnreizmechanismenFuerDasManagementUmweltOptions
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.allgemein.fuehrungsstandards.AnreizmechanismenFuerDasManagementSozialesOptions
 
 /**
  * The data-model for the Fuehrungsstandards section

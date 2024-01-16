@@ -2,7 +2,6 @@
 package org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.wasserverbrauch
 
 import org.dataland.datalandbackend.frameworks.esgQuestionnaire.custom.YearlyTimeseriesData
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.wasserverbrauch.BerichterstattungWasserverbrauchValues
 
 /**
  * The data-model for the Wasserverbrauch section
