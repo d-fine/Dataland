@@ -32,8 +32,8 @@ from dataland_backend_api_documentation_client.models.company_associated_data_pa
 from dataland_backend_api_documentation_client.models.company_associated_data_sme_data import (
     CompanyAssociatedDataSmeData,
 )
-from dataland_backend_api_documentation_client.models.company_associated_data_gdv_data import (
-    CompanyAssociatedDataGdvData,
+from dataland_backend_api_documentation_client.models.company_associated_data_esgquestionnaire_data import (
+    CompanyAssociatedDataEsgquestionnaireData,
 )
 
 from dataland_backend_api_documentation_client.client import AuthenticatedClient
@@ -66,7 +66,7 @@ def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient
         DataTypeEnum.SFDR: CompanyAssociatedDataSfdrData,
         DataTypeEnum.P2P: CompanyAssociatedDataPathwaysToParisData,
         DataTypeEnum.SME: CompanyAssociatedDataSmeData,
-        DataTypeEnum.GDV: CompanyAssociatedDataGdvData,
+        DataTypeEnum.ESGQUESTIONNAIRE: CompanyAssociatedDataEsgquestionnaireData,
     }
     response = client.get_httpx_client().request(method="get", url=f"/data/{data_type}/{data_id}")
     if response.status_code == HTTPStatus.OK:
