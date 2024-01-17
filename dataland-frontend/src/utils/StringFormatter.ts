@@ -6,13 +6,17 @@ import { HumanizedYesNoNa } from "@/utils/YesNoNa";
 import { getBaseFrameworkDefinition } from "@/frameworks/BaseFrameworkRegistry";
 
 /**
- * convert kebab case string to camel case string using regex
+ * convert kebab case string to pascal case string using regex
  * @param rawText is the string to be converted
- * @returns the converted string in camel case
+ * @returns the converted string in pascal case
  */
-export function convertKebabCaseToCamelCase(rawText: string): string {
-  return rawText.replace(/-([a-z])/g, (_, char: string) => char.toUpperCase());
+export function convertKebabCaseToPascalCase(rawText: string): string {
+  const camelCase = rawText.replace(/-([a-z])/g, (_, char: string) => char.toUpperCase());
+  const pascalCase = camelCase.charAt(0).toUpperCase() + camelCase.slice(1)
+  return pascalCase
 }
+
+
 
 /**
  * convert camel case string to sentence case string using regex

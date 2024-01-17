@@ -1,4 +1,4 @@
-import { convertKebabCaseToCamelCase, humanizeStringOrNumber } from "@/utils/StringFormatter";
+import { convertKebabCaseToPascalCase, humanizeStringOrNumber } from "@/utils/StringFormatter";
 
 describe("Unit test for StringFormatter", () => {
   it("Check if specific keywords are converted correctly", () => {
@@ -22,7 +22,7 @@ describe("Unit test for StringFormatter", () => {
   });
 
   it("Check that kebab case is converted correctly to camel case", () => {
-    expect(convertKebabCaseToCamelCase("this-is-kebab-case")).to.equal("thisIsKebabCase");
-    expect(convertKebabCaseToCamelCase("thisIsAlreadyCamelCase")).to.equal("thisIsAlreadyCamelCase");
+    expect(convertKebabCaseToPascalCase("this-is-kebab-case")).to.equal("ThisIsKebabCase");
+    expect(convertKebabCaseToPascalCase("ThisIsAlreadyPascalCase")).to.equal("ThisIsAlreadyPascalCase");
   });
 });

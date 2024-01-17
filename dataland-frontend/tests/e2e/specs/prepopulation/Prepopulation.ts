@@ -9,7 +9,7 @@ import { frameworkFixtureMap } from "@e2e/utils/FixtureMap";
 import { getAllFrameworkIdentifiers, getBaseFrameworkDefinition } from "@/frameworks/BaseFrameworkRegistry";
 import { type DataTypeEnum } from "@clients/backend";
 import { getUnifiedFrameworkDataControllerFromConfiguration } from "@/utils/api/FrameworkApiClient";
-import { convertKebabCaseToCamelCase } from "@/utils/StringFormatter";
+import { convertKebabCaseToPascalCase } from "@/utils/StringFormatter";
 
 const chunkSize = 15;
 
@@ -102,10 +102,11 @@ describe(
 
     // Prepopulation for frameworks of the framework-registry
     for (const framework of getAllFrameworkIdentifiers()) {
+      const dataTypeInPascalCase = convertKebabCaseToPascalCase(framework)
       registerFrameworkFakeFixtureUpload(
         framework as DataTypeEnum,
-        (config) => getBaseFrameworkDefinition(framework)!.getFrameworkApiClient(config),
-        `CompanyInformationWith${convertKebabCaseToCamelCase(framework).charAt(0).toUpperCase()}Data`.replace("-", ""),
+        (config) => getBaseFrameworkDefinitionForDataType(framework)!.getFrameworkApiClient(config),
+        `CompanyInformationWith${dataTypeInPascalCase}Data`.replace("-", ""),
       );
     }
   },
