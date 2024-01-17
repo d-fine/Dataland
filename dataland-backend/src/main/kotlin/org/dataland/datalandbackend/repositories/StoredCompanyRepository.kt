@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.repositories
 
+import org.dataland.datalandbackend.entities.ReducedCompanyEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
@@ -23,25 +24,25 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      * in one of the company identifiers or the name
      */
     @Query(
-        "SELECT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN company.dataRegisteredByDataland data " +
-            "LEFT JOIN company.identifiers identifier " +
-            "LEFT JOIN company.companyAlternativeNames alternativeName " +
-            "WHERE " +
-            "(:#{#searchFilter.dataTypeFilterSize} = 0 " +
-            "OR (data.dataType in :#{#searchFilter.dataTypeFilter})) AND " +
+        "SELECT company.companyId as company_id, " +
+            "max(company.companyName) as company_name, " +
+            "max(company.headquarters) as headquarters, " +
+            "max(company.sector) as sector, " +
+            "MIN(permid.identifier_value) AS perm_id " +
+            "FROM (SELECT companyId, dataRegisteredByDataland, companyAlternativeNames FROM StoredCompanyEntity WHERE " +
             "(:#{#searchFilter.sectorFilterSize} = 0 " +
-            "OR (company.sector in :#{#searchFilter.sectorFilter})) AND " +
+            "OR (sector in :#{#searchFilter.sectorFilter})) AND " +
             "(:#{#searchFilter.countryCodeFilterSize} = 0 " +
-            "OR (company.countryCode in :#{#searchFilter.countryCodeFilter})) AND " +
-            "(:#{#searchFilter.uploaderIdLength} = 0 " +
-            "OR (data.uploaderUserId = :#{#searchFilter.uploaderId})) AND " +
-            "(:#{#searchFilter.searchStringLength} = 0 " +
-            "OR (lower(company.companyName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
-            "(lower(alternativeName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
-            "(:#{#searchFilter.nameOnlyFilter} = false " +
-            "AND lower(identifier.identifierValue) LIKE %:#{#searchFilter.searchStringLower}%)) " +
-            "GROUP BY company.companyId " +
+            "OR (countryCode in :#{#searchFilter.countryCodeFilter})) " +
+            ") id_only " +
+            "JOIN id_only.dataRegisteredByDataland data ON id_only.companyId = data.company.companyId AND " +
+            "(:#{#searchFilter.dataTypeFilterSize} = 0 " +
+            "OR (data.dataType in :#{#searchFilter.dataTypeFilter})) " +
+            "LEFT JOIN StoredCompanyEntity company ON id_only.companyId = company.companyId " +
+            "LEFT JOIN StoredCompanyEntity.identifiers identifier ON identifier.company.companyId = id_only.companyId AND lower(identifier.identifierValue) LIKE %:#{#searchFilter.searchStringLower}% " +
+            "LEFT JOIN StoredCompanyEntity.identifiers identifier ON identifier.company.companyId = id_only.companyId AND identifier.identifierType = 'PermId' " +
+            "LEFT JOIN id_only.companyAlternativeNames alternativeName ON lower(identifier.identifierValue) LIKE %:#{#searchFilter.searchStringLower}% " +
+            "GROUP BY id_only.companyId " +
             "ORDER BY " +
             "(CASE WHEN lower(company.companyName) = :#{#searchFilter.searchStringLower} THEN 1 " +
             "WHEN lower(max(alternativeName)) = :#{#searchFilter.searchStringLower} THEN 2 " +
@@ -49,7 +50,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "WHEN lower(max(alternativeName)) LIKE :#{#searchFilter.searchStringLower}% THEN 4 ELSE 5 END) ASC, " +
             "company.companyName ASC",
     )
-    fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<StoredCompanyEntity>
+    fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<ReducedCompanyEntity>
 
     /**
      * A function for querying companies by search string:

@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.api.DataOwnerApi
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
+import org.dataland.datalandbackend.entities.ReducedCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
@@ -57,7 +58,7 @@ class CompanyDataController(
         sectors: Set<String>?,
         onlyCompanyNames: Boolean,
         onlyWithDataFromCurrentUser: Boolean,
-    ): ResponseEntity<List<StoredCompany>> {
+    ): ResponseEntity<List<ReducedCompanyEntity>> {
         logger.info(
             "Received a request to get companies with searchString='$searchString', onlyCompanyNames" +
                 "='$onlyCompanyNames', dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors', " +

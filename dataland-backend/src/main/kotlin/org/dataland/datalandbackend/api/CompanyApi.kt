@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.entities.ReducedCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
@@ -97,7 +98,7 @@ interface CompanyApi {
         @RequestParam onlyCompanyNames: Boolean = false,
         @RequestParam onlyWithDataFromCurrentUser: Boolean = false,
     ):
-        ResponseEntity<List<StoredCompany>>
+        ResponseEntity<List<ReducedCompanyEntity>>
 
     /**
      * A method to retrieve companies with names or identifiers matching a search string

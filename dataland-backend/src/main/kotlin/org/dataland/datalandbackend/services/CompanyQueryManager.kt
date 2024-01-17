@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
+import org.dataland.datalandbackend.entities.ReducedCompanyEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
@@ -43,7 +44,7 @@ class CompanyQueryManager(
     fun searchCompaniesAndGetApiModel(
         filter: StoredCompanySearchFilter,
         viewingUser: DatalandAuthentication? = null,
-    ): List<StoredCompany> {
+    ): List<ReducedCompanyEntity> {
         if (filter.dataTypeFilter.isEmpty()) {
             filter.dataTypeFilter = DataTypesExtractor().getAllDataTypes()
         }
@@ -53,11 +54,11 @@ class CompanyQueryManager(
             storedCompanyEntity.companyId to index
         }.toMap()
 
-        val results = fetchAllStoredCompanyFields(filteredAndSortedResults).sortedBy {
-            sortingMap.getValue(it.companyId)
-        }
+//        val results = fetchAllStoredCompanyFields(filteredAndSortedResults).sortedBy {
+//            sortingMap.getValue(it.companyId)
+//        }
 
-        return results.map { it.toApiModel(viewingUser) }
+        return filteredAndSortedResults//.map { it.toApiModel(viewingUser) }
     }
 
     /**
