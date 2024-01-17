@@ -27,6 +27,4 @@ interface ReducedCompanyEntity {
     val sector: String?
 
     var permId: String?
-
-    var search_rank: Int
 }
