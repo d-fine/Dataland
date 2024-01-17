@@ -59,6 +59,7 @@
       <p class="font-medium text-xl">
         Please double-check the spelling and try again or request the data you are missing!
       </p>
+      <RequestBulkDataButton />
       <RequestDataButton />
     </div>
   </div>
@@ -71,10 +72,11 @@ import Tooltip from "primevue/tooltip";
 import { type DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent } from "vue";
 import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
+import RequestBulkDataButton from "@/components/resources/frameworkDataSearch/RequestBulkDataButton.vue";
 
 export default defineComponent({
   name: "FrameworkDataSearchResults",
-  components: { RequestDataButton, DataTable, Column },
+  components: { RequestDataButton, RequestBulkDataButton, DataTable, Column },
   directives: {
     tooltip: Tooltip,
   },
