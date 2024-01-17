@@ -13,6 +13,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -92,4 +93,26 @@ interface RequestApi {
         @RequestParam identifierValue: String? = null,
         @RequestParam dataTypes: Set<DataTypeEnum>? = null,
     ): List<AggregatedDataRequest>
+
+    /** Changes request status of existing data request
+     * @return the modified data request
+     */
+
+    @Operation(
+        summary = "Update status of data request.",
+        description = "Updates status of data request given data request id.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully patched data request."),
+        ],
+    )
+    @PatchMapping(
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun patchDataRequest(
+        @RequestParam dataRequestId: String,
+        @RequestParam requestStatus: String
+    ): ResponseEntity<StoredDataRequest>
 }

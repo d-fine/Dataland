@@ -31,5 +31,5 @@ data class DataRequestEntity(
 
     val lastModifiedDate: Long,
 
-    val requestStatus: RequestStatus,
+    var requestStatus: RequestStatus,
 )
