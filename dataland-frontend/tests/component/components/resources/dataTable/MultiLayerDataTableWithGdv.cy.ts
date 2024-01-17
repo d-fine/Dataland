@@ -1,16 +1,16 @@
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import {
-  type CompanyAssociatedDataEsgquestionnaireData,
+  type CompanyAssociatedDataEsgQuestionnaireData,
   type DataMetaInformation,
   DataTypeEnum,
-  type EsgquestionnaireData,
+  type EsgQuestionnaireData,
 } from "@clients/backend";
 
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 import MultiLayerDataTableFrameworkPanel from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { EsgquestionnaireViewConfiguration } from "@/frameworks/esgquestionnaire/ViewConfig";
+import { esgQuestionnaireViewConfiguration } from "@/frameworks/esg-questionnaire/ViewConfig";
 import {
   getCellValueContainer,
   getSectionHead,
@@ -18,21 +18,22 @@ import {
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
 describe("Component Test for the GDV-VÖB view Page with its componenets", () => {
-  let preparedFixtureForTest: FixtureData<EsgquestionnaireData>;
+  let preparedFixtureForTest: FixtureData<EsgQuestionnaireData>;
   const companyId = "mock-company-id";
   before(function () {
-    cy.fixture("CompanyInformationWithGdvPreparedFixtures").then(function (jsonContent) {
-      const preparedFixtures = jsonContent as Array<FixtureData<EsgquestionnaireData>>;
-      preparedFixtureForTest = getPreparedFixture("Gdv-dataset-with-no-null-fields", preparedFixtures);
+    cy.fixture("CompanyInformationWithEsgquestionnairePreparedFixtures").then(function (jsonContent) {
+      const preparedFixtures = jsonContent as Array<FixtureData<EsgQuestionnaireData>>;
+      preparedFixtureForTest = getPreparedFixture("Esgquestionnaire-dataset-with-no-null-fields", preparedFixtures);
     });
   });
 
-  it("Check that on the GDV-VÖB view Page the rolling window component works properly", () => {
-    cy.intercept("/api/data/gdv/mock-data-id", {
+  it("Check that on the Esg questionnaire view Page the rolling window component works properly", () => {
+    cy.intercept("/api/data/esg-questionnaire/mock-data-id", {
+      // TODO use datatype num in link?
       companyId: companyId,
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
       data: preparedFixtureForTest.t,
-    } as CompanyAssociatedDataEsgquestionnaireData);
+    } as CompanyAssociatedDataEsgQuestionnaireData);
     mountGDVFrameworkFromFakeFixture([preparedFixtureForTest]);
     getSectionHead("Umwelt").click();
     getSectionHead("Treibhausgasemissionen").click();
@@ -54,11 +55,11 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
   });
 
   it("Check that on the GDV-VÖB view Page the string for datatable component works properly", () => {
-    cy.intercept("/api/data/gdv/mock-data-id", {
+    cy.intercept("/api/data/esg-questionnaire/mock-data-id", {
       companyId: companyId,
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
       data: preparedFixtureForTest.t,
-    } as CompanyAssociatedDataEsgquestionnaireData);
+    } as CompanyAssociatedDataEsgQuestionnaireData);
     mountGDVFrameworkFromFakeFixture([preparedFixtureForTest]);
     getSectionHead("Unternehmensführung/ Governance").click();
     getSectionHead("Sonstige").eq(1).click();
@@ -68,11 +69,11 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
   });
 
   it("Check that on the GDV-VÖB view Page the list base data point component works properly", () => {
-    cy.intercept("/api/data/gdv/mock-data-id", {
+    cy.intercept("/api/data/esg-questionnaire/mock-data-id", {
       companyId: companyId,
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
       data: preparedFixtureForTest.t,
-    } as CompanyAssociatedDataEsgquestionnaireData);
+    } as CompanyAssociatedDataEsgQuestionnaireData);
     mountGDVFrameworkFromFakeFixture([preparedFixtureForTest]);
     getSectionHead("ESG Berichte").click();
     getCellValueContainer("Aktuelle Berichte").click();
@@ -96,15 +97,15 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
  * @returns the component mounting chainable
  */
 function mountGDVFrameworkFromFakeFixture(
-  fixtureDatasetsForDisplay: Array<FixtureData<EsgquestionnaireData>>,
+  fixtureDatasetsForDisplay: Array<FixtureData<EsgQuestionnaireData>>,
 ): Cypress.Chainable {
   const dummyCompanyId = "mock-company-id";
-  const convertedDataAndMetaInformation: Array<DataAndMetaInformation<EsgquestionnaireData>> =
+  const convertedDataAndMetaInformation: Array<DataAndMetaInformation<EsgQuestionnaireData>> =
     fixtureDatasetsForDisplay.map((it, idx) => {
       const metaInformation: DataMetaInformation = {
         dataId: `data-id-${idx}`,
         companyId: dummyCompanyId,
-        dataType: DataTypeEnum.Esgquestionnaire,
+        dataType: DataTypeEnum.EsgQuestionnaire,
         uploadTime: 0,
         reportingPeriod: it.reportingPeriod,
         qaStatus: "Accepted",
@@ -127,11 +128,11 @@ function mountGDVFrameworkFromFakeFixture(
  * @returns the component mounting chainable
  */
 export function mountMLDTForGdvPanel(
-  datasetsToDisplay: Array<DataAndMetaInformation<EsgquestionnaireData>>,
+  datasetsToDisplay: Array<DataAndMetaInformation<EsgQuestionnaireData>>,
   companyId: string,
   reviewMode: boolean,
 ): Cypress.Chainable {
-  cy.intercept(`/api/data/${DataTypeEnum.Esgquestionnaire}/companies/${companyId}`, datasetsToDisplay);
+  cy.intercept(`/api/data/esg-questionnaire/companies/${companyId}`, datasetsToDisplay);
   return cy.mountWithDialog(
     MultiLayerDataTableFrameworkPanel,
     {
@@ -139,8 +140,8 @@ export function mountMLDTForGdvPanel(
     },
     {
       companyId: companyId,
-      frameworkIdentifier: DataTypeEnum.Esgquestionnaire,
-      displayConfiguration: EsgquestionnaireViewConfiguration,
+      frameworkIdentifier: DataTypeEnum.EsgQuestionnaire,
+      displayConfiguration: esgQuestionnaireViewConfiguration,
       inReviewMode: reviewMode,
     },
   );
