@@ -15,17 +15,17 @@ import { getBaseFrameworkDefinition } from "@/frameworks/BaseFrameworkRegistry";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 
-let esgquestionnaireFixtureForTest: FixtureData<EsgQuestionnaireData>;
+let esgQuestionnaireFixtureForTest: FixtureData<EsgQuestionnaireData>;
 before(function () {
   cy.fixture("CompanyInformationWithEsgQuestionnairePreparedFixtures").then(function (jsonContent) {
     const preparedFixturesEsgQuestionnaire = jsonContent as Array<FixtureData<EsgQuestionnaireData>>;
-    esgquestionnaireFixtureForTest = getPreparedFixture(
+    esgQuestionnaireFixtureForTest = getPreparedFixture(
       "EsgQuestionnaire-dataset-with-no-null-fields",
       preparedFixturesEsgQuestionnaire,
     );
   });
 });
-
+// TODO esgquestionnaire folder name in test folder
 describeIf(
   "As a user, I expect to be able to edit and submit GDV data via the upload form",
   {
@@ -50,7 +50,7 @@ describeIf(
                 token,
                 storedCompany.companyId,
                 "2021",
-                esgquestionnaireFixtureForTest.t,
+                esgQuestionnaireFixtureForTest.t,
                 (config) => getBaseFrameworkDefinition(DataTypeEnum.EsgQuestionnaire)!.getFrameworkApiClient(config),
               ).then((dataMetaInformation) => {
                 cy.intercept(`**/api/data/${DataTypeEnum.EsgQuestionnaire}/${dataMetaInformation.dataId}`).as(
@@ -81,16 +81,16 @@ describeIf(
                       .then((axiosResponse) => {
                         const frontendSubmittedEsgQuestionnaireDataset = axiosResponse.data.data;
 
-                        esgquestionnaireFixtureForTest.t.allgemein?.sektoren?.auflistungDerSektoren?.sort();
-                        esgquestionnaireFixtureForTest.t.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten?.sort();
-                        esgquestionnaireFixtureForTest.t.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort();
+                        esgQuestionnaireFixtureForTest.t.allgemein?.sektoren?.auflistungDerSektoren?.sort();
+                        esgQuestionnaireFixtureForTest.t.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten?.sort();
+                        esgQuestionnaireFixtureForTest.t.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort();
 
                         frontendSubmittedEsgQuestionnaireDataset.allgemein?.sektoren?.auflistungDerSektoren?.sort();
                         frontendSubmittedEsgQuestionnaireDataset.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten?.sort();
                         frontendSubmittedEsgQuestionnaireDataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort();
 
                         compareObjectKeysAndValuesDeep(
-                          esgquestionnaireFixtureForTest.t as Record<string, object>,
+                          esgQuestionnaireFixtureForTest.t as Record<string, object>,
                           frontendSubmittedEsgQuestionnaireDataset as Record<string, object>,
                         );
                       });

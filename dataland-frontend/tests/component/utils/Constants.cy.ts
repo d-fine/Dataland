@@ -12,7 +12,7 @@ describe("Unit test for the data type sorting in the Constants", () => {
     expect(sortedTestDataTypeEnums[3]).to.equal(DataTypeEnum.EsgQuestionnaire);
   });
 
-  it("Check if the order stays the same if a list of data type enums does not contain esgquestionnaire", () => {
+  it("Check if the order stays the same if a list of data type enums does not contain esg-questionnaire", () => {
     const allDataTypeEnumsButEsgQuestionnaire = Object.values(DataTypeEnum).filter(
       (it) => it !== DataTypeEnum.EsgQuestionnaire,
     );

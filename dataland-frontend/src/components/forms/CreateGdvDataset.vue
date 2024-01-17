@@ -273,10 +273,10 @@ export default defineComponent({
           apiClientProvider.axiosInstance,
         );
         const dataResponse = await esgQuestionnaireDataControllerApi.getFrameworkData(dataId);
-        const esgquestionnaireResponseData = dataResponse.data;
-        this.listOfFilledKpis = getFilledKpis(esgquestionnaireResponseData.data);
+        const esgQuestionnaireResponseData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(esgQuestionnaireResponseData.data);
         this.companyAssociatedEsgQuestionnaireData = objectDropNull(
-          esgquestionnaireResponseData as ObjectType,
+          esgQuestionnaireResponseData as ObjectType,
         ) as CompanyAssociatedDataEsgQuestionnaireData;
       }
 
@@ -293,13 +293,13 @@ export default defineComponent({
         }
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.EsgQuestionnaire);
-        let esgquestionnaireDataControllerApi: FrameworkDataApi<EsgQuestionnaireData>;
+        let esgQuestionnaireDataControllerApi: FrameworkDataApi<EsgQuestionnaireData>;
         if (frameworkDefinition) {
-          esgquestionnaireDataControllerApi = frameworkDefinition.getFrameworkApiClient(
+          esgQuestionnaireDataControllerApi = frameworkDefinition.getFrameworkApiClient(
             undefined,
             apiClientProvider.axiosInstance,
           );
-          await esgquestionnaireDataControllerApi.postFrameworkData(this.companyAssociatedEsgQuestionnaireData);
+          await esgQuestionnaireDataControllerApi.postFrameworkData(this.companyAssociatedEsgQuestionnaireData);
         }
         this.$emit("datasetCreated");
         this.dataDate = undefined;
