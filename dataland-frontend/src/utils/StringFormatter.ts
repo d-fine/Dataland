@@ -12,11 +12,9 @@ import { getBaseFrameworkDefinition } from "@/frameworks/BaseFrameworkRegistry";
  */
 export function convertKebabCaseToPascalCase(rawText: string): string {
   const camelCase = rawText.replace(/-([a-z])/g, (_, char: string) => char.toUpperCase());
-  const pascalCase = camelCase.charAt(0).toUpperCase() + camelCase.slice(1)
-  return pascalCase
+  const pascalCase = camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
+  return pascalCase;
 }
-
-
 
 /**
  * convert camel case string to sentence case string using regex
