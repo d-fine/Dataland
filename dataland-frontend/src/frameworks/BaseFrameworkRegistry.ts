@@ -10,7 +10,7 @@ import { FrameworkDefinitions } from "@/frameworks/BaseFrameworkRegistryImports"
  */
 export function getBaseFrameworkDefinition(identifier: string): BaseFrameworkDefinition<object> | undefined {
   for (const key in FrameworkDefinitions) {
-    const frameworkDefinition = FrameworkDefinitions[key]; // TODO namings
+    const frameworkDefinition = FrameworkDefinitions[key];
     if (frameworkDefinition.identifier === identifier) {
       return frameworkDefinition;
     }
