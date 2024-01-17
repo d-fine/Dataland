@@ -11,6 +11,7 @@ export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = putGdvAtTheEndOfList([
   DataTypeEnum.Lksg,
   DataTypeEnum.EutaxonomyNonFinancials,
   DataTypeEnum.Gdv,
+  DataTypeEnum.Heimathafen,
 ]);
 
 // - Keycloak and session management related settings
