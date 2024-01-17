@@ -81,7 +81,6 @@ class DataRequestManager(
                 dataRequestEntity.dataRequestCompanyIdentifierType,
                 dataRequestEntity.dataRequestCompanyIdentifierValue,
                 dataRequestEntity.lastModifiedDate,
-                //dataRequestEntity.messageHistory,
                 dataRequestEntity.requestStatus
             )
         }

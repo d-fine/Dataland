@@ -34,8 +34,6 @@ data class StoredDataRequest(
 
     val lastModifiedDate: Long,
 
-    //val messageHistory: List<StoredMessageRequest>? = null,
-
     val requestStatus: RequestStatus,
 
 

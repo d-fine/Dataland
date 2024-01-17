@@ -28,8 +28,5 @@ data class DataRequestEntity(
 
     val lastModifiedDate: Long,
 
-    //@OneToMany(mappedBy = "DataRequestEntity")
-    //val messageHistory: List<StoredMessageRequest>? = null,
-
     val requestStatus: RequestStatus,
 )
