@@ -1,4 +1,3 @@
-import { type Category } from "@/utils/GenericFrameworkTypes";
 import { type HeimathafenData } from "@clients/backend";
 
 export const heimathafenDataModel = [
@@ -3356,4 +3355,4 @@ export const heimathafenDataModel = [
       },
     ],
   },
-] as Category[];
+];
