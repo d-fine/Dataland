@@ -4,11 +4,13 @@ import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.*
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -29,6 +31,7 @@ class DataRequestManager(
     val isinRegex = Regex("^[A-Z]{2}[A-Z\\d]{10}$")
     val leiRegex = Regex("^[0-9A-Z]{18}[0-9]{2}$")
     val permIdRegex = Regex("^\\d+$")
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Processes a bulk data request from a user
@@ -113,6 +116,36 @@ class DataRequestManager(
             )
         }
         return aggregatedDataRequests
+    }
+
+    /**
+     * Method to patch the status of a data request.
+     * @param dataRequestId the id of the data request to patch
+     * @param requestStatus the status to apply to the data request
+     * @return the updated data request object
+     */
+    @Transactional
+    fun patchDataRequest(dataRequestId: String, requestStatus: String): StoredDataRequest {
+        if (!dataRequestRepository.existsById(dataRequestId)) {
+            throw ResourceNotFoundApiException("Data request not found", "Dataland does not know the Data request ID $dataRequestId")
+        }
+        var dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
+        logger.info("Patching Company ${dataRequestEntity.dataRequestId} with status $requestStatus")
+        if (requestStatus.lowercase() == "open") dataRequestEntity.requestStatus = RequestStatus.Open
+        else if (requestStatus.lowercase() == "resolved") dataRequestEntity.requestStatus = RequestStatus.Resolved
+        else throw InvalidInputApiException("Invalid data request status", "$requestStatus is invalid")
+        dataRequestRepository.save(dataRequestEntity)
+        dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
+        return StoredDataRequest(
+            dataRequestEntity.dataRequestId,
+            dataRequestEntity.userId,
+            dataRequestEntity.creationTimestamp,
+            getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
+            dataRequestEntity.dataRequestCompanyIdentifierType,
+            dataRequestEntity.dataRequestCompanyIdentifierValue,
+            dataRequestEntity.lastModifiedDate,
+            dataRequestEntity.requestStatus
+        )
     }
 
     private fun throwExceptionIfNotJwtAuth() {

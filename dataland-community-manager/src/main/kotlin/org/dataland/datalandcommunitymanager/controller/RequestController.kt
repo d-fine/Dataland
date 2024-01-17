@@ -39,4 +39,8 @@ class RequestController(
     ): List<AggregatedDataRequest> {
         return dataRequestManager.getAggregatedDataRequests(identifierValue, dataTypes)
     }
+
+    override fun patchDataRequest(dataRequestId: String, requestStatus: String): ResponseEntity<StoredDataRequest> {
+        return ResponseEntity.ok(dataRequestManager.patchDataRequest(dataRequestId, requestStatus))
+    }
 }
