@@ -1,11 +1,10 @@
 package org.dataland.datalandcommunitymanager.entities
 
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredMessageRequest
+
 
 /**
  * The entity storing the information considering one single data request
@@ -26,4 +25,11 @@ data class DataRequestEntity(
     val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
 
     val dataRequestCompanyIdentifierValue: String,
+
+    val lastModifiedDate: Long,
+
+    //@OneToMany(mappedBy = "DataRequestEntity")
+    //val messageHistory: List<StoredMessageRequest>? = null,
+
+    val requestStatus: RequestStatus,
 )

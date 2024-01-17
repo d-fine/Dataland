@@ -5,10 +5,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
-import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
-import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.*
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -83,6 +80,9 @@ class DataRequestManager(
                 getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
                 dataRequestEntity.dataRequestCompanyIdentifierType,
                 dataRequestEntity.dataRequestCompanyIdentifierValue,
+                dataRequestEntity.lastModifiedDate,
+                //dataRequestEntity.messageHistory,
+                dataRequestEntity.requestStatus
             )
         }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
@@ -235,13 +235,16 @@ class DataRequestManager(
         identifierType: DataRequestCompanyIdentifierType,
         identifierValue: String,
     ): DataRequestEntity {
+        val currentTimestamp = Instant.now().toEpochMilli()
         return DataRequestEntity(
             dataRequestId = UUID.randomUUID().toString(),
             userId = currentUserId,
-            creationTimestamp = Instant.now().toEpochMilli(),
+            creationTimestamp = currentTimestamp,
             dataTypeName = framework.value,
             dataRequestCompanyIdentifierType = identifierType,
             dataRequestCompanyIdentifierValue = identifierValue,
+            lastModifiedDate =  currentTimestamp,
+            requestStatus = RequestStatus.Open
         )
     }
 
