@@ -26,6 +26,9 @@ data class DataRequestEntity(
 
     val dataRequestCompanyIdentifierValue: String,
 
+    @OneToMany
+    val messageHistory: List<MessageRequestEntity>,
+
     val lastModifiedDate: Long,
 
     val requestStatus: RequestStatus,
