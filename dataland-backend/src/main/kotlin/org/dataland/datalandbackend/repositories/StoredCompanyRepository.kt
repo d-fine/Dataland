@@ -25,33 +25,39 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = "SELECT company.company_id as company_id, " +
-            "max(company.company_name) as company_name, " +
+        value = "SELECT ids_only.company_id as companyId, " +
+            "max(company.company_name) as companyName, " +
             "max(company.headquarters) as headquarters, " +
             "max(company.sector) as sector, " +
-            "MIN(permid.identifier_value) AS perm_id " +
-            "FROM (SELECT * FROM stored_companies WHERE sector in :#{#searchFilter.sectorFilter} AND country_code in ('DE')) company" +
-            "JOIN (SELECT distinct company_id from data_meta_information where data_type in ('eutaxonomy-financials','eutaxonomy-non-financials','lksg','p2p','sfdr','sme','gdv')) datainfo " +
-            "ON company.company_id = datainfo.company_id " +
-            "LEFT JOIN company_identifiers identifiers  " +
-            "ON company.company_id = identifiers.company_id " +
-            "AND identifiers.identifier_value ILIKE '%e%' " +
-            "LEFT JOIN company_identifiers permid  " +
-            "ON company.company_id = permid.company_id AND permid.identifier_type = 'PermId' " +
-            "LEFT JOIN stored_company_entity_company_alternative_names alt_names  " +
-            "ON company.company_id = alt_names.stored_company_entity_company_id " +
-            "AND alt_names.company_alternative_names ILIKE '%e%' " +
-            "GROUP BY company.company_id " +
-            "ORDER BY CASE " +
-            "WHEN max(company.company_name) ILIKE 'e' THEN 1 " +
-            "WHEN MAX(alt_names.company_alternative_names) ILIKE 'e' THEN 2 " +
-            "WHEN max(company.company_name) ILIKE 'e%' ESCAPE '' THEN 3 " +
-            "WHEN MAX(alt_names.company_alternative_names) ILIKE 'e%' ESCAPE '' THEN 4 " +
+            "max(permId.identifier_value) as permId, " +
+            "CASE " +
+            "WHEN max(company.company_name) ILIKE :#{escape(#searchFilter.searchString)} ESCAPE :#{escapeCharacter()} THEN 1 " +
+//            "WHEN MAX(alt_names.company_alternative_names) ILIKE 'e' THEN 2 " +
+            "WHEN max(company.company_name) ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 3 " +
+//            "WHEN MAX(alt_names.company_alternative_names) ILIKE 'e%' ESCAPE '' THEN 4 " +
             "ELSE 5 " +
-            "END, " +
-            "max(company.company_name) asc",
+            "END as search_rank " +
+            "FROM (SELECT company_id FROM stored_companies " +
+            "WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector in :#{#searchFilter.sectorFilter}) " +
+            "AND (:#{#searchFilter.countryCodeFilterSize} = 0 OR sector in :#{#searchFilter.countryCodeFilter}) " +
+            ") ids_only " +
+            "JOIN (SELECT distinct company_id from data_meta_information where :#{#searchFilter.dataTypeFilterSize} = 0 OR data_type in :#{#searchFilter.dataTypeFilter}) datainfo " +
+            "ON ids_only.company_id = datainfo.company_id " +
+            "LEFT JOIN (SELECT * FROM stored_companies WHERE company_name ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} ) company " +
+            "ON ids_only.company_id = company.company_id " +
+            "LEFT JOIN (SELECT * FROM company_identifiers where identifier_value ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} ) identifiers " +
+            "ON company.company_id = identifiers.company_id " +
+            "LEFT JOIN (SELECT * from company_identifiers where identifier_type = 'PermId') permid " +
+            "ON company.company_id = permid.company_id " +
+//            "LEFT JOIN stored_company_entity_company_alternative_names alt_names  " +
+//            "ON company.company_id = alt_names.stored_company_entity_company_id " +
+//            "AND alt_names.company_alternative_names ILIKE '%e%' " +
+            "GROUP BY ids_only.company_id " +
+            "ORDER BY search_rank asc, max(company.company_name) asc"
     )
-    fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<ReducedCompanyEntity>
+    fun searchCompanies(
+        @Param("searchFilter") searchFilter: StoredCompanySearchFilter
+    ): List<ReducedCompanyEntity>
 
     /**
      * A function for querying companies by search string:

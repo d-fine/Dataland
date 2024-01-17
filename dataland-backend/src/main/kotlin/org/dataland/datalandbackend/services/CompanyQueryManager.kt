@@ -50,9 +50,9 @@ class CompanyQueryManager(
         }
 
         val filteredAndSortedResults = companyRepository.searchCompanies(filter)
-        val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity ->
-            storedCompanyEntity.companyId to index
-        }.toMap()
+//        val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity ->
+//            storedCompanyEntity.companyId to index
+//        }.toMap()
 
 //        val results = fetchAllStoredCompanyFields(filteredAndSortedResults).sortedBy {
 //            sortingMap.getValue(it.companyId)

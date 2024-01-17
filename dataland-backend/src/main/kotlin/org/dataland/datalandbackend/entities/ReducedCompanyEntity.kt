@@ -17,20 +17,16 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 /**
  * The entity storing data regarding a company stored in dataland
  */
-data class ReducedCompanyEntity(
-    @Id
-    @Column(name = "company_id")
-    val companyId: String,
+interface ReducedCompanyEntity {
+    val companyId: String
 
-    @Column(name = "company_name")
-    var companyName: String,
+    val companyName: String
 
-    @Column(name = "headquarters")
-    var headquarters: String,
+    val headquarters: String
 
-    @Column(name = "sector")
-    var sector: String?,
+    val sector: String?
 
-    @Column(name = "perm_id")
-    var permId: String?,
-)
+    var permId: String?
+
+    var search_rank: Int
+}
