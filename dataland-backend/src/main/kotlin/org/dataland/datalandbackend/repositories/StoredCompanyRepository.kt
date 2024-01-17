@@ -39,7 +39,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "END as search_rank " +
             "FROM (SELECT company_id, company_name, headquarters, sector FROM stored_companies " +
             "WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector in :#{#searchFilter.sectorFilter}) " +
-            "AND (:#{#searchFilter.countryCodeFilterSize} = 0 OR sector in :#{#searchFilter.countryCodeFilter}) " +
+            "AND (:#{#searchFilter.countryCodeFilterSize} = 0 OR country_code in :#{#searchFilter.countryCodeFilter}) " +
             ") company " +
             "JOIN (SELECT distinct company_id from data_meta_information where :#{#searchFilter.dataTypeFilterSize} = 0 OR data_type in :#{#searchFilter.dataTypeFilter}) datainfo " +
             "ON company.company_id = datainfo.company_id " +
