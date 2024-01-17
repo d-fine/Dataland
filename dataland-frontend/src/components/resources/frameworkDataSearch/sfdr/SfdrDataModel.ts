@@ -265,7 +265,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "between:0,100",
+            validation: "min:0",
           },
           {
             name: "nonRenewableEnergyConsumptionInGWh",
@@ -286,7 +286,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "between:0,100",
+            validation: "min:0",
           },
           {
             name: "applicableHighImpactClimateSectors",
@@ -826,7 +826,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "between:0,100",
+            validation: "between:-100,100",
           },
           {
             name: "femaleBoardMembers",
@@ -964,7 +964,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "between:0,100",
+            validation: "min:0",
           },
         ],
       },
