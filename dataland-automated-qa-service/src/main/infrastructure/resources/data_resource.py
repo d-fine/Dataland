@@ -66,7 +66,7 @@ def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient
         DataTypeEnum.SFDR: CompanyAssociatedDataSfdrData,
         DataTypeEnum.P2P: CompanyAssociatedDataPathwaysToParisData,
         DataTypeEnum.SME: CompanyAssociatedDataSmeData,
-        DataTypeEnum.ESGQ_UESTIONNAIRE: CompanyAssociatedDataEsgQuestionnaireData,
+        DataTypeEnum.ESG_QUESTIONNAIRE: CompanyAssociatedDataEsgQuestionnaireData,
     }
     response = client.get_httpx_client().request(method="get", url=f"/data/{data_type}/{data_id}")
     if response.status_code == HTTPStatus.OK:
