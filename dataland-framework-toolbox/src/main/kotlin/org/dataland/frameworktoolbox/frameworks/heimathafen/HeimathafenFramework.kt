@@ -31,7 +31,7 @@ class HeimathafenFramework : InDevelopmentPavedRoadFramework(
 
         framework.root.edit<ComponentGroup>("general") {
             viewPageExpandOnPageLoad = true
-            edit<ComponentGroup>("masterData") {
+            edit<ComponentGroup>("datenanbieter") {
                 viewPageExpandOnPageLoad = true
             }
         }
