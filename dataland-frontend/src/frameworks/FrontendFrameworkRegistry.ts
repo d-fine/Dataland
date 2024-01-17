@@ -7,7 +7,13 @@ import { FrameworkDefinitions } from "@/frameworks/FrontendFrameworkRegistryImpo
  * @returns the framework definition if it exists
  */
 export function getFrontendFrameworkDefinition(identifier: string): FrontendFrameworkDefinition<object> | undefined {
-  return FrameworkDefinitions[identifier];
+  for (const key in FrameworkDefinitions) {
+    const frameworkDefinition = FrameworkDefinitions[key];
+    if (frameworkDefinition.identifier === identifier) {
+      return frameworkDefinition;
+    }
+  }
+  return undefined; // Return undefined if no match is found
 }
 
 /**

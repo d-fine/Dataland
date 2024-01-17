@@ -9,12 +9,12 @@
       <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
           <FormKit
-            v-model="companyAssociatedEsgquestionnaireData"
+            v-model="companyAssociatedEsgQuestionnaireData"
             :actions="false"
             type="form"
             :id="formId"
             :name="formId"
-            @submit="postEsgquestionnaireData"
+            @submit="postEsgQuestionnaireData"
             @submit-invalid="checkCustomInputs"
           >
             <FormKit type="hidden" name="companyId" :model-value="companyID" />
@@ -41,7 +41,7 @@
                       <div class="col-9 formFields">
                         <FormKit v-for="field in subcategory.fields" :key="field" type="group" :name="subcategory.name">
                           <component
-                            v-if="field.showIf(companyAssociatedEsgquestionnaireData.data)"
+                            v-if="field.showIf(companyAssociatedEsgQuestionnaireData.data)"
                             :is="field.component"
                             :label="field.label"
                             :placeholder="field.placeholder"
@@ -71,7 +71,7 @@
         </div>
         <SubmitSideBar>
           <SubmitButton :formId="formId" />
-          <div v-if="postEsgquestionnaireDataProcessed">
+          <div v-if="postEsgQuestionnaireDataProcessed">
             <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
             <FailMessage v-else :message="message" :messageId="messageCounter" />
           </div>
@@ -110,9 +110,9 @@ import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import {
-  type CompanyAssociatedDataEsgquestionnaireData,
+  type CompanyAssociatedDataEsgQuestionnaireData,
   DataTypeEnum,
-  type EsgquestionnaireData,
+  type EsgQuestionnaireData,
 } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
@@ -148,7 +148,7 @@ import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBa
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField from "@/components/forms/parts/fields/GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField.vue";
 import GdvYearlyDecimalTimeseriesThreeYearPastDataFormField from "@/components/forms/parts/fields/GdvYearlyDecimalTimeseriesThreeYearPastDataFormField.vue";
-import { esgquestionnaireDataModel } from "@/frameworks/esgquestionnaire/UploadConfig";
+import { esgQuestionnaireDataModel } from "@/frameworks/esg-questionnaire/UploadConfig";
 import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
@@ -207,14 +207,14 @@ export default defineComponent({
       formId: "createGDVForm",
       waitingForData: true,
       dataDate: undefined as Date | undefined,
-      companyAssociatedEsgquestionnaireData: {} as CompanyAssociatedDataEsgquestionnaireData,
-      esgquestionnaireDataModel,
+      companyAssociatedEsgQuestionnaireData: {} as CompanyAssociatedDataEsgQuestionnaireData,
+      esgQuestionnaireDataModel,
       route: useRoute(),
       message: "",
       listOfFilledKpis: [] as Array<string>,
       smoothScroll: smoothScroll,
       uploadSucceded: false,
-      postEsgquestionnaireDataProcessed: false,
+      postEsgQuestionnaireDataProcessed: false,
       messageCounter: 0,
       checkCustomInputs,
       fieldSpecificDocuments: new Map() as Map<string, DocumentToUpload>,
@@ -223,7 +223,7 @@ export default defineComponent({
   computed: {
     yearOfDataDate: {
       get(): string {
-        const currentDate = this.companyAssociatedEsgquestionnaireData.data?.general?.masterData?.gueltigkeitsDatum;
+        const currentDate = this.companyAssociatedEsgQuestionnaireData.data?.general?.masterData?.gueltigkeitsDatum;
         if (currentDate === undefined) {
           return "";
         } else {
@@ -237,8 +237,8 @@ export default defineComponent({
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(
-        this.esgquestionnaireDataModel,
-        this.companyAssociatedEsgquestionnaireData.data,
+        this.esgQuestionnaireDataModel,
+        this.companyAssociatedEsgQuestionnaireData.data,
       );
     },
   },
@@ -251,7 +251,7 @@ export default defineComponent({
   created() {
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === "string") {
-      void this.loadEsgquestionnaireData(dataId);
+      void this.loadEsgQuestionnaireData(dataId);
     } else {
       this.waitingForData = false;
     }
@@ -262,11 +262,11 @@ export default defineComponent({
      * from the dataset
      * @param dataId the id of the dataset to load
      */
-    async loadEsgquestionnaireData(dataId: string): Promise<void> {
+    async loadEsgQuestionnaireData(dataId: string): Promise<void> {
       this.waitingForData = true;
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Esgquestionnaire);
-      let esgqestionnaireDataControllerApi: FrameworkDataApi<EsgquestionnaireData>;
+      const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.EsgQuestionnaire);
+      let esgqestionnaireDataControllerApi: FrameworkDataApi<EsgQuestionnaireData>;
       if (frameworkDefinition) {
         esgqestionnaireDataControllerApi = frameworkDefinition?.getFrameworkApiClient(
           undefined,
@@ -275,9 +275,9 @@ export default defineComponent({
         const dataResponse = await esgqestionnaireDataControllerApi.getFrameworkData(dataId);
         const esgquestionnaireResponseData = dataResponse.data;
         this.listOfFilledKpis = getFilledKpis(esgquestionnaireResponseData.data);
-        this.companyAssociatedEsgquestionnaireData = objectDropNull(
+        this.companyAssociatedEsgQuestionnaireData = objectDropNull(
           esgquestionnaireResponseData as ObjectType,
-        ) as CompanyAssociatedDataEsgquestionnaireData;
+        ) as CompanyAssociatedDataEsgQuestionnaireData;
       }
 
       this.waitingForData = false;
@@ -285,21 +285,21 @@ export default defineComponent({
     /**
      * Sends data to add esg questionnaire data
      */
-    async postEsgquestionnaireData(): Promise<void> {
+    async postEsgQuestionnaireData(): Promise<void> {
       this.messageCounter++;
       try {
         if (this.fieldSpecificDocuments.size > 0) {
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-        const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Esgquestionnaire);
-        let esgquestionnaireDataControllerApi: FrameworkDataApi<EsgquestionnaireData>;
+        const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.EsgQuestionnaire);
+        let esgquestionnaireDataControllerApi: FrameworkDataApi<EsgQuestionnaireData>;
         if (frameworkDefinition) {
           esgquestionnaireDataControllerApi = frameworkDefinition.getFrameworkApiClient(
             undefined,
             apiClientProvider.axiosInstance,
           );
-          await esgquestionnaireDataControllerApi.postFrameworkData(this.companyAssociatedEsgquestionnaireData);
+          await esgquestionnaireDataControllerApi.postFrameworkData(this.companyAssociatedEsgQuestionnaireData);
         }
         this.$emit("datasetCreated");
         this.dataDate = undefined;
@@ -315,7 +315,7 @@ export default defineComponent({
         }
         this.uploadSucceded = false;
       } finally {
-        this.postEsgquestionnaireDataProcessed = true;
+        this.postEsgQuestionnaireDataProcessed = true;
       }
     },
 
@@ -338,7 +338,7 @@ export default defineComponent({
      * @returns an object expected by FormKit in order to customize the validation message of a field
      */
     getValidationMessageForFirstQuestion(field: Field): { is: string } | undefined {
-      if (field.name === esgquestionnaireDataModel[0].subcategories[0].fields[0].name) {
+      if (field.name === esgQuestionnaireDataModel[0].subcategories[0].fields[0].name) {
         return { is: 'Sie müssen "Ja" wählen, um den Datensatz abschicken zu können.' };
       }
     },

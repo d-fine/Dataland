@@ -4,17 +4,17 @@ import { type CompanyAssociatedData } from "@/api-models/CompanyAssociatedData";
 import {
   type Configuration,
   type DataMetaInformation,
-  type EsgquestionnaireData,
-  EsgquestionnaireDataControllerApi,
+  type EsgQuestionnaireData,
+  EsgQuestionnaireDataControllerApi,
 } from "@clients/backend";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
 
-export class EsgquestionnaireApiClient implements FrameworkDataApi<EsgquestionnaireData> {
-  private readonly openApiDataController: EsgquestionnaireDataControllerApi;
+export class EsgQuestionnaireApiClient implements FrameworkDataApi<EsgQuestionnaireData> {
+  private readonly openApiDataController: EsgQuestionnaireDataControllerApi;
 
   constructor(configuration: Configuration | undefined, axiosInstance: AxiosInstance | undefined) {
-    this.openApiDataController = new EsgquestionnaireDataControllerApi(configuration, undefined, axiosInstance);
+    this.openApiDataController = new EsgQuestionnaireDataControllerApi(configuration, undefined, axiosInstance);
   }
 
   getAllCompanyData(
@@ -22,8 +22,8 @@ export class EsgquestionnaireApiClient implements FrameworkDataApi<Esgquestionna
     showOnlyActive?: boolean,
     reportingPeriod?: string,
     options?: AxiosRequestConfig,
-  ): AxiosPromise<DataAndMetaInformation<EsgquestionnaireData>[]> {
-    return this.openApiDataController.getAllCompanyEsgquestionnaireData(
+  ): AxiosPromise<DataAndMetaInformation<EsgQuestionnaireData>[]> {
+    return this.openApiDataController.getAllCompanyEsgQuestionnaireData(
       companyId,
       showOnlyActive,
       reportingPeriod,
@@ -34,15 +34,15 @@ export class EsgquestionnaireApiClient implements FrameworkDataApi<Esgquestionna
   getFrameworkData(
     dataId: string,
     options?: AxiosRequestConfig,
-  ): AxiosPromise<CompanyAssociatedData<EsgquestionnaireData>> {
-    return this.openApiDataController.getCompanyAssociatedEsgquestionnaireData(dataId, options);
+  ): AxiosPromise<CompanyAssociatedData<EsgQuestionnaireData>> {
+    return this.openApiDataController.getCompanyAssociatedEsgQuestionnaireData(dataId, options);
   }
 
   postFrameworkData(
-    data: CompanyAssociatedData<EsgquestionnaireData>,
+    data: CompanyAssociatedData<EsgQuestionnaireData>,
     bypassQa?: boolean,
     options?: AxiosRequestConfig,
   ): AxiosPromise<DataMetaInformation> {
-    return this.openApiDataController.postCompanyAssociatedEsgquestionnaireData(data, bypassQa, options);
+    return this.openApiDataController.postCompanyAssociatedEsgQuestionnaireData(data, bypassQa, options);
   }
 }
