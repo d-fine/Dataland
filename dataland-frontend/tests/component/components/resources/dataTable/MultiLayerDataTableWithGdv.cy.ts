@@ -23,7 +23,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
   before(function () {
     cy.fixture("CompanyInformationWithEsgquestionnairePreparedFixtures").then(function (jsonContent) {
       const preparedFixtures = jsonContent as Array<FixtureData<EsgQuestionnaireData>>;
-      preparedFixtureForTest = getPreparedFixture("Esgquestionnaire-dataset-with-no-null-fields", preparedFixtures);
+      preparedFixtureForTest = getPreparedFixture("EsgQuestionnaire-dataset-with-no-null-fields", preparedFixtures);
     });
   });
 
