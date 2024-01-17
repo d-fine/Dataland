@@ -10,7 +10,7 @@ export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = putEsgQuestionnaireAtTheEndO
   DataTypeEnum.Sfdr,
   DataTypeEnum.Lksg,
   DataTypeEnum.EutaxonomyNonFinancials,
-  DataTypeEnum.Esgquestionnaire,
+  DataTypeEnum.EsgQuestionnaire,
 ]);
 
 // - Keycloak and session management related settings
@@ -46,15 +46,15 @@ export const ONLY_AUXILIARY_DATA_PROVIDED = "Only auxiliary data provided";
  */
 export function putEsgQuestionnaireAtTheEndOfList(frameworksToInclude: DataTypeEnum[]): DataTypeEnum[] {
   const customSort = (a: DataTypeEnum, b: DataTypeEnum): number => {
-    if (a === DataTypeEnum.Esgquestionnaire && b !== DataTypeEnum.Esgquestionnaire) {
+    if (a === DataTypeEnum.EsgQuestionnaire && b !== DataTypeEnum.EsgQuestionnaire) {
       return 1;
-    } else if (a !== DataTypeEnum.Esgquestionnaire && b === DataTypeEnum.Esgquestionnaire) {
+    } else if (a !== DataTypeEnum.EsgQuestionnaire && b === DataTypeEnum.EsgQuestionnaire) {
       return -1;
     } else {
       return 0;
     }
   };
-  return frameworksToInclude.includes(DataTypeEnum.Esgquestionnaire)
+  return frameworksToInclude.includes(DataTypeEnum.EsgQuestionnaire)
     ? [...frameworksToInclude].sort(customSort)
     : frameworksToInclude;
 }

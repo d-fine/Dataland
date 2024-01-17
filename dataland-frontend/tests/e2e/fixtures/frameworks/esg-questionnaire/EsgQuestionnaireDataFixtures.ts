@@ -2,8 +2,8 @@
 import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { type EsgquestionnaireData } from "@clients/backend";
-import { EsgquestionnaireGenerator } from "@e2e/fixtures/frameworks/esgquestionnaire/EsgquestionnaireGenerator";
+import { type EsgQuestionnaireData } from "@clients/backend";
+import { EsgQuestionnaireGenerator } from "@e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireGenerator";
 import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
 import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
 import { ArtDesAuditsOptions } from "@clients/backend";
@@ -18,25 +18,25 @@ import { generateArray } from "@e2e/fixtures/FixtureUtils";
 import { FrequenzDerBerichterstattungOptions } from "@clients/backend";
 
 /**
- * Generates a set number of esgquestionnaire fixtures
- * @param numFixtures the number of esgquestionnaire fixtures to generate
+ * Generates a set number of esg-questionnaire fixtures
+ * @param numFixtures the number of esg-questionnaire fixtures to generate
  * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
- * @returns a set number of esgquestionnaire fixtures
+ * @returns a set number of esg-questionnaire fixtures
  */
-export function generateEsgquestionnaireFixtures(
+export function generateEsgQuestionnaireFixtures(
   numFixtures: number,
   nullProbability = DEFAULT_PROBABILITY,
-): FixtureData<EsgquestionnaireData>[] {
-  return generateFixtureDataset<EsgquestionnaireData>(() => generateEsgquestionnaireData(nullProbability), numFixtures);
+): FixtureData<EsgQuestionnaireData>[] {
+  return generateFixtureDataset<EsgQuestionnaireData>(() => generateEsgQuestionnaireData(nullProbability), numFixtures);
 }
 
 /**
- * Generates a random esgquestionnaire dataset
+ * Generates a random esg-questionnaire dataset
  * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
- * @returns a random esgquestionnaire dataset
+ * @returns a random esg-questionnaire dataset
  */
-export function generateEsgquestionnaireData(nullProbability = DEFAULT_PROBABILITY): EsgquestionnaireData {
-  const dataGenerator = new EsgquestionnaireGenerator(nullProbability);
+export function generateEsgQuestionnaireData(nullProbability = DEFAULT_PROBABILITY): EsgQuestionnaireData {
+  const dataGenerator = new EsgQuestionnaireGenerator(nullProbability);
   return {
     general: {
       masterData: {

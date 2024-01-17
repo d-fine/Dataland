@@ -104,7 +104,7 @@ describe(
       registerFrameworkFakeFixtureUpload(
         framework as DataTypeEnum,
         (config) => getBaseFrameworkDefinition(framework)!.getFrameworkApiClient(config),
-        `CompanyInformationWith${framework.charAt(0).toUpperCase() + framework.slice(1)}Data`,
+        `CompanyInformationWith${framework.charAt(0).toUpperCase() + framework.slice(1)}Data`.replace("-", ""),
       );
     }
   },

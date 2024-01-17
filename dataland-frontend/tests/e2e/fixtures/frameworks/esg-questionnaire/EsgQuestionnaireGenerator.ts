@@ -5,7 +5,8 @@ interface YearlyTimeseriesData<InnerObj> {
 }
 
 type MappedOptionalDecimal<KeyList extends string> = { [K in KeyList]?: number | null };
-export class EsgquestionnaireGenerator extends Generator {
+
+export class EsgQuestionnaireGenerator extends Generator {
   dataDate: string;
 
   constructor(nullProbability = DEFAULT_PROBABILITY) {

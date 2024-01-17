@@ -3,5 +3,5 @@ import { type BaseFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 import esgQuestionnaireBaseFrameworkDefinition from "@/frameworks/esg-questionnaire/BaseFrameworkDefinition";
 
 export const FrameworkDefinitions: Record<string, BaseFrameworkDefinition<object>> = {
-  esgquestionnaire: esgQuestionnaireBaseFrameworkDefinition,
+  esgQuestionnaire: esgQuestionnaireBaseFrameworkDefinition,
 };

@@ -5,8 +5,8 @@ import {
   Configuration,
   type DataMetaInformation,
   DataTypeEnum,
-  type EsgquestionnaireData,
-  EsgquestionnaireDataControllerApi,
+  type EsgQuestionnaireData,
+  EsgQuestionnaireDataControllerApi,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadGenericFrameworkData } from "@e2e/utils/FrameworkUpload";
@@ -15,13 +15,13 @@ import { getBaseFrameworkDefinition } from "@/frameworks/BaseFrameworkRegistry";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 
-let esgquestionnaireFixtureForTest: FixtureData<EsgquestionnaireData>;
+let esgquestionnaireFixtureForTest: FixtureData<EsgQuestionnaireData>;
 before(function () {
   cy.fixture("CompanyInformationWithEsgquestionnairePreparedFixtures").then(function (jsonContent) {
-    const preparedFixturesEsgquestionnaire = jsonContent as Array<FixtureData<EsgquestionnaireData>>;
+    const preparedFixturesEsgQuestionnaire = jsonContent as Array<FixtureData<EsgQuestionnaireData>>;
     esgquestionnaireFixtureForTest = getPreparedFixture(
-      "Esgquestionnaire-dataset-with-no-null-fields",
-      preparedFixturesEsgquestionnaire,
+      "EsgQuestionnaire-dataset-with-no-null-fields",
+      preparedFixturesEsgQuestionnaire,
     );
   });
 });
@@ -41,33 +41,33 @@ describeIf(
         "assure that the re-uploaded dataset equals the pre-uploaded one",
       () => {
         const uniqueCompanyMarkerWithDate = Date.now().toString();
-        const testCompanyNameEsgquestionnaire =
-          "Company-Created-In-Esgquestionnaire-Blanket-Test-" + uniqueCompanyMarkerWithDate;
+        const testCompanyNameEsgQuestionnaire =
+          "Company-Created-In-EsgQuestionnaire-Blanket-Test-" + uniqueCompanyMarkerWithDate;
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameEsgquestionnaire)).then(
+          return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyNameEsgQuestionnaire)).then(
             (storedCompany) => {
               return uploadGenericFrameworkData(
                 token,
                 storedCompany.companyId,
                 "2021",
                 esgquestionnaireFixtureForTest.t,
-                (config) => getBaseFrameworkDefinition(DataTypeEnum.Esgquestionnaire)!.getFrameworkApiClient(config),
+                (config) => getBaseFrameworkDefinition(DataTypeEnum.EsgQuestionnaire)!.getFrameworkApiClient(config),
               ).then((dataMetaInformation) => {
-                cy.intercept(`**/api/data/${DataTypeEnum.Esgquestionnaire}/${dataMetaInformation.dataId}`).as(
+                cy.intercept(`**/api/data/${DataTypeEnum.EsgQuestionnaire}/${dataMetaInformation.dataId}`).as(
                   "fetchDataForPrefill",
                 );
                 cy.visitAndCheckAppMount(
                   "/companies/" +
                     storedCompany.companyId +
                     "/frameworks/" +
-                    DataTypeEnum.Esgquestionnaire +
+                    DataTypeEnum.EsgQuestionnaire +
                     "/upload?templateDataId=" +
                     dataMetaInformation.dataId,
                 );
                 cy.wait("@fetchDataForPrefill", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-                cy.get("h1").should("contain", testCompanyNameEsgquestionnaire);
+                cy.get("h1").should("contain", testCompanyNameEsgQuestionnaire);
                 cy.intercept({
-                  url: `**/api/data/${DataTypeEnum.Esgquestionnaire}`,
+                  url: `**/api/data/${DataTypeEnum.EsgQuestionnaire}`,
                   times: 1,
                 }).as("postCompanyAssociatedData");
                 submitButton.clickButton();
@@ -76,22 +76,22 @@ describeIf(
                     cy.url().should("eq", getBaseUrl() + "/datasets");
                     const dataMetaInformationOfReuploadedDataset = postInterception.response
                       ?.body as DataMetaInformation;
-                    return new EsgquestionnaireDataControllerApi(new Configuration({ accessToken: token }))
-                      .getCompanyAssociatedEsgquestionnaireData(dataMetaInformationOfReuploadedDataset.dataId)
+                    return new EsgQuestionnaireDataControllerApi(new Configuration({ accessToken: token }))
+                      .getCompanyAssociatedEsgQuestionnaireData(dataMetaInformationOfReuploadedDataset.dataId)
                       .then((axiosResponse) => {
-                        const frontendSubmittedEsgquestionnaireDataset = axiosResponse.data.data;
+                        const frontendSubmittedEsgQuestionnaireDataset = axiosResponse.data.data;
 
                         esgquestionnaireFixtureForTest.t.allgemein?.sektoren?.auflistungDerSektoren?.sort();
                         esgquestionnaireFixtureForTest.t.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten?.sort();
                         esgquestionnaireFixtureForTest.t.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort();
 
-                        frontendSubmittedEsgquestionnaireDataset.allgemein?.sektoren?.auflistungDerSektoren?.sort();
-                        frontendSubmittedEsgquestionnaireDataset.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten?.sort();
-                        frontendSubmittedEsgquestionnaireDataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort();
+                        frontendSubmittedEsgQuestionnaireDataset.allgemein?.sektoren?.auflistungDerSektoren?.sort();
+                        frontendSubmittedEsgQuestionnaireDataset.umwelt?.taxonomie?.euTaxonomieKompassAktivitaeten?.sort();
+                        frontendSubmittedEsgQuestionnaireDataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort();
 
                         compareObjectKeysAndValuesDeep(
                           esgquestionnaireFixtureForTest.t as Record<string, object>,
-                          frontendSubmittedEsgquestionnaireDataset as Record<string, object>,
+                          frontendSubmittedEsgQuestionnaireDataset as Record<string, object>,
                         );
                       });
                   },

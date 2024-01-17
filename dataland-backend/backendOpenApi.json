@@ -633,9 +633,9 @@
     "/data/esg-questionnaire": {
       "post": {
         "tags": [
-          "esgquestionnaire-data-controller"
+          "esg-questionnaire-data-controller"
         ],
-        "operationId": "postCompanyAssociatedEsgquestionnaireData",
+        "operationId": "postCompanyAssociatedEsgQuestionnaireData",
         "parameters": [
           {
             "name": "bypassQa",
@@ -651,7 +651,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CompanyAssociatedDataEsgquestionnaireData"
+                "$ref": "#/components/schemas/CompanyAssociatedDataEsgQuestionnaireData"
               }
             }
           },
@@ -2276,9 +2276,9 @@
     "/data/esg-questionnaire/{dataId}": {
       "get": {
         "tags": [
-          "esgquestionnaire-data-controller"
+          "esg-questionnaire-data-controller"
         ],
-        "operationId": "getCompanyAssociatedEsgquestionnaireData",
+        "operationId": "getCompanyAssociatedEsgQuestionnaireData",
         "parameters": [
           {
             "name": "dataId",
@@ -2295,7 +2295,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataEsgquestionnaireData"
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEsgQuestionnaireData"
                 }
               }
             }
@@ -2334,9 +2334,9 @@
     "/data/esg-questionnaire/companies/{companyId}": {
       "get": {
         "tags": [
-          "esgquestionnaire-data-controller"
+          "esg-questionnaire-data-controller"
         ],
-        "operationId": "getAllCompanyEsgquestionnaireData",
+        "operationId": "getAllCompanyEsgQuestionnaireData",
         "parameters": [
           {
             "name": "companyId",
@@ -2372,7 +2372,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DataAndMetaInformationEsgquestionnaireData"
+                    "$ref": "#/components/schemas/DataAndMetaInformationEsgQuestionnaireData"
                   }
                 }
               }
@@ -9212,7 +9212,7 @@
           }
         }
       },
-      "CompanyAssociatedDataEsgquestionnaireData": {
+      "CompanyAssociatedDataEsgQuestionnaireData": {
         "required": [
           "companyId",
           "data",
@@ -9227,19 +9227,19 @@
             "type": "string"
           },
           "data": {
-            "$ref": "#/components/schemas/EsgquestionnaireData"
+            "$ref": "#/components/schemas/EsgQuestionnaireData"
           }
         },
         "example": "{\n  \"companyId\": \"string\",\n  \"reportingPeriod\": \"2022\",\n  \"data\": {\n    \"general\": {\n      \"masterData\": {\n        \"berichtspflichtUndEinwilligungZurVeroeffentlichung\": \"Yes\",\n        \"gueltigkeitsDatum\": \"2022-12-31\"\n      }\n    },\n    \"allgemein\": {\n      \"esgZiele\": {\n        \"existenzVonEsgZielen\": \"Yes\",\n        \"beschreibungDerEsgZiele\": \"Transitioning to energy consumption from 100% renewable resources\",\n        \"investitionenInZielerreichung\": \"50000 EUR\"\n      },\n      \"sektoren\": {\n        \"sektorenMitHohenKlimaauswirkungen\": \"Yes\",\n        \"auflistungDerSektoren\": [\n          \"GHandelInstandhaltungUndReparaturVonKraftfahrzeugen\",\n          \"LGrundstuecksUndWohnungswesen\"\n        ]\n      },\n      \"esgBerichte\": {\n        \"nachhaltigkeitsberichte\": \"Yes\",\n        \"frequenzDerBerichterstattung\": \"Halbjaehrlich\",\n        \"aktuelleBerichte\": [\n          {\n            \"value\": \"Bayer Geschäftsbericht 2022\",\n            \"dataSource\": {\n              \"fileName\": \"Bayer-Geschaeftsbericht-2022\",\n              \"fileReference\": \"3bbdc1879acbc211af4b87a8593cfd7523adedd7100ca59326df05f8adbfe881\"\n            }\n          }\n        ]\n      },\n      \"akkreditierungen\": {\n        \"iso14001\": {\n          \"value\": \"Yes\",\n          \"dataSource\": {\n            \"fileName\": \"\",\n            \"fileReference\": \"\"\n          }\n        },\n        \"iso45001\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"iso27001\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"iso50001\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"weitereAkkreditierungen\": [\n          {\n            \"value\": \"Data quality\",\n            \"dataSource\": {\n              \"fileName\": \"Data_Quality_1_28_2019_FINAL_1\",\n              \"fileReference\": \"21567034fc692753175270d7eadeb135e9e885c77f71b79358a1fb897d992a7d\"\n            }\n          }\n        ]\n      },\n      \"unGlobalConceptPrinzipien\": {\n        \"mechanismenZurUeberwachungDerEinhaltungDerUngcp\": \"No\",\n        \"richtlinienZurEinhaltungDerUngcp\": null,\n        \"erklaerungDerEinhaltungDerUngcp\": null\n      },\n      \"oecdLeitsaetze\": {\n        \"mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze\": \"Yes\",\n        \"richtlinienZurEinhaltungDerOecdLeitsaetze\": [\n          {\n            \"value\": \"Annual report\",\n            \"dataSource\": {\n              \"fileName\": \"Bayer-Geschaeftsbericht-2022\",\n              \"fileReference\": \"3bbdc1879acbc211af4b87a8593cfd7523adedd7100ca59326df05f8adbfe881\"\n            }\n          }\n        ],\n        \"erklaerungDerEinhaltungDerOecdLeitsaetze\": \"Erklärung der Einhaltung\"\n      },\n      \"sonstige\": {\n        \"ausrichtungAufDieUnSdgsUndAktivesVerfolgen\": \"n/a\",\n        \"ausschlusslistenAufBasisVonEsgKriterien\": \"Yes\",\n        \"ausschlusslisten\": \"controversial weapons, tobacco, alcohol, gambling, adult entertainment, fossil fuels\"\n      },\n      \"fuehrungsstandards\": {\n        \"oekologischeSozialeFuehrungsstandardsOderPrinzipien\": \"Yes\",\n        \"anreizmechanismenFuerDasManagementUmwelt\": \"JaGeschaeftsleitung\",\n        \"anreizmechanismenFuerDasManagementSoziales\": \"JaAufsichtsrat\"\n      },\n      \"rechtsstreitigkeiten\": {\n        \"esgBezogeneRechtsstreitigkeiten\": \"Yes\",\n        \"rechtsstreitigkeitenMitBezugZuE\": \"Yes\",\n        \"statusZuE\": \"Geklaert\",\n        \"einzelheitenZuDenRechtsstreitigkeitenZuE\": \"Wasserverschmutzung\",\n        \"rechtsstreitigkeitenMitBezugZuS\": \"No\",\n        \"statusZuS\": null,\n        \"einzelheitenZuDenRechtsstreitigkeitenZuS\": null,\n        \"rechtsstreitigkeitenMitBezugZuG\": \"No\",\n        \"statusZuG\": null,\n        \"einzelheitenZuDenRechtsstreitigkeitenZuG\": null\n      },\n      \"rating\": {\n        \"esgRating\": \"Yes\",\n        \"agentur\": \"MSCI\",\n        \"ergebnis\": \"A\",\n        \"ratingbericht\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"kritischePunkte\": \"n/a\"\n      },\n      \"anleihen\": {\n        \"grueneSozialeUndOderNachhaltigeEmissionen\": \"Yes\",\n        \"ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen\": 10000,\n        \"sustainibilityLinkedDebt\": \"Yes\",\n        \"ausstehendeSustainibilityLinkedDebt\": 20000\n      },\n      \"risiken\": {\n        \"wichtigsteESUndGRisikenUndBewertung\": \"Risiken und Bewertung\",\n        \"hindernisseBeimUmgangMitEsgBedenken\": \"Hindernisse 1, Hindernisse 2\"\n      }\n    },\n    \"umwelt\": {\n      \"treibhausgasemissionen\": {\n        \"treibhausgasBerichterstattungUndPrognosen\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            },\n            \"2020\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            },\n            \"2021\": {\n              \"scope1\": 305000,\n              \"scope2\": 51900,\n              \"scope3\": 223000\n            },\n            \"2022\": {\n              \"scope1\": 351000,\n              \"scope2\": 195000,\n              \"scope3\": 405000\n            },\n            \"2023\": {\n              \"scope1\": 293000,\n              \"scope2\": 318000,\n              \"scope3\": 561000\n            },\n            \"2024\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            },\n            \"2025\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            }\n          }\n        },\n        \"treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird\": \"223000\",\n        \"strategieUndZieleZurReduzierungVonTreibhausgasEmissionen\": \"Strategie und Ziele\"\n      },\n      \"produktion\": {\n        \"produkteZurVerringerungDerUmweltbelastung\": \"Yes\",\n        \"verringerungenDerUmweltbelastung\": null,\n        \"oekologischerMindestStandardFuerProduktionsprozesse\": \"No\"\n      },\n      \"energieverbrauch\": {\n        \"berichterstattungEnergieverbrauch\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2020\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2021\": {\n              \"energieverbrauch\": 195000,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": 25,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2022\": {\n              \"energieverbrauch\": 561000,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": 70,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2023\": {\n              \"energieverbrauch\": 51900,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": 100,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": 5\n            },\n            \"2024\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2025\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglEnergieverbrauch\": null\n      },\n      \"energieeffizienzImmobilienanlagen\": {\n        \"berichterstattungEnergieverbrauchVonImmobilienvermoegen\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            },\n            \"2020\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            },\n            \"2021\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": 30\n            },\n            \"2022\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": 70\n            },\n            \"2023\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": 90\n            },\n            \"2024\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            },\n            \"2025\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen\": null\n      },\n      \"wasserverbrauch\": {\n        \"berichterstattungWasserverbrauch\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            },\n            \"2020\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            },\n            \"2021\": {\n              \"wasserverbrauch\": 30000,\n              \"emissionenInWasser\": 5\n            },\n            \"2022\": {\n              \"wasserverbrauch\": 15000,\n              \"emissionenInWasser\": 0\n            },\n            \"2023\": {\n              \"wasserverbrauch\": 10000,\n              \"emissionenInWasser\": 0\n            },\n            \"2024\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            },\n            \"2025\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglWasserverbrauch\": null\n      },\n      \"abfallproduktion\": {\n        \"berichterstattungAbfallproduktion\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            },\n            \"2020\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            },\n            \"2021\": {\n              \"gesamteAbfallmenge\": 30,\n              \"prozentAbfallRecyclet\": 15,\n              \"prozentGefaehrlicherAbfall\": 0\n            },\n            \"2022\": {\n              \"gesamteAbfallmenge\": 20,\n              \"prozentAbfallRecyclet\": 47,\n              \"prozentGefaehrlicherAbfall\": 0\n            },\n            \"2023\": {\n              \"gesamteAbfallmenge\": 10,\n              \"prozentAbfallRecyclet\": 68,\n              \"prozentGefaehrlicherAbfall\": 0\n            },\n            \"2024\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            },\n            \"2025\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglAbfallproduktion\": null,\n        \"recyclingImProduktionsprozess\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            },\n            \"2020\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            },\n            \"2021\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": 0\n            },\n            \"2022\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": 0\n            },\n            \"2023\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": 0\n            },\n            \"2024\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            },\n            \"2025\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            }\n          }\n        },\n        \"gefaehrlicherAbfall\": \"0\"\n      },\n      \"biodiversitaet\": {\n        \"negativeAktivitaetenFuerDieBiologischeVielfalt\": \"No\",\n        \"negativeMassnahmenFuerDieBiologischeVielfalt\": null,\n        \"positiveAktivitaetenFuerDieBiologischeVielfalt\": \"Yes\",\n        \"positiveMassnahmenFuerDieBiologischeVielfalt\": \"Positive Maßnahme\"\n      },\n      \"fossileBrennstoffe\": {\n        \"einnahmenAusFossilenBrennstoffen\": \"Yes\",\n        \"berichterstattungEinnahmenAusFossilenBrennstoffen\": {\n          \"currentYear\": 2022,\n          \"yearlyData\": {\n            \"2019\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            },\n            \"2020\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            },\n            \"2021\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": 60\n            },\n            \"2022\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": 15\n            },\n            \"2023\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": 0\n            },\n            \"2024\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            },\n            \"2025\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            }\n          }\n        }\n      },\n      \"taxonomie\": {\n        \"taxonomieBerichterstattung\": \"Nfrd\",\n        \"euTaxonomieKompassAktivitaeten\": [\n          \"ForestManagement\",\n          \"ManufactureOfLowCarbonTechnologiesForTransport\",\n          \"ManufactureOfIronAndSteel\"\n        ],\n        \"umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            },\n            \"2020\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            },\n            \"2021\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": 25,\n              \"taxonomieGeeignetNachProzentCapex\": 7,\n              \"taxonomieKonformNachProzentUmsatz\": 15,\n              \"taxonomieKonformNachProzentCapex\": 5\n            },\n            \"2022\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": 56,\n              \"taxonomieGeeignetNachProzentCapex\": 8,\n              \"taxonomieKonformNachProzentUmsatz\": 18,\n              \"taxonomieKonformNachProzentCapex\": 6\n            },\n            \"2023\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": 70,\n              \"taxonomieGeeignetNachProzentCapex\": 14,\n              \"taxonomieKonformNachProzentUmsatz\": 24,\n              \"taxonomieKonformNachProzentCapex\": 10\n            },\n            \"2024\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            },\n            \"2025\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            }\n          }\n        }\n      }\n    },\n    \"soziales\": {\n      \"unternehmensstrukturaenderungen\": {\n        \"vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur\": \"Yes\",\n        \"anzahlUnbefristeterVertraegeInDeutschland\": 543,\n        \"anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland\": 63,\n        \"anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland\": 34,\n        \"anzahlUnbefristeterVertraegeInDerGesamtgruppe\": 453,\n        \"anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe\": 75,\n        \"anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe\": 967,\n        \"auswirkungenAufAnteilBefristerVertraegeUndFluktuation\": {\n          \"currentYear\": 2022,\n          \"yearlyData\": {\n            \"2019\": {\n              \"anzahlDerBefristetenVertraege\": null,\n              \"fluktuation\": null\n            },\n            \"2020\": {\n              \"anzahlDerBefristetenVertraege\": null,\n              \"fluktuation\": null\n            },\n            \"2021\": {\n              \"anzahlDerBefristetenVertraege\": 456,\n              \"fluktuation\": 24\n            },\n            \"2022\": {\n              \"anzahlDerBefristetenVertraege\": 477,\n              \"fluktuation\": 57\n            }\n          }\n        }\n      },\n      \"sicherheitUndWeiterbildung\": {\n        \"sicherheitsmassnahmenFuerMitarbeiter\": \"Sicherheitsmaßnahme\",\n        \"unfallrate\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": null\n            },\n            \"2020\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": null\n            },\n            \"2021\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": 8\n            },\n            \"2022\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": 3\n            }\n          }\n        },\n        \"budgetFuerSchulungAusbildung\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"budgetProMitarbeiter\": null\n            },\n            \"2020\": {\n              \"budgetProMitarbeiter\": null\n            },\n            \"2021\": {\n              \"budgetProMitarbeiter\": 500\n            },\n            \"2022\": {\n              \"budgetProMitarbeiter\": 1000\n            }\n          }\n        }\n      },\n      \"einkommensgleichheit\": {\n        \"ueberwachungDerEinkommensungleichheit\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": null,\n              \"einkommensungleichheitsverhaeltnis\": null,\n              \"ceoEinkommensungleichheitsverhaeltnis\": null\n            },\n            \"2020\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": null,\n              \"einkommensungleichheitsverhaeltnis\": null,\n              \"ceoEinkommensungleichheitsverhaeltnis\": null\n            },\n            \"2021\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": 45,\n              \"einkommensungleichheitsverhaeltnis\": 23,\n              \"ceoEinkommensungleichheitsverhaeltnis\": 12\n            },\n            \"2022\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": 34,\n              \"einkommensungleichheitsverhaeltnis\": 34,\n              \"ceoEinkommensungleichheitsverhaeltnis\": 76\n            }\n          }\n        },\n        \"massnahmenZurVerbesserungDerEinkommensungleichheit\": null\n      },\n      \"geschlechterdiversitaet\": {\n        \"mitarbeiterAufTopManagementEbene\": 2,\n        \"frauenAufTopManagementEbene\": 6,\n        \"mitgliederGeschaeftsfuehrung\": 4671,\n        \"frauenInDerGeschaeftsfuehrung\": 2,\n        \"definitionTopManagement\": \"Definition \",\n        \"einhaltungRechtlicherVorgaben\": null\n      },\n      \"audit\": {\n        \"auditsZurEinhaltungVonArbeitsstandards\": \"Yes\",\n        \"artDesAudits\": \"PruefungDurchDritte\",\n        \"auditErgebnisse\": \"\"\n      }\n    },\n    \"unternehmensfuehrungGovernance\": {\n      \"aufsichtsrat\": {\n        \"anzahlDerMitgliederImAufsichtsrat\": 34,\n        \"anzahlUnabhaengigerMitgliederImAufsichtsrat\": 23,\n        \"anzahlVonFrauenImAufsichtsrat\": 15\n      },\n      \"verguetungsausschuss\": {\n        \"anzahlDerMitgliederImVerguetungsausschuss\": 36,\n        \"anzahlUnabhaengigerMitgliederImVerguetungsausschuss\": null,\n        \"anzahlVonFrauenImVerguetungsausschuss\": null\n      },\n      \"nominierungsausschuss\": {\n        \"anzahlDerMitgliederImNominierungsausschuss\": 43,\n        \"anzahlUnabhaengigerMitgliederImNominierungsausschuss\": null,\n        \"anzahlVonFrauenImVerguetungsausschuss\": 23\n      },\n      \"pruefungsausschuss\": {\n        \"anzahlDerMitgliederImPruefungsausschuss\": 41,\n        \"anzahlUnabhaengigerMitgliederImPruefungsausschuss\": 35,\n        \"anzahlVonFrauenImPruefungsausschuss\": null\n      },\n      \"nachhaltigkeitsausschuss\": {\n        \"anzahlDerMitgliederImNachhaltigkeitsausschuss\": 12,\n        \"anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss\": 4,\n        \"anzahlVonFrauenImNachhaltigkeitsausschuss\": 4\n      },\n      \"sonstige\": {\n        \"wirtschaftspruefer\": \"John Doe\",\n        \"trennungVonCeoOderVorsitzenden\": \"Yes\",\n        \"amtszeitBisZurTrennung\": \"4\"\n      },\n      \"stakeholder\": {\n        \"einbeziehungVonStakeholdern\": \"Yes\",\n        \"prozessDerEinbeziehungVonStakeholdern\": \"Prozess\",\n        \"mechanismenZurAusrichtungAufStakeholder\": null\n      },\n      \"unternehmensrichtlinien\": {\n        \"veroeffentlichteUnternehmensrichtlinien\": [\n          \"Verhaltenskodex\",\n          \"Zwangsarbeit\",\n          \"MgtVonUmweltgefahren\"\n        ],\n        \"weitereVeroeffentlicheUnternehmensrichtlinien\": \"Keine\"\n      },\n      \"lieferantenauswahl\": {\n        \"esgKriterienUndUeberwachungDerLieferanten\": \"Yes\",\n        \"auswahlkriterien\": null\n      }\n    }\n  }\n}"
       },
-      "EsgquestionnaireAllgemein": {
+      "EsgQuestionnaireAllgemein": {
         "type": "object",
         "properties": {
           "esgZiele": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinEsgZiele"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinEsgZiele"
               }
             ]
           },
@@ -9247,7 +9247,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinSektoren"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinSektoren"
               }
             ]
           },
@@ -9255,7 +9255,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinEsgBerichte"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinEsgBerichte"
               }
             ]
           },
@@ -9263,7 +9263,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinAkkreditierungen"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinAkkreditierungen"
               }
             ]
           },
@@ -9271,7 +9271,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinUnGlobalConceptPrinzipien"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinUnGlobalConceptPrinzipien"
               }
             ]
           },
@@ -9279,7 +9279,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinOecdLeitsaetze"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinOecdLeitsaetze"
               }
             ]
           },
@@ -9287,7 +9287,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinSonstige"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinSonstige"
               }
             ]
           },
@@ -9295,7 +9295,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinFuehrungsstandards"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinFuehrungsstandards"
               }
             ]
           },
@@ -9303,7 +9303,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinRechtsstreitigkeiten"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRechtsstreitigkeiten"
               }
             ]
           },
@@ -9311,7 +9311,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinRating"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRating"
               }
             ]
           },
@@ -9319,7 +9319,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinAnleihen"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinAnleihen"
               }
             ]
           },
@@ -9327,13 +9327,13 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireAllgemeinRisiken"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRisiken"
               }
             ]
           }
         }
       },
-      "EsgquestionnaireAllgemeinAkkreditierungen": {
+      "EsgQuestionnaireAllgemeinAkkreditierungen": {
         "type": "object",
         "properties": {
           "iso14001": {
@@ -9377,7 +9377,7 @@
           }
         }
       },
-      "EsgquestionnaireAllgemeinAnleihen": {
+      "EsgQuestionnaireAllgemeinAnleihen": {
         "type": "object",
         "properties": {
           "grueneSozialeUndOderNachhaltigeEmissionen": {
@@ -9406,7 +9406,7 @@
           }
         }
       },
-      "EsgquestionnaireAllgemeinEsgBerichte": {
+      "EsgQuestionnaireAllgemeinEsgBerichte": {
         "type": "object",
         "properties": {
           "nachhaltigkeitsberichte": {
@@ -9434,7 +9434,7 @@
           }
         }
       },
-      "EsgquestionnaireAllgemeinEsgZiele": {
+      "EsgQuestionnaireAllgemeinEsgZiele": {
         "type": "object",
         "properties": {
           "existenzVonEsgZielen": {
@@ -9455,7 +9455,7 @@
           }
         }
       },
-      "EsgquestionnaireAllgemeinFuehrungsstandards": {
+      "EsgQuestionnaireAllgemeinFuehrungsstandards": {
         "type": "object",
         "properties": {
           "oekologischeSozialeFuehrungsstandardsOderPrinzipien": {
@@ -9484,7 +9484,7 @@
           }
         }
       },
-      "EsgquestionnaireAllgemeinOecdLeitsaetze": {
+      "EsgQuestionnaireAllgemeinOecdLeitsaetze": {
         "type": "object",
         "properties": {
           "mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze": {
@@ -9508,7 +9508,7 @@
           }
         }
       },
-      "EsgquestionnaireAllgemeinRating": {
+      "EsgQuestionnaireAllgemeinRating": {
         "type": "object",
         "properties": {
           "esgRating": {
@@ -9541,7 +9541,7 @@
           }
         }
       },
-      "EsgquestionnaireAllgemeinRechtsstreitigkeiten": {
+      "EsgQuestionnaireAllgemeinRechtsstreitigkeiten": {
         "type": "object",
         "properties": {
           "esgBezogeneRechtsstreitigkeiten": {
@@ -9614,7 +9614,7 @@
           }
         }
       },
-      "EsgquestionnaireAllgemeinRisiken": {
+      "EsgQuestionnaireAllgemeinRisiken": {
         "type": "object",
         "properties": {
           "wichtigsteESUndGRisikenUndBewertung": {
@@ -9627,7 +9627,7 @@
           }
         }
       },
-      "EsgquestionnaireAllgemeinSektoren": {
+      "EsgQuestionnaireAllgemeinSektoren": {
         "type": "object",
         "properties": {
           "sektorenMitHohenKlimaauswirkungen": {
@@ -9647,7 +9647,7 @@
           }
         }
       },
-      "EsgquestionnaireAllgemeinSonstige": {
+      "EsgQuestionnaireAllgemeinSonstige": {
         "type": "object",
         "properties": {
           "ausrichtungAufDieUnSdgsUndAktivesVerfolgen": {
@@ -9668,7 +9668,7 @@
           }
         }
       },
-      "EsgquestionnaireAllgemeinUnGlobalConceptPrinzipien": {
+      "EsgQuestionnaireAllgemeinUnGlobalConceptPrinzipien": {
         "type": "object",
         "properties": {
           "mechanismenZurUeberwachungDerEinhaltungDerUngcp": {
@@ -9692,14 +9692,14 @@
           }
         }
       },
-      "EsgquestionnaireData": {
+      "EsgQuestionnaireData": {
         "type": "object",
         "properties": {
           "general": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireGeneral"
+                "$ref": "#/components/schemas/EsgQuestionnaireGeneral"
               }
             ]
           },
@@ -9707,7 +9707,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireAllgemein"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemein"
               }
             ]
           },
@@ -9715,7 +9715,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUmwelt"
+                "$ref": "#/components/schemas/EsgQuestionnaireUmwelt"
               }
             ]
           },
@@ -9723,7 +9723,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireSoziales"
+                "$ref": "#/components/schemas/EsgQuestionnaireSoziales"
               }
             ]
           },
@@ -9731,26 +9731,26 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernance"
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrungGovernance"
               }
             ]
           }
         }
       },
-      "EsgquestionnaireGeneral": {
+      "EsgQuestionnaireGeneral": {
         "type": "object",
         "properties": {
           "masterData": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireGeneralMasterData"
+                "$ref": "#/components/schemas/EsgQuestionnaireGeneralMasterData"
               }
             ]
           }
         }
       },
-      "EsgquestionnaireGeneralMasterData": {
+      "EsgQuestionnaireGeneralMasterData": {
         "required": [
           "berichtspflichtUndEinwilligungZurVeroeffentlichung"
         ],
@@ -9766,14 +9766,14 @@
           }
         }
       },
-      "EsgquestionnaireSoziales": {
+      "EsgQuestionnaireSoziales": {
         "type": "object",
         "properties": {
           "unternehmensstrukturaenderungen": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireSozialesUnternehmensstrukturaenderungen"
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesUnternehmensstrukturaenderungen"
               }
             ]
           },
@@ -9781,7 +9781,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireSozialesSicherheitUndWeiterbildung"
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesSicherheitUndWeiterbildung"
               }
             ]
           },
@@ -9789,7 +9789,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireSozialesEinkommensgleichheit"
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesEinkommensgleichheit"
               }
             ]
           },
@@ -9797,7 +9797,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireSozialesGeschlechterdiversitaet"
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesGeschlechterdiversitaet"
               }
             ]
           },
@@ -9805,13 +9805,13 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireSozialesAudit"
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesAudit"
               }
             ]
           }
         }
       },
-      "EsgquestionnaireSozialesAudit": {
+      "EsgQuestionnaireSozialesAudit": {
         "type": "object",
         "properties": {
           "auditsZurEinhaltungVonArbeitsstandards": {
@@ -9836,7 +9836,7 @@
           }
         }
       },
-      "EsgquestionnaireSozialesEinkommensgleichheit": {
+      "EsgQuestionnaireSozialesEinkommensgleichheit": {
         "type": "object",
         "properties": {
           "ueberwachungDerEinkommensungleichheit": {
@@ -9853,7 +9853,7 @@
           }
         }
       },
-      "EsgquestionnaireSozialesGeschlechterdiversitaet": {
+      "EsgQuestionnaireSozialesGeschlechterdiversitaet": {
         "type": "object",
         "properties": {
           "mitarbeiterAufTopManagementEbene": {
@@ -9882,7 +9882,7 @@
           }
         }
       },
-      "EsgquestionnaireSozialesSicherheitUndWeiterbildung": {
+      "EsgQuestionnaireSozialesSicherheitUndWeiterbildung": {
         "type": "object",
         "properties": {
           "sicherheitsmassnahmenFuerMitarbeiter": {
@@ -9907,7 +9907,7 @@
           }
         }
       },
-      "EsgquestionnaireSozialesUnternehmensstrukturaenderungen": {
+      "EsgQuestionnaireSozialesUnternehmensstrukturaenderungen": {
         "type": "object",
         "properties": {
           "vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur": {
@@ -9952,14 +9952,14 @@
           }
         }
       },
-      "EsgquestionnaireUmwelt": {
+      "EsgQuestionnaireUmwelt": {
         "type": "object",
         "properties": {
           "treibhausgasemissionen": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUmweltTreibhausgasemissionen"
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltTreibhausgasemissionen"
               }
             ]
           },
@@ -9967,7 +9967,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUmweltProduktion"
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltProduktion"
               }
             ]
           },
@@ -9975,7 +9975,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUmweltEnergieverbrauch"
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltEnergieverbrauch"
               }
             ]
           },
@@ -9983,7 +9983,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUmweltEnergieeffizienzImmobilienanlagen"
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltEnergieeffizienzImmobilienanlagen"
               }
             ]
           },
@@ -9991,7 +9991,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUmweltWasserverbrauch"
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltWasserverbrauch"
               }
             ]
           },
@@ -9999,7 +9999,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUmweltAbfallproduktion"
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltAbfallproduktion"
               }
             ]
           },
@@ -10007,7 +10007,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUmweltBiodiversitaet"
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltBiodiversitaet"
               }
             ]
           },
@@ -10015,7 +10015,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUmweltFossileBrennstoffe"
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltFossileBrennstoffe"
               }
             ]
           },
@@ -10023,13 +10023,13 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUmweltTaxonomie"
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltTaxonomie"
               }
             ]
           }
         }
       },
-      "EsgquestionnaireUmweltAbfallproduktion": {
+      "EsgQuestionnaireUmweltAbfallproduktion": {
         "type": "object",
         "properties": {
           "berichterstattungAbfallproduktion": {
@@ -10058,7 +10058,7 @@
           }
         }
       },
-      "EsgquestionnaireUmweltBiodiversitaet": {
+      "EsgQuestionnaireUmweltBiodiversitaet": {
         "type": "object",
         "properties": {
           "negativeAktivitaetenFuerDieBiologischeVielfalt": {
@@ -10087,7 +10087,7 @@
           }
         }
       },
-      "EsgquestionnaireUmweltEnergieeffizienzImmobilienanlagen": {
+      "EsgQuestionnaireUmweltEnergieeffizienzImmobilienanlagen": {
         "type": "object",
         "properties": {
           "berichterstattungEnergieverbrauchVonImmobilienvermoegen": {
@@ -10104,7 +10104,7 @@
           }
         }
       },
-      "EsgquestionnaireUmweltEnergieverbrauch": {
+      "EsgQuestionnaireUmweltEnergieverbrauch": {
         "type": "object",
         "properties": {
           "berichterstattungEnergieverbrauch": {
@@ -10121,7 +10121,7 @@
           }
         }
       },
-      "EsgquestionnaireUmweltFossileBrennstoffe": {
+      "EsgQuestionnaireUmweltFossileBrennstoffe": {
         "type": "object",
         "properties": {
           "einnahmenAusFossilenBrennstoffen": {
@@ -10142,7 +10142,7 @@
           }
         }
       },
-      "EsgquestionnaireUmweltProduktion": {
+      "EsgQuestionnaireUmweltProduktion": {
         "type": "object",
         "properties": {
           "produkteZurVerringerungDerUmweltbelastung": {
@@ -10167,7 +10167,7 @@
           }
         }
       },
-      "EsgquestionnaireUmweltTaxonomie": {
+      "EsgQuestionnaireUmweltTaxonomie": {
         "type": "object",
         "properties": {
           "taxonomieBerichterstattung": {
@@ -10195,7 +10195,7 @@
           }
         }
       },
-      "EsgquestionnaireUmweltTreibhausgasemissionen": {
+      "EsgQuestionnaireUmweltTreibhausgasemissionen": {
         "type": "object",
         "properties": {
           "treibhausgasBerichterstattungUndPrognosen": {
@@ -10216,7 +10216,7 @@
           }
         }
       },
-      "EsgquestionnaireUmweltWasserverbrauch": {
+      "EsgQuestionnaireUmweltWasserverbrauch": {
         "type": "object",
         "properties": {
           "berichterstattungWasserverbrauch": {
@@ -10233,14 +10233,14 @@
           }
         }
       },
-      "EsgquestionnaireUnternehmensfuehrungGovernance": {
+      "EsgQuestionnaireUnternehmensfuehrungGovernance": {
         "type": "object",
         "properties": {
           "aufsichtsrat": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceAufsichtsrat"
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceAufsichtsrat"
               }
             ]
           },
@@ -10248,7 +10248,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceVerguetungsausschuss"
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceVerguetungsausschuss"
               }
             ]
           },
@@ -10256,7 +10256,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceNominierungsausschuss"
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceNominierungsausschuss"
               }
             ]
           },
@@ -10264,7 +10264,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernancePruefungsausschuss"
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernancePruefungsausschuss"
               }
             ]
           },
@@ -10272,7 +10272,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceNachhaltigkeitsausschuss"
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceNachhaltigkeitsausschuss"
               }
             ]
           },
@@ -10280,7 +10280,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceSonstige"
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceSonstige"
               }
             ]
           },
@@ -10288,7 +10288,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceStakeholder"
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceStakeholder"
               }
             ]
           },
@@ -10296,7 +10296,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceUnternehmensrichtlinien"
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceUnternehmensrichtlinien"
               }
             ]
           },
@@ -10304,13 +10304,13 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EsgquestionnaireUnternehmensfuehrungGovernanceLieferantenauswahl"
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceLieferantenauswahl"
               }
             ]
           }
         }
       },
-      "EsgquestionnaireUnternehmensfuehrungGovernanceAufsichtsrat": {
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceAufsichtsrat": {
         "type": "object",
         "properties": {
           "anzahlDerMitgliederImAufsichtsrat": {
@@ -10327,7 +10327,7 @@
           }
         }
       },
-      "EsgquestionnaireUnternehmensfuehrungGovernanceLieferantenauswahl": {
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceLieferantenauswahl": {
         "type": "object",
         "properties": {
           "esgKriterienUndUeberwachungDerLieferanten": {
@@ -10344,7 +10344,7 @@
           }
         }
       },
-      "EsgquestionnaireUnternehmensfuehrungGovernanceNachhaltigkeitsausschuss": {
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceNachhaltigkeitsausschuss": {
         "type": "object",
         "properties": {
           "anzahlDerMitgliederImNachhaltigkeitsausschuss": {
@@ -10361,7 +10361,7 @@
           }
         }
       },
-      "EsgquestionnaireUnternehmensfuehrungGovernanceNominierungsausschuss": {
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceNominierungsausschuss": {
         "type": "object",
         "properties": {
           "anzahlDerMitgliederImNominierungsausschuss": {
@@ -10378,7 +10378,7 @@
           }
         }
       },
-      "EsgquestionnaireUnternehmensfuehrungGovernancePruefungsausschuss": {
+      "EsgQuestionnaireUnternehmensfuehrunggovernancePruefungsausschuss": {
         "type": "object",
         "properties": {
           "anzahlDerMitgliederImPruefungsausschuss": {
@@ -10395,7 +10395,7 @@
           }
         }
       },
-      "EsgquestionnaireUnternehmensfuehrungGovernanceSonstige": {
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceSonstige": {
         "type": "object",
         "properties": {
           "wirtschaftspruefer": {
@@ -10416,7 +10416,7 @@
           }
         }
       },
-      "EsgquestionnaireUnternehmensfuehrungGovernanceStakeholder": {
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceStakeholder": {
         "type": "object",
         "properties": {
           "einbeziehungVonStakeholdern": {
@@ -10437,7 +10437,7 @@
           }
         }
       },
-      "EsgquestionnaireUnternehmensfuehrungGovernanceUnternehmensrichtlinien": {
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceUnternehmensrichtlinien": {
         "type": "object",
         "properties": {
           "veroeffentlichteUnternehmensrichtlinien": {
@@ -10453,7 +10453,7 @@
           }
         }
       },
-      "EsgquestionnaireUnternehmensfuehrungGovernanceVerguetungsausschuss": {
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceVerguetungsausschuss": {
         "type": "object",
         "properties": {
           "anzahlDerMitgliederImVerguetungsausschuss": {
@@ -11010,7 +11010,7 @@
           }
         }
       },
-      "DataAndMetaInformationEsgquestionnaireData": {
+      "DataAndMetaInformationEsgQuestionnaireData": {
         "required": [
           "data",
           "metaInfo"
@@ -11021,7 +11021,7 @@
             "$ref": "#/components/schemas/DataMetaInformation"
           },
           "data": {
-            "$ref": "#/components/schemas/EsgquestionnaireData"
+            "$ref": "#/components/schemas/EsgQuestionnaireData"
           }
         }
       },

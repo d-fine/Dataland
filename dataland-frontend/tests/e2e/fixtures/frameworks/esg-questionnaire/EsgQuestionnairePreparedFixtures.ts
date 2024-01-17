@@ -1,13 +1,13 @@
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type BerichterstattungEnergieverbrauchValues, type EsgquestionnaireData, YesNo } from "@clients/backend";
-import { generateEsgquestionnaireFixtures } from "./EsgquestionnaireDataFixtures";
+import { type BerichterstattungEnergieverbrauchValues, type EsgQuestionnaireData, YesNo } from "@clients/backend";
+import { generateEsgQuestionnaireFixtures } from "./EsgQuestionnaireDataFixtures";
 
 /**
- * Generates esgquestionnaire prepared fixtures by generating random esgquestionnaire datasets and
+ * Generates gdv prepared fixtures by generating random gdv datasets and
  * afterwards manipulating some fields via manipulator-functions to set specific values for those fields.
  * @returns the prepared fixtures
  */
-export function generateEsgquestionnairePreparedFixtures(): Array<FixtureData<EsgquestionnaireData>> {
+export function generateEsgQuestionnairePreparedFixtures(): Array<FixtureData<EsgQuestionnaireData>> {
   const preparedFixtures = [];
   // Note: Put the code for prepared fixture generation below. This file will not be overwritten automatically
   preparedFixtures.push(generateFixtureForNoNullFieldsAndOnlyYesAnswers());
@@ -15,12 +15,12 @@ export function generateEsgquestionnairePreparedFixtures(): Array<FixtureData<Es
 }
 
 /**
- * Generates an esg-questionnaire fixture with no null values and all YesNo fields set to "Yes"
+ * Generates a gdv fixture with no null values and all YesNo fields set to "Yes"
  * @returns the fixture
  */
-function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<EsgquestionnaireData> {
-  const newFixture = generateEsgquestionnaireFixtures(1, 0)[0];
-  newFixture.companyInformation.companyName = "Esgquestionnaire-dataset-with-no-null-fields";
+function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<EsgQuestionnaireData> {
+  const newFixture = generateEsgQuestionnaireFixtures(1, 0)[0];
+  newFixture.companyInformation.companyName = "EsgQuestionnaire-dataset-with-no-null-fields";
 
   modifyPreparedFixturesPartOne(newFixture);
   modifyPreparedFixturesPartTwo(newFixture);
@@ -31,7 +31,7 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<Esgquest
  * Modifies the prepared fixtures
  * @param newFixture generated prepared fixture to modify
  */
-function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgquestionnaireData>): void {
+function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgQuestionnaireData>): void {
   if (newFixture.t.general?.masterData) {
     newFixture.t.general.masterData.berichtspflichtUndEinwilligungZurVeroeffentlichung = YesNo.Yes;
   }
@@ -77,7 +77,7 @@ function modifyPreparedFixturesPartOne(newFixture: FixtureData<EsgquestionnaireD
  * Modifies the prepared fixtures
  * @param newFixture generated prepared fixture to modify
  */
-function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgquestionnaireData>): void {
+function modifyPreparedFixturesPartTwo(newFixture: FixtureData<EsgQuestionnaireData>): void {
   if (newFixture.t.allgemein?.rating?.ratingbericht) {
     newFixture.t.allgemein.rating.ratingbericht.value = YesNo.Yes;
   }
