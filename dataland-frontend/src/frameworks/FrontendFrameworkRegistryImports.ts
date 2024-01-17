@@ -3,5 +3,5 @@ import { type FrontendFrameworkDefinition } from "@/frameworks/FrameworkDefiniti
 import esgQuestionnaireFrontendFrameworkDefinition from "@/frameworks/esg-questionnaire/FrontendFrameworkDefinition";
 
 export const FrameworkDefinitions: Record<string, FrontendFrameworkDefinition<object>> = {
-    esgquestionnaire: esgQuestionnaireFrontendFrameworkDefinition,
+  esgQuestionnaire: esgQuestionnaireFrontendFrameworkDefinition,
 };
