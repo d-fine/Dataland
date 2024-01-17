@@ -24,30 +24,32 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      * in one of the company identifiers or the name
      */
     @Query(
-        "SELECT company.companyId as company_id, " +
-            "max(company.companyName) as company_name, " +
+        nativeQuery = true,
+        value = "SELECT company.company_id as company_id, " +
+            "max(company.company_name) as company_name, " +
             "max(company.headquarters) as headquarters, " +
             "max(company.sector) as sector, " +
-            "MIN(permid.identifierValue) AS perm_id " +
-            "FROM (SELECT companyId as companyId, dataRegisteredByDataland as data, companyAlternativeNames as alts, identifiers as ids, companyName as companyName, headquarters as headquarters, sector as sector FROM StoredCompanyEntity WHERE " +
-            "(:#{#searchFilter.sectorFilterSize} = 0 " +
-            "OR (sector in :#{#searchFilter.sectorFilter})) AND " +
-            "(:#{#searchFilter.countryCodeFilterSize} = 0 " +
-            "OR (countryCode in :#{#searchFilter.countryCodeFilter})) " +
-            ") company " +
-            "JOIN company.data data ON company.companyId = data.company.companyId AND " +
-            "(:#{#searchFilter.dataTypeFilterSize} = 0 " +
-            "OR (data.dataType in :#{#searchFilter.dataTypeFilter})) " +
-            "LEFT JOIN company.ids identifier ON identifier.company.companyId = company.companyId AND lower(identifier.identifierValue) LIKE %:#{#searchFilter.searchStringLower}% " +
-            "LEFT JOIN company.ids permid ON identifier.company.companyId = company.companyId AND identifier.identifierType = 'PermId' " +
-            "LEFT JOIN company.alts alternativeName ON lower(alternativeName) LIKE %:#{#searchFilter.searchStringLower}% " +
-            "GROUP BY company.companyId " +
-            "ORDER BY " +
-            "(CASE WHEN lower(company.companyName) = :#{#searchFilter.searchStringLower} THEN 1 " +
-            "WHEN lower(max(alternativeName)) = :#{#searchFilter.searchStringLower} THEN 2 " +
-            "WHEN lower(company.companyName) LIKE :#{#searchFilter.searchStringLower}% THEN 3 " +
-            "WHEN lower(max(alternativeName)) LIKE :#{#searchFilter.searchStringLower}% THEN 4 ELSE 5 END) ASC, " +
-            "max(company.companyName) ASC",
+            "MIN(permid.identifier_value) AS perm_id " +
+            "FROM (SELECT * FROM stored_companies WHERE sector in :#{#searchFilter.sectorFilter} AND country_code in ('DE')) company" +
+            "JOIN (SELECT distinct company_id from data_meta_information where data_type in ('eutaxonomy-financials','eutaxonomy-non-financials','lksg','p2p','sfdr','sme','gdv')) datainfo " +
+            "ON company.company_id = datainfo.company_id " +
+            "LEFT JOIN company_identifiers identifiers  " +
+            "ON company.company_id = identifiers.company_id " +
+            "AND identifiers.identifier_value ILIKE '%e%' " +
+            "LEFT JOIN company_identifiers permid  " +
+            "ON company.company_id = permid.company_id AND permid.identifier_type = 'PermId' " +
+            "LEFT JOIN stored_company_entity_company_alternative_names alt_names  " +
+            "ON company.company_id = alt_names.stored_company_entity_company_id " +
+            "AND alt_names.company_alternative_names ILIKE '%e%' " +
+            "GROUP BY company.company_id " +
+            "ORDER BY CASE " +
+            "WHEN max(company.company_name) ILIKE 'e' THEN 1 " +
+            "WHEN MAX(alt_names.company_alternative_names) ILIKE 'e' THEN 2 " +
+            "WHEN max(company.company_name) ILIKE 'e%' ESCAPE '' THEN 3 " +
+            "WHEN MAX(alt_names.company_alternative_names) ILIKE 'e%' ESCAPE '' THEN 4 " +
+            "ELSE 5 " +
+            "END, " +
+            "max(company.company_name) asc",
     )
     fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<ReducedCompanyEntity>
 
