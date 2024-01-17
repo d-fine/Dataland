@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.model.dataRequest
 
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.entities.MessageRequestEntity
 import org.dataland.datalandcommunitymanager.model.email.EmailContact
 import org.springframework.data.annotation.LastModifiedDate
 
@@ -31,6 +32,8 @@ data class StoredDataRequest(
     val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
 
     val dataRequestCompanyIdentifierValue: String,
+
+    val messageHistory: List<MessageRequestEntity>,
 
     val lastModifiedDate: Long,
 

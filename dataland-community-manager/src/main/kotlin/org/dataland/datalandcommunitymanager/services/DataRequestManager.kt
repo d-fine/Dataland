@@ -6,6 +6,7 @@ import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSuppo
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.MessageRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.*
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -83,6 +84,7 @@ class DataRequestManager(
                 getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
                 dataRequestEntity.dataRequestCompanyIdentifierType,
                 dataRequestEntity.dataRequestCompanyIdentifierValue,
+                dataRequestEntity.messageHistory,
                 dataRequestEntity.lastModifiedDate,
                 dataRequestEntity.requestStatus
             )
@@ -143,6 +145,7 @@ class DataRequestManager(
             getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
             dataRequestEntity.dataRequestCompanyIdentifierType,
             dataRequestEntity.dataRequestCompanyIdentifierValue,
+            dataRequestEntity.messageHistory,
             dataRequestEntity.lastModifiedDate,
             dataRequestEntity.requestStatus
         )
@@ -261,6 +264,20 @@ class DataRequestManager(
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId, bulkDataRequestId)
     }
 
+    private fun buildMessageRequestEntity(
+        contactMails: List<String>,
+        userMessage: String,
+        receivingTime:  Long?
+    ): MessageRequestEntity {
+        return MessageRequestEntity(
+            messageRequestId = UUID.randomUUID().toString(),
+            contactList = contactMails,
+            message = userMessage,
+            updateTimestamp = receivingTime
+        )
+
+    }
+
     private fun buildDataRequestEntity(
         currentUserId: String,
         framework: DataTypeEnum,
@@ -276,6 +293,8 @@ class DataRequestManager(
             dataRequestCompanyIdentifierType = identifierType,
             dataRequestCompanyIdentifierValue = identifierValue,
             lastModifiedDate =  currentTimestamp,
+            messageHistory = listOf(buildMessageRequestEntity(
+                            listOf("abc@currentsolution.de"),"Hallo", currentTimestamp)),
             requestStatus = RequestStatus.Open
         )
     }
