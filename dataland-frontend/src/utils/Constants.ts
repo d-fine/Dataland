@@ -40,9 +40,9 @@ export const NO_DATA_PROVIDED = "No data provided";
 export const ONLY_AUXILIARY_DATA_PROVIDED = "Only auxiliary data provided";
 
 /**
- * Changes the sorting of a list of data type enums by putting the esg-questionnaire framework at the very end.
+ * Changes the sorting of a list of data type enums by putting the Esg Questionnaire framework at the very end.
  * @param frameworksToInclude a unsorted list of data type enums
- * @returns the list of data type enums sorted in a way, that esg-questionnaire framework is the last element
+ * @returns the list of data type enums sorted in a way, that Esg Questionnaire framework is the last element
  */
 export function putEsgQuestionnaireAtTheEndOfList(frameworksToInclude: DataTypeEnum[]): DataTypeEnum[] {
   const customSort = (a: DataTypeEnum, b: DataTypeEnum): number => {

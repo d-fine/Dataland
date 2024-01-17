@@ -28,7 +28,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
   });
 
   it("Check that on the Esg questionnaire view Page the rolling window component works properly", () => {
-    cy.intercept("/api/data/esg-questionnaire/mock-data-id", {
+    cy.intercept(`/api/data/${DataTypeEnum.EsgQuestionnaire}/mock-data-id`, {
       // TODO use datatype num in link?
       companyId: companyId,
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
@@ -55,7 +55,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
   });
 
   it("Check that on the GDV-VÖB view Page the string for datatable component works properly", () => {
-    cy.intercept("/api/data/esg-questionnaire/mock-data-id", {
+    cy.intercept(`/api/data/${DataTypeEnum.EsgQuestionnaire}/mock-data-id`, {
       companyId: companyId,
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
       data: preparedFixtureForTest.t,
@@ -69,7 +69,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
   });
 
   it("Check that on the GDV-VÖB view Page the list base data point component works properly", () => {
-    cy.intercept("/api/data/esg-questionnaire/mock-data-id", {
+    cy.intercept(`/api/data/${DataTypeEnum.EsgQuestionnaire}/mock-data-id`, {
       companyId: companyId,
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
       data: preparedFixtureForTest.t,
@@ -132,7 +132,7 @@ export function mountMLDTForGdvPanel(
   companyId: string,
   reviewMode: boolean,
 ): Cypress.Chainable {
-  cy.intercept(`/api/data/esg-questionnaire/companies/${companyId}`, datasetsToDisplay);
+  cy.intercept(`/api/data/${DataTypeEnum.EsgQuestionnaire}/companies/${companyId}`, datasetsToDisplay);
   return cy.mountWithDialog(
     MultiLayerDataTableFrameworkPanel,
     {
