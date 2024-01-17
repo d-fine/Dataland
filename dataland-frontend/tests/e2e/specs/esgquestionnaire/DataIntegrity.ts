@@ -17,7 +17,7 @@ import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 
 let esgquestionnaireFixtureForTest: FixtureData<EsgQuestionnaireData>;
 before(function () {
-  cy.fixture("CompanyInformationWithEsgquestionnairePreparedFixtures").then(function (jsonContent) {
+  cy.fixture("CompanyInformationWithEsgQuestionnairePreparedFixtures").then(function (jsonContent) {
     const preparedFixturesEsgQuestionnaire = jsonContent as Array<FixtureData<EsgQuestionnaireData>>;
     esgquestionnaireFixtureForTest = getPreparedFixture(
       "EsgQuestionnaire-dataset-with-no-null-fields",

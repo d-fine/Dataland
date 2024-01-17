@@ -21,7 +21,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
   let preparedFixtureForTest: FixtureData<EsgQuestionnaireData>;
   const companyId = "mock-company-id";
   before(function () {
-    cy.fixture("CompanyInformationWithEsgquestionnairePreparedFixtures").then(function (jsonContent) {
+    cy.fixture("CompanyInformationWithEsgQuestionnairePreparedFixtures").then(function (jsonContent) {
       const preparedFixtures = jsonContent as Array<FixtureData<EsgQuestionnaireData>>;
       preparedFixtureForTest = getPreparedFixture("EsgQuestionnaire-dataset-with-no-null-fields", preparedFixtures);
     });
