@@ -102,10 +102,10 @@ describe(
 
     // Prepopulation for frameworks of the framework-registry
     for (const framework of getAllFrameworkIdentifiers()) {
-      const dataTypeInPascalCase = convertKebabCaseToPascalCase(framework)
+      const dataTypeInPascalCase = convertKebabCaseToPascalCase(framework);
       registerFrameworkFakeFixtureUpload(
         framework as DataTypeEnum,
-        (config) => getBaseFrameworkDefinitionForDataType(framework)!.getFrameworkApiClient(config),
+        (config) => getBaseFrameworkDefinition(framework)!.getFrameworkApiClient(config),
         `CompanyInformationWith${dataTypeInPascalCase}Data`.replace("-", ""),
       );
     }

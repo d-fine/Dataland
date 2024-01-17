@@ -15,7 +15,7 @@ export function getBaseFrameworkDefinition(identifier: string): BaseFrameworkDef
       return frameworkDefinition;
     }
   }
-  return undefined; // Return undefined if no match is found
+  return undefined;
 }
 
 /**

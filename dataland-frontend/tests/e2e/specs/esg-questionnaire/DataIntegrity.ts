@@ -25,7 +25,7 @@ before(function () {
     );
   });
 });
-// TODO esgquestionnaire folder name in test folder
+
 describeIf(
   "As a user, I expect to be able to edit and submit GDV data via the upload form",
   {
