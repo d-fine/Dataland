@@ -23,7 +23,7 @@
             <FormKit type="group" name="data" label="data">
               <FormKit
                 type="group"
-                v-for="category in esgquestionnaireDataModel"
+                v-for="category in esgQuestionnaireDataModel"
                 :key="category"
                 :label="category.label"
                 :name="category.name"
@@ -78,7 +78,7 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in esgquestionnaireDataModel" :key="category">
+            <li v-for="category in esgQuestionnaireDataModel" :key="category">
               <ul>
                 <li v-for="subcategory in category.subcategories" :key="subcategory">
                   <a
@@ -266,13 +266,13 @@ export default defineComponent({
       this.waitingForData = true;
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.EsgQuestionnaire);
-      let esgqestionnaireDataControllerApi: FrameworkDataApi<EsgQuestionnaireData>;
+      let esgQuestionnaireDataControllerApi: FrameworkDataApi<EsgQuestionnaireData>;
       if (frameworkDefinition) {
-        esgqestionnaireDataControllerApi = frameworkDefinition?.getFrameworkApiClient(
+        esgQuestionnaireDataControllerApi = frameworkDefinition.getFrameworkApiClient(
           undefined,
           apiClientProvider.axiosInstance,
         );
-        const dataResponse = await esgqestionnaireDataControllerApi.getFrameworkData(dataId);
+        const dataResponse = await esgQuestionnaireDataControllerApi.getFrameworkData(dataId);
         const esgquestionnaireResponseData = dataResponse.data;
         this.listOfFilledKpis = getFilledKpis(esgquestionnaireResponseData.data);
         this.companyAssociatedEsgQuestionnaireData = objectDropNull(
