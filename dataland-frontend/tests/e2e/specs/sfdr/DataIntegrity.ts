@@ -87,6 +87,26 @@ describeIf(
     }
 
     /**
+     * Check if YesNoExtendedDataPointFormField component contain proper fields
+     */
+    function testYesNoExtendedDataPointFormField(): void {
+      cy.get('[data-test="protectedAreasExposure"]')
+        .find('div[data-test="dataQuality"] select')
+        .should("exist")
+        .should("has.value", "Audited");
+      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="Yes"]').click();
+      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
+      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] select')
+        .should("exist")
+        .should("has.value", "Audited");
+      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
+      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
+      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] select')
+        .should("exist")
+        .should("has.value", "Audited");
+    }
+
+    /**
      * Removes the first high impact climate sector and checks that it has actually disappeared
      */
     function testRemovingOfHighImpactClimateSector(): void {
@@ -136,6 +156,7 @@ describeIf(
           setReferenceToAllUploadedReports(
             Object.keys(testSfdrCompany.t.general.general.referencedReports as ObjectType),
           );
+          testYesNoExtendedDataPointFormField();
           testRemovingOfHighImpactClimateSector();
           submitButton.clickButton();
           cy.get("div.p-message-success:not(.p-message-error)").should("not.contain", "An unexpected error occurred.");

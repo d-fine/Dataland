@@ -46,7 +46,7 @@
           :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
           v-if="isYesNoVariant"
         />
-        <div class="col-12" v-if="dataPoint.value || (showDataPointFields && !isYesNoVariant)">
+        <div class="col-12" v-if="dataPoint.value || !isYesNoVariant">
           <UploadFormHeader
             v-if="!isDataPointToggleable && !isYesNoVariant"
             :label="label"
@@ -114,6 +114,7 @@
             <FormKit
               type="textarea"
               name="comment"
+              v-model="commentValue"
               placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
             />
           </div>
@@ -159,6 +160,7 @@ export default defineComponent({
         value: qualityOption,
       })),
       qualityValue: "NA",
+      commentValue: "",
       currentReportValue: "" as string,
       dataPoint: {} as ExtendedDataPoint<unknown>,
       currentValue: null,
@@ -248,7 +250,7 @@ export default defineComponent({
      * @param isDataValueProvided boolean which gives information whether data is provided or not
      */
     handleBlurValue(isDataValueProvided: boolean) {
-      if (!isDataValueProvided) {
+      if (!isDataValueProvided && !this.isYesNoVariant) {
         this.qualityValue = QualityOptions.Na;
       } else if (this.qualityValue === QualityOptions.Na) {
         this.qualityValue = "";
