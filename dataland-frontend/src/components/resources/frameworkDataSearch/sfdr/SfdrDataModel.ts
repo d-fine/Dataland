@@ -363,7 +363,7 @@ export const sfdrDataModel = [
           {
             name: "nonRenewableEnergyConsumptionOtherInGWh",
             label: "Non-Renewable Energy Consumption Other",
-            description: "Energy consumption from any other available (used) non-renewable source of energy ",
+            description: "Energy consumption from any other available (used) non-renewable source of energy",
             unit: "GWh",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
