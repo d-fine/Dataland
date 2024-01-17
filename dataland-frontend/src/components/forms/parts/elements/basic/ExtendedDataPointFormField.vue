@@ -46,7 +46,7 @@
           :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
           v-if="isYesNoVariant"
         />
-        <div class="col-12" v-if="showDataPointFields">
+        <div class="col-12" v-if="dataPoint.value || (showDataPointFields && !isYesNoVariant)">
           <UploadFormHeader
             v-if="!isDataPointToggleable && !isYesNoVariant"
             :label="label"
@@ -110,15 +110,13 @@
               :options="computeQualityOption"
             />
           </div>
-        </div>
-        <div class="col-12">
-          <div class="form-field">
-            <FormKit
-              type="textarea"
-              name="comment"
-              placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
-            />
-          </div>
+            <div class="form-field">
+              <FormKit
+                type="textarea"
+                name="comment"
+                placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
+              />
+            </div>
         </div>
       </FormKit>
     </div>
