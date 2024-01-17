@@ -110,13 +110,13 @@
               :options="computeQualityOption"
             />
           </div>
-            <div class="form-field">
-              <FormKit
-                type="textarea"
-                name="comment"
-                placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
-              />
-            </div>
+          <div class="form-field">
+            <FormKit
+              type="textarea"
+              name="comment"
+              placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
+            />
+          </div>
         </div>
       </FormKit>
     </div>
