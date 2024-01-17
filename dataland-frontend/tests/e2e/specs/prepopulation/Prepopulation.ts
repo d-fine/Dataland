@@ -105,7 +105,7 @@ describe(
       registerFrameworkFakeFixtureUpload(
         framework as DataTypeEnum,
         (config) => getBaseFrameworkDefinition(framework)!.getFrameworkApiClient(config),
-        `CompanyInformationWith${convertKebabCaseToCamelCase(framework)}Data`.replace("-", ""),
+        `CompanyInformationWith${convertKebabCaseToCamelCase(framework).charAt(0).toUpperCase()}Data`.replace("-", ""),
       );
     }
   },
