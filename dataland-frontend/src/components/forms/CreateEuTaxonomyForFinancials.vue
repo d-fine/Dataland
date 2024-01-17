@@ -315,7 +315,7 @@ import MultiSelect from "primevue/multiselect";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import Calendar from "primevue/calendar";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import { useRoute } from "vue-router";

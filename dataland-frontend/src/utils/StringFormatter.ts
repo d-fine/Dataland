@@ -6,6 +6,15 @@ import { HumanizedYesNoNa } from "@/utils/YesNoNa";
 import { getBaseFrameworkDefinition } from "@/frameworks/BaseFrameworkRegistry";
 
 /**
+ * convert kebab case string to camel case string using regex
+ * @param rawText is the string to be converted
+ * @returns the converted string in camel case
+ */
+export function convertKebabCaseToCamelCase(rawText: string): string {
+  return rawText.replace(/-([a-z])/g, (_, char: string) => char.toUpperCase());
+}
+
+/**
  * convert camel case string to sentence case string using regex
  * @param rawText is the string to be converted to a human-readable string
  * @returns the converted string in "sentence-case"
