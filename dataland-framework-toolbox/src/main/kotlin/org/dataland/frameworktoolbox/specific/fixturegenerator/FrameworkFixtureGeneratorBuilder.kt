@@ -64,7 +64,7 @@ class FrameworkFixtureGeneratorBuilder(
 
     private fun buildFrameworkGeneratorsTs(frameworkGeneratorTsPath: Path) {
         val freeMarkerContext = mapOf(
-            "frameworkRootName" to getNameFromLabel(framework.identifier),
+            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
         )
 
         val freemarkerTemplate = FreeMarker.configuration
