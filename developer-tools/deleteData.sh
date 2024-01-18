@@ -3,7 +3,8 @@ set -euo pipefail
 
 #The script is intended to provide a fast way for the developer to delete datasets using the company isin
 #Currently this script is written for eutaxonomy-non-financials and eutaxnomy-financials
-#Inputs necessary for this script are the server environment (e.g. dev1.dataland.com) and the api key on this environment
+#Inputs necessary for this script are the server environment (e.g. dev1.dataland.com) and the api key of the data_admin
+#on this environment
 
 server=$1
 key=$2
