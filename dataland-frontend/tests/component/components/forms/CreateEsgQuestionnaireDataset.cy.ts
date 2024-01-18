@@ -1,4 +1,4 @@
-import CreateEsgQuestionnaireDataset from "@components/forms/CreateEsgQuestionnaireDataset.vue";
+import CreateEsgQuestionnaireDataset from "@/components/forms/CreateEsgQuestionnaireDataset.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 
