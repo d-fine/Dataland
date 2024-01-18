@@ -30,13 +30,13 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "max(company.headquarters) as headquarters, " +
             "max(company.sector) as sector, " +
             "max(permId.identifier_value) as permId, " +
-            "min(CASE " +
-            "WHEN company.company_name ILIKE :#{escape(#searchFilter.searchString)} ESCAPE :#{escapeCharacter()} THEN 1 " +
-            "WHEN alt_names.company_alternative_names ILIKE :#{escape(#searchFilter.searchString)} ESCAPE :#{escapeCharacter()} THEN 2 " +
-            "WHEN company.company_name ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 3 " +
-            "WHEN alt_names.company_alternative_names ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 4 " +
+            "CASE " +
+            "WHEN max(company.company_name) ILIKE :#{escape(#searchFilter.searchString)} ESCAPE :#{escapeCharacter()} THEN 1 " +
+            "WHEN max(alt_names.company_alternative_names) ILIKE :#{escape(#searchFilter.searchString)} ESCAPE :#{escapeCharacter()} THEN 2 " +
+            "WHEN max(company.company_name) ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 3 " +
+            "WHEN max(alt_names.company_alternative_names) ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 4 " +
             "ELSE 5 " +
-            "END) as search_rank " +
+            "END as search_rank " +
             "FROM (SELECT company_id, company_name, headquarters, sector FROM stored_companies " +
             "WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector in :#{#searchFilter.sectorFilter}) " +
             "AND (:#{#searchFilter.countryCodeFilterSize} = 0 OR country_code in :#{#searchFilter.countryCodeFilter}) " +
