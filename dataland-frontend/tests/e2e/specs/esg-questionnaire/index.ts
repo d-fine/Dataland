@@ -1,6 +1,6 @@
 /**
- * As a user, I want the Esg Questionnaire to exist and behave like I expect
+ * As a user, I want the Esg Questionnaire upload page to exist and behave like I expect
  */
-describe("Tests for view page of P2P-Framework data", () => {
+describe("Blanket test for Esg Questionnaire upload page", () => {
   require("./DataIntegrity");
 });
