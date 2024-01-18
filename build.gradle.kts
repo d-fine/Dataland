@@ -124,7 +124,7 @@ sonar {
                 "dataland-frontend/src/components/general/SlideShow.vue," +
                 "dataland-frontend/src/components/resources/newLandingPage/TheQuotes.vue," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
-                "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/GdvDataFixtures.ts",
+                "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts",
         )
     }
 }
