@@ -4,6 +4,7 @@ import HeimathafenComponentGenerationUtils
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
 import org.dataland.frameworktoolbox.frameworks.heimathafen.custom.HeimathafenListOfBaseDataPointComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
+import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
@@ -56,5 +57,18 @@ class HeimathafenFramework : InDevelopmentPavedRoadFramework(
                     " Daten von NGOs etc."
                 documentColumnHeader = "Quelle"
             }
+
+        removeAntiDuplicationStringsForIdentifiers(framework)
+    }
+}
+
+private fun removeAntiDuplicationStringsForIdentifiers(framework: Framework) {
+    val keineArmutComponentGroup = framework.root.getOrNull<ComponentGroup>("sdg")
+        ?.getOrNull<ComponentGroup>("keineArmut")
+    keineArmutComponentGroup?.edit<YesNoComponent>("sdgKeineArmut") {
+        val oldLabel = label.toString()
+        print(oldLabel)
+        label = "abctest"
+        explanation = "deftestHU"
     }
 }
