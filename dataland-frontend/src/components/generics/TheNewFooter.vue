@@ -1,13 +1,23 @@
 <template>
-  <footer :class="['footer', { 'footer--light': isLightVersion }]" role="contentinfo">
+  <footer :class="['footer', { 'footer--light': isLightVersion }]" role="contentinfo" data-test="dataland footer">
     <div class="footer__row footer__row--top">
       <div class="footer__section footer__section--logo">
         <img v-if="footerLogo" :src="footerLogo" alt="Dataland Logo" class="footer__logo" />
       </div>
       <div class="footer__section footer__section--columns" aria-labelledby="footer-navigation">
-        <nav class="footer__column" v-for="card in nonLegalCards" :key="card.title" :aria-labelledby="card.title">
-          <h3 :id="card.title" class="footer__column-title">{{ card.title }}</h3>
-          <ul class="footer__column-list">
+        <div
+          class="footer__column"
+          v-for="card in nonLegalCards"
+          :key="card.title || 'default-key'"
+          @click="card.title && toggleAccordion(card.title)"
+        >
+          <h3 :id="card.title" class="footer__column-title">
+            {{ card.title }}
+            <span class="footer__toggle-icon">
+              {{ card.title && isAccordionOpen(card.title) ? "-" : "+" }}
+            </span>
+          </h3>
+          <ul class="footer__column-list" v-show="!isSmallScreen || (card.title && isAccordionOpen(card.title))">
             <li v-for="link in card.links" :key="link.text">
               <a
                 v-if="isExternalLink(link.url)"
@@ -20,7 +30,7 @@
               <router-link v-else :to="link.url" class="footer__column-link">{{ link.text }}</router-link>
             </li>
           </ul>
-        </nav>
+        </div>
       </div>
     </div>
     <div class="footer__row footer__row--bottom">
@@ -39,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref, onMounted, onUnmounted, type Ref } from "vue";
 import type { Section } from "@/types/ContentTypes";
 
 const props = defineProps<{
@@ -50,6 +60,24 @@ const props = defineProps<{
 const footerSection = computed(() => {
   return props.sections?.find((section) => section.title === "Footer") ?? null;
 });
+
+const openAccordions = ref<Record<string, boolean>>({});
+
+/**
+ * Toggles the open state of an accordion section based on its title.
+ * If the title is already in the openAccordions set, it will be removed (closed),
+ * otherwise, it will be added (opened).
+ * @param {string | undefined} title - The title of the accordion section.
+ */
+function toggleAccordion(title: string | undefined): void {
+  if (title) {
+    openAccordions.value[title] = !openAccordions.value[title];
+  }
+}
+
+const isAccordionOpen = (title: string | undefined): boolean => {
+  return title ? openAccordions.value[title] || false : true;
+};
 
 const footerLogo = computed(() => footerSection.value?.image?.[0] ?? "");
 
@@ -69,6 +97,25 @@ const copyrightText = computed(() => {
   if (!footerSection.value?.text) return "";
   const currentYear = new Date().getFullYear();
   return `${footerSection.value.text[0]}${currentYear}${footerSection.value.text[1]}`;
+});
+
+const isSmallScreen: Ref<boolean> = ref(window.innerWidth < 768);
+
+// Create a function to update `isSmallScreen` when the window is resized
+const updateScreenSize = (): void => {
+  isSmallScreen.value = window.innerWidth < 768;
+};
+
+onMounted(() => {
+  // Add a resize event listener that updates `isSmallScreen`
+  window.addEventListener("resize", updateScreenSize);
+  // Initialize `isSmallScreen` value based on the current window width
+  updateScreenSize();
+});
+
+onUnmounted(() => {
+  // Remove the resize event listener when the component is unmounted
+  window.removeEventListener("resize", updateScreenSize);
 });
 </script>
 
@@ -227,22 +274,81 @@ const copyrightText = computed(() => {
     }
   }
 }
-@media only screen and (max-width: $large) {
+@media only screen and (max-width: $medium) {
+  .footer {
+    &__row--top {
+      flex-direction: column;
+      gap: 3em;
+    }
+  }
 }
 @media only screen and (max-width: $small) {
   .footer {
-    padding: 80px 16px;
-    gap: 64px 16px;
-    grid-template-columns: 1fr;
+    padding: 64px 24px 40px;
 
-    &__left {
-      grid-row: 2;
-      grid-column: 1;
-      text-align: left;
+    &__row {
+      flex-direction: column;
     }
-    &__right {
-      grid-row: 1;
-      grid-column: 1;
+
+    &__row--top,
+    &__row--bottom {
+      flex-direction: column;
+    }
+
+    &__section {
+      width: 100%;
+
+      &--logo {
+        justify-content: left;
+        margin-bottom: 3em;
+      }
+
+      &--columns {
+        flex-direction: column;
+        gap: 1.5em;
+      }
+
+      &--legal {
+        justify-content: left;
+        margin-top: 2em;
+      }
+    }
+
+    &__column {
+      align-items: center;
+      text-align: left;
+
+      &:not(:last-of-type) {
+        margin-bottom: 1em;
+      }
+
+      &-title {
+        margin-bottom: 1em;
+        cursor: pointer;
+        user-select: none;
+      }
+      .footer__column[aria-expanded="true"] .footer__toggle-icon {
+        transform: rotate(45deg);
+      }
+      .footer__toggle-icon {
+        transition: transform 0.3s ease;
+      }
+      &-list,
+      &-link {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    &__legal-list {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    &__copyright {
+      text-align: left;
+      flex: 1;
+      width: 100%;
+      margin-top: 2em;
     }
   }
 }
