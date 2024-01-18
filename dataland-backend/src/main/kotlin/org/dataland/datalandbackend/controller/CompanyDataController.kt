@@ -68,11 +68,9 @@ class CompanyDataController(
             companyQueryManager.searchCompaniesAndGetApiModel(
                 StoredCompanySearchFilter(
                     searchString = searchString ?: "",
-                    nameOnlyFilter = onlyCompanyNames,
                     dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
                     countryCodeFilter = countryCodes?.toList() ?: listOf(),
                     sectorFilter = sectors?.toList() ?: listOf(),
-                    uploaderId = if (onlyWithDataFromCurrentUser) DatalandAuthentication.fromContext().userId else "",
                 ),
                 DatalandAuthentication.fromContextOrNull(),
             ),
