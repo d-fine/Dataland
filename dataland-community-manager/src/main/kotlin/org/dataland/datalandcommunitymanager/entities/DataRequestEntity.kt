@@ -3,7 +3,6 @@ package org.dataland.datalandcommunitymanager.entities
 import jakarta.persistence.*
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredMessageRequest
 
 
 /**

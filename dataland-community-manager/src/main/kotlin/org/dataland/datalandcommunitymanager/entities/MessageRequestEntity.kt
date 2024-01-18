@@ -13,9 +13,9 @@ data class MessageRequestEntity (
     val messageRequestId: String,
 
     @ElementCollection
-    var contactList: List<String>?,
+    var contactList: List<String>? = null,
 
-    val message: String,
+    val message: String? = null,
 
-    val updateTimestamp:  Long?,
+    val updateTimestamp:  Long? = null,
 )

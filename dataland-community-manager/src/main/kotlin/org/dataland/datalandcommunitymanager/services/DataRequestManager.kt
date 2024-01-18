@@ -264,19 +264,6 @@ class DataRequestManager(
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId, bulkDataRequestId)
     }
 
-    private fun buildMessageRequestEntity(
-        contactMails: List<String>,
-        userMessage: String,
-        receivingTime:  Long?
-    ): MessageRequestEntity {
-        return MessageRequestEntity(
-            messageRequestId = UUID.randomUUID().toString(),
-            contactList = contactMails,
-            message = userMessage,
-            updateTimestamp = receivingTime
-        )
-
-    }
 
     private fun buildDataRequestEntity(
         currentUserId: String,
@@ -285,6 +272,8 @@ class DataRequestManager(
         identifierValue: String,
     ): DataRequestEntity {
         val currentTimestamp = Instant.now().toEpochMilli()
+        val buildMessageRequestEntity = listOf(MessageRequestEntity(
+            messageRequestId =  UUID.randomUUID().toString()))
         return DataRequestEntity(
             dataRequestId = UUID.randomUUID().toString(),
             userId = currentUserId,
@@ -293,8 +282,7 @@ class DataRequestManager(
             dataRequestCompanyIdentifierType = identifierType,
             dataRequestCompanyIdentifierValue = identifierValue,
             lastModifiedDate =  currentTimestamp,
-            messageHistory = listOf(buildMessageRequestEntity(
-                            listOf("abc@currentsolution.de"),"Hallo", currentTimestamp)),
+            messageHistory = buildMessageRequestEntity,
             requestStatus = RequestStatus.Open
         )
     }
