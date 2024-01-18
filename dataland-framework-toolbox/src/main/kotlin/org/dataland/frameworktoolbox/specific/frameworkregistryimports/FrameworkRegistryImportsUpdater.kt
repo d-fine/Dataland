@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.specific.frameworkregistryimports
 
 import org.dataland.frameworktoolbox.utils.DatalandRepository
+import org.dataland.frameworktoolbox.utils.Naming.getNameFromLabel
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import org.dataland.frameworktoolbox.utils.typescript.EsLintRunner
 import java.io.FileWriter
@@ -23,7 +24,12 @@ class FrameworkRegistryImportsUpdater {
         }!!
 
         val freeMarkerContext = mapOf(
-            "frameworks" to allRegisteredFrameworks.map { it.name },
+            "frameworks" to allRegisteredFrameworks.map {
+                mapOf(
+                    "identifier" to it.name,
+                    "baseNameInCamelCase" to getNameFromLabel(it.name),
+                )
+            },
         )
 
         val jobs = listOf(
