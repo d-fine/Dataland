@@ -12,7 +12,6 @@ import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuil
  */
 class Framework(
     val identifier: String,
-    val apiEndpoint: String,
     val label: String,
     val explanation: String,
 ) {
