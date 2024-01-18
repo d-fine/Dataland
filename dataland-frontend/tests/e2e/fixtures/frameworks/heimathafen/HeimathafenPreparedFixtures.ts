@@ -11,12 +11,14 @@ export function generateHeimathafenPreparedFixtures(): Array<FixtureData<Heimath
   const preparedFixtures = [];
   // Note: Put the code for prepared fixture generation below. This file will not be overwritten automatically
 
-  const manipulatorFunctions: Array<(input: FixtureData<HeimathafenData>) => FixtureData<HeimathafenData>> = [];
-  const preparedFixturesBeforeManipulation = generateHeimathafenFixtures(manipulatorFunctions.length);
-
-  for (let i = 0; i < manipulatorFunctions.length; i++) {
-    preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
-  }
-
+  preparedFixtures.push(generateFixturesWithNoNullFields());
   return preparedFixtures;
+}
+
+/**
+ * Generate a prepared Fixture with no null entries
+ * @returns the fixture
+ */
+function generateFixturesWithNoNullFields(): FixtureData<HeimathafenData> {
+  return generateHeimathafenFixtures(1, 0)[0];
 }
