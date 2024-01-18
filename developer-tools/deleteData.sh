@@ -11,9 +11,6 @@ key=$2
 isin_file=isin_non_financial.txt
 company_file=company.txt
 data_file=data.txt
-#TODO create backup before deleting the actual data
-#TODO make sure it works for the intended data
-#TODO check that the companies are gone from the company search page
 
 #loop over non financials and financials
 for framework in eutaxonomy-non-financials eutaxonomy-financials; do
