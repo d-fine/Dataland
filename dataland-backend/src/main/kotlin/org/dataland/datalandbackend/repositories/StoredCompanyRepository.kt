@@ -58,8 +58,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             ") alt_names " +
             "ON company.company_id = alt_names.stored_company_entity_company_id " +
             "WHERE company.company_name ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} " +
-            "OR min(alt_names.search_rank) IS NOT NULL " +
-            "OR min(identifiers.max_identifier_value) IS NOT NULL " +
+            "OR alt_names.search_rank IS NOT NULL " +
+            "OR identifiers.max_identifier_value IS NOT NULL " +
             "GROUP BY company.company_id " +
             "ORDER BY global_search_rank asc, max(company.company_name) asc "
     )
