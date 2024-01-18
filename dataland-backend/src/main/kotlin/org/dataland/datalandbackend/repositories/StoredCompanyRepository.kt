@@ -44,9 +44,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
 
     @Query(
         nativeQuery = true,
-        value =
-        "WITH filtered_results as (" +
-            // Fuzzy-Search Company Name
+        value = "WITH " +
+            " has_data as (SELECT distinct company_id from data_meta_information where :#{#searchFilter.dataTypeFilterSize} = 0 OR data_type in :#{#searchFilter.dataTypeFilter}), " +
+            " filtered_results as (" +
             " SELECT intermediate_results.company_id as company_id, min(intermediate_results.match_quality) as match_quality from (" +
             " (SELECT company.company_id as company_id," +
             " CASE " +
@@ -55,12 +55,11 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " ELSE 5" +
             " END match_quality " +
             " FROM (SELECT company_id, company_name FROM stored_companies) company " +
-            " JOIN (SELECT distinct company_id from data_meta_information where :#{#searchFilter.dataTypeFilterSize} = 0 OR data_type in :#{#searchFilter.dataTypeFilter}) datainfo" +
+            " JOIN has_data datainfo" +
             " ON company.company_id = datainfo.company_id " +
             " WHERE company.company_name ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()})" +
 
             " UNION " +
-            // Fuzzy-Search Company Alternative Name
             " (SELECT " +
             " stored_company_entity_company_id AS company_id," +
             " min(CASE " +
@@ -69,18 +68,17 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " ELSE 5 " +
             " END) match_quality " +
             " FROM stored_company_entity_company_alternative_names alt_names" +
-            " JOIN (SELECT distinct company_id from data_meta_information where :#{#searchFilter.dataTypeFilterSize} = 0 OR data_type in :#{#searchFilter.dataTypeFilter}) datainfo" +
+            " JOIN has_data datainfo" +
             " ON alt_names.stored_company_entity_company_id = datainfo.company_id " +
             " WHERE company_alternative_names ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()}" +
             " GROUP BY stored_company_entity_company_id)" +
 
             " UNION " +
-            // Fuzzy-Search Company Alternative Name
             " (SELECT " +
             " identifiers.company_id as company_id," +
             " 5 match_quality " +
             " FROM company_identifiers identifiers" +
-            " JOIN (SELECT distinct company_id from data_meta_information where :#{#searchFilter.dataTypeFilterSize} = 0 OR data_type in :#{#searchFilter.dataTypeFilter}) datainfo" +
+            " JOIN has_data datainfo" +
             " ON identifiers.company_id = datainfo.company_id " +
             " WHERE identifier_value ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()}" +
             " GROUP BY identifiers.company_id)) as intermediate_results " +
