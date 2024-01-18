@@ -24,6 +24,8 @@ interface ReducedCompanyEntity {
 
     val headquarters: String
 
+    val countryCode: String
+
     val sector: String?
 
     var permId: String?

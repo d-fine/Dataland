@@ -13,6 +13,24 @@ import org.springframework.data.repository.query.Param
  */
 
 interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
+
+    @Query(
+        nativeQuery = true,
+        value = "SELECT company.company_id as companyId, " +
+            "company.company_name as companyName, " +
+            "company.headquarters as headquarters, " +
+            "company.country_code as countryCode, " +
+            "company.sector as sector, " +
+            "permId.min_id as permId " +
+            "FROM stored_companies company " +
+            "JOIN (SELECT distinct company_id from data_meta_information where 0 = 0 ) datainfo " +
+            "ON company.company_id = datainfo.company_id " +
+            "LEFT JOIN (SELECT company_id, min(identifier_value) as min_id from company_identifiers where identifier_type = 'PermId' group by company_id) permId " +
+            "ON company.company_id = permid.company_id " +
+            "ORDER by company.company_name asc "
+    )
+    fun getAllCompaniesWithDataset(): List<ReducedCompanyEntity>
+
     /**
      * A function for querying companies by various filters:
      * - dataTypeFilter: If set, only companies with at least one datapoint
