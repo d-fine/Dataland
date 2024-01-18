@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigB
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
+import org.dataland.frameworktoolbox.utils.Naming.getNameFromLabel
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import org.dataland.frameworktoolbox.utils.typescript.EsLintRunner
@@ -34,8 +35,8 @@ class FrameworkViewConfigBuilder(
     private fun buildViewConfig(viewConfigTsPath: Path) {
         val freeMarkerContext = mapOf(
             "viewConfig" to rootSectionConfigBuilder.children,
-            "frameworkDataType" to "${framework.identifier.capitalizeEn()}Data",
-            "frameworkIdentifier" to framework.identifier,
+            "frameworkDataType" to "${getNameFromLabel(framework.identifier).capitalizeEn()}Data",
+            "viewConfigConstName" to getNameFromLabel(framework.identifier),
             "imports" to rootSectionConfigBuilder.imports,
         )
 
@@ -50,7 +51,7 @@ class FrameworkViewConfigBuilder(
 
     private fun buildApiClient(apiClientTsPath: Path) {
         val freeMarkerContext = mapOf(
-            "frameworkIdentifier" to framework.identifier,
+            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
         )
 
         val freemarkerTemplate = FreeMarker.configuration
@@ -65,6 +66,8 @@ class FrameworkViewConfigBuilder(
     private fun buildFrameworkDefinitionTs(baseDirectoryPath: Path) {
         val freeMarkerContext = mapOf(
             "frameworkIdentifier" to framework.identifier,
+            "frameworkRootName" to getNameFromLabel(framework.identifier).capitalizeEn(), // TODO naming?
+            "frameworkViewConfigConstName" to getNameFromLabel(framework.identifier),
             "frameworkLabel" to framework.label,
             "frameworkExplanation" to framework.explanation,
         )
