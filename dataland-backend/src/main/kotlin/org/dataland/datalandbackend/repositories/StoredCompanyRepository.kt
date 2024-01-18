@@ -29,7 +29,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "max(company.company_name) as companyName, " +
             "max(company.headquarters) as headquarters, " +
             "max(company.sector) as sector, " +
-            "max(permId.identifier_value) as permId, " +
+            "max(permId.max_identifier_value) as permId, " +
             "LEAST(CASE " +
             "WHEN max(company.company_name) ILIKE :#{escape(#searchFilter.searchString)} ESCAPE :#{escapeCharacter()} THEN 1 " +
             "WHEN max(company.company_name) ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 3 " +
@@ -41,9 +41,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             ") company " +
             "JOIN (SELECT distinct company_id from data_meta_information where :#{#searchFilter.dataTypeFilterSize} = 0 OR data_type in :#{#searchFilter.dataTypeFilter}) datainfo " +
             "ON company.company_id = datainfo.company_id " +
-            "LEFT JOIN (SELECT company_id, max(identifier_value) FROM company_identifiers where identifier_value ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} group by company_id ) identifiers " +
+            "LEFT JOIN (SELECT company_id, max(identifier_value) as max_identifier_value FROM company_identifiers where identifier_value ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} group by company_id ) identifiers " +
             "ON company.company_id = identifiers.company_id " +
-            "LEFT JOIN (SELECT company_id, max(identifier_value) from company_identifiers where identifier_type = 'PermId' group by company_id) permid " +
+            "LEFT JOIN (SELECT company_id, max(identifier_value) as max_identifier_value from company_identifiers where identifier_type = 'PermId' group by company_id) permid " +
             "ON company.company_id = permid.company_id " +
             "LEFT JOIN (" +
             "SELECT stored_company_entity_company_id, " +
@@ -59,7 +59,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "ON company.company_id = alt_names.stored_company_entity_company_id " +
             "WHERE company.company_name ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} " +
             "OR alt_names.search_rank IS NOT NULL " +
-            "OR identifiers.identifier_value IS NOT NULL " +
+            "OR identifiers.max_identifier_value IS NOT NULL " +
             "GROUP BY company.company_id " +
             "ORDER BY search_rank asc, max(company.company_name) asc "
     )
