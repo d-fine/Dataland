@@ -163,19 +163,20 @@ function checkShouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDispla
     case "string":
       return !!(value && value != NO_DATA_PROVIDED);
     case "object":
+      /* eslint-disable @typescript-eslint/no-unsafe-member-access */
       if (!!value && "modalOptions" in value) {
         return !!(
           // prettier-ignore
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           (value.modalOptions?.data?.listOfRowContents?.length ||
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             value.modalOptions?.data?.input ||
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             value.modalOptions?.data?.value?.length)
         );
+      } else if (!!value && "innerContents" in value) {
+        return value.innerContents.displayValue != NO_DATA_PROVIDED && value.innerContents.displayValue != "";
       } else {
         return !!value;
       }
+    /* eslint-enable @typescript-eslint/no-unsafe-member-access */
     default:
       return !!value;
   }
