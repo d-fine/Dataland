@@ -43,7 +43,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "ON company.company_id = datainfo.company_id " +
             "LEFT JOIN (SELECT company_id, max(identifier_value) FROM company_identifiers where identifier_value ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} group by company_id ) identifiers " +
             "ON company.company_id = identifiers.company_id " +
-            "LEFT JOIN (SELECT company_id, identifier_value from company_identifiers where identifier_type = 'PermId') permid " +
+            "LEFT JOIN (SELECT company_id, max(identifier_value) from company_identifiers where identifier_type = 'PermId' group by company_id) permid " +
             "ON company.company_id = permid.company_id " +
             "LEFT JOIN (" +
             "SELECT stored_company_entity_company_id, " +
@@ -58,7 +58,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             ") alt_names " +
             "ON company.company_id = alt_names.stored_company_entity_company_id " +
             "WHERE company.company_name ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} " +
-            "OR alt_names.company_alternative_names IS NOT NULL " +
+            "OR alt_names.search_rank IS NOT NULL " +
             "OR identifiers.identifier_value IS NOT NULL " +
             "GROUP BY company.company_id " +
             "ORDER BY search_rank asc, max(company.company_name) asc "
