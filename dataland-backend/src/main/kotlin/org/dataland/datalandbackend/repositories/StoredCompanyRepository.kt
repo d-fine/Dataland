@@ -79,8 +79,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " FROM company_identifiers identifiers" +
             " JOIN has_data datainfo" +
             " ON identifiers.company_id = datainfo.company_id " +
-            " WHERE identifier_value ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()}" +
-            " GROUP BY identifiers.company_id)) as intermediate_results) " +
+            " WHERE identifier_value ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()})) " +
+            " as intermediate_results group by intermediate_results.company_id) " +
 
             // Combine Results
             " SELECT info.company_id AS companyId," +
