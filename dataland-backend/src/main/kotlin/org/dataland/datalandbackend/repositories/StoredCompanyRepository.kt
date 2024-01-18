@@ -51,7 +51,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "WHEN company_alternative_names ILIKE :#{escape(#searchFilter.searchString)} ESCAPE :#{escapeCharacter()} THEN 2 " +
             "WHEN company_alternative_names ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 4 " +
             "ELSE 5 " +
-            "END) as search_rank" +
+            "END) as search_rank " +
             "FROM stored_company_entity_company_alternative_names " +
             "where company_alternative_names ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} " +
             "group by stored_company_entity_company_id " +
@@ -61,7 +61,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "OR alt_names.company_alternative_names IS NOT NULL " +
             "OR identifiers.identifier_value IS NOT NULL " +
             "GROUP BY company.company_id " +
-            "ORDER BY search_rank asc, max(company.company_name) asc"
+            "ORDER BY search_rank asc, max(company.company_name) asc "
     )
     fun searchCompanies(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter
