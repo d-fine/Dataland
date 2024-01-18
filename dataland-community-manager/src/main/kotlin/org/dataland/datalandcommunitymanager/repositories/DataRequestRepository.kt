@@ -23,32 +23,37 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @param dataTypeName to check for
      * @returns a Boolean stating the result of the check
      */
-    fun existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeName(
+    fun existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
         userId: String,
         dataRequestCompanyIdentifierValue: String,
         dataTypeName: String,
+        reportingPeriod: String,
     ): Boolean
 
     /** This method queries data requests and aggregates all the userIds, so that the result contains the count of
      * data requests for one specific identifierValue, identifierType and framework.
      * It also filters these results based on the provided identifier value and frameworks.
      * @param identifierValue to check for
+     * @param reportingPeriod to check for
      * @param dataTypes to check for
      * @returns the aggregated data requests
      */
     @Query(
         "SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity(" +
             "d.dataTypeName, " +
+            "d.reportingPeriod, " +
             "d.dataRequestCompanyIdentifierType, " +
             "d.dataRequestCompanyIdentifierValue, " +
             "COUNT(d.userId))" +
             "FROM DataRequestEntity d " +
             "WHERE (:dataTypes IS NULL OR d.dataTypeName IN :dataTypes) " +
+            "  AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%)" +
             "  AND (:identifierValue IS NULL OR d.dataRequestCompanyIdentifierValue LIKE %:identifierValue%) " +
-            "GROUP BY d.dataTypeName, d.dataRequestCompanyIdentifierType, d.dataRequestCompanyIdentifierValue",
+            "GROUP BY d.dataTypeName, d.reportingPeriod, d.dataRequestCompanyIdentifierType, d.dataRequestCompanyIdentifierValue",
     )
     fun getAggregatedDataRequests(
         @Param("identifierValue") identifierValue: String?,
         @Param("dataTypes") dataTypeNames: List<String>?,
+        @Param("reportingPeriod") reportingPeriod: String?,
     ): List<AggregatedDataRequestEntity>
 }

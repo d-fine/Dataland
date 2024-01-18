@@ -36,8 +36,9 @@ class RequestController(
     override fun getAggregatedDataRequests(
         identifierValue: String?,
         dataTypes: Set<DataTypeEnum>?,
+        reportingPeriod: String?,
     ): List<AggregatedDataRequest> {
-        return dataRequestManager.getAggregatedDataRequests(identifierValue, dataTypes)
+        return dataRequestManager.getAggregatedDataRequests(identifierValue, dataTypes, reportingPeriod)
     }
 
     override fun patchDataRequest(dataRequestId: String, requestStatus: String): ResponseEntity<StoredDataRequest> {

@@ -1,13 +1,19 @@
 package org.dataland.e2etests.utils
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
 import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdentifierType
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
+import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
+import org.dataland.e2etests.tests.CommunityManagerTest
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.assertThrows
+import org.slf4j.LoggerFactory
 import java.time.Instant
 
 fun retrieveTimeAndWaitOneMillisecond(): Long {
@@ -134,9 +140,10 @@ fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
     )
 }
 
-fun checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
+fun checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
     recentlyStoredRequestsForUser: List<StoredDataRequest>,
     framework: BulkDataRequest.ListOfFrameworkNames,
+    reportingPeriod: String,
     dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
     dataRequestCompanyIdentifierValue: String,
 ) {
@@ -144,6 +151,7 @@ fun checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
         1,
         recentlyStoredRequestsForUser.filter { storedDataRequest ->
             storedDataRequest.dataType == findStoredDataRequestDataTypeForFramework(framework) &&
+                storedDataRequest.reportingPeriod == reportingPeriod &&
                 storedDataRequest.dataRequestCompanyIdentifierType == dataRequestCompanyIdentifierType &&
                 storedDataRequest.dataRequestCompanyIdentifierValue == dataRequestCompanyIdentifierValue
         }.size,
@@ -152,19 +160,72 @@ fun checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
     )
 }
 
-fun checkErrorMessageForClientException(clientException: ClientException) {
+private fun causeAndAssertClientException(
+    listOfIdentifiers: List<String>,
+    listOfFrameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+    listOfReportingPeriods: List<String>,
+): ClientException {
+    val clientException = assertThrows<ClientException> {
+        RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER).postBulkDataRequest(
+            BulkDataRequest(
+                listOfIdentifiers, listOfFrameworks, listOfReportingPeriods,
+            ),
+        )
+    }
     assertEquals("Client error : 400 ", clientException.message)
+    return clientException
+}
+
+fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
+    listOfIdentifiers: List<String>,
+    listOfFrameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+    listOfReportingPeriods: List<String>,
+) {
+    val logger = LoggerFactory.getLogger(CommunityManagerTest::class.java)
+    if (listOfIdentifiers.isNotEmpty() && listOfFrameworks.isNotEmpty() && listOfReportingPeriods.isNotEmpty()) {
+        logger.info(
+            "None of the input lists is empty although a function to assert the error message due to their" +
+                "emptiness is called.",
+        )
+    } else {
+        val clientException = causeAndAssertClientException(listOfIdentifiers, listOfFrameworks, listOfReportingPeriods)
+        val errorMessage = when {
+            listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() -> "All provided lists are empty."
+            listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() -> "The lists of company identifiers and frameworks are empty."
+            listOfIdentifiers.isEmpty() && listOfReportingPeriods.isEmpty() -> "The lists of company identifiers and reporting periods are empty."
+            listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() -> "The lists of frameworks and reporting periods are empty."
+            listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
+            listOfFrameworks.isEmpty() -> "The list of frameworks is empty."
+            else -> "The list of reporting periods is empty."
+        }
+        val responseBody = (clientException.response as ClientError<*>).body as String
+        assertTrue(responseBody.contains("No empty lists are allowed as input for bulk data request."))
+        assertTrue(responseBody.contains(errorMessage))
+    }
+}
+
+fun sendBulkRequestWithInvalidIdentifiersOnlyAndCheckErrorMessage(
+    listOfIdentifiers: List<String>,
+    listOfFrameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+    listOfReportingPeriods: List<String>,
+) {
+    val clientException = causeAndAssertClientException(listOfIdentifiers, listOfFrameworks, listOfReportingPeriods)
+    val responseBody = (clientException.response as ClientError<*>).body as String
+    assertTrue(responseBody.contains("All provided company identifiers have an invalid format."))
+    assertTrue(responseBody.contains("The company identifiers you provided do not match the patterns of a valid LEI, ISIN or PermId."))
 }
 
 fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
     framework: BulkDataRequest.ListOfFrameworkNames,
+    reportingPeriod: String,
     identifierType: DataRequestCompanyIdentifierType,
     identifierValue: String,
     count: Long,
 ) {
     val matchingAggregatedRequests = aggregatedDataRequests.filter { aggregatedDataRequest ->
         aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
+            aggregatedDataRequest.reportingPeriod == reportingPeriod &&
             aggregatedDataRequest.dataRequestCompanyIdentifierType == identifierType &&
             aggregatedDataRequest.dataRequestCompanyIdentifierValue == identifierValue
     }
@@ -182,16 +243,19 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     )
 }
 
-fun iterateThroughIdentifiersAndFrameworksAndCheckExistenceWithCount1(
+fun iterateThroughIdentifiersAndFrameworksAndReportingPeriodsAndCheckExistenceWithCount1(
     identifierMap: Map<DataRequestCompanyIdentifierType, String>,
     frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+    reportingPeriods: List<String>,
     aggregatedDataRequests: List<AggregatedDataRequest>,
 ) {
     identifierMap.forEach { (identifierType, identifierValue) ->
         frameworks.forEach { framework ->
-            checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
-                aggregatedDataRequests, framework, identifierType, identifierValue, 1,
-            )
+            reportingPeriods.forEach { reportingPeriod ->
+                checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
+                    aggregatedDataRequests, framework, reportingPeriod, identifierType, identifierValue, 1,
+                )
+            }
         }
     }
 }

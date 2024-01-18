@@ -92,6 +92,7 @@ interface RequestApi {
     fun getAggregatedDataRequests(
         @RequestParam identifierValue: String? = null,
         @RequestParam dataTypes: Set<DataTypeEnum>? = null,
+        @RequestParam reportingPeriod: String? = null,
     ): List<AggregatedDataRequest>
 
     /** Changes request status of existing data request
@@ -113,6 +114,6 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun patchDataRequest(
         @RequestParam dataRequestId: String,
-        @RequestParam requestStatus: String
+        @RequestParam requestStatus: String,
     ): ResponseEntity<StoredDataRequest>
 }

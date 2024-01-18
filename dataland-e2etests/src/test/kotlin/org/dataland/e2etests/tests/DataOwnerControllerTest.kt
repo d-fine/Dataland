@@ -158,7 +158,7 @@ class DataOwnerControllerTest {
         }
         assertErrorCodeForClientException(headExceptionForNotFoundDataOwner, 404)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(
-            TechnicalUser.entries.filter { it != TechnicalUser.Admin }.random(),
+            TechnicalUser.values().filter { it != TechnicalUser.Admin }.random(),
         )
         val postExceptionForUnauthorizedRequest = assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.postDataOwner(companyId, userId)
@@ -177,7 +177,7 @@ class DataOwnerControllerTest {
         val userId = UUID.randomUUID()
         apiAccessor.companyDataControllerApi.postDataOwner(companyId, userId)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(
-            TechnicalUser.entries.filter { it != TechnicalUser.Admin }.random(),
+            TechnicalUser.values().filter { it != TechnicalUser.Admin }.random(),
         )
         val deleteExceptionFromUnauthorized = assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.deleteDataOwner(companyId, userId)

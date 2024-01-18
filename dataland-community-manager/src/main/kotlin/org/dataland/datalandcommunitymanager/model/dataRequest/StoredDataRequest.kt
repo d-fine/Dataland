@@ -3,9 +3,6 @@ package org.dataland.datalandcommunitymanager.model.dataRequest
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.MessageRequestEntity
-import org.dataland.datalandcommunitymanager.model.email.EmailContact
-import org.springframework.data.annotation.LastModifiedDate
-
 
 /**
  * --- API model ---
@@ -29,6 +26,8 @@ data class StoredDataRequest(
 
     val dataType: DataTypeEnum?,
 
+    val reportingPeriod: String,
+
     val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
 
     val dataRequestCompanyIdentifierValue: String,
@@ -39,10 +38,4 @@ data class StoredDataRequest(
 
     val requestStatus: RequestStatus,
 
-
-
-
-
 )
-
-

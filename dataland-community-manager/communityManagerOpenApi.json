@@ -57,6 +57,14 @@
                 ]
               }
             }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -127,6 +135,72 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BulkDataRequestResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Update status of data request.",
+        "description": "Updates status of data request given data request id.",
+        "operationId": "patchDataRequest",
+        "parameters": [
+          {
+            "name": "dataRequestId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestStatus",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully patched data request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredDataRequest"
                 }
               }
             }
@@ -443,7 +517,8 @@
       "BulkDataRequest": {
         "required": [
           "listOfCompanyIdentifiers",
-          "listOfFrameworkNames"
+          "listOfFrameworkNames",
+          "listOfReportingPeriods"
         ],
         "type": "object",
         "properties": {
@@ -475,6 +550,16 @@
                 "sme"
               ]
             }
+          },
+          "listOfReportingPeriods": {
+            "type": "array",
+            "example": [
+              "2022",
+              "2023"
+            ],
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -503,38 +588,6 @@
           }
         }
       },
-      "AggregatedDataRequest": {
-        "required": [
-          "count",
-          "dataRequestCompanyIdentifierType",
-          "dataRequestCompanyIdentifierValue"
-        ],
-        "type": "object",
-        "properties": {
-          "dataType": {
-            "type": "string",
-            "enum": [
-              "gdv",
-              "eutaxonomy-financials",
-              "eutaxonomy-non-financials",
-              "lksg",
-              "p2p",
-              "sfdr",
-              "sme"
-            ]
-          },
-          "dataRequestCompanyIdentifierType": {
-            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
-          },
-          "dataRequestCompanyIdentifierValue": {
-            "type": "string"
-          },
-          "count": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
       "DataRequestCompanyIdentifierType": {
         "type": "string",
         "enum": [
@@ -545,12 +598,51 @@
           "DatalandCompanyId"
         ]
       },
+      "MessageRequestEntity": {
+        "required": [
+          "dataRequestId",
+          "messageRequestId"
+        ],
+        "type": "object",
+        "properties": {
+          "messageRequestId": {
+            "type": "string"
+          },
+          "dataRequestId": {
+            "type": "string"
+          },
+          "contactList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "updateTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "RequestStatus": {
+        "type": "string",
+        "enum": [
+          "Open",
+          "Resolved"
+        ]
+      },
       "StoredDataRequest": {
         "required": [
           "creationTimestamp",
           "dataRequestCompanyIdentifierType",
           "dataRequestCompanyIdentifierValue",
           "dataRequestId",
+          "lastModifiedDate",
+          "messageHistory",
+          "reportingPeriod",
+          "requestStatus",
           "userId"
         ],
         "type": "object",
@@ -577,11 +669,62 @@
               "sme"
             ]
           },
+          "reportingPeriod": {
+            "type": "string"
+          },
           "dataRequestCompanyIdentifierType": {
             "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
           },
           "dataRequestCompanyIdentifierValue": {
             "type": "string"
+          },
+          "messageHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageRequestEntity"
+            }
+          },
+          "lastModifiedDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requestStatus": {
+            "$ref": "#/components/schemas/RequestStatus"
+          }
+        }
+      },
+      "AggregatedDataRequest": {
+        "required": [
+          "count",
+          "dataRequestCompanyIdentifierType",
+          "dataRequestCompanyIdentifierValue"
+        ],
+        "type": "object",
+        "properties": {
+          "dataType": {
+            "type": "string",
+            "enum": [
+              "gdv",
+              "eutaxonomy-financials",
+              "eutaxonomy-non-financials",
+              "lksg",
+              "p2p",
+              "sfdr",
+              "sme"
+            ]
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "dataRequestCompanyIdentifierType": {
+            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
+          },
+          "dataRequestCompanyIdentifierValue": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },

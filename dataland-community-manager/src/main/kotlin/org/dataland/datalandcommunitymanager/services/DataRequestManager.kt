@@ -7,7 +7,11 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.*
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -57,7 +61,8 @@ class DataRequestManager(
             processAcceptedIdentifier(
                 userProvidedIdentifierValue,
                 matchedIdentifierType,
-                bulkDataRequest.listOfFrameworkNames,
+                cleanedBulkDataRequest.listOfFrameworkNames,
+                cleanedBulkDataRequest.listOfReportingPeriods,
                 userId,
                 bulkDataRequestId,
             )
@@ -82,11 +87,12 @@ class DataRequestManager(
                 dataRequestEntity.userId,
                 dataRequestEntity.creationTimestamp,
                 getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
+                dataRequestEntity.reportingPeriod,
                 dataRequestEntity.dataRequestCompanyIdentifierType,
                 dataRequestEntity.dataRequestCompanyIdentifierValue,
                 dataRequestEntity.messageHistory,
                 dataRequestEntity.lastModifiedDate,
-                dataRequestEntity.requestStatus
+                dataRequestEntity.requestStatus,
             )
         }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
@@ -101,6 +107,7 @@ class DataRequestManager(
     fun getAggregatedDataRequests(
         identifierValue: String?,
         dataTypes: Set<DataTypeEnum>?,
+        reportingPeriod: String?,
     ): List<AggregatedDataRequest> {
         val dataTypesFilterForQuery = if (dataTypes != null && dataTypes.isEmpty()) {
             null
@@ -108,10 +115,11 @@ class DataRequestManager(
             dataTypes?.map { it.value }
         }
         val aggregatedDataRequestEntities =
-            dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery)
+            dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery, reportingPeriod)
         val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
             AggregatedDataRequest(
                 getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataTypeName),
+                aggregatedDataRequestEntity.reportingPeriod,
                 aggregatedDataRequestEntity.dataRequestCompanyIdentifierType,
                 aggregatedDataRequestEntity.dataRequestCompanyIdentifierValue,
                 aggregatedDataRequestEntity.count,
@@ -133,9 +141,13 @@ class DataRequestManager(
         }
         var dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         logger.info("Patching Company ${dataRequestEntity.dataRequestId} with status $requestStatus")
-        if (requestStatus.lowercase() == "open") dataRequestEntity.requestStatus = RequestStatus.Open
-        else if (requestStatus.lowercase() == "resolved") dataRequestEntity.requestStatus = RequestStatus.Resolved
-        else throw InvalidInputApiException("Invalid data request status", "$requestStatus is invalid")
+        if (requestStatus.lowercase() == "open") {
+            dataRequestEntity.requestStatus = RequestStatus.Open
+        } else if (requestStatus.lowercase() == "resolved") {
+            dataRequestEntity.requestStatus = RequestStatus.Resolved
+        } else {
+            throw InvalidInputApiException("Invalid data request status", "$requestStatus is invalid")
+        }
         dataRequestRepository.save(dataRequestEntity)
         dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         return StoredDataRequest(
@@ -143,11 +155,12 @@ class DataRequestManager(
             dataRequestEntity.userId,
             dataRequestEntity.creationTimestamp,
             getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
+            dataRequestEntity.reportingPeriod,
             dataRequestEntity.dataRequestCompanyIdentifierType,
             dataRequestEntity.dataRequestCompanyIdentifierValue,
             dataRequestEntity.messageHistory,
             dataRequestEntity.lastModifiedDate,
-            dataRequestEntity.requestStatus
+            dataRequestEntity.requestStatus,
         )
     }
 
@@ -160,11 +173,16 @@ class DataRequestManager(
     private fun assureValidityOfRequestLists(bulkDataRequest: BulkDataRequest) {
         val listOfIdentifiers = bulkDataRequest.listOfCompanyIdentifiers
         val listOfFrameworks = bulkDataRequest.listOfFrameworkNames
-        if (listOfIdentifiers.isEmpty() || listOfFrameworks.isEmpty()) {
+        val listOfReportingPeriods = bulkDataRequest.listOfReportingPeriods
+        if (listOfIdentifiers.isEmpty() || listOfFrameworks.isEmpty() || listOfReportingPeriods.isEmpty()) {
             val errorMessage = when {
-                listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() -> "All provided lists are empty."
+                listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() -> "All provided lists are empty."
+                listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() -> "The lists of company identifiers and frameworks are empty."
+                listOfIdentifiers.isEmpty() && listOfReportingPeriods.isEmpty() -> "The lists of company identifiers and reporting periods are empty."
+                listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() -> "The lists of frameworks and reporting periods are empty."
                 listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
-                else -> "The list of frameworks is empty."
+                listOfFrameworks.isEmpty() -> "The list of frameworks is empty."
+                else -> "The list of reporting periods is empty."
             }
             throw InvalidInputApiException(
                 "No empty lists are allowed as input for bulk data request.",
@@ -176,9 +194,11 @@ class DataRequestManager(
     private fun removeDuplicatesInRequestLists(bulkDataRequest: BulkDataRequest): BulkDataRequest {
         val distinctCompanyIdentifiers = bulkDataRequest.listOfCompanyIdentifiers.distinct()
         val distinctFrameworkNames = bulkDataRequest.listOfFrameworkNames.distinct()
+        val distinctReportingPeriods = bulkDataRequest.listOfReportingPeriods.distinct()
         return bulkDataRequest.copy(
             listOfCompanyIdentifiers = distinctCompanyIdentifiers,
             listOfFrameworkNames = distinctFrameworkNames,
+            listOfReportingPeriods = distinctReportingPeriods,
         )
     }
 
@@ -192,10 +212,12 @@ class DataRequestManager(
         requestingUserId: String,
         identifierValue: String,
         framework: DataTypeEnum,
+        reportingPeriod: String,
     ): Boolean {
-        val isAlreadyExisting = dataRequestRepository.existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeName(
-            requestingUserId, identifierValue, framework.name,
-        )
+        val isAlreadyExisting = dataRequestRepository
+            .existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
+                requestingUserId, identifierValue, framework.name, reportingPeriod,
+            )
         if (isAlreadyExisting) {
             dataRequestLogger
                 .logMessageForCheckingIfDataRequestAlreadyExists(identifierValue, framework)
@@ -207,14 +229,16 @@ class DataRequestManager(
         identifierValue: String,
         identifierType: DataRequestCompanyIdentifierType,
         dataType: DataTypeEnum,
+        reportingPeriod: String,
         userId: String,
         bulkDataRequestId: String,
     ) {
-        if (!isDataRequestAlreadyExisting(userId, identifierValue, dataType)) {
+        if (!isDataRequestAlreadyExisting(userId, identifierValue, dataType, reportingPeriod)) {
             storeDataRequestEntity(
                 buildDataRequestEntity(
                     userId,
                     dataType,
+                    reportingPeriod,
                     identifierType,
                     identifierValue,
                 ),
@@ -227,6 +251,7 @@ class DataRequestManager(
         userProvidedIdentifierValue: String,
         matchedIdentifierType: DataRequestCompanyIdentifierType,
         requestedFrameworks: List<DataTypeEnum>,
+        requestedReportingPeriods: List<String>,
         userId: String,
         bulkDataRequestId: String,
     ) {
@@ -236,13 +261,16 @@ class DataRequestManager(
         } ?: matchedIdentifierType
         val identifierValueToStore = datalandCompanyId ?: userProvidedIdentifierValue
         for (framework in requestedFrameworks) {
-            storeDataRequestIfNotExisting(
-                identifierValueToStore,
-                identifierTypeToStore,
-                framework,
-                userId,
-                bulkDataRequestId,
-            )
+            for (reportingPeriod in requestedReportingPeriods) {
+                storeDataRequestIfNotExisting(
+                    identifierValueToStore,
+                    identifierTypeToStore,
+                    framework,
+                    reportingPeriod,
+                    userId,
+                    bulkDataRequestId,
+                )
+            }
         }
     }
 
@@ -264,26 +292,29 @@ class DataRequestManager(
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId, bulkDataRequestId)
     }
 
-
     private fun buildDataRequestEntity(
         currentUserId: String,
         framework: DataTypeEnum,
+        reportingPeriod: String,
         identifierType: DataRequestCompanyIdentifierType,
         identifierValue: String,
     ): DataRequestEntity {
         val currentTimestamp = Instant.now().toEpochMilli()
-        val buildMessageRequestEntity = listOf(MessageRequestEntity(
-            messageRequestId =  UUID.randomUUID().toString()))
+        val dataRequestId = UUID.randomUUID().toString()
+        val buildMessageRequestEntity = listOf(
+            MessageRequestEntity(messageRequestId = UUID.randomUUID().toString(), dataRequestId = dataRequestId),
+        )
         return DataRequestEntity(
-            dataRequestId = UUID.randomUUID().toString(),
+            dataRequestId = dataRequestId,
             userId = currentUserId,
             creationTimestamp = currentTimestamp,
             dataTypeName = framework.value,
+            reportingPeriod = reportingPeriod,
             dataRequestCompanyIdentifierType = identifierType,
             dataRequestCompanyIdentifierValue = identifierValue,
-            lastModifiedDate =  currentTimestamp,
             messageHistory = buildMessageRequestEntity,
-            requestStatus = RequestStatus.Open
+            lastModifiedDate = currentTimestamp,
+            requestStatus = RequestStatus.Open,
         )
     }
 

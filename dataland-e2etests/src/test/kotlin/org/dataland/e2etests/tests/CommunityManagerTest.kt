@@ -1,7 +1,6 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdentifierType
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
@@ -9,11 +8,10 @@ import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.checkErrorMessageForClientException
 import org.dataland.e2etests.utils.checkThatAllIdentifiersWereAccepted
 import org.dataland.e2etests.utils.checkThatMessageIsAsExpected
 import org.dataland.e2etests.utils.checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount
-import org.dataland.e2etests.utils.checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce
+import org.dataland.e2etests.utils.checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce
 import org.dataland.e2etests.utils.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
 import org.dataland.e2etests.utils.checkThatTheNumberOfAcceptedIdentifiersIsAsExpected
 import org.dataland.e2etests.utils.checkThatTheNumberOfRejectedIdentifiersIsAsExpected
@@ -23,13 +21,14 @@ import org.dataland.e2etests.utils.generateMapWithOneRandomValueForEachIdentifie
 import org.dataland.e2etests.utils.generateRandomIsin
 import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
-import org.dataland.e2etests.utils.iterateThroughIdentifiersAndFrameworksAndCheckExistenceWithCount1
+import org.dataland.e2etests.utils.iterateThroughIdentifiersAndFrameworksAndReportingPeriodsAndCheckExistenceWithCount1
 import org.dataland.e2etests.utils.retrieveTimeAndWaitOneMillisecond
+import org.dataland.e2etests.utils.sendBulkRequestWithEmptyInputAndCheckErrorMessage
+import org.dataland.e2etests.utils.sendBulkRequestWithInvalidIdentifiersOnlyAndCheckErrorMessage
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.assertThrows
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CommunityManagerTest {
@@ -63,22 +62,26 @@ class CommunityManagerTest {
         val multipleRegexMatchingIdentifier = generateRandomPermId(20)
         val identifiers = uniqueIdentifiersMap.values.toList() + listOf(multipleRegexMatchingIdentifier)
         val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
+        val reportingPeriods = listOf("2022", "2023")
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiers, frameworks),
+            BulkDataRequest(identifiers, frameworks, reportingPeriods),
         )
         checkThatAllIdentifiersWereAccepted(response, identifiers.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
-        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, identifiers.size * frameworks.size)
+        checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
+            newlyStoredRequests, identifiers.size * frameworks.size * reportingPeriods.size,
+        )
         val randomUniqueDataRequestCompanyIdentifierType = uniqueIdentifiersMap.keys.random()
         uniqueIdentifiersMap[randomUniqueDataRequestCompanyIdentifierType]?.let {
-            checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
-                newlyStoredRequests, frameworks.random(), randomUniqueDataRequestCompanyIdentifierType, it,
+            checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
+                newlyStoredRequests, frameworks.random(), reportingPeriods.random(),
+                randomUniqueDataRequestCompanyIdentifierType, it,
             )
         }
-        checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests, frameworks.random(), DataRequestCompanyIdentifierType.multipleRegexMatches,
-            multipleRegexMatchingIdentifier,
+        checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
+            newlyStoredRequests, frameworks.random(), reportingPeriods.random(),
+            DataRequestCompanyIdentifierType.multipleRegexMatches, multipleRegexMatchingIdentifier,
         )
     }
 
@@ -95,6 +98,7 @@ class CommunityManagerTest {
             BulkDataRequest(
                 validIdentifiers + invalidIdentifiers,
                 listOf(BulkDataRequest.ListOfFrameworkNames.lksg),
+                listOf("2023"),
             ),
         )
         checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(response, validIdentifiers.size)
@@ -103,9 +107,7 @@ class CommunityManagerTest {
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, validIdentifiers.size)
         assertFalse(
-            newlyStoredRequests.any { storedDataRequest ->
-                invalidIdentifiers.contains(storedDataRequest.dataRequestCompanyIdentifierValue)
-            },
+            newlyStoredRequests.any { invalidIdentifiers.contains(it.dataRequestCompanyIdentifierValue) },
         )
     }
 
@@ -120,22 +122,23 @@ class CommunityManagerTest {
             leiForCompany, isinForCompany, identifierValueForUnknownCompany,
         )
         val frameworksForBulkRequest = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
+        val reportingPeriodsForBulkRequest = listOf("2023")
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest),
+            BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest, reportingPeriodsForBulkRequest),
         )
         checkThatAllIdentifiersWereAccepted(response, identifiersForBulkRequest.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
             newlyStoredRequests,
-            (identifiersForBulkRequest.size - 1) * frameworksForBulkRequest.size,
+            (identifiersForBulkRequest.size - 1) * frameworksForBulkRequest.size * reportingPeriodsForBulkRequest.size,
         )
-        checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests, frameworksForBulkRequest[0],
+        checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
+            newlyStoredRequests, frameworksForBulkRequest[0], reportingPeriodsForBulkRequest[0],
             DataRequestCompanyIdentifierType.datalandCompanyId, companyId,
         )
-        checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests, frameworksForBulkRequest[0],
+        checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
+            newlyStoredRequests, frameworksForBulkRequest[0], reportingPeriodsForBulkRequest[0],
             identifierTypeForUnknownCompany, identifierValueForUnknownCompany,
         )
     }
@@ -143,19 +146,22 @@ class CommunityManagerTest {
     private fun checkThatBothRequestExistExactlyOnceAfterBulkRequest(
         requestsStoredAfterBulkRequest: List<StoredDataRequest>,
         framework: BulkDataRequest.ListOfFrameworkNames,
+        reportingPeriod: String,
         companyId: String,
         identifierTypeForUnknownCompany: DataRequestCompanyIdentifierType,
         identifierValueForUnknownCompany: String,
     ) {
-        checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
+        checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
             requestsStoredAfterBulkRequest,
             framework,
+            reportingPeriod,
             DataRequestCompanyIdentifierType.datalandCompanyId,
             companyId,
         )
-        checkThatRequestForFrameworkAndIdentifierExistsExactlyOnce(
+        checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
             requestsStoredAfterBulkRequest,
             framework,
+            reportingPeriod,
             identifierTypeForUnknownCompany,
             identifierValueForUnknownCompany,
         )
@@ -163,32 +169,35 @@ class CommunityManagerTest {
 
     @Test
     fun `post a bulk data request with at least one already existing request and check that this one is ignored`() {
-        val leiForCompany = generateRandomLei()
-        val isinForCompany = generateRandomIsin()
+        val leiForCompany = generateRandomLei(); val isinForCompany = generateRandomIsin()
         val companyId = getIdForUploadedCompanyWithIdentifiers(leiForCompany, listOf(isinForCompany))
         val identifierMapForUnknownCompany = mapOf(DataRequestCompanyIdentifierType.lei to generateRandomLei())
-        val frameworks = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
+        val frameworks = listOf(BulkDataRequest.ListOfFrameworkNames.lksg); val reportingPeriods = listOf("2023")
         val firstIdentifiers = listOf(leiForCompany, identifierMapForUnknownCompany.values.toList()[0])
         val timeBeforeFirstBulkRequest = retrieveTimeAndWaitOneMillisecond()
-        val firstResponse = requestControllerApi.postBulkDataRequest(BulkDataRequest(firstIdentifiers, frameworks))
+        val firstResponse = requestControllerApi.postBulkDataRequest(
+            BulkDataRequest(firstIdentifiers, frameworks, reportingPeriods),
+        )
         checkThatAllIdentifiersWereAccepted(firstResponse, firstIdentifiers.size)
         val newRequestsAfter1stBulkRequest = getNewlyStoredRequestsAfterTimestamp(timeBeforeFirstBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
-            newRequestsAfter1stBulkRequest, firstIdentifiers.size * frameworks.size,
+            newRequestsAfter1stBulkRequest, firstIdentifiers.size * frameworks.size * reportingPeriods.size,
         )
         checkThatBothRequestExistExactlyOnceAfterBulkRequest(
-            newRequestsAfter1stBulkRequest, frameworks[0], companyId,
+            newRequestsAfter1stBulkRequest, frameworks[0], reportingPeriods[0], companyId,
             identifierMapForUnknownCompany.keys.toList()[0], identifierMapForUnknownCompany.values.toList()[0],
         )
         val secondIdentifiers = listOf(isinForCompany, identifierMapForUnknownCompany.values.toList()[0])
         val timestampBeforeSecondBulkRequest = retrieveTimeAndWaitOneMillisecond()
-        val secondResponse = requestControllerApi.postBulkDataRequest(BulkDataRequest(secondIdentifiers, frameworks))
+        val secondResponse = requestControllerApi.postBulkDataRequest(
+            BulkDataRequest(secondIdentifiers, frameworks, reportingPeriods),
+        )
         checkThatAllIdentifiersWereAccepted(secondResponse, secondIdentifiers.size)
         val newRequestsAfter2ndBulkRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSecondBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newRequestsAfter2ndBulkRequest, 0)
         val newRequestsAfter1stAnd2ndBulkRequest = getNewlyStoredRequestsAfterTimestamp(timeBeforeFirstBulkRequest)
         checkThatBothRequestExistExactlyOnceAfterBulkRequest(
-            newRequestsAfter1stAnd2ndBulkRequest, frameworks[0], companyId,
+            newRequestsAfter1stAnd2ndBulkRequest, frameworks[0], reportingPeriods[0], companyId,
             identifierMapForUnknownCompany.keys.toList()[0], identifierMapForUnknownCompany.values.toList()[0],
         )
     }
@@ -197,35 +206,29 @@ class CommunityManagerTest {
     fun `check the expected exception is thrown when frameworks are empty or identifiers are empty or invalid only`() {
         val validIdentifiers = listOf(generateRandomLei(), generateRandomIsin(), generateRandomPermId())
         val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
-        val exceptionForEmptyFrameworkList = assertThrows<ClientException> {
-            requestControllerApi.postBulkDataRequest(BulkDataRequest(validIdentifiers, emptyList()))
-        }
-        checkErrorMessageForClientException(exceptionForEmptyFrameworkList)
-        val exceptionForEmptyIdentifiersList = assertThrows<ClientException> {
-            requestControllerApi.postBulkDataRequest(BulkDataRequest(emptyList(), frameworks))
-        }
-        checkErrorMessageForClientException(exceptionForEmptyIdentifiersList)
-        val exceptionForEmptyFrameworksAndEmptyIdentifiersList = assertThrows<ClientException> {
-            requestControllerApi.postBulkDataRequest(BulkDataRequest(emptyList(), emptyList()))
-        }
-        checkErrorMessageForClientException(exceptionForEmptyFrameworksAndEmptyIdentifiersList)
+        val reportingPeriods = listOf("2023")
+        sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, frameworks, emptyList())
+        sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, emptyList(), reportingPeriods)
+        sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptyList(), frameworks, reportingPeriods)
+        sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, emptyList(), emptyList())
+        sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptyList(), frameworks, emptyList())
+        sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptyList(), emptyList(), reportingPeriods)
+        sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptyList(), emptyList(), emptyList())
         val invalidIdentifiers = listOf(
             generateRandomLei() + "F", generateRandomIsin() + "F", generateRandomPermId() + "F",
         )
-        val exceptionForInvalidIdentifiersOnly = assertThrows<ClientException> {
-            requestControllerApi.postBulkDataRequest(BulkDataRequest(invalidIdentifiers, frameworks))
-        }
-        checkErrorMessageForClientException(exceptionForInvalidIdentifiersOnly)
+        sendBulkRequestWithInvalidIdentifiersOnlyAndCheckErrorMessage(invalidIdentifiers, frameworks, reportingPeriods)
     }
 
     private fun authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
         technicalUser: TechnicalUser,
         identifiers: List<String>,
         frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+        reportingPeriods: List<String>,
     ) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val responseForReader = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiers, frameworks),
+            BulkDataRequest(identifiers, frameworks, reportingPeriods),
         )
         checkThatAllIdentifiersWereAccepted(responseForReader, identifiers.size)
     }
@@ -241,22 +244,26 @@ class CommunityManagerTest {
             )
             ).toMutableMap()
         val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
-        TechnicalUser.entries.forEach { technicalUser ->
+        val reportingPeriods = listOf("2022", "2023")
+        TechnicalUser.values().forEach { technicalUser ->
             authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
-                technicalUser, identifierMap.values.toList(), frameworks,
+                technicalUser, identifierMap.values.toList(), frameworks, reportingPeriods,
             )
         }
         identifierMap[DataRequestCompanyIdentifierType.datalandCompanyId] = companyId
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests()
         frameworks.forEach { framework ->
-            identifierMap.forEach { (identifierType, identifierValue) ->
-                checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
-                    aggregatedDataRequests,
-                    framework,
-                    identifierType,
-                    identifierValue,
-                    TechnicalUser.entries.size.toLong(),
-                )
+            reportingPeriods.forEach { reportingPeriod ->
+                identifierMap.forEach { (identifierType, identifierValue) ->
+                    checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
+                        aggregatedDataRequests,
+                        framework,
+                        reportingPeriod,
+                        identifierType,
+                        identifierValue,
+                        TechnicalUser.values().size.toLong(),
+                    )
+                }
             }
         }
     }
@@ -272,30 +279,35 @@ class CommunityManagerTest {
         val differentLei = generateRandomLei()
         val identifiers = identifiersToRecognizeMap.values.toList() + listOf(differentLei)
         val frameworks = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
-        val response = requestControllerApi.postBulkDataRequest(BulkDataRequest(identifiers, frameworks))
+        val reportingPeriods = listOf("2023")
+        val response = requestControllerApi.postBulkDataRequest(
+            BulkDataRequest(identifiers, frameworks, reportingPeriods),
+        )
         checkThatAllIdentifiersWereAccepted(response, identifiers.size)
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(identifierValue = permId)
-        iterateThroughIdentifiersAndFrameworksAndCheckExistenceWithCount1(
-            identifiersToRecognizeMap, frameworks, aggregatedDataRequests,
+        iterateThroughIdentifiersAndFrameworksAndReportingPeriodsAndCheckExistenceWithCount1(
+            identifiersToRecognizeMap, frameworks, reportingPeriods, aggregatedDataRequests,
         )
         assertFalse(aggregatedDataRequests.any { it.dataRequestCompanyIdentifierValue == differentLei })
-        val aggregatedDataRequestsForEmptyString = requestControllerApi.getAggregatedDataRequests(identifierValue = "")
-        iterateThroughIdentifiersAndFrameworksAndCheckExistenceWithCount1(
-            identifiersToRecognizeMap, frameworks, aggregatedDataRequestsForEmptyString,
+        val aggregatedDataRequestsWithoutFilter = requestControllerApi.getAggregatedDataRequests(identifierValue = null)
+        iterateThroughIdentifiersAndFrameworksAndReportingPeriodsAndCheckExistenceWithCount1(
+            identifiersToRecognizeMap + mapOf(DataRequestCompanyIdentifierType.lei to differentLei),
+            frameworks, reportingPeriods, aggregatedDataRequestsWithoutFilter,
         )
-        iterateThroughIdentifiersAndFrameworksAndCheckExistenceWithCount1(
-            mapOf(DataRequestCompanyIdentifierType.lei to differentLei),
-            frameworks,
-            aggregatedDataRequestsForEmptyString,
+        val aggregatedDataRequestsForEmptyString = requestControllerApi.getAggregatedDataRequests(identifierValue = "")
+        iterateThroughIdentifiersAndFrameworksAndReportingPeriodsAndCheckExistenceWithCount1(
+            identifiersToRecognizeMap + mapOf(DataRequestCompanyIdentifierType.lei to differentLei),
+            frameworks, reportingPeriods, aggregatedDataRequestsForEmptyString,
         )
     }
 
     @Test
     fun `post bulk requests and check that the filter for frameworks on aggregated level works properly`() {
         val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
+        val reportingPeriods = listOf("2023")
         val identifierMap = mapOf(DataRequestCompanyIdentifierType.lei to generateRandomLei())
         val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifierMap.values.toList(), frameworks),
+            BulkDataRequest(identifierMap.values.toList(), frameworks, reportingPeriods),
         )
         checkThatAllIdentifiersWereAccepted(response, identifierMap.size)
         listOf(1, (2 until frameworks.size).random(), frameworks.size).forEach { numberOfRandomFrameworks ->
@@ -303,8 +315,8 @@ class CommunityManagerTest {
             val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(
                 dataTypes = randomFrameworks.map { findRequestControllerApiDataTypeForFramework(it) },
             )
-            iterateThroughIdentifiersAndFrameworksAndCheckExistenceWithCount1(
-                identifierMap, randomFrameworks, aggregatedDataRequests,
+            iterateThroughIdentifiersAndFrameworksAndReportingPeriodsAndCheckExistenceWithCount1(
+                identifierMap, randomFrameworks, reportingPeriods, aggregatedDataRequests,
             )
             val frameworksNotToBeFound = frameworks.filter { !randomFrameworks.contains(it) }
             frameworksNotToBeFound.forEach { framework ->
@@ -315,9 +327,42 @@ class CommunityManagerTest {
                 )
             }
         }
+        val aggregatedDataRequestsWithoutFilter = requestControllerApi.getAggregatedDataRequests(dataTypes = null)
+        iterateThroughIdentifiersAndFrameworksAndReportingPeriodsAndCheckExistenceWithCount1(
+            identifierMap, frameworks, reportingPeriods, aggregatedDataRequestsWithoutFilter,
+        )
         val aggregatedDataRequestsForEmptyList = requestControllerApi.getAggregatedDataRequests(dataTypes = emptyList())
-        iterateThroughIdentifiersAndFrameworksAndCheckExistenceWithCount1(
-            identifierMap, frameworks, aggregatedDataRequestsForEmptyList,
+        iterateThroughIdentifiersAndFrameworksAndReportingPeriodsAndCheckExistenceWithCount1(
+            identifierMap, frameworks, reportingPeriods, aggregatedDataRequestsForEmptyList,
+        )
+    }
+
+    @Test
+    fun `post bulk data request and check that the filter for reporting periods on aggregated level works properly`() {
+        val identifierMap = mapOf(DataRequestCompanyIdentifierType.lei to generateRandomLei())
+        val frameworks = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
+        val reportingPeriods = listOf("2020", "2021", "2022", "2023")
+        val response = requestControllerApi.postBulkDataRequest(
+            BulkDataRequest(identifierMap.values.toList(), frameworks, reportingPeriods),
+        )
+        checkThatAllIdentifiersWereAccepted(response, identifierMap.size)
+        val randomReportingPeriod = reportingPeriods.random()
+        val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests(
+            reportingPeriod = randomReportingPeriod,
+        )
+        iterateThroughIdentifiersAndFrameworksAndReportingPeriodsAndCheckExistenceWithCount1(
+            identifierMap, frameworks, listOf(randomReportingPeriod), aggregatedDataRequests,
+        )
+        reportingPeriods.filter { it != randomReportingPeriod }.forEach { filteredReportingPeriod ->
+            assertFalse(aggregatedDataRequests.any { it.reportingPeriod == filteredReportingPeriod })
+        }
+        val aggregatedDataRequestsWithoutFilter = requestControllerApi.getAggregatedDataRequests(reportingPeriod = null)
+        iterateThroughIdentifiersAndFrameworksAndReportingPeriodsAndCheckExistenceWithCount1(
+            identifierMap, frameworks, reportingPeriods, aggregatedDataRequestsWithoutFilter,
+        )
+        val aggregatedDataRequestsForEmptyString = requestControllerApi.getAggregatedDataRequests(reportingPeriod = "")
+        iterateThroughIdentifiersAndFrameworksAndReportingPeriodsAndCheckExistenceWithCount1(
+            identifierMap, frameworks, reportingPeriods, aggregatedDataRequestsForEmptyString,
         )
     }
 }
