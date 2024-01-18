@@ -18,8 +18,7 @@ export const esgQuestionnaireDataModel = [
             label: "Berichtspflicht und Einwilligung zur Veröffentlichung",
             description:
               "Ist das Unternehmen berichtspflichtig im Rahmen der CSRD-Richtlinie bzw. ist es gemäß den Offenlegungspflichten der Artikel 19a und 29a der Richtilinie 2023/34/EU zur Nachhaltigkeitsberichtserstattung verpflichtet? Ist das Unternehmen außerdem mit einer Veröffentlichung des Datensatzes auf Dataland einverstanden? Anderenfalls ist eine Dateneineingabe nicht möglich.",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: true,
             showIf: (): boolean => true,
@@ -29,12 +28,10 @@ export const esgQuestionnaireDataModel = [
             name: "gueltigkeitsDatum",
             label: "(Gültigkeits) Datum",
             description: "Datum bis wann die Information gültig ist",
-            options: "",
-            unit: "",
+
             component: "DateFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "",
           },
         ],
       },
@@ -55,38 +52,32 @@ export const esgQuestionnaireDataModel = [
             label: "Existenz von ESG-Zielen",
             description:
               "Hat das Unternehmen spezifische ESG-Ziele / Engagements? Werden bspw. spezifische Ziele / Maßnahmen ergriffen, um das 1,5 Grad Ziel zu erreichen?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "beschreibungDerEsgZiele",
             label: "Beschreibung der ESG-Ziele",
             description: "Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.esgZiele?.existenzVonEsgZielen == "Yes",
-            validation: "",
           },
           {
             name: "investitionenInZielerreichung",
             label: "Investitionen in Zielerreichung",
             description:
               "Bitte geben Sie an wieviele Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele zugewiesen wurden.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.esgZiele?.existenzVonEsgZielen == "Yes",
-            validation: "",
           },
         ],
       },
@@ -99,13 +90,11 @@ export const esgQuestionnaireDataModel = [
             label: "Sektoren mit hohen Klimaauswirkungen",
             description:
               "Kann das Unternehmen einem oder mehreren Sektoren mit hohen Klimaauswirkungen zugeordnet werden?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "auflistungDerSektoren",
@@ -150,12 +139,11 @@ export const esgQuestionnaireDataModel = [
                 value: "LGrundstuecksUndWohnungswesen",
               },
             ],
-            unit: "",
+
             component: "MultiSelectFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen == "Yes",
-            validation: "",
           },
         ],
       },
@@ -167,13 +155,11 @@ export const esgQuestionnaireDataModel = [
             name: "nachhaltigkeitsberichte",
             label: "Nachhaltigkeitsberichte",
             description: "Erstellt das Unternehmen Nachhaltigkeits- oder ESG-Berichte?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "frequenzDerBerichterstattung",
@@ -197,24 +183,21 @@ export const esgQuestionnaireDataModel = [
                 value: "Monatlich",
               },
             ],
-            unit: "",
+
             component: "SingleSelectFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == "Yes",
-            validation: "",
           },
           {
             name: "aktuelleBerichte",
             label: "Aktuelle Berichte",
             description: "Aktuelle Nachhaltigkeits- oder ESG-Berichte",
-            options: "",
-            unit: "",
+
             component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == "Yes",
-            validation: "",
           },
         ],
       },
@@ -227,64 +210,54 @@ export const esgQuestionnaireDataModel = [
             label: "ISO 14001",
             description:
               "Haben Sie eine ISO 14001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-            options: "",
-            unit: "",
+
             component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "iso45001",
             label: "ISO 45001",
             description:
               "Haben Sie eine ISO 45001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-            options: "",
-            unit: "",
+
             component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "iso27001",
             label: "ISO 27001",
             description:
               "Haben Sie eine ISO 27001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-            options: "",
-            unit: "",
+
             component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "iso50001",
             label: "ISO 50001",
             description:
               "Haben Sie eine ISO 50001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
-            options: "",
-            unit: "",
+
             component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "weitereAkkreditierungen",
             label: "Weitere Akkreditierungen",
             description: "Weitere Akkreditierungen, die noch nicht aufgeführt wurden",
-            options: "",
-            unit: "",
+
             component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
         ],
       },
@@ -297,38 +270,32 @@ export const esgQuestionnaireDataModel = [
             label: "Mechanismen zur Überwachung der Einhaltung der UNGCP",
             description:
               "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der Prinzipien des UN Global Compact zu überwachen?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "richtlinienZurEinhaltungDerUngcp",
             label: "Richtlinien zur Einhaltung der UNGCP",
             description:
               "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht.",
-            options: "",
-            unit: "",
+
             component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == "Yes",
-            validation: "",
           },
           {
             name: "erklaerungDerEinhaltungDerUngcp",
             label: "Erklärung der Einhaltung der UNGCP",
             description: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == "Yes",
-            validation: "",
           },
         ],
       },
@@ -341,38 +308,32 @@ export const esgQuestionnaireDataModel = [
             label: "Mechanismen zur Überwachung der Einhaltung der OECD-Leitsätze",
             description:
               "Verfügt das Unternehmen über Prozesse und Compliance-Mechanismen, um die Einhaltung der OECD-Leitsätze für multinationale Unternehmen (OECD MNE Guidelines) zu überwachen?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "richtlinienZurEinhaltungDerOecdLeitsaetze",
             label: "Richtlinien zur Einhaltung der OECD-Leitsätze",
             description:
               "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht.",
-            options: "",
-            unit: "",
+
             component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == "Yes",
-            validation: "",
           },
           {
             name: "erklaerungDerEinhaltungDerOecdLeitsaetze",
             label: "Erklärung der Einhaltung der OECD-Leitsätze",
             description: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == "Yes",
-            validation: "",
           },
         ],
       },
@@ -385,38 +346,32 @@ export const esgQuestionnaireDataModel = [
             label: "Ausrichtung auf die UN SDGs und aktives Verfolgen",
             description:
               "Wie steht das Unternehmen in Einklang mit den 17 UN-Zielen für nachhaltige Entwicklung? Welche dieser Ziele verfolgt das Unternehmen aktiv, entweder durch ihre Geschäftstätigkeit oder durch die Unternehmensführung?",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "ausschlusslistenAufBasisVonEsgKriterien",
             label: "Ausschlusslisten auf Basis von ESG Kriterien",
             description:
               "Führt das Unternehmen Ausschlusslisten? Von besonderem Interesse sind Listen die Ausschlusskriterien, die einen Bezug zu den Bereichen E, S oder G haben.",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "ausschlusslisten",
             label: "Ausschlusslisten",
             description: "Bitte nennen Sie die Ausschlusslisten auf Basis von ESG Kriterien.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.sonstige?.ausschlusslistenAufBasisVonEsgKriterien == "Yes",
-            validation: "",
           },
         ],
       },
@@ -429,13 +384,11 @@ export const esgQuestionnaireDataModel = [
             label: "Ökologische/soziale Führungsstandards oder -prinzipien",
             description:
               "Hat sich das Unternehmen zu ökologischen/sozialen Führungsstandards oder Prinzipien verpflichtet?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "anreizmechanismenFuerDasManagementUmwelt",
@@ -460,12 +413,11 @@ export const esgQuestionnaireDataModel = [
                 value: "JaAufsichtsratUndGeschaeftsleitung",
               },
             ],
-            unit: "",
+
             component: "SingleSelectFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien == "Yes",
-            validation: "",
           },
           {
             name: "anreizmechanismenFuerDasManagementSoziales",
@@ -490,12 +442,11 @@ export const esgQuestionnaireDataModel = [
                 value: "JaAufsichtsratUndGeschaeftsleitung",
               },
             ],
-            unit: "",
+
             component: "SingleSelectFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien == "Yes",
-            validation: "",
           },
         ],
       },
@@ -508,25 +459,21 @@ export const esgQuestionnaireDataModel = [
             label: "ESG-bezogene Rechtsstreitigkeiten",
             description:
               "Ist das Unternehmen in laufende bzw. war das Unternehmen in den letzten 3 Jahren in abgeschlossenen Rechtsstreitigkeiten im Zusammenhang mit ESG involviert?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "rechtsstreitigkeitenMitBezugZuE",
             label: "Rechtsstreitigkeiten mit Bezug zu E",
             description: 'Haben bzw. hatten die Rechtsstreitigkeiten Bezug zu "E"',
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeiten == "Yes",
-            validation: "",
           },
           {
             name: "statusZuE",
@@ -542,36 +489,31 @@ export const esgQuestionnaireDataModel = [
                 value: "Geklaert",
               },
             ],
-            unit: "",
+
             component: "SingleSelectFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuE == "Yes",
-            validation: "",
           },
           {
             name: "einzelheitenZuDenRechtsstreitigkeitenZuE",
             label: "Einzelheiten zu den Rechtsstreitigkeiten zu E",
             description: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuE == "Yes",
-            validation: "",
           },
           {
             name: "rechtsstreitigkeitenMitBezugZuS",
             label: "Rechtsstreitigkeiten mit Bezug zu S",
             description: 'Haben bzw. hatten die Rechtsstreitigkeiten Bezug zu "S"',
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeiten == "Yes",
-            validation: "",
           },
           {
             name: "statusZuS",
@@ -587,36 +529,31 @@ export const esgQuestionnaireDataModel = [
                 value: "Geklaert",
               },
             ],
-            unit: "",
+
             component: "SingleSelectFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuS == "Yes",
-            validation: "",
           },
           {
             name: "einzelheitenZuDenRechtsstreitigkeitenZuS",
             label: "Einzelheiten zu den Rechtsstreitigkeiten zu S",
             description: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuS == "Yes",
-            validation: "",
           },
           {
             name: "rechtsstreitigkeitenMitBezugZuG",
             label: "Rechtsstreitigkeiten mit Bezug zu G",
             description: 'Haben bzw. hatten die Rechtsstreitigkeiten Bezug zu "G"',
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.esgBezogeneRechtsstreitigkeiten == "Yes",
-            validation: "",
           },
           {
             name: "statusZuG",
@@ -632,24 +569,21 @@ export const esgQuestionnaireDataModel = [
                 value: "Geklaert",
               },
             ],
-            unit: "",
+
             component: "SingleSelectFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuG == "Yes",
-            validation: "",
           },
           {
             name: "einzelheitenZuDenRechtsstreitigkeitenZuG",
             label: "Einzelheiten zu den Rechtsstreitigkeiten zu G",
             description: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuG == "Yes",
-            validation: "",
           },
         ],
       },
@@ -661,57 +595,47 @@ export const esgQuestionnaireDataModel = [
             name: "esgRating",
             label: "ESG-Rating",
             description: "Hat das Unternehmen bereits ein ESG-Rating einer anerkannten Ratingagentur?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "agentur",
             label: "Agentur",
             description: "Welche Rating Agentur hat das Rating durchgeführt?",
-            options: "",
-            unit: "",
+
             component: "InputTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean => dataset.allgemein?.rating?.esgRating == "Yes",
-            validation: "",
           },
           {
             name: "ergebnis",
             label: "Ergebnis",
             description: "Wie lautet das Rating?",
-            options: "",
-            unit: "",
+
             component: "InputTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean => dataset.allgemein?.rating?.esgRating == "Yes",
-            validation: "",
           },
           {
             name: "ratingbericht",
             label: "Ratingbericht",
             description: "Liegt ein Ratingbericht vor?",
-            options: "",
-            unit: "",
+
             component: "YesNoBaseDataPointFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean => dataset.allgemein?.rating?.esgRating == "Yes",
-            validation: "",
           },
           {
             name: "kritischePunkte",
             label: "Kritische Punkte",
             description: "Was waren die kritischen Punkte beim ESG-Rating?",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean => dataset.allgemein?.rating?.esgRating == "Yes",
-            validation: "",
           },
         ],
       },
@@ -723,51 +647,43 @@ export const esgQuestionnaireDataModel = [
             name: "grueneSozialeUndOderNachhaltigeEmissionen",
             label: "Grüne, soziale und/oder nachhaltige Emissionen",
             description: "Hat das Unternehmen „grüne“, „soziale“ und/oder „nachhaltige“ Schuldtitel begeben?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen",
             label: "Ausstehende grüne, soziale und/oder nachhaltige Emissionen",
             description:
               "Bitte geben Sie Details zu den ausstehenden Emissionen für das letzte Jahr der Berichterstattung an (in Mio €).",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.anleihen?.grueneSozialeUndOderNachhaltigeEmissionen == "Yes",
-            validation: "",
           },
           {
             name: "sustainibilityLinkedDebt",
             label: "Sustainibility Linked Debt",
             description: "Hat das Unternehmen Sustainability Linked Debt („SLD“) emittiert?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "ausstehendeSustainibilityLinkedDebt",
             label: "Ausstehende Sustainibility Linked Debt",
             description:
               "Bitte geben Sie Details zu den ausstehenden Emissionen für das letzte Jahr der Berichterstattung an (in Mio €).",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.anleihen?.sustainibilityLinkedDebt == "Yes",
-            validation: "",
           },
         ],
       },
@@ -780,26 +696,22 @@ export const esgQuestionnaireDataModel = [
             label: "Wichtigste E-, S- und G-Risiken und Bewertung",
             description:
               "Welche sind die wichtigsten von der Gruppe identifizierten E-, S- und G-Risiken? Bitte geben Sie die Details / Bewertung der identifizierten Risiken an.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "hindernisseBeimUmgangMitEsgBedenken",
             label: "Hindernisse beim Umgang mit ESG-Bedenken",
             description:
               "Welche grundsätzlichen Hindernisse bestehen für das Unternehmen bei der Berücksichtigung von ESG-Belangen?",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
         ],
       },
@@ -834,38 +746,33 @@ export const esgQuestionnaireDataModel = [
                 value: "scope3",
               },
             ],
-            unit: "",
+
             component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird",
             label: "Treibhausgas-Emissionsintensität der Unternehmen, in die investiert wird",
             description:
               "THG-Emissionsintensität der Unternehmen, in die investiert wird. (1) Scope 1 + Scope 2 Treibhausgasemissionen / Umsatz in Millionen EUR, (2) Scope 1 + Scope 2 Treibhausgasemissionen / Unternehmensgröße in Mio. EUR",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "strategieUndZieleZurReduzierungVonTreibhausgasEmissionen",
             label: "Strategie und Ziele zur Reduzierung von Treibhausgas-Emissionen",
             description:
               "Welchen Entwicklungspfad bzgl. der (Reduktion von) Treibhausgasemissionen verfolgt das Unternehmen. Gibt es einen Zeitplan bzw. konkrete Ziele? Und wie plant das Unternehmen, diesen Kurs zu erreichen? Bitte erläutern Sie, in welchem Bezug dieser Entwicklungspfad zu dem auf dem Pariser Abkommen basierenden Kurs steht.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
         ],
       },
@@ -878,38 +785,32 @@ export const esgQuestionnaireDataModel = [
             label: "Produkte zur Verringerung der Umweltbelastung",
             description:
               "Entwickelt, produziert oder vertreibt das Unternehmen Produkte, die die Umweltbelastung verringern?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "verringerungenDerUmweltbelastung",
             label: "Verringerungen der Umweltbelastung",
             description: "Bitte beschreiben Sie möglichst genau, wie die Produkte die Umweltbelastung reduzieren.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.produktion?.produkteZurVerringerungDerUmweltbelastung == "Yes",
-            validation: "",
           },
           {
             name: "oekologischerMindestStandardFuerProduktionsprozesse",
             label: "Ökologischer Mindest-Standard für Produktionsprozesse",
             description:
               "Verfügt das Unternehmen über interne Richtlinien, die einen Mindestumweltstandard im Produktionsprozess sicherstellen?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
         ],
       },
@@ -936,25 +837,22 @@ export const esgQuestionnaireDataModel = [
                 value: "ggfProzentDerErneuerbarenEnergieerzeugung",
               },
             ],
-            unit: "",
+
             component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "unternehmensGruppenStrategieBzglEnergieverbrauch",
             label: "Unternehmens/Gruppen Strategie bzgl Energieverbrauch",
             description:
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
         ],
       },
@@ -973,25 +871,22 @@ export const esgQuestionnaireDataModel = [
                 value: "engagementAnteilInEnergieineffizientenImmobilienanlagen",
               },
             ],
-            unit: "",
+
             component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen",
             label: "Unternehmens/Gruppen Strategie bzgl energieeffizienten Immobilienanlagen",
             description:
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
         ],
       },
@@ -1014,25 +909,22 @@ export const esgQuestionnaireDataModel = [
                 value: "emissionenInWasser",
               },
             ],
-            unit: "",
+
             component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "unternehmensGruppenStrategieBzglWasserverbrauch",
             label: "Unternehmens/Gruppen Strategie bzgl Wasserverbrauch",
             description:
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
         ],
       },
@@ -1059,25 +951,22 @@ export const esgQuestionnaireDataModel = [
                 value: "prozentGefaehrlicherAbfall",
               },
             ],
-            unit: "",
+
             component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "unternehmensGruppenStrategieBzglAbfallproduktion",
             label: "Unternehmens/Gruppen Strategie bzgl Abfallproduktion",
             description:
               "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "recyclingImProduktionsprozess",
@@ -1090,25 +979,22 @@ export const esgQuestionnaireDataModel = [
                 value: "prozentRecycelteWerkstoffeImProduktionsprozess",
               },
             ],
-            unit: "",
+
             component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "gefaehrlicherAbfall",
             label: "Gefährlicher Abfall",
             description:
               "Wie wird in dem Unternehmen während der Produktion und Verarbeitung mit gefährlichen Abfällen (brennbar, reaktiv, giftig, radioaktiv) umgegangen?",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
         ],
       },
@@ -1121,52 +1007,44 @@ export const esgQuestionnaireDataModel = [
             label: "Negative Aktivitäten für die biologische Vielfalt",
             description:
               "Hat das Unternehmen Standorte / Betriebe in oder in der Nähe von biodiversitätssensiblen Gebieten, in denen sich die Aktivitäten des Unternehmens negativ auf diese Gebiete auswirken?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "negativeMassnahmenFuerDieBiologischeVielfalt",
             label: "Negative Maßnahmen für die biologische Vielfalt",
             description:
               "Bitte erläutern Sie Aktivitäten, die sich negativ auf die Biodiversität auswirken. Teilen Sie bitte auch den von der Gruppe/Unternehmen definierte Entwicklungspfad für den Umgang mit diesen Maßnahmen (Zeitplan und Ziel - falls vorhanden) mit uns und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.biodiversitaet?.negativeAktivitaetenFuerDieBiologischeVielfalt == "Yes",
-            validation: "",
           },
           {
             name: "positiveAktivitaetenFuerDieBiologischeVielfalt",
             label: "Positive Aktivitäten für die biologische Vielfalt",
             description:
               "Hat das Unternehmen Standorte / Betriebe in oder in der Nähe von biodiversitätssensiblen Gebieten, in denen sich die Aktivitäten des Unternehmens positiv auf diese Gebiete auswirken?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "positiveMassnahmenFuerDieBiologischeVielfalt",
             label: "Positive Maßnahmen für die biologische Vielfalt",
             description:
               "Bitte erläutern Sie Aktivitäten, die sich positiv auf die Biodiversität auswirken. Teilen Sie bitte auch den von der Gruppe/Unternehmen definierte Entwicklungspfad für die Weiterentwicklung dieser Maßnahmen (Zeitplan und Ziel - falls vorhanden) mit uns und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.biodiversitaet?.positiveAktivitaetenFuerDieBiologischeVielfalt == "Yes",
-            validation: "",
           },
         ],
       },
@@ -1179,13 +1057,11 @@ export const esgQuestionnaireDataModel = [
             label: "Einnahmen aus fossilen Brennstoffen",
             description:
               "Erzielt das Unternehmen einen Teil seiner Einnahmen aus Aktivitäten im Bereich fossiler Brennstoffe und/oder besitzt das Unternehmen Immobilien, die an der Gewinnung, Lagerung, dem Transport oder der Herstellung fossiler Brennstoffe beteiligt sind?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "berichterstattungEinnahmenAusFossilenBrennstoffen",
@@ -1198,12 +1074,11 @@ export const esgQuestionnaireDataModel = [
                 value: "prozentDerEinnahmenAusFossilenBrennstoffen",
               },
             ],
-            unit: "",
+
             component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.fossileBrennstoffe?.einnahmenAusFossilenBrennstoffen == "Yes",
-            validation: "",
           },
         ],
       },
@@ -1225,24 +1100,22 @@ export const esgQuestionnaireDataModel = [
                 value: "Csrd",
               },
             ],
-            unit: "",
+
             component: "SingleSelectFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "euTaxonomieKompassAktivitaeten",
             label: "EU Taxonomie Kompass Aktivitäten",
             description: "Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?",
             options: getActivityNamesAsDropdownOptions(),
-            unit: "",
+
             component: "MultiSelectFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten",
@@ -1267,12 +1140,11 @@ export const esgQuestionnaireDataModel = [
                 value: "taxonomieKonformNachProzentCapex",
               },
             ],
-            unit: "",
+
             component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
         ],
       },
@@ -1293,20 +1165,17 @@ export const esgQuestionnaireDataModel = [
             label: "Vorhandensein kürzlicher Änderungen der Unternehmensstruktur",
             description:
               "Gab es kürzlich eine Veränderung im Unternehmen / in der Gruppe (Umstrukturierung, Verkauf oder Übernahme)?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "anzahlUnbefristeterVertraegeInDeutschland",
             label: "Anzahl unbefristeter Verträge in Deutschland",
             description: "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in Deutschland gibt.",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1319,8 +1188,7 @@ export const esgQuestionnaireDataModel = [
             label: "Anzahl der von einem Verkauf betroffenen unbefristeten Verträge in Deutschland ",
             description:
               "Bitte teilen Sie mit uns wieviele unbefristete Verträge in Deutschland von einem etwaigen Verkauf betroffen waren.",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1333,8 +1201,7 @@ export const esgQuestionnaireDataModel = [
             label: "Anzahl der von einer Akquisition betroffenen unbefristeten Verträge in Deutschland ",
             description:
               "Bitte teilen Sie mit uns wieviele unbefristete Verträge in Deutschland von einer etwaigen Akquisition betroffen waren.",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1347,8 +1214,7 @@ export const esgQuestionnaireDataModel = [
             label: "Anzahl unbefristeter Verträge in der Gesamtgruppe",
             description:
               "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in der Gesamtgruppe gibt.",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1361,8 +1227,7 @@ export const esgQuestionnaireDataModel = [
             label: "Anzahl der von einem Verkauf betroffenen unbefristeten Verträge in der Gesamtgruppe",
             description:
               "Bitte teilen Sie mit uns wieviele unbefristete Verträge in der Gesamtgruppe von einem etwaigen Verkauf betroffen waren.",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1375,8 +1240,7 @@ export const esgQuestionnaireDataModel = [
             label: "Anzahl der von einer Akquisition betroffenen unbefristeten Verträge in der Gesamtgruppe",
             description:
               "Bitte teilen Sie mit uns wieviele unbefristete Verträge in der Gesamtgruppe von einer etwaigen Akquisition betroffen waren.",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1399,13 +1263,12 @@ export const esgQuestionnaireDataModel = [
                 value: "fluktuation",
               },
             ],
-            unit: "",
+
             component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
-            validation: "",
           },
         ],
       },
@@ -1418,13 +1281,11 @@ export const esgQuestionnaireDataModel = [
             label: "Sicherheitsmaßnahmen für Mitarbeiter",
             description:
               "Welche Maßnahmen werden ergriffen, um die Gesundheit und Sicherheit der Mitarbeiter des Unternehmens zu verbessern?",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "unfallrate",
@@ -1437,12 +1298,11 @@ export const esgQuestionnaireDataModel = [
                 value: "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust",
               },
             ],
-            unit: "",
+
             component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "budgetFuerSchulungAusbildung",
@@ -1455,12 +1315,11 @@ export const esgQuestionnaireDataModel = [
                 value: "budgetProMitarbeiter",
               },
             ],
-            unit: "",
+
             component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
         ],
       },
@@ -1487,25 +1346,22 @@ export const esgQuestionnaireDataModel = [
                 value: "ceoEinkommensungleichheitsverhaeltnis",
               },
             ],
-            unit: "",
+
             component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "massnahmenZurVerbesserungDerEinkommensungleichheit",
             label: "Maßnahmen zur Verbesserung der Einkommensungleichheit",
             description:
               "Wie überwacht das Unternehmen die Einkommens(un)gleichheit und welche Maßnahmen wurden ergriffen, um die Einkommensungleichheit abzustellen?",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
         ],
       },
@@ -1517,8 +1373,7 @@ export const esgQuestionnaireDataModel = [
             name: "mitarbeiterAufTopManagementEbene",
             label: "Mitarbeiter auf Top-Management Ebene",
             description: "Geben Sie bitte an wieviele Personen eine Top-Management Position innehaben.",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1529,8 +1384,7 @@ export const esgQuestionnaireDataModel = [
             name: "frauenAufTopManagementEbene",
             label: "Frauen auf Top-Management-Ebene",
             description: "Geben Sie bitte an wieviele Frauen eine Top-Management Position innehaben.",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1541,8 +1395,7 @@ export const esgQuestionnaireDataModel = [
             name: "mitgliederGeschaeftsfuehrung",
             label: "Mitglieder Geschäftsführung",
             description: "Geben Sie bitte an wieviele Mitglieder die Geschäftsführung hat.",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1553,8 +1406,7 @@ export const esgQuestionnaireDataModel = [
             name: "frauenInDerGeschaeftsfuehrung",
             label: "Frauen in der Geschäftsführung",
             description: "Geben Sie bitte an wieviele Frauen in der Geschäftsführung sind.",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1565,26 +1417,22 @@ export const esgQuestionnaireDataModel = [
             name: "definitionTopManagement",
             label: "Definition Top-Management",
             description: 'Bitte geben Sie Ihre Definition von "Top-Management".',
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "einhaltungRechtlicherVorgaben",
             label: "Einhaltung rechtlicher Vorgaben",
             description:
               "Welche Maßnahmen wurden ergriffen, um das geltende Recht in Bezug auf die Geschlechterdiversität von Exekutivinstanzen einzuhalten?",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
         ],
       },
@@ -1597,13 +1445,11 @@ export const esgQuestionnaireDataModel = [
             label: "Audits zur Einhaltung von Arbeitsstandards",
             description:
               "Führt das Unternehmen interne oder externe Audits durch, um die Einhaltung der Arbeitsnormen durch das Unternehmen zu bewerten?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "artDesAudits",
@@ -1623,24 +1469,21 @@ export const esgQuestionnaireDataModel = [
                 value: "SowohlInternAlsAuchVonDrittanbietern",
               },
             ],
-            unit: "",
+
             component: "SingleSelectFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes",
-            validation: "",
           },
           {
             name: "auditErgebnisse",
             label: "Audit Ergebnisse",
             description: "Bitte geben Sie Informationen über das letzte Audit an.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes",
-            validation: "",
           },
         ],
       },
@@ -1660,8 +1503,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlDerMitgliederImAufsichtsrat",
             label: "Anzahl der Mitglieder im Aufsichtsrat",
             description: "Wieviele Mitglieder hat der Aufsichtsrat?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1672,8 +1514,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlUnabhaengigerMitgliederImAufsichtsrat",
             label: "Anzahl unabhängiger Mitglieder im Aufsichtsrat",
             description: "Wieviele unabhängige Mitglieder hat der Aufsichtsrat?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1684,8 +1525,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlVonFrauenImAufsichtsrat",
             label: "Anzahl von Frauen im Aufsichtsrat",
             description: "Wieviele Frauen sind im Aufsichtsrat?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1702,8 +1542,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlDerMitgliederImVerguetungsausschuss",
             label: "Anzahl der Mitglieder im Vergütungsausschuss",
             description: "Wieviele Mitglieder hat der Vergütungsausschuss?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1714,8 +1553,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlUnabhaengigerMitgliederImVerguetungsausschuss",
             label: "Anzahl unabhängiger Mitglieder im Vergütungsausschuss",
             description: "Wieviele unabhängige Mitglieder hat der Vergütungsausschuss?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1726,8 +1564,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlVonFrauenImVerguetungsausschuss",
             label: "Anzahl von Frauen im Vergütungsausschuss",
             description: "Wieviele Frauen sind im Vergütungsausschuss?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1744,8 +1581,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlDerMitgliederImNominierungsausschuss",
             label: "Anzahl der Mitglieder im Nominierungsausschuss",
             description: "Wieviele Mitglieder hat der Nominierungsausschuss?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1756,8 +1592,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlUnabhaengigerMitgliederImNominierungsausschuss",
             label: "Anzahl unabhängiger Mitglieder im Nominierungsausschuss",
             description: "Wieviele unabhängige Mitglieder hat der Nominierungsausschuss?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1768,8 +1603,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlVonFrauenImVerguetungsausschuss",
             label: "Anzahl von Frauen im Vergütungsausschuss",
             description: "Wieviele Frauen sind im Nominierungsausschuss?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1786,8 +1620,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlDerMitgliederImPruefungsausschuss",
             label: "Anzahl der Mitglieder im Prüfungsausschuss",
             description: "Wieviele Mitglieder hat der Prüfungsausschuss?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1798,8 +1631,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlUnabhaengigerMitgliederImPruefungsausschuss",
             label: "Anzahl unabhängiger Mitglieder im Prüfungsausschuss",
             description: "Wieviele unabhängige Mitglieder hat der Prüfungsausschuss?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1810,8 +1642,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlVonFrauenImPruefungsausschuss",
             label: "Anzahl von Frauen im Prüfungsausschuss",
             description: "Wieviele Frauen sind im Prüfungsausschuss?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1828,8 +1659,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlDerMitgliederImNachhaltigkeitsausschuss",
             label: "Anzahl der Mitglieder im Nachhaltigkeitsausschuss",
             description: "Wieviele Mitglieder hat der Nachhaltigkeitsausschuss?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1840,8 +1670,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss",
             label: "Anzahl unabhängiger Mitglieder im Nachhaltigkeitsausschuss",
             description: "Wieviele unabhängige Mitglieder hat der Nachhaltigkeitsausschuss?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1852,8 +1681,7 @@ export const esgQuestionnaireDataModel = [
             name: "anzahlVonFrauenImNachhaltigkeitsausschuss",
             label: "Anzahl von Frauen im Nachhaltigkeitsausschuss",
             description: "Wieviele Frauen sind im Nachhaltigkeitsausschuss?",
-            options: "",
-            unit: "",
+
             component: "NumberFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
@@ -1870,32 +1698,27 @@ export const esgQuestionnaireDataModel = [
             name: "wirtschaftspruefer",
             label: "Wirtschaftsprüfer",
 
-            options: "",
-            unit: "",
             component: "InputTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "trennungVonCeoOderVorsitzenden",
             label: "Trennung von CEO oder Vorsitzenden",
             description:
               "Hat sich das Unternehmen im aktuellen Jahr der Berichterstattung von CEO/Vorsitzenden getrennt?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "amtszeitBisZurTrennung",
             label: "Amtszeit bis zur Trennung",
             description: "Wieviele Jahre war der/die CEO/Vorsitzende(r) im Amt?",
-            options: "",
+
             unit: "Jahre",
             component: "NumberFormField",
             required: false,
@@ -1913,39 +1736,33 @@ export const esgQuestionnaireDataModel = [
             name: "einbeziehungVonStakeholdern",
             label: "Einbeziehung von Stakeholdern",
             description: "Gibt es einen kontinuierlichen Prozess des Dialogs mit den Stakeholdern des Unternehmens?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "prozessDerEinbeziehungVonStakeholdern",
             label: "Prozess der Einbeziehung von Stakeholdern",
             description:
               "Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == "Yes",
-            validation: "",
           },
           {
             name: "mechanismenZurAusrichtungAufStakeholder",
             label: "Mechanismen zur Ausrichtung auf Stakeholder",
             description:
               "Welche Mechanismen gibt es derzeit, um sicherzustellen, dass die Stakeholder im besten Interesse des Unternehmens handeln? Bitte erläutern Sie (falls zutreffend) die Beteiligungsmechanismen, verschiedene Anreizsysteme usw.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == "Yes",
-            validation: "",
           },
         ],
       },
@@ -2007,24 +1824,21 @@ export const esgQuestionnaireDataModel = [
                 value: "Other",
               },
             ],
-            unit: "",
+
             component: "MultiSelectFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "weitereVeroeffentlicheUnternehmensrichtlinien",
             label: "Weitere veröffentliche Unternehmensrichtlinien",
             description: "Bitte nennen Sie weitere wichtige Richtlinien, falls diese nicht angegeben sind.",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
         ],
       },
@@ -2037,27 +1851,23 @@ export const esgQuestionnaireDataModel = [
             label: "ESG-Kriterien und Überwachung der Lieferanten",
             description:
               "Wendet das Unternehmen ESG-Kriterien bei der Auswahl seiner Lieferanten an, einschließlich einer Bestandsaufnahme der Lieferkette?",
-            options: "",
-            unit: "",
+
             component: "YesNoFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
-            validation: "",
           },
           {
             name: "auswahlkriterien",
             label: "Auswahlkriterien",
             description:
               "Bitte nennen Sie die Auswahlkriterien und erläutern Sie, wie diese Kriterien im Laufe der Zeit überwacht/geprüft werden. Bezieht das Unternehmen beispielsweise Rohstoffe aus Gebieten, in denen umstrittene Abholzungsaktivitäten stattfinden (z.B. Soja, Palmöl, Tropenholz, Holz oder industrielle Viehzucht)?",
-            options: "",
-            unit: "",
+
             component: "FreeTextFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten ==
               "Yes",
-            validation: "",
           },
         ],
       },
