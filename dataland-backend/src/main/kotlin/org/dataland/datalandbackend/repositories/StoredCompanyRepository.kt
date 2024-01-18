@@ -46,6 +46,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         value = "SELECT company.company_id as companyId, " +
             "max(company.company_name) as companyName, " +
             "max(company.headquarters) as headquarters, " +
+            "company.country_code as countryCode, " +
             "max(company.sector) as sector, " +
             "max(permId.max_identifier_value) as permId, " +
             "LEAST(CASE " +
@@ -53,7 +54,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "WHEN max(company.company_name) ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 3 " +
             "ELSE 5 " +
             "END, min(alt_names.search_rank)) as global_search_rank " +
-            "FROM (SELECT company_id, company_name, headquarters, sector FROM stored_companies " +
+            "FROM (SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
             "WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector in :#{#searchFilter.sectorFilter}) " +
             "AND (:#{#searchFilter.countryCodeFilterSize} = 0 OR country_code in :#{#searchFilter.countryCodeFilter}) " +
             ") company " +
