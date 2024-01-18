@@ -81,7 +81,7 @@ class FrameworkFixtureGeneratorBuilder(
     private fun buildDataFixtures(dataFixturesTsPath: Path) {
         val freeMarkerContext = mapOf(
             "frameworkIdentifier" to framework.identifier,
-            "frameworkRootName" to getNameFromLabel(framework.identifier),
+            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
             "imports" to rootSectionBuilder.imports,
             "rootSection" to rootSectionBuilder,
         )
