@@ -60,7 +60,8 @@ export default defineComponent({
         this.currentValue = checkboxValue[0].toString();
         this.$emit("update:currentValue", checkboxValue[0].toString());
       } else {
-        this.shouldBeIgnored = true;
+        this.currentValue = null;
+        this.shouldBeIgnored = !this.validation.includes("is:");
         this.$emit("update:currentValue", null);
       }
     },
@@ -73,7 +74,7 @@ export default defineComponent({
         this.shouldBeIgnored = false;
         this.checkboxValue = [currentValue];
       } else {
-        this.shouldBeIgnored = true;
+        this.shouldBeIgnored = !this.validation.includes("is:");
       }
     },
   },
