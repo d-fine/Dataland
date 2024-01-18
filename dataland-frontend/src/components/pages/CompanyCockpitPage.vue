@@ -46,6 +46,17 @@ export default defineComponent({
       return this.injectedUseMobileView;
     },
   },
+  watch: {
+    async companyId(newCompanyId, oldCompanyId) {
+      if (newCompanyId !== oldCompanyId) {
+        try {
+          await this.getAggregatedFrameworkDataSummary();
+        } catch (error) {
+          console.error("Error fetching data for new company:", error);
+        }
+      }
+    },
+  },
   components: {
     CompanyInfoSheet,
     FrameworkSummaryPanel,
