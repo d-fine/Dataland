@@ -43,14 +43,24 @@ class CompanyQueryManager(
     @Transactional
     fun searchCompaniesAndGetApiModel(
         filter: StoredCompanySearchFilter,
-        viewingUser: DatalandAuthentication? = null,
+        viewingUser: DatalandAuthentication? = null, // TODO remove
     ): List<ReducedCompanyEntity> {
         if (filter.dataTypeFilter.isEmpty()) {
             filter.dataTypeFilter = DataTypesExtractor().getAllDataTypes()
         }
 
-        val filteredAndSortedResults = companyRepository.getAllCompaniesWithDataset()
-//        val filteredAndSortedResults = companyRepository.searchCompanies(filter)
+
+//        val filteredAndSortedResults = companyRepository.getAllCompaniesWithDataset()
+        val filteredAndSortedResults = companyRepository.searchCompanies(filter)
+//        val filteredAndSortedResults = TODO use this one
+//            if (
+//                filter.sectorFilterSize > 0 || TODO put this check into the searchFilter
+//                filter.countryCodeFilterSize > 0 ||
+//                filter.dataTypeFilterSize > 0 ||
+//                filter.searchStringLength > 0
+//            ) companyRepository.searchCompanies(
+//                filter
+//            ) else companyRepository.getAllCompaniesWithDataset()
 //        val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity ->
 //            storedCompanyEntity.companyId to index
 //        }.toMap()

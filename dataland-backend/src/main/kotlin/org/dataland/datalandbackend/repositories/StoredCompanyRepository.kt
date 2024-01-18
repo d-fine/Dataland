@@ -46,7 +46,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         value = "SELECT company.company_id as companyId, " +
             "max(company.company_name) as companyName, " +
             "max(company.headquarters) as headquarters, " +
-            "company.country_code as countryCode, " +
+            "max(company.country_code) as countryCode, " +
             "max(company.sector) as sector, " +
             "max(permId.max_identifier_value) as permId, " +
             "LEAST(CASE " +
