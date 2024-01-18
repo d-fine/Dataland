@@ -66,10 +66,11 @@ class FrameworkViewConfigBuilder(
     private fun buildFrameworkDefinitionTs(baseDirectoryPath: Path) {
         val freeMarkerContext = mapOf(
             "frameworkIdentifier" to framework.identifier,
-            "frameworkRootName" to getNameFromLabel(framework.identifier).capitalizeEn(), // TODO naming?
-            "frameworkViewConfigConstName" to getNameFromLabel(framework.identifier),
             "frameworkLabel" to framework.label,
             "frameworkExplanation" to framework.explanation,
+            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
+            "frameworkViewConfigConstName" to getNameFromLabel(framework.identifier),
+
         )
 
         val outputJobs = listOf(
