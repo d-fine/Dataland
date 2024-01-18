@@ -835,7 +835,7 @@ export const esgQuestionnaireDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
+            component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -937,7 +937,7 @@ export const esgQuestionnaireDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
+            component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -974,7 +974,7 @@ export const esgQuestionnaireDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
+            component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -1015,7 +1015,7 @@ export const esgQuestionnaireDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
+            component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -1060,7 +1060,7 @@ export const esgQuestionnaireDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
+            component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -1091,7 +1091,7 @@ export const esgQuestionnaireDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
+            component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -1199,7 +1199,7 @@ export const esgQuestionnaireDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
+            component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.fossileBrennstoffe?.einnahmenAusFossilenBrennstoffen == "Yes",
@@ -1268,7 +1268,7 @@ export const esgQuestionnaireDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
+            component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -1400,7 +1400,7 @@ export const esgQuestionnaireDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearPastDataFormField",
+            component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
@@ -1438,7 +1438,7 @@ export const esgQuestionnaireDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearPastDataFormField",
+            component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -1456,7 +1456,7 @@ export const esgQuestionnaireDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearPastDataFormField",
+            component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
@@ -1488,7 +1488,7 @@ export const esgQuestionnaireDataModel = [
               },
             ],
             unit: "",
-            component: "GdvYearlyDecimalTimeseriesThreeYearPastDataFormField",
+            component: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField",
             required: false,
             showIf: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",

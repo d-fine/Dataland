@@ -6,7 +6,7 @@ import Column from "primevue/column";
 import { type BaseDataPoint } from "@/utils/DataPoint";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 
-interface GdvListOfBaseDataPointDialogData {
+interface EsgQuestionnaireListOfBaseDataPointDialogData {
   label: string;
   input: Array<BaseDataPoint<string>>;
   descriptionColumnHeader: string;
@@ -15,7 +15,7 @@ interface GdvListOfBaseDataPointDialogData {
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>("dialogRef");
 const dialogData = computed(() => {
-  return dialogRef?.value?.data as GdvListOfBaseDataPointDialogData;
+  return dialogRef?.value?.data as EsgQuestionnaireListOfBaseDataPointDialogData;
 });
 
 const tableData = computed(() => {

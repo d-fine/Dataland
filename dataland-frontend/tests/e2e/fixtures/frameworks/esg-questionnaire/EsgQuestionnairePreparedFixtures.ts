@@ -3,7 +3,7 @@ import { type BerichterstattungEnergieverbrauchValues, type EsgQuestionnaireData
 import { generateEsgQuestionnaireFixtures } from "./EsgQuestionnaireDataFixtures";
 
 /**
- * Generates gdv prepared fixtures by generating random gdv datasets and
+ * Generates esg-questionnaire prepared fixtures by generating random esg-questionnaire datasets and
  * afterwards manipulating some fields via manipulator-functions to set specific values for those fields.
  * @returns the prepared fixtures
  */
@@ -15,7 +15,7 @@ export function generateEsgQuestionnairePreparedFixtures(): Array<FixtureData<Es
 }
 
 /**
- * Generates a gdv fixture with no null values and all YesNo fields set to "Yes"
+ * Generates a esg-questionnaire fixture with no null values and all YesNo fields set to "Yes"
  * @returns the fixture
  */
 function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<EsgQuestionnaireData> {

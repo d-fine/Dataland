@@ -5,7 +5,7 @@ export interface YearlyTimeseriesData<InnerObj> {
 
 export type MappedOptionalDecimal<KeyList extends string> = { [K in KeyList]?: number | null };
 
-export type GdvYearlyDecimalTimeseriesDataConfiguration<KeyList extends string> = {
+export type EsgQuestionnaireYearlyDecimalTimeseriesDataConfiguration<KeyList extends string> = {
   [K in KeyList]: {
     label: string;
     unitSuffix: string;

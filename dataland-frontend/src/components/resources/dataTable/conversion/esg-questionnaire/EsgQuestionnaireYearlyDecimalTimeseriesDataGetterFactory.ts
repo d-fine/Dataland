@@ -6,11 +6,11 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 
 import {
-  type GdvYearlyDecimalTimeseriesDataConfiguration,
+  type EsgQuestionnaireYearlyDecimalTimeseriesDataConfiguration,
   type MappedOptionalDecimal,
   type YearlyTimeseriesData,
-} from "@/components/resources/dataTable/conversion/gdv/GdvYearlyDecimalTimeseriesData";
-import GdvYearlyDecimalTimeseriesModal from "@/components/resources/dataTable/modals/GdvYearlyDecimalTimeseriesModal.vue";
+} from "@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireYearlyDecimalTimeseriesData";
+import EsgQuestionnaireYearlyDecimalTimeseriesModal from "@/components/resources/dataTable/modals/EsgQuestionnaireYearlyDecimalTimeseriesModal.vue";
 
 /**
  * Formtas a GDVYearlyDecimalTimeseries for display in the table using a modal
@@ -19,9 +19,9 @@ import GdvYearlyDecimalTimeseriesModal from "@/components/resources/dataTable/mo
  * @param fieldLabel the label of the containing field
  * @returns the display-value for the table
  */
-export function formatGdvYearlyDecimalTimeseriesDataForTable<KeyList extends string>(
+export function formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable<KeyList extends string>(
   input: YearlyTimeseriesData<MappedOptionalDecimal<KeyList>> | null | undefined,
-  options: GdvYearlyDecimalTimeseriesDataConfiguration<KeyList>,
+  options: EsgQuestionnaireYearlyDecimalTimeseriesDataConfiguration<KeyList>,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
   const yearlyData = input?.yearlyData;
@@ -37,7 +37,7 @@ export function formatGdvYearlyDecimalTimeseriesDataForTable<KeyList extends str
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show data`,
-        modalComponent: GdvYearlyDecimalTimeseriesModal,
+        modalComponent: EsgQuestionnaireYearlyDecimalTimeseriesModal,
         modalOptions: {
           props: {
             header: fieldLabel,

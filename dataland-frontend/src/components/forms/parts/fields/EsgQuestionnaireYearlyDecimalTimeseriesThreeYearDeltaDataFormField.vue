@@ -1,5 +1,5 @@
 <template>
-  <GdvYearlyDecimalTimeseriesDataFormElement
+  <EsgQuestionnaireYearlyDecimalTimeseriesDataFormElement
     :name="name"
     :description="description"
     :label="label"
@@ -17,12 +17,12 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import GdvYearlyDecimalTimeseriesDataFormElement from "@/components/forms/parts/elements/derived/GdvYearlyDecimalTimeseriesDataFormElement.vue";
+import EsgQuestionnaireYearlyDecimalTimeseriesDataFormElement from "@/components/forms/parts/elements/derived/EsgQuestionnaireYearlyDecimalTimeseriesDataFormElement.vue";
 import { DropdownOptionFormFieldProps } from "@/components/forms/parts/fields/FormFieldProps";
 
 export default defineComponent({
-  name: "GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
-  components: { GdvYearlyDecimalTimeseriesDataFormElement },
+  name: "EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField",
+  components: { EsgQuestionnaireYearlyDecimalTimeseriesDataFormElement },
   props: {
     ...DropdownOptionFormFieldProps,
     reportingPeriod: {

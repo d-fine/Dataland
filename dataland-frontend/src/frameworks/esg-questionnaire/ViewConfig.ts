@@ -8,10 +8,10 @@ import { formatListOfStringsForDatatable } from "@/components/resources/dataTabl
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
-import { formatGdvYearlyDecimalTimeseriesDataForTable } from "@/components/resources/dataTable/conversion/gdv/GdvYearlyDecimalTimeseriesDataGetterFactory";
+import { formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable } from "@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireYearlyDecimalTimeseriesDataGetterFactory";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
-import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/gdv/GdvListOfBaseDataPointGetterFactory";
+import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireListOfBaseDataPointGetterFactory";
 export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData> = [
   {
     type: "section",
@@ -751,7 +751,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatGdvYearlyDecimalTimeseriesDataForTable(
+              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.treibhausgasemissionen?.treibhausgasBerichterstattungUndPrognosen,
                 {
                   scope1: { label: "Scope 1", unitSuffix: "tCO2-Äquiv." },
@@ -841,7 +841,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatGdvYearlyDecimalTimeseriesDataForTable(
+              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.energieverbrauch?.berichterstattungEnergieverbrauch,
                 {
                   energieverbrauch: { label: "Energieverbrauch", unitSuffix: "GWh" },
@@ -885,7 +885,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatGdvYearlyDecimalTimeseriesDataForTable(
+              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.energieeffizienzImmobilienanlagen
                   ?.berichterstattungEnergieverbrauchVonImmobilienvermoegen,
                 {
@@ -926,7 +926,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatGdvYearlyDecimalTimeseriesDataForTable(
+              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.wasserverbrauch?.berichterstattungWasserverbrauch,
                 {
                   wasserverbrauch: { label: "Wasserverbrauch", unitSuffix: "l" },
@@ -963,7 +963,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatGdvYearlyDecimalTimeseriesDataForTable(
+              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.abfallproduktion?.berichterstattungAbfallproduktion,
                 {
                   gesamteAbfallmenge: { label: "Gesamte Abfallmenge", unitSuffix: "t" },
@@ -993,7 +993,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatGdvYearlyDecimalTimeseriesDataForTable(
+              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.abfallproduktion?.recyclingImProduktionsprozess,
                 {
                   prozentRecycelteWerkstoffeImProduktionsprozess: {
@@ -1092,7 +1092,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.fossileBrennstoffe?.einnahmenAusFossilenBrennstoffen == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatGdvYearlyDecimalTimeseriesDataForTable(
+              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.fossileBrennstoffe?.berichterstattungEinnahmenAusFossilenBrennstoffen,
                 {
                   prozentDerEinnahmenAusFossilenBrennstoffen: {
@@ -1151,7 +1151,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatGdvYearlyDecimalTimeseriesDataForTable(
+              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.umwelt?.taxonomie?.umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten,
                 {
                   taxonomieGeeignetNachProzentUmsatz: {
@@ -1299,7 +1299,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatGdvYearlyDecimalTimeseriesDataForTable(
+              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.soziales?.unternehmensstrukturaenderungen
                   ?.auswirkungenAufAnteilBefristerVertraegeUndFluktuation,
                 {
@@ -1337,7 +1337,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatGdvYearlyDecimalTimeseriesDataForTable(
+              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.soziales?.sicherheitUndWeiterbildung?.unfallrate,
                 {
                   haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust: {
@@ -1356,7 +1356,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatGdvYearlyDecimalTimeseriesDataForTable(
+              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.soziales?.sicherheitUndWeiterbildung?.budgetFuerSchulungAusbildung,
                 { budgetProMitarbeiter: { label: "Budget pro Mitarbeiter", unitSuffix: "€" } },
                 "Budget f\u00FCr Schulung/Ausbildung",
@@ -1378,7 +1378,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
-              formatGdvYearlyDecimalTimeseriesDataForTable(
+              formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable(
                 dataset.soziales?.einkommensgleichheit?.ueberwachungDerEinkommensungleichheit,
                 {
                   unbereinigtesGeschlechtsspezifischesLohngefaelle: {

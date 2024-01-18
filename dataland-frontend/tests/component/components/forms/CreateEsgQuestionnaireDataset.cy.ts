@@ -1,10 +1,10 @@
-import CreateGdvDataset from "@/components/forms/CreateGdvDataset.vue";
+import CreateEsgQuestionnaireDataset from "@components/forms/CreateEsgQuestionnaireDataset.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 
-describe("Component tests for the gdv upload page", () => {
+describe("Component tests for the esg questionnaire upload page", () => {
   it("Ensure that the customized validation message appears if a user selects No in the first question ", () => {
-    cy.mountWithPlugins(CreateGdvDataset, {
+    cy.mountWithPlugins(CreateEsgQuestionnaireDataset, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
       submitButton.buttonAppearsDisabled();

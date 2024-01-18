@@ -4,7 +4,7 @@ import {
   type MLDTDisplayObject,
   MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import GdvListOfBaseDataPointModal from "@/components/resources/dataTable/modals/GdvListOfBaseDataPointModal.vue";
+import EsgQuestionnaireListOfBaseDataPointModal from "@/components/resources/dataTable/modals/EsgQuestionnaireListOfBaseDataPointModal.vue";
 import { type BaseDataPointString } from "@clients/backend";
 
 /**
@@ -28,7 +28,7 @@ export function formatListOfBaseDataPoint(
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
         label: `Show ${baseDataPoints.length} value${baseDataPoints.length > 1 ? "s" : ""}`,
-        modalComponent: GdvListOfBaseDataPointModal,
+        modalComponent: EsgQuestionnaireListOfBaseDataPointModal,
         modalOptions: {
           props: {
             header: fieldLabel,

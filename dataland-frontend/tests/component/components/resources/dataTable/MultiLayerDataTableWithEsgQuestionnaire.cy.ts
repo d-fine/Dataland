@@ -117,7 +117,7 @@ function mountGDVFrameworkFromFakeFixture(
       };
     });
 
-  return mountMLDTForGdvPanel(convertedDataAndMetaInformation, dummyCompanyId, false);
+  return mountMLDTForEsgQuestionnairePanel(convertedDataAndMetaInformation, dummyCompanyId, false);
 }
 
 /**
@@ -127,7 +127,7 @@ function mountGDVFrameworkFromFakeFixture(
  * @param reviewMode toggles the reviewer mode
  * @returns the component mounting chainable
  */
-export function mountMLDTForGdvPanel(
+export function mountMLDTForEsgQuestionnairePanel(
   datasetsToDisplay: Array<DataAndMetaInformation<EsgQuestionnaireData>>,
   companyId: string,
   reviewMode: boolean,

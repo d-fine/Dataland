@@ -146,8 +146,8 @@ import CurrencyDataPointFormField from "@/components/forms/parts/fields/Currency
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue";
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
-import GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField from "@/components/forms/parts/fields/GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField.vue";
-import GdvYearlyDecimalTimeseriesThreeYearPastDataFormField from "@/components/forms/parts/fields/GdvYearlyDecimalTimeseriesThreeYearPastDataFormField.vue";
+import EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField from "@/components/forms/parts/fields/EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField.vue";
+import EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField from "@/components/forms/parts/fields/EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField.vue";
 import { esgQuestionnaireDataModel } from "@/frameworks/esg-questionnaire/UploadConfig";
 import ListOfBaseDataPointsFormField from "@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
@@ -160,7 +160,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  name: "CreateGdvDataset",
+  name: "CreateEsgQuestionnaireDataset",
   components: {
     SubmitButton,
     SubmitSideBar,
@@ -194,8 +194,8 @@ export default defineComponent({
     YesNoBaseDataPointFormField,
     YesNoNaBaseDataPointFormField,
     YesNoExtendedDataPointFormField,
-    GdvYearlyDecimalTimeseriesThreeYearDeltaDataFormField,
-    GdvYearlyDecimalTimeseriesThreeYearPastDataFormField,
+    EsgQuestionnaireYearlyDecimalTimeseriesThreeYearDeltaDataFormField,
+    EsgQuestionnaireYearlyDecimalTimeseriesThreeYearPastDataFormField,
     ListOfBaseDataPointsFormField,
   },
   directives: {

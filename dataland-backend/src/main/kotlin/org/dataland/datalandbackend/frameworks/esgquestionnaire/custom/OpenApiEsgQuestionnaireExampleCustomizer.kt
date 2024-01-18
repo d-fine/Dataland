@@ -12,15 +12,16 @@ import org.springframework.stereotype.Component
 @Component
 class OpenApiEsgQuestionnaireExampleCustomizer(
     @Value("classpath:org/dataland/datalandbackend/frameworks/esgquestionnaire/EsgQuestionnaireExampleDataset.json")
-    private val gdvExampleJsonResource: Resource, // TODO renamings
+    private val esgQuestionnaireExampleJsonResource: Resource,
 ) : OpenApiCustomizer {
 
-    private fun readGdvOpenApiExample(): String {
-        return gdvExampleJsonResource.getContentAsString(Charsets.UTF_8)
+    private fun readEsgQuestionnaireOpenApiExample(): String {
+        return esgQuestionnaireExampleJsonResource.getContentAsString(Charsets.UTF_8)
     }
     override fun customise(openApi: OpenAPI) {
-        val companyAssociatedGdvDataSchema = openApi.components.schemas["CompanyAssociatedDataEsgQuestionnaireData"]
-        requireNotNull(companyAssociatedGdvDataSchema)
-        companyAssociatedGdvDataSchema.example = readGdvOpenApiExample()
+        val companyAssociatedEsgQuestionnaireDataSchema =
+            openApi.components.schemas["CompanyAssociatedDataEsgQuestionnaireData"]
+        requireNotNull(companyAssociatedEsgQuestionnaireDataSchema)
+        companyAssociatedEsgQuestionnaireDataSchema.example = readEsgQuestionnaireOpenApiExample()
     }
 }

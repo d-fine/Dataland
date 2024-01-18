@@ -53,7 +53,7 @@ interface YearGroup {
 }
 
 export default defineComponent({
-  name: "GdvYearlyDecimalTimeseriesDataFormElement",
+  name: "EsgQuestionnaireYearlyDecimalTimeseriesDataFormElement",
   components: { UploadFormHeader, FormKit },
   props: {
     ...DropdownOptionFormFieldProps,

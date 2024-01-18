@@ -2,10 +2,10 @@
 import { computed, inject, type Ref } from "vue";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import {
-  type GdvYearlyDecimalTimeseriesDataConfiguration,
+  type EsgQuestionnaireYearlyDecimalTimeseriesDataConfiguration,
   type MappedOptionalDecimal,
   type YearlyTimeseriesData,
-} from "@/components/resources/dataTable/conversion/gdv/GdvYearlyDecimalTimeseriesData";
+} from "@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireYearlyDecimalTimeseriesData";
 
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
@@ -13,13 +13,13 @@ import ColumnGroup from "primevue/columngroup";
 import Row from "primevue/row";
 import { formatNumberToReadableFormat } from "@/utils/Formatter";
 
-interface GdvYearlyDecimalTimeseriesDialogData<T extends string> {
+interface EsgQuestionnaireYearlyDecimalTimeseriesDialogData<T extends string> {
   label: string;
   input: YearlyTimeseriesData<MappedOptionalDecimal<T>>;
-  options: GdvYearlyDecimalTimeseriesDataConfiguration<T>;
+  options: EsgQuestionnaireYearlyDecimalTimeseriesDataConfiguration<T>;
 }
 
-type GdvDecimalTimeseriesRow<T> = {
+type EsgQuestionnaireDecimalTimeseriesRow<T> = {
   key: T;
   label: string;
   unitSuffix: string;
@@ -33,17 +33,17 @@ interface YearsForDisplay {
 }
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>("dialogRef");
-const dialogData = computed<GdvYearlyDecimalTimeseriesDialogData<KeyList> | undefined>(() => {
-  return dialogRef?.value?.data as GdvYearlyDecimalTimeseriesDialogData<KeyList>;
+const dialogData = computed<EsgQuestionnaireYearlyDecimalTimeseriesDialogData<KeyList> | undefined>(() => {
+  return dialogRef?.value?.data as EsgQuestionnaireYearlyDecimalTimeseriesDialogData<KeyList>;
 });
 
-const tableData = computed<GdvDecimalTimeseriesRow<KeyList>[]>(() => {
+const tableData = computed<EsgQuestionnaireDecimalTimeseriesRow<KeyList>[]>(() => {
   const dialogDataValue = dialogData?.value;
   if (!dialogDataValue) {
     return [];
   }
 
-  const generatedRows: GdvDecimalTimeseriesRow<KeyList>[] = [];
+  const generatedRows: EsgQuestionnaireDecimalTimeseriesRow<KeyList>[] = [];
 
   for (const [key, element] of Object.entries(dialogDataValue.options)) {
     const typedElement = element as {
@@ -88,7 +88,7 @@ const yearsForDisplay = computed<YearsForDisplay | undefined>(() => {
   for (const year of Object.keys(dialogDataValue.input.yearlyData)) {
     const numericalYear = parseInt(year);
     if (isNaN(numericalYear)) {
-      throw new Error(`Non-numerical year ${numericalYear} received in GdvYearlyDecimalTimeseriesModal`);
+      throw new Error(`Non-numerical year ${numericalYear} received in EsgQuestionnaireYearlyDecimalTimeseriesModal`);
     }
     data.allYearsSorted.push(numericalYear);
     if (numericalYear > data.reportingYear) {
