@@ -8,4 +8,4 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(
     enumAsRef = true,
 )
-enum class RequestStatus { Open, Resolved}
+enum class RequestStatus { Open, Resolved }
