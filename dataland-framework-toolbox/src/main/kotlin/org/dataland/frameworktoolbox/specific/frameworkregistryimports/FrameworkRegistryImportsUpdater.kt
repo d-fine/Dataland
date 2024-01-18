@@ -31,7 +31,11 @@ class FrameworkRegistryImportsUpdater {
                 )
             },
         )
+        writeIntoRegistryTsFiles(repository, freeMarkerContext)
+    }
 
+    private fun writeIntoRegistryTsFiles(repository: DatalandRepository, freeMarkerContext: Any) {
+        val pathToFrameworkDirectory = repository.frontendSrc / "frameworks"
         val jobs = listOf(
             Pair(
                 "/specific/frameworkregistryimports/BaseFrameworkRegistryImports.ts.ftl",
@@ -52,7 +56,6 @@ class FrameworkRegistryImportsUpdater {
             template.process(freeMarkerContext, writer)
             writer.close()
         }
-
         EsLintRunner(repository, generatedTsFiles).run()
     }
 }

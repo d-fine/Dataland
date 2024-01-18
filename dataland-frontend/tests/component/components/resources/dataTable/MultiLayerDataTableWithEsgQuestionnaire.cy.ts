@@ -29,7 +29,6 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
 
   it("Check that on the Esg questionnaire view Page the rolling window component works properly", () => {
     cy.intercept(`/api/data/${DataTypeEnum.EsgQuestionnaire}/mock-data-id`, {
-      // TODO use datatype num in link?
       companyId: companyId,
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
       data: preparedFixtureForTest.t,

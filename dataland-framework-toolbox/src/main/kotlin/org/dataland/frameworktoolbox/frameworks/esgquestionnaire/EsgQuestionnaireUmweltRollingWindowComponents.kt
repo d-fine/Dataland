@@ -1,6 +1,7 @@
 package org.dataland.frameworktoolbox.frameworks.esgquestionnaire
 
-import org.dataland.frameworktoolbox.frameworks.esgquestionnaire.custom.EsgQuestionnaireYearlyDecimalTimeseriesDataComponent
+import org.dataland.frameworktoolbox.frameworks.esgquestionnaire.custom
+    .EsgQuestionnaireYearlyDecimalTimeseriesDataComponent
 import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.create
