@@ -17,14 +17,16 @@
       </div>
     </div>
   </TheContent>
-  <TheFooter />
+  <TheFooter :is-light-version="true" :sections="footerContent" />
 </template>
 
 <script lang="ts">
 import { defineComponent, inject } from "vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import TheFooter from "@/components/generics/TheFooter.vue";
+import TheFooter from "@/components/generics/TheNewFooter.vue";
+import contentData from "@/assets/content.json";
+import type { Content, Page } from "@/types/ContentTypes";
 import { type AggregatedFrameworkDataSummary, DataTypeEnum } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
@@ -67,10 +69,14 @@ export default defineComponent({
     },
   },
   data() {
+    const content: Content = contentData;
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerContent = footerPage?.sections;
     return {
       aggregatedFrameworkDataSummary: undefined as
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
+      footerContent,
     };
   },
   mounted() {
