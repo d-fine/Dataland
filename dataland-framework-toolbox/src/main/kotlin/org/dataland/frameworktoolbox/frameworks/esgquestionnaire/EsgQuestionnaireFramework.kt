@@ -29,11 +29,11 @@ import java.io.File
  */
 @Component
 class EsgQuestionnaireFramework : PavedRoadFramework(
-    identifier = "esgquestionnaire",
+    identifier = "esg-questionnaire",
     label = "ESG Questionnaire für Corporate Schuldscheindarlehen",
     explanation = "Der ESG Questionnaire für Corporate Schuldscheindarlehen ist ein ESG-Fragebogen des " +
         "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
-    File("./dataland-framework-toolbox/inputs/gdv/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
+    File("./dataland-framework-toolbox/inputs/esg-questionnaire/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
 ) {
 
     override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
@@ -89,7 +89,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
     ) {
         framework.root.edit<ComponentGroup>("umwelt") {
             val umweltGroup = this
-            with(GdvUmweltRollingWindowComponents) {
+            with(EsgQuestionnaireUmweltRollingWindowComponents) {
                 treibhausgasBerichterstattungUndPrognosen(umweltGroup, showIfBerichtsPflicht)
                 berichterstattungEnergieverbrauch(umweltGroup, showIfBerichtsPflicht)
                 energieeffizienzImmobilienanlagen(umweltGroup, showIfBerichtsPflicht)
@@ -108,7 +108,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
     ) {
         framework.root.edit<ComponentGroup>("soziales") {
             val sozialesGroup = this
-            with(GdvSozialesRollingWindowComponents) {
+            with(EsgQuestionnaireSozialesRollingWindowComponents) {
                 auswirkungenAufAnteilBefristerVertraegeUndFluktuation(sozialesGroup)
                 budgetFuerSchulungAusbildung(sozialesGroup, showIfBerichtsPflicht)
                 unfallrate(sozialesGroup, showIfBerichtsPflicht)
@@ -120,7 +120,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
     private fun createListOfBaseDatapointComponents(framework: Framework, showIfBerichtsPflicht: FrameworkConditional) {
         framework.root.edit<ComponentGroup>("allgemein") {
             val sozialesGroup = this
-            with(GdvListOfBaseDataPointComponents) {
+            with(EsgQuestionnaireListOfBaseDataPointComponents) {
                 aktuelleBerichte(sozialesGroup)
                 weitereAkkreditierungen(sozialesGroup, showIfBerichtsPflicht)
                 richtlinienZurEinhaltungDerUngcp(sozialesGroup)
@@ -159,7 +159,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
-        return GdvComponentGenerationUtils()
+        return EsgQuestionnaireComponentGenerationUtils()
     }
 
     private fun setEuTaxonomieKompassAktivitaeten(component: MultiSelectComponent) {

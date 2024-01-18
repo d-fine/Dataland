@@ -27,7 +27,6 @@ import java.io.File
 @Suppress("TooManyFunctions")
 abstract class PavedRoadFramework(
     val identifier: String,
-    val apiEndpoint: String = identifier,
     val label: String,
     val explanation: String,
     val frameworkTemplateCsvFile: File,
@@ -35,7 +34,6 @@ abstract class PavedRoadFramework(
 ) {
     val framework = Framework(
         identifier = identifier,
-        apiEndpoint = apiEndpoint,
         label = label,
         explanation = explanation,
     )
