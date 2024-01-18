@@ -34,7 +34,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "WHEN max(company.company_name) ILIKE :#{escape(#searchFilter.searchString)} ESCAPE :#{escapeCharacter()} THEN 1 " +
             "WHEN max(company.company_name) ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 3 " +
             "ELSE 5 " +
-            "END, alt_names.search_rank) as search_rank " +
+            "END, min(alt_names.search_rank)) as global_search_rank " +
             "FROM (SELECT company_id, company_name, headquarters, sector FROM stored_companies " +
             "WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector in :#{#searchFilter.sectorFilter}) " +
             "AND (:#{#searchFilter.countryCodeFilterSize} = 0 OR country_code in :#{#searchFilter.countryCodeFilter}) " +
@@ -58,10 +58,10 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             ") alt_names " +
             "ON company.company_id = alt_names.stored_company_entity_company_id " +
             "WHERE company.company_name ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} " +
-            "OR alt_names.search_rank IS NOT NULL " +
-            "OR identifiers.max_identifier_value IS NOT NULL " +
+            "OR min(alt_names.search_rank) IS NOT NULL " +
+            "OR min(identifiers.max_identifier_value) IS NOT NULL " +
             "GROUP BY company.company_id " +
-            "ORDER BY search_rank asc, max(company.company_name) asc "
+            "ORDER BY global_search_rank asc, max(company.company_name) asc "
     )
     fun searchCompanies(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter
