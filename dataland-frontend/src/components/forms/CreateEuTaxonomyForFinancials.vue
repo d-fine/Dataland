@@ -558,7 +558,7 @@ export default defineComponent({
           return item;
         })
         .filter((item) => Object.values(item)[0])
-        .reduce((all, one) => ({ ...all, ...one }));
+        .reduce((all, one) => ({ ...all, ...one }), []);
     },
 
     /**
@@ -606,7 +606,7 @@ export default defineComponent({
           const field = section[financialServiceType];
           return { [financialServiceType]: field };
         })
-        .reduce((all, one) => ({ ...all, ...one }));
+        .reduce((all, one) => ({ ...all, ...one }), []);
 
       const kpis = Object.keys(kpiSections)
         .filter((financialServiceTypeKey) => financialServiceTypeKey !== "assetManagementKpis")
@@ -620,7 +620,7 @@ export default defineComponent({
           }
           return kpi;
         })
-        .reduce((all, one) => ({ ...all, ...one }));
+        .reduce((all, one) => ({ ...all, ...one }), []);
 
       return { eligibilityKpis, ...kpis };
     },
