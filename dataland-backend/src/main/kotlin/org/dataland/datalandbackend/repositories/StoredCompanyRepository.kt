@@ -62,16 +62,15 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " UNION " +
             " (SELECT " +
             " stored_company_entity_company_id AS company_id," +
-            " min(CASE " +
+            " CASE " +
             " WHEN company_alternative_names = :#{#searchFilter.searchString} THEN 2" +
             " WHEN company_alternative_names ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 4" +
             " ELSE 5 " +
-            " END) match_quality " +
+            " END match_quality " +
             " FROM stored_company_entity_company_alternative_names alt_names" +
             " JOIN has_data datainfo" +
             " ON alt_names.stored_company_entity_company_id = datainfo.company_id " +
-            " WHERE company_alternative_names ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()}" +
-            " GROUP BY stored_company_entity_company_id)" +
+            " WHERE company_alternative_names ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()})" +
 
             " UNION " +
             " (SELECT " +
@@ -81,8 +80,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " JOIN has_data datainfo" +
             " ON identifiers.company_id = datainfo.company_id " +
             " WHERE identifier_value ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()}" +
-            " GROUP BY identifiers.company_id)) as intermediate_results " +
-            " group by intermediate_results.company_id) " +
+            " GROUP BY identifiers.company_id)) as intermediate_results) " +
 
             // Combine Results
             " SELECT info.company_id AS companyId," +
