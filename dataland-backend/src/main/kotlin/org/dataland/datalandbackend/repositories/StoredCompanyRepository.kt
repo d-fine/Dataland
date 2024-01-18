@@ -30,24 +30,32 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "max(company.headquarters) as headquarters, " +
             "max(company.sector) as sector, " +
             "max(permId.identifier_value) as permId, " +
-            "CASE " +
+            "LEAST(CASE " +
             "WHEN max(company.company_name) ILIKE :#{escape(#searchFilter.searchString)} ESCAPE :#{escapeCharacter()} THEN 1 " +
-            "WHEN max(alt_names.company_alternative_names) ILIKE :#{escape(#searchFilter.searchString)} ESCAPE :#{escapeCharacter()} THEN 2 " +
             "WHEN max(company.company_name) ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 3 " +
-            "WHEN max(alt_names.company_alternative_names) ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 4 " +
             "ELSE 5 " +
-            "END as search_rank " +
+            "END, alt_names.search_rank) as search_rank " +
             "FROM (SELECT company_id, company_name, headquarters, sector FROM stored_companies " +
             "WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector in :#{#searchFilter.sectorFilter}) " +
             "AND (:#{#searchFilter.countryCodeFilterSize} = 0 OR country_code in :#{#searchFilter.countryCodeFilter}) " +
             ") company " +
             "JOIN (SELECT distinct company_id from data_meta_information where :#{#searchFilter.dataTypeFilterSize} = 0 OR data_type in :#{#searchFilter.dataTypeFilter}) datainfo " +
             "ON company.company_id = datainfo.company_id " +
-            "LEFT JOIN (SELECT company_id, identifier_value FROM company_identifiers where identifier_value ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} ) identifiers " +
+            "LEFT JOIN (SELECT company_id, max(identifier_value) FROM company_identifiers where identifier_value ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} group by company_id ) identifiers " +
             "ON company.company_id = identifiers.company_id " +
             "LEFT JOIN (SELECT company_id, identifier_value from company_identifiers where identifier_type = 'PermId') permid " +
             "ON company.company_id = permid.company_id " +
-            "LEFT JOIN (SELECT stored_company_entity_company_id, company_alternative_names FROM stored_company_entity_company_alternative_names where company_alternative_names ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} ) alt_names  " +
+            "LEFT JOIN (" +
+            "SELECT stored_company_entity_company_id, " +
+            "min(CASE " +
+            "WHEN company_alternative_names ILIKE :#{escape(#searchFilter.searchString)} ESCAPE :#{escapeCharacter()} THEN 2 " +
+            "WHEN company_alternative_names ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 4 " +
+            "ELSE 5 " +
+            "END) as search_rank" +
+            "FROM stored_company_entity_company_alternative_names " +
+            "where company_alternative_names ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} " +
+            "group by stored_company_entity_company_id " +
+            ") alt_names " +
             "ON company.company_id = alt_names.stored_company_entity_company_id " +
             "WHERE company.company_name ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} " +
             "OR alt_names.company_alternative_names IS NOT NULL " +
