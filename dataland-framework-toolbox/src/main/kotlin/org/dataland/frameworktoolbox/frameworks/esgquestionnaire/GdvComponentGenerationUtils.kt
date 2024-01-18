@@ -1,4 +1,4 @@
-package org.dataland.frameworktoolbox.frameworks.gdv
+package org.dataland.frameworktoolbox.frameworks.esgquestionnaire
 
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils

@@ -1,4 +1,4 @@
-package org.dataland.frameworktoolbox.frameworks.gdv
+package org.dataland.frameworktoolbox.frameworks.esgquestionnaire
 
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
@@ -28,9 +28,8 @@ import java.io.File
  * Definition of the Heimathafen framework
  */
 @Component
-class GdvFramework : PavedRoadFramework(
+class EsgQuestionnaireFramework : PavedRoadFramework(
     identifier = "esgquestionnaire",
-    apiEndpoint = "esg-questionnaire",
     label = "ESG Questionnaire für Corporate Schuldscheindarlehen",
     explanation = "Der ESG Questionnaire für Corporate Schuldscheindarlehen ist ein ESG-Fragebogen des " +
         "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",

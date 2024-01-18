@@ -1,4 +1,4 @@
-package org.dataland.frameworktoolbox.frameworks.gdv.custom
+package org.dataland.frameworktoolbox.frameworks.esgquestionnaire.custom
 
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent

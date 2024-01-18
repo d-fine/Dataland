@@ -1,4 +1,4 @@
-package org.dataland.frameworktoolbox.frameworks.gdv.custom
+package org.dataland.frameworktoolbox.frameworks.esgquestionnaire.custom
 
 import com.fasterxml.jackson.core.json.JsonWriteFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper

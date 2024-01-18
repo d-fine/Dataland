@@ -1,6 +1,6 @@
-package org.dataland.frameworktoolbox.frameworks.gdv
+package org.dataland.frameworktoolbox.frameworks.esgquestionnaire
 
-import org.dataland.frameworktoolbox.frameworks.gdv.custom.GdvListOfBaseDataPointComponent
+import org.dataland.frameworktoolbox.frameworks.esgquestionnaire.custom.GdvListOfBaseDataPointComponent
 import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.create
