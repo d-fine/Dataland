@@ -61,7 +61,8 @@ const legalLinks = computed(() => {
 });
 
 const isExternalLink = (url: string): boolean => {
-  return !url.startsWith("/");
+  const externalUrlPattern = /^https?:\/\//;
+  return externalUrlPattern.test(url);
 };
 
 const copyrightText = computed(() => {
@@ -227,8 +228,6 @@ const copyrightText = computed(() => {
   }
 }
 @media only screen and (max-width: $large) {
-  .footer {
-  }
 }
 @media only screen and (max-width: $small) {
   .footer {
