@@ -18,7 +18,7 @@
     :id="fieldName + name"
     :ignore="true"
     :plugins="[disabledOnMoreThanOne]"
-    @input="emitUpdateCurrentValue($event)"
+    @input="updateCurrentValue($event)"
   />
   <FormKit
     type="text"
@@ -51,18 +51,16 @@ export default defineComponent({
   methods: {
     disabledOnMoreThanOne,
     /**
-     * Emits an event when the currentValue has been changed
-     * @param checkboxValue current value
+     * Updates the currentValue when the checkboxes value has been changed
+     * @param checkboxValue current selection in the checkbox
      */
-    emitUpdateCurrentValue(checkboxValue: [string]) {
+    updateCurrentValue(checkboxValue: [string]) {
       if (checkboxValue[0]) {
         this.shouldBeIgnored = false;
         this.currentValue = checkboxValue[0].toString();
-        this.$emit("update:currentValue", checkboxValue[0].toString());
       } else {
         this.currentValue = null;
         this.shouldBeIgnored = !this.validation.includes("is:");
-        this.$emit("update:currentValue", null);
       }
     },
     /**
@@ -108,6 +106,5 @@ export default defineComponent({
       default: "",
     },
   },
-  emits: ["update:currentValue"],
 });
 </script>
