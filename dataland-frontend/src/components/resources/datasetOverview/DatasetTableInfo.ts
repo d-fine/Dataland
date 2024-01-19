@@ -1,7 +1,7 @@
-import { type DataMetaInformation, type DataTypeEnum, QaStatus, type StoredCompany } from "@clients/backend";
+import { type DataTypeEnum, type MyDatasetsDatasetInfo, QaStatus } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export enum DatasetStatus {
   QaPending,
@@ -27,10 +27,10 @@ export class DatasetTableInfo {
  * @param dataMetaInfo the dataset containing different status indicators (i.e QaStatus, currentlyActive,...)
  * @returns a unified DatasetStatus
  */
-export function getDatasetStatus(dataMetaInfo: DataMetaInformation): DatasetStatus {
-  if (dataMetaInfo.qaStatus == QaStatus.Accepted) {
+export function getDatasetStatus(dataMetaInfo: MyDatasetsDatasetInfo): DatasetStatus {
+  if (dataMetaInfo.qualityStatus == QaStatus.Accepted) {
     return dataMetaInfo.currentlyActive ? DatasetStatus.QaApproved : DatasetStatus.Superseded;
-  } else if (dataMetaInfo.qaStatus == QaStatus.Rejected) {
+  } else if (dataMetaInfo.qualityStatus == QaStatus.Rejected) {
     return DatasetStatus.QaRejected;
   } else {
     return DatasetStatus.QaPending;
@@ -48,39 +48,25 @@ export async function getMyDatasetTableInfos(
   searchString?: string,
 ): Promise<DatasetTableInfo[]> {
   let userId: string | undefined;
-  const companyDataControllerApi = new ApiClientProvider(getKeycloakPromise()).backendClients.userController;
-  const storedCompaniesUploadedByCurrentUser = (
-    await companyDataControllerApi.getCompanies(
-      searchString,
-      new Set(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE),
-      undefined,
-      undefined,
-      undefined,
-      true,
-    )
-  ).data;
   const parsedIdToken = (await getKeycloakPromise()).idTokenParsed;
   if (parsedIdToken) {
     userId = parsedIdToken.sub;
   }
+  const userControllerApi = new ApiClientProvider(getKeycloakPromise()).backendClients.userController;
+  const storedCompaniesUploadedByCurrentUser = (
+    await userControllerApi.getUserDataMetaInformation(assertDefined(userId))
+  ).data;
 
-  return storedCompaniesUploadedByCurrentUser.flatMap((company: StoredCompany) =>
-    company.dataRegisteredByDataland
-      .filter(
-        (dataMetaInfo: DataMetaInformation) =>
-          dataMetaInfo.uploaderUserId == userId && ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(dataMetaInfo.dataType),
-      )
-      .map(
-        (dataMetaInfo: DataMetaInformation) =>
-          new DatasetTableInfo(
-            company.companyInformation.companyName,
-            dataMetaInfo.dataType,
-            dataMetaInfo.uploadTime,
-            company.companyId,
-            dataMetaInfo.dataId,
-            dataMetaInfo.reportingPeriod,
-            getDatasetStatus(dataMetaInfo),
-          ),
+  return storedCompaniesUploadedByCurrentUser.map(
+    (company: MyDatasetsDatasetInfo) =>
+      new DatasetTableInfo(
+        company.companyName,
+        company.dataType,
+        company.uploadTime,
+        company.companyId,
+        company.dataId,
+        company.reportingPeriod,
+        getDatasetStatus(company),
       ),
   );
 }
