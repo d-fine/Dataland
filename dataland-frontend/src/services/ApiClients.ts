@@ -15,6 +15,7 @@ interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
   companyDataController: backendApis.CompanyDataControllerApiInterface;
   metaDataController: backendApis.MetaDataControllerApiInterface;
+  userController: backendApis.UserControllerApiInterface;
 }
 
 interface ApiClients {
@@ -66,6 +67,7 @@ export class ApiClientProvider {
       actuator: backendClientFactory(backendApis.ActuatorApi),
       companyDataController: backendClientFactory(backendApis.CompanyDataControllerApi),
       metaDataController: backendClientFactory(backendApis.MetaDataControllerApi),
+      userController: backendClientFactory(backendApis.UserControllerApi),
     };
   }
 

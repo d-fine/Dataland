@@ -48,7 +48,7 @@ export async function getMyDatasetTableInfos(
   searchString?: string,
 ): Promise<DatasetTableInfo[]> {
   let userId: string | undefined;
-  const companyDataControllerApi = new ApiClientProvider(getKeycloakPromise()).backendClients.companyDataController;
+  const companyDataControllerApi = new ApiClientProvider(getKeycloakPromise()).backendClients.userController;
   const storedCompaniesUploadedByCurrentUser = (
     await companyDataControllerApi.getCompanies(
       searchString,
