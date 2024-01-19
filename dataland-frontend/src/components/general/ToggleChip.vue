@@ -1,5 +1,10 @@
 <template>
-  <span class="toggle-chip mr-2" :class="`${isToggled ? 'toggled' : ''}`" data-test="toggle-chip" @click="toggle()">
+  <span
+    class="toggle-chip mr-2 mb-2"
+    :class="`${isToggled ? 'toggled' : ''}`"
+    data-test="toggle-chip"
+    @click="toggle()"
+  >
     <span class="label">
       {{ label }}
     </span>

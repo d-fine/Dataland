@@ -136,11 +136,11 @@
             </div> -->
           </div>
 
-          <div class="col-8" v-else>
+          <div class="col-12 md:col-8 xl:col-6" v-else>
             <div class="grid">
               <div class="col-12">
                 <BasicFormSection header="Select at least one reporting period">
-                  <div class="mt-4 py-2">
+                  <div class="flex flex-wrap mt-4 py-2">
                     <ToggleChip :label="'2023'" />
                     <ToggleChip :label="'2022'" />
                     <ToggleChip :label="'2021'" />
