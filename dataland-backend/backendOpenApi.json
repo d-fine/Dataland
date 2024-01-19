@@ -1219,8 +1219,8 @@
         "tags": [
           "user-controller"
         ],
-        "summary": "Retrieve framework datasets with meta info.",
-        "description": "All framework datasets with meta info for the given company ID are retrieved.",
+        "summary": "Retrieve an augmented dataset meta information uploaded by a specific user.",
+        "description": "Retrieve an augmented dataset meta information uploaded by a specific user for the \"My Datasets\" page.",
         "operationId": "getUserDataMetaInformation",
         "parameters": [
           {
@@ -1234,13 +1234,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved framework datasets with meta info.",
+            "description": "Successfully retrieved augmented dataset meta information.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/MyDatasetsDatasetInfo"
+                    "$ref": "#/components/schemas/DataMetaInformationForMyDatasets"
                   }
                 }
               }
@@ -2677,8 +2677,8 @@
         "tags": [
           "company-data-controller"
         ],
-        "summary": "Retrieve reduced information about  specific companies with framework data by different filters or just all companies from the data store.",
-        "description": "Reduced information about companies with associated framework data identified via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+        "summary": "Retrieve just the basic information about specific companies with approved framework data by different filters.",
+        "description": "The basic information about companies with associated approved framework data identified via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
         "operationId": "getCompanies2",
         "parameters": [
           {
@@ -2728,13 +2728,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved companies.",
+            "description": "Successfully retrieved basic company information.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ReducedCompany"
+                    "$ref": "#/components/schemas/BasicCompanyInformation"
                   }
                 }
               }
@@ -11082,11 +11082,10 @@
           "VatNumber"
         ]
       },
-      "MyDatasetsDatasetInfo": {
+      "DataMetaInformationForMyDatasets": {
         "required": [
           "companyId",
           "companyName",
-          "currentlyActive",
           "dataId",
           "dataType",
           "qualityStatus",
@@ -11114,7 +11113,8 @@
             "$ref": "#/components/schemas/QaStatus"
           },
           "currentlyActive": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           },
           "uploadTime": {
             "type": "integer",
@@ -11239,7 +11239,7 @@
           }
         }
       },
-      "ReducedCompany": {
+      "BasicCompanyInformation": {
         "required": [
           "companyId",
           "companyName",
@@ -11248,13 +11248,7 @@
         ],
         "type": "object",
         "properties": {
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "sector": {
+          "permId": {
             "type": "string",
             "nullable": true
           },
@@ -11264,9 +11258,15 @@
           "companyId": {
             "type": "string"
           },
-          "permId": {
+          "sector": {
             "type": "string",
             "nullable": true
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
           }
         }
       },
