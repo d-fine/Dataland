@@ -2,12 +2,11 @@ package org.dataland.datalandbackend.entities
 
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 
 /**
- * The entity storing info for a dataset on the my datasets page
+ * A variation of the DataMetaInformation augmented by the information needed for display on the "My Datasets" page
  */
-data class MyDatasetsDatasetInfo(
+data class DataMetaInformationForMyDatasets(
     val companyId: String,
     val dataId: String,
     val companyName: String,
@@ -18,7 +17,7 @@ data class MyDatasetsDatasetInfo(
     var uploadTime: Long,
 ) {
     companion object {
-        fun fromEntity(entity: MyDatasetsDatasetInfoEntity) = MyDatasetsDatasetInfo(
+        fun fromEntity(entity: DatasetMetaInfoEntityForMyDatasets) = DataMetaInformationForMyDatasets(
             companyId = entity.companyId,
             dataId = entity.dataId,
             companyName = entity.companyName,

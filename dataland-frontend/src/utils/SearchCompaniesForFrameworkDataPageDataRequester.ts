@@ -5,9 +5,7 @@
 
 import { ApiClientProvider } from "@/services/ApiClients";
 import {
-  type StoredCompany,
   type DataTypeEnum,
-  IdentifierType,
   ReducedCompany,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";

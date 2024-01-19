@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.entities.MyDatasetsDatasetInfo
+import org.dataland.datalandbackend.entities.DataMetaInformationForMyDatasets
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
@@ -106,7 +106,10 @@ class DataMetaInformationManager(
         dataMetaInformationRepositoryInterface.delete(dataMetaInformation)
     }
 
-    fun getUserDataMetaInformation(userId: String): List<MyDatasetsDatasetInfo>? {
-        return dataMetaInformationRepositoryInterface.getUserDataMetaInfos(userId).map { MyDatasetsDatasetInfo.fromEntity(it) }
+    /**
+     *
+     */
+    fun getUserDataMetaInformation(userId: String): List<DataMetaInformationForMyDatasets>? {
+        return dataMetaInformationRepositoryInterface.getUserDataMetaInfos(userId).map { DataMetaInformationForMyDatasets.fromEntity(it) }
     }
 }

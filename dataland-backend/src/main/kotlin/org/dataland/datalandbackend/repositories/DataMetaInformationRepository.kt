@@ -1,8 +1,7 @@
 package org.dataland.datalandbackend.repositories
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.entities.MyDatasetsDatasetInfo
-import org.dataland.datalandbackend.entities.MyDatasetsDatasetInfoEntity
+import org.dataland.datalandbackend.entities.DatasetMetaInfoEntityForMyDatasets
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
@@ -93,5 +92,5 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
     )
     fun getUserDataMetaInfos(
         userId: String
-    ): List<MyDatasetsDatasetInfoEntity>
+    ): List<DatasetMetaInfoEntityForMyDatasets>
 }
