@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.repositories
 
-import org.dataland.datalandbackend.entities.ReducedCompanyEntity
+import org.dataland.datalandbackend.entities.ReducedCompany
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
@@ -13,7 +13,6 @@ import org.springframework.data.repository.query.Param
  */
 
 interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
-
     @Query(
         nativeQuery = true,
         value = "SELECT company.company_id as companyId, " +
@@ -23,13 +22,13 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "company.sector as sector, " +
             "permId.min_id as permId " +
             "FROM stored_companies company " +
-            "JOIN (SELECT distinct company_id from data_meta_information where 0 = 0 ) datainfo " +
+            "JOIN (SELECT distinct company_id from data_meta_information) datainfo " +
             "ON company.company_id = datainfo.company_id " +
             "LEFT JOIN (SELECT company_id, min(identifier_value) as min_id from company_identifiers where identifier_type = 'PermId' group by company_id) permId " +
             "ON company.company_id = permid.company_id " +
             "ORDER by company.company_name asc "
     )
-    fun getAllCompaniesWithDataset(): List<ReducedCompanyEntity>
+    fun getAllCompaniesWithDataset(): List<ReducedCompany>
 
     /**
      * A function for querying companies by various filters:
@@ -41,7 +40,6 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      * - nameOnlyFilter: If false, it suffices if the searchString is contained
      * in one of the company identifiers or the name
      */
-
     @Query(
         nativeQuery = true,
         value = "WITH " +
@@ -100,10 +98,48 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " ON perm_id.company_id = filtered_results.company_id " +
             " ORDER BY filtered_results.match_quality asc, info.company_name asc "
     )
-    fun searchCompanies(
+    fun searchCompanies2(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter
-    ): List<ReducedCompanyEntity>
+    ): List<ReducedCompany>
 
+    /**
+     * A function for querying companies by various filters:
+     * - dataTypeFilter: If set, only companies with at least one datapoint
+     * of one of the supplied dataTypes are returned
+     * - searchString: If not empty, only companies that contain the search string in their name are returned
+     * (Prefix-Matches are ordered before Center-Matches,
+     * e.g. when searching for "a" Allianz will come before Deutsche Bank)
+     * - nameOnlyFilter: If false, it suffices if the searchString is contained
+     * in one of the company identifiers or the name
+     */
+    @Query(
+        "SELECT company FROM StoredCompanyEntity company " +
+            "LEFT JOIN company.dataRegisteredByDataland data " +
+            "LEFT JOIN company.identifiers identifier " +
+            "LEFT JOIN company.companyAlternativeNames alternativeName " +
+            "WHERE " +
+            "(:#{#searchFilter.dataTypeFilterSize} = 0 " +
+            "OR (data.dataType in :#{#searchFilter.dataTypeFilter})) AND " +
+            "(:#{#searchFilter.sectorFilterSize} = 0 " +
+            "OR (company.sector in :#{#searchFilter.sectorFilter})) AND " +
+            "(:#{#searchFilter.countryCodeFilterSize} = 0 " +
+            "OR (company.countryCode in :#{#searchFilter.countryCodeFilter})) AND " +
+            "(:#{#searchFilter.uploaderIdLength} = 0 " +
+            "OR (data.uploaderUserId = :#{#searchFilter.uploaderId})) AND " +
+            "(:#{#searchFilter.searchStringLength} = 0 " +
+            "OR (lower(company.companyName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
+            "(lower(alternativeName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
+            "(:#{#searchFilter.nameOnlyFilter} = false " +
+            "AND lower(identifier.identifierValue) LIKE %:#{#searchFilter.searchStringLower}%)) " +
+            "GROUP BY company.companyId " +
+            "ORDER BY " +
+            "(CASE WHEN lower(company.companyName) = :#{#searchFilter.searchStringLower} THEN 1 " +
+            "WHEN lower(max(alternativeName)) = :#{#searchFilter.searchStringLower} THEN 2 " +
+            "WHEN lower(company.companyName) LIKE :#{#searchFilter.searchStringLower}% THEN 3 " +
+            "WHEN lower(max(alternativeName)) LIKE :#{#searchFilter.searchStringLower}% THEN 4 ELSE 5 END) ASC, " +
+            "company.companyName ASC",
+    )
+    fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<StoredCompanyEntity>
 
     /**
      * A function for querying companies by search string:

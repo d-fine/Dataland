@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.api.DataOwnerApi
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
-import org.dataland.datalandbackend.entities.ReducedCompanyEntity
+import org.dataland.datalandbackend.entities.ReducedCompany
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
@@ -58,7 +58,7 @@ class CompanyDataController(
         sectors: Set<String>?,
         onlyCompanyNames: Boolean,
         onlyWithDataFromCurrentUser: Boolean,
-    ): ResponseEntity<List<ReducedCompanyEntity>> {
+    ): ResponseEntity<List<StoredCompany>> {
         logger.info(
             "Received a request to get companies with searchString='$searchString', onlyCompanyNames" +
                 "='$onlyCompanyNames', dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors', " +
@@ -68,11 +68,36 @@ class CompanyDataController(
             companyQueryManager.searchCompaniesAndGetApiModel(
                 StoredCompanySearchFilter(
                     searchString = searchString ?: "",
+                    nameOnlyFilter = onlyCompanyNames,
+                    dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
+                    countryCodeFilter = countryCodes?.toList() ?: listOf(),
+                    sectorFilter = sectors?.toList() ?: listOf(),
+                    uploaderId = if (onlyWithDataFromCurrentUser) DatalandAuthentication.fromContext().userId else "",
+
+                ),
+                DatalandAuthentication.fromContextOrNull(),
+            ),
+        )
+    }
+
+    override fun getCompanies2(
+        searchString: String?,
+        dataTypes: Set<DataType>?,
+        countryCodes: Set<String>?,
+        sectors: Set<String>?,
+    ): ResponseEntity<List<ReducedCompany>> {
+        logger.info(
+            "Received a request to get companies with searchString='$searchString', dataTypes='$dataTypes'" +
+                ", countryCodes='$countryCodes', sectors='$sectors'",
+        )
+        return ResponseEntity.ok(
+            companyQueryManager.searchCompaniesAndGetApiModel2(
+                StoredCompanySearchFilter(
+                    searchString = searchString ?: "",
                     dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
                     countryCodeFilter = countryCodes?.toList() ?: listOf(),
                     sectorFilter = sectors?.toList() ?: listOf(),
                 ),
-                DatalandAuthentication.fromContextOrNull(),
             ),
         )
     }

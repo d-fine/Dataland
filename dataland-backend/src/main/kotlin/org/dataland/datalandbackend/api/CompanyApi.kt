@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.entities.ReducedCompanyEntity
+import org.dataland.datalandbackend.entities.ReducedCompany
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
@@ -98,7 +98,46 @@ interface CompanyApi {
         @RequestParam onlyCompanyNames: Boolean = false,
         @RequestParam onlyWithDataFromCurrentUser: Boolean = false,
     ):
-        ResponseEntity<List<ReducedCompanyEntity>>
+        ResponseEntity<List<StoredCompany>>
+
+
+
+    /**
+     * A method to retrieve reduced information about specific companies with framework data identified by different filters
+     * If the filters are not set, all companies in the data store are returned.
+     * @param searchString string used for substring matching
+     * @param dataTypes this function only returns companies that have data for the specified dataTypes.
+     * if none is specified, it is filtered all data types are allowed
+     * @param countryCodes If set & non-empty,
+     * this function only returns companies that have a country code contained in the set
+     * @param sectors If set & non-empty, this function only returns companies that belong to a sector in the set
+     * uploaded by the current user
+     * @return reduced information about all companies with framework data matching the search criteria
+     */
+    @Operation(
+        summary = "Retrieve reduced information about  specific companies with framework data by different filters" +
+            " or just all companies from the data store.",
+        description = "Reduced information about companies with associated framework data identified via the provided company name/identifier" +
+            " are retrieved and filtered by countryCode, sector and available framework data." +
+            " Empty/Unspecified filters are ignored.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved companies."),
+        ],
+    )
+    @GetMapping(
+        value = ["/v2"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getCompanies2(
+        @RequestParam searchString: String? = null,
+        @RequestParam dataTypes: Set<DataType>? = null,
+        @RequestParam countryCodes: Set<String>? = null,
+        @RequestParam sectors: Set<String>? = null,
+    ):
+        ResponseEntity<List<ReducedCompany>>
 
     /**
      * A method to retrieve companies with names or identifiers matching a search string

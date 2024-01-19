@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
-import org.dataland.datalandbackend.entities.ReducedCompanyEntity
+import org.dataland.datalandbackend.entities.ReducedCompany
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
@@ -43,33 +43,48 @@ class CompanyQueryManager(
     @Transactional
     fun searchCompaniesAndGetApiModel(
         filter: StoredCompanySearchFilter,
-        viewingUser: DatalandAuthentication? = null, // TODO remove
-    ): List<ReducedCompanyEntity> {
+        viewingUser: DatalandAuthentication? = null,
+    ): List<StoredCompany> {
         if (filter.dataTypeFilter.isEmpty()) {
             filter.dataTypeFilter = DataTypesExtractor().getAllDataTypes()
         }
 
-
-//        val filteredAndSortedResults = companyRepository.getAllCompaniesWithDataset()
         val filteredAndSortedResults = companyRepository.searchCompanies(filter)
-//        val filteredAndSortedResults = TODO use this one
-//            if (
-//                filter.sectorFilterSize > 0 || TODO put this check into the searchFilter
-//                filter.countryCodeFilterSize > 0 ||
-//                filter.dataTypeFilterSize > 0 ||
-//                filter.searchStringLength > 0
-//            ) companyRepository.searchCompanies(
-//                filter
-//            ) else companyRepository.getAllCompaniesWithDataset()
-//        val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity ->
-//            storedCompanyEntity.companyId to index
-//        }.toMap()
+        val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity ->
+            storedCompanyEntity.companyId to index
+        }.toMap()
 
-//        val results = fetchAllStoredCompanyFields(filteredAndSortedResults).sortedBy {
-//            sortingMap.getValue(it.companyId)
-//        }
+        val results = fetchAllStoredCompanyFields(filteredAndSortedResults).sortedBy {
+            sortingMap.getValue(it.companyId)
+        }
 
-        return filteredAndSortedResults//.map { it.toApiModel(viewingUser) }
+        return results.map { it.toApiModel(viewingUser) }
+    }
+
+
+
+    /**
+     * Method to search for companies matching the company name or identifier
+     * @param filter The filter to use during searching
+     * @param viewingUser The user that is viewing the API model
+     * @return list of all matching companies in Dataland
+     */
+    @Transactional
+    fun searchCompaniesAndGetApiModel2(
+        filter: StoredCompanySearchFilter,
+    ): List<ReducedCompany> {
+        if (filter.dataTypeFilter.isEmpty()) {
+            filter.dataTypeFilter = DataTypesExtractor().getAllDataTypes()
+        }
+
+        return if (
+                filter.sectorFilterSize > 0 ||
+                filter.countryCodeFilterSize > 0 ||
+                filter.dataTypeFilterSize > 0 ||
+                filter.searchStringLength > 0
+            ) companyRepository.searchCompanies2(
+                filter
+            ) else companyRepository.getAllCompaniesWithDataset()
     }
 
     /**
