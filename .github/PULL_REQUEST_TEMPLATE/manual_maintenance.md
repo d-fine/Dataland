@@ -114,6 +114,7 @@ Execute `sudo apt-get update && sudo apt-get upgrade` on
 
 - [ ] dev1.dataland.com
 - [ ] dev2.dataland.com
+- [ ] dev3.dataland.com
 - [ ] test.dataland.com
 - [ ] letsencrypt.dataland.com
 - [ ] monitoring.dataland.com
@@ -125,6 +126,7 @@ check that all ssh-keys are set and erased from people that have left
 
 - [ ] dev1.dataland.com
 - [ ] dev2.dataland.com
+- [ ] dev3.dataland.com
 - [ ] test.dataland.com
 - [ ] letsencrypt.dataland.com
 - [ ] monitoring.dataland.com
