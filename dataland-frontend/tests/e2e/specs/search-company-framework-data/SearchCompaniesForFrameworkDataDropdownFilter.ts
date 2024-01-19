@@ -56,8 +56,8 @@ describe("As a user, I expect the search functionality on the /companies page to
           `&framework=${DataTypeEnum.P2p}` +
           `&framework=${DataTypeEnum.Sfdr}` +
           `&framework=${DataTypeEnum.Sme}` +
-          `&framework=${DataTypeEnum.Gdv}`,
-        `&framework=${DataTypeEnum.Heimathafen}`,
+          `&framework=${DataTypeEnum.Gdv}` +
+          `&framework=${DataTypeEnum.Heimathafen}`,
       )
       .get("div.p-multiselect-panel")
       .find(`li.p-multiselect-item:contains(${humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials)})`)
