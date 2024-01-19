@@ -1,5 +1,5 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { getReducedCompaniesForDataType } from "@e2e/utils/GeneralApiUtils";
+import { searchBasicCompanyInformationForDataType } from "@e2e/utils/GeneralApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { checkFooter } from "@sharedUtils/ElementChecks";
@@ -28,8 +28,8 @@ describeIf(
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
         it(`Checks that the footer is present on ${framework}`, () => {
           getKeycloakToken(reader_name, reader_pw).then((token) => {
-            cy.browserThen(getReducedCompaniesForDataType(token, framework)).then((reducedCompanies) => {
-              const companyId = reducedCompanies[0].companyId;
+            cy.browserThen(searchBasicCompanyInformationForDataType(token, framework)).then((basicCompanyInformations) => {
+              const companyId = basicCompanyInformations[0].companyId;
               cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${framework}`);
               checkFooter();
             });

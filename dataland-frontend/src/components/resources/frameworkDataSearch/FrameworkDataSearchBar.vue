@@ -61,7 +61,7 @@ import type Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { ReducedCompany } from "@clients/backend";
+import { BasicCompanyInformation } from "@clients/backend";
 
 export default defineComponent({
   setup() {
@@ -182,7 +182,7 @@ export default defineComponent({
      * @param event the click event
      * @param event.value the company that was clicked on
      */
-    handleItemSelect(event: { value: ReducedCompany }) {
+    handleItemSelect(event: { value: BasicCompanyInformation }) {
       const companyIdOfSelectedItem = event.value.companyId;
       void this.$router.push(`/companies/${companyIdOfSelectedItem}`);
     },

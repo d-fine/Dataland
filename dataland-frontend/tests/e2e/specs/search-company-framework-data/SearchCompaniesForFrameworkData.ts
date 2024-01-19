@@ -1,5 +1,5 @@
-import { getReducedCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
-import {DataTypeEnum, type EuTaxonomyDataForFinancials, ReducedCompany} from "@clients/backend";
+import { searchBasicCompanyInformationForDataType } from "@e2e//utils/GeneralApiUtils";
+import {DataTypeEnum, type EuTaxonomyDataForFinancials, BasicCompanyInformation} from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
@@ -117,10 +117,10 @@ describeIf(
       const inputValue = "A company name";
 
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        cy.browserThen(getReducedCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-          (reducedCompanies: Array<ReducedCompany>) => {
+        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
+          (basicCompanyInformations: Array<BasicCompanyInformation>) => {
             cy.visitAndCheckAppMount(
-              `/companies/${reducedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
+              `/companies/${basicCompanyInformations[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
             );
             cy.get("input[id=company_search_bar_standard]")
               .should("not.be.disabled")
@@ -137,9 +137,9 @@ describeIf(
       const primevueHighlightedSuggestionClass = "p-focus";
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        cy.browserThen(getReducedCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-          (reducedCompanies: Array<ReducedCompany>) => {
-            const testCompany = reducedCompanies[0];
+        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
+          (basicCompanyInformations: Array<BasicCompanyInformation>) => {
+            const testCompany = basicCompanyInformations[0];
             cy.visitAndCheckAppMount("/companies");
 
             verifySearchResultTableExists();

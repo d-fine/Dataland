@@ -1,4 +1,4 @@
-import { type CompanyInformation, IdentifierType, ReducedCompany } from "@clients/backend";
+import { type CompanyInformation, IdentifierType, BasicCompanyInformation } from "@clients/backend";
 import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
 import { DataMetaInformationGenerator } from "@e2e/fixtures/data_meta_information/DataMetaInformationFixtures";
 
@@ -6,7 +6,7 @@ import { DataMetaInformationGenerator } from "@e2e/fixtures/data_meta_informatio
  * Generates a single search result for the framework data search
  * @returns the object representing the search result
  */
-function generateReducedCompany(): ReducedCompany {
+function generateBasicCompanyInformation(): BasicCompanyInformation {
   const mockCompanyInformation: CompanyInformation = generateCompanyInformation();
   const mockDataMetaInformation = new DataMetaInformationGenerator().generateDataMetaInformation();
   return {
@@ -23,6 +23,6 @@ function generateReducedCompany(): ReducedCompany {
  * Prepares an array consisting of search results to be displayed in the framework data search
  * @returns the list of search result objects
  */
-export function generateListOfDataSearchStoredCompany(): ReducedCompany[] {
-  return Array.from({ length: 100 }, () => ({ ...generateReducedCompany() }));
+export function generateListOfDataSearchStoredCompany(): BasicCompanyInformation[] {
+  return Array.from({ length: 100 }, () => ({ ...generateBasicCompanyInformation() }));
 }

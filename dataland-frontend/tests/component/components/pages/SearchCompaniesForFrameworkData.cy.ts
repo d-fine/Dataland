@@ -3,13 +3,13 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import type Keycloak from "keycloak-js";
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 import { verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
-import { ReducedCompany } from "@clients/backend";
+import { BasicCompanyInformation } from "@clients/backend";
 
-let mockDataSearchResponse: Array<ReducedCompany>;
+let mockDataSearchResponse: Array<BasicCompanyInformation>;
 
 before(function () {
   cy.fixture("DataSearchStoredCompanyMocks").then(function (jsonContent) {
-    mockDataSearchResponse = jsonContent as Array<ReducedCompany>;
+    mockDataSearchResponse = jsonContent as Array<BasicCompanyInformation>;
   });
 });
 

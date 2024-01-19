@@ -1,5 +1,5 @@
 import { reader_name, reader_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { getReducedCompaniesForDataType } from "@e2e/utils/GeneralApiUtils";
+import { searchBasicCompanyInformationForDataType } from "@e2e/utils/GeneralApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { type CompanyIdAndName, DataTypeEnum } from "@clients/backend";
 
@@ -12,15 +12,15 @@ describe("As a user, I expect the navigation around the company cockpit to work 
   before(() => {
     getKeycloakToken(reader_name, reader_pw)
       .then((token: string) => {
-        return getReducedCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
+        return searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
       })
-      .then((reducedCompanies) => {
-        expect(reducedCompanies).to.be.not.empty;
+      .then((basicCompanyInfos) => {
+        expect(basicCompanyInfos).to.be.not.empty;
         someCompanyIdAndName = {
-          companyId: reducedCompanies[0].companyId,
-          companyName: reducedCompanies[0].companyName,
+          companyId: basicCompanyInfos[0].companyId,
+          companyName: basicCompanyInfos[0].companyName,
         };
-        otherCompanyName = reducedCompanies[1].companyName;
+        otherCompanyName = basicCompanyInfos[1].companyName;
       });
   });
 

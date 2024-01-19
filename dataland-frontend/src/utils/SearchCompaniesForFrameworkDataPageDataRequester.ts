@@ -5,8 +5,8 @@
 
 import { ApiClientProvider } from "@/services/ApiClients";
 import {
+  BasicCompanyInformation,
   type DataTypeEnum,
-  ReducedCompany,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
@@ -38,7 +38,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
   countryCodeFilter: Set<string>,
   sectorFilter: Set<string>,
   keycloakPromise: Promise<Keycloak>,
-): Promise<Array<ReducedCompany>> {
+): Promise<Array<BasicCompanyInformation>> {
   try {
     const companyDataControllerApi = new ApiClientProvider(keycloakPromise).backendClients.companyDataController;
     if (frameworkFilter.size === 0) {

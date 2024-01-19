@@ -70,7 +70,7 @@ import Column from "primevue/column";
 import Tooltip from "primevue/tooltip";
 import { defineComponent } from "vue";
 import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
-import { ReducedCompany } from "@clients/backend";
+import {BasicCompanyInformation} from "@clients/backend";
 
 export default defineComponent({
   name: "FrameworkDataSearchResults",
@@ -95,7 +95,7 @@ export default defineComponent({
      * @param event.data the company the user clicked on
      * @returns the promise of the router push action
      */
-    goToCompanyCockpit(event: { data: ReducedCompany }) {
+    goToCompanyCockpit(event: { data: BasicCompanyInformation }) {
       const companyIdOfClickedRow = event.data.companyId;
       return this.$router.push(`/companies/${companyIdOfClickedRow}`);
     },
