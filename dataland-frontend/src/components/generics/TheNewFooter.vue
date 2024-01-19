@@ -24,7 +24,7 @@
             <li v-for="link in card.links" :key="link.text">
               <a
                 v-if="isExternalLink(link.url)"
-                :href="link.url"
+                :href="sanitizeUrl(link.url)"
                 class="footer__column-link"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -96,6 +96,14 @@ const isSmallScreen: Ref<boolean> = ref(window.innerWidth < 768);
 
 const updateScreenSize = (): void => {
   isSmallScreen.value = window.innerWidth < 768;
+};
+
+const sanitizeUrl = (url: string): string => {
+  const safeUrlPattern = /^(https?|mailto|tel):/;
+  if (safeUrlPattern.test(url)) {
+    return url;
+  }
+  return "#";
 };
 
 onMounted(() => {
