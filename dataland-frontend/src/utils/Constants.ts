@@ -46,21 +46,16 @@ export const ONLY_AUXILIARY_DATA_PROVIDED = "Only auxiliary data provided";
  * @returns the list of data type enums sorted in a way, that German frameworks are the last elements
  */
 export function putGermanFrameworksAtTheEndOfList(frameworksToInclude: DataTypeEnum[]): DataTypeEnum[] {
-  const customSort = (a: DataTypeEnum, b: DataTypeEnum): number => {
-    if (a === DataTypeEnum.Heimathafen && b !== DataTypeEnum.Heimathafen) {
+  const germanFrameworks = ["gdv", "heimathafen"];
+  frameworksToInclude.sort((a, b) => {
+    if (germanFrameworks.includes(a) && !germanFrameworks.includes(b)) {
       return 1;
-    } else if (a !== DataTypeEnum.Heimathafen && b === DataTypeEnum.Heimathafen) {
-      return -1;
-    } else if (a === DataTypeEnum.Gdv && b !== DataTypeEnum.Gdv) {
-      return 1;
-    } else if (a !== DataTypeEnum.Gdv && b === DataTypeEnum.Gdv) {
+    } else if (!germanFrameworks.includes(a) && germanFrameworks.includes(b)) {
       return -1;
     } else {
       return 0;
     }
-  };
+  });
 
-  return frameworksToInclude.includes(DataTypeEnum.Gdv) || frameworksToInclude.includes(DataTypeEnum.Heimathafen)
-    ? [...frameworksToInclude].sort(customSort)
-    : frameworksToInclude;
+  return frameworksToInclude;
 }
