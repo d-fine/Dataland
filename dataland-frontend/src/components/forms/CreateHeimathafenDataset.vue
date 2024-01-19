@@ -43,7 +43,7 @@
                           <component
                             v-if="field.showIf(companyAssociatedHeimathafenData.data)"
                             :is="field.component"
-                            :label="trimLabel(field.label)"
+                            :label="field.label"
                             :placeholder="field.placeholder"
                             :description="field.description"
                             :name="field.name"
@@ -334,10 +334,12 @@ export default defineComponent({
      * @param label The full field label
      * @returns the trimmed label
      */
+    //TODO if not necessary, remove it later
+    /*
     trimLabel(label: string): string {
       const trimIndex = label.indexOf("(");
       return trimIndex !== -1 ? label.substring(0, trimIndex).trim() : label;
-    },
+    }, */
   },
   provide() {
     return {
