@@ -2,7 +2,7 @@ import { type DropdownOption } from "@/utils/PremadeDropdownDatasets";
 import {
   type EuTaxonomyDataForFinancials,
   type EuTaxonomyDataForNonFinancials,
-  type GdvData,
+  type EsgQuestionnaireData,
   type LksgData,
   type PathwaysToParisData,
   type SfdrData,
@@ -50,5 +50,5 @@ export type FrameworkData =
   | LksgData
   | SfdrData
   | SmeData
-  | GdvData
+  | EsgQuestionnaireData
   | PathwaysToParisData;

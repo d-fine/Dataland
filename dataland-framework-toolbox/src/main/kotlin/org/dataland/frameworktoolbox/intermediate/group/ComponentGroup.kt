@@ -8,6 +8,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
+import org.dataland.frameworktoolbox.utils.Naming.getNameFromLabel
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
 /**
@@ -32,8 +33,8 @@ class ComponentGroup(
                 .reversed()
                 .mapNotNull {
                     when (it) {
-                        is ComponentGroup -> it.identifier.capitalizeEn()
-                        is TopLevelComponentGroup -> it.parent.identifier.capitalizeEn()
+                        is ComponentGroup -> getNameFromLabel(it.identifier).capitalizeEn()
+                        is TopLevelComponentGroup -> getNameFromLabel(it.parent.identifier).capitalizeEn()
                         else -> null
                     }
                 }.joinToString("") + identifier.capitalizeEn()
