@@ -2,9 +2,9 @@ import { DataTypeEnum } from "@clients/backend";
 
 // - Available frameworks settings
 
-export const ARRAY_OF_SUPPORTED_FRAMEWORKS = putGdvAtTheEndOfList(Object.values(DataTypeEnum));
-export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = putGdvAtTheEndOfList(Object.values(DataTypeEnum));
-export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = putGdvAtTheEndOfList([
+export const ARRAY_OF_SUPPORTED_FRAMEWORKS = putGermanFrameworksAtTheEndOfList(Object.values(DataTypeEnum));
+export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = putGermanFrameworksAtTheEndOfList(Object.values(DataTypeEnum));
+export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = putGermanFrameworksAtTheEndOfList([
   DataTypeEnum.P2p,
   DataTypeEnum.EutaxonomyFinancials,
   DataTypeEnum.Sfdr,
@@ -41,13 +41,17 @@ export const NO_DATA_PROVIDED = "No data provided";
 export const ONLY_AUXILIARY_DATA_PROVIDED = "Only auxiliary data provided";
 
 /**
- * Changes the sorting of a list of data type enums by putting the gdv/vöb framework at the very end.
+ * Changes the sorting of a list of data type enums by putting German frameworks at the very end.
  * @param frameworksToInclude a unsorted list of data type enums
- * @returns the list of data type enums sorted in a way, that gdv/vöb framework is the last element
+ * @returns the list of data type enums sorted in a way, that German frameworks are the last elements
  */
-export function putGdvAtTheEndOfList(frameworksToInclude: DataTypeEnum[]): DataTypeEnum[] {
+export function putGermanFrameworksAtTheEndOfList(frameworksToInclude: DataTypeEnum[]): DataTypeEnum[] {
   const customSort = (a: DataTypeEnum, b: DataTypeEnum): number => {
-    if (a === DataTypeEnum.Gdv && b !== DataTypeEnum.Gdv) {
+    if (a === DataTypeEnum.Heimathafen && b !== DataTypeEnum.Heimathafen) {
+      return 1;
+    } else if (a !== DataTypeEnum.Heimathafen && b === DataTypeEnum.Heimathafen) {
+      return -1;
+    } else if (a === DataTypeEnum.Gdv && b !== DataTypeEnum.Gdv) {
       return 1;
     } else if (a !== DataTypeEnum.Gdv && b === DataTypeEnum.Gdv) {
       return -1;
@@ -55,7 +59,8 @@ export function putGdvAtTheEndOfList(frameworksToInclude: DataTypeEnum[]): DataT
       return 0;
     }
   };
-  return frameworksToInclude.includes(DataTypeEnum.Gdv)
+
+  return frameworksToInclude.includes(DataTypeEnum.Gdv) || frameworksToInclude.includes(DataTypeEnum.Heimathafen)
     ? [...frameworksToInclude].sort(customSort)
     : frameworksToInclude;
 }
