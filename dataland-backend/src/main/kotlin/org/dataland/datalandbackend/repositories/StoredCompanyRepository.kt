@@ -22,7 +22,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "company.sector as sector, " +
             "permId.min_id as permId " +
             "FROM stored_companies company " +
-            "JOIN (SELECT distinct company_id from data_meta_information) datainfo " + // TODO filter for only accepted datasets
+            "JOIN (SELECT distinct company_id from data_meta_information where quality_status = 1) datainfo " +
             "ON company.company_id = datainfo.company_id " +
             "LEFT JOIN (SELECT company_id, min(identifier_value) as min_id from company_identifiers where identifier_type = 'PermId' group by company_id) permId " +
             "ON company.company_id = permid.company_id " +
@@ -43,7 +43,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value = "WITH " +
-            " has_data as (SELECT distinct company_id from data_meta_information where :#{#searchFilter.dataTypeFilterSize} = 0 OR data_type in :#{#searchFilter.dataTypeFilter}), " + // TODO filter for only accepted datasets
+            " has_data as (SELECT distinct company_id from data_meta_information where (:#{#searchFilter.dataTypeFilterSize} = 0 OR data_type in :#{#searchFilter.dataTypeFilter}) and quality_status = 1), " +
             " filtered_results as (" +
             " SELECT intermediate_results.company_id as company_id, min(intermediate_results.match_quality) as match_quality from (" +
             " (SELECT company.company_id as company_id," +
