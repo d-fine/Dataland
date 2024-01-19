@@ -1,6 +1,8 @@
 package org.dataland.datalandbackend.repositories
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.entities.MyDatasetsDatasetInfo
+import org.dataland.datalandbackend.entities.MyDatasetsDatasetInfoEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
@@ -69,4 +71,26 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
         dataType: String,
         currentlyActive: Boolean,
     ): Long
+
+    @Query(
+        nativeQuery = true,
+        value = "SELECT " +
+            " datainfo.data_id as dataId," +
+            " datainfo.company_id as companyId," +
+            " company.company_name as companyName," +
+            " datainfo.data_type as dataType," +
+            " datainfo.reporting_period as reportingPeriod," +
+            " datainfo.quality_status as qualityStatus," +
+            " datainfo.upload_time as uploadTime" +
+            " from (" +
+            " SELECT company_id, data_id, data_type, reporting_period, quality_status, upload_time " +
+            " from data_meta_information meta" +
+            " where uploader_user_id = :userId" +
+            " ) datainfo" +
+            " LEFT JOIN stored_companies company" +
+            " ON company.company_id = datainfo.company_id"
+    )
+    fun getUserDataMetaInfos(
+        userId: String
+    ): List<MyDatasetsDatasetInfoEntity>
 }
