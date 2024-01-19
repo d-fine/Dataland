@@ -1,5 +1,5 @@
 import { reader_name, reader_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { getStoredCompaniesForDataType } from "@e2e/utils/GeneralApiUtils";
+import { getReducedCompaniesForDataType } from "@e2e/utils/GeneralApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { type CompanyIdAndName, DataTypeEnum } from "@clients/backend";
 
@@ -12,15 +12,15 @@ describe("As a user, I expect the navigation around the company cockpit to work 
   before(() => {
     getKeycloakToken(reader_name, reader_pw)
       .then((token: string) => {
-        return getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
+        return getReducedCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
       })
-      .then((storedCompanies) => {
-        expect(storedCompanies).to.be.not.empty;
+      .then((reducedCompanies) => {
+        expect(reducedCompanies).to.be.not.empty;
         someCompanyIdAndName = {
-          companyId: storedCompanies[0].companyId,
-          companyName: storedCompanies[0].companyInformation.companyName,
+          companyId: reducedCompanies[0].companyId,
+          companyName: reducedCompanies[0].companyName,
         };
-        otherCompanyName = storedCompanies[1].companyInformation.companyName;
+        otherCompanyName = reducedCompanies[1].companyName;
       });
   });
 

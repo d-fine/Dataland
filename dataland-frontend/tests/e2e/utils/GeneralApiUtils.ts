@@ -1,4 +1,9 @@
-import { CompanyDataControllerApi, Configuration, type DataTypeEnum, type StoredCompany } from "@clients/backend";
+import {
+  CompanyDataControllerApi,
+  Configuration,
+  type DataTypeEnum,
+  ReducedCompany,
+} from "@clients/backend";
 import { type RouteHandler } from "cypress/types/net-stubbing";
 import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
 
@@ -13,8 +18,8 @@ export interface UploadIds {
  * @param dataType Data type for which the returned companies should have at least one dataset
  * @returns an array of stored companies
  */
-export async function getStoredCompaniesForDataType(token: string, dataType: DataTypeEnum): Promise<StoredCompany[]> {
-  const response = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
+export async function getReducedCompaniesForDataType(token: string, dataType: DataTypeEnum): Promise<ReducedCompany[]> {
+  const response = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies2(
     undefined,
     new Set([dataType]),
   );
@@ -32,15 +37,16 @@ export async function countCompaniesAndDataSetsForDataType(
   token: string,
   dataType: DataTypeEnum,
 ): Promise<{ numberOfCompaniesForDataType: number; numberOfDataSetsForDataType: number }> {
-  const storedCompaniesForDataType = await getStoredCompaniesForDataType(token, dataType);
+  const reducedCompaniesForDataType = await getReducedCompaniesForDataType(token, dataType);
   let numberOfDataSetsForDataType = 0;
-  storedCompaniesForDataType.forEach((storedCompany) => {
-    numberOfDataSetsForDataType += storedCompany.dataRegisteredByDataland.length;
+  const companyDataController = new CompanyDataControllerApi(new Configuration({ accessToken: token }))
+  reducedCompaniesForDataType.forEach(async (storedCompany) => {
+    numberOfDataSetsForDataType += (await companyDataController.getCompanyById(storedCompany.companyId)).data.dataRegisteredByDataland.length;
   });
 
   return {
     numberOfDataSetsForDataType,
-    numberOfCompaniesForDataType: storedCompaniesForDataType.length,
+    numberOfCompaniesForDataType: reducedCompaniesForDataType.length,
   };
 }
 

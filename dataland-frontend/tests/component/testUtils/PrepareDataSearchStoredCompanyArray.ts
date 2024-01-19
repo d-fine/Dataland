@@ -1,4 +1,3 @@
-import { type DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import {
   IdentifierType,
   type CompanyInformation,

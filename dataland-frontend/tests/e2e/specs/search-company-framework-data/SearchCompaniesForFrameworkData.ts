@@ -1,5 +1,5 @@
-import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
-import { DataTypeEnum, type EuTaxonomyDataForFinancials, type StoredCompany } from "@clients/backend";
+import { getReducedCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
+import {DataTypeEnum, type EuTaxonomyDataForFinancials, ReducedCompany} from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
@@ -117,10 +117,10 @@ describeIf(
       const inputValue = "A company name";
 
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-          (storedCompanies: Array<StoredCompany>) => {
+        cy.browserThen(getReducedCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
+          (reducedCompanies: Array<ReducedCompany>) => {
             cy.visitAndCheckAppMount(
-              `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
+              `/companies/${reducedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
             );
             cy.get("input[id=company_search_bar_standard]")
               .should("not.be.disabled")
@@ -137,9 +137,9 @@ describeIf(
       const primevueHighlightedSuggestionClass = "p-focus";
       const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-          (storedCompanies: Array<StoredCompany>) => {
-            const testCompany = storedCompanies[0];
+        cy.browserThen(getReducedCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
+          (reducedCompanies: Array<ReducedCompany>) => {
+            const testCompany = reducedCompanies[0];
             cy.visitAndCheckAppMount("/companies");
 
             verifySearchResultTableExists();
@@ -165,13 +165,13 @@ describeIf(
             cy.get("input[id=search_bar_top]")
               .click({ force: true })
               .type("{backspace}")
-              .type(testCompany.companyInformation.companyName);
+              .type(testCompany.companyName);
             cy.get(".p-autocomplete-item")
               .eq(0)
-              .should("contain.text", testCompany.companyInformation.companyName)
+              .should("contain.text", testCompany.companyName)
               .click({ force: true });
 
-            validateCompanyCockpitPage(testCompany.companyInformation.companyName, testCompany.companyId);
+            validateCompanyCockpitPage(testCompany.companyName, testCompany.companyId);
           },
         );
       });
