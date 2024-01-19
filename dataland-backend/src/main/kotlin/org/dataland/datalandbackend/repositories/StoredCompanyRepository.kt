@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.repositories
 
-import org.dataland.datalandbackend.entities.ReducedCompany
+import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
@@ -13,6 +13,9 @@ import org.springframework.data.repository.query.Param
  */
 
 interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
+    /**
+     * A function for querying basic information for all companies with approved datasets
+     */
     @Query(
         nativeQuery = true,
         value = "SELECT company.company_id as companyId, " +
@@ -28,17 +31,15 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "ON company.company_id = permid.company_id " +
             "ORDER by company.company_name asc "
     )
-    fun getAllCompaniesWithDataset(): List<ReducedCompany>
+    fun getAllCompaniesWithDataset(): List<BasicCompanyInformation>
 
     /**
-     * A function for querying companies by various filters:
+     * A function for querying basic information of companies with approved datasets by various filters:
      * - dataTypeFilter: If set, only companies with at least one datapoint
      * of one of the supplied dataTypes are returned
      * - searchString: If not empty, only companies that contain the search string in their name are returned
      * (Prefix-Matches are ordered before Center-Matches,
      * e.g. when searching for "a" Allianz will come before Deutsche Bank)
-     * - nameOnlyFilter: If false, it suffices if the searchString is contained
-     * in one of the company identifiers or the name
      */
     @Query(
         nativeQuery = true,
@@ -100,7 +101,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     )
     fun searchCompanies2(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter
-    ): List<ReducedCompany>
+    ): List<BasicCompanyInformation>
 
     /**
      * A function for querying companies by various filters:

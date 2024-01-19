@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.api.DataOwnerApi
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
-import org.dataland.datalandbackend.entities.ReducedCompany
+import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
@@ -85,9 +85,9 @@ class CompanyDataController(
         dataTypes: Set<DataType>?,
         countryCodes: Set<String>?,
         sectors: Set<String>?,
-    ): ResponseEntity<List<ReducedCompany>> {
+    ): ResponseEntity<List<BasicCompanyInformation>> {
         logger.info(
-            "Received a request to get companies with searchString='$searchString', dataTypes='$dataTypes'" +
+            "Received a request to get basic company information with searchString='$searchString', dataTypes='$dataTypes'" +
                 ", countryCodes='$countryCodes', sectors='$sectors'",
         )
         return ResponseEntity.ok(

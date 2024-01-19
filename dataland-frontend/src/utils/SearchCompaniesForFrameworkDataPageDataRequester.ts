@@ -21,23 +21,6 @@ export interface FrameworkDataSearchFilterInterface {
 }
 
 /**
- * Retrieve the value of the Perm Id of a company. Throws an exception if no perm id is found
- * @param  {StoredCompany} storedCompany      is the company object for which the Perm Id should be retrieved
- * @returns the perm id retrieved from the company object. Empty string if no perm id is known.
- */
-function retrievePermIdFromStoredCompany(storedCompany: StoredCompany): string {
-  const permIdIdentifier = storedCompany.companyInformation.identifiers[IdentifierType.PermId];
-  if (permIdIdentifier.length == 1) {
-    return permIdIdentifier[0];
-  } else if (permIdIdentifier.length == 0) {
-    return "";
-  } else {
-    console.error("More than one PermId found for a specific company");
-    return permIdIdentifier[0];
-  }
-}
-
-/**
  * send out an API-call to get stored companies and map the response to the required scheme for the search page
  * @param  {string} searchString           the string that is used to search companies
  *                                         companies by name, or additionally by identifier values

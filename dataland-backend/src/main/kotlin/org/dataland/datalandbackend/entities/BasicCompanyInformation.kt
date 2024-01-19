@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.entities
 
 /**
- * The entity storing data regarding a company stored in dataland
+ * Just the basic data regarding a company stored in dataland
  */
-interface ReducedCompany {
+interface BasicCompanyInformation {
     val companyId: String
 
     val companyName: String
