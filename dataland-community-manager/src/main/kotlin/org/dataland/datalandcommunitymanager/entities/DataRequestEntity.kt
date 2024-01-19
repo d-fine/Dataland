@@ -34,7 +34,7 @@ data class DataRequestEntity(
     val dataRequestCompanyIdentifierValue: String,
 
     @OneToMany(mappedBy = "dataRequestId")
-    val messageHistory: List<MessageRequestEntity>,
+    val messageHistory: MutableList<MessageRequestEntity>,
 
     val lastModifiedDate: Long,
 

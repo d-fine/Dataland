@@ -6,7 +6,6 @@ import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSuppo
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.entities.MessageRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
@@ -301,9 +300,6 @@ class DataRequestManager(
     ): DataRequestEntity {
         val currentTimestamp = Instant.now().toEpochMilli()
         val dataRequestId = UUID.randomUUID().toString()
-        val buildMessageRequestEntity = listOf(
-            MessageRequestEntity(messageRequestId = UUID.randomUUID().toString(), dataRequestId = dataRequestId),
-        )
         return DataRequestEntity(
             dataRequestId = dataRequestId,
             userId = currentUserId,
@@ -312,7 +308,7 @@ class DataRequestManager(
             reportingPeriod = reportingPeriod,
             dataRequestCompanyIdentifierType = identifierType,
             dataRequestCompanyIdentifierValue = identifierValue,
-            messageHistory = buildMessageRequestEntity,
+            messageHistory = mutableListOf(),
             lastModifiedDate = currentTimestamp,
             requestStatus = RequestStatus.Open,
         )
