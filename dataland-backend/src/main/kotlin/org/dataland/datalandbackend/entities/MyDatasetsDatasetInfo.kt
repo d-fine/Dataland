@@ -14,6 +14,7 @@ data class MyDatasetsDatasetInfo(
     val dataType: DataType,
     val reportingPeriod: String,
     val qualityStatus: QaStatus,
+    val currentlyActive: Boolean,
     var uploadTime: Long,
 ) {
     companion object {
@@ -24,6 +25,7 @@ data class MyDatasetsDatasetInfo(
             dataType = DataType.valueOf(entity.dataType),
             reportingPeriod = entity.reportingPeriod,
             qualityStatus = QaStatus.values().find { it.ordinal == entity.qualityStatus }!!,
+            currentlyActive = entity.currentlyActive,
             uploadTime = entity.uploadTime,
         )
     }

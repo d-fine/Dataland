@@ -81,9 +81,10 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
             " datainfo.data_type as dataType," +
             " datainfo.reporting_period as reportingPeriod," +
             " datainfo.quality_status as qualityStatus," +
+            " datainfo.currently_active as currentlyActive," +
             " datainfo.upload_time as uploadTime" +
             " from (" +
-            " SELECT company_id, data_id, data_type, reporting_period, quality_status, upload_time " +
+            " SELECT company_id, data_id, data_type, reporting_period, quality_status, currently_active, upload_time " +
             " from data_meta_information meta" +
             " where uploader_user_id = :userId" +
             " ) datainfo" +

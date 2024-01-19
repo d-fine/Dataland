@@ -11086,6 +11086,7 @@
         "required": [
           "companyId",
           "companyName",
+          "currentlyActive",
           "dataId",
           "dataType",
           "qualityStatus",
@@ -11111,6 +11112,9 @@
           },
           "qualityStatus": {
             "$ref": "#/components/schemas/QaStatus"
+          },
+          "currentlyActive": {
+            "type": "boolean"
           },
           "uploadTime": {
             "type": "integer",
@@ -11244,6 +11248,16 @@
         ],
         "type": "object",
         "properties": {
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
@@ -11253,16 +11267,6 @@
           "permId": {
             "type": "string",
             "nullable": true
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "countryCode": {
-            "type": "string"
           }
         }
       },
