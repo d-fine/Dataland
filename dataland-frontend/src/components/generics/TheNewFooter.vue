@@ -9,15 +9,18 @@
           class="footer__column"
           v-for="card in nonLegalCards"
           :key="card.title || 'default-key'"
-          @click="card.title && toggleAccordion(card.title)"
+          @click="isSmallScreen && card.title && toggleAccordion(card.title)"
         >
           <h3 :id="card.title" class="footer__column-title">
             {{ card.title }}
-            <span class="footer__toggle-icon">
+            <span v-if="isSmallScreen" class="footer__toggle-icon">
               {{ card.title && isAccordionOpen(card.title) ? "-" : "+" }}
             </span>
           </h3>
-          <ul class="footer__column-list" v-show="!isSmallScreen || (card.title && isAccordionOpen(card.title))">
+          <ul
+            class="footer__column-list"
+            :style="{ maxHeight: !isSmallScreen || (card.title && isAccordionOpen(card.title)) ? '500px' : '0px' }"
+          >
             <li v-for="link in card.links" :key="link.text">
               <a
                 v-if="isExternalLink(link.url)"
@@ -64,34 +67,24 @@ const footerSection = computed(() => {
 const openAccordions = ref<Record<string, boolean>>({});
 
 /**
- * Toggles the open state of an accordion section based on its title.
- * If the title is already in the openAccordions set, it will be removed (closed),
- * otherwise, it will be added (opened).
- * @param {string | undefined} title - The title of the accordion section.
+ * Toggles the open state of an accordion section. If the accordion section
+ * corresponding to the provided title is currently closed, it will be opened,
+ * and vice versa.
+ * @param {string} title - The title of the accordion section to toggle.
  */
-function toggleAccordion(title: string | undefined): void {
-  if (title) {
-    openAccordions.value[title] = !openAccordions.value[title];
-  }
+function toggleAccordion(title: string): void {
+  openAccordions.value[title] = !openAccordions.value[title];
 }
 
-const isAccordionOpen = (title: string | undefined): boolean => {
-  return title ? openAccordions.value[title] || false : true;
-};
+const isAccordionOpen = (title: string | undefined): boolean => (title ? openAccordions.value[title] : false);
 
 const footerLogo = computed(() => footerSection.value?.image?.[0] ?? "");
 
 const nonLegalCards = computed(() => footerSection.value?.cards?.filter((card) => card.title !== "Legal") ?? []);
 
-const legalLinks = computed(() => {
-  const legalCard = footerSection.value?.cards?.find((card) => card.title === "Legal");
-  return legalCard?.links ?? [];
-});
+const legalLinks = computed(() => footerSection.value?.cards?.find((card) => card.title === "Legal")?.links ?? []);
 
-const isExternalLink = (url: string): boolean => {
-  const externalUrlPattern = /^https?:\/\//;
-  return externalUrlPattern.test(url);
-};
+const isExternalLink = (url: string): boolean => /^https?:\/\//.test(url);
 
 const copyrightText = computed(() => {
   if (!footerSection.value?.text) return "";
@@ -101,20 +94,16 @@ const copyrightText = computed(() => {
 
 const isSmallScreen: Ref<boolean> = ref(window.innerWidth < 768);
 
-// Create a function to update `isSmallScreen` when the window is resized
 const updateScreenSize = (): void => {
   isSmallScreen.value = window.innerWidth < 768;
 };
 
 onMounted(() => {
-  // Add a resize event listener that updates `isSmallScreen`
   window.addEventListener("resize", updateScreenSize);
-  // Initialize `isSmallScreen` value based on the current window width
   updateScreenSize();
 });
 
 onUnmounted(() => {
-  // Remove the resize event listener when the component is unmounted
   window.removeEventListener("resize", updateScreenSize);
 });
 </script>
@@ -177,6 +166,12 @@ onUnmounted(() => {
       list-style: none;
       padding-left: 0;
       margin: 0;
+      max-height: 500px;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .footer__toggle-icon {
+      transition: transform 0.4s ease;
     }
     li {
       margin-bottom: 16px;
@@ -258,6 +253,9 @@ onUnmounted(() => {
     background-color: #f6f5f0;
     color: #0b191f;
     .footer__column {
+      &-list {
+        max-height: 500px;
+      }
       &-title,
       &-link {
         color: #0b191f;
@@ -293,6 +291,13 @@ onUnmounted(() => {
     &__row--top,
     &__row--bottom {
       flex-direction: column;
+      gap: 0;
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+    &__row--top {
+      margin-bottom: 2em;
     }
 
     &__section {
@@ -300,49 +305,59 @@ onUnmounted(() => {
 
       &--logo {
         justify-content: left;
-        margin-bottom: 3em;
+        margin-bottom: 1.5em;
       }
 
       &--columns {
         flex-direction: column;
-        gap: 1.5em;
+        gap: 0;
       }
 
       &--legal {
         justify-content: left;
-        margin-top: 2em;
       }
     }
 
     &__column {
       align-items: center;
       text-align: left;
-
-      &:not(:last-of-type) {
-        margin-bottom: 1em;
-      }
+      border-bottom: 1px solid var(--grey-tones-900);
 
       &-title {
-        margin-bottom: 1em;
+        margin: 1.5em 0;
         cursor: pointer;
         user-select: none;
+        font-size: 1em;
+        font-weight: 400;
+        line-height: 24px; /* 150% */
+        letter-spacing: 0.25px;
+        color: var(--default-neutral-white);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .footer__toggle-icon[data-v-28e6a421] {
+        transition: transform 0.4s ease;
+        font-size: 1.3em;
+        line-height: 1.5em;
       }
       .footer__column[aria-expanded="true"] .footer__toggle-icon {
         transform: rotate(45deg);
-      }
-      .footer__toggle-icon {
-        transition: transform 0.3s ease;
       }
       &-list,
       &-link {
         width: 100%;
         justify-content: center;
       }
+      &-list li {
+        margin-bottom: 1.5em;
+      }
     }
 
     &__legal-list {
       flex-direction: column;
       align-items: flex-start;
+      gap: 2em;
     }
     &__copyright {
       text-align: left;
