@@ -3,19 +3,19 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import type Keycloak from "keycloak-js";
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 import { verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
-import { type DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import { ReducedCompany } from "@clients/backend";
 
-let mockDataSearchResponse: Array<DataSearchStoredCompany>;
+let mockDataSearchResponse: Array<ReducedCompany>;
 
 before(function () {
   cy.fixture("DataSearchStoredCompanyMocks").then(function (jsonContent) {
-    mockDataSearchResponse = jsonContent as Array<DataSearchStoredCompany>;
+    mockDataSearchResponse = jsonContent as Array<ReducedCompany>;
   });
 });
 
 describe("Component tests for the Dataland companies search page", function (): void {
   beforeEach(() => {
-    cy.intercept("**/api/companies?**", mockDataSearchResponse);
+    cy.intercept("**/api/companies/v2?**", mockDataSearchResponse);
     cy.intercept("**/api/companies/meta-information", {});
   });
 

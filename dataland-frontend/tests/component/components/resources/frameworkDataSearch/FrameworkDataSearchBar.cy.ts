@@ -1,22 +1,18 @@
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { type DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import {ReducedCompany} from "@clients/backend";
 
-let modifiedMockDataSearchResponse: Array<DataSearchStoredCompany>;
+let modifiedMockDataSearchResponse: Array<ReducedCompany>;
 const highlightedSubString = "this_is_expected_to_be_highlighted";
 before(function () {
   cy.fixture("DataSearchStoredCompanyMocks").then(function (jsonContent) {
-    const mockDataSearchResponse = jsonContent as Array<DataSearchStoredCompany>;
+    const mockDataSearchResponse = jsonContent as Array<ReducedCompany>;
     const customCompanyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
     modifiedMockDataSearchResponse = [...mockDataSearchResponse.slice(0, 4)];
     modifiedMockDataSearchResponse[0].dataRegisteredByDataland[0].qaStatus = "Accepted";
     modifiedMockDataSearchResponse[0] = {
       ...modifiedMockDataSearchResponse[0],
       companyName: customCompanyName,
-      companyInformation: {
-        ...modifiedMockDataSearchResponse[0].companyInformation,
-        companyName: customCompanyName,
-      },
     };
   });
 });
@@ -26,7 +22,7 @@ describe("Component tests for the search bar on the company search page", () => 
     cy.mountWithPlugins(FrameworkDataSearchBar, {
       keycloak: minimalKeycloakMock({}),
     });
-    cy.intercept("**/api/companies*", modifiedMockDataSearchResponse).as("searchCompany");
+    cy.intercept("**/api/companies/v2*", modifiedMockDataSearchResponse).as("searchCompany");
     cy.get("input[id=framework_data_search_bar_standard]").click({ force: true }).type(highlightedSubString);
     cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
     cy.get(".p-autocomplete-item")
