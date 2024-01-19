@@ -70,7 +70,6 @@ export default defineComponent({
     setIgnoreToFields(currentValue: string) {
       if (currentValue && currentValue !== "") {
         this.shouldBeIgnored = false;
-        this.checkboxValue = [currentValue];
       } else {
         this.shouldBeIgnored = !this.validation.includes("is:");
       }
