@@ -2,8 +2,21 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="paper-section no-ui-message">
-      <FormKit :actions="false" type="form" @submit="submitRequest" id="requestDataFormId" name="requestDataFormName">
-        <div class="grid p-8 uploadFormWrapper">
+      <MarginWrapper class="mb-2 bg-white">
+        <div class="text-left company-details">
+          <h1 data-test="headerLabel">Bulk Data Request</h1>
+        </div>
+      </MarginWrapper>
+
+      <FormKit
+        :actions="false"
+        disabled
+        type="form"
+        @submit="submitRequest"
+        id="requestDataFormId"
+        name="requestDataFormName"
+      >
+        <div class="grid p-8 justify-content-center uploadFormWrapper">
           <div class="col-12" v-if="postBulkDataRequestObjectProcessed">
             <div data-test="submittingSuccededMessage" v-if="submittingSucceded">
               <MessageComponent
@@ -20,7 +33,7 @@
                     All identifiers have been submitted successfully.
                   </p>
                   <p class="fw-semi-bold red-text" v-if="rejectedCompanyIdentifiers.length">
-                    However, some identifiers couldn’t be recognised.
+                    However, some identifiers couldn't be recognised.
                   </p>
                 </template>
               </MessageComponent>
@@ -47,7 +60,7 @@
           </div>
 
           <div class="col-12" v-if="submittingSucceded">
-            <div data-test="nonIdentifiersPassed" class="bg-white radius-1 p-4">
+            <!-- <div data-test="nonIdentifiersPassed" class="bg-white radius-1 p-4">
               <div class="grid">
                 <div class="col-12">
                   <h4 class="p-0">Data Request Summary</h4>
@@ -120,30 +133,25 @@
                   </PrimeButton>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
 
-          <div class="col-12" v-else>
+          <div class="col-12 md:col-8 xl:col-6" v-else>
             <div class="grid">
-              <div class="col-12 next-to-each-other">
-                <h2>Request Data</h2>
-                <PrimeButton
-                  type="submit"
-                  label="Submit"
-                  class="p-button p-button-sm d-letters place-self-center ml-auto"
-                  name="submit_request_button"
-                >
-                  Submit Data Request
-                </PrimeButton>
-              </div>
-              <div class="col-6">
-                <div data-test="selectFrameworkDiv" class="bg-white radius-1 p-4">
-                  <h4 class="p-0">Select at least one framework</h4>
+              <div class="col-12">
+                <BasicFormSection header="Select at least one reporting period">
+                  <div class="flex flex-wrap mt-4 py-2">
+                    <ToggleChip :label="'2023'" />
+                    <ToggleChip :label="'2022'" />
+                    <ToggleChip :label="'2021'" />
+                    <ToggleChip :label="'2020'" />
+                  </div>
+                </BasicFormSection>
+
+                <BasicFormSection header="Select at least one framework">
                   <MultiSelectFormFieldBindData
                     data-test="selectFrameworkSelect"
-                    label="Frameworks"
                     placeholder="Select framework"
-                    description="Select the frameworks you would like data for"
                     name="listOfFrameworkNames"
                     :options="availableFrameworks"
                     optionValue="value"
@@ -161,8 +169,7 @@
                     }"
                     :outer-class="{ 'hidden-input': true }"
                   />
-                  <h4 class="p-0">Added Frameworks:</h4>
-                  <div data-test="addedFrameworks" class="paper-section radius-1 p-2 w-full selected-frameworks">
+                  <div data-test="addedFrameworks" class="radius-1 w-full">
                     <span v-if="!selectedFrameworks.length" class="gray-text no-framework"
                       >No Frameworks added yet</span
                     >
@@ -171,11 +178,9 @@
                       <em @click="removeItem(it)" class="material-icons">close</em>
                     </span>
                   </div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div data-test="provideIdentifiers" class="bg-white radius-1 p-4">
-                  <h4 class="p-0">Provide Company Identifiers</h4>
+                </BasicFormSection>
+
+                <BasicFormSection header="Provide Company Identifiers">
                   <FormKit
                     v-model="identifiersInString"
                     type="textarea"
@@ -185,13 +190,22 @@
                     :validation-messages="{
                       required: 'Provide at least one identifier',
                     }"
-                    placeholder="Insert identifiers here. Separated by either comma, space, semicolon or linebreak."
+                    placeholder="E.g.: DE-000402625-0, SWE402626, DE-000402627-2, SWE402626,DE-0004026244"
                   />
-                  <span class="gray-text font-italic"
-                    >Accepted identifier types are: LEI, ISIN & permID. Expected in comma, semicolon, linebreaks and
-                    spaces separted format.</span
-                  >
-                </div>
+                  <span class="gray-text font-italic">
+                    Accepted identifiers: DUNS Number, LEI, ISIN & permID. Expected in comma separted format.
+                  </span>
+                </BasicFormSection>
+              </div>
+              <div class="col-12 flex align-items-end">
+                <PrimeButton
+                  type="submit"
+                  label="Submit"
+                  class="p-button p-button-sm d-letters ml-auto"
+                  name="submit_request_button"
+                >
+                  Next
+                </PrimeButton>
               </div>
             </div>
           </div>
@@ -221,9 +235,12 @@ import { type BulkDataRequest } from "@clients/communitymanager";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import MessageComponent from "@/components/messages/MessageComponent.vue";
 import { AxiosError } from "axios";
+import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
+import ToggleChip from "@/components/general/ToggleChip.vue";
+import BasicFormSection from "@/components/general/BasicFormSection.vue";
 
 export default defineComponent({
-  name: "RequestData",
+  name: "RequestBulkData",
   components: {
     MessageComponent,
     FailMessage,
@@ -234,6 +251,9 @@ export default defineComponent({
     TheFooter,
     PrimeButton,
     FormKit,
+    MarginWrapper,
+    ToggleChip,
+    BasicFormSection,
   },
   setup() {
     return {
@@ -365,13 +385,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.selected-frameworks {
-  min-height: 100px;
-}
 .no-framework {
   display: flex;
   justify-content: center;
-  height: 100px;
   align-items: center;
 }
 </style>
