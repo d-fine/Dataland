@@ -1,758 +1,4720 @@
 [
 	{
-		"companyName": "Schroeder and Sons",
-		"companyId": "a329b4c5-4406-4d33-96f6-bdef52befc13",
-		"permId": "HeG7uUNY9x",
-		"headquarters": "Ricardotown",
-		"sector": "channels",
-		"countryCode": "RE"
+		"companyName": "Flatley, Runte and Legros",
+		"companyInformation": {
+			"companyName": "Flatley, Runte and Legros",
+			"headquarters": "Jupiter",
+			"headquartersPostalCode": null,
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"h7hcJnkJMw0VM30q1DKh"
+				],
+				"Isin": [
+					"De9HHh6mylUV",
+					"Vi6dQthh2qOS"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TR",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://astonishing-jam.org",
+			"isTeaserCompany": false
+		},
+		"companyId": "6ce721b4-fbff-42de-9ff2-e60ba8eae21c",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "f27bf756-e0cd-440f-9429-fed8e542b828",
+				"companyId": "6ce721b4-fbff-42de-9ff2-e60ba8eae21c",
+				"dataType": "sfdr",
+				"reportingPeriod": "2021",
+				"currentlyActive": false,
+				"qaStatus": "Accepted",
+				"uploadTime": 2352,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Dietrich, Schulist and Paucek",
-		"companyId": "976cc4c0-1f7c-4d46-a57a-798950c8e14f",
-		"headquarters": "Hageneston",
-		"sector": "initiatives",
-		"countryCode": "AI"
+		"companyName": "Schimmel - Hyatt",
+		"companyInformation": {
+			"companyName": "Schimmel - Hyatt",
+			"headquarters": "Ponce",
+			"headquartersPostalCode": "02631",
+			"sector": "networks",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"agPxo3eOcgdb"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"R6ibQXsQVCUq9nP"
+				]
+			},
+			"countryCode": "MC",
+			"companyAlternativeNames": [
+				"Jenkins, Grant and Hahn"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://lustrous-sleeping.org",
+			"isTeaserCompany": false
+		},
+		"companyId": "32082ff4-d29d-417e-96db-a159559d4293",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "0ea001c0-dc8f-4587-bc01-c70b2ab886cd",
+				"companyId": "32082ff4-d29d-417e-96db-a159559d4293",
+				"dataType": "lksg",
+				"reportingPeriod": "2021",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 8005,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Yost - Waelchi",
-		"companyId": "c8eb74e0-2c74-427a-b5b1-ed8f17ea86e5",
-		"permId": "REdrdTttoW",
-		"headquarters": "Port Ward",
-		"sector": "lifetime value",
-		"countryCode": "BG"
+		"companyName": "Jones - Ruecker",
+		"companyInformation": {
+			"companyName": "Jones - Ruecker",
+			"headquarters": "Grand Island",
+			"headquartersPostalCode": "10250-3379",
+			"sector": "channels",
+			"identifiers": {
+				"Lei": [
+					"qqbYJkQ8JE6jtqvDhT7p"
+				],
+				"Isin": [
+					"LRKA2YWabE2z",
+					"O7mQPQRXCN3J"
+				],
+				"PermId": [],
+				"Ticker": [
+					"uFoZndd"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"zEUIqqmnX2NPVau"
+				]
+			},
+			"countryCode": "RO",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://obedient-thunderhead.net/",
+			"isTeaserCompany": false
+		},
+		"companyId": "5aef9472-b3eb-4bb3-b86c-38cccbe9fc13",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "22aca639-8f89-4521-9025-a06e1eee94ba",
+				"companyId": "5aef9472-b3eb-4bb3-b86c-38cccbe9fc13",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2020",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 2163,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "MacGyver and Sons",
-		"companyId": "158b1a9a-8eaf-4120-a602-23a98b4d137e",
-		"headquarters": "Karinaside",
-		"sector": "architectures",
-		"countryCode": "LR"
+		"companyName": "Little - Adams",
+		"companyInformation": {
+			"companyName": "Little - Adams",
+			"headquarters": "West Zechariah",
+			"headquartersPostalCode": "83808",
+			"sector": "experiences",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"4zQV9QYovvDR",
+					"1Bx7khTnNZ0u"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"ZR0VHTTi1"
+				],
+				"VatNumber": [
+					"eSDQJ5Nq5"
+				],
+				"CompanyRegistrationNumber": [
+					"q2wVchlY51VrJXk"
+				]
+			},
+			"countryCode": "LY",
+			"companyAlternativeNames": [
+				"Miller - Bartell",
+				"Mraz - Lueilwitz",
+				"Pfeffer Inc"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://identical-polliwog.com/",
+			"isTeaserCompany": false
+		},
+		"companyId": "e9b037d6-52f0-42c1-a820-48362377ae6e",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "f673aebb-89e6-4a7a-8319-4764d0b3df33",
+				"companyId": "e9b037d6-52f0-42c1-a820-48362377ae6e",
+				"dataType": "lksg",
+				"reportingPeriod": "2020",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 394,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Hermiston, Fisher and Cormier",
-		"companyId": "cafa9f5a-8fa5-425e-951b-b67c87e30bd6",
-		"permId": "Vx0U1TdP7d",
-		"headquarters": "East Sven",
-		"sector": "eyeballs",
-		"countryCode": "MD"
+		"companyName": "Schuppe Group",
+		"companyInformation": {
+			"companyName": "Schuppe Group",
+			"headquarters": "Lindton",
+			"headquartersPostalCode": "07472-3717",
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [
+					"2qsujZQo2VXLbZpAcrJ1"
+				],
+				"Isin": [
+					"qTFHw5CZPK18"
+				],
+				"PermId": [
+					"bzHqZJGTvA"
+				],
+				"Ticker": [
+					"opc7hTE"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "IT",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "14a098ed-900a-4cfb-848b-a0d7ebc27b89",
+		"permId": "bzHqZJGTvA",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "309f6801-c663-4b59-9896-c275bbf5ef6f",
+				"companyId": "14a098ed-900a-4cfb-848b-a0d7ebc27b89",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2022",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 9387,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Little, Walsh and Jenkins",
-		"companyId": "cf2f5559-7a9a-4561-8eca-65481cc3da7d",
-		"headquarters": "Knoxville",
-		"sector": null,
-		"countryCode": "HK"
+		"companyName": "Veum and Sons",
+		"companyInformation": {
+			"companyName": "Veum and Sons",
+			"headquarters": "Port Garrett",
+			"headquartersPostalCode": "72062",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"Yq3eJ8D9cYjcVRD0UiiM"
+				],
+				"Isin": [
+					"GbUOZr6YmjWu"
+				],
+				"PermId": [
+					"rHwN76IIM1"
+				],
+				"Ticker": [
+					"t1Vtet6"
+				],
+				"Duns": [
+					"yOHo11nYk"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"TrpLEFgVCARkoPb"
+				]
+			},
+			"countryCode": "CF",
+			"companyAlternativeNames": [
+				"Bogisich - Torphy"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://wan-rubber.com/",
+			"isTeaserCompany": false
+		},
+		"companyId": "ea8a2bfb-4a64-4475-88df-6484b1adbee1",
+		"permId": "rHwN76IIM1",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "346bbe7b-76e2-4a32-a07f-1d610f4e9245",
+				"companyId": "ea8a2bfb-4a64-4475-88df-6484b1adbee1",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2022",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 7078,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Becker, Langworth and Gerlach",
-		"companyId": "94f6938a-2c1e-495f-aa29-8d00499de171",
-		"headquarters": "Cassieview",
-		"sector": "relationships",
-		"countryCode": "IR"
+		"companyName": "Ratke - Effertz",
+		"companyInformation": {
+			"companyName": "Ratke - Effertz",
+			"headquarters": "Aufderhartown",
+			"headquartersPostalCode": "78901-9293",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"CQerz8V4gc1j"
+				],
+				"PermId": [
+					"5S0hnk9A5c"
+				],
+				"Ticker": [
+					"6mcheXA"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"7cGnOSpjd"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "LB",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://strange-box.org/",
+			"isTeaserCompany": false
+		},
+		"companyId": "36a207ec-7004-4a31-8d55-c94b6013c833",
+		"permId": "5S0hnk9A5c",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "1daeb115-5beb-4a05-aa0f-5dbf4a16d6da",
+				"companyId": "36a207ec-7004-4a31-8d55-c94b6013c833",
+				"dataType": "p2p",
+				"reportingPeriod": "2020",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 1097,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Weimann - Zemlak",
-		"companyId": "c1960478-cfa1-41b8-954f-807359419afd",
-		"permId": "tQ4bQ4Yapi",
-		"headquarters": "Keller",
-		"sector": "metrics",
-		"countryCode": "RO"
+		"companyName": "Ledner, Hegmann and Witting",
+		"companyInformation": {
+			"companyName": "Ledner, Hegmann and Witting",
+			"headquarters": "Sanfordport",
+			"headquartersPostalCode": "81304-4033",
+			"sector": "e-markets",
+			"identifiers": {
+				"Lei": [
+					"sf0MAIMMce2YT9wrhN8j"
+				],
+				"Isin": [
+					"nrHuaITltmC4",
+					"VOHHBA4UeAIV"
+				],
+				"PermId": [
+					"IfIdNDwIFH"
+				],
+				"Ticker": [],
+				"Duns": [
+					"r4STmVHZn"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"FT0pjRRS42M1nf2"
+				]
+			},
+			"countryCode": "JP",
+			"companyAlternativeNames": [
+				"Larkin - Adams",
+				"O'Connell Inc",
+				"Prohaska - Auer",
+				"Ryan, Franecki and Hermann"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://cold-initialise.com/",
+			"isTeaserCompany": false
+		},
+		"companyId": "169f6dfd-7405-48c2-8a2f-9cacb7118222",
+		"permId": "IfIdNDwIFH",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "ee3f710a-80c0-4224-bc89-b0a971e41e2c",
+				"companyId": "169f6dfd-7405-48c2-8a2f-9cacb7118222",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2022",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 9270,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Padberg LLC",
-		"companyId": "bfd9e86d-b1ea-4dfd-8532-4dadff9283ac",
-		"permId": "YMKxKYI1p3",
-		"headquarters": "Olsonville",
-		"sector": "infrastructures",
-		"countryCode": "CO"
+		"companyName": "Flatley - Denesik",
+		"companyInformation": {
+			"companyName": "Flatley - Denesik",
+			"headquarters": "Maritzafurt",
+			"headquartersPostalCode": "33233",
+			"sector": "functionalities",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"2yAsHxtE3kUm",
+					"9e0PRovB1Ohd"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"AWUUFVbdE"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CZ",
+			"companyAlternativeNames": [
+				"Casper, Rodriguez and Kertzmann",
+				"Hoppe, Hills and Berge",
+				"Larkin, Rowe and Russel",
+				"Reichert and Sons"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://legal-household.com/",
+			"isTeaserCompany": false
+		},
+		"companyId": "74f4ccdb-e0a9-40e8-8481-5ebbc0319673",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "ebbf4210-eb90-4231-8c8c-c0040cb74d40",
+				"companyId": "74f4ccdb-e0a9-40e8-8481-5ebbc0319673",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2022",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 6382,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Kris, Upton and Emmerich",
-		"companyId": "01adb5c6-f713-4a40-8e24-9356a6dd919b",
-		"headquarters": "Walnut Creek",
-		"sector": "interfaces",
-		"countryCode": "GI"
+		"companyName": "Lesch and Sons",
+		"companyInformation": {
+			"companyName": "Lesch and Sons",
+			"headquarters": "Port Soledad",
+			"headquartersPostalCode": "57381-1057",
+			"sector": "methodologies",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"iNqVMr24EQSI",
+					"RxDE6enT9vEW"
+				],
+				"PermId": [],
+				"Ticker": [
+					"z10CGC4"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"UAjOgVcAH"
+				],
+				"CompanyRegistrationNumber": [
+					"cmtq5w7F8dppAyh"
+				]
+			},
+			"countryCode": "TG",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://shimmering-waveform.com",
+			"isTeaserCompany": false
+		},
+		"companyId": "7fd70473-a4b8-467d-8a6c-452840fa2e46",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "500f720d-cefc-4b0e-8a2b-efe5b584abe0",
+				"companyId": "7fd70473-a4b8-467d-8a6c-452840fa2e46",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2021",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 9880,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Kuhlman LLC",
-		"companyId": "96d66855-1856-41af-9990-989e5698c2d7",
-		"headquarters": "New Jeramie",
-		"sector": null,
-		"countryCode": "GG"
+		"companyName": "Graham - Blick",
+		"companyInformation": {
+			"companyName": "Graham - Blick",
+			"headquarters": "North Fausto",
+			"headquartersPostalCode": "13277",
+			"sector": "content",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"HNiMT1y0swfZ"
+				],
+				"PermId": [
+					"UZt75NPwdX"
+				],
+				"Ticker": [],
+				"Duns": [
+					"wT7ybpHmJ"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MC",
+			"companyAlternativeNames": [
+				"Howe - Schuppe",
+				"Pfeffer, Ortiz and Mohr",
+				"Weimann, Oberbrunner and Wuckert",
+				"Wintheiser, Stark and Torp"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://hard-to-find-poor.info/",
+			"isTeaserCompany": false
+		},
+		"companyId": "f7940097-c686-4856-971c-f5e6a851665d",
+		"permId": "UZt75NPwdX",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "26aedee3-c896-43a5-88bf-4a26ce4436f7",
+				"companyId": "f7940097-c686-4856-971c-f5e6a851665d",
+				"dataType": "sfdr",
+				"reportingPeriod": "2021",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 2062,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Purdy Inc",
-		"companyId": "72d8508a-ffac-4b96-872c-6ebc695872eb",
-		"permId": "l4OP1tRfOA",
-		"headquarters": "Fort Dallas",
-		"sector": "technologies",
-		"countryCode": "LC"
+		"companyName": "Mills, Davis and Hansen",
+		"companyInformation": {
+			"companyName": "Mills, Davis and Hansen",
+			"headquarters": "New Arianna",
+			"headquartersPostalCode": "00319-8006",
+			"sector": "paradigms",
+			"identifiers": {
+				"Lei": [
+					"ZRbNUkB5L93lSHZBLFNN"
+				],
+				"Isin": [
+					"m4NeHHMGGuDa",
+					"N6PtXdQaBax2"
+				],
+				"PermId": [
+					"HsDUSB6xaS"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"gkrRHSwlxZ4sVRv"
+				]
+			},
+			"countryCode": "SV",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "a4db9cb2-d278-4821-80ea-fbf72801703f",
+		"permId": "HsDUSB6xaS",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "53c83fe8-b62f-41bc-9817-455c876483f3",
+				"companyId": "a4db9cb2-d278-4821-80ea-fbf72801703f",
+				"dataType": "sfdr",
+				"reportingPeriod": "2021",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 6365,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Powlowski Inc",
-		"companyId": "ba82e68c-b6c9-44a7-8ba4-59b47d6f4d72",
-		"headquarters": "Steuberchester",
-		"sector": "infrastructures",
-		"countryCode": "AL"
+		"companyName": "Adams - Stamm",
+		"companyInformation": {
+			"companyName": "Adams - Stamm",
+			"headquarters": "Clovistown",
+			"headquartersPostalCode": null,
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"9UK6bnH6yLJg"
+				],
+				"PermId": [
+					"ujG2qpJQiZ"
+				],
+				"Ticker": [],
+				"Duns": [
+					"ill9mADXm"
+				],
+				"VatNumber": [
+					"qyhwmL1G8"
+				],
+				"CompanyRegistrationNumber": [
+					"oDV2nmECX1LhSrk"
+				]
+			},
+			"countryCode": "MV",
+			"companyAlternativeNames": [
+				"Runolfsson - Hodkiewicz"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://insidious-shack.com/",
+			"isTeaserCompany": false
+		},
+		"companyId": "612bfbdf-c800-4e69-b62f-30fc482b9cb5",
+		"permId": "ujG2qpJQiZ",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "f2f8948d-2cd0-46c8-baca-a741611f15d8",
+				"companyId": "612bfbdf-c800-4e69-b62f-30fc482b9cb5",
+				"dataType": "p2p",
+				"reportingPeriod": "2023",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 5312,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Swift Inc",
-		"companyId": "54fb8267-e0fd-4c72-b46a-5ed7facb894c",
-		"headquarters": "Cheektowaga",
-		"sector": "e-business",
-		"countryCode": "CU"
+		"companyName": "Sporer - Kunze",
+		"companyInformation": {
+			"companyName": "Sporer - Kunze",
+			"headquarters": "Louville",
+			"headquartersPostalCode": "23955-1514",
+			"sector": "applications",
+			"identifiers": {
+				"Lei": [
+					"AZQKhMA42cghU41rhFpi"
+				],
+				"Isin": [
+					"VBdYHKttLbKF"
+				],
+				"PermId": [],
+				"Ticker": [
+					"knjFVrG"
+				],
+				"Duns": [
+					"TUMiFcfSo"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CF",
+			"companyAlternativeNames": [
+				"Jacobson, Stokes and Towne",
+				"Kub - Fritsch"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://alarming-alto.org",
+			"isTeaserCompany": false
+		},
+		"companyId": "36c88e50-b3c7-4309-8517-37df3fb512b5",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "34f19aae-1658-47e0-86cd-822512793c86",
+				"companyId": "36c88e50-b3c7-4309-8517-37df3fb512b5",
+				"dataType": "sfdr",
+				"reportingPeriod": "2020",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 3120,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Walsh, Wintheiser and Graham",
-		"companyId": "8054fe5f-6341-4477-b52e-8643d6cca3ea",
-		"permId": "nozHTvG5qj",
-		"headquarters": "Overland Park",
-		"sector": "initiatives",
-		"countryCode": "SC"
+		"companyName": "Zieme - Heidenreich",
+		"companyInformation": {
+			"companyName": "Zieme - Heidenreich",
+			"headquarters": "Birdieport",
+			"headquartersPostalCode": "76983-4031",
+			"sector": "content",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"Qx7WCHbnnwZk"
+				],
+				"PermId": [],
+				"Ticker": [
+					"jpK1fse"
+				],
+				"Duns": [
+					"yS7iRk5AA"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TG",
+			"companyAlternativeNames": [
+				"Volkman - Nader",
+				"Welch - Gerlach"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://sudden-shadow.org/",
+			"isTeaserCompany": false
+		},
+		"companyId": "bf1e28e1-f1f8-4d67-ad35-73e1b7f4a2ed",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "fdbe082f-5e80-4ecb-ab9c-a4c0c3070110",
+				"companyId": "bf1e28e1-f1f8-4d67-ad35-73e1b7f4a2ed",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2021",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 9079,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Jacobson, Ziemann and Veum",
-		"companyId": "0bb850ef-38e8-4703-9954-94d26f1ab7b3",
-		"permId": "6pfc8lVKA8",
-		"headquarters": "Tonycester",
-		"sector": null,
-		"countryCode": "PH"
+		"companyName": "Mohr LLC",
+		"companyInformation": {
+			"companyName": "Mohr LLC",
+			"headquarters": "Tabithaberg",
+			"headquartersPostalCode": "13969-1831",
+			"sector": "platforms",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"pXRmD3zBaNBu",
+					"vPI2A6wNdOIq"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"5fWC87olAUt3r7L"
+				]
+			},
+			"countryCode": "LB",
+			"companyAlternativeNames": [
+				"Swaniawski - Hickle"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://meager-acknowledgment.name",
+			"isTeaserCompany": false
+		},
+		"companyId": "167c1070-bb74-43a1-ab9e-4c0ffabb7a35",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "99d6e53a-ef4c-4b79-93b6-4d285fd08986",
+				"companyId": "167c1070-bb74-43a1-ab9e-4c0ffabb7a35",
+				"dataType": "p2p",
+				"reportingPeriod": "2021",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 8685,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Flatley - Stanton",
-		"companyId": "67ea7014-01f4-404e-bc0d-2d4fda40dc05",
-		"permId": "Cd6DI37PEY",
-		"headquarters": "Swiftfurt",
-		"sector": "supply-chains",
-		"countryCode": "MW"
+		"companyName": "Schamberger, Steuber and Pacocha",
+		"companyInformation": {
+			"companyName": "Schamberger, Steuber and Pacocha",
+			"headquarters": "New Tomasa",
+			"headquartersPostalCode": null,
+			"sector": "ROI",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"2aZrrArR0mri",
+					"WmNOknCx4b2p"
+				],
+				"PermId": [
+					"p4oYBjumxD"
+				],
+				"Ticker": [
+					"4iYFqPZ"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"ut4HY0oTo"
+				],
+				"CompanyRegistrationNumber": [
+					"sUkDD9XOwDVoQZB"
+				]
+			},
+			"countryCode": "SB",
+			"companyAlternativeNames": [
+				"Hartmann, Rosenbaum and Sauer",
+				"Mueller - Maggio",
+				"O'Connell and Sons"
+			],
+			"companyLegalForm": "AG",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "c0927209-5964-45c4-b49f-29fcb164b388",
+		"permId": "p4oYBjumxD",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "6ce76ccb-2e0c-4b51-8976-9d0dfb4521cd",
+				"companyId": "c0927209-5964-45c4-b49f-29fcb164b388",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2020",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 4016,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "McDermott, Cummerata and Farrell",
-		"companyId": "b74416d1-2f51-4ff8-8a6f-c2a8fc3c57c0",
-		"permId": "jUm0eGoeal",
-		"headquarters": "New Hiltonbury",
-		"sector": null,
-		"countryCode": "FM"
+		"companyName": "Jacobson, Gorczany and Smith",
+		"companyInformation": {
+			"companyName": "Jacobson, Gorczany and Smith",
+			"headquarters": "Sipeschester",
+			"headquartersPostalCode": "89002",
+			"sector": "functionalities",
+			"identifiers": {
+				"Lei": [
+					"LxNlHXaRsQK1L00TNu97"
+				],
+				"Isin": [
+					"r9YkUVDCWe5M",
+					"GnaAL7uxgAqr"
+				],
+				"PermId": [
+					"aLWXbSmcVP"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"bbn1bGQMp"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "VC",
+			"companyAlternativeNames": [
+				"Aufderhar, Heathcote and Hayes",
+				"Buckridge and Sons",
+				"Dach Group",
+				"Pfeffer - Glover"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://naughty-sunset.org",
+			"isTeaserCompany": false
+		},
+		"companyId": "c42497a6-4c56-4a85-9f2e-ba85d7396031",
+		"permId": "aLWXbSmcVP",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "1ce9c1c4-83af-4e0f-b835-da3367273f9b",
+				"companyId": "c42497a6-4c56-4a85-9f2e-ba85d7396031",
+				"dataType": "sfdr",
+				"reportingPeriod": "2020",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 7060,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Prosacco, Heidenreich and Spinka",
-		"companyId": "77740e83-80a5-42bc-9365-945469069328",
-		"headquarters": "Port Dellfield",
-		"sector": null,
-		"countryCode": "PM"
+		"companyName": "Sawayn Inc",
+		"companyInformation": {
+			"companyName": "Sawayn Inc",
+			"headquarters": "Zoieshire",
+			"headquartersPostalCode": "25799",
+			"sector": "schemas",
+			"identifiers": {
+				"Lei": [
+					"5ajlMqTrwYN9bVSEVPQo"
+				],
+				"Isin": [
+					"JHtq685u6ly7"
+				],
+				"PermId": [
+					"CuqiFlunNP"
+				],
+				"Ticker": [
+					"e5CIEZA"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"1CjerSb4c"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "OM",
+			"companyAlternativeNames": [
+				"Bayer, Lind and Doyle",
+				"Borer Group",
+				"Dickens Inc",
+				"Littel, Johnston and Gutmann"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://bowed-astrologer.name",
+			"isTeaserCompany": false
+		},
+		"companyId": "4e30c2f0-9716-4f6c-ae93-2634f7f74710",
+		"permId": "CuqiFlunNP",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "7348c395-bef8-496f-87b7-55f8239918c1",
+				"companyId": "4e30c2f0-9716-4f6c-ae93-2634f7f74710",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2020",
+				"currentlyActive": false,
+				"qaStatus": "Accepted",
+				"uploadTime": 8599,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Jenkins - Raynor",
-		"companyId": "a8d3bf84-9c3a-4c70-81b1-da35f018cb3d",
-		"permId": "ZQFDfZs4Zs",
-		"headquarters": "Fort Lisette",
-		"sector": "infrastructures",
-		"countryCode": "TF"
+		"companyName": "Rau, Lind and Heidenreich",
+		"companyInformation": {
+			"companyName": "Rau, Lind and Heidenreich",
+			"headquarters": "Kevenberg",
+			"headquartersPostalCode": "81027-2647",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"YDO4to8ckdbsl3jMCvdi"
+				],
+				"Isin": [
+					"8uWUbkDTHafU",
+					"BRzIqWbkJ507"
+				],
+				"PermId": [
+					"mWtNQ2UdHo"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"RBTSd7rfk"
+				],
+				"CompanyRegistrationNumber": [
+					"wKkhMuvPWDZgDsN"
+				]
+			},
+			"countryCode": "MG",
+			"companyAlternativeNames": [
+				"Conn Inc",
+				"Rodriguez, Powlowski and Goldner",
+				"Watsica and Sons"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://big-hurdle.org",
+			"isTeaserCompany": false
+		},
+		"companyId": "6f3e7bea-53a7-411c-8a4a-80c9fa014a04",
+		"permId": "mWtNQ2UdHo",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "8aafae81-6cfc-4ea8-b331-f912e664f5be",
+				"companyId": "6f3e7bea-53a7-411c-8a4a-80c9fa014a04",
+				"dataType": "p2p",
+				"reportingPeriod": "2020",
+				"currentlyActive": false,
+				"qaStatus": "Accepted",
+				"uploadTime": 1429,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Will LLC",
-		"companyId": "98018f18-8877-4399-af20-c24de52a2cb7",
-		"permId": "kn4efgZMT5",
-		"headquarters": "Port Sherwood",
-		"sector": "technologies",
-		"countryCode": "GU"
+		"companyName": "Aufderhar Inc",
+		"companyInformation": {
+			"companyName": "Aufderhar Inc",
+			"headquarters": "East Georgettestad",
+			"headquartersPostalCode": "30716-3761",
+			"sector": "lifetime value",
+			"identifiers": {
+				"Lei": [
+					"NPTt0yX4AuhiNpw9uwwi"
+				],
+				"Isin": [
+					"fGgjLnExkqJS"
+				],
+				"PermId": [
+					"KmNypmggrd"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"CxywYQ0SU5791b2"
+				]
+			},
+			"countryCode": "HM",
+			"companyAlternativeNames": [
+				"Thiel - Homenick"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://pleased-circulation.org/",
+			"isTeaserCompany": false
+		},
+		"companyId": "4b21dd78-471e-413f-a0be-0acca44779bc",
+		"permId": "KmNypmggrd",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "5be2280e-5bf2-4536-a5fa-6a031c36f240",
+				"companyId": "4b21dd78-471e-413f-a0be-0acca44779bc",
+				"dataType": "p2p",
+				"reportingPeriod": "2022",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 1452,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Kerluke - Pfannerstill",
-		"companyId": "cf652967-01c4-4fb8-8c1d-0ab639dc01e4",
-		"headquarters": "Great Falls",
-		"sector": null,
-		"countryCode": "DK"
+		"companyName": "Thiel Inc",
+		"companyInformation": {
+			"companyName": "Thiel Inc",
+			"headquarters": "Fort Luisaside",
+			"headquartersPostalCode": "55442",
+			"sector": "blockchains",
+			"identifiers": {
+				"Lei": [
+					"vLWAmxxg4hrKNDc8Z4bk"
+				],
+				"Isin": [
+					"y7vgTVtDADCq"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"58xiaDOT4yHjdNI"
+				]
+			},
+			"countryCode": "LR",
+			"companyAlternativeNames": [
+				"Bailey - Grant",
+				"Glover and Sons",
+				"Krajcik LLC",
+				"Rempel, Fisher and Brekke"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://definite-immigrant.name/",
+			"isTeaserCompany": false
+		},
+		"companyId": "a576df0b-34fb-4a0f-8eac-d7c578a63f44",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "68c787f2-7c2b-405d-a7bd-ce2bccecd2b4",
+				"companyId": "a576df0b-34fb-4a0f-8eac-d7c578a63f44",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2021",
+				"currentlyActive": false,
+				"qaStatus": "Accepted",
+				"uploadTime": 2442,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Larson - Prohaska",
-		"companyId": "dea9b41b-cef8-4960-8e7c-5c16a2138150",
-		"headquarters": "Port Antwan",
-		"sector": "applications",
-		"countryCode": "LY"
+		"companyName": "King - Lind",
+		"companyInformation": {
+			"companyName": "King - Lind",
+			"headquarters": "Funkhaven",
+			"headquartersPostalCode": "93795",
+			"sector": "users",
+			"identifiers": {
+				"Lei": [
+					"gbWeagmy06ThHEw9AePf"
+				],
+				"Isin": [
+					"WFKbTYedVwUx"
+				],
+				"PermId": [],
+				"Ticker": [
+					"QEm0nPn"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"DXJyu0LOjGugaka"
+				]
+			},
+			"countryCode": "LC",
+			"companyAlternativeNames": [
+				"Okuneva - Gottlieb",
+				"Quitzon LLC",
+				"Senger - Swift"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://nifty-video.info",
+			"isTeaserCompany": false
+		},
+		"companyId": "b1372219-305f-4e6e-b877-ee2910c637b5",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "07d9b425-ddf4-4e66-a2ed-cf644f494b70",
+				"companyId": "b1372219-305f-4e6e-b877-ee2910c637b5",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2022",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 7756,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Gorczany, Rippin and Treutel",
-		"companyId": "947b6491-c416-4ee3-8ff7-538fed2cefb6",
-		"permId": "KGntDt8I51",
-		"headquarters": "Cordellhaven",
-		"sector": null,
-		"countryCode": "VI"
+		"companyName": "Morar and Sons",
+		"companyInformation": {
+			"companyName": "Morar and Sons",
+			"headquarters": "West Duane",
+			"headquartersPostalCode": "99409",
+			"sector": "metrics",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"q2l0LNBSpZmh"
+				],
+				"PermId": [
+					"95me0kavbG"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"TAWmfdpE1"
+				],
+				"CompanyRegistrationNumber": [
+					"XdUHjeYNqnmUedi"
+				]
+			},
+			"countryCode": "LY",
+			"companyAlternativeNames": [
+				"Carter - Miller",
+				"Cartwright - Weissnat",
+				"Heller, Mann and Johns",
+				"Toy LLC"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "08bb0bdc-5514-4ade-83c3-dc28d42aeb39",
+		"permId": "95me0kavbG",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "447bc7b7-3e6f-454a-931b-600d391353b2",
+				"companyId": "08bb0bdc-5514-4ade-83c3-dc28d42aeb39",
+				"dataType": "sme",
+				"reportingPeriod": "2022",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 5187,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Raynor - Toy",
-		"companyId": "7c86a609-b26f-4053-841f-4c1826eba294",
-		"permId": "q7YmG6NiKZ",
-		"headquarters": "Baumbachstead",
-		"sector": "systems",
-		"countryCode": "YT"
+		"companyName": "Homenick Group",
+		"companyInformation": {
+			"companyName": "Homenick Group",
+			"headquarters": "Barnstable Town",
+			"headquartersPostalCode": "01110-2317",
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [
+					"1x4MHCqr064Q2FQ5Qg4n"
+				],
+				"Isin": [
+					"PSps6wg1omD2"
+				],
+				"PermId": [],
+				"Ticker": [
+					"UcD7K0C"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"iyYcafdfu"
+				],
+				"CompanyRegistrationNumber": [
+					"NszULQMxZxlSwLH"
+				]
+			},
+			"countryCode": "CN",
+			"companyAlternativeNames": [
+				"Lueilwitz - Conroy"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://quintessential-epic.net",
+			"isTeaserCompany": false
+		},
+		"companyId": "7dc61dcf-110e-44f9-bde1-0cf491e664e0",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "f2f35125-cb69-4391-81d3-212755be1231",
+				"companyId": "7dc61dcf-110e-44f9-bde1-0cf491e664e0",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2023",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 5316,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Weissnat - Flatley",
-		"companyId": "ce7a410a-5dd1-4f22-b273-ba419460cf5a",
-		"permId": "NwaCyWM6Bj",
-		"headquarters": "North Mitchel",
-		"sector": "supply-chains",
-		"countryCode": "IT"
+		"companyName": "Hintz and Sons",
+		"companyInformation": {
+			"companyName": "Hintz and Sons",
+			"headquarters": "Collierborough",
+			"headquartersPostalCode": "12455-9303",
+			"sector": "channels",
+			"identifiers": {
+				"Lei": [
+					"pReTpMg0cGCJtntZkAFq"
+				],
+				"Isin": [
+					"5tVnu2OsUcBA",
+					"limDlEK7KDvq"
+				],
+				"PermId": [
+					"N5cy3CW1jM"
+				],
+				"Ticker": [
+					"KWUCUDh"
+				],
+				"Duns": [
+					"NEM7sDuiF"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GR",
+			"companyAlternativeNames": [
+				"Christiansen - McCullough",
+				"Luettgen LLC"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://decisive-constellation.com/",
+			"isTeaserCompany": false
+		},
+		"companyId": "cf89313e-9443-4be2-a00c-427582d1c3a9",
+		"permId": "N5cy3CW1jM",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "462cf24d-58ab-4920-8ecc-20b7035da9f2",
+				"companyId": "cf89313e-9443-4be2-a00c-427582d1c3a9",
+				"dataType": "p2p",
+				"reportingPeriod": "2023",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 2085,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Swaniawski LLC",
-		"companyId": "c6e56212-460c-43c3-9c4c-c68419e58c45",
-		"headquarters": "North Ethel",
-		"sector": "content",
-		"countryCode": "SJ"
+		"companyName": "Harris - Mertz",
+		"companyInformation": {
+			"companyName": "Harris - Mertz",
+			"headquarters": "Port Domenico",
+			"headquartersPostalCode": null,
+			"sector": "technologies",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"u7RPlF61C6oZ"
+				],
+				"PermId": [],
+				"Ticker": [
+					"Jar0J7p"
+				],
+				"Duns": [
+					"u2gmdGLk3"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MX",
+			"companyAlternativeNames": [
+				"Bogisich - Wiza"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "97a5957c-e4ae-4fb2-b069-d8dbc5d732b3",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "c1a67442-e569-4a6f-8ef3-ead7598c162b",
+				"companyId": "97a5957c-e4ae-4fb2-b069-d8dbc5d732b3",
+				"dataType": "sme",
+				"reportingPeriod": "2023",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 4754,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Halvorson, King and Keeling",
-		"companyId": "82ba1848-df00-4755-80e4-e398fc4731a1",
-		"permId": "rxGLuSwVLA",
-		"headquarters": "Lucasberg",
-		"sector": "action-items",
-		"countryCode": "AT"
+		"companyName": "O'Reilly - Tillman",
+		"companyInformation": {
+			"companyName": "O'Reilly - Tillman",
+			"headquarters": "Fayfort",
+			"headquartersPostalCode": null,
+			"sector": "e-business",
+			"identifiers": {
+				"Lei": [
+					"z423NgDOiXIutg3RFNPj"
+				],
+				"Isin": [
+					"09qT4sb2ZYtd"
+				],
+				"PermId": [
+					"GmQCuXvgfc"
+				],
+				"Ticker": [
+					"IZhVUOC"
+				],
+				"Duns": [
+					"DWoF4KyWB"
+				],
+				"VatNumber": [
+					"CPL07eyO2"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BZ",
+			"companyAlternativeNames": [
+				"Tillman - Heathcote",
+				"Wiza - Russel"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://ill-informed-dirt.net/",
+			"isTeaserCompany": false
+		},
+		"companyId": "283cce73-83b5-41e1-a058-903b58a5160c",
+		"permId": "GmQCuXvgfc",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "b49faa90-b239-4df9-a2e9-d5b386cc92d2",
+				"companyId": "283cce73-83b5-41e1-a058-903b58a5160c",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2022",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 2476,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Schoen LLC",
-		"companyId": "e59a3981-9bd6-48c5-90e9-7ebe79cdaa29",
-		"headquarters": "South Kade",
-		"sector": "solutions",
-		"countryCode": "TH"
+		"companyName": "Hirthe LLC",
+		"companyInformation": {
+			"companyName": "Hirthe LLC",
+			"headquarters": "Tillmanboro",
+			"headquartersPostalCode": "71864-0603",
+			"sector": "markets",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"zaM2HAmLQhlp",
+					"heIOO0JGJWkv"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BA",
+			"companyAlternativeNames": [
+				"Paucek and Sons"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://prize-feast.biz/",
+			"isTeaserCompany": false
+		},
+		"companyId": "c14b8cf1-4168-400e-9557-2502830f5c45",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "e6945636-df78-42f8-8a49-96d28ab8459f",
+				"companyId": "c14b8cf1-4168-400e-9557-2502830f5c45",
+				"dataType": "p2p",
+				"reportingPeriod": "2023",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 2082,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Carroll - Ratke",
-		"companyId": "fb10c8e7-eeb9-40ab-a7cc-fa99e4f2c9f5",
-		"permId": "ITQ2QWdaHw",
-		"headquarters": "Raynorside",
-		"sector": null,
-		"countryCode": "BE"
+		"companyName": "Schuppe, Parisian and Larson",
+		"companyInformation": {
+			"companyName": "Schuppe, Parisian and Larson",
+			"headquarters": "Fort Kitty",
+			"headquartersPostalCode": "53035",
+			"sector": "web services",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"M4suGwSQ3POz"
+				],
+				"PermId": [],
+				"Ticker": [
+					"892rQ5C"
+				],
+				"Duns": [
+					"jircBD0TE"
+				],
+				"VatNumber": [
+					"PaYmzNNgf"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GL",
+			"companyAlternativeNames": [
+				"Dare, Kertzmann and Beier",
+				"Ruecker - Conroy"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://general-infusion.org/",
+			"isTeaserCompany": false
+		},
+		"companyId": "13969783-5a53-431a-823a-32985994c57f",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "1a8b3574-926c-4e52-b626-cf4ae09e3dc9",
+				"companyId": "13969783-5a53-431a-823a-32985994c57f",
+				"dataType": "sme",
+				"reportingPeriod": "2022",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 9699,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Parisian, Hudson and Becker",
-		"companyId": "eb809b28-42d0-457f-8590-b6417b564d80",
-		"permId": "2WIGrWxfFh",
-		"headquarters": "Hesselstead",
-		"sector": "users",
-		"countryCode": "CA"
+		"companyName": "Rowe, Price and Howe",
+		"companyInformation": {
+			"companyName": "Rowe, Price and Howe",
+			"headquarters": "Fort Kamron",
+			"headquartersPostalCode": "70676-2922",
+			"sector": "partnerships",
+			"identifiers": {
+				"Lei": [
+					"h3LXFHElAvbjir70ufyw"
+				],
+				"Isin": [
+					"QDU6d8LTapCD"
+				],
+				"PermId": [
+					"qKwdMGZ9S4"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BQ",
+			"companyAlternativeNames": [
+				"Farrell, Koch and Langosh"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://reckless-memory.com",
+			"isTeaserCompany": false
+		},
+		"companyId": "93857c01-511e-42ba-909d-10f33f1d6e86",
+		"permId": "qKwdMGZ9S4",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "293f0842-67d8-44e7-9a01-a8dc77c960fc",
+				"companyId": "93857c01-511e-42ba-909d-10f33f1d6e86",
+				"dataType": "lksg",
+				"reportingPeriod": "2023",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 7298,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Tremblay, Treutel and Rolfson",
-		"companyId": "1993607a-430b-4f7a-a429-f682da0a8eba",
-		"permId": "ggjFVHSxV6",
-		"headquarters": "Fayetteville",
-		"sector": "markets",
-		"countryCode": "VG"
+		"companyName": "Luettgen - Stroman",
+		"companyInformation": {
+			"companyName": "Luettgen - Stroman",
+			"headquarters": "East Naomi",
+			"headquartersPostalCode": "81662",
+			"sector": "ROI",
+			"identifiers": {
+				"Lei": [
+					"1AmqZqIU8EV1uQfgrr0J"
+				],
+				"Isin": [
+					"POwwyEzs3G9M"
+				],
+				"PermId": [
+					"5qXYffO7pQ"
+				],
+				"Ticker": [
+					"69ocTUO"
+				],
+				"Duns": [
+					"dYeG53CuU"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"PUZq3yIhT9EpNz2"
+				]
+			},
+			"countryCode": "AL",
+			"companyAlternativeNames": [
+				"Kuhic, Altenwerth and Beatty",
+				"Reilly, Rath and Metz",
+				"Wolff - Gerlach"
+			],
+			"companyLegalForm": null,
+			"website": "https://growing-handicap.net",
+			"isTeaserCompany": false
+		},
+		"companyId": "efb2ad79-3c98-4050-bc6f-e631876d5432",
+		"permId": "5qXYffO7pQ",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "7d9845a2-a275-4607-b3c8-fea49a34b230",
+				"companyId": "efb2ad79-3c98-4050-bc6f-e631876d5432",
+				"dataType": "lksg",
+				"reportingPeriod": "2022",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 309,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Purdy - Torp",
-		"companyId": "8a67ce15-ffa6-406f-ae2b-c2819b8f3a56",
-		"permId": "JpH9rLABsz",
-		"headquarters": "Wichita Falls",
-		"sector": "niches",
-		"countryCode": "EG"
+		"companyName": "Jones, Reinger and Purdy",
+		"companyInformation": {
+			"companyName": "Jones, Reinger and Purdy",
+			"headquarters": "Timothyport",
+			"headquartersPostalCode": "76526",
+			"sector": "users",
+			"identifiers": {
+				"Lei": [
+					"yflDgG5Xn1darcxsbXJe"
+				],
+				"Isin": [
+					"DomlZG7t96Iq",
+					"7ZKqXjyPCS2S"
+				],
+				"PermId": [],
+				"Ticker": [
+					"Z69W6Bp"
+				],
+				"Duns": [
+					"KQhdOnFvk"
+				],
+				"VatNumber": [
+					"unshHloFZ"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TZ",
+			"companyAlternativeNames": [
+				"Breitenberg - Lehner",
+				"Jacobs, Windler and Nitzsche",
+				"Weber, Bergstrom and Corwin"
+			],
+			"companyLegalForm": null,
+			"website": "https://poised-hummus.org/",
+			"isTeaserCompany": false
+		},
+		"companyId": "b37670a5-8a05-44ef-8ee3-22c92294f179",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "1319049f-febd-4662-a9c1-43c82b0ae439",
+				"companyId": "b37670a5-8a05-44ef-8ee3-22c92294f179",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2022",
+				"currentlyActive": false,
+				"qaStatus": "Accepted",
+				"uploadTime": 3830,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Bahringer - Farrell",
-		"companyId": "da84b79b-f7c2-44c5-b6be-d6b3ae74fa16",
-		"permId": "IXGP3oWKXw",
-		"headquarters": "Victorville",
-		"sector": "paradigms",
-		"countryCode": "EE"
+		"companyName": "Walker Group",
+		"companyInformation": {
+			"companyName": "Walker Group",
+			"headquarters": "New Bell",
+			"headquartersPostalCode": "59227",
+			"sector": "experiences",
+			"identifiers": {
+				"Lei": [
+					"NEDJP1RKunUJtDOuWOzN"
+				],
+				"Isin": [
+					"5sAHltbHfSaM"
+				],
+				"PermId": [],
+				"Ticker": [
+					"LqOdT6T"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"9mfE94SdL8GpI7C"
+				]
+			},
+			"countryCode": "FR",
+			"companyAlternativeNames": [
+				"Rice, Baumbach and Doyle"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://boiling-lapdog.name",
+			"isTeaserCompany": false
+		},
+		"companyId": "725280c5-3055-4396-9779-7ce172db6f99",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "bce002fc-f85f-47a8-8cb5-cebc53941ba2",
+				"companyId": "725280c5-3055-4396-9779-7ce172db6f99",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2022",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 6839,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Grady - Wolf",
-		"companyId": "ba260305-1f48-459b-aa38-84672e52a894",
-		"headquarters": "Fort Litzyton",
-		"sector": null,
-		"countryCode": "AZ"
+		"companyName": "Price and Sons",
+		"companyInformation": {
+			"companyName": "Price and Sons",
+			"headquarters": "Corkerymouth",
+			"headquartersPostalCode": null,
+			"sector": "networks",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"Y4UqscZZtiBN"
+				],
+				"PermId": [
+					"7lLog8FkHS"
+				],
+				"Ticker": [
+					"4hrDmMH"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"L1XFX8kfxGBbKO4"
+				]
+			},
+			"countryCode": "TV",
+			"companyAlternativeNames": [
+				"Kuhlman Inc"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://starchy-destroyer.org",
+			"isTeaserCompany": false
+		},
+		"companyId": "69726be8-db8e-4a0b-ab62-f0343d553232",
+		"permId": "7lLog8FkHS",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "fad0bd44-475f-489e-9fa2-481441a6cc51",
+				"companyId": "69726be8-db8e-4a0b-ab62-f0343d553232",
+				"dataType": "sme",
+				"reportingPeriod": "2021",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 1309,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Schneider and Sons",
-		"companyId": "ad5bd4d3-a374-4d42-b33e-8682d88e00cc",
-		"headquarters": "Fort Bridie",
-		"sector": "channels",
-		"countryCode": "ML"
+		"companyName": "Konopelski - Hand",
+		"companyInformation": {
+			"companyName": "Konopelski - Hand",
+			"headquarters": "New Amalia",
+			"headquartersPostalCode": "17756-9158",
+			"sector": "infrastructures",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"ziPwl0KIOTKf"
+				],
+				"PermId": [
+					"d7BN0MPFNq"
+				],
+				"Ticker": [],
+				"Duns": [
+					"toMuCG5xH"
+				],
+				"VatNumber": [
+					"XFayyVfLg"
+				],
+				"CompanyRegistrationNumber": [
+					"yoHdgnHwG9emxxL"
+				]
+			},
+			"countryCode": "NG",
+			"companyAlternativeNames": [
+				"Bergnaum - Kassulke",
+				"Collins and Sons",
+				"Conroy Group"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://marvelous-translation.com/",
+			"isTeaserCompany": false
+		},
+		"companyId": "009bda4e-0434-4956-9f9e-c186f5997961",
+		"permId": "d7BN0MPFNq",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "652c7e19-ba8f-4fa8-8fb5-51ce825a8428",
+				"companyId": "009bda4e-0434-4956-9f9e-c186f5997961",
+				"dataType": "sfdr",
+				"reportingPeriod": "2021",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 4476,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Tremblay Group",
-		"companyId": "fcba0fc0-6b0a-40ff-afad-8c17bbae06c0",
-		"permId": "bm8HxvddAm",
-		"headquarters": "Corineton",
-		"sector": "experiences",
-		"countryCode": "IN"
+		"companyName": "Christiansen LLC",
+		"companyInformation": {
+			"companyName": "Christiansen LLC",
+			"headquarters": "Jaymeburgh",
+			"headquartersPostalCode": "24343",
+			"sector": "systems",
+			"identifiers": {
+				"Lei": [
+					"ut3CtEIGfBNRxT79kyrF"
+				],
+				"Isin": [
+					"TjfOMf9KUhvR",
+					"NQlwCHNeumtX"
+				],
+				"PermId": [
+					"RfQyPZ2RWu"
+				],
+				"Ticker": [],
+				"Duns": [
+					"BRHoGPKeZ"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"bzR9TNHte4XTo1S"
+				]
+			},
+			"countryCode": "GR",
+			"companyAlternativeNames": [
+				"Kuhlman, Rippin and Heaney",
+				"Larkin - Durgan"
+			],
+			"companyLegalForm": null,
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "c2b24658-5017-4fa8-bf76-e997e223ea81",
+		"permId": "RfQyPZ2RWu",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "8b53e8f9-ea59-4474-b9ad-64e412668e5c",
+				"companyId": "c2b24658-5017-4fa8-bf76-e997e223ea81",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2020",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 1976,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Swaniawski Inc",
-		"companyId": "8be9830f-5bbb-47df-8062-7d35c07684e4",
-		"headquarters": "East Rickiefurt",
-		"sector": null,
-		"countryCode": "BZ"
+		"companyName": "Walker, Quitzon and Johnson",
+		"companyInformation": {
+			"companyName": "Walker, Quitzon and Johnson",
+			"headquarters": "Mazieville",
+			"headquartersPostalCode": "41309-3952",
+			"sector": "e-markets",
+			"identifiers": {
+				"Lei": [
+					"pZNo8kmqoLn5RKgmwQUz"
+				],
+				"Isin": [
+					"RHaBlcwjgtW9"
+				],
+				"PermId": [],
+				"Ticker": [
+					"2Ui1Gs3"
+				],
+				"Duns": [
+					"FW07yLxHT"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"sfu9TuitN1Wl8M2"
+				]
+			},
+			"countryCode": "MU",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://all-kale.net",
+			"isTeaserCompany": false
+		},
+		"companyId": "586b36f2-c564-4b7e-9ade-491ed2e63fb1",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "05a536ca-1797-488c-b9fb-f759e04c6fdb",
+				"companyId": "586b36f2-c564-4b7e-9ade-491ed2e63fb1",
+				"dataType": "p2p",
+				"reportingPeriod": "2020",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 2103,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Quigley and Sons",
-		"companyId": "4b0cde4e-1020-43c4-9df2-d983c374bba4",
-		"headquarters": "New Justice",
-		"sector": "architectures",
-		"countryCode": "KR"
+		"companyName": "Bins Group",
+		"companyInformation": {
+			"companyName": "Bins Group",
+			"headquarters": "East Kim",
+			"headquartersPostalCode": "65832",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"WyjAmyMWJewJ",
+					"vbMfzpegCDSp"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"26ttwobqQ"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "AT",
+			"companyAlternativeNames": [
+				"Abbott, Strosin and Hudson",
+				"Baumbach, Grady and Ledner",
+				"Gorczany - Hermiston",
+				"Gusikowski and Sons"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "17bf1b26-4966-440b-8385-10c417dd9b9d",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "9bdd7d48-9bf3-4387-9592-7a4e7a69fe68",
+				"companyId": "17bf1b26-4966-440b-8385-10c417dd9b9d",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2021",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 841,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Champlin - Daugherty",
-		"companyId": "3b2734d6-d40e-48b8-94a1-9f50dd2e69a0",
-		"headquarters": "West Destin",
-		"sector": "interfaces",
-		"countryCode": "IE"
+		"companyName": "Hickle and Sons",
+		"companyInformation": {
+			"companyName": "Hickle and Sons",
+			"headquarters": "Lake Nicholas",
+			"headquartersPostalCode": "41098",
+			"sector": "lifetime value",
+			"identifiers": {
+				"Lei": [
+					"GSclcU0gkcI2WPCe7AUq"
+				],
+				"Isin": [
+					"VSbnikugyI4X"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "PL",
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": "https://dramatic-tam-o-shanter.info/",
+			"isTeaserCompany": false
+		},
+		"companyId": "a632ac84-4b42-411d-8e9a-aa69c4107606",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "c1235e1f-272a-427f-acba-8349666040ee",
+				"companyId": "a632ac84-4b42-411d-8e9a-aa69c4107606",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2021",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 5070,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Tremblay, Koelpin and Collins",
-		"companyId": "f41a5be2-dbff-428c-abed-7121b4e0faf0",
-		"permId": "vtPN92lUob",
-		"headquarters": "Port Isaishire",
-		"sector": null,
-		"countryCode": "MC"
+		"companyName": "Schulist - Aufderhar",
+		"companyInformation": {
+			"companyName": "Schulist - Aufderhar",
+			"headquarters": "Feeststad",
+			"headquartersPostalCode": "82542-4126",
+			"sector": "functionalities",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"dTjVNWoaSnMC"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"0eNoVD22c"
+				],
+				"VatNumber": [
+					"ytTO9pGRY"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "ZW",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://raw-wage.net/",
+			"isTeaserCompany": false
+		},
+		"companyId": "b040a20d-3490-4932-add2-579038f8de92",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "baa36689-b93d-4662-b30d-a3725e86d805",
+				"companyId": "b040a20d-3490-4932-add2-579038f8de92",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2020",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 5038,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Johnson - Considine",
-		"companyId": "4f41b5bf-8694-42c8-bc9e-e782fd1896db",
-		"permId": "3Ua1DxoMja",
-		"headquarters": "Willfort",
-		"sector": "eyeballs",
-		"countryCode": "VE"
+		"companyName": "Klocko, Sawayn and Schmeler",
+		"companyInformation": {
+			"companyName": "Klocko, Sawayn and Schmeler",
+			"headquarters": "Lake Concepcion",
+			"headquartersPostalCode": "98775-0951",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"U0tUXWyRm2VHzxWAVMA3"
+				],
+				"Isin": [
+					"S2PczQltkbVm"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"dfRKRyYg4"
+				],
+				"VatNumber": [
+					"cf0ZjQbs7"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "VG",
+			"companyAlternativeNames": [
+				"Collier - Lakin",
+				"Leuschke - Koss",
+				"Von, Greenholt and Klocko"
+			],
+			"companyLegalForm": null,
+			"website": "https://unrealistic-harvest.info/",
+			"isTeaserCompany": false
+		},
+		"companyId": "cc4dea63-7562-497c-855f-c3609bd0dcbc",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "c5550073-5ff0-4ff0-9e72-4c57f017c97f",
+				"companyId": "cc4dea63-7562-497c-855f-c3609bd0dcbc",
+				"dataType": "sfdr",
+				"reportingPeriod": "2021",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 3757,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Ortiz - Steuber",
-		"companyId": "f9e41637-4021-4b3a-a714-1a6eab9a3b9f",
-		"permId": "xDndyjaoow",
-		"headquarters": "Grand Island",
-		"sector": "action-items",
-		"countryCode": "TR"
+		"companyName": "Hamill Inc",
+		"companyInformation": {
+			"companyName": "Hamill Inc",
+			"headquarters": "Danielport",
+			"headquartersPostalCode": "06154",
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"p0NC660MakBg"
+				],
+				"PermId": [
+					"JiA4lqT1Zl"
+				],
+				"Ticker": [],
+				"Duns": [
+					"gRNxXXhI0"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"F2Retcx4iqJ1rGI"
+				]
+			},
+			"countryCode": "SM",
+			"companyAlternativeNames": [
+				"Casper, Grady and Kris",
+				"Dicki, Rippin and Mueller",
+				"Mayert LLC",
+				"Parisian, Murray and Jacobson"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://wan-chronograph.name",
+			"isTeaserCompany": false
+		},
+		"companyId": "6450c5dd-8222-4282-96a6-1b64816db431",
+		"permId": "JiA4lqT1Zl",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "d10c61bf-93a6-4fe4-b26d-8d54d47bfac4",
+				"companyId": "6450c5dd-8222-4282-96a6-1b64816db431",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2020",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 8414,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Torphy Group",
-		"companyId": "fcffa749-9b04-4705-aa2d-79ae54f5bdd3",
-		"permId": "YJ7jIoMGJD",
-		"headquarters": "Bergstromshire",
-		"sector": "eyeballs",
-		"countryCode": "SV"
+		"companyName": "Ortiz, Towne and Nolan",
+		"companyInformation": {
+			"companyName": "Ortiz, Towne and Nolan",
+			"headquarters": "South Arnoldo",
+			"headquartersPostalCode": "36162",
+			"sector": "infrastructures",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"RMXh8Fcq3o5b",
+					"DWkindFWnTu1"
+				],
+				"PermId": [
+					"MUnprhfuiu"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CA",
+			"companyAlternativeNames": [
+				"Wunsch - Jacobi"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://pale-sorrow.com/",
+			"isTeaserCompany": false
+		},
+		"companyId": "c20955a5-252b-440e-bf4e-b7815b0c1e86",
+		"permId": "MUnprhfuiu",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "f592fc09-aa57-403e-b482-759957400211",
+				"companyId": "c20955a5-252b-440e-bf4e-b7815b0c1e86",
+				"dataType": "lksg",
+				"reportingPeriod": "2023",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 1209,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Kessler Group",
-		"companyId": "ffceacde-444f-47fe-935d-26ff289cea5d",
-		"permId": "fdYjKU8kqU",
-		"headquarters": "Rethaville",
-		"sector": null,
-		"countryCode": "HU"
+		"companyName": "Roberts and Sons",
+		"companyInformation": {
+			"companyName": "Roberts and Sons",
+			"headquarters": "New Elmorefield",
+			"headquartersPostalCode": "96803-8368",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"uUUl07f7M9s6l4BX2lMb"
+				],
+				"Isin": [
+					"Q1bInxJhe7TH",
+					"VUn95NVhw5dG"
+				],
+				"PermId": [
+					"lA3pJk2aK2"
+				],
+				"Ticker": [],
+				"Duns": [
+					"mzj6QVXGx"
+				],
+				"VatNumber": [
+					"RTmveWQSE"
+				],
+				"CompanyRegistrationNumber": [
+					"YtdOZLuutxopdLa"
+				]
+			},
+			"countryCode": "NE",
+			"companyAlternativeNames": [
+				"Block - Hilpert",
+				"Durgan - Sanford",
+				"Graham and Sons",
+				"Lakin - Nikolaus"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "65c8937d-3512-4966-8eaa-fa99c3775670",
+		"permId": "lA3pJk2aK2",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "9e7afc3b-2686-42c6-bd9f-eb350d917178",
+				"companyId": "65c8937d-3512-4966-8eaa-fa99c3775670",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2023",
+				"currentlyActive": false,
+				"qaStatus": "Accepted",
+				"uploadTime": 396,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Price, Carter and Wehner",
-		"companyId": "89049cb1-86ef-4808-a45e-52e9a48e5e33",
-		"permId": "2tSnF7GkHw",
-		"headquarters": "South Noelia",
-		"sector": null,
-		"countryCode": "LK"
+		"companyName": "Carroll Group",
+		"companyInformation": {
+			"companyName": "Carroll Group",
+			"headquarters": "New Robbboro",
+			"headquartersPostalCode": null,
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"7zZBgymQaJZG",
+					"r5KiIdO5gkKF"
+				],
+				"PermId": [],
+				"Ticker": [
+					"YB3gFWO"
+				],
+				"Duns": [
+					"Ak8pmAPJe"
+				],
+				"VatNumber": [
+					"npd08gyOX"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MN",
+			"companyAlternativeNames": [
+				"Rowe Inc",
+				"Yundt - Ebert"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://distant-auction.biz",
+			"isTeaserCompany": false
+		},
+		"companyId": "c5f422e3-ab47-4aec-8554-68d8fe13efbc",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "8f088d82-d2a3-46a5-9c7e-e65abadcc5b6",
+				"companyId": "c5f422e3-ab47-4aec-8554-68d8fe13efbc",
+				"dataType": "p2p",
+				"reportingPeriod": "2021",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 1357,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Kuphal - Mertz",
-		"companyId": "510b845d-c464-4e31-a102-300f566b53f0",
-		"permId": "RBvqFPtrvv",
-		"headquarters": "Schuylercester",
-		"sector": "lifetime value",
-		"countryCode": "GS"
+		"companyName": "Nitzsche, Hand and Collier",
+		"companyInformation": {
+			"companyName": "Nitzsche, Hand and Collier",
+			"headquarters": "Jeramyworth",
+			"headquartersPostalCode": "70524",
+			"sector": "paradigms",
+			"identifiers": {
+				"Lei": [
+					"WEbPVWomhx1pezn3EQtm"
+				],
+				"Isin": [
+					"atGb3DTBubBI"
+				],
+				"PermId": [
+					"Ky6IDpDhAF"
+				],
+				"Ticker": [
+					"ObLIgC5"
+				],
+				"Duns": [
+					"q3OLerZ9X"
+				],
+				"VatNumber": [
+					"1sI7no5nr"
+				],
+				"CompanyRegistrationNumber": [
+					"nH9Dpqtc7WsgJ8l"
+				]
+			},
+			"countryCode": "IO",
+			"companyAlternativeNames": [
+				"Bailey - Lehner"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://exotic-hectare.info/",
+			"isTeaserCompany": false
+		},
+		"companyId": "b83953fd-0c97-4909-ba7a-d503772c82bc",
+		"permId": "Ky6IDpDhAF",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "b5b86312-0179-4179-a5ce-8773befc9457",
+				"companyId": "b83953fd-0c97-4909-ba7a-d503772c82bc",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2022",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 3821,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Simonis - Rowe",
-		"companyId": "e9d89823-9525-4841-b39b-7704e33d4f66",
-		"headquarters": "Glendale",
-		"sector": "applications",
-		"countryCode": "MM"
+		"companyName": "Weimann, Tillman and Kulas",
+		"companyInformation": {
+			"companyName": "Weimann, Tillman and Kulas",
+			"headquarters": "Chattanooga",
+			"headquartersPostalCode": "78403-0998",
+			"sector": "synergies",
+			"identifiers": {
+				"Lei": [
+					"2FDudopO8xEpBnsvswrE"
+				],
+				"Isin": [
+					"Jp4vO2YMHQH5",
+					"3bUmpcomMcfd"
+				],
+				"PermId": [
+					"Pq1Idpfpan"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"TJQP0McAz"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BI",
+			"companyAlternativeNames": [
+				"Bahringer and Sons",
+				"Gusikowski, Simonis and MacGyver",
+				"Lind - Gleason"
+			],
+			"companyLegalForm": null,
+			"website": "https://elementary-assembly.net",
+			"isTeaserCompany": false
+		},
+		"companyId": "9114c3f7-ece6-4177-9bbd-f94135f234d2",
+		"permId": "Pq1Idpfpan",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "de152600-ee94-4ff5-a46b-0cdcf08262e9",
+				"companyId": "9114c3f7-ece6-4177-9bbd-f94135f234d2",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2023",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 1485,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Krajcik, Hartmann and Gusikowski",
-		"companyId": "d3634ad2-a4ed-4368-b428-f78f30c1bf26",
-		"headquarters": "East Imogene",
-		"sector": "blockchains",
-		"countryCode": "NL"
+		"companyName": "Lueilwitz Inc",
+		"companyInformation": {
+			"companyName": "Lueilwitz Inc",
+			"headquarters": "South Mina",
+			"headquartersPostalCode": "52051-2377",
+			"sector": "metrics",
+			"identifiers": {
+				"Lei": [
+					"zgiVEeYFu9YlKzCz7RWS"
+				],
+				"Isin": [
+					"TEmxmarZw9AW",
+					"AdI5QlLCiuNc"
+				],
+				"PermId": [],
+				"Ticker": [
+					"aXXNGhX"
+				],
+				"Duns": [
+					"LnwoHCrkP"
+				],
+				"VatNumber": [
+					"lYufq1X5S"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SO",
+			"companyAlternativeNames": [
+				"Casper, Howell and Keebler",
+				"Jenkins, Pacocha and Emmerich",
+				"Ledner - Waelchi"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://urban-want.info",
+			"isTeaserCompany": false
+		},
+		"companyId": "b52ed9a5-0ac5-4365-8711-9663a47f1a01",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "b65e7f7c-ed13-41cd-9f1f-d246e5d79f9c",
+				"companyId": "b52ed9a5-0ac5-4365-8711-9663a47f1a01",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2021",
+				"currentlyActive": false,
+				"qaStatus": "Accepted",
+				"uploadTime": 6686,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Heathcote, Lindgren and Williamson",
-		"companyId": "1f9a69cf-a560-4def-a001-02c8ac30403c",
-		"permId": "TevITY73Rt",
-		"headquarters": "Frederiqueview",
-		"sector": "portals",
-		"countryCode": "PM"
+		"companyName": "Reinger, Smith and Pouros",
+		"companyInformation": {
+			"companyName": "Reinger, Smith and Pouros",
+			"headquarters": "Hamillhaven",
+			"headquartersPostalCode": "87478-4509",
+			"sector": "ROI",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"LtHfw6NMlAqe",
+					"wHC1hQk5I5bw"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "FI",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://quirky-investigation.biz",
+			"isTeaserCompany": false
+		},
+		"companyId": "c0c45c0d-a4d7-4633-afa2-32fefa9e5488",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "b97c34ca-af14-4a84-8719-f4dc3a2486c8",
+				"companyId": "c0c45c0d-a4d7-4633-afa2-32fefa9e5488",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2020",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 1145,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "McKenzie and Sons",
-		"companyId": "92d8f1d8-807e-437c-a6bd-d33f884d02df",
-		"permId": "V5t993CwWq",
-		"headquarters": "South Vitachester",
-		"sector": "partnerships",
-		"countryCode": "PF"
+		"companyName": "Emard - Schoen",
+		"companyInformation": {
+			"companyName": "Emard - Schoen",
+			"headquarters": "West Ellie",
+			"headquartersPostalCode": "24410-9716",
+			"sector": "functionalities",
+			"identifiers": {
+				"Lei": [
+					"9ajfPwKXtnb8rMnG8LOC"
+				],
+				"Isin": [
+					"rNPMLL8FWSDB"
+				],
+				"PermId": [
+					"O8fmqoTBNI"
+				],
+				"Ticker": [
+					"njhQDRb"
+				],
+				"Duns": [
+					"oNrNeDHAv"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MM",
+			"companyAlternativeNames": [
+				"Erdman and Sons",
+				"Kihn and Sons",
+				"O'Keefe Group",
+				"Senger, Kozey and Moen"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://phony-nucleotide.org",
+			"isTeaserCompany": false
+		},
+		"companyId": "d320e585-a4dd-4b35-a3c7-358202133c56",
+		"permId": "O8fmqoTBNI",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "8cfd5e59-3b1c-488d-bf4b-2daacbbd9a0e",
+				"companyId": "d320e585-a4dd-4b35-a3c7-358202133c56",
+				"dataType": "p2p",
+				"reportingPeriod": "2022",
+				"currentlyActive": false,
+				"qaStatus": "Accepted",
+				"uploadTime": 1790,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Hoeger, Kuhlman and Schaefer",
-		"companyId": "968a2547-723b-4a8f-9371-8e89f5490ad1",
-		"headquarters": "Gradyville",
-		"sector": "networks",
-		"countryCode": "NU"
+		"companyName": "McDermott, Kautzer and Jaskolski",
+		"companyInformation": {
+			"companyName": "McDermott, Kautzer and Jaskolski",
+			"headquarters": "Cleorafurt",
+			"headquartersPostalCode": "89335",
+			"sector": "experiences",
+			"identifiers": {
+				"Lei": [
+					"LJWUH3NozB6YOqirthh6"
+				],
+				"Isin": [
+					"fpbzMIEZcVP1",
+					"HU7ngcanyH2j"
+				],
+				"PermId": [
+					"EdhgQ5Xhn7"
+				],
+				"Ticker": [],
+				"Duns": [
+					"af4qN5ygf"
+				],
+				"VatNumber": [
+					"VahhKXf3V"
+				],
+				"CompanyRegistrationNumber": [
+					"HRdqCvYFv2bpSas"
+				]
+			},
+			"countryCode": "JO",
+			"companyAlternativeNames": [
+				"Orn and Sons"
+			],
+			"companyLegalForm": null,
+			"website": "https://astonishing-titanium.org",
+			"isTeaserCompany": false
+		},
+		"companyId": "a62d383a-c580-414f-a3b8-8bfab5d76429",
+		"permId": "EdhgQ5Xhn7",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "4dfab69a-cad1-44a9-aeb8-0f2345f05625",
+				"companyId": "a62d383a-c580-414f-a3b8-8bfab5d76429",
+				"dataType": "lksg",
+				"reportingPeriod": "2021",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 6514,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Beahan - Reinger",
-		"companyId": "f9c94cbf-331a-4cc9-a8ca-468665a613cf",
-		"headquarters": "Chino Hills",
-		"sector": "methodologies",
-		"countryCode": "MP"
+		"companyName": "Kunze Inc",
+		"companyInformation": {
+			"companyName": "Kunze Inc",
+			"headquarters": "Westhaven",
+			"headquartersPostalCode": "61022-8927",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"9JfftKvyyA75p1q84ZDS"
+				],
+				"Isin": [
+					"zMub4pOv7igE",
+					"yus9CF8z4Uo2"
+				],
+				"PermId": [
+					"RHcWI3eAfw"
+				],
+				"Ticker": [
+					"Z2oNkRW"
+				],
+				"Duns": [
+					"QqccEKMh6"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "KZ",
+			"companyAlternativeNames": [
+				"Hegmann - Howell"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://pessimistic-pomelo.info",
+			"isTeaserCompany": false
+		},
+		"companyId": "17bdf57b-4f65-4138-b568-4181e0fd8667",
+		"permId": "RHcWI3eAfw",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "7cdf3c16-b4e2-4091-829c-0b1f12b6c3fe",
+				"companyId": "17bdf57b-4f65-4138-b568-4181e0fd8667",
+				"dataType": "sme",
+				"reportingPeriod": "2023",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 4564,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Borer Group",
-		"companyId": "cf880df3-bb96-4082-8d5a-21c80a5743e7",
-		"permId": "GNBRRJi3Vz",
-		"headquarters": "Abilene",
-		"sector": "partnerships",
-		"countryCode": "SC"
+		"companyName": "Goodwin Group",
+		"companyInformation": {
+			"companyName": "Goodwin Group",
+			"headquarters": "South Marcelside",
+			"headquartersPostalCode": "97462-6467",
+			"sector": "portals",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"qBBnOIVqay9v",
+					"0UW4ENy68kkM"
+				],
+				"PermId": [],
+				"Ticker": [
+					"Y0Ydhea"
+				],
+				"Duns": [
+					"IO1FfvgmK"
+				],
+				"VatNumber": [
+					"yYnH2hIyU"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "ER",
+			"companyAlternativeNames": [
+				"Collier - Mayert"
+			],
+			"companyLegalForm": null,
+			"website": "https://terrific-revolver.info/",
+			"isTeaserCompany": false
+		},
+		"companyId": "d51198e9-3072-4789-b864-cf07a8060f75",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "29b1a450-1c19-4d8e-a035-842b113b91ba",
+				"companyId": "d51198e9-3072-4789-b864-cf07a8060f75",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2020",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 1052,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Bahringer - Emard",
-		"companyId": "cff51cab-ccd6-42e1-9e07-02c866f7be8a",
-		"permId": "7YtlmVKRM7",
-		"headquarters": "McDermottview",
-		"sector": "users",
-		"countryCode": "AR"
+		"companyName": "Gusikowski - Schimmel",
+		"companyInformation": {
+			"companyName": "Gusikowski - Schimmel",
+			"headquarters": "Fort Luna",
+			"headquartersPostalCode": "67481",
+			"sector": "technologies",
+			"identifiers": {
+				"Lei": [
+					"6B6EjCZQNRymIHWjJU5X"
+				],
+				"Isin": [
+					"g3KBqZXO4TNo"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"n7MBSCNMv"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "IQ",
+			"companyAlternativeNames": [
+				"Bednar - McDermott",
+				"Heller - Erdman"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://vital-banana.com",
+			"isTeaserCompany": false
+		},
+		"companyId": "17e669d6-c465-4a3c-992a-2700d591d031",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "551633bb-cb6b-4da5-b0c2-813285c93903",
+				"companyId": "17e669d6-c465-4a3c-992a-2700d591d031",
+				"dataType": "lksg",
+				"reportingPeriod": "2023",
+				"currentlyActive": false,
+				"qaStatus": "Accepted",
+				"uploadTime": 265,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Leannon Group",
-		"companyId": "d2b6320b-d313-4c10-9936-0586e6234c3b",
-		"headquarters": "Port Darlene",
-		"sector": "blockchains",
-		"countryCode": "TG"
+		"companyName": "Murray - O'Conner",
+		"companyInformation": {
+			"companyName": "Murray - O'Conner",
+			"headquarters": "East Hayliecester",
+			"headquartersPostalCode": "39691-8039",
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"vzXCiuwN2b5U"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"GqRY0XQSC"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "PT",
+			"companyAlternativeNames": [
+				"Pollich - Hermann"
+			],
+			"companyLegalForm": null,
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "edfe761e-1d63-47bc-80f1-bb6c05c3a864",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "8836c700-c6d7-4f27-a8cd-d4caf8d83a69",
+				"companyId": "edfe761e-1d63-47bc-80f1-bb6c05c3a864",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2022",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 1726,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Gutmann, O'Connell and Schmidt",
-		"companyId": "ef727ce8-66fa-407f-9074-3c1654704abd",
-		"headquarters": "West Brenda",
-		"sector": "web services",
-		"countryCode": "VA"
+		"companyName": "Kuhlman, Smitham and Nicolas",
+		"companyInformation": {
+			"companyName": "Kuhlman, Smitham and Nicolas",
+			"headquarters": "Troy",
+			"headquartersPostalCode": "90376",
+			"sector": "e-business",
+			"identifiers": {
+				"Lei": [
+					"MFnx4EnehUMo3zaiFjGj"
+				],
+				"Isin": [
+					"qNatTIzRds3J",
+					"0VMLXZr2Cu4r"
+				],
+				"PermId": [
+					"9NItr89EM4"
+				],
+				"Ticker": [],
+				"Duns": [
+					"WrGQ8IGjY"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"z5oEd8636I4dZVY"
+				]
+			},
+			"countryCode": "RO",
+			"companyAlternativeNames": [
+				"Berge - Luettgen",
+				"Friesen - Heaney",
+				"Koss Inc",
+				"Wolf - Effertz"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://suspicious-argument.net/",
+			"isTeaserCompany": false
+		},
+		"companyId": "6d9754e2-5e9a-40fe-8caf-a261322cef21",
+		"permId": "9NItr89EM4",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "472e398f-678d-444e-b6d5-3929fd81e782",
+				"companyId": "6d9754e2-5e9a-40fe-8caf-a261322cef21",
+				"dataType": "lksg",
+				"reportingPeriod": "2021",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 4162,
+				"uploaderUserId": null
+			}
+		]
+	},
+	{
+		"companyName": "Rippin, Pollich and Considine",
+		"companyInformation": {
+			"companyName": "Rippin, Pollich and Considine",
+			"headquarters": "South Marge",
+			"headquartersPostalCode": null,
+			"sector": "models",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"iGIZkY0cuV1M",
+					"bjWhXa9biLAM"
+				],
+				"PermId": [],
+				"Ticker": [
+					"RC6WhVx"
+				],
+				"Duns": [
+					"7K1zsPY9x"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"wHccqlf2YgpprPM"
+				]
+			},
+			"countryCode": "SV",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "AG",
+			"website": "https://equatorial-pathology.info",
+			"isTeaserCompany": false
+		},
+		"companyId": "453f91b9-55d4-4184-ba3a-bea350d938f8",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "eefaedfb-98bf-438d-be36-70ecc893a715",
+				"companyId": "453f91b9-55d4-4184-ba3a-bea350d938f8",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2022",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 6047,
+				"uploaderUserId": null
+			}
+		]
+	},
+	{
+		"companyName": "Huel Group",
+		"companyInformation": {
+			"companyName": "Huel Group",
+			"headquarters": "Oceanside",
+			"headquartersPostalCode": "45423",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"NDZ8qOoNnS7M",
+					"Ip7LtFmO21Ka"
+				],
+				"PermId": [],
+				"Ticker": [
+					"fiT5lRP"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"XXUKeowSkAZ1o8D"
+				]
+			},
+			"countryCode": "MV",
+			"companyAlternativeNames": [
+				"Simonis, Emard and Dooley"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "fbc7babc-1aaf-469d-a27b-dde857fdbe2a",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "150e7a6e-37aa-4298-872a-33f8ed8f0602",
+				"companyId": "fbc7babc-1aaf-469d-a27b-dde857fdbe2a",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2023",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 9654,
+				"uploaderUserId": null
+			}
+		]
+	},
+	{
+		"companyName": "Gleichner Group",
+		"companyInformation": {
+			"companyName": "Gleichner Group",
+			"headquarters": "Stammton",
+			"headquartersPostalCode": "49308",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"34sf8n3a69W3rHLRFZTB"
+				],
+				"Isin": [
+					"XUv9EnXzDk83"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"6SmeiK1rH"
+				],
+				"CompanyRegistrationNumber": [
+					"GQ2MMc7nlVwXIym"
+				]
+			},
+			"countryCode": "SB",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH",
+			"website": "https://last-survey.org",
+			"isTeaserCompany": false
+		},
+		"companyId": "351cf664-6aad-4ae5-8209-32f5014828b1",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "22e9bafc-f86b-4132-aae4-e979a94a508f",
+				"companyId": "351cf664-6aad-4ae5-8209-32f5014828b1",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2023",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 8258,
+				"uploaderUserId": null
+			}
+		]
+	},
+	{
+		"companyName": "Larson, Satterfield and Bernier",
+		"companyInformation": {
+			"companyName": "Larson, Satterfield and Bernier",
+			"headquarters": "East Chance",
+			"headquartersPostalCode": "43327-5583",
+			"sector": "metrics",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"QVBA0TjV8g9Z"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"bTx7pxiXQ"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"frLT4BB9L462wVx"
+				]
+			},
+			"countryCode": "MT",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "9b634526-3762-4602-a905-6aa56f6071ec",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "e4a36e4c-8050-45e4-9dbf-b0610ace641c",
+				"companyId": "9b634526-3762-4602-a905-6aa56f6071ec",
+				"dataType": "lksg",
+				"reportingPeriod": "2022",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 4559,
+				"uploaderUserId": null
+			}
+		]
+	},
+	{
+		"companyName": "Ondricka - Pfannerstill",
+		"companyInformation": {
+			"companyName": "Ondricka - Pfannerstill",
+			"headquarters": "North Emeraldfort",
+			"headquartersPostalCode": "65869",
+			"sector": "interfaces",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"zvZrWSZx0WiE",
+					"aKOxMKu3D4H3"
+				],
+				"PermId": [
+					"dd3KIVydPh"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BR",
+			"companyAlternativeNames": [
+				"DuBuque, Waters and Powlowski",
+				"Erdman - Zulauf",
+				"Legros, Kohler and Gulgowski",
+				"Welch Inc"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://puzzling-recess.info/",
+			"isTeaserCompany": false
+		},
+		"companyId": "eaf53f63-4b0d-4110-bfa3-0241ae57eb70",
+		"permId": "dd3KIVydPh",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "1f1d12af-36e2-478b-9f9b-1855b99af6c9",
+				"companyId": "eaf53f63-4b0d-4110-bfa3-0241ae57eb70",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2020",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 5670,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
 		"companyName": "Nikolaus Inc",
-		"companyId": "3bdea343-065a-4ede-a5d1-ee9cf5de25ed",
-		"permId": "cWbDIZcRwV",
-		"headquarters": "Lake Selmer",
-		"sector": "applications",
-		"countryCode": "KY"
+		"companyInformation": {
+			"companyName": "Nikolaus Inc",
+			"headquarters": "Gradyberg",
+			"headquartersPostalCode": "24120-3945",
+			"sector": "markets",
+			"identifiers": {
+				"Lei": [
+					"Cj8vZvZyCvP1qKcMmCvM"
+				],
+				"Isin": [
+					"BAbwlaE7AbLC",
+					"wkCZYF4wctXZ"
+				],
+				"PermId": [
+					"YWEEEFg2L9"
+				],
+				"Ticker": [
+					"F6ykOjE"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"8KDKngaf0"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TH",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "240831d3-3de3-48a2-8996-7cf7f7765b6e",
+		"permId": "YWEEEFg2L9",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "725f1ae2-3d66-49c0-be87-19df556572c2",
+				"companyId": "240831d3-3de3-48a2-8996-7cf7f7765b6e",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2021",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 8985,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Bogan - Collier",
-		"companyId": "99de8971-bc1c-4651-83a8-76aa362914e3",
-		"headquarters": "Dariostad",
-		"sector": "e-business",
-		"countryCode": "LU"
+		"companyName": "Hermiston and Sons",
+		"companyInformation": {
+			"companyName": "Hermiston and Sons",
+			"headquarters": "South Ibrahim",
+			"headquartersPostalCode": "96009-5867",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"soLoVA6SM3NC"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"FU5ThNSeH"
+				],
+				"CompanyRegistrationNumber": [
+					"bl2OzERdDu5AtqT"
+				]
+			},
+			"countryCode": "JM",
+			"companyAlternativeNames": [
+				"Toy Inc",
+				"Vandervort LLC"
+			],
+			"companyLegalForm": null,
+			"website": "https://enchanted-sunbeam.info",
+			"isTeaserCompany": false
+		},
+		"companyId": "8b854903-e87c-4b8d-9590-d4f5132edbcd",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "879e207d-7672-429e-b801-58a2f81ccbca",
+				"companyId": "8b854903-e87c-4b8d-9590-d4f5132edbcd",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2020",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 8236,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Schaden Group",
-		"companyId": "66ff7f01-4026-4733-9850-102699e19408",
-		"permId": "YusAcu7tB5",
-		"headquarters": "South Dudley",
-		"sector": "bandwidth",
-		"countryCode": "FK"
+		"companyName": "Hayes - Nikolaus",
+		"companyInformation": {
+			"companyName": "Hayes - Nikolaus",
+			"headquarters": "Durganberg",
+			"headquartersPostalCode": "71855",
+			"sector": "e-business",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"ykaUYCvazOaR",
+					"OORrA1kN6EJf"
+				],
+				"PermId": [],
+				"Ticker": [
+					"6Y7lCsc"
+				],
+				"Duns": [
+					"RzbdpAio5"
+				],
+				"VatNumber": [
+					"mai80vr3m"
+				],
+				"CompanyRegistrationNumber": [
+					"Y6XpcA2dPrXIoMQ"
+				]
+			},
+			"countryCode": "LY",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://scholarly-boss.biz/",
+			"isTeaserCompany": false
+		},
+		"companyId": "1154d9c2-c355-4329-80dc-bf4d1feae2f5",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "86912065-dc7b-4b6d-9e7c-976d8c389c57",
+				"companyId": "1154d9c2-c355-4329-80dc-bf4d1feae2f5",
+				"dataType": "lksg",
+				"reportingPeriod": "2020",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 4621,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Reynolds, Moen and West",
-		"companyId": "ee2ed1e0-2b93-4dab-8685-49a49cdc2a41",
-		"permId": "ccgYRfnVJ9",
-		"headquarters": "Stammchester",
-		"sector": "content",
-		"countryCode": "BO"
+		"companyName": "Wuckert - Fay",
+		"companyInformation": {
+			"companyName": "Wuckert - Fay",
+			"headquarters": "Port Nelsonchester",
+			"headquartersPostalCode": "09166",
+			"sector": "action-items",
+			"identifiers": {
+				"Lei": [
+					"MNb4nwGCueazU7tnG6io"
+				],
+				"Isin": [
+					"GneA7Xf3DNPY",
+					"QxlRZfxv6EuE"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MP",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://trusting-soul.name/",
+			"isTeaserCompany": false
+		},
+		"companyId": "28da7c7c-3c72-4ff3-8947-637bbdcdd75a",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "890a90c0-7918-45dd-9fea-a71b4cdedec8",
+				"companyId": "28da7c7c-3c72-4ff3-8947-637bbdcdd75a",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2023",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 1603,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Hilpert, Fay and Dooley",
-		"companyId": "28c788b9-dc21-42c4-8856-54dea7d64c12",
-		"permId": "XBE8PBv9D4",
-		"headquarters": "Alycialand",
-		"sector": null,
-		"countryCode": "ST"
+		"companyName": "Torp, Murphy and Kovacek",
+		"companyInformation": {
+			"companyName": "Torp, Murphy and Kovacek",
+			"headquarters": "Opalside",
+			"headquartersPostalCode": "06216",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"7aJbu1uHtJSj4eEaWe3l"
+				],
+				"Isin": [
+					"Q87glvpfeRHH"
+				],
+				"PermId": [
+					"FsQtFnNwOz"
+				],
+				"Ticker": [],
+				"Duns": [
+					"2tdSIk5qo"
+				],
+				"VatNumber": [
+					"1UvIqPDAV"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BT",
+			"companyAlternativeNames": [
+				"Douglas, Huels and Pagac",
+				"Labadie - Kuhn",
+				"Sanford - Luettgen"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://plain-location.net",
+			"isTeaserCompany": false
+		},
+		"companyId": "f51ed655-0082-4828-b86b-ba73a03b0bba",
+		"permId": "FsQtFnNwOz",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "b55ee93a-81e0-4a23-b375-adf31a7a5ec8",
+				"companyId": "f51ed655-0082-4828-b86b-ba73a03b0bba",
+				"dataType": "sfdr",
+				"reportingPeriod": "2021",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 2384,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Satterfield - Weber",
-		"companyId": "59b9df6a-e639-4dfa-a677-975dee172308",
-		"headquarters": "Zoieborough",
-		"sector": "systems",
-		"countryCode": "LA"
+		"companyName": "Nolan and Sons",
+		"companyInformation": {
+			"companyName": "Nolan and Sons",
+			"headquarters": "Feltonton",
+			"headquartersPostalCode": null,
+			"sector": "bandwidth",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"AUh6KQ0eOBv4"
+				],
+				"PermId": [],
+				"Ticker": [
+					"xDrqiba"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"2l2DXETzEV7Ng94"
+				]
+			},
+			"countryCode": "BO",
+			"companyAlternativeNames": [
+				"Dare Group",
+				"Koelpin, Kilback and Nolan"
+			],
+			"companyLegalForm": null,
+			"website": "https://earnest-zone.biz",
+			"isTeaserCompany": false
+		},
+		"companyId": "9d390af2-12d3-4d3c-b677-3587414eb636",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "329ff860-c874-4c81-afd9-75db4d50104f",
+				"companyId": "9d390af2-12d3-4d3c-b677-3587414eb636",
+				"dataType": "lksg",
+				"reportingPeriod": "2023",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 4822,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Donnelly, Konopelski and Harris",
-		"companyId": "e4460f8f-4832-4c9e-93ec-1b38e76ab051",
-		"headquarters": "Lake Savannah",
-		"sector": "e-business",
-		"countryCode": "BT"
+		"companyName": "Howe, Littel and Pouros",
+		"companyInformation": {
+			"companyName": "Howe, Littel and Pouros",
+			"headquarters": "Devanfort",
+			"headquartersPostalCode": null,
+			"sector": "niches",
+			"identifiers": {
+				"Lei": [
+					"AoEjuBV8zdNBE7p8izpd"
+				],
+				"Isin": [
+					"oI3omdkcdrWd"
+				],
+				"PermId": [
+					"Cbo9ITbqou"
+				],
+				"Ticker": [
+					"akyBCpb"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"zciVavPzvNNX7sw"
+				]
+			},
+			"countryCode": "GL",
+			"companyAlternativeNames": [
+				"Bahringer - Will",
+				"Gutkowski - Ledner",
+				"Watsica LLC",
+				"Witting, Kirlin and Howell"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://only-root.com",
+			"isTeaserCompany": false
+		},
+		"companyId": "e4f3e12c-d36a-48ac-97f7-917ab6c2b505",
+		"permId": "Cbo9ITbqou",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "c585d5ab-492c-44f8-9ea6-bf983cbb595d",
+				"companyId": "e4f3e12c-d36a-48ac-97f7-917ab6c2b505",
+				"dataType": "sme",
+				"reportingPeriod": "2021",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 8420,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Macejkovic - Wuckert",
-		"companyId": "c4294af8-e5e8-4160-9b07-601b1b838b68",
-		"headquarters": "Fort Hermina",
-		"sector": "channels",
-		"countryCode": "IT"
+		"companyName": "Corkery - Cronin",
+		"companyInformation": {
+			"companyName": "Corkery - Cronin",
+			"headquarters": "Lodi",
+			"headquartersPostalCode": "61914-7928",
+			"sector": "schemas",
+			"identifiers": {
+				"Lei": [
+					"CRZZWrFHg33LEjbzQ1Rg"
+				],
+				"Isin": [
+					"812iSn1692XI",
+					"oFCky1ocI14a"
+				],
+				"PermId": [
+					"jwOM4hd6ch"
+				],
+				"Ticker": [
+					"FFCgZch"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"RNJvWV1Mb"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GW",
+			"companyAlternativeNames": [
+				"Cartwright, Kulas and Beatty",
+				"Howe, Stracke and Mitchell",
+				"Luettgen Inc"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://cheery-octet.name/",
+			"isTeaserCompany": false
+		},
+		"companyId": "d2ea4543-6e76-466b-92e8-acc3a8eafcd6",
+		"permId": "jwOM4hd6ch",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "8982e48b-22ad-49f7-a420-e34870e5b8b6",
+				"companyId": "d2ea4543-6e76-466b-92e8-acc3a8eafcd6",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2020",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 4776,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Yost - Gerlach",
-		"companyId": "490b2a29-b599-4e36-b6d6-44446c3341ad",
-		"permId": "mRTTQxjko5",
-		"headquarters": "Kinghaven",
-		"sector": "systems",
-		"countryCode": "FR"
+		"companyName": "Effertz, Lockman and Lehner",
+		"companyInformation": {
+			"companyName": "Effertz, Lockman and Lehner",
+			"headquarters": "Port Judgehaven",
+			"headquartersPostalCode": "75446",
+			"sector": "platforms",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"EhC4ku0VAWCP",
+					"WEXN1ZxQVq5P"
+				],
+				"PermId": [
+					"xijXrxrJdu"
+				],
+				"Ticker": [
+					"Imvl2bu"
+				],
+				"Duns": [
+					"2JMVnupbQ"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "ZW",
+			"companyAlternativeNames": [
+				"Fahey - Koch",
+				"Thiel, Turcotte and Frami"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://uneven-dahlia.biz",
+			"isTeaserCompany": false
+		},
+		"companyId": "f40d82df-5615-4c42-a76a-498caa8c58ef",
+		"permId": "xijXrxrJdu",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "4527b715-d17f-4099-87dc-986295d4a0a1",
+				"companyId": "f40d82df-5615-4c42-a76a-498caa8c58ef",
+				"dataType": "sfdr",
+				"reportingPeriod": "2020",
+				"currentlyActive": false,
+				"qaStatus": "Accepted",
+				"uploadTime": 265,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Lind LLC",
-		"companyId": "373aea32-5a55-4d9c-a264-54260ae2858f",
-		"permId": "4pRHKCEZxz",
-		"headquarters": "Keanushire",
-		"sector": "lifetime value",
-		"countryCode": "MO"
+		"companyName": "Heidenreich, Kovacek and Funk",
+		"companyInformation": {
+			"companyName": "Heidenreich, Kovacek and Funk",
+			"headquarters": "Priceboro",
+			"headquartersPostalCode": "09365-9939",
+			"sector": "e-markets",
+			"identifiers": {
+				"Lei": [
+					"Sidp2oUbENcatibTl1Oa"
+				],
+				"Isin": [
+					"aUzC6mHeaMLO"
+				],
+				"PermId": [],
+				"Ticker": [
+					"611SwsI"
+				],
+				"Duns": [
+					"jgiN92xeU"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SA",
+			"companyAlternativeNames": [
+				"Larson, Terry and Batz",
+				"Russel and Sons",
+				"Schroeder, Okuneva and Boyle"
+			],
+			"companyLegalForm": null,
+			"website": "https://trustworthy-asparagus.biz",
+			"isTeaserCompany": false
+		},
+		"companyId": "a5ad6457-c633-446d-baa7-81aa027f9a91",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "4eb0a401-6948-4f33-a710-d458b7fffae1",
+				"companyId": "a5ad6457-c633-446d-baa7-81aa027f9a91",
+				"dataType": "lksg",
+				"reportingPeriod": "2020",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 1727,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "D'Amore, Herzog and Jaskolski",
-		"companyId": "b8fe7ac3-8c02-459b-a0ad-0134a3643a94",
-		"headquarters": "Quintenboro",
-		"sector": null,
-		"countryCode": "NG"
+		"companyName": "Conn and Sons",
+		"companyInformation": {
+			"companyName": "Conn and Sons",
+			"headquarters": "Jaskolskiview",
+			"headquartersPostalCode": null,
+			"sector": "interfaces",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"vtLBUsBA8H6m"
+				],
+				"PermId": [],
+				"Ticker": [
+					"pcp19UL"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GR",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://thunderous-presence.org/",
+			"isTeaserCompany": false
+		},
+		"companyId": "69f98b43-b5a5-446b-8556-af98fc540101",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "cc67df5d-709f-49b6-8c8b-67b4f2ed4c2a",
+				"companyId": "69f98b43-b5a5-446b-8556-af98fc540101",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2021",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 2641,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Beatty, VonRueden and Kuhn",
-		"companyId": "87ea70fa-0bef-49a9-8944-fbcad3f158db",
-		"headquarters": "Lake Boydborough",
-		"sector": null,
-		"countryCode": "HK"
+		"companyName": "Casper, Mann and Gibson",
+		"companyInformation": {
+			"companyName": "Casper, Mann and Gibson",
+			"headquarters": "Arecibo",
+			"headquartersPostalCode": "48739-9152",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"KSMRjjHRLzPOq5K0AELc"
+				],
+				"Isin": [
+					"UXwzL8pFrQbT"
+				],
+				"PermId": [
+					"MVbEmUhpYJ"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TV",
+			"companyAlternativeNames": [
+				"Hoeger - Huel",
+				"Walker Inc"
+			],
+			"companyLegalForm": null,
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "a9fd8808-25cd-4fa9-856a-67a20d9ff595",
+		"permId": "MVbEmUhpYJ",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "e5a1b8b6-5b0e-4b4c-bd0c-2fafc76b6167",
+				"companyId": "a9fd8808-25cd-4fa9-856a-67a20d9ff595",
+				"dataType": "sfdr",
+				"reportingPeriod": "2020",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 4550,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Cummerata - Schiller",
-		"companyId": "b7cb8992-1890-4157-8650-508c17eb9d9b",
-		"headquarters": "East Omari",
-		"sector": "convergence",
-		"countryCode": "SH"
+		"companyName": "Kuvalis, Lynch and Bogisich",
+		"companyInformation": {
+			"companyName": "Kuvalis, Lynch and Bogisich",
+			"headquarters": "Alecworth",
+			"headquartersPostalCode": "00679-1938",
+			"sector": "web services",
+			"identifiers": {
+				"Lei": [
+					"bG6v6cDFGWHjV0DUlqoN"
+				],
+				"Isin": [
+					"Y6s9C2meozAg",
+					"cSz3V26DbZa2"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"G4rYGm50o"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "UM",
+			"companyAlternativeNames": [
+				"Kulas - Runte",
+				"Nolan Inc",
+				"Satterfield, Sipes and McCullough",
+				"Steuber - Kreiger"
+			],
+			"companyLegalForm": null,
+			"website": "https://complete-stand.com/",
+			"isTeaserCompany": false
+		},
+		"companyId": "8178d41b-9ec6-4105-929f-15acdcb6eba8",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "ebbc46c9-154e-4e8a-8eda-5da5309a2ff8",
+				"companyId": "8178d41b-9ec6-4105-929f-15acdcb6eba8",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2022",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 7407,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Haley, VonRueden and Carroll",
-		"companyId": "877ddc2b-3e66-4f9d-95d1-51c8e140ea51",
-		"headquarters": "Alvenaworth",
-		"sector": "markets",
-		"countryCode": "GR"
+		"companyName": "Rutherford - Adams",
+		"companyInformation": {
+			"companyName": "Rutherford - Adams",
+			"headquarters": "Fort Piper",
+			"headquartersPostalCode": null,
+			"sector": "users",
+			"identifiers": {
+				"Lei": [
+					"ygO6Kl1FvCZ1AHhkvwFA"
+				],
+				"Isin": [
+					"b3CjP1W1nmNk"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"A4qJU3CQE"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"Pd5rlmFwg04sOTI"
+				]
+			},
+			"countryCode": "NA",
+			"companyAlternativeNames": [
+				"Goyette and Sons",
+				"Rau, Dickinson and Nikolaus"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://crushing-orchestra.info",
+			"isTeaserCompany": false
+		},
+		"companyId": "194c6c96-42ed-43e8-a73f-6ae4bcc0b470",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "9859f591-7a7a-4fc9-9b50-1a2ff2b103a7",
+				"companyId": "194c6c96-42ed-43e8-a73f-6ae4bcc0b470",
+				"dataType": "sme",
+				"reportingPeriod": "2023",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 6429,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Watsica, Kovacek and West",
-		"companyId": "079893f5-c576-49be-852b-5c0ae97ea8cb",
-		"permId": "Ri0GJcp5In",
-		"headquarters": "Sheldonborough",
-		"sector": null,
-		"countryCode": "CU"
+		"companyName": "Hills, Lueilwitz and Parker",
+		"companyInformation": {
+			"companyName": "Hills, Lueilwitz and Parker",
+			"headquarters": "Dixieborough",
+			"headquartersPostalCode": "55846-6946",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"nLiY9ND1pJpY"
+				],
+				"PermId": [],
+				"Ticker": [
+					"qGMZXBo"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "HN",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://harmful-vanilla.biz/",
+			"isTeaserCompany": false
+		},
+		"companyId": "8c70b0b9-3871-411a-b5f3-e5f958fcaf63",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "7f05f445-92d7-41a8-b69a-081f9218e99a",
+				"companyId": "8c70b0b9-3871-411a-b5f3-e5f958fcaf63",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2023",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 6615,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Jones - Bartoletti",
-		"companyId": "4bd1a74e-8444-4719-9096-0b76197b720a",
-		"headquarters": "Hacienda Heights",
-		"sector": "functionalities",
-		"countryCode": "SE"
+		"companyName": "DuBuque - Nitzsche",
+		"companyInformation": {
+			"companyName": "DuBuque - Nitzsche",
+			"headquarters": "South Hiramfurt",
+			"headquartersPostalCode": "21656-2067",
+			"sector": "interfaces",
+			"identifiers": {
+				"Lei": [
+					"54RJPYZF4BVt5pJucItK"
+				],
+				"Isin": [
+					"Ct7DQxzCg0E7",
+					"cHmEDO8ro2r2"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"jHuFMYhMj"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TH",
+			"companyAlternativeNames": [
+				"Crist - Altenwerth",
+				"Gutmann LLC",
+				"Parker, Kuhic and Heaney",
+				"Waelchi - Yundt"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://indolent-decade.info",
+			"isTeaserCompany": false
+		},
+		"companyId": "a5481af0-d1ad-4ab4-b8b4-7aa6b8494d44",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "94fc341a-f99b-44e5-a8c8-6781ae627bdb",
+				"companyId": "a5481af0-d1ad-4ab4-b8b4-7aa6b8494d44",
+				"dataType": "lksg",
+				"reportingPeriod": "2023",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 9063,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Walter, Crona and Jones",
-		"companyId": "6c0beede-fc41-421c-bad8-37dd2d9c847f",
-		"permId": "QNdhA3NQo7",
-		"headquarters": "East Bella",
-		"sector": "users",
-		"countryCode": "SD"
+		"companyName": "Lubowitz - Hammes",
+		"companyInformation": {
+			"companyName": "Lubowitz - Hammes",
+			"headquarters": "Kohlershire",
+			"headquartersPostalCode": "67836",
+			"sector": "portals",
+			"identifiers": {
+				"Lei": [
+					"6ma6IbZCwQNQ9E8WqQWY"
+				],
+				"Isin": [
+					"WPa3DHQ3zXdz",
+					"DjvUauWhPsYu"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"0t6kJ7OrD"
+				],
+				"VatNumber": [
+					"60RIa8sDP"
+				],
+				"CompanyRegistrationNumber": [
+					"91QF8ysbTHM4bXj"
+				]
+			},
+			"countryCode": "IS",
+			"companyAlternativeNames": [
+				"Crooks Group"
+			],
+			"companyLegalForm": "GmbH",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "1f9e88d0-e71b-4b53-b38d-1efa627a6975",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "97474771-a0c2-49e4-8d0e-0430d48700bd",
+				"companyId": "1f9e88d0-e71b-4b53-b38d-1efa627a6975",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2023",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 6063,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Cormier and Sons",
-		"companyId": "a5041089-f075-42ab-a70c-045033159595",
-		"permId": "t2QqzKkoaP",
-		"headquarters": "New Milton",
-		"sector": "models",
-		"countryCode": "BN"
+		"companyName": "Ondricka - Hahn",
+		"companyInformation": {
+			"companyName": "Ondricka - Hahn",
+			"headquarters": "Hauckfort",
+			"headquartersPostalCode": null,
+			"sector": "networks",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"em5z7FFlQyv2"
+				],
+				"PermId": [
+					"MLK7eWVW1k"
+				],
+				"Ticker": [
+					"wYdzvPe"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"3w8cAMf2P"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SR",
+			"companyAlternativeNames": [
+				"Hartmann, Prosacco and Becker",
+				"Howell, Gorczany and Wiegand",
+				"Leffler, Roob and Labadie"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://courageous-bus.info/",
+			"isTeaserCompany": false
+		},
+		"companyId": "04b0dba9-9bf2-4756-bdad-c2d92cf218b5",
+		"permId": "MLK7eWVW1k",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "1fb13c24-2df8-4f1e-8f2e-74977ed8911d",
+				"companyId": "04b0dba9-9bf2-4756-bdad-c2d92cf218b5",
+				"dataType": "p2p",
+				"reportingPeriod": "2023",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 7594,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Ferry - Bernhard",
-		"companyId": "5e5d77e2-4a31-4929-8e01-3f83691359bb",
-		"permId": "4f4NbuAPKe",
-		"headquarters": "East Orpha",
-		"sector": "e-business",
-		"countryCode": "SV"
+		"companyName": "Lesch Inc",
+		"companyInformation": {
+			"companyName": "Lesch Inc",
+			"headquarters": "Bahringerboro",
+			"headquartersPostalCode": null,
+			"sector": "convergence",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"F52Zxp4e9fzT"
+				],
+				"PermId": [],
+				"Ticker": [
+					"RyJzdoB"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "AT",
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "6a0395ea-7cc4-45c0-9938-6edc9d2801dd",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "76b56d75-e7ec-45b4-b8d7-19f3bf2ada42",
+				"companyId": "6a0395ea-7cc4-45c0-9938-6edc9d2801dd",
+				"dataType": "lksg",
+				"reportingPeriod": "2022",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 4682,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Cormier Group",
-		"companyId": "ae85c96b-1997-4b38-92b3-5a3394a890d0",
-		"permId": "6fgKkoLjPx",
-		"headquarters": "Fort Abrahamberg",
-		"sector": null,
-		"countryCode": "MG"
+		"companyName": "Mayer Inc",
+		"companyInformation": {
+			"companyName": "Mayer Inc",
+			"headquarters": "Myleneboro",
+			"headquartersPostalCode": "24840",
+			"sector": "web services",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"tE8tgmX0qxbC"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"eGycE39DCUPpede"
+				]
+			},
+			"countryCode": "NG",
+			"companyAlternativeNames": [
+				"Cummings - Parisian"
+			],
+			"companyLegalForm": null,
+			"website": "https://curly-stencil.name",
+			"isTeaserCompany": false
+		},
+		"companyId": "bd13c735-404a-403b-822e-c783f9365bf6",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "4413e125-6b23-40b1-80f1-f5ae1ca1cc78",
+				"companyId": "bd13c735-404a-403b-822e-c783f9365bf6",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2023",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 257,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Cormier, Towne and Botsford",
-		"companyId": "2793c423-dcf1-4e08-8642-c3b6bbd2ae11",
-		"headquarters": "Port Frieda",
-		"sector": "methodologies",
-		"countryCode": "PK"
+		"companyName": "Schulist Group",
+		"companyInformation": {
+			"companyName": "Schulist Group",
+			"headquarters": "Kaseyland",
+			"headquartersPostalCode": null,
+			"sector": "bandwidth",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"xFLlDuWACKAU"
+				],
+				"PermId": [
+					"JishWI7PI7"
+				],
+				"Ticker": [
+					"XV4w9Vu"
+				],
+				"Duns": [
+					"PIaEQN6e2"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"xY789xXBz6bZ2A0"
+				]
+			},
+			"countryCode": "SC",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://simple-rotation.info",
+			"isTeaserCompany": false
+		},
+		"companyId": "0086805e-9227-411e-adc4-fddd431a4e54",
+		"permId": "JishWI7PI7",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "70f9e964-f7c4-4223-8ecd-fb8e0510a4e4",
+				"companyId": "0086805e-9227-411e-adc4-fddd431a4e54",
+				"dataType": "sme",
+				"reportingPeriod": "2023",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 4362,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Koepp, McClure and Lueilwitz",
-		"companyId": "b73fe101-e465-42d4-b0d1-93ff886b11e4",
-		"headquarters": "Beattyville",
-		"sector": "convergence",
-		"countryCode": "TG"
+		"companyName": "Corwin - Wintheiser",
+		"companyInformation": {
+			"companyName": "Corwin - Wintheiser",
+			"headquarters": "Youngstown",
+			"headquartersPostalCode": "97026-0717",
+			"sector": "paradigms",
+			"identifiers": {
+				"Lei": [
+					"c5myWRdmUL1aR56HgoNI"
+				],
+				"Isin": [
+					"EBPOYf4jyFq7",
+					"4n5ddxyFGHxS"
+				],
+				"PermId": [
+					"L3Ftj1Dhz6"
+				],
+				"Ticker": [
+					"MKTu4Rv"
+				],
+				"Duns": [
+					"25RSSfDKa"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"x6Mky6JTI9DsBiS"
+				]
+			},
+			"countryCode": "VI",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "AG",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "01ed7344-ab24-4954-80cd-e2d289ea3d92",
+		"permId": "L3Ftj1Dhz6",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "de46a7f8-61aa-4b89-9d1c-606645ddd724",
+				"companyId": "01ed7344-ab24-4954-80cd-e2d289ea3d92",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2020",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 9824,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Romaguera - Konopelski",
-		"companyId": "45dd5f21-cffc-47fd-aee9-0c2e83d69577",
-		"headquarters": "Upland",
-		"sector": "initiatives",
-		"countryCode": "NU"
+		"companyName": "Williamson - Blanda",
+		"companyInformation": {
+			"companyName": "Williamson - Blanda",
+			"headquarters": "East Dovieworth",
+			"headquartersPostalCode": "51488",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"O33QZYFcZmO3n5wtglQW"
+				],
+				"Isin": [
+					"hxC1CP931ejT"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"nbzwSRgL7"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"zYA4tFgn8lNO33a"
+				]
+			},
+			"countryCode": "SJ",
+			"companyAlternativeNames": [
+				"Casper - Reynolds"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "df3f722b-8b28-4b95-b987-3c4cb2d1ab29",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "e6e8d489-ce09-4ee2-a2f7-ec1cf1601bed",
+				"companyId": "df3f722b-8b28-4b95-b987-3c4cb2d1ab29",
+				"dataType": "p2p",
+				"reportingPeriod": "2022",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 2618,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Kassulke, Kuphal and Heidenreich",
-		"companyId": "093f7838-edb4-4c81-96ac-3f8d289b5bca",
-		"permId": "fFZr8BeEIJ",
-		"headquarters": "Port Franz",
-		"sector": "blockchains",
-		"countryCode": "ML"
+		"companyName": "Muller Group",
+		"companyInformation": {
+			"companyName": "Muller Group",
+			"headquarters": "Port Medaburgh",
+			"headquartersPostalCode": null,
+			"sector": "experiences",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"56P5WzYuVtRL",
+					"KYTp4lDG4rls"
+				],
+				"PermId": [
+					"b4jTbibHWq"
+				],
+				"Ticker": [
+					"DweLXrH"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"kTiIzVD49"
+				],
+				"CompanyRegistrationNumber": [
+					"09NHnnbcTKQVc5O"
+				]
+			},
+			"countryCode": "YE",
+			"companyAlternativeNames": [
+				"Conn Inc",
+				"Hammes Inc",
+				"Schowalter, Schulist and Labadie"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "2198d826-9e08-4a05-8c02-8559dcc65a0b",
+		"permId": "b4jTbibHWq",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "4becb616-58ad-4ea2-b971-979f19762d59",
+				"companyId": "2198d826-9e08-4a05-8c02-8559dcc65a0b",
+				"dataType": "lksg",
+				"reportingPeriod": "2021",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 6589,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Cummings - Frami",
-		"companyId": "f815c3b8-99fd-4f78-8a50-047447538b14",
-		"headquarters": "Dickensworth",
-		"sector": null,
-		"countryCode": "AT"
+		"companyName": "Kiehn Group",
+		"companyInformation": {
+			"companyName": "Kiehn Group",
+			"headquarters": "Commerce City",
+			"headquartersPostalCode": "47362",
+			"sector": "systems",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"7pwek1NqdYo1",
+					"tTWc9v0PylFc"
+				],
+				"PermId": [
+					"HhvdhrREyK"
+				],
+				"Ticker": [],
+				"Duns": [
+					"ix5KLQa6L"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TD",
+			"companyAlternativeNames": [
+				"D'Amore, Ruecker and Christiansen",
+				"Rippin Inc"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://substantial-iridescence.net",
+			"isTeaserCompany": false
+		},
+		"companyId": "46439e5c-3a84-4fe3-a70f-ef2d111ef819",
+		"permId": "HhvdhrREyK",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "13cac512-3e3f-4df1-bccc-666d49bfb29f",
+				"companyId": "46439e5c-3a84-4fe3-a70f-ef2d111ef819",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2023",
+				"currentlyActive": false,
+				"qaStatus": "Accepted",
+				"uploadTime": 6847,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Murazik LLC",
-		"companyId": "6ee975c0-4911-4017-95c2-34787a00b8d7",
-		"permId": "VeGn2cGrww",
-		"headquarters": "Fort Coralie",
-		"sector": null,
-		"countryCode": "TD"
+		"companyName": "Prohaska, Schneider and Pacocha",
+		"companyInformation": {
+			"companyName": "Prohaska, Schneider and Pacocha",
+			"headquarters": "West Rosalinda",
+			"headquartersPostalCode": "67102-2745",
+			"sector": "blockchains",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"z3pAFgSWDRjI"
+				],
+				"PermId": [],
+				"Ticker": [
+					"VDdiwaq"
+				],
+				"Duns": [
+					"oxHHrGzOm"
+				],
+				"VatNumber": [
+					"BSOxsaNwi"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CI",
+			"companyAlternativeNames": [
+				"Botsford, Jenkins and Padberg",
+				"Macejkovic, Rath and Corkery"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://immense-disembodiment.name",
+			"isTeaserCompany": false
+		},
+		"companyId": "2083d3c0-9174-4c11-a501-fe4d845982f4",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "a7c751d1-511c-4699-9eaf-e31fea29933e",
+				"companyId": "2083d3c0-9174-4c11-a501-fe4d845982f4",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2023",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 2494,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Lockman - Abshire",
-		"companyId": "55c039c6-5836-4946-946f-542c9b643657",
-		"headquarters": "Lake Unique",
-		"sector": "networks",
-		"countryCode": "ER"
+		"companyName": "Murray - Hirthe",
+		"companyInformation": {
+			"companyName": "Murray - Hirthe",
+			"headquarters": "South Winifred",
+			"headquartersPostalCode": "79652-6908",
+			"sector": "deliverables",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"5ccegjrzJrPa"
+				],
+				"PermId": [
+					"XeYxHSOg75"
+				],
+				"Ticker": [],
+				"Duns": [
+					"yRfEpXkZz"
+				],
+				"VatNumber": [
+					"BdjmSUsBR"
+				],
+				"CompanyRegistrationNumber": [
+					"5eS4vxxYw4XzCDu"
+				]
+			},
+			"countryCode": "EH",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://extra-large-peak.com",
+			"isTeaserCompany": false
+		},
+		"companyId": "8736cb49-b355-4651-87e0-b5aef8281c72",
+		"permId": "XeYxHSOg75",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "0c17873b-15a7-452a-b688-60adb2c76fe6",
+				"companyId": "8736cb49-b355-4651-87e0-b5aef8281c72",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2020",
+				"currentlyActive": false,
+				"qaStatus": "Pending",
+				"uploadTime": 6547,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Kihn - Walsh",
-		"companyId": "5c786ee5-6dcf-4a70-9cf0-0af6050c2ae7",
-		"headquarters": "West Harveyhaven",
-		"sector": "experiences",
-		"countryCode": "ET"
+		"companyName": "Lockman, Stracke and Kozey",
+		"companyInformation": {
+			"companyName": "Lockman, Stracke and Kozey",
+			"headquarters": "Schimmelbury",
+			"headquartersPostalCode": "05826",
+			"sector": "bandwidth",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"tCXI9oVv7ea4"
+				],
+				"PermId": [
+					"MBQL3a5Cq6"
+				],
+				"Ticker": [
+					"wEAPfcH"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"tLb1RxzGx"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "NO",
+			"companyAlternativeNames": [
+				"Marquardt Inc",
+				"Schaefer, West and Olson",
+				"Turner Group"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://overjoyed-trailpatrol.biz",
+			"isTeaserCompany": false
+		},
+		"companyId": "60c6c974-c72e-4557-86d8-29fe2231fc89",
+		"permId": "MBQL3a5Cq6",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "4fd11c3c-a11c-429d-a762-a5963a76715c",
+				"companyId": "60c6c974-c72e-4557-86d8-29fe2231fc89",
+				"dataType": "eutaxonomy-financials",
+				"reportingPeriod": "2020",
+				"currentlyActive": false,
+				"qaStatus": "Accepted",
+				"uploadTime": 9867,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Witting, McDermott and Moen",
-		"companyId": "e3f49ed0-43bb-4766-a64f-dba0314693e7",
-		"permId": "Fs9bvvOzaD",
-		"headquarters": "West Mathilde",
-		"sector": "e-business",
-		"countryCode": "AT"
+		"companyName": "Nienow, Thompson and Breitenberg",
+		"companyInformation": {
+			"companyName": "Nienow, Thompson and Breitenberg",
+			"headquarters": "South Bruce",
+			"headquartersPostalCode": "07427-1237",
+			"sector": "systems",
+			"identifiers": {
+				"Lei": [
+					"NbovQFBSSu56hWUSlv3h"
+				],
+				"Isin": [
+					"D91VfDftn7fz"
+				],
+				"PermId": [
+					"8h028Yt4me"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "NL",
+			"companyAlternativeNames": [
+				"Morissette Group",
+				"Olson - Russel"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://scrawny-diction.biz",
+			"isTeaserCompany": false
+		},
+		"companyId": "e0131778-edfa-471d-bfb5-1f58c5362680",
+		"permId": "8h028Yt4me",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "811077b3-4aea-435b-bc3d-9e0f91faabf3",
+				"companyId": "e0131778-edfa-471d-bfb5-1f58c5362680",
+				"dataType": "sfdr",
+				"reportingPeriod": "2021",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 5666,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Bogan - McGlynn",
-		"companyId": "b58638dd-762a-41de-89bf-be1966d32e08",
-		"permId": "RJNq7ma2y8",
-		"headquarters": "Thornton",
-		"sector": "infrastructures",
-		"countryCode": "BA"
+		"companyName": "Friesen - O'Reilly",
+		"companyInformation": {
+			"companyName": "Friesen - O'Reilly",
+			"headquarters": "New Liza",
+			"headquartersPostalCode": null,
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"Nw3RKO41KEve",
+					"7LEqIr9w8DLb"
+				],
+				"PermId": [],
+				"Ticker": [
+					"4R2FtjM"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "ER",
+			"companyAlternativeNames": [
+				"Ankunding, Labadie and Reichel",
+				"Buckridge and Sons",
+				"D'Amore, Bailey and Osinski",
+				"Roberts - Volkman"
+			],
+			"companyLegalForm": null,
+			"website": "https://adored-pyramid.org/",
+			"isTeaserCompany": false
+		},
+		"companyId": "325e730a-5e24-435c-8d20-858e1f1e6765",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "6cf2b6c4-22e0-4c4d-9811-26c237e430a0",
+				"companyId": "325e730a-5e24-435c-8d20-858e1f1e6765",
+				"dataType": "sme",
+				"reportingPeriod": "2021",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 7259,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Jenkins and Sons",
-		"companyId": "17da6bbd-1928-4d1f-875f-8c52365f1033",
-		"permId": "Lgrllq99hU",
-		"headquarters": "Heaneyborough",
-		"sector": null,
-		"countryCode": "AT"
+		"companyName": "Reynolds Inc",
+		"companyInformation": {
+			"companyName": "Reynolds Inc",
+			"headquarters": "Sigurdcester",
+			"headquartersPostalCode": "90571-5184",
+			"sector": "e-commerce",
+			"identifiers": {
+				"Lei": [
+					"KIjOIIQCpdeMmrNMhthO"
+				],
+				"Isin": [
+					"qMGWrWpVqlCT"
+				],
+				"PermId": [
+					"GCaaPY8DI2"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"XAPBegt1E3gO16z"
+				]
+			},
+			"countryCode": "MV",
+			"companyAlternativeNames": [
+				"Rohan, Raynor and Gerhold",
+				"Streich - Greenholt"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://bland-swordfish.com",
+			"isTeaserCompany": false
+		},
+		"companyId": "35e6748c-f58a-4f68-95ff-53a4d6037727",
+		"permId": "GCaaPY8DI2",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "fd9f0d7c-c531-4e33-824a-5c61f2802611",
+				"companyId": "35e6748c-f58a-4f68-95ff-53a4d6037727",
+				"dataType": "lksg",
+				"reportingPeriod": "2023",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 6384,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Howe Inc",
-		"companyId": "797fae0f-92ef-499d-918f-8bab95e84db9",
-		"headquarters": "Wolffside",
-		"sector": "infrastructures",
-		"countryCode": "IM"
+		"companyName": "Wolff - Klein",
+		"companyInformation": {
+			"companyName": "Wolff - Klein",
+			"headquarters": "New Olgaland",
+			"headquartersPostalCode": "32935",
+			"sector": "functionalities",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"g4lo66B3OzGq"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SR",
+			"companyAlternativeNames": [
+				"Graham Group",
+				"Pouros - Douglas",
+				"Ratke - Harber",
+				"Reinger - Rolfson"
+			],
+			"companyLegalForm": null,
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "02729993-915c-43ad-8bd7-4a2d873be651",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "9b406742-30c6-4afb-8026-f816d6fac67e",
+				"companyId": "02729993-915c-43ad-8bd7-4a2d873be651",
+				"dataType": "sme",
+				"reportingPeriod": "2022",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 250,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Jacobson Group",
-		"companyId": "445ee702-bc0f-4176-95c1-183b123afc6f",
-		"headquarters": "Rennershire",
-		"sector": "content",
-		"countryCode": "SL"
+		"companyName": "Franecki, Hammes and Brakus",
+		"companyInformation": {
+			"companyName": "Franecki, Hammes and Brakus",
+			"headquarters": "New Jaylan",
+			"headquartersPostalCode": "71001",
+			"sector": "relationships",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"ib2d8rGTYO3m",
+					"sfmlYFZfyu8m"
+				],
+				"PermId": [
+					"x6GAZTbWf3"
+				],
+				"Ticker": [],
+				"Duns": [
+					"Fu3hJzFoO"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"se9SNwBTwF7UBmf"
+				]
+			},
+			"countryCode": "BY",
+			"companyAlternativeNames": [
+				"Lind, Kutch and Upton",
+				"Nolan - Rice",
+				"Trantow LLC"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://sugary-collateral.biz",
+			"isTeaserCompany": false
+		},
+		"companyId": "f6f84db9-3b84-4812-94f2-7f3170b171ef",
+		"permId": "x6GAZTbWf3",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "cebf6288-d781-4b79-b2ae-952511d8db43",
+				"companyId": "f6f84db9-3b84-4812-94f2-7f3170b171ef",
+				"dataType": "p2p",
+				"reportingPeriod": "2022",
+				"currentlyActive": false,
+				"qaStatus": "Accepted",
+				"uploadTime": 9125,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Wintheiser Group",
-		"companyId": "76195300-1677-4a1c-bc61-229e0954d7d3",
-		"headquarters": "Alessiaport",
-		"sector": null,
-		"countryCode": "LK"
+		"companyName": "Metz, Cummings and O'Hara",
+		"companyInformation": {
+			"companyName": "Metz, Cummings and O'Hara",
+			"headquarters": "Riverview",
+			"headquartersPostalCode": "54090",
+			"sector": "content",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"0Sth5wbGyrXd"
+				],
+				"PermId": [
+					"1PnPGk8GrF"
+				],
+				"Ticker": [
+					"NCPaga9"
+				],
+				"Duns": [
+					"UXANSfWZo"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BQ",
+			"companyAlternativeNames": [
+				"Friesen Inc",
+				"Nitzsche and Sons"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://flawed-wrench.net/",
+			"isTeaserCompany": false
+		},
+		"companyId": "d4b54a48-5512-4040-8c96-87075f289044",
+		"permId": "1PnPGk8GrF",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "9752fde5-299f-4c7b-9f46-ac238e3771be",
+				"companyId": "d4b54a48-5512-4040-8c96-87075f289044",
+				"dataType": "sfdr",
+				"reportingPeriod": "2023",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 3884,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Cummings LLC",
-		"companyId": "21409fc0-8678-4901-b8f4-f619cceae188",
-		"permId": "AETrtnNntK",
-		"headquarters": "North Adelia",
-		"sector": "deliverables",
-		"countryCode": "BQ"
+		"companyName": "Dach LLC",
+		"companyInformation": {
+			"companyName": "Dach LLC",
+			"headquarters": "West Kris",
+			"headquartersPostalCode": "30309-4339",
+			"sector": "architectures",
+			"identifiers": {
+				"Lei": [
+					"V6zMP3f5rKdHCDw3P5G0"
+				],
+				"Isin": [
+					"VRgHwMmg6MQK",
+					"oVPBMCV1lS51"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"pA3AVCiam"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MO",
+			"companyAlternativeNames": [
+				"Frami - Bernhard"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://dutiful-karate.org",
+			"isTeaserCompany": false
+		},
+		"companyId": "4a204bf9-c77d-4e5d-9f13-7f748c58ddc8",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "5f9ab3c9-7721-4e5b-8b93-7c7e833e7680",
+				"companyId": "4a204bf9-c77d-4e5d-9f13-7f748c58ddc8",
+				"dataType": "sfdr",
+				"reportingPeriod": "2020",
+				"currentlyActive": false,
+				"qaStatus": "Accepted",
+				"uploadTime": 2969,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "DuBuque, Conn and Legros",
-		"companyId": "bcd24b14-90f4-4215-adb4-d6f8c46a8d14",
-		"permId": "AQdDRygwve",
-		"headquarters": "Silver Spring",
-		"sector": "schemas",
-		"countryCode": "AZ"
+		"companyName": "Kirlin - Raynor",
+		"companyInformation": {
+			"companyName": "Kirlin - Raynor",
+			"headquarters": "East Merrittberg",
+			"headquartersPostalCode": null,
+			"sector": "relationships",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"dwzRL38YsWF0",
+					"no9jN6qY5mT4"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"Qj71Zag94"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GF",
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"companyId": "fa1e8c6e-1fed-429d-a330-1cfa79734bd7",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "9126cf99-cdd8-406a-9281-88791fd27674",
+				"companyId": "fa1e8c6e-1fed-429d-a330-1cfa79734bd7",
+				"dataType": "esg-questionnaire",
+				"reportingPeriod": "2020",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 513,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Dibbert - Hilpert",
-		"companyId": "af9ba95e-c084-4cac-9828-4a91cc5f3cc8",
-		"headquarters": "South Jay",
-		"sector": null,
-		"countryCode": "AZ"
+		"companyName": "Feeney, Dibbert and Ortiz",
+		"companyInformation": {
+			"companyName": "Feeney, Dibbert and Ortiz",
+			"headquarters": "Blandaland",
+			"headquartersPostalCode": "34406",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"3mooXnBTchvp",
+					"NvWvHtTwzWlT"
+				],
+				"PermId": [],
+				"Ticker": [
+					"ifZ2DZv"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"RHP8o9WnOkwUR7y"
+				]
+			},
+			"countryCode": "FJ",
+			"companyAlternativeNames": [
+				"Bruen, Thiel and Wiegand",
+				"King and Sons",
+				"Rutherford, Feest and Kuhlman",
+				"Willms - Doyle"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://whopping-craft.net",
+			"isTeaserCompany": false
+		},
+		"companyId": "426badda-7c26-46eb-b819-edff5d937aec",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "8582b58a-89da-40ab-9dbe-a19879930410",
+				"companyId": "426badda-7c26-46eb-b819-edff5d937aec",
+				"dataType": "lksg",
+				"reportingPeriod": "2021",
+				"currentlyActive": true,
+				"qaStatus": "Accepted",
+				"uploadTime": 7696,
+				"uploaderUserId": null
+			}
+		]
 	},
 	{
-		"companyName": "Mante Group",
-		"companyId": "bc0618e4-e459-4af4-806c-8406123ca33e",
-		"headquarters": "East Daphne",
-		"sector": "e-markets",
-		"countryCode": "CD"
-	},
-	{
-		"companyName": "Littel LLC",
-		"companyId": "876a4b3c-a943-40fc-aafd-d14a53538d7f",
-		"permId": "sz1JYJEw5y",
-		"headquarters": "South Humberto",
-		"sector": null,
-		"countryCode": "HN"
-	},
-	{
-		"companyName": "Dooley - Hintz",
-		"companyId": "a26c2835-295e-4cc5-a435-9babcfaea1b3",
-		"permId": "7kQg0c22mo",
-		"headquarters": "Bednarfort",
-		"sector": "architectures",
-		"countryCode": "KW"
-	},
-	{
-		"companyName": "Predovic, Schaden and Bartell",
-		"companyId": "80633726-e36e-42e1-9297-0b605a66e407",
-		"permId": "FYFH6HgUfj",
-		"headquarters": "Ferneburgh",
-		"sector": null,
-		"countryCode": "AU"
-	},
-	{
-		"companyName": "Zieme - Schulist",
-		"companyId": "a5a68997-d073-4666-b0f7-06f3b2b291fc",
-		"permId": "h4vdFyegzi",
-		"headquarters": "North Jeremy",
-		"sector": "solutions",
-		"countryCode": "SI"
-	},
-	{
-		"companyName": "Rice LLC",
-		"companyId": "e6ac3664-ade3-42f9-b398-4ad1f6bc88c6",
-		"permId": "DfqQSvUVPE",
-		"headquarters": "Port Roslynport",
-		"sector": "architectures",
-		"countryCode": "VU"
+		"companyName": "Roob Inc",
+		"companyInformation": {
+			"companyName": "Roob Inc",
+			"headquarters": "Danielside",
+			"headquartersPostalCode": "57133",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"JuCwYgJCwBFE",
+					"vw3n08m1CRe5"
+				],
+				"PermId": [
+					"dwfVoYTgkD"
+				],
+				"Ticker": [],
+				"Duns": [
+					"7DZ0rjjb0"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "HR",
+			"companyAlternativeNames": [
+				"Konopelski - Considine",
+				"Schiller - Murazik",
+				"Stoltenberg and Sons",
+				"Thompson - Franecki"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://knowledgeable-conspirator.info",
+			"isTeaserCompany": false
+		},
+		"companyId": "a6d1f48d-4f4b-4dda-93ce-ff096a968fe5",
+		"permId": "dwfVoYTgkD",
+		"dataRegisteredByDataland": [
+			{
+				"dataId": "3c475eb1-7641-462b-bb64-056ac959e44e",
+				"companyId": "a6d1f48d-4f4b-4dda-93ce-ff096a968fe5",
+				"dataType": "eutaxonomy-non-financials",
+				"reportingPeriod": "2021",
+				"currentlyActive": false,
+				"qaStatus": "Rejected",
+				"uploadTime": 9990,
+				"uploaderUserId": null
+			}
+		]
 	}
 ]
