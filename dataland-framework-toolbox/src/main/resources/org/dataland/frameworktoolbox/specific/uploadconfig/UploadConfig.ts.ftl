@@ -49,12 +49,13 @@ export const ${frameworkIdentifier}DataModel = [<@loopCategories uploadConfig/>]
     name: "${fieldConfig.name?js_string}",
     label: "${fieldConfig.label?js_string}",
     <#if fieldConfig.explanation??>description: "${fieldConfig.explanation?js_string}",</#if>
-    options: <#if fieldConfig.frameworkUploadOptions??>${fieldConfig.frameworkUploadOptions.body},<#else>"",</#if>
-    unit: "<#if fieldConfig.unit??>${fieldConfig.unit?js_string}</#if>",
+    <#if fieldConfig.frameworkUploadOptions??>options: ${fieldConfig.frameworkUploadOptions.body},</#if>
+    <#if fieldConfig.unit??>unit: "${fieldConfig.unit?js_string}",</#if>
     component: "${fieldConfig.uploadComponentName?js_string}",
     required: ${fieldConfig.required?c},
     showIf: <@frameworklambda fieldConfig.shouldDisplay/>,
-    validation: "<#if fieldConfig.required>required<#if fieldConfig.validation??>|</#if></#if><#if fieldConfig.validation??>${fieldConfig.validation}</#if>",
+    <#if fieldConfig.required>validation: "required<#if fieldConfig.validation??>|${fieldConfig.validation}</#if>",
+    <#else><#if fieldConfig.validation??>validation: "${fieldConfig.validation}",</#if></#if>
     },
 </#macro>
 <#macro frameworklambda lambda>(<#if lambda.usesDataset>dataset: ${frameworkDataType}</#if>):${lambda.returnParameter} => ${lambda.lambdaBody}</#macro>
