@@ -8761,6 +8761,13 @@
             "type": "string",
             "nullable": true
           },
+          "kernkompetenzenUndGeschaeftsbereiche": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
           "anzahlDerFuerEsgZustaendigenMitarbeiter": {
             "type": "number",
             "nullable": true

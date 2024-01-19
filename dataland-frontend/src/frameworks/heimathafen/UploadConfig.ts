@@ -23,6 +23,15 @@ export const heimathafenDataModel = [
             showIf: (): boolean => true,
           },
           {
+            name: "kernkompetenzenUndGeschaeftsbereiche",
+            label: "Kernkompetenzen und Geschäftsbereiche",
+            description: "Bitte beschreiben Sie kurz Ihre Kernkompetenzen und Geschäftsfelder",
+
+            component: "NaceCodeFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
             name: "anzahlDerFuerEsgZustaendigenMitarbeiter",
             label: "Anzahl der für ESG zuständigen Mitarbeiter",
             description:

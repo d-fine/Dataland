@@ -8,5 +8,6 @@ import java.math.BigDecimal
  */
 data class HeimathafenGeneralDatenanbieter(
     val unternehmenseigentumUndEigentuemerstruktur: String? = null,
+    val kernkompetenzenUndGeschaeftsbereiche: List<String>? = null,
     val anzahlDerFuerEsgZustaendigenMitarbeiter: BigDecimal? = null,
 )

@@ -6,6 +6,7 @@ import { formatStringForDatatable } from "@/components/resources/dataTable/conve
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
+import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
   {
     type: "section",
@@ -27,6 +28,17 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.datenanbieter?.unternehmenseigentumUndEigentuemerstruktur),
+          },
+          {
+            type: "cell",
+            label: "Kernkompetenzen und Geschäftsbereiche",
+            explanation: "Bitte beschreiben Sie kurz Ihre Kernkompetenzen und Geschäftsfelder",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatNaceCodesForDatatable(
+                dataset.general?.datenanbieter?.kernkompetenzenUndGeschaeftsbereiche,
+                "Kernkompetenzen und Gesch\u00E4ftsbereiche",
+              ),
           },
           {
             type: "cell",
