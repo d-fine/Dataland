@@ -66,7 +66,6 @@ describe("Component test for ViewFrameworkBase", () => {
     });
     const storedCompanies = await getCompanyDataForFrameworkDataSearchPage(
       "",
-      false,
       new Set<DataTypeEnum>(),
       new Set<string>(),
       new Set<string>(),
