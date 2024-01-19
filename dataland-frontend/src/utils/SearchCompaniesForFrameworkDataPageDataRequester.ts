@@ -13,11 +13,11 @@ import {
 import type Keycloak from "keycloak-js";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
-export interface DataSearchStoredCompany {
-  companyName: string;
-  companyId: string;
-  permId: string;
-}
+// export interface DataSearchStoredCompany { TODO adapt tests for type change
+//   companyName: string;
+//   companyId: string;
+//   permId: string;
+// }
 
 export interface FrameworkDataSearchFilterInterface {
   companyNameFilter: string;

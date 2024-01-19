@@ -85,7 +85,6 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import {
   type FrameworkDataSearchFilterInterface,
-  type DataSearchStoredCompany,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import PrimeButton from "primevue/button";
@@ -142,7 +141,7 @@ export default defineComponent({
       searchBarToggled: false,
       pageScrolled: false,
       route: useRoute(),
-      resultsArray: [] as Array<DataSearchStoredCompany>,
+      resultsArray: [] as Array<ReducedCompany>,
       latestScrollPosition: 0,
       currentSearchBarInput: "",
       currentFilteredFrameworks: ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,

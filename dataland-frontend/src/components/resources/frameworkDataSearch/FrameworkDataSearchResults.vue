@@ -68,7 +68,6 @@
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Tooltip from "primevue/tooltip";
-import { type DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent } from "vue";
 import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
 import { ReducedCompany } from "@clients/backend";
