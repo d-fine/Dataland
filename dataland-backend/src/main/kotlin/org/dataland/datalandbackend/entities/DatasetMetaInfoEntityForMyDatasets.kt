@@ -11,6 +11,6 @@ interface DatasetMetaInfoEntityForMyDatasets {
     val dataType: String
     val reportingPeriod: String
     val qualityStatus: Int
-    val currentlyActive: Boolean
+    val currentlyActive: Boolean?
     var uploadTime: Long
 }

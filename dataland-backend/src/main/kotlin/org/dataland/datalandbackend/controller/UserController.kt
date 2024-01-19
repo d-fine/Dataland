@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * Defines the restful dataland-backend API regarding data exchange
+ * Defines the restful dataland-backend API regarding user data exchange
  */
 @RestController
 class UserController(

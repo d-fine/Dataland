@@ -71,6 +71,11 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
         currentlyActive: Boolean,
     ): Long
 
+    /**
+     * Queries the meta information for datasets uploaded by a specific user
+     * @param userId the id of the user for whom to query data meta information
+     * @returns the data meta information uploaded by the specified user
+     */
     @Query(
         nativeQuery = true,
         value = "SELECT " +

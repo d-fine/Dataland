@@ -107,7 +107,9 @@ class DataMetaInformationManager(
     }
 
     /**
-     *
+     * Queries the meta information for datasets uploaded by a specific user
+     * @param userId the id of the user for whom to query data meta information
+     * @returns the data meta information uploaded by the specified user
      */
     fun getUserDataMetaInformation(userId: String): List<DataMetaInformationForMyDatasets>? {
         return dataMetaInformationRepositoryInterface.getUserDataMetaInfos(userId).map { DataMetaInformationForMyDatasets.fromEntity(it) }

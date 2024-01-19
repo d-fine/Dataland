@@ -13,7 +13,7 @@ data class DataMetaInformationForMyDatasets(
     val dataType: DataType,
     val reportingPeriod: String,
     val qualityStatus: QaStatus,
-    val currentlyActive: Boolean,
+    val currentlyActive: Boolean?,
     var uploadTime: Long,
 ) {
     companion object {
