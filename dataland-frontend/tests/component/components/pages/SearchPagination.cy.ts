@@ -1,6 +1,6 @@
 import SearchCompaniesForFrameworkData from "@/components/pages/SearchCompaniesForFrameworkData.vue";
-import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { prepareSimpleDataSearchStoredCompanyArray } from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
+import {minimalKeycloakMock} from "@ct/testUtils/Keycloak";
+import {prepareSimpleDataSearchStoredCompanyArray} from "@ct/testUtils/PrepareDataSearchStoredCompanyArray";
 
 /**
  * Loads mock data
@@ -8,8 +8,15 @@ import { prepareSimpleDataSearchStoredCompanyArray } from "@ct/testUtils/Prepare
  */
 function intercept(arr: undefined | [] = undefined): undefined {
   const mockDataSearchStoredCompanyArray = prepareSimpleDataSearchStoredCompanyArray(200);
-  cy.intercept("**/api/companies?**", arr ?? mockDataSearchStoredCompanyArray);
-  cy.intercept("**/api/companies/meta-information", mockDataSearchStoredCompanyArray[0].dataRegisteredByDataland[0]);
+  cy.intercept("**/api/companies/v2?**", arr ?? mockDataSearchStoredCompanyArray);
+  cy.intercept("**/api/companies/meta-information", {
+    countryCodes: [
+      "CV"
+    ],
+    sectors: [
+      "partnerships",
+    ]
+  });
   const keycloakMock = minimalKeycloakMock({
     roles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_REVIEWER"],
   });
