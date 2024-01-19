@@ -1214,6 +1214,69 @@
         ]
       }
     },
+    "/user/{userId}/datasets": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Retrieve framework datasets with meta info.",
+        "description": "All framework datasets with meta info for the given company ID are retrieved.",
+        "operationId": "getUserDataMetaInformation",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MyDatasetsDatasetInfo"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/token": {
       "get": {
         "tags": [
@@ -2573,6 +2636,105 @@
                   "type": "object",
                   "additionalProperties": {
                     "$ref": "#/components/schemas/AggregatedFrameworkDataSummary"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/companies/v2": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve reduced information about  specific companies with framework data by different filters or just all companies from the data store.",
+        "description": "Reduced information about companies with associated framework data identified via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+        "operationId": "getCompanies2",
+        "parameters": [
+          {
+            "name": "searchString",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataTypes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/DataTypeEnum"
+              }
+            }
+          },
+          {
+            "name": "countryCodes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "sectors",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved companies.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReducedCompany"
                   }
                 }
               }
@@ -10920,6 +11082,42 @@
           "VatNumber"
         ]
       },
+      "MyDatasetsDatasetInfo": {
+        "required": [
+          "companyId",
+          "companyName",
+          "dataId",
+          "dataType",
+          "qualityStatus",
+          "reportingPeriod",
+          "uploadTime"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "dataId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/DataTypeEnum"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "qualityStatus": {
+            "$ref": "#/components/schemas/QaStatus"
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "DataAndMetaInformationSmeData": {
         "required": [
           "data",
@@ -11034,6 +11232,37 @@
           "numberOfProvidedReportingPeriods": {
             "type": "integer",
             "format": "int64"
+          }
+        }
+      },
+      "ReducedCompany": {
+        "required": [
+          "companyId",
+          "companyName",
+          "countryCode",
+          "headquarters"
+        ],
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "permId": {
+            "type": "string",
+            "nullable": true
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryCode": {
+            "type": "string"
           }
         }
       },
