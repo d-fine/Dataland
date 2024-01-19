@@ -16,13 +16,13 @@
       :rowHover="true"
     >
       <Column
-        field="companyInformation.companyName"
+        field="companyName"
         header="COMPANY"
         :sortable="true"
         class="d-bg-white w-3 d-datatable-column-left"
       >
       </Column>
-      <Column field="companyInformation.permId" :sortable="false" class="d-bg-white w-2">
+      <Column field="permId" :sortable="false" class="d-bg-white w-2">
         <template #header>
           <span class="uppercase">PERM ID</span>
           <i
@@ -42,10 +42,10 @@
           {{ data.permId ? data.permId : "Not available" }}
         </template>
       </Column>
-      <Column field="companyInformation.sector" header="SECTOR" :sortable="true" class="d-bg-white w-2" />
-      <Column field="companyInformation.headquarters" header="LOCATION" :sortable="true" class="d-bg-white w-2">
+      <Column field="sector" header="SECTOR" :sortable="true" class="d-bg-white w-2" />
+      <Column field="headquarters" header="LOCATION" :sortable="true" class="d-bg-white w-2">
         <template #body="{ data }">
-          {{ data.companyInformation.headquarters }}, {{ data.companyInformation.countryCode }}
+          {{ data.headquarters }}, {{ data.countryCode }}
         </template>
       </Column>
       <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
@@ -71,6 +71,7 @@ import Tooltip from "primevue/tooltip";
 import { type DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import { defineComponent } from "vue";
 import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
+import { ReducedCompany } from "@clients/backend";
 
 export default defineComponent({
   name: "FrameworkDataSearchResults",
@@ -95,7 +96,7 @@ export default defineComponent({
      * @param event.data the company the user clicked on
      * @returns the promise of the router push action
      */
-    goToCompanyCockpit(event: { data: DataSearchStoredCompany }) {
+    goToCompanyCockpit(event: { data: ReducedCompany }) {
       const companyIdOfClickedRow = event.data.companyId;
       return this.$router.push(`/companies/${companyIdOfClickedRow}`);
     },
