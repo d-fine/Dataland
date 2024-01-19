@@ -9,7 +9,6 @@ before(function () {
     const mockDataSearchResponse = jsonContent as Array<BasicCompanyInformation>;
     const customCompanyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
     modifiedMockDataSearchResponse = [...mockDataSearchResponse.slice(0, 4)];
-    modifiedMockDataSearchResponse[0].dataRegisteredByDataland[0].qaStatus = "Accepted";
     modifiedMockDataSearchResponse[0] = {
       ...modifiedMockDataSearchResponse[0],
       companyName: customCompanyName,
