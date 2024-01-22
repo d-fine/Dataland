@@ -83,15 +83,13 @@
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import {
-  type FrameworkDataSearchFilterInterface,
-} from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import { type FrameworkDataSearchFilterInterface } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { type RouteLocationNormalizedLoaded, useRoute } from "vue-router";
 import { defineComponent, inject, ref } from "vue";
-import { type DataTypeEnum, BasicCompanyInformation } from "@clients/backend";
+import { type DataTypeEnum, type BasicCompanyInformation } from "@clients/backend";
 import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
@@ -409,10 +407,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.d-search-toggle {
-  z-index: 99;
-  top: 4rem;
-}
 .d-search-filters-panel {
   height: 5rem;
 }

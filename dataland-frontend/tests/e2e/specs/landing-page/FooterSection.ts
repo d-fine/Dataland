@@ -28,11 +28,13 @@ describeIf(
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
         it(`Checks that the footer is present on ${framework}`, () => {
           getKeycloakToken(reader_name, reader_pw).then((token) => {
-            cy.browserThen(searchBasicCompanyInformationForDataType(token, framework)).then((basicCompanyInformations) => {
-              const companyId = basicCompanyInformations[0].companyId;
-              cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${framework}`);
-              checkFooter();
-            });
+            cy.browserThen(searchBasicCompanyInformationForDataType(token, framework)).then(
+              (basicCompanyInformations) => {
+                const companyId = basicCompanyInformations[0].companyId;
+                cy.visitAndCheckAppMount(`/companies/${companyId}/frameworks/${framework}`);
+                checkFooter();
+              },
+            );
           });
         });
       });
