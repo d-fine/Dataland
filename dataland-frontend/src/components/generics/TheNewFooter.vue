@@ -98,13 +98,13 @@ const updateScreenSize = (): void => {
   isSmallScreen.value = window.innerWidth < 768;
 };
 
-const sanitizeUrl = (url: string): string => {
+const sanitizeUrl = (url: string): string | undefined => {
   const uriEncoded = encodeURI(url);
   const safeUrlPattern = /^(https?|mailto|tel):/;
   if (safeUrlPattern.test(uriEncoded)) {
     return url;
   }
-  return "#";
+  return undefined;
 };
 
 onMounted(() => {
