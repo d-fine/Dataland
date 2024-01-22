@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.entities
 
 
 /**
- * A variation fo DataMetaInformationForMyDatasets for database interaction
+ * A variation of DataMetaInformationForMyDatasets for database interaction
  */
 interface DatasetMetaInfoEntityForMyDatasets {
     val companyId: String

@@ -1198,10 +1198,10 @@
         ]
       }
     },
-    "/user/{userId}/datasets": {
+    "/users/{userId}/datasets": {
       "get": {
         "tags": [
-          "user-controller"
+          "user-uploads-controller"
         ],
         "summary": "Retrieve an augmented dataset meta information uploaded by a specific user.",
         "description": "Retrieve an augmented dataset meta information uploaded by a specific user for the \"My Datasets\" page.",
