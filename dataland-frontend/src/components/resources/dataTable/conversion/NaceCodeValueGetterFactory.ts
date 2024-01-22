@@ -23,19 +23,21 @@ export function naceCodeValueGetterFactory(
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
     const naceCodes = getFieldValueFromFrameworkDataset(path, dataset) as Array<string>;
-    const modalLabel = field.label
-    return formatNaceCodesForDatatable(naceCodes, modalLabel)
+    const modalLabel = field.label;
+    return formatNaceCodesForDatatable(naceCodes, modalLabel);
   };
 }
 
 /**
- * Formats the provided string as a raw string cell for the datatable
- * @param input the input to display TODO adjust description
- * @returns the value formatted for display
+ * Formats a list of nace codes for the datatable
+ * @param naceCodes the nace codes to display
+ * @param modalLabel the label that the modal which shows the nace codes shall have
+ * @returns display object for the multi layer data table
  */
 export function formatNaceCodesForDatatable(
-    naceCodes: string[] | null | undefined,
-modalLabel:string): AvailableMLDTDisplayObjectTypes {
+  naceCodes: string[] | null | undefined,
+  modalLabel: string,
+): AvailableMLDTDisplayObjectTypes {
   if (!naceCodes || naceCodes.length == 0) {
     return MLDTDisplayObjectForEmptyString;
   } else {
