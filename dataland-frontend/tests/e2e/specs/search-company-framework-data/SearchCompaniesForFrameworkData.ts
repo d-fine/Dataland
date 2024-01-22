@@ -1,5 +1,5 @@
 import { searchBasicCompanyInformationForDataType } from "@e2e//utils/GeneralApiUtils";
-import {DataTypeEnum, type EuTaxonomyDataForFinancials, BasicCompanyInformation} from "@clients/backend";
+import { DataTypeEnum, type EuTaxonomyDataForFinancials, type BasicCompanyInformation } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
@@ -162,14 +162,8 @@ describeIf(
             cy.get("input[id=search_bar_top]").type("{upArrow}");
             cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
             cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
-            cy.get("input[id=search_bar_top]")
-              .click({ force: true })
-              .type("{backspace}")
-              .type(testCompany.companyName);
-            cy.get(".p-autocomplete-item")
-              .eq(0)
-              .should("contain.text", testCompany.companyName)
-              .click({ force: true });
+            cy.get("input[id=search_bar_top]").click({ force: true }).type("{backspace}").type(testCompany.companyName);
+            cy.get(".p-autocomplete-item").eq(0).should("contain.text", testCompany.companyName).click({ force: true });
 
             validateCompanyCockpitPage(testCompany.companyName, testCompany.companyId);
           },

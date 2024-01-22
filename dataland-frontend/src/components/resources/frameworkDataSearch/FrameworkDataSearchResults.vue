@@ -15,12 +15,7 @@
       id="search-result-framework-data"
       :rowHover="true"
     >
-      <Column
-        field="companyName"
-        header="COMPANY"
-        :sortable="true"
-        class="d-bg-white w-3 d-datatable-column-left"
-      >
+      <Column field="companyName" header="COMPANY" :sortable="true" class="d-bg-white w-3 d-datatable-column-left">
       </Column>
       <Column field="permId" :sortable="false" class="d-bg-white w-2">
         <template #header>
@@ -44,9 +39,7 @@
       </Column>
       <Column field="sector" header="SECTOR" :sortable="true" class="d-bg-white w-2" />
       <Column field="headquarters" header="LOCATION" :sortable="true" class="d-bg-white w-2">
-        <template #body="{ data }">
-          {{ data.headquarters }}, {{ data.countryCode }}
-        </template>
+        <template #body="{ data }"> {{ data.headquarters }}, {{ data.countryCode }} </template>
       </Column>
       <Column field="companyId" header="" class="d-bg-white w-1 d-datatable-column-right">
         <template #body>
@@ -70,7 +63,7 @@ import Column from "primevue/column";
 import Tooltip from "primevue/tooltip";
 import { defineComponent } from "vue";
 import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
-import {BasicCompanyInformation} from "@clients/backend";
+import { type BasicCompanyInformation } from "@clients/backend";
 
 export default defineComponent({
   name: "FrameworkDataSearchResults",

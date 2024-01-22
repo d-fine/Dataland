@@ -1,6 +1,6 @@
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import {BasicCompanyInformation} from "@clients/backend";
+import { type BasicCompanyInformation } from "@clients/backend";
 
 let modifiedMockDataSearchResponse: Array<BasicCompanyInformation>;
 const highlightedSubString = "this_is_expected_to_be_highlighted";
