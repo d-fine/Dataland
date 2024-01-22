@@ -37,7 +37,7 @@ describe("Component tests for the Dataland companies search page", function (): 
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: minimalKeycloakMock({}),
     }).then(() => {
-      const placeholder = "Search company by name or PermID";
+      const placeholder = "Search company by name or identifier (e.g. PermID, LEI, ...)";
       const inputValue = "A company name";
       cy.get("input[id=search_bar_top]")
         .should("not.be.disabled")
