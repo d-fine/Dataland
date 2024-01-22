@@ -76,8 +76,6 @@ export default defineComponent({
           return CreateP2pDataset;
         case `${DataTypeEnum.Sfdr}`:
           return CreateSfdrDataset;
-        case `${DataTypeEnum.Gdv}`:
-          return CreateGdvDataset;
         case `${DataTypeEnum.Heimathafen}`:
           return CreateHeimathafenDataset;
         case `${DataTypeEnum.EsgQuestionnaire}`:

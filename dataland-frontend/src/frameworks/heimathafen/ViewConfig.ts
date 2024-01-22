@@ -7,7 +7,7 @@ import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/c
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
-export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
+export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
   {
     type: "section",
     label: "General",
@@ -1663,8 +1663,8 @@ export const HeimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
         children: [
           {
             type: "cell",
-            label: "SDG - Keine Armut",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "keine Armut" gemessen werden?',
+            label: "abctest",
+            explanation: "deftestHU",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.sdg?.keineArmut?.sdgKeineArmut),
