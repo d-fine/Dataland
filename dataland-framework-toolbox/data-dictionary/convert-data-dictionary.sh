@@ -12,6 +12,6 @@ if [ -e "./csv" ]; then
 fi
 mkdir -p ./csv
 
-docker compose up
+docker compose up --build
 
 echo "All done!"

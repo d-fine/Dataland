@@ -17,8 +17,9 @@ export const sfdrDataModel = [    {
     
     
                 component: "DateFormField",
-                required: false,
+                required: true,
                 showIf: ():boolean => true,
+                validation: "required",
     
                 },
             {
@@ -28,6 +29,29 @@ export const sfdrDataModel = [    {
     
     
                 component: "DateFormField",
+                required: true,
+                showIf: ():boolean => true,
+                validation: "required",
+    
+                },
+            {
+                name: "referencedReports",
+                label: "Referenced Reports",
+                description: "Please upload all relevant reports for this dataset in the PDF format.",
+    
+    
+                component: "UploadReports",
+                required: false,
+                showIf: ():boolean => true,
+    
+                },
+            {
+                name: "scopeOfEntities",
+                label: "Scope Of Entities",
+                description: "Does a list of legal entities covered by Sust./Annual/Integrated report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
+    
+    
+                component: "YesNoNaFormField",
                 required: false,
                 showIf: ():boolean => true,
     
@@ -47,7 +71,7 @@ export const sfdrDataModel = [    {
             label: "Greenhouse gas emissions ",
             fields: [
                  {
-                name: "scope1GhgEmissions",
+                name: "scope1GhgEmissionsInTonnes",
                 label: "Scope 1 GHG emissions",
                 description: "Scope 1 carbon emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets",
     
@@ -58,7 +82,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "scope2GhgEmissions",
+                name: "scope2GhgEmissionsInTonnes",
                 label: "Scope 2 GHG emissions",
                 description: "Scope 2 carbon emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets",
     
@@ -69,7 +93,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "scope2GhgEmissionsLocationBased",
+                name: "scope2GhgEmissionsLocationBasedInTonnes",
                 label: "Scope 2 GHG emissions (location-based)",
                 description: "Scope 2 carbon emissions computed using the location-based method",
     
@@ -80,7 +104,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "scope2GhgEmissionsMarketBased",
+                name: "scope2GhgEmissionsMarketBasedInTonnes",
                 label: "Scope 2 GHG emissions (market-based)",
                 description: "Scope 2 carbon emissions computed using the market-based method",
     
@@ -91,7 +115,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "scope1And2GhgEmissions",
+                name: "scope1And2GhgEmissionsInTonnes",
                 label: "Scope 1 and 2 GHG emissions",
                 description: "Sum of scope 1 and 2 carbon emissions",
     
@@ -102,7 +126,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "scope1And2GhgEmissionsLocationBased",
+                name: "scope1And2GhgEmissionsLocationBasedInTonnes",
                 label: "Scope 1 and 2 GHG emissions (location-based)",
                 description: "Sum of scope 1 and 2 carbon emissions, using the location-based method to compute scope 2 carbon emissions",
     
@@ -113,7 +137,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "scope1And2GhgEmissionsMarketBased",
+                name: "scope1And2GhgEmissionsMarketBasedInTonnes",
                 label: "Scope 1 and 2 GHG emissions (market-based)",
                 description: "Sum of scope 1 and 2 carbon emissions, using the market-based method to compute scope 2 carbon emissions",
     
@@ -124,7 +148,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "scope3GhgEmissions",
+                name: "scope3GhgEmissionsInTonnes",
                 label: "Scope 3 GHG emissions",
                 description: "Scope 3 carbon emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2",
     
@@ -135,7 +159,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "scope1And2And3GhgEmissions",
+                name: "scope1And2And3GhgEmissionsInTonnes",
                 label: "Scope 1 and 2 and 3 GHG emissions",
                 description: "Sum of scope 1, 2 and 3 carbon emissions",
     
@@ -146,7 +170,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "carbonFootprint",
+                name: "carbonFootprintInTonnesPerMillionEURRevenue",
                 label: "Carbon footprint",
                 description: "Tonnes GHG emissions / EUR million enterprise value",
     
@@ -157,7 +181,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "ghgIntensity",
+                name: "ghgIntensityInTonnesPerMillionEURRevenue",
                 label: "GHG intensity",
                 description: "Tonnes of GHG emissions / EUR million revenue",
     
@@ -186,7 +210,7 @@ export const sfdrDataModel = [    {
             label: "Energy performance",
             fields: [
                  {
-                name: "renewableEnergyProduction",
+                name: "renewableEnergyProductionInGWh",
                 label: "Renewable Energy Production",
                 description: "Total value of renewable energy produced, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation, Annex I, top (6).",
     
@@ -197,7 +221,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "renewableEnergyConsumption",
+                name: "renewableEnergyConsumptionInGWh",
                 label: "Renewable Energy Consumption",
                 description: "Total value of renewable energy consumed, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation, Annex I, top (6).",
     
@@ -208,7 +232,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "nonRenewableEnergyProduction",
+                name: "nonRenewableEnergyProductionInGWh",
                 label: "Non-Renewable Energy Production",
                 description: "Total value of non-renewable energy produced, meaning energy from sources other than non-fossil sources. See also Regulation, Annex I, top (7).",
     
@@ -219,7 +243,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "relativeNonRenewableEnergyProduction",
+                name: "relativeNonRenewableEnergyProductionInPercent",
                 label: "Relative Non-Renewable Energy Production",
                 description: "Share of non-renewable energy production from total energy production (i.e. renewable plus non-renewable).",
     
@@ -230,7 +254,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "nonRenewableEnergyConsumption",
+                name: "nonRenewableEnergyConsumptionInGWh",
                 label: "Non-Renewable Energy Consumption",
                 description: "Total value of non-renewable energy consumed, meaning energy from sources other than non-fossil sources.",
     
@@ -241,7 +265,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "relativeNonRenewableEnergyConsumption",
+                name: "relativeNonRenewableEnergyConsumptionInPercent",
                 label: "Relative Non-Renewable Energy Consumption",
                 description: "Share of non-renewal energy consumption from total energy consumption (i.e. renewable plus non-renewable).",
     
@@ -252,7 +276,18 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "totalHighImpactClimateSectorEnergyConsumption",
+                name: "applicableHighImpactClimateSectors",
+                label: "Applicable High Impact Climate Sectors",
+                description: "Please select any sector(s) applicable activities (NACE Codes A-H, L)",
+    
+    
+                component: "HighImpactClimateSectorsFormField",
+                required: false,
+                showIf: ():boolean => true,
+    
+                },
+            {
+                name: "totalHighImpactClimateSectorEnergyConsumptionInGWh",
                 label: "Total High Impact Climate Sector Energy Consumption",
                 description: "High impact climate sectors’ means the sectors listed in Sections A to H and Section L of Annex I to Regulation (EC) No 1893/2006 of the European Parliament and of the Council (Regulation (EC) No 1893/2006 of the European Parliament and of the Council of 20 December 2006 establishing the statistical classification of economic activities NACE Revision 2 and amending Council Regulation (EEC) No 3037/90 as well as certain EC Regulations on specific statistical domains (OJ L 393, 30.12.2006, p. 1)).",
     
@@ -263,7 +298,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "nonRenewableEnergyConsumptionFossilFuels",
+                name: "nonRenewableEnergyConsumptionFossilFuelsInGWh",
                 label: "Non-Renewable Energy Consumption Fossil Fuels",
                 description: "Energy consumption from fossil fuels (sum of crude oil, natural gas, nuclear energy, lignite and coal) (non-renewable energy source)",
     
@@ -274,7 +309,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "nonRenewableEnergyConsumptionCrudeOil",
+                name: "nonRenewableEnergyConsumptionCrudeOilInGWh",
                 label: "Non-Renewable Energy Consumption Crude Oil",
                 description: "Energy consumption from crude oil (non-renewable energy source)",
     
@@ -285,7 +320,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "nonRenewableEnergyConsumptionNaturalGas",
+                name: "nonRenewableEnergyConsumptionNaturalGasInGWh",
                 label: "Non-Renewable Energy Consumption Natural Gas",
                 description: "Energy consumption from natural gas (non-renewable energy source)",
     
@@ -296,7 +331,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "nonRenewableEnergyConsumptionLignite",
+                name: "nonRenewableEnergyConsumptionLigniteInGWh",
                 label: "Non-Renewable Energy Consumption Lignite",
                 description: "Energy consumption from lignite (non-renewable energy source)",
     
@@ -307,7 +342,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "nonRenewableEnergyConsumptionCoal",
+                name: "nonRenewableEnergyConsumptionCoalInGWh",
                 label: "Non-Renewable Energy Consumption Coal",
                 description: "Energy consumption from coal (non-renewable energy source)",
     
@@ -318,7 +353,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "nonRenewableEnergyConsumptionNuclearEnergy",
+                name: "nonRenewableEnergyConsumptionNuclearEnergyInGWh",
                 label: "Non-Renewable Energy Consumption Nuclear Energy",
                 description: "Energy consumption from nuclear energy (Uranium) (non-renewable energy source)",
     
@@ -329,7 +364,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "nonRenewableEnergyConsumptionOther",
+                name: "nonRenewableEnergyConsumptionOtherInGWh",
                 label: "Non-Renewable Energy Consumption Other",
                 description: "Energy consumption from any other available (used) non-renewable source of energy",
     
@@ -398,7 +433,7 @@ export const sfdrDataModel = [    {
             label: "Water",
             fields: [
                  {
-                name: "emissionsToWater",
+                name: "emissionsToWaterInTonnes",
                 label: "Emissions To Water",
                 description: "Emissions to water (direct nitrates, direct phosphate emissions, direct pesticides) to water (tonnes)",
     
@@ -409,7 +444,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "waterConsumption",
+                name: "waterConsumptionInCubicMeters",
                 label: "Water Consumption",
                 description: "Amount of water consumed by the company",
     
@@ -420,7 +455,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "waterReused",
+                name: "waterReusedInCubicMeters",
                 label: "Water Reused",
                 description: "Amount of water recycled and reused by the company. Linked to Regulation, Annex I, Table 2, metric 6.2.",
     
@@ -431,7 +466,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "relativeWaterUsage",
+                name: "relativeWaterUsageInCubicMetersPerMillionEURRevenue",
                 label: "Relative Water Usage",
                 description: "Average amount in cubic meters of fresh water used per million EUR revenue",
     
@@ -471,7 +506,7 @@ export const sfdrDataModel = [    {
             label: "Waste",
             fields: [
                  {
-                name: "hazardousAndRadioactiveWaste",
+                name: "hazardousAndRadioactiveWasteInTonnes",
                 label: "Hazardous and Radioactive Waste",
                 description: "Tonnes of hazardous waste and radioactive waste generated, which are Explosives, Oxidizing substances, Highly flammable, Flammable, Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding substance which possesses any of the characteristics listed above (tonnes)",
     
@@ -526,7 +561,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "nonRecycledWaste",
+                name: "nonRecycledWasteInTonnes",
                 label: "Non-Recycled Waste",
                 description: "Value of non-recycled waste generated. \"Non-recycled waste\" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC.",
     
@@ -577,7 +612,7 @@ export const sfdrDataModel = [    {
             label: "Emissions",
             fields: [
                  {
-                name: "emissionsOfInorganicPollutants",
+                name: "emissionsOfInorganicPollutantsInTonnes",
                 label: "Emissions of Inorganic Pollutants",
                 description: "Inorganic pollutants such as those arising due to radiant energy and noise, heat, or light, including arsenic, cadmium, lead, mercury, chromium, aluminum, nitrates, nitrites, and fluorides or contaminants of water such as arsenic, fluoride, iron, nitrate, heavy metals, etc.",
     
@@ -588,7 +623,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "emissionsOfAirPollutants",
+                name: "emissionsOfAirPollutantsInTonnes",
                 label: "Emissions of Air Pollutants",
                 description: "Air pollutants (Direct Sulphur dioxides (Sox/SO2) emissions, direct nitrogen oxides (NOx/NO2) emissions, direct ammonia (NH3) emissions, direct particulate matter (PM2.5) emissions, direct non-methane volatile organic compounds (NMVOC) emissions, direct total heavy metals (HM) emissions (encompassing cadmium, mercury and lead)",
     
@@ -599,7 +634,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "emissionsOfOzoneDepletionSubstances",
+                name: "emissionsOfOzoneDepletionSubstancesInTonnes",
                 label: "Emissions of Ozone Depletion Substances",
                 description: "Tonnes of ozone depletion substances, chemicals that destroy the earth\'s protective ozone layer. They include: chlorofluorocarbons (CFCs), halons, carbon tetrachloride (CCl4), methyl chloroform (CH3CCl3), hydrobromofluorocarbons (HBFCs), hydrochlorofluorocarbons (HCFCs), methyl bromide (CH3Br), bromochloromethane (CH2BrCl)",
     
@@ -822,7 +857,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "unadjustedGenderPayGap",
+                name: "unadjustedGenderPayGapInPercent",
                 label: "Unadjusted gender pay gap",
                 description: "Average unadjusted gender pay gap (female to male ratio, only considering gender)",
     
@@ -855,7 +890,7 @@ export const sfdrDataModel = [    {
                 validation: "integer",
                 },
             {
-                name: "boardGenderDiversity",
+                name: "boardGenderDiversityInPercent",
                 label: "Board gender diversity",
                 description: "Average ratio of female to male board members, expressed as a percentage of all board members",
     
@@ -888,7 +923,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "rateOfAccidents",
+                name: "rateOfAccidentsInPercent",
                 label: "Rate Of Accidents",
                 description: "(number of accidents * 200,000) / number of hours worked by all employees",
     
@@ -899,7 +934,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "workdaysLost",
+                name: "workdaysLostInDays",
                 label: "Workdays Lost",
                 description: "Number of workdays lost to injuries, accidents, fatalities or illness",
     
@@ -976,7 +1011,7 @@ export const sfdrDataModel = [    {
     
                 },
             {
-                name: "excessiveCeoPayRatio",
+                name: "excessiveCeoPayRatioInPercent",
                 label: "Excessive CEO pay ratio",
                 description: "Average ratio of the annual total compensation for the highest compensated individual to the median annual total compensation for all employees (excluding the highest-compensated individual)",
     

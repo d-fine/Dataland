@@ -11,13 +11,13 @@ import java.math.BigDecimal
  */
 data class SfdrEnvironmentalEmissions(
     @field:Valid()
-    val emissionsOfInorganicPollutants: ExtendedDataPoint<BigDecimal?>? = null,
+    val emissionsOfInorganicPollutantsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val emissionsOfAirPollutants: ExtendedDataPoint<BigDecimal?>? = null,
+    val emissionsOfAirPollutantsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val emissionsOfOzoneDepletionSubstances: ExtendedDataPoint<BigDecimal?>? = null,
+    val emissionsOfOzoneDepletionSubstancesInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     val carbonReductionInitiatives: ExtendedDataPoint<YesNo?>? = null,
 

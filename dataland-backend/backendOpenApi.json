@@ -3875,7 +3875,7 @@
       "SfdrEnvironmentalEmissions": {
         "type": "object",
         "properties": {
-          "emissionsOfInorganicPollutants": {
+          "emissionsOfInorganicPollutantsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3883,7 +3883,7 @@
               }
             ]
           },
-          "emissionsOfAirPollutants": {
+          "emissionsOfAirPollutantsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3891,7 +3891,7 @@
               }
             ]
           },
-          "emissionsOfOzoneDepletionSubstances": {
+          "emissionsOfOzoneDepletionSubstancesInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -3912,7 +3912,7 @@
       "SfdrEnvironmentalEnergyPerformance": {
         "type": "object",
         "properties": {
-          "renewableEnergyProduction": {
+          "renewableEnergyProductionInGWh": {
             "nullable": true,
             "allOf": [
               {
@@ -3920,7 +3920,7 @@
               }
             ]
           },
-          "renewableEnergyConsumption": {
+          "renewableEnergyConsumptionInGWh": {
             "nullable": true,
             "allOf": [
               {
@@ -3928,7 +3928,7 @@
               }
             ]
           },
-          "nonRenewableEnergyProduction": {
+          "nonRenewableEnergyProductionInGWh": {
             "nullable": true,
             "allOf": [
               {
@@ -3936,7 +3936,7 @@
               }
             ]
           },
-          "relativeNonRenewableEnergyProduction": {
+          "relativeNonRenewableEnergyProductionInPercent": {
             "nullable": true,
             "allOf": [
               {
@@ -3944,7 +3944,7 @@
               }
             ]
           },
-          "nonRenewableEnergyConsumption": {
+          "nonRenewableEnergyConsumptionInGWh": {
             "nullable": true,
             "allOf": [
               {
@@ -3952,7 +3952,7 @@
               }
             ]
           },
-          "relativeNonRenewableEnergyConsumption": {
+          "relativeNonRenewableEnergyConsumptionInPercent": {
             "nullable": true,
             "allOf": [
               {
@@ -3960,7 +3960,232 @@
               }
             ]
           },
-          "totalHighImpactClimateSectorEnergyConsumption": {
+          "applicableHighImpactClimateSectors": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SfdrHighImpactClimateSectorEnergyConsumption"
+            },
+            "nullable": true,
+            "example": {
+              "NaceCodeA": {
+                "highImpactClimateSectorEnergyConsumptionInGWh": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                },
+                "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                }
+              },
+              "NaceCodeB": {
+                "highImpactClimateSectorEnergyConsumptionInGWh": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                },
+                "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                }
+              },
+              "NaceCodeC": {
+                "highImpactClimateSectorEnergyConsumptionInGWh": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                },
+                "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                }
+              },
+              "NaceCodeD": {
+                "highImpactClimateSectorEnergyConsumptionInGWh": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                },
+                "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                }
+              },
+              "NaceCodeE": {
+                "highImpactClimateSectorEnergyConsumptionInGWh": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                },
+                "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                }
+              },
+              "NaceCodeF": {
+                "highImpactClimateSectorEnergyConsumptionInGWh": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                },
+                "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                }
+              },
+              "NaceCodeG": {
+                "highImpactClimateSectorEnergyConsumptionInGWh": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                },
+                "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                }
+              },
+              "NaceCodeH": {
+                "highImpactClimateSectorEnergyConsumptionInGWh": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                },
+                "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                }
+              },
+              "NaceCodeL": {
+                "highImpactClimateSectorEnergyConsumptionInGWh": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                },
+                "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+                  "quality": "Audited",
+                  "dataSource": {
+                    "page": 0,
+                    "tagName": "string",
+                    "fileName": "string",
+                    "fileReference": "string"
+                  },
+                  "comment": "string",
+                  "value": 0
+                }
+              }
+            }
+          },
+          "totalHighImpactClimateSectorEnergyConsumptionInGWh": {
             "nullable": true,
             "allOf": [
               {
@@ -3968,7 +4193,7 @@
               }
             ]
           },
-          "nonRenewableEnergyConsumptionFossilFuels": {
+          "nonRenewableEnergyConsumptionFossilFuelsInGWh": {
             "nullable": true,
             "allOf": [
               {
@@ -3976,7 +4201,7 @@
               }
             ]
           },
-          "nonRenewableEnergyConsumptionCrudeOil": {
+          "nonRenewableEnergyConsumptionCrudeOilInGWh": {
             "nullable": true,
             "allOf": [
               {
@@ -3984,7 +4209,7 @@
               }
             ]
           },
-          "nonRenewableEnergyConsumptionNaturalGas": {
+          "nonRenewableEnergyConsumptionNaturalGasInGWh": {
             "nullable": true,
             "allOf": [
               {
@@ -3992,7 +4217,7 @@
               }
             ]
           },
-          "nonRenewableEnergyConsumptionLignite": {
+          "nonRenewableEnergyConsumptionLigniteInGWh": {
             "nullable": true,
             "allOf": [
               {
@@ -4000,7 +4225,7 @@
               }
             ]
           },
-          "nonRenewableEnergyConsumptionCoal": {
+          "nonRenewableEnergyConsumptionCoalInGWh": {
             "nullable": true,
             "allOf": [
               {
@@ -4008,7 +4233,7 @@
               }
             ]
           },
-          "nonRenewableEnergyConsumptionNuclearEnergy": {
+          "nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
             "nullable": true,
             "allOf": [
               {
@@ -4016,7 +4241,7 @@
               }
             ]
           },
-          "nonRenewableEnergyConsumptionOther": {
+          "nonRenewableEnergyConsumptionOtherInGWh": {
             "nullable": true,
             "allOf": [
               {
@@ -4029,7 +4254,7 @@
       "SfdrEnvironmentalGreenhouseGasEmissions": {
         "type": "object",
         "properties": {
-          "scope1GhgEmissions": {
+          "scope1GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -4037,7 +4262,7 @@
               }
             ]
           },
-          "scope2GhgEmissions": {
+          "scope2GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -4045,7 +4270,7 @@
               }
             ]
           },
-          "scope2GhgEmissionsLocationBased": {
+          "scope2GhgEmissionsLocationBasedInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -4053,7 +4278,7 @@
               }
             ]
           },
-          "scope2GhgEmissionsMarketBased": {
+          "scope2GhgEmissionsMarketBasedInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -4061,7 +4286,7 @@
               }
             ]
           },
-          "scope1And2GhgEmissions": {
+          "scope1And2GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -4069,7 +4294,7 @@
               }
             ]
           },
-          "scope1And2GhgEmissionsLocationBased": {
+          "scope1And2GhgEmissionsLocationBasedInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -4077,7 +4302,7 @@
               }
             ]
           },
-          "scope1And2GhgEmissionsMarketBased": {
+          "scope1And2GhgEmissionsMarketBasedInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -4085,7 +4310,7 @@
               }
             ]
           },
-          "scope3GhgEmissions": {
+          "scope3GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -4093,7 +4318,7 @@
               }
             ]
           },
-          "scope1And2And3GhgEmissions": {
+          "scope1And2And3GhgEmissionsInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -4101,7 +4326,7 @@
               }
             ]
           },
-          "carbonFootprint": {
+          "carbonFootprintInTonnesPerMillionEURRevenue": {
             "nullable": true,
             "allOf": [
               {
@@ -4109,7 +4334,7 @@
               }
             ]
           },
-          "ghgIntensity": {
+          "ghgIntensityInTonnesPerMillionEURRevenue": {
             "nullable": true,
             "allOf": [
               {
@@ -4130,7 +4355,7 @@
       "SfdrEnvironmentalWaste": {
         "type": "object",
         "properties": {
-          "hazardousAndRadioactiveWaste": {
+          "hazardousAndRadioactiveWasteInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -4170,7 +4395,7 @@
               }
             ]
           },
-          "nonRecycledWaste": {
+          "nonRecycledWasteInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -4207,7 +4432,7 @@
       "SfdrEnvironmentalWater": {
         "type": "object",
         "properties": {
-          "emissionsToWater": {
+          "emissionsToWaterInTonnes": {
             "nullable": true,
             "allOf": [
               {
@@ -4215,7 +4440,7 @@
               }
             ]
           },
-          "waterConsumption": {
+          "waterConsumptionInCubicMeters": {
             "nullable": true,
             "allOf": [
               {
@@ -4223,7 +4448,7 @@
               }
             ]
           },
-          "waterReused": {
+          "waterReusedInCubicMeters": {
             "nullable": true,
             "allOf": [
               {
@@ -4231,7 +4456,7 @@
               }
             ]
           },
-          "relativeWaterUsage": {
+          "relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
             "nullable": true,
             "allOf": [
               {
@@ -4271,17 +4496,279 @@
         }
       },
       "SfdrGeneralGeneral": {
+        "required": [
+          "dataDate",
+          "fiscalYearEnd"
+        ],
         "type": "object",
         "properties": {
           "dataDate": {
             "type": "string",
-            "format": "date",
-            "nullable": true
+            "format": "date"
           },
           "fiscalYearEnd": {
             "type": "string",
-            "format": "date",
-            "nullable": true
+            "format": "date"
+          },
+          "referencedReports": {
+            "type": "object",
+            "nullable": true,
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "isGroupLevel": "Yes",
+                "reportDate": "2023-10-12",
+                "currency": "string"
+              }
+            }
+          },
+          "scopeOfEntities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          }
+        }
+      },
+      "SfdrHighImpactClimateSectorEnergyConsumption": {
+        "type": "object",
+        "properties": {
+          "highImpactClimateSectorEnergyConsumptionInGWh": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          }
+        },
+        "example": {
+          "NaceCodeA": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeB": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeC": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeD": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeE": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeF": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeG": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeH": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
+          },
+          "NaceCodeL": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "quality": "Audited",
+              "dataSource": {
+                "page": 0,
+                "tagName": "string",
+                "fileName": "string",
+                "fileReference": "string"
+              },
+              "comment": "string",
+              "value": 0
+            }
           }
         }
       },
@@ -4548,7 +5035,7 @@
               }
             ]
           },
-          "unadjustedGenderPayGap": {
+          "unadjustedGenderPayGapInPercent": {
             "nullable": true,
             "allOf": [
               {
@@ -4572,7 +5059,7 @@
               }
             ]
           },
-          "boardGenderDiversity": {
+          "boardGenderDiversityInPercent": {
             "nullable": true,
             "allOf": [
               {
@@ -4596,7 +5083,7 @@
               }
             ]
           },
-          "rateOfAccidents": {
+          "rateOfAccidentsInPercent": {
             "nullable": true,
             "allOf": [
               {
@@ -4604,7 +5091,7 @@
               }
             ]
           },
-          "workdaysLost": {
+          "workdaysLostInDays": {
             "nullable": true,
             "allOf": [
               {
@@ -4660,7 +5147,7 @@
               }
             ]
           },
-          "excessiveCeoPayRatio": {
+          "excessiveCeoPayRatioInPercent": {
             "nullable": true,
             "allOf": [
               {
@@ -4669,6 +5156,14 @@
             ]
           }
         }
+      },
+      "YesNoNa": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No",
+          "NA"
+        ]
       },
       "CompanyAssociatedDataPathwaysToParisData": {
         "required": [
@@ -7585,14 +8080,6 @@
           "Greater50"
         ]
       },
-      "YesNoNa": {
-        "type": "string",
-        "enum": [
-          "Yes",
-          "No",
-          "NA"
-        ]
-      },
       "Activity": {
         "type": "string",
         "enum": [
@@ -9235,34 +9722,6 @@
             "type": "string",
             "format": "date",
             "nullable": true
-          },
-          "testNumberWithoutValidation": {
-            "type": "number",
-            "nullable": true
-          },
-          "testNumberWithMinValue": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "testNumberWithMaxValue": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "testNumberWithMinAndMaxValue": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
           }
         }
       },

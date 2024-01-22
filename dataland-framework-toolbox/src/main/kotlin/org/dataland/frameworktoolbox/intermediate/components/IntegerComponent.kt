@@ -16,10 +16,11 @@ open class IntegerComponent(
 ) : NumberBaseComponent(identifier, parent, "java.math.BigInteger") {
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        val componentName = when(documentSupport) {
+        val componentName = when (documentSupport) {
             is NoDocumentSupport -> "NumberFormField"
             is ExtendedDocumentSupport -> "BigDecimalExtendedDataPointFormField"
-            else -> throw IllegalArgumentException("IntegerComponent does not support document support '$documentSupport")
+            else ->
+                throw IllegalArgumentException("IntegerComponent does not support document support '$documentSupport")
         }
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,

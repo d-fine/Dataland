@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.enums.sfdr
+package org.dataland.datalandbackend.frameworks.sfdr.custom
 
 import io.swagger.v3.oas.annotations.media.Schema
 

@@ -12,7 +12,7 @@ import java.math.BigDecimal
  */
 data class SfdrEnvironmentalWaste(
     @field:Valid()
-    val hazardousAndRadioactiveWaste: ExtendedDataPoint<BigDecimal?>? = null,
+    val hazardousAndRadioactiveWasteInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     val manufactureOfAgrochemicalPesticidesProducts: ExtendedDataPoint<YesNo?>? = null,
 
@@ -23,7 +23,7 @@ data class SfdrEnvironmentalWaste(
     val sustainableOceansAndSeasPolicy: BaseDataPoint<YesNo>? = null,
 
     @field:Valid()
-    val nonRecycledWaste: ExtendedDataPoint<BigDecimal?>? = null,
+    val nonRecycledWasteInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     val threatenedSpeciesExposure: ExtendedDataPoint<YesNo?>? = null,
 

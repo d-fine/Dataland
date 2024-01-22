@@ -10,10 +10,11 @@ open class Annotation(
     val fullyQualifiedName: String,
     val rawParameterSpec: String = "",
     val applicationTargetPrefix: String? = null,
+    val additionalImports: Set<String> = emptySet(),
 ) {
     val shortenedQualifier: String
         get() = fullyQualifiedName.substringAfterLast(".")
 
     val imports: Set<String>
-        get() = setOf(fullyQualifiedName)
+        get() = setOf(fullyQualifiedName) + additionalImports
 }

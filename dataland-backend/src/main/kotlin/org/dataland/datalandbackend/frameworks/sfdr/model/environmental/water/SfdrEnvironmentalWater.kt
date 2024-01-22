@@ -11,16 +11,16 @@ import java.math.BigDecimal
  */
 data class SfdrEnvironmentalWater(
     @field:Valid()
-    val emissionsToWater: ExtendedDataPoint<BigDecimal?>? = null,
+    val emissionsToWaterInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val waterConsumption: ExtendedDataPoint<BigDecimal?>? = null,
+    val waterConsumptionInCubicMeters: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val waterReused: ExtendedDataPoint<BigDecimal?>? = null,
+    val waterReusedInCubicMeters: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val relativeWaterUsage: ExtendedDataPoint<BigDecimal?>? = null,
+    val relativeWaterUsageInCubicMetersPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
 
     val waterManagementPolicy: ExtendedDataPoint<YesNo?>? = null,
 

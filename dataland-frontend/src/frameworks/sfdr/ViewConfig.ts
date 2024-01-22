@@ -6,6 +6,7 @@ import { formatNumberForDatatable } from "@/components/resources/dataTable/conve
 import { wrapDisplayValueWithDatapointInformation } 
 from "@/components/resources/dataTable/conversion/DataPoints";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
+import { formatHighImpactClimateSectorForDisplay } from "@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
       type: "section",
@@ -37,6 +38,15 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.general?.general?.fiscalYearEnd)
             ,
             },
+            {
+              type: "cell",
+              label: "Scope Of Entities",
+              explanation: "Does a list of legal entities covered by Sust./Annual/Integrated report match with a list of legal entities covered by Audited Consolidated Financial Statement ",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.general?.general?.scopeOfEntities)
+            ,
+            },
             ],
     
         },
@@ -61,7 +71,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Scope 1 carbon emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissions?.value, ""), "Scope 1 GHG emissions", dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissions)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes?.value, ""), "Scope 1 GHG emissions", dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes)
             ,
             },
             {
@@ -70,7 +80,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Scope 2 carbon emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissions?.value, ""), "Scope 2 GHG emissions", dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissions)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsInTonnes?.value, ""), "Scope 2 GHG emissions", dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsInTonnes)
             ,
             },
             {
@@ -79,7 +89,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Scope 2 carbon emissions computed using the location-based method",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBased?.value, ""), "Scope 2 GHG emissions (location-based)", dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBased)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes?.value, ""), "Scope 2 GHG emissions (location-based)", dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes)
             ,
             },
             {
@@ -88,7 +98,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Scope 2 carbon emissions computed using the market-based method",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBased?.value, ""), "Scope 2 GHG emissions (market-based)", dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBased)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes?.value, ""), "Scope 2 GHG emissions (market-based)", dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes)
             ,
             },
             {
@@ -97,7 +107,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Sum of scope 1 and 2 carbon emissions",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissions?.value, ""), "Scope 1 and 2 GHG emissions", dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissions)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsInTonnes?.value, ""), "Scope 1 and 2 GHG emissions", dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsInTonnes)
             ,
             },
             {
@@ -106,7 +116,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Sum of scope 1 and 2 carbon emissions, using the location-based method to compute scope 2 carbon emissions",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsLocationBased?.value, ""), "Scope 1 and 2 GHG emissions (location-based)", dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsLocationBased)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsLocationBasedInTonnes?.value, ""), "Scope 1 and 2 GHG emissions (location-based)", dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsLocationBasedInTonnes)
             ,
             },
             {
@@ -115,7 +125,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Sum of scope 1 and 2 carbon emissions, using the market-based method to compute scope 2 carbon emissions",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsMarketBased?.value, ""), "Scope 1 and 2 GHG emissions (market-based)", dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsMarketBased)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsMarketBasedInTonnes?.value, ""), "Scope 1 and 2 GHG emissions (market-based)", dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsMarketBasedInTonnes)
             ,
             },
             {
@@ -124,7 +134,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Scope 3 carbon emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope3GhgEmissions?.value, ""), "Scope 3 GHG emissions", dataset.environmental?.greenhouseGasEmissions?.scope3GhgEmissions)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes?.value, ""), "Scope 3 GHG emissions", dataset.environmental?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes)
             ,
             },
             {
@@ -133,7 +143,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Sum of scope 1, 2 and 3 carbon emissions",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissions?.value, ""), "Scope 1 and 2 and 3 GHG emissions", dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissions)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsInTonnes?.value, ""), "Scope 1 and 2 and 3 GHG emissions", dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsInTonnes)
             ,
             },
             {
@@ -142,7 +152,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Tonnes GHG emissions / EUR million enterprise value",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.carbonFootprint?.value, ""), "Carbon footprint", dataset.environmental?.greenhouseGasEmissions?.carbonFootprint)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEURRevenue?.value, ""), "Carbon footprint", dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEURRevenue)
             ,
             },
             {
@@ -151,13 +161,13 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Tonnes of GHG emissions / EUR million revenue",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.ghgIntensity?.value, ""), "GHG intensity", dataset.environmental?.greenhouseGasEmissions?.ghgIntensity)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue?.value, ""), "GHG intensity", dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue)
             ,
             },
             {
               type: "cell",
               label: "Fossil Fuel Sector Exposure",
-              explanation: "Do you derive any revenues from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels as defined in Article 2, point (62), of Regulation (EU) 2018/1999 of the European Parliament and of the Council? See also Regulation, Annex I, top (5).",
+              explanation: "(Part of) revenues derived from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels as defined in Article 2, point (62), of Regulation (EU) 2018/1999 of the European Parliament and of the Council? See also Regulation, Annex I, top (5).",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.greenhouseGasEmissions?.fossilFuelSectorExposure?.value), "Fossil Fuel Sector Exposure", dataset.environmental?.greenhouseGasEmissions?.fossilFuelSectorExposure)
@@ -178,7 +188,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Total value of renewable energy produced, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation, Annex I, top (6).",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.renewableEnergyProduction?.value, ""), "Renewable Energy Production", dataset.environmental?.energyPerformance?.renewableEnergyProduction)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.renewableEnergyProductionInGWh?.value, ""), "Renewable Energy Production", dataset.environmental?.energyPerformance?.renewableEnergyProductionInGWh)
             ,
             },
             {
@@ -187,7 +197,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Total value of renewable energy consumed, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation, Annex I, top (6).",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.renewableEnergyConsumption?.value, ""), "Renewable Energy Consumption", dataset.environmental?.energyPerformance?.renewableEnergyConsumption)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.renewableEnergyConsumptionInGWh?.value, ""), "Renewable Energy Consumption", dataset.environmental?.energyPerformance?.renewableEnergyConsumptionInGWh)
             ,
             },
             {
@@ -196,7 +206,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Total value of non-renewable energy produced, meaning energy from sources other than non-fossil sources. See also Regulation, Annex I, top (7).",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyProduction?.value, ""), "Non-Renewable Energy Production", dataset.environmental?.energyPerformance?.nonRenewableEnergyProduction)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyProductionInGWh?.value, ""), "Non-Renewable Energy Production", dataset.environmental?.energyPerformance?.nonRenewableEnergyProductionInGWh)
             ,
             },
             {
@@ -205,7 +215,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Share of non-renewable energy production from total energy production (i.e. renewable plus non-renewable).",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyProduction?.value, ""), "Relative Non-Renewable Energy Production", dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyProduction)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyProductionInPercent?.value, ""), "Relative Non-Renewable Energy Production", dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyProductionInPercent)
             ,
             },
             {
@@ -214,7 +224,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Total value of non-renewable energy consumed, meaning energy from sources other than non-fossil sources.",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumption?.value, ""), "Non-Renewable Energy Consumption", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumption)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionInGWh?.value, ""), "Non-Renewable Energy Consumption", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionInGWh)
             ,
             },
             {
@@ -223,7 +233,16 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Share of non-renewal energy consumption from total energy consumption (i.e. renewable plus non-renewable).",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyConsumption?.value, ""), "Relative Non-Renewable Energy Consumption", dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyConsumption)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyConsumptionInPercent?.value, ""), "Relative Non-Renewable Energy Consumption", dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyConsumptionInPercent)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Applicable High Impact Climate Sectors",
+              explanation: "Sector applicable activities",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => formatHighImpactClimateSectorForDisplay(dataset.environmental?.energyPerformance?.applicableHighImpactClimateSectors)
             ,
             },
             {
@@ -232,7 +251,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "High impact climate sectors’ means the sectors listed in Sections A to H and Section L of Annex I to Regulation (EC) No 1893/2006 of the European Parliament and of the Council (Regulation (EC) No 1893/2006 of the European Parliament and of the Council of 20 December 2006 establishing the statistical classification of economic activities NACE Revision 2 and amending Council Regulation (EEC) No 3037/90 as well as certain EC Regulations on specific statistical domains (OJ L 393, 30.12.2006, p. 1)).",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.totalHighImpactClimateSectorEnergyConsumption?.value, ""), "Total High Impact Climate Sector Energy Consumption", dataset.environmental?.energyPerformance?.totalHighImpactClimateSectorEnergyConsumption)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.totalHighImpactClimateSectorEnergyConsumptionInGWh?.value, ""), "Total High Impact Climate Sector Energy Consumption", dataset.environmental?.energyPerformance?.totalHighImpactClimateSectorEnergyConsumptionInGWh)
             ,
             },
             {
@@ -241,7 +260,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Energy consumption from fossil fuels (sum of crude oil, natural gas, nuclear energy, lignite and coal) (non-renewable energy source)",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionFossilFuels?.value, ""), "Non-Renewable Energy Consumption Fossil Fuels", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionFossilFuels)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionFossilFuelsInGWh?.value, ""), "Non-Renewable Energy Consumption Fossil Fuels", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionFossilFuelsInGWh)
             ,
             },
             {
@@ -250,7 +269,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Energy consumption from crude oil (non-renewable energy source)",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCrudeOil?.value, ""), "Non-Renewable Energy Consumption Crude Oil", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCrudeOil)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCrudeOilInGWh?.value, ""), "Non-Renewable Energy Consumption Crude Oil", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCrudeOilInGWh)
             ,
             },
             {
@@ -259,7 +278,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Energy consumption from natural gas (non-renewable energy source)",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNaturalGas?.value, ""), "Non-Renewable Energy Consumption Natural Gas", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNaturalGas)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNaturalGasInGWh?.value, ""), "Non-Renewable Energy Consumption Natural Gas", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNaturalGasInGWh)
             ,
             },
             {
@@ -268,7 +287,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Energy consumption from lignite (non-renewable energy source)",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionLignite?.value, ""), "Non-Renewable Energy Consumption Lignite", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionLignite)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionLigniteInGWh?.value, ""), "Non-Renewable Energy Consumption Lignite", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionLigniteInGWh)
             ,
             },
             {
@@ -277,7 +296,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Energy consumption from coal (non-renewable energy source)",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCoal?.value, ""), "Non-Renewable Energy Consumption Coal", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCoal)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCoalInGWh?.value, ""), "Non-Renewable Energy Consumption Coal", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCoalInGWh)
             ,
             },
             {
@@ -286,7 +305,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Energy consumption from nuclear energy (Uranium) (non-renewable energy source)",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNuclearEnergy?.value, ""), "Non-Renewable Energy Consumption Nuclear Energy", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNuclearEnergy)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNuclearEnergyInGWh?.value, ""), "Non-Renewable Energy Consumption Nuclear Energy", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNuclearEnergyInGWh)
             ,
             },
             {
@@ -295,7 +314,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Energy consumption from any other available (used) non-renewable source of energy",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionOther?.value, ""), "Non-Renewable Energy Consumption Other", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionOther)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionOtherInGWh?.value, ""), "Non-Renewable Energy Consumption Other", dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionOtherInGWh)
             ,
             },
             ],
@@ -310,7 +329,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
           children: [    {
               type: "cell",
               label: "Primary Forest And Wooded Land Of Native Species Exposure",
-              explanation: "Do you have sites/operations located in or near to primary forest and other wooded areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).",
+              explanation: "Sites/operations (partly) located in or near to primary forest and other wooded areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.biodiversity?.primaryForestAndWoodedLandOfNativeSpeciesExposure?.value), "Primary Forest And Wooded Land Of Native Species Exposure", dataset.environmental?.biodiversity?.primaryForestAndWoodedLandOfNativeSpeciesExposure)
@@ -319,7 +338,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Protected Areas Exposure",
-              explanation: "Do you have sites/operations located in or near protected areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).",
+              explanation: "Sites/operations (partly) located in or near protected areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.biodiversity?.protectedAreasExposure?.value), "Protected Areas Exposure", dataset.environmental?.biodiversity?.protectedAreasExposure)
@@ -328,7 +347,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Rare Or Endangered Ecosystems Exposure",
-              explanation: "Do you have sites/operations in or near areas designated for the protection of species (including flora and fauna) and where the activities of those sites/operations lead to the deterioration of natural habitats and the habitats of those species and disturb the species for which the protected area has been designated? See also Regulation, Annex I, table 1, indicator nr. 7 and Annex I, definition 18(a).",
+              explanation: "Sites/operations in or near areas designated for the protection of species (including flora and fauna) and where the activities of those sites/operations lead to the deterioration of natural habitats and the habitats of those species and disturb the species for which the protected area has been designated? See also Regulation, Annex I, table 1, indicator nr. 7 and Annex I, definition 18(a).",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.biodiversity?.rareOrEndangeredEcosystemsExposure?.value), "Rare Or Endangered Ecosystems Exposure", dataset.environmental?.biodiversity?.rareOrEndangeredEcosystemsExposure)
@@ -337,7 +356,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Highly Biodiverse Grassland Exposure",
-              explanation: "Do you have sites/operations located in highly biodiverse grassland that is: (i) natural, namely, grassland that would remain grassland in the absence of human intervention and which maintains the natural species composition and ecological characteristics and processes; or (ii) non-natural, namely, grassland that would cease to be grassland in the absence of human intervention and which is species-rich and not degraded, unless evidence is provided that the harvesting of the raw material is necessary to preserve its grassland status?",
+              explanation: "Sites/operations (partly) located in highly biodiverse grassland that is: (i) natural, namely, grassland that would remain grassland in the absence of human intervention and which maintains the natural species composition and ecological characteristics and processes; or (ii) non-natural, namely, grassland that would cease to be grassland in the absence of human intervention and which is species-rich and not degraded, unless evidence is provided that the harvesting of the raw material is necessary to preserve its grassland status?",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.biodiversity?.highlyBiodiverseGrasslandExposure?.value), "Highly Biodiverse Grassland Exposure", dataset.environmental?.biodiversity?.highlyBiodiverseGrasslandExposure)
@@ -358,7 +377,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Emissions to water (direct nitrates, direct phosphate emissions, direct pesticides) to water (tonnes)",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.water?.emissionsToWater?.value, ""), "Emissions To Water", dataset.environmental?.water?.emissionsToWater)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.water?.emissionsToWaterInTonnes?.value, ""), "Emissions To Water", dataset.environmental?.water?.emissionsToWaterInTonnes)
             ,
             },
             {
@@ -367,7 +386,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Amount of water consumed by the company",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.water?.waterConsumption?.value, ""), "Water Consumption", dataset.environmental?.water?.waterConsumption)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.water?.waterConsumptionInCubicMeters?.value, ""), "Water Consumption", dataset.environmental?.water?.waterConsumptionInCubicMeters)
             ,
             },
             {
@@ -376,7 +395,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Amount of water recycled and reused by the company. Linked to Regulation, Annex I, Table 2, metric 6.2.",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.water?.waterReused?.value, ""), "Water Reused", dataset.environmental?.water?.waterReused)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.water?.waterReusedInCubicMeters?.value, ""), "Water Reused", dataset.environmental?.water?.waterReusedInCubicMeters)
             ,
             },
             {
@@ -385,13 +404,13 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Average amount in cubic meters of fresh water used per million EUR revenue",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.water?.relativeWaterUsage?.value, ""), "Relative Water Usage", dataset.environmental?.water?.relativeWaterUsage)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue?.value, ""), "Relative Water Usage", dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue)
             ,
             },
             {
               type: "cell",
               label: "Water Management Policy",
-              explanation: "Does the company have policies and procedures for water management? If yes, please share the relevant documents with us.",
+              explanation: "Existence of policies and procedures for water management",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.water?.waterManagementPolicy?.value), "Water Management Policy", dataset.environmental?.water?.waterManagementPolicy)
@@ -400,7 +419,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "High Water Stress Area Exposure",
-              explanation: "Do you have sites/operations in or near ‘areas of high water stress’, meaning regions where the percentage of total water withdrawn is high (40-80 %) or extremely high (greater than 80 %) where the activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, definition 13.",
+              explanation: "Sites (partly) located in \"areas of high water stress\", i.e. regions where the percentage of total water withdrawn is high (60%) or extremely high (80%), without a water management policy",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.water?.highWaterStressAreaExposure?.value), "High Water Stress Area Exposure", dataset.environmental?.water?.highWaterStressAreaExposure)
@@ -421,13 +440,13 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Tonnes of hazardous waste and radioactive waste generated, which are Explosives, Oxidizing substances, Highly flammable, Flammable, Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding substance which possesses any of the characteristics listed above (tonnes)",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.waste?.hazardousAndRadioactiveWaste?.value, ""), "Hazardous and Radioactive Waste", dataset.environmental?.waste?.hazardousAndRadioactiveWaste)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.waste?.hazardousAndRadioactiveWasteInTonnes?.value, ""), "Hazardous and Radioactive Waste", dataset.environmental?.waste?.hazardousAndRadioactiveWasteInTonnes)
             ,
             },
             {
               type: "cell",
               label: "Manufacture Of Agrochemical Pesticides Products",
-              explanation: "Are you involved in the manufacturing of pesticides and other agrochemical products? (see activities which fall under Division 20.2 of Annex I to Regulation (EC) No 1893/2006)",
+              explanation: "Involvement in manufacture of pesticides and other agrochemical products",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.waste?.manufactureOfAgrochemicalPesticidesProducts?.value), "Manufacture Of Agrochemical Pesticides Products", dataset.environmental?.waste?.manufactureOfAgrochemicalPesticidesProducts)
@@ -436,7 +455,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Land Degradation Desertification Soil Sealing Exposure",
-              explanation: "Is the company involved in activities which cause land degradation, desertification or soil sealing? See also Regulation, Annex I, Table 2, indicator 10.",
+              explanation: "Involvement in activities, which cause land degradation, desertification or soil sealing",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.waste?.landDegradationDesertificationSoilSealingExposure?.value), "Land Degradation Desertification Soil Sealing Exposure", dataset.environmental?.waste?.landDegradationDesertificationSoilSealingExposure)
@@ -445,7 +464,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Sustainable Agriculture Policy",
-              explanation: "Do you have sustainable land/agriculture practices or policies? If yes, please share the relevant documents with us.",
+              explanation: "Sustainable land/agriculture practices or policies",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.waste?.sustainableAgriculturePolicy?.value), "Sustainable Agriculture Policy", dataset.environmental?.waste?.sustainableAgriculturePolicy)
@@ -454,7 +473,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Sustainable Oceans And Seas Policy",
-              explanation: "Do you have sustainable oceans/seas practices or policies? If yes, please share the relevant documents with us.",
+              explanation: "Sustainable oceans/seas practices or policies",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.waste?.sustainableOceansAndSeasPolicy?.value), "Sustainable Oceans And Seas Policy", dataset.environmental?.waste?.sustainableOceansAndSeasPolicy)
@@ -466,13 +485,13 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Value of non-recycled waste generated. \"Non-recycled waste\" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC.",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.waste?.nonRecycledWaste?.value, ""), "Non-Recycled Waste", dataset.environmental?.waste?.nonRecycledWaste)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.waste?.nonRecycledWasteInTonnes?.value, ""), "Non-Recycled Waste", dataset.environmental?.waste?.nonRecycledWasteInTonnes)
             ,
             },
             {
               type: "cell",
               label: "Threatened Species Exposure",
-              explanation: "Do you have operations which affect threatened species?",
+              explanation: "Operations, which affect threatened species",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.waste?.threatenedSpeciesExposure?.value), "Threatened Species Exposure", dataset.environmental?.waste?.threatenedSpeciesExposure)
@@ -481,7 +500,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Biodiversity Protection Policy",
-              explanation: "Do you have a biodiversity protection policy covering operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas? If yes, please share the policy with us.",
+              explanation: "Existence of a biodiversity protection policy that encompasses operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.waste?.biodiversityProtectionPolicy?.value), "Biodiversity Protection Policy", dataset.environmental?.waste?.biodiversityProtectionPolicy)
@@ -490,7 +509,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Deforestation Policy",
-              explanation: "Do you have a policy to address deforestation? If yes, please share the policy with us. \"Deforestation\" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council.",
+              explanation: "Existence of a policy to address deforestation. \"Deforestation\" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council.",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.waste?.deforestationPolicy?.value), "Deforestation Policy", dataset.environmental?.waste?.deforestationPolicy)
@@ -511,7 +530,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Inorganic pollutants such as those arising due to radiant energy and noise, heat, or light, including arsenic, cadmium, lead, mercury, chromium, aluminum, nitrates, nitrites, and fluorides or contaminants of water such as arsenic, fluoride, iron, nitrate, heavy metals, etc.",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.emissions?.emissionsOfInorganicPollutants?.value, ""), "Emissions of Inorganic Pollutants", dataset.environmental?.emissions?.emissionsOfInorganicPollutants)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.emissions?.emissionsOfInorganicPollutantsInTonnes?.value, ""), "Emissions of Inorganic Pollutants", dataset.environmental?.emissions?.emissionsOfInorganicPollutantsInTonnes)
             ,
             },
             {
@@ -520,7 +539,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Air pollutants (Direct Sulphur dioxides (Sox/SO2) emissions, direct nitrogen oxides (NOx/NO2) emissions, direct ammonia (NH3) emissions, direct particulate matter (PM2.5) emissions, direct non-methane volatile organic compounds (NMVOC) emissions, direct total heavy metals (HM) emissions (encompassing cadmium, mercury and lead)",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.emissions?.emissionsOfAirPollutants?.value, ""), "Emissions of Air Pollutants", dataset.environmental?.emissions?.emissionsOfAirPollutants)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.emissions?.emissionsOfAirPollutantsInTonnes?.value, ""), "Emissions of Air Pollutants", dataset.environmental?.emissions?.emissionsOfAirPollutantsInTonnes)
             ,
             },
             {
@@ -529,13 +548,13 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Tonnes of ozone depletion substances, chemicals that destroy the earth\'s protective ozone layer. They include: chlorofluorocarbons (CFCs), halons, carbon tetrachloride (CCl4), methyl chloroform (CH3CCl3), hydrobromofluorocarbons (HBFCs), hydrochlorofluorocarbons (HCFCs), methyl bromide (CH3Br), bromochloromethane (CH2BrCl)",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.emissions?.emissionsOfOzoneDepletionSubstances?.value, ""), "Emissions of Ozone Depletion Substances", dataset.environmental?.emissions?.emissionsOfOzoneDepletionSubstances)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.emissions?.emissionsOfOzoneDepletionSubstancesInTonnes?.value, ""), "Emissions of Ozone Depletion Substances", dataset.environmental?.emissions?.emissionsOfOzoneDepletionSubstancesInTonnes)
             ,
             },
             {
               type: "cell",
               label: "Carbon Reduction Initiatives",
-              explanation: "Do you have any policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement?",
+              explanation: "Existence of policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.environmental?.emissions?.carbonReductionInitiatives?.value), "Carbon Reduction Initiatives", dataset.environmental?.emissions?.carbonReductionInitiatives)
@@ -562,7 +581,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
           children: [    {
               type: "cell",
               label: "Human Rights Legal Proceedings",
-              explanation: "Have you been involved in Human Rights related legal proceedings?",
+              explanation: "Involvement in Human Rights related legal proceedings",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.humanRightsLegalProceedings?.value), "Human Rights Legal Proceedings", dataset.social?.socialAndEmployeeMatters?.humanRightsLegalProceedings)
@@ -571,7 +590,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "ILO Core Labour Standards",
-              explanation: "Do you abide by the ILO Core Labour Standards?",
+              explanation: "Abidance by the ILO Core Labour Standards",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.iloCoreLabourStandards?.value), "ILO Core Labour Standards", dataset.social?.socialAndEmployeeMatters?.iloCoreLabourStandards)
@@ -580,7 +599,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Environmental Policy",
-              explanation: "Do you have an environmental policy? If yes, please share the policy with us.",
+              explanation: "Existence of an environmental policy",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.environmentalPolicy?.value), "Environmental Policy", dataset.social?.socialAndEmployeeMatters?.environmentalPolicy)
@@ -589,7 +608,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Corruption Legal Proceedings",
-              explanation: "Have you been involved in corruption related legal proceedings?",
+              explanation: "Involvement in corruption-related legal proceedings",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.corruptionLegalProceedings?.value), "Corruption Legal Proceedings", dataset.social?.socialAndEmployeeMatters?.corruptionLegalProceedings)
@@ -598,7 +617,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Transparency Disclosure Policy",
-              explanation: "Do you have a transparency policy? If yes, please share the policy with us. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.",
+              explanation: "Existence of a transparency policy. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.transparencyDisclosurePolicy?.value), "Transparency Disclosure Policy", dataset.social?.socialAndEmployeeMatters?.transparencyDisclosurePolicy)
@@ -607,7 +626,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Human Rights Due Diligence Policy",
-              explanation: "Do you have policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact? If yes, please share the relevant documents with us.",
+              explanation: "Policies in place to support/respect human rights and conduct due diligence to ensure that business activities do not have a negative human rights impact.",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.humanRightsDueDiligencePolicy?.value), "Human Rights Due Diligence Policy", dataset.social?.socialAndEmployeeMatters?.humanRightsDueDiligencePolicy)
@@ -616,7 +635,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Policy against Child Labour",
-              explanation: "Do you have policies in place to abolish all forms of child labour? If yes, please share the policy with us.",
+              explanation: "Policies in place to abolish all forms of child labour.",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.policyAgainstChildLabour?.value), "Policy against Child Labour", dataset.social?.socialAndEmployeeMatters?.policyAgainstChildLabour)
@@ -625,7 +644,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Policy against Forced Labour",
-              explanation: "Do you have policies in place to abolish all forms of forced labour? If yes, please share the policy with us.",
+              explanation: "Policies in place to abolish all forms of forced labour.",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.policyAgainstForcedLabour?.value), "Policy against Forced Labour", dataset.social?.socialAndEmployeeMatters?.policyAgainstForcedLabour)
@@ -634,7 +653,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Policy against Discrimination in the Workplace",
-              explanation: "Do you have policies in place to eliminate discrimination in the workplace? If yes, please share the policy with us.",
+              explanation: "Policies in place to eliminate discrimination in the workplace.",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.policyAgainstDiscriminationInTheWorkplace?.value), "Policy against Discrimination in the Workplace", dataset.social?.socialAndEmployeeMatters?.policyAgainstDiscriminationInTheWorkplace)
@@ -643,7 +662,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "ISO 14001 Certificate",
-              explanation: "Is your company ISO 14001 certified (Environmental Management)? If yes, please share the certificate with us.",
+              explanation: "The company is ISO 14001 certifified",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.iso14001Certificate?.value), "ISO 14001 Certificate", dataset.social?.socialAndEmployeeMatters?.iso14001Certificate)
@@ -652,7 +671,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Policy against Bribery and Corruption",
-              explanation: "Do you have a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption? If yes, please share the policy with us.",
+              explanation: "Existence of a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption.",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.policyAgainstBriberyAndCorruption?.value), "Policy against Bribery and Corruption", dataset.social?.socialAndEmployeeMatters?.policyAgainstBriberyAndCorruption)
@@ -661,7 +680,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Fair Business Marketing Advertising Policy",
-              explanation: "Do you have policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services? If yes, please share the relevant documents with us.",
+              explanation: "Policies and procedures in place to apply fair business, marketing, and advertising practices and ensure the safety and quality of goods and services.",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.fairBusinessMarketingAdvertisingPolicy?.value), "Fair Business Marketing Advertising Policy", dataset.social?.socialAndEmployeeMatters?.fairBusinessMarketingAdvertisingPolicy)
@@ -670,7 +689,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Technologies Expertise Transfer Policy",
-              explanation: "Do you have policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise? If yes, please share the relevant documents with us.",
+              explanation: "Policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.technologiesExpertiseTransferPolicy?.value), "Technologies Expertise Transfer Policy", dataset.social?.socialAndEmployeeMatters?.technologiesExpertiseTransferPolicy)
@@ -679,7 +698,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Fair Competition Policy",
-              explanation: "Do you have policies and procedures in place related to fair competition and anti-competitive cartels? If yes, please share the relevant documents with us.",
+              explanation: "Policies and procedures in place related to fair competition and anti-competitive cartels",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.fairCompetitionPolicy?.value), "Fair Competition Policy", dataset.social?.socialAndEmployeeMatters?.fairCompetitionPolicy)
@@ -688,7 +707,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Violation Of Tax Rules And Regulation",
-              explanation: "Are you involved in violation of OECD Guidelines for Multinational Enterprises for Taxation: In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.",
+              explanation: "Involvement in a violation of OECD Guidelines for Multinational Enterprises for Taxation: In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.violationOfTaxRulesAndRegulation?.value), "Violation Of Tax Rules And Regulation", dataset.social?.socialAndEmployeeMatters?.violationOfTaxRulesAndRegulation)
@@ -697,7 +716,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "UN Global Compact Principles Compliance Policy",
-              explanation: "Do you have a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises? If yes, please share the policy with us.",
+              explanation: "Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.unGlobalCompactPrinciplesCompliancePolicy?.value), "UN Global Compact Principles Compliance Policy", dataset.social?.socialAndEmployeeMatters?.unGlobalCompactPrinciplesCompliancePolicy)
@@ -706,7 +725,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "OECD Guidelines For Multinational Enterprises Grievance Handling",
-              explanation: "Do you have grievance / complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises?",
+              explanation: "Existence of grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.oecdGuidelinesForMultinationalEnterprisesGrievanceHandling?.value), "OECD Guidelines For Multinational Enterprises Grievance Handling", dataset.social?.socialAndEmployeeMatters?.oecdGuidelinesForMultinationalEnterprisesGrievanceHandling)
@@ -718,7 +737,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Average unadjusted gender pay gap (female to male ratio, only considering gender)",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.unadjustedGenderPayGap?.value, ""), "Unadjusted gender pay gap", dataset.social?.socialAndEmployeeMatters?.unadjustedGenderPayGap)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.unadjustedGenderPayGapInPercent?.value, ""), "Unadjusted gender pay gap", dataset.social?.socialAndEmployeeMatters?.unadjustedGenderPayGapInPercent)
             ,
             },
             {
@@ -745,7 +764,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Average ratio of female to male board members, expressed as a percentage of all board members",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.boardGenderDiversity?.value, ""), "Board gender diversity", dataset.social?.socialAndEmployeeMatters?.boardGenderDiversity)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.boardGenderDiversityInPercent?.value, ""), "Board gender diversity", dataset.social?.socialAndEmployeeMatters?.boardGenderDiversityInPercent)
             ,
             },
             {
@@ -760,7 +779,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Workplace Accident Prevention Policy",
-              explanation: "Do you have workplace accident prevention policy? If yes, please share the policy with us.",
+              explanation: "Existence of a workplace accident prevention policy",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.workplaceAccidentPreventionPolicy?.value), "Workplace Accident Prevention Policy", dataset.social?.socialAndEmployeeMatters?.workplaceAccidentPreventionPolicy)
@@ -772,7 +791,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "(number of accidents * 200,000) / number of hours worked by all employees",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.rateOfAccidents?.value, ""), "Rate Of Accidents", dataset.social?.socialAndEmployeeMatters?.rateOfAccidents)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.rateOfAccidentsInPercent?.value, ""), "Rate Of Accidents", dataset.social?.socialAndEmployeeMatters?.rateOfAccidentsInPercent)
             ,
             },
             {
@@ -781,13 +800,13 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Number of workdays lost to injuries, accidents, fatalities or illness",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.workdaysLost?.value, ""), "Workdays Lost", dataset.social?.socialAndEmployeeMatters?.workdaysLost)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.workdaysLostInDays?.value, ""), "Workdays Lost", dataset.social?.socialAndEmployeeMatters?.workdaysLostInDays)
             ,
             },
             {
               type: "cell",
               label: "Supplier Code Of Conduct",
-              explanation: "Do you have a supplier code of conduct (against unsafe working conditions, precarious work, child labour and forced labour)? If yes, please share the document with us.",
+              explanation: "Supplier code of conduct addressing unsafe working conditions, precarious work, child labor, and forced labor.",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.supplierCodeOfConduct?.value), "Supplier Code Of Conduct", dataset.social?.socialAndEmployeeMatters?.supplierCodeOfConduct)
@@ -796,7 +815,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Grievance Handling Mechanism",
-              explanation: "Do you have any grievance/complaints handling mechanism related to employee matters?",
+              explanation: "Existence of a grievance/complaints handling mechanism related to employee matters",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.grievanceHandlingMechanism?.value), "Grievance Handling Mechanism", dataset.social?.socialAndEmployeeMatters?.grievanceHandlingMechanism)
@@ -805,7 +824,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Whistleblower Protection Policy",
-              explanation: "Do you have a policy on the protection of whistleblowers? If yes, please share the policy with us.",
+              explanation: "Existence of a policy on the protection of whistleblowers",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.socialAndEmployeeMatters?.whistleblowerProtectionPolicy?.value), "Whistleblower Protection Policy", dataset.social?.socialAndEmployeeMatters?.whistleblowerProtectionPolicy)
@@ -844,7 +863,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               explanation: "Average ratio of the annual total compensation for the highest compensated individual to the median annual total compensation for all employees (excluding the highest-compensated individual)",
               shouldDisplay: (): boolean => true
             ,
-              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatio?.value, ""), "Excessive CEO pay ratio", dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatio)
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatioInPercent?.value, ""), "Excessive CEO pay ratio", dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatioInPercent)
             ,
             },
             ],
@@ -859,7 +878,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
           children: [    {
               type: "cell",
               label: "Securities Not Certified As Green",
-              explanation: "Do you have securities in investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?",
+              explanation: "Possession of securities in investments that are not certified as green under a future EU legal act establishing an EU Green Bond Standard",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.greenSecurities?.securitiesNotCertifiedAsGreen?.value), "Securities Not Certified As Green", dataset.social?.greenSecurities?.securitiesNotCertifiedAsGreen)
@@ -877,7 +896,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
           children: [    {
               type: "cell",
               label: "Human Rights Policy",
-              explanation: "Do you have human rights policy? If yes, please share the policy with us.",
+              explanation: "Existence of a human rights policy",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.humanRights?.humanRightsPolicy?.value), "Human Rights Policy", dataset.social?.humanRights?.humanRightsPolicy)
@@ -886,7 +905,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Human Rights Due Diligence",
-              explanation: "Do you have due diligence processes to identify, prevent, mitigate and address adverse human rights impacts?",
+              explanation: "Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.humanRights?.humanRightsDueDiligence?.value), "Human Rights Due Diligence", dataset.social?.humanRights?.humanRightsDueDiligence)
@@ -895,7 +914,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Trafficking In Human Beings Policy",
-              explanation: "Do you have a policy against trafficking in human beings? If yes, please share the policy with us.",
+              explanation: "Existence of a policy against trafficking in human beings",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.humanRights?.traffickingInHumanBeingsPolicy?.value), "Trafficking In Human Beings Policy", dataset.social?.humanRights?.traffickingInHumanBeingsPolicy)
@@ -904,7 +923,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Reported Child Labour Incidents",
-              explanation: "Has their been any reported child labour incident (within own operations or supply chain)?",
+              explanation: "Reported incidents of child labor within own operations or supply chain",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.humanRights?.reportedChildLabourIncidents?.value), "Reported Child Labour Incidents", dataset.social?.humanRights?.reportedChildLabourIncidents)
@@ -913,7 +932,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             {
               type: "cell",
               label: "Reported Forced Or Compulsory Labour Incidents",
-              explanation: "Has their been any reported forced or compulsory labour incident (within own operations or supply chain)?",
+              explanation: "Reported incidents of forced or compulsory labor within own operations or supply chain.",
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.social?.humanRights?.reportedForcedOrCompulsoryLabourIncidents?.value), "Reported Forced Or Compulsory Labour Incidents", dataset.social?.humanRights?.reportedForcedOrCompulsoryLabourIncidents)

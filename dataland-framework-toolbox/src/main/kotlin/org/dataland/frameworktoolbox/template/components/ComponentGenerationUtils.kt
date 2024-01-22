@@ -45,17 +45,20 @@ open class ComponentGenerationUtils {
     open fun setCommonProperties(row: TemplateRow, component: ComponentBase) {
         component.label = row.fieldName
         component.uploadPageExplanation =
-            if (row.combinedTooltip?.isNotBlank() == true)
+            if (row.combinedTooltip?.isNotBlank() == true) {
                 row.combinedTooltip
-            else if (row.uploadPageTooltip?.isNotBlank() == true)
+            } else if (row.uploadPageTooltip?.isNotBlank() == true) {
                 row.uploadPageTooltip
-            else
+            } else {
                 null
+            }
 
         component.viewPageExplanation =
-            if (row.viewPageTooltip?.isNotBlank() == true)
+            if (row.viewPageTooltip?.isNotBlank() == true) {
                 row.viewPageTooltip
-        else null
+            } else {
+                null
+            }
 
         component.isNullable = row.mandatoryField == TemplateYesNo.No
         component.documentSupport = DocumentSupport.fromTemplate(row.documentSupport)

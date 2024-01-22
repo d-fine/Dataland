@@ -1,6 +1,8 @@
 package org.dataland.frameworktoolbox.frameworks.sfdr
 
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
+import org.dataland.frameworktoolbox.intermediate.group.get
+import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -14,5 +16,7 @@ class SfdrFramework : InDevelopmentPavedRoadFramework(
     explanation = "Sustainability Finance Disclosure Regulation",
     File("./dataland-framework-toolbox/data-dictionary/csv/dataDictionary-SFDR (developer version).csv"),
 ) {
-
+    override fun getComponentGenerationUtils(): ComponentGenerationUtils {
+        return SfdrComponentGenerationUtils()
+    }
 }

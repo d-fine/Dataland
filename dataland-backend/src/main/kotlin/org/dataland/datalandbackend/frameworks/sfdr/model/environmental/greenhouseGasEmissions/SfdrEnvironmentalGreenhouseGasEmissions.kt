@@ -11,37 +11,37 @@ import java.math.BigDecimal
  */
 data class SfdrEnvironmentalGreenhouseGasEmissions(
     @field:Valid()
-    val scope1GhgEmissions: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope1GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val scope2GhgEmissions: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val scope2GhgEmissionsLocationBased: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val scope2GhgEmissionsMarketBased: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val scope1And2GhgEmissions: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope1And2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val scope1And2GhgEmissionsLocationBased: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope1And2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val scope1And2GhgEmissionsMarketBased: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope1And2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val scope3GhgEmissions: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val scope1And2And3GhgEmissions: ExtendedDataPoint<BigDecimal?>? = null,
+    val scope1And2And3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val carbonFootprint: ExtendedDataPoint<BigDecimal?>? = null,
+    val carbonFootprintInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val ghgIntensity: ExtendedDataPoint<BigDecimal?>? = null,
+    val ghgIntensityInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
 
     val fossilFuelSectorExposure: ExtendedDataPoint<YesNo?>? = null,
 

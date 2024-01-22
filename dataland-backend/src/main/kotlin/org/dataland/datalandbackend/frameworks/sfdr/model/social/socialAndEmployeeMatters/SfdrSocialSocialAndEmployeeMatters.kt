@@ -47,24 +47,24 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
-    val unadjustedGenderPayGap: ExtendedDataPoint<BigDecimal?>? = null,
+    val unadjustedGenderPayGapInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
     val femaleBoardMembers: ExtendedDataPoint<BigInteger?>? = null,
 
     val maleBoardMembers: ExtendedDataPoint<BigInteger?>? = null,
 
     @field:Valid()
-    val boardGenderDiversity: ExtendedDataPoint<BigDecimal?>? = null,
+    val boardGenderDiversityInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
     val controversialWeaponsExposure: ExtendedDataPoint<YesNo?>? = null,
 
     val workplaceAccidentPreventionPolicy: BaseDataPoint<YesNo>? = null,
 
     @field:Valid()
-    val rateOfAccidents: ExtendedDataPoint<BigDecimal?>? = null,
+    val rateOfAccidentsInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val workdaysLost: ExtendedDataPoint<BigDecimal?>? = null,
+    val workdaysLostInDays: ExtendedDataPoint<BigDecimal?>? = null,
 
     val supplierCodeOfConduct: BaseDataPoint<YesNo>? = null,
 
@@ -80,6 +80,6 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    val excessiveCeoPayRatio: ExtendedDataPoint<BigDecimal?>? = null,
+    val excessiveCeoPayRatioInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
 )
