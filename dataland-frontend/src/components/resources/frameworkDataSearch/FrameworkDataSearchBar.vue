@@ -62,7 +62,7 @@ import type Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import { BasicCompanyInformation } from "@clients/backend";
+import { type BasicCompanyInformation } from "@clients/backend";
 
 export default defineComponent({
   setup() {

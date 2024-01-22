@@ -4,10 +4,7 @@
  */
 
 import { ApiClientProvider } from "@/services/ApiClients";
-import {
-  BasicCompanyInformation,
-  type DataTypeEnum,
-} from "@clients/backend";
+import { type BasicCompanyInformation, type DataTypeEnum } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
@@ -45,12 +42,8 @@ export async function getCompanyDataForFrameworkDataSearchPage(
       frameworkFilter = new Set(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE);
     }
 
-    return (await companyDataControllerApi.getCompanies(
-      searchString,
-      frameworkFilter,
-      countryCodeFilter,
-      sectorFilter,
-    )).data;
+    return (await companyDataControllerApi.getCompanies(searchString, frameworkFilter, countryCodeFilter, sectorFilter))
+      .data;
   } catch (error) {
     console.error(error);
     return [];

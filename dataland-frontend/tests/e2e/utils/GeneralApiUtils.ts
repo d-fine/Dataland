@@ -2,7 +2,7 @@ import {
   CompanyDataControllerApi,
   Configuration,
   type DataTypeEnum,
-  BasicCompanyInformation,
+  type BasicCompanyInformation,
 } from "@clients/backend";
 import { type RouteHandler } from "cypress/types/net-stubbing";
 import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
@@ -18,7 +18,10 @@ export interface UploadIds {
  * @param dataType Data type for which the returned companies should have at least one dataset
  * @returns an array of stored companies
  */
-export async function searchBasicCompanyInformationForDataType(token: string, dataType: DataTypeEnum): Promise<BasicCompanyInformation[]> {
+export async function searchBasicCompanyInformationForDataType(
+  token: string,
+  dataType: DataTypeEnum,
+): Promise<BasicCompanyInformation[]> {
   const response = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
     undefined,
     new Set([dataType]),
@@ -39,9 +42,10 @@ export async function countCompaniesAndDataSetsForDataType(
 ): Promise<{ numberOfCompaniesForDataType: number; numberOfDataSetsForDataType: number }> {
   const basicCompanyInformations = await searchBasicCompanyInformationForDataType(token, dataType);
   let numberOfDataSetsForDataType = 0;
-  const companyDataController = new CompanyDataControllerApi(new Configuration({ accessToken: token }))
+  const companyDataController = new CompanyDataControllerApi(new Configuration({ accessToken: token }));
   basicCompanyInformations.forEach(async (storedCompany) => {
-    numberOfDataSetsForDataType += (await companyDataController.getCompanyById(storedCompany.companyId)).data.dataRegisteredByDataland.length;
+    numberOfDataSetsForDataType += (await companyDataController.getCompanyById(storedCompany.companyId)).data
+      .dataRegisteredByDataland.length;
   });
 
   return {
