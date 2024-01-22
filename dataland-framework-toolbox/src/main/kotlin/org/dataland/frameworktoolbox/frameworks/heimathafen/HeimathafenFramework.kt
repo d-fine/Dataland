@@ -1,6 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.heimathafen
 
-import HeimathafenComponentGenerationUtils
+import ComponentGenerationUtilsForGermanFrameworks
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
 import org.dataland.frameworktoolbox.frameworks.heimathafen.custom.HeimathafenListOfBaseDataPointComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
@@ -24,7 +24,7 @@ class HeimathafenFramework : InDevelopmentPavedRoadFramework(
     File("./dataland-framework-toolbox/inputs/heimathafen/dataDictionary-Heimathafen.csv"),
 ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
-        return HeimathafenComponentGenerationUtils()
+        return ComponentGenerationUtilsForGermanFrameworks()
     }
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {

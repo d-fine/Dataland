@@ -1,5 +1,3 @@
-package org.dataland.frameworktoolbox.frameworks.esgquestionnaire
-
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.dataland.frameworktoolbox.template.model.TemplateRow
@@ -7,9 +5,9 @@ import org.dataland.frameworktoolbox.utils.Naming
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
 /**
- * Custom utility class used during Template conversion for the Esg Questionnaire framework.
+ * Custom utility class used during Template conversion for the German frameworks.
  */
-class EsgQuestionnaireComponentGenerationUtils : ComponentGenerationUtils() {
+class ComponentGenerationUtilsForGermanFrameworks : ComponentGenerationUtils() {
     private fun getFieldNameFromGermanString(technicalFieldName: String): String {
         return Naming.getNameFromLabel(
             technicalFieldName

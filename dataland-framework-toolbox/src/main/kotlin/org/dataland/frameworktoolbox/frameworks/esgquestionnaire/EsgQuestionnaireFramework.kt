@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.esgquestionnaire
 
+import ComponentGenerationUtilsForGermanFrameworks
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
@@ -159,7 +160,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
-        return EsgQuestionnaireComponentGenerationUtils()
+        return ComponentGenerationUtilsForGermanFrameworks()
     }
 
     private fun setEuTaxonomieKompassAktivitaeten(component: MultiSelectComponent) {
