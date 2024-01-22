@@ -1,5 +1,4 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
-import { SfdrData } from "@clients/backend";
 
 export const sfdrDataModel = [
   {
@@ -95,7 +94,6 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "max:0",
           },
           {
             name: "scope2GhgEmissionsInTonnes",
@@ -107,7 +105,6 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "max:0",
           },
           {
             name: "scope2GhgEmissionsLocationBasedInTonnes",
@@ -118,7 +115,6 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "max:0",
           },
           {
             name: "scope2GhgEmissionsMarketBasedInTonnes",
@@ -129,7 +125,6 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "max:0",
           },
           {
             name: "scope1And2GhgEmissionsInTonnes",
@@ -140,7 +135,6 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "max:0",
           },
           {
             name: "scope1And2GhgEmissionsLocationBasedInTonnes",
@@ -152,7 +146,6 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "max:0",
           },
           {
             name: "scope1And2GhgEmissionsMarketBasedInTonnes",
@@ -164,7 +157,6 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "max:0",
           },
           {
             name: "scope3GhgEmissionsInTonnes",
@@ -176,7 +168,6 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "max:0",
           },
           {
             name: "scope1And2And3GhgEmissionsInTonnes",
@@ -187,7 +178,6 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "max:0",
           },
           {
             name: "enterpriseValue",
@@ -218,7 +208,6 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "max:0",
           },
           {
             name: "ghgIntensityInTonnesPerMillionEURRevenue",
@@ -229,7 +218,6 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "max:0",
           },
           {
             name: "fossilFuelSectorExposure",
@@ -257,6 +245,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "renewableEnergyConsumptionInGWh",
@@ -268,6 +257,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "nonRenewableEnergyProductionInGWh",
@@ -279,6 +269,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "relativeNonRenewableEnergyProductionInPercent",
@@ -290,7 +281,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "min:100",
+            validation: "min:0",
           },
           {
             name: "nonRenewableEnergyConsumptionInGWh",
@@ -302,6 +293,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "relativeNonRenewableEnergyConsumptionInPercent",
@@ -313,7 +305,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "min:100",
+            validation: "min:0",
           },
           {
             name: "applicableHighImpactClimateSectors",
@@ -334,6 +326,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "nonRenewableEnergyConsumptionFossilFuelsInGWh",
@@ -345,6 +338,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "nonRenewableEnergyConsumptionCrudeOilInGWh",
@@ -355,6 +349,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "nonRenewableEnergyConsumptionNaturalGasInGWh",
@@ -365,6 +360,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "nonRenewableEnergyConsumptionLigniteInGWh",
@@ -375,6 +371,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "nonRenewableEnergyConsumptionCoalInGWh",
@@ -385,6 +382,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "nonRenewableEnergyConsumptionNuclearEnergyInGWh",
@@ -395,6 +393,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "nonRenewableEnergyConsumptionOtherInGWh",
@@ -405,6 +404,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
         ],
       },
@@ -468,6 +468,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "waterConsumptionInCubicMeters",
@@ -478,6 +479,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "waterReusedInCubicMeters",
@@ -489,6 +491,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "relativeWaterUsageInCubicMetersPerMillionEURRevenue",
@@ -499,6 +502,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "waterManagementPolicy",
@@ -536,6 +540,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "manufactureOfAgrochemicalPesticidesProducts",
@@ -587,6 +592,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "threatenedSpeciesExposure",
@@ -633,6 +639,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "emissionsOfAirPollutantsInTonnes",
@@ -644,6 +651,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "emissionsOfOzoneDepletionSubstancesInTonnes",
@@ -655,6 +663,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "carbonReductionInitiatives",
@@ -873,7 +882,6 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "max:0",
           },
           {
             name: "femaleBoardMembers",
@@ -884,7 +892,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "integer",
+            validation: "integer|min:0",
           },
           {
             name: "maleBoardMembers",
@@ -895,7 +903,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "integer",
+            validation: "integer|min:0",
           },
           {
             name: "boardGenderDiversityInPercent",
@@ -907,6 +915,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "between:0,100",
           },
           {
             name: "controversialWeaponsExposure",
@@ -936,6 +945,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "workdaysLostInDays",
@@ -946,6 +956,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "min:0",
           },
           {
             name: "supplierCodeOfConduct",
@@ -984,7 +995,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "integer",
+            validation: "integer|min:0",
           },
           {
             name: "sanctionedIncidentsOfDiscrimination",
@@ -995,7 +1006,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "integer",
+            validation: "integer|min:0",
           },
           {
             name: "ceoToEmployeePayGapRatio",
@@ -1006,7 +1017,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "min:100",
+            validation: "min:0",
           },
           {
             name: "excessiveCeoPayRatioInPercent",
@@ -1018,7 +1029,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "min:100",
+            validation: "min:0",
           },
         ],
       },
@@ -1098,7 +1109,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "integer",
+            validation: "integer|min:0",
           },
         ],
       },
@@ -1115,7 +1126,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "integer",
+            validation: "integer|min:0",
           },
           {
             name: "reportedConvictionsOfBriberyAndCorruption",
@@ -1125,7 +1136,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "integer",
+            validation: "integer|min:0",
           },
           {
             name: "totalAmountOfReportedFinesOfBriberyAndCorruption",

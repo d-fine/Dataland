@@ -4,12 +4,7 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
-import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSupport
-import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
-import org.dataland.frameworktoolbox.specific.datamodel.annotations.DataPointMaximumValueAnnotation
-import org.dataland.frameworktoolbox.specific.datamodel.annotations.DataPointMinimumValueAnnotation
-import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -25,13 +20,7 @@ open class DecimalComponent(
     var minimumValue: Long? = null
     var maximumValue: Long? = null
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        val annotations = mutableListOf<Annotation>()
-
-        if (documentSupport is SimpleDocumentSupport || documentSupport is ExtendedDocumentSupport) {
-            annotations.add(ValidAnnotation)
-            minimumValue?.let { annotations.add(DataPointMinimumValueAnnotation(it)) }
-            maximumValue?.let { annotations.add(DataPointMaximumValueAnnotation(it)) }
-        }
+        val annotations = getMinMaxDatamodelAnnotations(minimumValue, maximumValue)
 
         dataClassBuilder.addProperty(
             identifier,
@@ -62,15 +51,7 @@ open class DecimalComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        val rangeParameterSpecification = if (minimumValue != null && maximumValue != null) {
-            "$minimumValue, $maximumValue"
-        } else if (minimumValue != null) {
-            "$minimumValue"
-        } else if (maximumValue != null) {
-            "0, $maximumValue"
-        } else {
-            ""
-        }
+        val rangeParameterSpecification = getFakeFixtureMinMaxRangeParameterSpec(minimumValue, maximumValue)
 
         sectionBuilder.addAtomicExpression(
             identifier,

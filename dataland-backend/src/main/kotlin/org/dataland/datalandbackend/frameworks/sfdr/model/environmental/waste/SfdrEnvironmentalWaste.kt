@@ -5,6 +5,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.validator.DataPointMinimumValue
 import java.math.BigDecimal
 
 /**
@@ -12,6 +13,7 @@ import java.math.BigDecimal
  */
 data class SfdrEnvironmentalWaste(
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val hazardousAndRadioactiveWasteInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     val manufactureOfAgrochemicalPesticidesProducts: ExtendedDataPoint<YesNo?>? = null,
@@ -23,6 +25,7 @@ data class SfdrEnvironmentalWaste(
     val sustainableOceansAndSeasPolicy: BaseDataPoint<YesNo>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val nonRecycledWasteInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     val threatenedSpeciesExposure: ExtendedDataPoint<YesNo?>? = null,

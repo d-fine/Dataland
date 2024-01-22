@@ -21,7 +21,7 @@ class IntegerComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnos
         utils: ComponentGenerationUtils,
         componentGroup: ComponentGroupApi,
     ): ComponentBase {
-        templateDiagnostic.optionsNotUsed(row)
+        val bounds = DecimalComponentFactory.parseBounds(row.options)
 
         return componentGroup.create<IntegerComponent>(
             utils.generateFieldIdentifierFromRow(row),
@@ -30,6 +30,8 @@ class IntegerComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnos
             if (row.unit.isNotBlank()) {
                 constantUnitSuffix = row.unit.trim()
             }
+            this.minimumValue = bounds.first
+            this.maximumValue = bounds.second
         }
     }
 

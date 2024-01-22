@@ -50,20 +50,26 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNo?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
-    @field:Valid()
-    @field:DataPointMaximumValue(maximumValue = 0)
     val unadjustedGenderPayGapInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
+    @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val femaleBoardMembers: ExtendedDataPoint<BigInteger?>? = null,
 
+    @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val maleBoardMembers: ExtendedDataPoint<BigInteger?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
+    @field:DataPointMaximumValue(maximumValue = 100)
     val boardGenderDiversityInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
     val controversialWeaponsExposure: ExtendedDataPoint<YesNo?>? = null,
@@ -71,9 +77,11 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val workplaceAccidentPreventionPolicy: BaseDataPoint<YesNo>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val rateOfAccidentsInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val workdaysLostInDays: ExtendedDataPoint<BigDecimal?>? = null,
 
     val supplierCodeOfConduct: BaseDataPoint<YesNo>? = null,
@@ -82,16 +90,20 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     val whistleblowerProtectionPolicy: BaseDataPoint<YesNo>? = null,
 
+    @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val reportedIncidentsOfDiscrimination: ExtendedDataPoint<BigInteger?>? = null,
 
+    @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val sanctionedIncidentsOfDiscrimination: ExtendedDataPoint<BigInteger?>? = null,
 
     @field:Valid()
-    @field:DataPointMinimumValue(minimumValue = 100)
+    @field:DataPointMinimumValue(minimumValue = 0)
     val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    @field:DataPointMinimumValue(minimumValue = 100)
+    @field:DataPointMinimumValue(minimumValue = 0)
     val excessiveCeoPayRatioInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
 )

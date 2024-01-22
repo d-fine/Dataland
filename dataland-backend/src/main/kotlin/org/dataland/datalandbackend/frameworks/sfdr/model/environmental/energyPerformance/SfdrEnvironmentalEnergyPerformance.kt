@@ -15,23 +15,27 @@ import java.math.BigDecimal
  */
 data class SfdrEnvironmentalEnergyPerformance(
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val renewableEnergyProductionInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val renewableEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val nonRenewableEnergyProductionInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    @field:DataPointMinimumValue(minimumValue = 100)
+    @field:DataPointMinimumValue(minimumValue = 0)
     val relativeNonRenewableEnergyProductionInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val nonRenewableEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
-    @field:DataPointMinimumValue(minimumValue = 100)
+    @field:DataPointMinimumValue(minimumValue = 0)
     val relativeNonRenewableEnergyConsumptionInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Schema(example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE)
@@ -39,27 +43,35 @@ data class SfdrEnvironmentalEnergyPerformance(
     Map<HighImpactClimateSector, SfdrHighImpactClimateSectorEnergyConsumption>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val totalHighImpactClimateSectorEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val nonRenewableEnergyConsumptionFossilFuelsInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val nonRenewableEnergyConsumptionCrudeOilInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val nonRenewableEnergyConsumptionNaturalGasInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val nonRenewableEnergyConsumptionLigniteInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val nonRenewableEnergyConsumptionCoalInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val nonRenewableEnergyConsumptionNuclearEnergyInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val nonRenewableEnergyConsumptionOtherInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 
 )

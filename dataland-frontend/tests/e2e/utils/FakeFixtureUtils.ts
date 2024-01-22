@@ -77,11 +77,11 @@ export class Generator {
     return generatePercentageValue();
   }
 
-  randomInt(max = 10000): number | null {
-    return this.valueOrNull(this.guaranteedInt(max));
+  randomInt(min: number = 0, max: number = 10000): number | null {
+    return this.valueOrNull(this.guaranteedInt(min, max));
   }
 
-  guaranteedInt(max: number = 10000): number {
+  guaranteedInt(min: number = 0, max: number = 10000): number {
     return generateInt(max);
   }
 

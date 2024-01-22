@@ -4,17 +4,23 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.social.antiCorruption
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
+import org.dataland.datalandbackend.validator.DataPointMinimumValue
 import java.math.BigInteger
 
 /**
  * The data-model for the AntiCorruptionAndAntiBribery section
  */
 data class SfdrSocialAntiCorruptionAndAntiBribery(
+    @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val casesOfInsufficientActionAgainstBriberyAndCorruption: ExtendedDataPoint<BigInteger?>? = null,
 
+    @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val reportedConvictionsOfBriberyAndCorruption: ExtendedDataPoint<BigInteger?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 0)
     val totalAmountOfReportedFinesOfBriberyAndCorruption: CurrencyDataPoint? = null,
 
 )

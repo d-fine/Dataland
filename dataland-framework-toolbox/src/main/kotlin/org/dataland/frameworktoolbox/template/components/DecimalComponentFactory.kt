@@ -23,7 +23,8 @@ class DecimalComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnos
         fun parseBounds(input: String): Pair<Long?, Long?> {
             if (input.isBlank()) return Pair(null, null)
 
-            val pattern = """\[(?<lower>(?:\-?\d+|INF)),\s*(?<upper>(?:\-?\d+|INF))\]""".toRegex()
+            val pattern =
+                """Allowed Range:\s*\[\s*(?<lower>(?:\-?\d+|-INF))\s*,\s*(?<upper>(?:\-?\d+|INF))\s*\]""".toRegex()
             val matchResult = pattern.find(input)
                 ?: throw IllegalArgumentException(
                     "Decimal options $input does not" +
