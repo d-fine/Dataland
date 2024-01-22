@@ -182,13 +182,17 @@ private fun errorMessageForEmptyInputConfigurations(
     listOfReportingPeriods: List<String>,
 ): String {
     return when {
-        listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() -> "All " +
+        listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
+            "All " +
                 "provided lists are empty."
-        listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() -> "The lists of company identifiers and " +
+        listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() ->
+            "The lists of company identifiers and " +
                 "frameworks are empty."
-        listOfIdentifiers.isEmpty() && listOfReportingPeriods.isEmpty() -> "The lists of company identifiers and " +
+        listOfIdentifiers.isEmpty() && listOfReportingPeriods.isEmpty() ->
+            "The lists of company identifiers and " +
                 "reporting periods are empty."
-        listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() -> "The lists of frameworks and reporting " +
+        listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
+            "The lists of frameworks and reporting " +
                 "periods are empty."
         listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
         listOfFrameworks.isEmpty() -> "The list of frameworks is empty."
@@ -213,8 +217,8 @@ fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
         assertTrue(responseBody.contains("No empty lists are allowed as input for bulk data request."))
         assertTrue(
             responseBody.contains(
-                errorMessageForEmptyInputConfigurations(listOfIdentifiers, listOfFrameworks, listOfReportingPeriods)
-            )
+                errorMessageForEmptyInputConfigurations(listOfIdentifiers, listOfFrameworks, listOfReportingPeriods),
+            ),
         )
     }
 }
@@ -229,8 +233,8 @@ fun sendBulkRequestWithInvalidIdentifiersOnlyAndCheckErrorMessage(
     assertTrue(responseBody.contains("All provided company identifiers have an invalid format."))
     assertTrue(
         responseBody.contains(
-            "The company identifiers you provided do not match the patterns of a valid LEI, ISIN or PermId."
-        )
+            "The company identifiers you provided do not match the patterns of a valid LEI, ISIN or PermId.",
+        ),
     )
 }
 
@@ -262,7 +266,7 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     )
 }
 
-fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregatedExistenceWithCorrectCount(
+fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
     frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
     reportingPeriods: List<String>,
