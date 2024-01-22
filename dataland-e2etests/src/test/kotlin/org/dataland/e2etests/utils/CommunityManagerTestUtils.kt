@@ -176,6 +176,26 @@ private fun causeAndAssertClientException(
     return clientException
 }
 
+private fun errorMessageForEmptyInputConfigurations(
+    listOfIdentifiers: List<String>,
+    listOfFrameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+    listOfReportingPeriods: List<String>,
+): String {
+    return when {
+        listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() -> "All " +
+                "provided lists are empty."
+        listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() -> "The lists of company identifiers and " +
+                "frameworks are empty."
+        listOfIdentifiers.isEmpty() && listOfReportingPeriods.isEmpty() -> "The lists of company identifiers and " +
+                "reporting periods are empty."
+        listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() -> "The lists of frameworks and reporting " +
+                "periods are empty."
+        listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
+        listOfFrameworks.isEmpty() -> "The list of frameworks is empty."
+        else -> "The list of reporting periods is empty."
+    }
+}
+
 fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
     listOfIdentifiers: List<String>,
     listOfFrameworks: List<BulkDataRequest.ListOfFrameworkNames>,
@@ -189,18 +209,13 @@ fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
         )
     } else {
         val clientException = causeAndAssertClientException(listOfIdentifiers, listOfFrameworks, listOfReportingPeriods)
-        val errorMessage = when {
-            listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() -> "All provided lists are empty."
-            listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() -> "The lists of company identifiers and frameworks are empty."
-            listOfIdentifiers.isEmpty() && listOfReportingPeriods.isEmpty() -> "The lists of company identifiers and reporting periods are empty."
-            listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() -> "The lists of frameworks and reporting periods are empty."
-            listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
-            listOfFrameworks.isEmpty() -> "The list of frameworks is empty."
-            else -> "The list of reporting periods is empty."
-        }
         val responseBody = (clientException.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("No empty lists are allowed as input for bulk data request."))
-        assertTrue(responseBody.contains(errorMessage))
+        assertTrue(
+            responseBody.contains(
+                errorMessageForEmptyInputConfigurations(listOfIdentifiers, listOfFrameworks, listOfReportingPeriods)
+            )
+        )
     }
 }
 
@@ -212,7 +227,11 @@ fun sendBulkRequestWithInvalidIdentifiersOnlyAndCheckErrorMessage(
     val clientException = causeAndAssertClientException(listOfIdentifiers, listOfFrameworks, listOfReportingPeriods)
     val responseBody = (clientException.response as ClientError<*>).body as String
     assertTrue(responseBody.contains("All provided company identifiers have an invalid format."))
-    assertTrue(responseBody.contains("The company identifiers you provided do not match the patterns of a valid LEI, ISIN or PermId."))
+    assertTrue(
+        responseBody.contains(
+            "The company identifiers you provided do not match the patterns of a valid LEI, ISIN or PermId."
+        )
+    )
 }
 
 fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
@@ -243,17 +262,18 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     )
 }
 
-fun iterateThroughIdentifiersAndFrameworksAndReportingPeriodsAndCheckExistenceWithCount1(
-    identifierMap: Map<DataRequestCompanyIdentifierType, String>,
+fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregatedExistenceWithCorrectCount(
+    aggregatedDataRequests: List<AggregatedDataRequest>,
     frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
     reportingPeriods: List<String>,
-    aggregatedDataRequests: List<AggregatedDataRequest>,
+    identifierMap: Map<DataRequestCompanyIdentifierType, String>,
+    count: Long,
 ) {
-    identifierMap.forEach { (identifierType, identifierValue) ->
-        frameworks.forEach { framework ->
-            reportingPeriods.forEach { reportingPeriod ->
+    frameworks.forEach { framework ->
+        reportingPeriods.forEach { reportingPeriod ->
+            identifierMap.forEach { (identifierType, identifierValue) ->
                 checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
-                    aggregatedDataRequests, framework, reportingPeriod, identifierType, identifierValue, 1,
+                    aggregatedDataRequests, framework, reportingPeriod, identifierType, identifierValue, count,
                 )
             }
         }
