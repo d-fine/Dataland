@@ -116,7 +116,6 @@ sonar {
                 "configForEutaxonomyFinancialsMLDT.ts," +
                 "dataland-frontend/src/frameworks/esg-questionnaire/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts," +
-                "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/heimathafen/UploadConfig.ts,",
         )
         property(
@@ -126,7 +125,10 @@ sonar {
                 "dataland-frontend/src/components/general/SlideShow.vue," +
                 "dataland-frontend/src/components/resources/newLandingPage/TheQuotes.vue," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
-                "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts",
+                "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts," +
+                // no need to cover the heimathafen-ViewConfig because there are no custom fields
+                "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts,",
+
         )
     }
 }
