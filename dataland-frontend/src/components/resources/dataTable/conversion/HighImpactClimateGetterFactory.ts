@@ -7,7 +7,7 @@ import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTabl
 import { type ExtendedDataPointBigDecimal } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/extended-data-point-big-decimal";
 import { HighImpactClimateSectorsKeys } from "@/types/HighImpactClimateSectors";
 import { type ExtendedDataPoint } from "@/utils/DataPoint";
-import { QualityOptions, type SfdrHighImpactClimateSectorEnergyConsumption } from "@clients/backend";
+import { type SfdrHighImpactClimateSectorEnergyConsumption } from "@clients/backend";
 
 interface HighImpactClimateDisplayFormat {
   sector: string;

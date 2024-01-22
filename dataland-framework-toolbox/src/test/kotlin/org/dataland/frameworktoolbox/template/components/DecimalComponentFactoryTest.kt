@@ -1,7 +1,5 @@
 package org.dataland.frameworktoolbox.template.components
 
-
-import org.dataland.frameworktoolbox.intermediate.components.DecimalComponent
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

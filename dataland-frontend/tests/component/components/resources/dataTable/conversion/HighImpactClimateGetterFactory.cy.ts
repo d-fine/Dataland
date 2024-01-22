@@ -2,7 +2,6 @@ import {
   formatHighImpactClimateSectorForDisplay,
   type HighImpactClimateValueObject,
 } from "@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory";
-import { type Field } from "@/utils/GenericFrameworkTypes";
 import { MLDTDisplayComponentName } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { HighImpactClimateSector } from "@/api-models/HighImpactClimateSector";
 import { type ExtendedDataPointBigDecimal } from "@clients/backend";
