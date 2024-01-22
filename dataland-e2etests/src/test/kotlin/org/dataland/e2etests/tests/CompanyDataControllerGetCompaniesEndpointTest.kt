@@ -65,7 +65,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         )
     }
 
-    private fun convertStoredToBasicCompanyInformation(storedCompany: StoredCompany) : BasicCompanyInformation {
+    private fun convertStoredToBasicCompanyInformation(storedCompany: StoredCompany): BasicCompanyInformation {
         return BasicCompanyInformation(
             companyId = storedCompany.companyId,
             countryCode = storedCompany.companyInformation.countryCode,
@@ -73,7 +73,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             companyName = storedCompany.companyInformation.companyName,
             permId = storedCompany.companyInformation.identifiers.getOrDefault(IdentifierType.permId.value, null)
                 ?.minOrNull(),
-            headquarters = storedCompany.companyInformation.headquarters
+            headquarters = storedCompany.companyInformation.headquarters,
         )
     }
 
@@ -209,11 +209,12 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         )
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
         val uploadedData = uploadTestEuTaxonomyFinancialsDataSet(uploadedCompany.companyId).copy(uploaderUserId = null)
-        val expectedCompany = convertStoredToBasicCompanyInformation(StoredCompany(
-            uploadedCompany.companyId,
-            uploadedCompany.companyInformation,
-            listOf(uploadedData),
-            )
+        val expectedCompany = convertStoredToBasicCompanyInformation(
+            StoredCompany(
+                uploadedCompany.companyId,
+                uploadedCompany.companyInformation,
+                listOf(uploadedData),
+            ),
         )
         val searchIdentifier = testIdentifier.drop(1).dropLast(1)
         val searchName = testName.drop(1).dropLast(1)

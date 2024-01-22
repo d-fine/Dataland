@@ -93,9 +93,9 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
             " where uploader_user_id = :userId" +
             " ) datainfo" +
             " LEFT JOIN stored_companies company" +
-            " ON company.company_id = datainfo.company_id"
+            " ON company.company_id = datainfo.company_id",
     )
     fun getUserDataMetaInfos(
-        userId: String
+        userId: String,
     ): List<DatasetMetaInfoEntityForMyDatasets>
 }

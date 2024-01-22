@@ -29,7 +29,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "ON company.company_id = datainfo.company_id " +
             "LEFT JOIN (SELECT company_id, min(identifier_value) as min_id from company_identifiers where identifier_type = 'PermId' group by company_id) permId " +
             "ON company.company_id = permid.company_id " +
-            "ORDER by company.company_name asc "
+            "ORDER by company.company_name asc ",
     )
     fun getAllCompaniesWithDataset(): List<BasicCompanyInformation>
 
@@ -97,10 +97,10 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " ON info.company_id = filtered_results.company_id " +
             " LEFT JOIN (SELECT company_id, MIN(identifier_value) as identifier_value from company_identifiers where identifier_type = 'PermId' group by company_id) perm_id " +
             " ON perm_id.company_id = filtered_results.company_id " +
-            " ORDER BY filtered_results.match_quality asc, info.company_name asc "
+            " ORDER BY filtered_results.match_quality asc, info.company_name asc ",
     )
     fun searchCompanies(
-        @Param("searchFilter") searchFilter: StoredCompanySearchFilter
+        @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
     ): List<BasicCompanyInformation>
 
     /**

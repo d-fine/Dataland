@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 class UserUploadsController(
-    @Autowired val dataMetaInformationManager: DataMetaInformationManager
+    @Autowired val dataMetaInformationManager: DataMetaInformationManager,
 ) : UserUploadsApi {
     override fun getUserDataMetaInformation(userId: String): ResponseEntity<List<DataMetaInformationForMyDatasets>> {
-        if(DatalandAuthentication.fromContextOrNull()?.userId != userId) {
+        if (DatalandAuthentication.fromContextOrNull()?.userId != userId) {
             throw InsufficientRightsApiException(
                 "You are not allowed to retrieve information about this user.",
                 "You are not allowed to retrieve information about this user.",
