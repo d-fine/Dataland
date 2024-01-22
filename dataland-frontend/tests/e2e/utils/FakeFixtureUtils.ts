@@ -118,13 +118,14 @@ export class Generator {
     return this.generateExtendedDataPoint(this.valueOrNull(input));
   }
 
-  randomCurrencyDataPoint(input = generateCurrencyValue()): CurrencyDataPoint | null {
-    return this.valueOrNull(this.guaranteedCurrencyDataPoint(input));
+  randomCurrencyDataPoint(min: number = 0, max: number = 1e10): CurrencyDataPoint | null {
+    return this.valueOrNull(this.guaranteedCurrencyDataPoint(min, max));
   }
 
-  guaranteedCurrencyDataPoint(input = generateCurrencyValue()): CurrencyDataPoint {
+  guaranteedCurrencyDataPoint(min: number = 0, max: number = 1e10): CurrencyDataPoint {
     const localCurrency = generateCurrencyCode();
-    return this.generateCurrencyExtendedDataPoint(this.valueOrNull(input), localCurrency);
+    const value = generateCurrencyValue(min, max);
+    return this.generateCurrencyExtendedDataPoint(this.valueOrNull(value), localCurrency);
   }
 
   randomArray<T>(generator: () => T, min = 0, max = 5): T[] | null {

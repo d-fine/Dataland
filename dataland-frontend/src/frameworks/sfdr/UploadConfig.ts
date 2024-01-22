@@ -170,6 +170,28 @@ export const sfdrDataModel = [    {
     
                 },
             {
+                name: "enterpriseValue",
+                label: "Enterprise Value",
+                description: "The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, and the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation, Annex I top (4).",
+    
+    
+                component: "CurrencyDataPointFormField",
+                required: false,
+                showIf: ():boolean => true,
+    
+                },
+            {
+                name: "totalRevenue",
+                label: "Total Revenue",
+                description: "Total revenue for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm\'s total revenues over some period of time (millions)",
+    
+    
+                component: "CurrencyDataPointFormField",
+                required: false,
+                showIf: ():boolean => true,
+    
+                },
+            {
                 name: "carbonFootprintInTonnesPerMillionEURRevenue",
                 label: "Carbon footprint",
                 description: "Tonnes GHG emissions / EUR million enterprise value",
@@ -857,6 +879,28 @@ export const sfdrDataModel = [    {
     
                 },
             {
+                name: "averageGrossHourlyEarningsMaleEmployees",
+                label: "Average Gross Hourly Earnings Male Employees",
+                description: "Average gross hourly earnings of male employees",
+    
+    
+                component: "CurrencyDataPointFormField",
+                required: false,
+                showIf: ():boolean => true,
+    
+                },
+            {
+                name: "averageGrossHourlyEarningsFemaleEmployees",
+                label: "Average Gross Hourly Earnings Female Employees",
+                description: "Average gross hourly earnings of female employees",
+    
+    
+                component: "CurrencyDataPointFormField",
+                required: false,
+                showIf: ():boolean => true,
+    
+                },
+            {
                 name: "unadjustedGenderPayGapInPercent",
                 label: "Unadjusted gender pay gap",
                 description: "Average unadjusted gender pay gap (female to male ratio, only considering gender)",
@@ -1140,6 +1184,17 @@ export const sfdrDataModel = [    {
                 required: false,
                 showIf: ():boolean => true,
                 validation: "integer",
+                },
+            {
+                name: "totalAmountOfReportedFinesOfBriberyAndCorruption",
+                label: "Total Amount Of Reported Fines Of Bribery and Corruption",
+                description: "Amount of fines for violations of anti-corruption and anti-bribery laws",
+    
+    
+                component: "CurrencyDataPointFormField",
+                required: false,
+                showIf: ():boolean => true,
+    
                 },
      
             ],

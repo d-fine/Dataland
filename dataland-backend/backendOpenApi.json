@@ -3634,6 +3634,37 @@
           }
         }
       },
+      "CurrencyDataPoint": {
+        "required": [
+          "quality"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "nullable": true
+          },
+          "quality": {
+            "$ref": "#/components/schemas/QualityOptions"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "ExtendedDataPointBigDecimal": {
         "required": [
           "quality"
@@ -4326,6 +4357,22 @@
               }
             ]
           },
+          "enterpriseValue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "totalRevenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
           "carbonFootprintInTonnesPerMillionEURRevenue": {
             "nullable": true,
             "allOf": [
@@ -4827,6 +4874,14 @@
                 "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
               }
             ]
+          },
+          "totalAmountOfReportedFinesOfBriberyAndCorruption": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
           }
         }
       },
@@ -5032,6 +5087,22 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "averageGrossHourlyEarningsMaleEmployees": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "averageGrossHourlyEarningsFemaleEmployees": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
@@ -8290,37 +8361,6 @@
             "isGroupLevel": "Yes",
             "reportDate": "2023-10-12",
             "currency": "string"
-          }
-        }
-      },
-      "CurrencyDataPoint": {
-        "required": [
-          "quality"
-        ],
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "number",
-            "nullable": true
-          },
-          "quality": {
-            "$ref": "#/components/schemas/QualityOptions"
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          },
-          "currency": {
-            "type": "string",
-            "nullable": true
           }
         }
       },

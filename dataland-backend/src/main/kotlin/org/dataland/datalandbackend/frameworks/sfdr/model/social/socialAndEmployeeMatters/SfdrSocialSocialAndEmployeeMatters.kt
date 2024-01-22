@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.frameworks.sfdr.model.social.socialAndEmplo
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
+import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import java.math.BigDecimal
@@ -45,6 +46,12 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val unGlobalCompactPrinciplesCompliancePolicy: BaseDataPoint<YesNo>? = null,
 
     val oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: ExtendedDataPoint<YesNo?>? = null,
+
+    @field:Valid()
+    val averageGrossHourlyEarningsMaleEmployees: CurrencyDataPoint? = null,
+
+    @field:Valid()
+    val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
     @field:Valid()
     val unadjustedGenderPayGapInPercent: ExtendedDataPoint<BigDecimal?>? = null,

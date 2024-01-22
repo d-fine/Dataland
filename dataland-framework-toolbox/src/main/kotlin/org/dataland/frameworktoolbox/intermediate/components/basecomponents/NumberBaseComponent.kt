@@ -19,6 +19,18 @@ open class NumberBaseComponent(
 ) : ComponentBase(identifier, parent, fullyQualifiedNameOfKotlinType) {
     open var constantUnitSuffix: String? = null
 
+    fun getMinMaxValidationRule(minimumValue: Long?, maximumValue: Long?): String? {
+        return if (minimumValue != null && maximumValue != null) {
+            "between:$minimumValue,$maximumValue"
+        } else if (minimumValue != null) {
+            "min:$minimumValue"
+        } else if (maximumValue != null) {
+            "max:$maximumValue"
+        } else {
+            null
+        }
+    }
+
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,

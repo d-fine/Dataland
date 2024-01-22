@@ -49,6 +49,8 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
             scope1And2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
             scope3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
             scope1And2And3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+            enterpriseValue: dataGenerator.randomCurrencyDataPoint(),
+            totalRevenue: dataGenerator.randomCurrencyDataPoint(),
             carbonFootprintInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
             ghgIntensityInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
             fossilFuelSectorExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
@@ -121,6 +123,8 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
             violationOfTaxRulesAndRegulation: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
             unGlobalCompactPrinciplesCompliancePolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
             oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+            averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(),
+            averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(),
             unadjustedGenderPayGapInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
             femaleBoardMembers: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
             maleBoardMembers: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
@@ -151,6 +155,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         antiCorruptionAndAntiBribery: {
             casesOfInsufficientActionAgainstBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
             reportedConvictionsOfBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
+            totalAmountOfReportedFinesOfBriberyAndCorruption: dataGenerator.randomCurrencyDataPoint(),
         },
     },
 }

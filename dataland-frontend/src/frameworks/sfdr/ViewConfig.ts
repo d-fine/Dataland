@@ -2,6 +2,7 @@
 import { type SfdrData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import { formatCurrencyForDisplay } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } 
 from "@/components/resources/dataTable/conversion/DataPoints";
@@ -144,6 +145,24 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsInTonnes?.value, ""), "Scope 1 and 2 and 3 GHG emissions", dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsInTonnes)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Enterprise Value",
+              explanation: "The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, and the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation, Annex I top (4).",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => formatCurrencyForDisplay(dataset.environmental?.greenhouseGasEmissions?.enterpriseValue, "Enterprise Value")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Total Revenue",
+              explanation: "Total revenue for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm\'s total revenues over some period of time (millions)",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => formatCurrencyForDisplay(dataset.environmental?.greenhouseGasEmissions?.totalRevenue, "Total Revenue")
             ,
             },
             {
@@ -733,6 +752,24 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
             },
             {
               type: "cell",
+              label: "Average Gross Hourly Earnings Male Employees",
+              explanation: "Average gross hourly earnings of male employees",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => formatCurrencyForDisplay(dataset.social?.socialAndEmployeeMatters?.averageGrossHourlyEarningsMaleEmployees, "Average Gross Hourly Earnings Male Employees")
+            ,
+            },
+            {
+              type: "cell",
+              label: "Average Gross Hourly Earnings Female Employees",
+              explanation: "Average gross hourly earnings of female employees",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => formatCurrencyForDisplay(dataset.social?.socialAndEmployeeMatters?.averageGrossHourlyEarningsFemaleEmployees, "Average Gross Hourly Earnings Female Employees")
+            ,
+            },
+            {
+              type: "cell",
               label: "Unadjusted gender pay gap",
               explanation: "Average unadjusted gender pay gap (female to male ratio, only considering gender)",
               shouldDisplay: (): boolean => true
@@ -972,6 +1009,15 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [    {
               shouldDisplay: (): boolean => true
             ,
               valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatNumberForDatatable(dataset.social?.antiCorruptionAndAntiBribery?.reportedConvictionsOfBriberyAndCorruption?.value, ""), "Reported Convictions Of Bribery and Corruption", dataset.social?.antiCorruptionAndAntiBribery?.reportedConvictionsOfBriberyAndCorruption)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Total Amount Of Reported Fines Of Bribery and Corruption",
+              explanation: "Amount of fines for violations of anti-corruption and anti-bribery laws",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes => formatCurrencyForDisplay(dataset.social?.antiCorruptionAndAntiBribery?.totalAmountOfReportedFinesOfBriberyAndCorruption, "Total Amount Of Reported Fines Of Bribery and Corruption")
             ,
             },
             ],
