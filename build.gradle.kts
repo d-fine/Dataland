@@ -115,7 +115,9 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts," +
                 "dataland-frontend/src/frameworks/esg-questionnaire/ViewConfig.ts," +
-                "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts",
+                "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/heimathafen/UploadConfig.ts,",
         )
         property(
             "sonar.exclusions",
