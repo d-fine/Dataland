@@ -8,9 +8,6 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireUmweltProduktion(
     val produkteZurVerringerungDerUmweltbelastung: YesNo? = null,
-
     val verringerungenDerUmweltbelastung: String? = null,
-
     val oekologischerMindestStandardFuerProduktionsprozesse: YesNo? = null,
-
 )

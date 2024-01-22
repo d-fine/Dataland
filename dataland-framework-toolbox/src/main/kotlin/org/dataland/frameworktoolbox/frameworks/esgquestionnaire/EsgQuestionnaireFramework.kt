@@ -149,27 +149,6 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
                 edit<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung") {
                     customizeBerichtsPflicht(this)
                 }
-                // TODO: ONLY FOR TESTING. REMOVE IN IMPLEMENTATION
-                create<DecimalComponent>("testNumberWithoutValidation") {
-                    label = "Test Number"
-                    documentSupport = NoDocumentSupport
-                }
-                create<DecimalComponent>("testNumberWithMinValue") {
-                    label = "Test Number With Minimum Value"
-                    minimumValue = 123L
-                    documentSupport = ExtendedDocumentSupport
-                }
-                create<DecimalComponent>("testNumberWithMaxValue") {
-                    label = "Test Number With Maximum Value"
-                    maximumValue = 123L
-                    documentSupport = ExtendedDocumentSupport
-                }
-                create<DecimalComponent>("testNumberWithMinAndMaxValue") {
-                    label = "Test Number With Minimum and Maximum Value"
-                    minimumValue = 500L
-                    maximumValue = 1000L
-                    documentSupport = ExtendedDocumentSupport
-                }
             }
         }
         framework.root.get<ComponentGroup>("umwelt").get<ComponentGroup>("taxonomie")

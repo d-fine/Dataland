@@ -8,7 +8,5 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTim
  */
 data class EsgQuestionnaireUmweltWasserverbrauch(
     val berichterstattungWasserverbrauch: YearlyTimeseriesData<BerichterstattungWasserverbrauchValues?>? = null,
-
     val unternehmensGruppenStrategieBzglWasserverbrauch: String? = null,
-
 )

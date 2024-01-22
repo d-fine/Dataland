@@ -8,23 +8,13 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireAllgemeinRechtsstreitigkeiten(
     val esgBezogeneRechtsstreitigkeiten: YesNo? = null,
-
     val rechtsstreitigkeitenMitBezugZuE: YesNo? = null,
-
     val statusZuE: StatusZuEOptions? = null,
-
     val einzelheitenZuDenRechtsstreitigkeitenZuE: String? = null,
-
     val rechtsstreitigkeitenMitBezugZuS: YesNo? = null,
-
     val statusZuS: StatusZuSOptions? = null,
-
     val einzelheitenZuDenRechtsstreitigkeitenZuS: String? = null,
-
     val rechtsstreitigkeitenMitBezugZuG: YesNo? = null,
-
     val statusZuG: StatusZuGOptions? = null,
-
     val einzelheitenZuDenRechtsstreitigkeitenZuG: String? = null,
-
 )

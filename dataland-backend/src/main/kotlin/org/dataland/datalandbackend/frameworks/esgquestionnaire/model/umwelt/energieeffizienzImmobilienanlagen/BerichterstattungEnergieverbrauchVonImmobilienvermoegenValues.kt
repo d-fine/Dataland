@@ -8,5 +8,4 @@ import java.math.BigDecimal
  */
 data class BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues(
     val engagementAnteilInEnergieineffizientenImmobilienanlagen: BigDecimal? = null,
-
 )

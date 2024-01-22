@@ -8,7 +8,5 @@ import java.math.BigDecimal
  */
 data class AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues(
     val anzahlDerBefristetenVertraege: BigDecimal? = null,
-
     val fluktuation: BigDecimal? = null,
-
 )

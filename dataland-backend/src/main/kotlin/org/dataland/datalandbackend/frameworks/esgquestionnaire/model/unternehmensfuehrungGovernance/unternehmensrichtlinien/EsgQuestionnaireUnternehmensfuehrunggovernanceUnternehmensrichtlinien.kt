@@ -8,7 +8,5 @@ import java.util.EnumSet
  */
 data class EsgQuestionnaireUnternehmensfuehrunggovernanceUnternehmensrichtlinien(
     val veroeffentlichteUnternehmensrichtlinien: EnumSet<VeroeffentlichteUnternehmensrichtlinienOptions>? = null,
-
     val weitereVeroeffentlicheUnternehmensrichtlinien: String? = null,
-
 )

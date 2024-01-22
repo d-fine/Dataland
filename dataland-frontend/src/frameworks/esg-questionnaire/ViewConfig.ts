@@ -44,50 +44,6 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.masterData?.gueltigkeitsDatum),
           },
-          {
-            type: "cell",
-            label: "Test Number",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.general?.masterData?.testNumberWithoutValidation, ""),
-          },
-          {
-            type: "cell",
-            label: "Test Number With Minimum Value",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.general?.masterData?.testNumberWithMinValue?.value, ""),
-                "Test Number With Minimum Value",
-                dataset.general?.masterData?.testNumberWithMinValue,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Test Number With Maximum Value",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.general?.masterData?.testNumberWithMaxValue?.value, ""),
-                "Test Number With Maximum Value",
-                dataset.general?.masterData?.testNumberWithMaxValue,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Test Number With Minimum and Maximum Value",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: GdvData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.general?.masterData?.testNumberWithMinAndMaxValue?.value, ""),
-                "Test Number With Minimum and Maximum Value",
-                dataset.general?.masterData?.testNumberWithMinAndMaxValue,
-              ),
-          },
         ],
       },
     ],

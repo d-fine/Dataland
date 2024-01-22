@@ -8,9 +8,6 @@ import java.math.BigDecimal
  */
 data class TreibhausgasBerichterstattungUndPrognosenValues(
     val scope1: BigDecimal? = null,
-
     val scope2: BigDecimal? = null,
-
     val scope3: BigDecimal? = null,
-
 )

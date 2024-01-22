@@ -8,9 +8,6 @@ import java.math.BigDecimal
  */
 data class UeberwachungDerEinkommensungleichheitValues(
     val unbereinigtesGeschlechtsspezifischesLohngefaelle: BigDecimal? = null,
-
     val einkommensungleichheitsverhaeltnis: BigDecimal? = null,
-
     val ceoEinkommensungleichheitsverhaeltnis: BigDecimal? = null,
-
 )

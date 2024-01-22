@@ -9,9 +9,6 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireAllgemeinEsgBerichte(
     val nachhaltigkeitsberichte: YesNo? = null,
-
     val frequenzDerBerichterstattung: FrequenzDerBerichterstattungOptions? = null,
-
     val aktuelleBerichte: List<BaseDataPoint<String>>? = null,
-
 )

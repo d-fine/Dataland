@@ -9,9 +9,6 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTim
 data class EsgQuestionnaireUmweltTreibhausgasemissionen(
     val treibhausgasBerichterstattungUndPrognosen:
     YearlyTimeseriesData<TreibhausgasBerichterstattungUndPrognosenValues?>? = null,
-
     val treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird: String? = null,
-
     val strategieUndZieleZurReduzierungVonTreibhausgasEmissionen: String? = null,
-
 )

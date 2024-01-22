@@ -9,13 +9,8 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireAllgemeinAkkreditierungen(
     val iso14001: BaseDataPoint<YesNo>? = null,
-
     val iso45001: BaseDataPoint<YesNo>? = null,
-
     val iso27001: BaseDataPoint<YesNo>? = null,
-
     val iso50001: BaseDataPoint<YesNo>? = null,
-
     val weitereAkkreditierungen: List<BaseDataPoint<String>>? = null,
-
 )

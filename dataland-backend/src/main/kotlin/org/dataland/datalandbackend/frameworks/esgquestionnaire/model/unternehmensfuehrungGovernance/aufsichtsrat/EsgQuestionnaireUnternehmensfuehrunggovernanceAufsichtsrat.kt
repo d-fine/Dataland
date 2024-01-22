@@ -8,9 +8,6 @@ import java.math.BigInteger
  */
 data class EsgQuestionnaireUnternehmensfuehrunggovernanceAufsichtsrat(
     val anzahlDerMitgliederImAufsichtsrat: BigInteger? = null,
-
     val anzahlUnabhaengigerMitgliederImAufsichtsrat: BigInteger? = null,
-
     val anzahlVonFrauenImAufsichtsrat: BigInteger? = null,
-
 )
