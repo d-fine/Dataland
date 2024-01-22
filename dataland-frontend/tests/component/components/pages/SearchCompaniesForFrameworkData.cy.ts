@@ -15,7 +15,7 @@ before(function () {
 
 describe("Component tests for the Dataland companies search page", function (): void {
   beforeEach(() => {
-    cy.intercept("**/api/companies/v2?**", mockDataSearchResponse);
+    cy.intercept("**/api/companies?**", mockDataSearchResponse);
     cy.intercept("**/api/companies/meta-information", {});
   });
 

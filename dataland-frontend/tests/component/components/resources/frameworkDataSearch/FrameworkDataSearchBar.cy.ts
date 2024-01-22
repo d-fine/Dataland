@@ -21,7 +21,7 @@ describe("Component tests for the search bar on the company search page", () => 
     cy.mountWithPlugins(FrameworkDataSearchBar, {
       keycloak: minimalKeycloakMock({}),
     });
-    cy.intercept("**/api/companies/v2*", modifiedMockDataSearchResponse).as("searchCompany");
+    cy.intercept("**/api/companies*", modifiedMockDataSearchResponse).as("searchCompany");
     cy.get("input[id=framework_data_search_bar_standard]").click({ force: true }).type(highlightedSubString);
     cy.wait("@searchCompany", { timeout: Cypress.env("short_timeout_in_ms") as number });
     cy.get(".p-autocomplete-item")

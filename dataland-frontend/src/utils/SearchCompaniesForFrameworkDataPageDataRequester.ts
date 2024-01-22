@@ -45,7 +45,7 @@ export async function getCompanyDataForFrameworkDataSearchPage(
       frameworkFilter = new Set(ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE);
     }
 
-    return (await companyDataControllerApi.getCompanies2(
+    return (await companyDataControllerApi.getCompanies(
       searchString,
       frameworkFilter,
       countryCodeFilter,

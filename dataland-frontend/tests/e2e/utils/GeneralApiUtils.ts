@@ -19,7 +19,7 @@ export interface UploadIds {
  * @returns an array of stored companies
  */
 export async function searchBasicCompanyInformationForDataType(token: string, dataType: DataTypeEnum): Promise<BasicCompanyInformation[]> {
-  const response = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies2(
+  const response = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
     undefined,
     new Set([dataType]),
   );
