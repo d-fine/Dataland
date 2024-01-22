@@ -1,7 +1,7 @@
 import Card from "primevue/card";
 import Tooltip from "primevue/tooltip";
 import { type ComponentOptionsWithObjectProps, type PropType } from "vue";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
 /**
  * Contains getter methods to provide pre-defined options to standardize multiple Vue-components that should behave in

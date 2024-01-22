@@ -23,7 +23,7 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { DataTypeEnum } from "@clients/backend";
 
-import CreateGdvDataset from "@/components/forms/CreateGdvDataset.vue";
+import CreateEsgQuestionnaireDataset from "@/components/forms/CreateEsgQuestionnaireDataset.vue";
 import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
 import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
@@ -80,6 +80,8 @@ export default defineComponent({
           return CreateGdvDataset;
         case `${DataTypeEnum.Heimathafen}`:
           return CreateHeimathafenDataset;
+        case `${DataTypeEnum.EsgQuestionnaire}`:
+          return CreateEsgQuestionnaireDataset;
         default:
           return null;
       }

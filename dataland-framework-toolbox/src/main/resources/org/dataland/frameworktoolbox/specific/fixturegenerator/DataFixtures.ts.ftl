@@ -7,8 +7,8 @@
 import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { type ${frameworkIdentifier?cap_first}Data } from "@clients/backend";
-import { ${frameworkIdentifier?cap_first}Generator } from "@e2e/fixtures/frameworks/${frameworkIdentifier}/${frameworkIdentifier?cap_first}Generator";
+import { type ${frameworkBaseName}Data } from "@clients/backend";
+import { ${frameworkBaseName}Generator } from "@e2e/fixtures/frameworks/${frameworkIdentifier}/${frameworkBaseName}Generator";
 <#list imports as import>${import}
 </#list>
 
@@ -18,12 +18,12 @@ import { ${frameworkIdentifier?cap_first}Generator } from "@e2e/fixtures/framewo
  * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a set number of ${frameworkIdentifier} fixtures
  */
-export function generate${frameworkIdentifier?cap_first}Fixtures(
+export function generate${frameworkBaseName}Fixtures(
   numFixtures: number,
   nullProbability = DEFAULT_PROBABILITY,
-): FixtureData<${frameworkIdentifier?cap_first}Data>[] {
-  return generateFixtureDataset<${frameworkIdentifier?cap_first}Data>(
-    () => generate${frameworkIdentifier?cap_first}Data(nullProbability),
+): FixtureData<${frameworkBaseName}Data>[] {
+  return generateFixtureDataset<${frameworkBaseName}Data>(
+    () => generate${frameworkBaseName}Data(nullProbability),
     numFixtures,
     <#if reportingPeriodGetter??> (dataset) => ${reportingPeriodGetter},</#if>
   );
@@ -34,7 +34,7 @@ export function generate${frameworkIdentifier?cap_first}Fixtures(
  * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a random ${frameworkIdentifier} dataset
  */
-export function generate${frameworkIdentifier?cap_first}Data(nullProbability = DEFAULT_PROBABILITY): ${frameworkIdentifier?cap_first}Data {
-  const dataGenerator = new ${frameworkIdentifier?cap_first}Generator(nullProbability);
+export function generate${frameworkBaseName}Data(nullProbability = DEFAULT_PROBABILITY): ${frameworkBaseName}Data {
+  const dataGenerator = new ${frameworkBaseName}Generator(nullProbability);
   return <@dataFixtureSection rootSection/>
 }

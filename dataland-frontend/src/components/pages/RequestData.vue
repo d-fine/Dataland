@@ -216,7 +216,7 @@ import TheFooter from "@/components/generics/TheFooter.vue";
 import MultiSelectFormFieldBindData from "@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { type BulkDataRequest } from "@clients/communitymanager";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import MessageComponent from "@/components/messages/MessageComponent.vue";

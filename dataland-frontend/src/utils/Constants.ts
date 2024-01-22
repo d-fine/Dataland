@@ -10,7 +10,7 @@ export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = putGermanFrameworksAtTheEndO
   DataTypeEnum.Sfdr,
   DataTypeEnum.Lksg,
   DataTypeEnum.EutaxonomyNonFinancials,
-  DataTypeEnum.Gdv,
+  DataTypeEnum.EsgQuestionnaire,
   DataTypeEnum.Heimathafen,
 ]);
 
@@ -46,7 +46,7 @@ export const ONLY_AUXILIARY_DATA_PROVIDED = "Only auxiliary data provided";
  * @returns the list of data type enums sorted in a way, that German frameworks are the last elements
  */
 export function putGermanFrameworksAtTheEndOfList(frameworksToInclude: DataTypeEnum[]): DataTypeEnum[] {
-  const germanFrameworks = ["gdv", "heimathafen"];
+  const germanFrameworks = ["esg-questionnaire", "heimathafen"];
   frameworksToInclude.sort((a, b) => {
     if (germanFrameworks.includes(a) && !germanFrameworks.includes(b)) {
       return 1;

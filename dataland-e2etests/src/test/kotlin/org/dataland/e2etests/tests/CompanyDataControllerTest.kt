@@ -361,7 +361,8 @@ class CompanyDataControllerTest {
         uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
         sleep(100)
         val expectedMap = mapOf(
-            DataTypeEnum.gdv.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
+            DataTypeEnum.esgMinusQuestionnaire.toString() to
+                AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
             DataTypeEnum.heimathafen.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
             DataTypeEnum.eutaxonomyMinusFinancials.toString() to AggregatedFrameworkDataSummary(
                 numberOfProvidedReportingPeriods = 0,

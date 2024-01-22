@@ -16,7 +16,7 @@ import { getDataPointGetterFactory } from "@/components/resources/dataTable/conv
 import { type ExtendedDataPoint } from "@/utils/DataPoint";
 import { type Field } from "@/utils/GenericFrameworkTypes";
 import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { numberValueGetterFactory } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 
 const sampleField: Field = {

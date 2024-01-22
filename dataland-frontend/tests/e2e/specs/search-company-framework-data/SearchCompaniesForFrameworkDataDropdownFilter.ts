@@ -10,7 +10,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { convertStringToQueryParamFormat } from "@e2e/utils/Converters";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
 let companiesWithEuTaxonomyDataForFinancials: Array<FixtureData<EuTaxonomyDataForFinancials>>;
 let companiesWithSmeData: Array<FixtureData<SmeData>>;
@@ -56,7 +56,7 @@ describe("As a user, I expect the search functionality on the /companies page to
           `&framework=${DataTypeEnum.P2p}` +
           `&framework=${DataTypeEnum.Sfdr}` +
           `&framework=${DataTypeEnum.Sme}` +
-          `&framework=${DataTypeEnum.Gdv}` +
+          `&framework=${DataTypeEnum.EsgQuestionnaire}` +
           `&framework=${DataTypeEnum.Heimathafen}`,
       )
       .get("div.p-multiselect-panel")
@@ -79,7 +79,8 @@ describe("As a user, I expect the search functionality on the /companies page to
         `&framework=${DataTypeEnum.Lksg}` +
         `&framework=${DataTypeEnum.P2p}` +
         `&framework=${DataTypeEnum.Sme}` +
-        `&framework=${DataTypeEnum.Gdv}`,
+        `&framework=${DataTypeEnum.EsgQuestionnaire}` +
+        `&framework=${DataTypeEnum.Heimathafen}`,
     );
   });
 
