@@ -4,7 +4,6 @@ import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
-import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
@@ -24,7 +23,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 class CurrencyComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : NumberBaseComponent(identifier, parent, ) {
+) : NumberBaseComponent(identifier, parent) {
 
     var minimumValue: Long? = null
     var maximumValue: Long? = null
@@ -57,12 +56,12 @@ class CurrencyComponent(
             FrameworkDisplayValueLambda(
                 "formatCurrencyForDisplay(${getTypescriptFieldAccessor()}, \"${
                     StringEscapeUtils.escapeEcmaScript(
-                        label
+                        label,
                     )
                 }\")",
                 setOf(
                     "import { formatCurrencyForDisplay } from " +
-                            "\"@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory\";",
+                        "\"@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory\";",
                 ),
             ),
         )
@@ -91,14 +90,15 @@ class CurrencyComponent(
         } else {
             ""
         }
-        val expression = if (isRequired)
+        val expression = if (isRequired) {
             "dataGenerator.guaranteedCurrencyDataPoint($rangeParameterSpecification)"
-        else
+        } else {
             "dataGenerator.randomCurrencyDataPoint($rangeParameterSpecification)"
+        }
 
         sectionBuilder.addAtomicExpression(
             identifier,
-            expression
+            expression,
         )
     }
 }

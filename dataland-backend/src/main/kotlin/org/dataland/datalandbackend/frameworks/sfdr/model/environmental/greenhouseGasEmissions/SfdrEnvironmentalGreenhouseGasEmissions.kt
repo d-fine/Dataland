@@ -5,6 +5,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.validator.DataPointMaximumValue
 import java.math.BigDecimal
 
 /**
@@ -12,42 +13,55 @@ import java.math.BigDecimal
  */
 data class SfdrEnvironmentalGreenhouseGasEmissions(
     @field:Valid()
+    @field:DataPointMaximumValue(maximumValue = 0)
     val scope1GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMaximumValue(maximumValue = 0)
     val scope2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMaximumValue(maximumValue = 0)
     val scope2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMaximumValue(maximumValue = 0)
     val scope2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMaximumValue(maximumValue = 0)
     val scope1And2GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMaximumValue(maximumValue = 0)
     val scope1And2GhgEmissionsLocationBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMaximumValue(maximumValue = 0)
     val scope1And2GhgEmissionsMarketBasedInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMaximumValue(maximumValue = 0)
     val scope3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMaximumValue(maximumValue = 0)
     val scope1And2And3GhgEmissionsInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMaximumValue(maximumValue = 0)
     val enterpriseValue: CurrencyDataPoint? = null,
 
     @field:Valid()
+    @field:DataPointMaximumValue(maximumValue = 0)
     val totalRevenue: CurrencyDataPoint? = null,
 
     @field:Valid()
+    @field:DataPointMaximumValue(maximumValue = 0)
     val carbonFootprintInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMaximumValue(maximumValue = 0)
     val ghgIntensityInTonnesPerMillionEURRevenue: ExtendedDataPoint<BigDecimal?>? = null,
 
     val fossilFuelSectorExposure: ExtendedDataPoint<YesNo?>? = null,

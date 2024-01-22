@@ -2,7 +2,6 @@ package org.dataland.frameworktoolbox.template.components
 
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.CurrencyComponent
-import org.dataland.frameworktoolbox.intermediate.components.DecimalComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.template.TemplateDiagnostic
@@ -22,13 +21,15 @@ class CurrencyComponentFactory(@Autowired val templateDiagnostic: TemplateDiagno
         utils: ComponentGenerationUtils,
         componentGroup: ComponentGroupApi,
     ): ComponentBase {
-        templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
+        val bounds = DecimalComponentFactory.parseBounds(row.options)
 
         return componentGroup.create<CurrencyComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)
+            this.minimumValue = bounds.first
+            this.maximumValue = bounds.second
         }
     }
 

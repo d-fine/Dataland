@@ -17,7 +17,7 @@ class SingleSelectComponentFactory(@Autowired val templateDiagnostic: TemplateDi
 
     private val nameMap = mapOf(
         "Single-Select Dropdown" to SingleSelectComponent.UploadMode.Dropdown,
-        "Single-Select Radio Button" to SingleSelectComponent.UploadMode.RadioButtons
+        "Single-Select Radio Button" to SingleSelectComponent.UploadMode.RadioButtons,
     )
 
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component in nameMap.keys

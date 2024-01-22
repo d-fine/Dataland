@@ -9,7 +9,6 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
-import org.dataland.frameworktoolbox.utils.Naming.getNameFromLabel
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
 /**

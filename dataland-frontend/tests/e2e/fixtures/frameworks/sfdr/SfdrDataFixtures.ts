@@ -39,19 +39,27 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
     },
     environmental: {
       greenhouseGasEmissions: {
-        scope1GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        scope2GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        scope2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        scope2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        scope1And2GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        scope1And2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        scope1And2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        scope3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        scope1And2And3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        enterpriseValue: dataGenerator.randomCurrencyDataPoint(),
-        totalRevenue: dataGenerator.randomCurrencyDataPoint(),
-        carbonFootprintInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        ghgIntensityInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        scope1GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0, 0)),
+        scope2GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0, 0)),
+        scope2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0, 0)),
+        scope2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0, 0)),
+        scope1And2GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0, 0)),
+        scope1And2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat(0, 0),
+        ),
+        scope1And2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat(0, 0),
+        ),
+        scope3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0, 0)),
+        scope1And2And3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0, 0)),
+        enterpriseValue: dataGenerator.randomCurrencyDataPoint(0, 0),
+        totalRevenue: dataGenerator.randomCurrencyDataPoint(0, 0),
+        carbonFootprintInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat(0, 0),
+        ),
+        ghgIntensityInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat(0, 0),
+        ),
         fossilFuelSectorExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       },
       energyPerformance: {
@@ -59,11 +67,11 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         renewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         nonRenewableEnergyProductionInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         relativeNonRenewableEnergyProductionInPercent: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomFloat(),
+          dataGenerator.randomFloat(100),
         ),
         nonRenewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         relativeNonRenewableEnergyConsumptionInPercent: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomFloat(),
+          dataGenerator.randomFloat(100),
         ),
         applicableHighImpactClimateSectors: dataGenerator.generateHighImpactClimateSectors(),
         totalHighImpactClimateSectorEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(
@@ -144,7 +152,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         ),
         averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(),
         averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(),
-        unadjustedGenderPayGapInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        unadjustedGenderPayGapInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0, 0)),
         femaleBoardMembers: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
         maleBoardMembers: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
         boardGenderDiversityInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
@@ -157,8 +165,8 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         whistleblowerProtectionPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         reportedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
         sanctionedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
-        ceoToEmployeePayGapRatio: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        excessiveCeoPayRatioInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        ceoToEmployeePayGapRatio: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(100)),
+        excessiveCeoPayRatioInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(100)),
       },
       greenSecurities: {
         securitiesNotCertifiedAsGreen: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),

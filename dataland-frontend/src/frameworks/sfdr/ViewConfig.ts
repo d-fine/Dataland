@@ -90,7 +90,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes?.value,
-                  "",
+                  "Tonnes",
                 ),
                 "Scope 1 GHG emissions",
                 dataset.environmental?.greenhouseGasEmissions?.scope1GhgEmissionsInTonnes,
@@ -106,7 +106,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsInTonnes?.value,
-                  "",
+                  "Tonnes",
                 ),
                 "Scope 2 GHG emissions",
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsInTonnes,
@@ -121,7 +121,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes?.value,
-                  "",
+                  "Tonnes",
                 ),
                 "Scope 2 GHG emissions (location-based)",
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsLocationBasedInTonnes,
@@ -136,7 +136,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes?.value,
-                  "",
+                  "Tonnes",
                 ),
                 "Scope 2 GHG emissions (market-based)",
                 dataset.environmental?.greenhouseGasEmissions?.scope2GhgEmissionsMarketBasedInTonnes,
@@ -151,7 +151,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsInTonnes?.value,
-                  "",
+                  "Tonnes",
                 ),
                 "Scope 1 and 2 GHG emissions",
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsInTonnes,
@@ -167,7 +167,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsLocationBasedInTonnes?.value,
-                  "",
+                  "Tonnes",
                 ),
                 "Scope 1 and 2 GHG emissions (location-based)",
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsLocationBasedInTonnes,
@@ -183,7 +183,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsMarketBasedInTonnes?.value,
-                  "",
+                  "Tonnes",
                 ),
                 "Scope 1 and 2 GHG emissions (market-based)",
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2GhgEmissionsMarketBasedInTonnes,
@@ -199,7 +199,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes?.value,
-                  "",
+                  "Tonnes",
                 ),
                 "Scope 3 GHG emissions",
                 dataset.environmental?.greenhouseGasEmissions?.scope3GhgEmissionsInTonnes,
@@ -214,7 +214,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsInTonnes?.value,
-                  "",
+                  "Tonnes",
                 ),
                 "Scope 1 and 2 and 3 GHG emissions",
                 dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsInTonnes,
@@ -250,7 +250,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEURRevenue?.value,
-                  "",
+                  "Tonnes / \u20ACMRevenue",
                 ),
                 "Carbon footprint",
                 dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEURRevenue,
@@ -265,7 +265,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue?.value,
-                  "",
+                  "Tonnes / \u20ACMRevenue",
                 ),
                 "GHG intensity",
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue,
@@ -304,7 +304,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.energyPerformance?.renewableEnergyProductionInGWh?.value,
-                  "",
+                  "GWh",
                 ),
                 "Renewable Energy Production",
                 dataset.environmental?.energyPerformance?.renewableEnergyProductionInGWh,
@@ -320,7 +320,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.energyPerformance?.renewableEnergyConsumptionInGWh?.value,
-                  "",
+                  "GWh",
                 ),
                 "Renewable Energy Consumption",
                 dataset.environmental?.energyPerformance?.renewableEnergyConsumptionInGWh,
@@ -336,7 +336,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.energyPerformance?.nonRenewableEnergyProductionInGWh?.value,
-                  "",
+                  "GWh",
                 ),
                 "Non-Renewable Energy Production",
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyProductionInGWh,
@@ -352,7 +352,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyProductionInPercent?.value,
-                  "",
+                  "Percent",
                 ),
                 "Relative Non-Renewable Energy Production",
                 dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyProductionInPercent,
@@ -368,7 +368,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionInGWh?.value,
-                  "",
+                  "GWh",
                 ),
                 "Non-Renewable Energy Consumption",
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionInGWh,
@@ -384,7 +384,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyConsumptionInPercent?.value,
-                  "",
+                  "Percent",
                 ),
                 "Relative Non-Renewable Energy Consumption",
                 dataset.environmental?.energyPerformance?.relativeNonRenewableEnergyConsumptionInPercent,
@@ -410,7 +410,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.energyPerformance?.totalHighImpactClimateSectorEnergyConsumptionInGWh?.value,
-                  "",
+                  "GWh",
                 ),
                 "Total High Impact Climate Sector Energy Consumption",
                 dataset.environmental?.energyPerformance?.totalHighImpactClimateSectorEnergyConsumptionInGWh,
@@ -426,7 +426,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionFossilFuelsInGWh?.value,
-                  "",
+                  "GWh",
                 ),
                 "Non-Renewable Energy Consumption Fossil Fuels",
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionFossilFuelsInGWh,
@@ -441,7 +441,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCrudeOilInGWh?.value,
-                  "",
+                  "GWh",
                 ),
                 "Non-Renewable Energy Consumption Crude Oil",
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCrudeOilInGWh,
@@ -456,7 +456,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNaturalGasInGWh?.value,
-                  "",
+                  "GWh",
                 ),
                 "Non-Renewable Energy Consumption Natural Gas",
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNaturalGasInGWh,
@@ -471,7 +471,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionLigniteInGWh?.value,
-                  "",
+                  "GWh",
                 ),
                 "Non-Renewable Energy Consumption Lignite",
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionLigniteInGWh,
@@ -486,7 +486,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCoalInGWh?.value,
-                  "",
+                  "GWh",
                 ),
                 "Non-Renewable Energy Consumption Coal",
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionCoalInGWh,
@@ -501,7 +501,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNuclearEnergyInGWh?.value,
-                  "",
+                  "GWh",
                 ),
                 "Non-Renewable Energy Consumption Nuclear Energy",
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionNuclearEnergyInGWh,
@@ -516,7 +516,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionOtherInGWh?.value,
-                  "",
+                  "GWh",
                 ),
                 "Non-Renewable Energy Consumption Other",
                 dataset.environmental?.energyPerformance?.nonRenewableEnergyConsumptionOtherInGWh,
@@ -604,7 +604,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.environmental?.water?.emissionsToWaterInTonnes?.value, ""),
+                formatNumberForDatatable(dataset.environmental?.water?.emissionsToWaterInTonnes?.value, "Tonnes"),
                 "Emissions To Water",
                 dataset.environmental?.water?.emissionsToWaterInTonnes,
               ),
@@ -616,7 +616,10 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.environmental?.water?.waterConsumptionInCubicMeters?.value, ""),
+                formatNumberForDatatable(
+                  dataset.environmental?.water?.waterConsumptionInCubicMeters?.value,
+                  "Cubic Meters",
+                ),
                 "Water Consumption",
                 dataset.environmental?.water?.waterConsumptionInCubicMeters,
               ),
@@ -629,7 +632,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.environmental?.water?.waterReusedInCubicMeters?.value, ""),
+                formatNumberForDatatable(dataset.environmental?.water?.waterReusedInCubicMeters?.value, "Cubic Meters"),
                 "Water Reused",
                 dataset.environmental?.water?.waterReusedInCubicMeters,
               ),
@@ -643,7 +646,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue?.value,
-                  "",
+                  "Cubic Meters / \u20ACMRevenue",
                 ),
                 "Relative Water Usage",
                 dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue,
@@ -690,7 +693,10 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.environmental?.waste?.hazardousAndRadioactiveWasteInTonnes?.value, ""),
+                formatNumberForDatatable(
+                  dataset.environmental?.waste?.hazardousAndRadioactiveWasteInTonnes?.value,
+                  "Tonnes",
+                ),
                 "Hazardous and Radioactive Waste",
                 dataset.environmental?.waste?.hazardousAndRadioactiveWasteInTonnes,
               ),
@@ -755,7 +761,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.environmental?.waste?.nonRecycledWasteInTonnes?.value, ""),
+                formatNumberForDatatable(dataset.environmental?.waste?.nonRecycledWasteInTonnes?.value, "Tonnes"),
                 "Non-Recycled Waste",
                 dataset.environmental?.waste?.nonRecycledWasteInTonnes,
               ),
@@ -816,7 +822,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.emissions?.emissionsOfInorganicPollutantsInTonnes?.value,
-                  "",
+                  "Tonnes",
                 ),
                 "Emissions of Inorganic Pollutants",
                 dataset.environmental?.emissions?.emissionsOfInorganicPollutantsInTonnes,
@@ -830,7 +836,10 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.environmental?.emissions?.emissionsOfAirPollutantsInTonnes?.value, ""),
+                formatNumberForDatatable(
+                  dataset.environmental?.emissions?.emissionsOfAirPollutantsInTonnes?.value,
+                  "Tonnes",
+                ),
                 "Emissions of Air Pollutants",
                 dataset.environmental?.emissions?.emissionsOfAirPollutantsInTonnes,
               ),
@@ -845,7 +854,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.emissions?.emissionsOfOzoneDepletionSubstancesInTonnes?.value,
-                  "",
+                  "Tonnes",
                 ),
                 "Emissions of Ozone Depletion Substances",
                 dataset.environmental?.emissions?.emissionsOfOzoneDepletionSubstancesInTonnes,
@@ -1148,7 +1157,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.unadjustedGenderPayGapInPercent?.value,
-                  "",
+                  "Percent",
                 ),
                 "Unadjusted gender pay gap",
                 dataset.social?.socialAndEmployeeMatters?.unadjustedGenderPayGapInPercent,
@@ -1190,7 +1199,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.boardGenderDiversityInPercent?.value,
-                  "",
+                  "Percent",
                 ),
                 "Board gender diversity",
                 dataset.social?.socialAndEmployeeMatters?.boardGenderDiversityInPercent,
@@ -1232,7 +1241,10 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.rateOfAccidentsInPercent?.value, ""),
+                formatNumberForDatatable(
+                  dataset.social?.socialAndEmployeeMatters?.rateOfAccidentsInPercent?.value,
+                  "Percent",
+                ),
                 "Rate Of Accidents",
                 dataset.social?.socialAndEmployeeMatters?.rateOfAccidentsInPercent,
               ),
@@ -1244,7 +1256,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.workdaysLostInDays?.value, ""),
+                formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.workdaysLostInDays?.value, "Days"),
                 "Workdays Lost",
                 dataset.social?.socialAndEmployeeMatters?.workdaysLostInDays,
               ),
@@ -1344,7 +1356,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatioInPercent?.value,
-                  "",
+                  "Percent",
                 ),
                 "Excessive CEO pay ratio",
                 dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatioInPercent,

@@ -6,6 +6,8 @@ import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
+import org.dataland.datalandbackend.validator.DataPointMaximumValue
+import org.dataland.datalandbackend.validator.DataPointMinimumValue
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -54,6 +56,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
     @field:Valid()
+    @field:DataPointMaximumValue(maximumValue = 0)
     val unadjustedGenderPayGapInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
     val femaleBoardMembers: ExtendedDataPoint<BigInteger?>? = null,
@@ -84,9 +87,11 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val sanctionedIncidentsOfDiscrimination: ExtendedDataPoint<BigInteger?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 100)
     val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 100)
     val excessiveCeoPayRatioInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
 )

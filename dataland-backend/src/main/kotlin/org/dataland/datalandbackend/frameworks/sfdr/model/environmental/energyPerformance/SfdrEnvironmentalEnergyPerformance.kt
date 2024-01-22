@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSect
 import org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
+import org.dataland.datalandbackend.validator.DataPointMinimumValue
 import java.math.BigDecimal
 
 /**
@@ -23,12 +24,14 @@ data class SfdrEnvironmentalEnergyPerformance(
     val nonRenewableEnergyProductionInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 100)
     val relativeNonRenewableEnergyProductionInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
     val nonRenewableEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = 100)
     val relativeNonRenewableEnergyConsumptionInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Schema(example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE)
