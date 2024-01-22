@@ -101,7 +101,7 @@ describeIf(
       cy.intercept({ url: `**/documents/*`, method: "HEAD", times: 1 }).as("documentExists");
       cy.intercept(`**/documents/`, cy.spy().as("postDocument"));
       cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
-      cy.intercept(`**/companies**`).as("getDataForMyDatasetsPage");
+      cy.intercept(`**/users/**`).as("getDataForMyDatasetsPage");
       cy.get('button[data-test="submitButton"]').click();
       cy.wait("@documentExists", { timeout: Cypress.env("short_timeout_in_ms") as number })
         .its("response.statusCode")
