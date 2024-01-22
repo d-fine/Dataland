@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
+import org.dataland.frameworktoolbox.utils.Naming
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import org.dataland.frameworktoolbox.utils.typescript.EsLintRunner
@@ -33,6 +34,7 @@ class FrameworkUploadConfigBuilder(
         val freeMarkerContext = mapOf(
             "uploadConfig" to rootSectionConfigBuilder.children,
             "frameworkDataType" to "${framework.identifier.capitalizeEn()}Data",
+            "frameworkBaseNameInCamelCase" to Naming.getNameFromLabel(framework.identifier),
             "frameworkIdentifier" to framework.identifier,
         )
 
