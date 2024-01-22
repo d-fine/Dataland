@@ -52,9 +52,11 @@ class ComponentGroup(
             it.generateDataModel(groupClass)
         }
 
+        val isRequired = isRequired || nestedChildren.any { it.isRequired }
+
         dataClassBuilder.addProperty(
             identifier,
-            groupClass.getTypeReference(nullable = isNullable),
+            groupClass.getTypeReference(nullable = !isRequired),
             listOf(ValidAnnotation),
         )
     }

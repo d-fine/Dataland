@@ -3785,15 +3785,13 @@
         ]
       },
       "SfdrData": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
           "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SfdrGeneral"
-              }
-            ]
+            "$ref": "#/components/schemas/SfdrGeneral"
           },
           "environmental": {
             "nullable": true,
@@ -4530,15 +4528,13 @@
         }
       },
       "SfdrGeneral": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
           "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SfdrGeneralGeneral"
-              }
-            ]
+            "$ref": "#/components/schemas/SfdrGeneralGeneral"
           }
         }
       },
