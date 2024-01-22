@@ -4,6 +4,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
@@ -33,7 +34,7 @@ data class DataRequestEntity(
 
     val dataRequestCompanyIdentifierValue: String,
 
-    @OneToMany(mappedBy = "dataRequestId")
+    @OneToMany(mappedBy = "dataRequestId", fetch = FetchType.EAGER)
     val messageHistory: MutableList<MessageRequestEntity>,
 
     val lastModifiedDate: Long,

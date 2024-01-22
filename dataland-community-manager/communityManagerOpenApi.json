@@ -598,9 +598,60 @@
           "DatalandCompanyId"
         ]
       },
+      "DataRequestEntity": {
+        "required": [
+          "creationTimestamp",
+          "dataRequestCompanyIdentifierType",
+          "dataRequestCompanyIdentifierValue",
+          "dataRequestId",
+          "dataTypeName",
+          "lastModifiedDate",
+          "messageHistory",
+          "reportingPeriod",
+          "requestStatus",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "dataRequestId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dataTypeName": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "dataRequestCompanyIdentifierType": {
+            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
+          },
+          "dataRequestCompanyIdentifierValue": {
+            "type": "string"
+          },
+          "messageHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageRequestEntity"
+            }
+          },
+          "lastModifiedDate": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requestStatus": {
+            "$ref": "#/components/schemas/RequestStatus"
+          }
+        }
+      },
       "MessageRequestEntity": {
         "required": [
-          "dataRequestId",
           "messageRequestId"
         ],
         "type": "object",
@@ -609,7 +660,7 @@
             "type": "string"
           },
           "dataRequestId": {
-            "type": "string"
+            "$ref": "#/components/schemas/DataRequestEntity"
           },
           "contactList": {
             "type": "array",
