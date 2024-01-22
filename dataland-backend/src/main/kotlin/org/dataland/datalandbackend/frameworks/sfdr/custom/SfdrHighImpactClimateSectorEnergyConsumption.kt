@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.sfdr.custom
+package org.dataland.datalandbackend.frameworks.sfdr.custom
 
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import java.math.BigDecimal

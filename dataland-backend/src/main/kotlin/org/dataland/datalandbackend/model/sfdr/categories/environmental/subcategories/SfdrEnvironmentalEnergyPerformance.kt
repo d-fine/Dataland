@@ -2,9 +2,9 @@ package org.dataland.datalandbackend.model.sfdr.categories.environmental.subcate
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.enums.sfdr.HighImpactClimateSector
-import org.dataland.datalandbackend.model.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import org.dataland.datalandbackend.validator.DataPointMinimumValue
 import java.math.BigDecimal
