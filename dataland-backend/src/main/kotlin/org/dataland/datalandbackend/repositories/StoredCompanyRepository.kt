@@ -54,15 +54,13 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " (SELECT company.company_id AS company_id," +
             " CASE " +
             " WHEN company_name = :#{#searchFilter.searchString} THEN 1" +
-            " WHEN company_name" +
-            " ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 3" +
+            " WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
             " ELSE 5" +
             " END match_quality " +
             " FROM (SELECT company_id, company_name FROM stored_companies) company " +
             " JOIN has_data datainfo" +
             " ON company.company_id = datainfo.company_id " +
-            " WHERE company.company_name" +
-            " ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()})" +
+            " WHERE company.company_name ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})" +
 
             " UNION " +
             " (SELECT " +
@@ -77,7 +75,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " JOIN has_data datainfo" +
             " ON alt_names.stored_company_entity_company_id = datainfo.company_id " +
             " WHERE company_alternative_names" +
-            " ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()})" +
+            " ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})" +
 
             " UNION " +
             " (SELECT " +
@@ -86,8 +84,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " FROM company_identifiers identifiers" +
             " JOIN has_data datainfo" +
             " ON identifiers.company_id = datainfo.company_id " +
-            " WHERE identifier_value" +
-            " ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()})) " +
+            " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})) " +
             " AS intermediate_results GROUP BY intermediate_results.company_id) " +
 
             // Combine Results
