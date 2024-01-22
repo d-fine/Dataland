@@ -407,6 +407,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.d-search-toggle {
+  z-index: 99;
+  top: 4rem;
+}
 .d-search-filters-panel {
   height: 5rem;
 }
