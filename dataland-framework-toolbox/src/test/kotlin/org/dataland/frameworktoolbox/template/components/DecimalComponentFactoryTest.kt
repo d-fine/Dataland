@@ -15,7 +15,7 @@ class DecimalComponentFactoryTest {
 
     @Test
     fun `Test that valid input with numeric bounds returns valid bounds`() {
-        val input = "[-10, 20]"
+        val input = "Allowed Range: [-10, 20]"
         val expected = Pair(-10L, 20L)
         val actual = DecimalComponentFactory.parseBounds(input)
         assertEquals(expected, actual)
@@ -23,7 +23,7 @@ class DecimalComponentFactoryTest {
 
     @Test
     fun `Test that valid input with infinite bounds returns valid pair`() {
-        val input = "[INF, 5]"
+        val input = "Allowed Range: [-INF, 5]"
         val expected = Pair(null, 5L)
         val actual = DecimalComponentFactory.parseBounds(input)
         assertEquals(expected, actual)

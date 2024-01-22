@@ -28,14 +28,14 @@ class DecimalComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnos
             val matchResult = pattern.find(input)
                 ?: throw IllegalArgumentException(
                     "Decimal options $input does not" +
-                        " match the expected format [LOWER_BOUND,UPPER_BOUND]",
+                        " match the expected format 'Allowed Range: [LOWER_BOUND, UPPER_BOUND]'",
                 )
 
             val lowerBoundGroupMatch = matchResult.groups["lower"]!!.value
             val upperBoundGroupMatch = matchResult.groups["upper"]!!.value
 
             fun getBound(value: String): Long? {
-                return if (value == "INF") {
+                return if (value == "INF" || value == "-INF") {
                     null
                 } else {
                     value.toLong()
