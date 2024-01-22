@@ -14,7 +14,13 @@ import org.springframework.stereotype.Component
  */
 @Component
 class SingleSelectComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Single-Select Dropdown"
+
+    private val nameMap = mapOf(
+        "Single-Select Dropdown" to SingleSelectComponent.UploadMode.Dropdown,
+        "Single-Select Radio Button" to SingleSelectComponent.UploadMode.RadioButtons
+    )
+
+    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component in nameMap.keys
 
     override fun generateComponent(
         row: TemplateRow,
@@ -28,6 +34,7 @@ class SingleSelectComponentFactory(@Autowired val templateDiagnostic: TemplateDi
         ) {
             utils.setCommonProperties(row, this)
             this.options = utils.getSelectionOptionsFromOptionColumn(row)
+            this.uploadMode = nameMap[row.component]!!
         }
     }
 

@@ -27,20 +27,6 @@ class ComponentGroup(
 
     override val children: Sequence<ComponentBase> by componentGroupApi::children
 
-    val camelCaseComponentIdentifier: String
-        get() {
-            return parents()
-                .toList()
-                .reversed()
-                .mapNotNull {
-                    when (it) {
-                        is ComponentGroup -> getNameFromLabel(it.identifier).capitalizeEn()
-                        is TopLevelComponentGroup -> getNameFromLabel(it.parent.identifier).capitalizeEn()
-                        else -> null
-                    }
-                }.joinToString("") + identifier.capitalizeEn()
-        }
-
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val groupPackage = dataClassBuilder.parentPackage.addPackage(identifier)
         val groupClass = groupPackage.addClass(

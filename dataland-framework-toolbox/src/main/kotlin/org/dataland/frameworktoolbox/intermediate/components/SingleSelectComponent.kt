@@ -22,8 +22,14 @@ open class SingleSelectComponent(
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
 
+    enum class UploadMode(val component: String) {
+        Dropdown("SingleSelectFormField"),
+        RadioButtons("RadioButtonsFormField")
+    }
+
     var options: Set<SelectionOption> = mutableSetOf()
-    val enumName = "${identifier.capitalizeEn()}Options"
+    var enumName = "${camelCaseComponentIdentifier}Options"
+    var uploadMode: UploadMode = UploadMode.Dropdown
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val enum = dataClassBuilder.parentPackage.addEnum(
@@ -71,7 +77,7 @@ open class SingleSelectComponent(
                 imports = null,
             ),
             component = this,
-            uploadComponentName = "SingleSelectFormField",
+            uploadComponentName = uploadMode.component,
         )
     }
 

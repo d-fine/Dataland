@@ -17,7 +17,7 @@ import {
  * @returns the cell to display
  */
 export function formatCurrencyForDisplay(
-  dataPoint: CurrencyDataPoint | null,
+  dataPoint: CurrencyDataPoint | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
   const datapointValue = formatAmountWithCurrency({ amount: dataPoint?.value });

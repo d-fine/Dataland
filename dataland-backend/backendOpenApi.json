@@ -4541,6 +4541,7 @@
       "SfdrGeneralGeneral": {
         "required": [
           "dataDate",
+          "fiscalYearDeviation",
           "fiscalYearEnd"
         ],
         "type": "object",
@@ -4548,6 +4549,9 @@
           "dataDate": {
             "type": "string",
             "format": "date"
+          },
+          "fiscalYearDeviation": {
+            "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
           },
           "fiscalYearEnd": {
             "type": "string",
@@ -4575,6 +4579,13 @@
             ]
           }
         }
+      },
+      "SfdrGeneralGeneralFiscalYearDeviationOptions": {
+        "type": "string",
+        "enum": [
+          "Deviation",
+          "NoDeviation"
+        ]
       },
       "SfdrHighImpactClimateSectorEnergyConsumption": {
         "type": "object",

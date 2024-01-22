@@ -65,7 +65,7 @@ function convertHighImpactClimateToListForModal(
  * @returns the converted cell for the table
  */
 export function formatHighImpactClimateSectorForDisplay(
-  fieldValue: { [key: string]: SfdrHighImpactClimateSectorEnergyConsumption } | null,
+  fieldValue: { [key: string]: SfdrHighImpactClimateSectorEnergyConsumption } | null | undefined,
 ): AvailableMLDTDisplayObjectTypes {
   if (!fieldValue) return MLDTDisplayObjectForEmptyString;
 

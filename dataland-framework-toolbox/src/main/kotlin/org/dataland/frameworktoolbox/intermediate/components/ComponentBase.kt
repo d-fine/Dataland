@@ -5,12 +5,16 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.TreeNode
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
+import org.dataland.frameworktoolbox.intermediate.group.TopLevelComponentGroup
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
+import org.dataland.frameworktoolbox.utils.Naming
+import org.dataland.frameworktoolbox.utils.capitalizeEn
 
 /**
  * A component is a higher-level abstraction for framework elements. Components are arranged in a hierarchy
@@ -101,6 +105,20 @@ open class ComponentBase(
             }
         }
     }
+
+    val camelCaseComponentIdentifier: String
+        get() {
+            return parents()
+                .toList()
+                .reversed()
+                .mapNotNull {
+                    when (it) {
+                        is ComponentGroup -> Naming.getNameFromLabel(it.identifier).capitalizeEn()
+                        is TopLevelComponentGroup -> Naming.getNameFromLabel(it.parent.identifier).capitalizeEn()
+                        else -> null
+                    }
+                }.joinToString("") + identifier.capitalizeEn()
+        }
 
     /**
      * Build this component instance into the provided Kotlin DataClass using the default

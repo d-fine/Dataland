@@ -13,6 +13,8 @@ import java.time.LocalDate
 data class SfdrGeneralGeneral(
     val dataDate: LocalDate,
 
+    val fiscalYearDeviation: SfdrGeneralGeneralFiscalYearDeviationOptions,
+
     val fiscalYearEnd: LocalDate,
 
     @field:Schema(implementation = Map::class, example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)

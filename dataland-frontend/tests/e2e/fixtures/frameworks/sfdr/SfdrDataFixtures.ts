@@ -4,6 +4,8 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type SfdrData } from "@clients/backend";
 import { SfdrGenerator } from "@e2e/fixtures/frameworks/sfdr/SfdrGenerator";
+import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
+import { SfdrGeneralGeneralFiscalYearDeviationOptions } from "@clients/backend";
 
 /**
  * Generates a set number of sfdr fixtures
@@ -15,11 +17,7 @@ export function generateSfdrFixtures(
   numFixtures: number,
   nullProbability = DEFAULT_PROBABILITY,
 ): FixtureData<SfdrData>[] {
-  return generateFixtureDataset<SfdrData>(
-    () => generateSfdrData(nullProbability),
-    numFixtures,
-    
-  );
+  return generateFixtureDataset<SfdrData>(() => generateSfdrData(nullProbability), numFixtures);
 }
 
 /**
@@ -31,132 +29,157 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
   const dataGenerator = new SfdrGenerator(nullProbability);
   return {
     general: {
-        general: {
-            dataDate: dataGenerator.guaranteedFutureDate(),
-            fiscalYearEnd: dataGenerator.guaranteedFutureDate(),
-            referencedReports: dataGenerator.reports,
-            scopeOfEntities: dataGenerator.randomYesNoNa(),
-        },
+      general: {
+        dataDate: dataGenerator.guaranteedFutureDate(),
+        fiscalYearDeviation: pickOneElement(Object.values(SfdrGeneralGeneralFiscalYearDeviationOptions)),
+        fiscalYearEnd: dataGenerator.guaranteedFutureDate(),
+        referencedReports: dataGenerator.reports,
+        scopeOfEntities: dataGenerator.randomYesNoNa(),
+      },
     },
     environmental: {
-        greenhouseGasEmissions: {
-            scope1GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            scope2GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            scope2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            scope2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            scope1And2GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            scope1And2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            scope1And2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            scope3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            scope1And2And3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            enterpriseValue: dataGenerator.randomCurrencyDataPoint(),
-            totalRevenue: dataGenerator.randomCurrencyDataPoint(),
-            carbonFootprintInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            ghgIntensityInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            fossilFuelSectorExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        },
-        energyPerformance: {
-            renewableEnergyProductionInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            renewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            nonRenewableEnergyProductionInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            relativeNonRenewableEnergyProductionInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            nonRenewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            relativeNonRenewableEnergyConsumptionInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            applicableHighImpactClimateSectors: dataGenerator.generateHighImpactClimateSectors(),
-            totalHighImpactClimateSectorEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            nonRenewableEnergyConsumptionFossilFuelsInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            nonRenewableEnergyConsumptionCrudeOilInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            nonRenewableEnergyConsumptionNaturalGasInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            nonRenewableEnergyConsumptionLigniteInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            nonRenewableEnergyConsumptionCoalInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            nonRenewableEnergyConsumptionNuclearEnergyInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            nonRenewableEnergyConsumptionOtherInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        },
-        biodiversity: {
-            primaryForestAndWoodedLandOfNativeSpeciesExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            protectedAreasExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            rareOrEndangeredEcosystemsExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            highlyBiodiverseGrasslandExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        },
-        water: {
-            emissionsToWaterInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            waterConsumptionInCubicMeters: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            waterReusedInCubicMeters: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            relativeWaterUsageInCubicMetersPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            waterManagementPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            highWaterStressAreaExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        },
-        waste: {
-            hazardousAndRadioactiveWasteInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            manufactureOfAgrochemicalPesticidesProducts: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            landDegradationDesertificationSoilSealingExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            sustainableAgriculturePolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            sustainableOceansAndSeasPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            nonRecycledWasteInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            threatenedSpeciesExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            biodiversityProtectionPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            deforestationPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-        },
-        emissions: {
-            emissionsOfInorganicPollutantsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            emissionsOfAirPollutantsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            emissionsOfOzoneDepletionSubstancesInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            carbonReductionInitiatives: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        },
+      greenhouseGasEmissions: {
+        scope1GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        scope2GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        scope2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        scope2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        scope1And2GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        scope1And2GhgEmissionsLocationBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        scope1And2GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        scope3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        scope1And2And3GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        enterpriseValue: dataGenerator.randomCurrencyDataPoint(),
+        totalRevenue: dataGenerator.randomCurrencyDataPoint(),
+        carbonFootprintInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        ghgIntensityInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        fossilFuelSectorExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+      },
+      energyPerformance: {
+        renewableEnergyProductionInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        renewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        nonRenewableEnergyProductionInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        relativeNonRenewableEnergyProductionInPercent: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat(),
+        ),
+        nonRenewableEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        relativeNonRenewableEnergyConsumptionInPercent: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat(),
+        ),
+        applicableHighImpactClimateSectors: dataGenerator.generateHighImpactClimateSectors(),
+        totalHighImpactClimateSectorEnergyConsumptionInGWh: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat(),
+        ),
+        nonRenewableEnergyConsumptionFossilFuelsInGWh: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat(),
+        ),
+        nonRenewableEnergyConsumptionCrudeOilInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        nonRenewableEnergyConsumptionNaturalGasInGWh: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat(),
+        ),
+        nonRenewableEnergyConsumptionLigniteInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        nonRenewableEnergyConsumptionCoalInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        nonRenewableEnergyConsumptionNuclearEnergyInGWh: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat(),
+        ),
+        nonRenewableEnergyConsumptionOtherInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+      },
+      biodiversity: {
+        primaryForestAndWoodedLandOfNativeSpeciesExposure: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomYesNo(),
+        ),
+        protectedAreasExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        rareOrEndangeredEcosystemsExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        highlyBiodiverseGrasslandExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+      },
+      water: {
+        emissionsToWaterInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        waterConsumptionInCubicMeters: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        waterReusedInCubicMeters: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        relativeWaterUsageInCubicMetersPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomFloat(),
+        ),
+        waterManagementPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        highWaterStressAreaExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+      },
+      waste: {
+        hazardousAndRadioactiveWasteInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        manufactureOfAgrochemicalPesticidesProducts: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        landDegradationDesertificationSoilSealingExposure: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomYesNo(),
+        ),
+        sustainableAgriculturePolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        sustainableOceansAndSeasPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        nonRecycledWasteInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        threatenedSpeciesExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        biodiversityProtectionPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        deforestationPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+      },
+      emissions: {
+        emissionsOfInorganicPollutantsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        emissionsOfAirPollutantsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        emissionsOfOzoneDepletionSubstancesInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        carbonReductionInitiatives: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+      },
     },
     social: {
-        socialAndEmployeeMatters: {
-            humanRightsLegalProceedings: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            iloCoreLabourStandards: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            environmentalPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            corruptionLegalProceedings: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            transparencyDisclosurePolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            humanRightsDueDiligencePolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            policyAgainstChildLabour: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            policyAgainstForcedLabour: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            policyAgainstDiscriminationInTheWorkplace: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            iso14001Certificate: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            policyAgainstBriberyAndCorruption: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            fairBusinessMarketingAdvertisingPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            technologiesExpertiseTransferPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            fairCompetitionPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            violationOfTaxRulesAndRegulation: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            unGlobalCompactPrinciplesCompliancePolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(),
-            averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(),
-            unadjustedGenderPayGapInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            femaleBoardMembers: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
-            maleBoardMembers: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
-            boardGenderDiversityInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            controversialWeaponsExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            workplaceAccidentPreventionPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            rateOfAccidentsInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            workdaysLostInDays: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            supplierCodeOfConduct: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            grievanceHandlingMechanism: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            whistleblowerProtectionPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            reportedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
-            sanctionedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
-            ceoToEmployeePayGapRatio: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-            excessiveCeoPayRatioInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        },
-        greenSecurities: {
-            securitiesNotCertifiedAsGreen: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        },
-        humanRights: {
-            humanRightsPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            humanRightsDueDiligence: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            traffickingInHumanBeingsPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-            reportedChildLabourIncidents: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            reportedForcedOrCompulsoryLabourIncidents: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-            numberOfReportedIncidentsOfHumanRightsViolations: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
-        },
-        antiCorruptionAndAntiBribery: {
-            casesOfInsufficientActionAgainstBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
-            reportedConvictionsOfBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
-            totalAmountOfReportedFinesOfBriberyAndCorruption: dataGenerator.randomCurrencyDataPoint(),
-        },
+      socialAndEmployeeMatters: {
+        humanRightsLegalProceedings: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        iloCoreLabourStandards: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        environmentalPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        corruptionLegalProceedings: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        transparencyDisclosurePolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        humanRightsDueDiligencePolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        policyAgainstChildLabour: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        policyAgainstForcedLabour: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        policyAgainstDiscriminationInTheWorkplace: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        iso14001Certificate: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        policyAgainstBriberyAndCorruption: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        fairBusinessMarketingAdvertisingPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        technologiesExpertiseTransferPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        fairCompetitionPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        violationOfTaxRulesAndRegulation: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        unGlobalCompactPrinciplesCompliancePolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        oecdGuidelinesForMultinationalEnterprisesGrievanceHandling: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomYesNo(),
+        ),
+        averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(),
+        averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(),
+        unadjustedGenderPayGapInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        femaleBoardMembers: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
+        maleBoardMembers: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
+        boardGenderDiversityInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        controversialWeaponsExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        workplaceAccidentPreventionPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        rateOfAccidentsInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        workdaysLostInDays: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        supplierCodeOfConduct: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        grievanceHandlingMechanism: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        whistleblowerProtectionPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        reportedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
+        sanctionedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
+        ceoToEmployeePayGapRatio: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        excessiveCeoPayRatioInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+      },
+      greenSecurities: {
+        securitiesNotCertifiedAsGreen: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+      },
+      humanRights: {
+        humanRightsPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        humanRightsDueDiligence: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        traffickingInHumanBeingsPolicy: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
+        reportedChildLabourIncidents: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        reportedForcedOrCompulsoryLabourIncidents: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        numberOfReportedIncidentsOfHumanRightsViolations: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomInt(),
+        ),
+      },
+      antiCorruptionAndAntiBribery: {
+        casesOfInsufficientActionAgainstBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(
+          dataGenerator.randomInt(),
+        ),
+        reportedConvictionsOfBriberyAndCorruption: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt()),
+        totalAmountOfReportedFinesOfBriberyAndCorruption: dataGenerator.randomCurrencyDataPoint(),
+      },
     },
-}
+  };
 }
