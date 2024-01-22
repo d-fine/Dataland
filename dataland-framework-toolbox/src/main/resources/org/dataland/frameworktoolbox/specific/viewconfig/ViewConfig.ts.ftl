@@ -11,7 +11,7 @@
   expandOnPageLoad: ${sectionConfig.expandOnPageLoad?c},
   shouldDisplay: <@frameworklambda sectionConfig.shouldDisplay/>,
   children: [<@mldtconfig sectionConfig.children/>],
-  <#if sectionConfig.labelBadgeColor??>labelBadgeColor: ${sectionConfig.labelBadgeColor?c},</#if>
+  <#if sectionConfig.labelBadgeColor??>labelBadgeColor: "${sectionConfig.labelBadgeColor.value?js_string}",</#if>
 }</#macro>
 <#macro frameworklambda lambda>
 (<#if lambda.usesDataset>dataset: ${frameworkDataType}</#if>): ${lambda.returnParameter} => ${lambda.lambdaBody}

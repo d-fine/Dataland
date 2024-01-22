@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import {
-  type MLDTDisplayComponentName,
+  MLDTDisplayComponentName,
   type MLDTDisplayObject,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DataPointDataTable from "@/components/general/DataPointDataTable.vue";
@@ -57,7 +57,12 @@ export default defineComponent({
     },
     dataPointProperties() {
       const content = this.content.displayValue;
+      let valueOption = undefined;
+      if (content.innerContents.displayComponentName == MLDTDisplayComponentName.StringDisplayComponent) {
+        valueOption = content.innerContents.displayValue;
+      }
       return {
+        value: valueOption,
         quality: content.quality,
         dataSource: content.dataSource,
         comment: content.comment,

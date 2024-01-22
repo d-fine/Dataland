@@ -13,13 +13,13 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
   {
     type: "section",
     label: "General",
-    expandOnPageLoad: false,
+    expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
       {
         type: "section",
         label: "General",
-        expandOnPageLoad: false,
+        expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
           {
@@ -67,6 +67,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
         ],
       },
     ],
+    labelBadgeColor: "orange",
   },
   {
     type: "section",
@@ -876,6 +877,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
         ],
       },
     ],
+    labelBadgeColor: "green",
   },
   {
     type: "section",
@@ -1523,5 +1525,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
         ],
       },
     ],
+    labelBadgeColor: "yellow",
   },
 ];

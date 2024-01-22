@@ -32,7 +32,7 @@ export const ${frameworkBaseNameInCamelCase}DataModel = [<@loopCategories upload
 <#macro uploadConfigCategory categoryConfig>{
     name: "${categoryConfig.name?js_string}",
     label: "${categoryConfig.label?js_string}",
-    color: "<#if categoryConfig.labelBadgeColor??>${categoryConfig.labelBadgeColor?c}</#if>",
+    color: "<#if categoryConfig.labelBadgeColor??>${categoryConfig.labelBadgeColor.value?js_string}</#if>",
     showIf: <@frameworklambda categoryConfig.shouldDisplay/>,
     subcategories: [<@loopSubcategories categoryConfig.children/>],
     },

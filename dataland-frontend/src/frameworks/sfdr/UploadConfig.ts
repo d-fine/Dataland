@@ -5,7 +5,7 @@ export const sfdrDataModel = [
   {
     name: "general",
     label: "General",
-    color: "",
+    color: "orange",
     showIf: (): boolean => true,
     subcategories: [
       {
@@ -78,7 +78,7 @@ export const sfdrDataModel = [
   {
     name: "environmental",
     label: "Environmental",
-    color: "",
+    color: "green",
     showIf: (): boolean => true,
     subcategories: [
       {
@@ -673,7 +673,7 @@ export const sfdrDataModel = [
   {
     name: "social",
     label: "Social",
-    color: "",
+    color: "yellow",
     showIf: (): boolean => true,
     subcategories: [
       {
