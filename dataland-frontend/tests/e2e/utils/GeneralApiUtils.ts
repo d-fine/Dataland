@@ -43,10 +43,10 @@ export async function countCompaniesAndDataSetsForDataType(
   const basicCompanyInformations = await searchBasicCompanyInformationForDataType(token, dataType);
   let numberOfDataSetsForDataType = 0;
   const companyDataController = new CompanyDataControllerApi(new Configuration({ accessToken: token }));
-  basicCompanyInformations.forEach(async (storedCompany) => {
+  for (const storedCompany of basicCompanyInformations) {
     numberOfDataSetsForDataType += (await companyDataController.getCompanyById(storedCompany.companyId)).data
       .dataRegisteredByDataland.length;
-  });
+  }
 
   return {
     numberOfDataSetsForDataType,

@@ -151,8 +151,8 @@ describeIf(
             cy.get("input[id=search_bar_top]")
               .click({ force: true })
               .type("{backspace}")
-                .type("{backspace}")
-                .type("{backspace}")
+              .type("{backspace}")
+              .type("{backspace}")
               .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
             cy.get("ul[class=p-autocomplete-items]").should("exist");
             cy.get("input[id=search_bar_top]").type("{downArrow}");
@@ -164,7 +164,12 @@ describeIf(
             cy.get("input[id=search_bar_top]").type("{upArrow}");
             cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
             cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
-            cy.get("input[id=search_bar_top]").click({ force: true }).type("{backspace}").type("{backspace}").type("{backspace}").type(testCompany.companyName);
+            cy.get("input[id=search_bar_top]")
+              .click({ force: true })
+              .type("{backspace}")
+              .type("{backspace}")
+              .type("{backspace}")
+              .type(testCompany.companyName);
             cy.get(".p-autocomplete-item").eq(0).should("contain.text", testCompany.companyName).click({ force: true });
 
             validateCompanyCockpitPage(testCompany.companyName, testCompany.companyId);
