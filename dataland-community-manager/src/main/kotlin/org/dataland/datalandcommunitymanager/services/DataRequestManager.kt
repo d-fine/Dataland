@@ -153,16 +153,10 @@ class DataRequestManager(
         dataRequestRepository.save(dataRequestEntity)
         dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         return StoredDataRequest(
-            dataRequestEntity.dataRequestId,
-            dataRequestEntity.userId,
-            dataRequestEntity.creationTimestamp,
-            getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
-            dataRequestEntity.reportingPeriod,
-            dataRequestEntity.dataRequestCompanyIdentifierType,
-            dataRequestEntity.dataRequestCompanyIdentifierValue,
-            dataRequestEntity.messageHistory,
-            dataRequestEntity.lastModifiedDate,
-            dataRequestEntity.requestStatus,
+            dataRequestEntity.dataRequestId, dataRequestEntity.userId, dataRequestEntity.creationTimestamp,
+            getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName), dataRequestEntity.reportingPeriod,
+            dataRequestEntity.dataRequestCompanyIdentifierType, dataRequestEntity.dataRequestCompanyIdentifierValue,
+            dataRequestEntity.messageHistory, dataRequestEntity.lastModifiedDate, dataRequestEntity.requestStatus,
         )
     }
 
