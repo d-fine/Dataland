@@ -2,10 +2,11 @@ import {
   CompanyDataControllerApi,
   Configuration,
   type DataTypeEnum,
-  type BasicCompanyInformation, MetaDataControllerApi,
+  type BasicCompanyInformation,
+  MetaDataControllerApi,
 } from "@clients/backend";
-import {type RouteHandler} from "cypress/types/net-stubbing";
-import {KEYCLOAK_ROLE_REVIEWER} from "@/utils/KeycloakUtils";
+import { type RouteHandler } from "cypress/types/net-stubbing";
+import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
 
 export interface UploadIds {
   companyId: string;
@@ -22,7 +23,7 @@ export async function searchBasicCompanyInformationForDataType(
   token: string,
   dataType: DataTypeEnum,
 ): Promise<BasicCompanyInformation[]> {
-  const response = await new CompanyDataControllerApi(new Configuration({accessToken: token})).getCompanies(
+  const response = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).getCompanies(
     undefined,
     new Set([dataType]),
   );
@@ -42,9 +43,10 @@ export async function countCompaniesAndDataSetsForDataType(
 ): Promise<{ numberOfCompaniesForDataType: number; numberOfDataSetsForDataType: number }> {
   const basicCompanyInformations = await searchBasicCompanyInformationForDataType(token, dataType);
   let numberOfDataSetsForDataType = 0;
-  const metaDataController = new MetaDataControllerApi(new Configuration({accessToken: token}));
+  const metaDataController = new MetaDataControllerApi(new Configuration({ accessToken: token }));
   for (const basicCompanyInfo of basicCompanyInformations) {
-    numberOfDataSetsForDataType += (await metaDataController.getListOfDataMetaInfo(basicCompanyInfo.companyId)).data.length;
+    numberOfDataSetsForDataType += (await metaDataController.getListOfDataMetaInfo(basicCompanyInfo.companyId)).data
+      .length;
   }
 
   return {
