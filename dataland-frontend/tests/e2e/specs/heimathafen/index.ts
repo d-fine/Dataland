@@ -1,6 +1,6 @@
 /**
- * As a user, I want the Heimathafen company page to exist and behave like I expect
+ * As a user, I want the Heimathafen upload page to exist and behave like I expect
  */
-describe("Tests for view page of Heimathafen-Framework data", () => {
+describe("Blanket test for Heimathafen upload page", () => {
   require("./DataIntegrity");
 });
