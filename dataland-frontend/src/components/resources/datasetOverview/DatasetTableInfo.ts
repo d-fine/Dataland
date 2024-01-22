@@ -48,7 +48,7 @@ export async function getMyDatasetTableInfos(getKeycloakPromise: () => Promise<K
   if (parsedIdToken) {
     userId = parsedIdToken.sub;
   }
-  const userControllerApi = new ApiClientProvider(getKeycloakPromise()).backendClients.userController;
+  const userControllerApi = new ApiClientProvider(getKeycloakPromise()).backendClients.userUploadsController;
   const storedCompaniesUploadedByCurrentUser = (
     await userControllerApi.getUserDataMetaInformation(assertDefined(userId))
   ).data;
