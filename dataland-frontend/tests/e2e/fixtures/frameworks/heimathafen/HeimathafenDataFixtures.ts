@@ -4,6 +4,7 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type HeimathafenData } from "@clients/backend";
 import { HeimathafenGenerator } from "@e2e/fixtures/frameworks/heimathafen/HeimathafenGenerator";
+import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 
 /**
  * Generates a set number of heimathafen fixtures
@@ -29,6 +30,7 @@ export function generateHeimathafenData(nullProbability = DEFAULT_PROBABILITY): 
     general: {
       datenanbieter: {
         unternehmenseigentumUndEigentuemerstruktur: dataGenerator.randomShortString(),
+        kernkompetenzenUndGeschaeftsbereiche: dataGenerator.valueOrNull(generateNaceCodes()),
         anzahlDerFuerEsgZustaendigenMitarbeiter: dataGenerator.randomFloat(),
       },
       methodik: {

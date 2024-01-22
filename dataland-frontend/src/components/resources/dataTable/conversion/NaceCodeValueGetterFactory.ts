@@ -22,28 +22,40 @@ export function naceCodeValueGetterFactory(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): (dataset: any) => AvailableMLDTDisplayObjectTypes {
   return (dataset) => {
-    const selectionValue = getFieldValueFromFrameworkDataset(path, dataset) as Array<string>;
-    if (!selectionValue || selectionValue.length == 0) {
-      return MLDTDisplayObjectForEmptyString;
-    } else {
-      return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
-        displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
-        displayValue: {
-          label: `Show ${selectionValue.length} NACE code${selectionValue.length > 1 ? "s" : ""}`,
-          modalComponent: MultiSelectModal,
-          modalOptions: {
-            props: {
-              header: field.label,
-              modal: true,
-              dismissableMask: true,
-            },
-            data: {
-              label: field.label,
-              values: selectionValue.map(convertSingleNaceCode),
-            },
+    const naceCodes = getFieldValueFromFrameworkDataset(path, dataset) as Array<string>;
+    const modalLabel = field.label
+    return formatNaceCodesForDatatable(naceCodes, modalLabel)
+  };
+}
+
+/**
+ * Formats the provided string as a raw string cell for the datatable
+ * @param input the input to display TODO adjust description
+ * @returns the value formatted for display
+ */
+export function formatNaceCodesForDatatable(
+    naceCodes: string[] | null | undefined,
+modalLabel:string): AvailableMLDTDisplayObjectTypes {
+  if (!naceCodes || naceCodes.length == 0) {
+    return MLDTDisplayObjectForEmptyString;
+  } else {
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+      displayValue: {
+        label: `Show ${naceCodes.length} NACE code${naceCodes.length > 1 ? "s" : ""}`,
+        modalComponent: MultiSelectModal,
+        modalOptions: {
+          props: {
+            header: modalLabel,
+            modal: true,
+            dismissableMask: true,
+          },
+          data: {
+            label: modalLabel,
+            values: naceCodes.map(convertSingleNaceCode),
           },
         },
-      };
-    }
-  };
+      },
+    };
+  }
 }
