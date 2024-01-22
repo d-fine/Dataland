@@ -17,7 +17,7 @@
         left-arrow-classes="about-principles__arrow about-principles__arrow--left"
         right-arrow-classes="about-principles__arrow about-principles__arrow--right"
         :slide-count="slides.length"
-        :scroll-screen-width-limit="1800"
+        :scroll-screen-width-limit="9999"
         :slide-width="slideWidth"
       >
         <div v-for="(slide, index) in slides" :key="index" role="listitem" class="about-principles__slide">
@@ -65,22 +65,22 @@ onUnmounted(() => {
   &__wrapper {
     position: relative;
     overflow: hidden;
-    display: flex;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    padding-left: calc((100% - 900px) / 2 + 22px);
     align-items: center;
     gap: 56px;
   }
 
   &__title {
-    font-size: 64px;
+    grid-column: 1 / 8;
+    font-size: 48px;
     font-style: normal;
-    font-weight: 700;
-    line-height: 78px;
+    font-weight: 600;
+    line-height: 56px;
+    letter-spacing: 0.25px;
     margin: 0;
-    max-width: 1273px;
-    padding-right: 789px;
+    max-width: 370px;
     text-align: left;
     display: block;
     transition:
@@ -96,6 +96,10 @@ onUnmounted(() => {
       font-size 0.4s ease,
       line-height 0.4s ease;
   }
+  &__sliderwrapper,
+  &__arrows {
+    grid-column: 1 / -1;
+  }
 
   &__slides {
     display: flex;
@@ -106,7 +110,7 @@ onUnmounted(() => {
     -moz-transition: transform 0.3s ease-out;
     -o-transition: transform 0.3s ease-out;
     gap: 32px;
-    justify-content: center;
+    justify-content: flex-start;
 
     &.isdragging .about-principles__slide {
       cursor: grabbing;
@@ -127,12 +131,13 @@ onUnmounted(() => {
     background: var(--default-neutral-white);
     gap: 24px;
     text-align: left;
+    cursor: grab;
 
     &-title {
-      font-size: 48px;
+      font-size: 40px;
+      line-height: 48px;
       font-style: normal;
       font-weight: 600;
-      line-height: 56px; /* 116.667% */
       letter-spacing: 0.25px;
       margin: 0;
       transition:
@@ -175,7 +180,8 @@ onUnmounted(() => {
     display: -webkit-flex;
     display: -ms-flexbox;
     gap: 18px;
-    visibility: hidden;
+    visibility: visible;
+    justify-content: flex-start;
     touch-action: manipulation;
     -ms-touch-action: manipulation;
   }
@@ -214,46 +220,6 @@ onUnmounted(() => {
         -webkit-transform: scaleX(-1);
         -moz-transform: scaleX(-1);
         -o-transform: scaleX(-1);
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: $extra-large) {
-  .about-principles {
-    padding: 120px 0 64px;
-
-    &__wrapper {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      padding-left: calc((100% - 900px) / 2 + 22px);
-    }
-
-    &__title {
-      grid-column: 1 / 8;
-      font-size: 48px;
-      font-weight: 600;
-      line-height: 56px; /* 116.667% */
-      letter-spacing: 0.25px;
-      max-width: 370px;
-      padding-right: unset;
-    }
-    &__slides {
-      justify-content: flex-start;
-    }
-    &__arrows {
-      visibility: visible;
-      justify-content: flex-start;
-    }
-    &__sliderwrapper,
-    &__arrows {
-      grid-column: 1 / -1;
-    }
-    &__slide {
-      cursor: grab;
-      &-title {
-        font-size: 40px;
-        line-height: 48px;
       }
     }
   }
