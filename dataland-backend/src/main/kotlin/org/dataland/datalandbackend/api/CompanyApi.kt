@@ -61,7 +61,8 @@ interface CompanyApi {
         ResponseEntity<StoredCompany>
 
     /**
-     * A method to retrieve just the basic information about specific companies with approved framework data identified by different filters
+     * A method to retrieve just the basic information about specific companies
+     * with approved framework data identified by different filters
      * If the filters are not set, all companies with approved data in the data store are returned.
      * @param searchString string used for substring matching
      * @param dataTypes this function only returns companies that have data for the specified dataTypes.
@@ -73,8 +74,10 @@ interface CompanyApi {
      * @return basic information about all companies with approved framework data matching the search criteria
      */
     @Operation(
-        summary = "Retrieve just the basic information about specific companies with approved framework data by different filters.",
-        description = "The basic information about companies with associated approved framework data identified via the provided company name/identifier" +
+        summary = "Retrieve just the basic information about specific companies" +
+            " with approved framework data by different filters.",
+        description = "The basic information about companies with associated approved framework data identified" +
+            " via the provided company name/identifier" +
             " are retrieved and filtered by countryCode, sector and available framework data." +
             " Empty/Unspecified filters are ignored.",
     )

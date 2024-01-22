@@ -27,7 +27,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             "FROM stored_companies company " +
             "JOIN (SELECT distinct company_id from data_meta_information where quality_status = 1) datainfo " +
             "ON company.company_id = datainfo.company_id " +
-            "LEFT JOIN (SELECT company_id, min(identifier_value) as min_id from company_identifiers where identifier_type = 'PermId' group by company_id) permId " +
+            "LEFT JOIN (SELECT company_id, min(identifier_value) as min_id from company_identifiers " +
+            "where identifier_type = 'PermId' group by company_id) permId " +
             "ON company.company_id = permid.company_id " +
             "ORDER by company.company_name asc ",
     )
@@ -44,32 +45,39 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value = "WITH " +
-            " has_data as (SELECT distinct company_id from data_meta_information where (:#{#searchFilter.dataTypeFilterSize} = 0 OR data_type in :#{#searchFilter.dataTypeFilter}) and quality_status = 1), " +
+            " has_data as (SELECT distinct company_id from data_meta_information" +
+            " where (:#{#searchFilter.dataTypeFilterSize} = 0" +
+            " OR data_type in :#{#searchFilter.dataTypeFilter}) and quality_status = 1), " +
             " filtered_results as (" +
-            " SELECT intermediate_results.company_id as company_id, min(intermediate_results.match_quality) as match_quality from (" +
+            " SELECT intermediate_results.company_id as company_id, min(intermediate_results.match_quality)" +
+            " as match_quality from (" +
             " (SELECT company.company_id as company_id," +
             " CASE " +
             " WHEN company_name = :#{#searchFilter.searchString} THEN 1" +
-            " WHEN company_name ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 3" +
+            " WHEN company_name" +
+            " ILIKE :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()} THEN 3" +
             " ELSE 5" +
             " END match_quality " +
             " FROM (SELECT company_id, company_name FROM stored_companies) company " +
             " JOIN has_data datainfo" +
             " ON company.company_id = datainfo.company_id " +
-            " WHERE company.company_name ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()})" +
+            " WHERE company.company_name" +
+            " ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()})" +
 
             " UNION " +
             " (SELECT " +
             " stored_company_entity_company_id AS company_id," +
             " CASE " +
             " WHEN company_alternative_names = :#{#searchFilter.searchString} THEN 2" +
-            " WHEN company_alternative_names ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 4" +
+            " WHEN company_alternative_names" +
+            " ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 4" +
             " ELSE 5 " +
             " END match_quality " +
             " FROM stored_company_entity_company_alternative_names alt_names" +
             " JOIN has_data datainfo" +
             " ON alt_names.stored_company_entity_company_id = datainfo.company_id " +
-            " WHERE company_alternative_names ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()})" +
+            " WHERE company_alternative_names" +
+            " ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()})" +
 
             " UNION " +
             " (SELECT " +
@@ -78,7 +86,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " FROM company_identifiers identifiers" +
             " JOIN has_data datainfo" +
             " ON identifiers.company_id = datainfo.company_id " +
-            " WHERE identifier_value ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()})) " +
+            " WHERE identifier_value" +
+            " ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()})) " +
             " as intermediate_results group by intermediate_results.company_id) " +
 
             // Combine Results
@@ -92,10 +101,12 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
             " JOIN " +
             " (select company_id, company_name, headquarters, country_code, sector from stored_companies " +
             " WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector in :#{#searchFilter.sectorFilter}) " +
-            " AND (:#{#searchFilter.countryCodeFilterSize} = 0 OR country_code in :#{#searchFilter.countryCodeFilter}) " +
+            " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
+            " OR country_code in :#{#searchFilter.countryCodeFilter}) " +
             " ) info " +
             " ON info.company_id = filtered_results.company_id " +
-            " LEFT JOIN (SELECT company_id, MIN(identifier_value) as identifier_value from company_identifiers where identifier_type = 'PermId' group by company_id) perm_id " +
+            " LEFT JOIN (SELECT company_id, MIN(identifier_value) as identifier_value from company_identifiers" +
+            " where identifier_type = 'PermId' group by company_id) perm_id " +
             " ON perm_id.company_id = filtered_results.company_id " +
             " ORDER BY filtered_results.match_quality asc, info.company_name asc ",
     )
