@@ -328,18 +328,6 @@ export default defineComponent({
         return { is: 'Sie müssen "Ja" wählen, um den Datensatz abschicken zu können.' };
       }
     },
-    /**
-     * Some fields labels include a repeating string containing the subcategory name in ()
-     * This function trims the label name upto the ( symbol
-     * @param label The full field label
-     * @returns the trimmed label
-     */
-    //TODO if not necessary, remove it later
-    /*
-    trimLabel(label: string): string {
-      const trimIndex = label.indexOf("(");
-      return trimIndex !== -1 ? label.substring(0, trimIndex).trim() : label;
-    }, */
   },
   provide() {
     return {
