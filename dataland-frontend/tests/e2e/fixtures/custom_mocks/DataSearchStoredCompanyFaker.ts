@@ -1,4 +1,4 @@
-import { type CompanyInformation, IdentifierType, BasicCompanyInformation } from "@clients/backend";
+import { type CompanyInformation, IdentifierType, type BasicCompanyInformation } from "@clients/backend";
 import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
 import { DataMetaInformationGenerator } from "@e2e/fixtures/data_meta_information/DataMetaInformationFixtures";
 

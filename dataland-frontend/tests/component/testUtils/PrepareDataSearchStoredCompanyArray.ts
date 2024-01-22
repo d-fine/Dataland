@@ -3,7 +3,8 @@ import {
   type CompanyInformation,
   type DataMetaInformation,
   DataTypeEnum,
-  QaStatus, BasicCompanyInformation,
+  QaStatus,
+  type BasicCompanyInformation,
 } from "@clients/backend";
 
 /**
