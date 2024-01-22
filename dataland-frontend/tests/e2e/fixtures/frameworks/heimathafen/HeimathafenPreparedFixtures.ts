@@ -20,5 +20,7 @@ export function generateHeimathafenPreparedFixtures(): Array<FixtureData<Heimath
  * @returns the fixture
  */
 function generateFixturesWithNoNullFields(): FixtureData<HeimathafenData> {
-  return generateHeimathafenFixtures(1, 0)[0];
+  const newFixture = generateHeimathafenFixtures(1, 0)[0];
+  newFixture.companyInformation.companyName = "Heimathafen-dataset-with-no-null-fields";
+  return newFixture;
 }
