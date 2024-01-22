@@ -24,7 +24,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val expectedDataset = uploadTestEuTaxonomyFinancialsDataSet(uploadInfo.actualStoredCompany.companyId)
             .copy(uploaderUserId = null)
-        val getCompaniesOnlyByNameResponse = apiAccessor.getCompaniesByNameAndIdentifier(
+        val getCompaniesResponse = apiAccessor.getCompaniesByNameAndIdentifier(
             uploadInfo.actualStoredCompany.companyInformation.companyName,
         )
         val expectedCompany = StoredCompany(
@@ -33,7 +33,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             listOf(expectedDataset),
         )
         assertTrue(
-            getCompaniesOnlyByNameResponse.contains(convertStoredToBasicCompanyInformation(expectedCompany)),
+            getCompaniesResponse.contains(convertStoredToBasicCompanyInformation(expectedCompany)),
             "Dataland does not contain the posted company.",
         )
     }
