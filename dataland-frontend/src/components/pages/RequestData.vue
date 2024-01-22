@@ -8,14 +8,7 @@
         </div>
       </MarginWrapper>
 
-      <FormKit
-        :actions="false"
-        disabled
-        type="form"
-        @submit="submitRequest"
-        id="requestDataFormId"
-        name="requestDataFormName"
-      >
+      <FormKit :actions="false" type="form" @submit="submitRequest" id="requestDataFormId" name="requestDataFormName">
         <div class="grid p-8 justify-content-center uploadFormWrapper">
           <div class="col-12" v-if="postBulkDataRequestObjectProcessed">
             <div data-test="submittingSuccededMessage" v-if="submittingSucceded">
@@ -42,7 +35,7 @@
                   <em class="material-icons info-icon p-message-icon red-text">error</em>
                 </template>
                 <template #text-info>
-                  <h4>Data request couldn’t be submitted.</h4>
+                  <h4>Data request couldn't be submitted.</h4>
                   <p class="fw-semi-bold">
                     Check the format of the identifiers and try again. Accepted identifiers are: LEI, ISIN & permID.
                     Expected in comma, semicolon, linebreaks and spaces separted format.
@@ -141,10 +134,7 @@
               <div class="col-12">
                 <BasicFormSection header="Select at least one reporting period">
                   <div class="flex flex-wrap mt-4 py-2">
-                    <ToggleChip :label="'2023'" />
-                    <ToggleChip :label="'2022'" />
-                    <ToggleChip :label="'2021'" />
-                    <ToggleChip :label="'2020'" />
+                    <ToggleChipFormInputs :name="'reportingPeriods'" :options="reportingPeriods" />
                   </div>
                 </BasicFormSection>
 
@@ -238,6 +228,8 @@ import { AxiosError } from "axios";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import ToggleChip from "@/components/general/ToggleChip.vue";
 import BasicFormSection from "@/components/general/BasicFormSection.vue";
+import BulkDataResponseDialog from "@/components/general/BulkDataResponseDialog.vue";
+import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue";
 
 export default defineComponent({
   name: "RequestBulkData",
@@ -254,6 +246,8 @@ export default defineComponent({
     MarginWrapper,
     ToggleChip,
     BasicFormSection,
+    BulkDataResponseDialog,
+    ToggleChipFormInputs,
   },
   setup() {
     return {
@@ -275,6 +269,12 @@ export default defineComponent({
       postBulkDataRequestObjectProcessed: false,
       message: "",
       summary: "",
+      reportingPeriods: [
+        { name: "2023", value: false },
+        { name: "2022", value: false },
+        { name: "2021", value: false },
+        { name: "2020", value: false }
+      ],
     };
   },
 
@@ -315,35 +315,37 @@ export default defineComponent({
      * Submits the data request to the request service
      */
     async submitRequest(): Promise<void> {
-      this.messageCounter++;
-      this.processInput();
-      try {
-        this.submittingInProgress = true;
-        const bulkDataRequestObject = this.collectDataToSend();
-        const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-          .requestController;
-        const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
+      this.openRequestModal();
 
-        this.messageCounter++;
-        this.message = response.data.message;
-        this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
-        this.acceptedCompanyIdentifiers = response.data.acceptedCompanyIdentifiers;
-        this.submittingSucceded = true;
-      } catch (error) {
-        this.messageCounter++;
-        console.error(error);
-        if (error instanceof AxiosError) {
-          const responseMessages = (error.response?.data as ErrorResponse)?.errors;
-          this.message = responseMessages ? responseMessages[0].message : error.message;
-          this.summary = responseMessages[0].summary;
-        } else {
-          this.message =
-            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
-        }
-      } finally {
-        this.submittingInProgress = false;
-        this.postBulkDataRequestObjectProcessed = true;
-      }
+      // this.messageCounter++;
+      // this.processInput();
+      // try {
+      //   this.submittingInProgress = true;
+      //   const bulkDataRequestObject = this.collectDataToSend();
+      //   const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+      //     .requestController;
+      //   const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
+
+      //   this.messageCounter++;
+      //   this.message = response.data.message;
+      //   this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
+      //   this.acceptedCompanyIdentifiers = response.data.acceptedCompanyIdentifiers;
+      //   this.submittingSucceded = true;
+      // } catch (error) {
+      //   this.messageCounter++;
+      //   console.error(error);
+      //   if (error instanceof AxiosError) {
+      //     const responseMessages = (error.response?.data as ErrorResponse)?.errors;
+      //     this.message = responseMessages ? responseMessages[0].message : error.message;
+      //     this.summary = responseMessages[0].summary;
+      //   } else {
+      //     this.message =
+      //       "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+      //   }
+      // } finally {
+      //   this.submittingInProgress = false;
+      //   this.postBulkDataRequestObjectProcessed = true;
+      // }
     },
 
     /**
@@ -376,6 +378,23 @@ export default defineComponent({
      */
     goToCompanies() {
       void this.$router.push("/companies");
+    },
+
+    /**
+     * Opens a pop-up to warn the user that the session will expire soon and offers a button to refresh it.
+     * If the refresh button is clicked soon enough, the session is refreshed.
+     * Else the text changes and tells the user that the session was closed.
+     */
+    openRequestModal(): void {
+      this.$dialog.open(BulkDataResponseDialog, {
+        props: {
+          modal: true,
+          closable: false,
+          closeOnEscape: false,
+          showHeader: true,
+        },
+        data: {},
+      });
     },
   },
   mounted() {

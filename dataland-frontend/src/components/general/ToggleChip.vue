@@ -16,6 +16,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "ToggleChip",
+  emits: ["onChange"],
   props: {
     label: {
       type: String,
@@ -33,6 +34,7 @@ export default defineComponent({
      */
     toggle(): void {
       this.isToggled = !this.isToggled;
+      this.$emit("onChange", this.isToggled);
     },
   },
 });
