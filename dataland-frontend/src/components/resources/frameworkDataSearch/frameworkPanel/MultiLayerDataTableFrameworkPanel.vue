@@ -35,7 +35,7 @@
 <script setup generic="FrameworkDataType" lang="ts">
 import MultiLayerDataTable from "@/components/resources/dataTable/MultiLayerDataTable.vue";
 import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { computed, inject, ref, shallowRef, watch } from "vue";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type DataAndMetaInformation } from "@/api-models/DataAndMetaInformation";
