@@ -10,7 +10,7 @@ import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 
 /**
- * This object contains implementations for the list of base datapoint components of the GDV framework
+ * This object contains implementations for the list of base datapoint components of the ESG Questionnaire framework
  */
 object EsgQuestionnaireListOfBaseDataPointComponents {
 
