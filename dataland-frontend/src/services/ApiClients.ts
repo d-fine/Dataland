@@ -15,7 +15,7 @@ interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
   companyDataController: backendApis.CompanyDataControllerApiInterface;
   metaDataController: backendApis.MetaDataControllerApiInterface;
-  userUploadsController: backendApis.UserControllerApiInterface;
+  userUploadsController: backendApis.UserUploadsControllerApiInterface;
 }
 
 interface ApiClients {
