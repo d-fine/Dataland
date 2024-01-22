@@ -223,14 +223,12 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         )
         val searchIdentifier = testIdentifier.drop(1).dropLast(1)
         val searchName = testName.drop(1).dropLast(1)
-        val searchResponseForName = apiAccessor.getCompaniesByNameAndIdentifier(searchName)
-        val searchResponseForIdentifier = apiAccessor.getCompaniesByNameAndIdentifier(searchIdentifier)
         assertTrue(
-            searchResponseForName.contains(expectedCompany),
+            apiAccessor.getCompaniesByNameAndIdentifier(searchName).contains(expectedCompany),
             "The search results do not contain the expected company.",
         )
         assertTrue(
-            searchResponseForIdentifier.contains(expectedCompany),
+            apiAccessor.getCompaniesByNameAndIdentifier(searchIdentifier).contains(expectedCompany),
             "The search results do not contain the expected company.",
         )
     }
