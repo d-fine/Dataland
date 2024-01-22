@@ -2,10 +2,7 @@ package org.dataland.datalandcommunitymanager.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.api.RequestApi
-import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
-import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
-import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.*
 import org.dataland.datalandcommunitymanager.services.DataRequestManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -41,7 +38,7 @@ class RequestController(
         return dataRequestManager.getAggregatedDataRequests(identifierValue, dataTypes, reportingPeriod)
     }
 
-    override fun patchDataRequest(dataRequestId: String, requestStatus: String): ResponseEntity<StoredDataRequest> {
+    override fun patchDataRequest(dataRequestId: String, requestStatus: RequestStatus): ResponseEntity<StoredDataRequest> {
         return ResponseEntity.ok(dataRequestManager.patchDataRequest(dataRequestId, requestStatus))
     }
 }

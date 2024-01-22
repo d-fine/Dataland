@@ -134,7 +134,7 @@ class DataRequestManager(
      * @return the updated data request object
      */
     @Transactional
-    fun patchDataRequest(dataRequestId: String, requestStatus: String): StoredDataRequest {
+    fun patchDataRequest(dataRequestId: String, requestStatus: RequestStatus): StoredDataRequest {
         if (!dataRequestRepository.existsById(dataRequestId)) {
             throw ResourceNotFoundApiException(
                 "Data request not found",
@@ -143,13 +143,7 @@ class DataRequestManager(
         }
         var dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         logger.info("Patching Company ${dataRequestEntity.dataRequestId} with status $requestStatus")
-        if (requestStatus.lowercase() == "open") {
-            dataRequestEntity.requestStatus = RequestStatus.Open
-        } else if (requestStatus.lowercase() == "resolved") {
-            dataRequestEntity.requestStatus = RequestStatus.Resolved
-        } else {
-            throw InvalidInputApiException("Invalid data request status", "$requestStatus is invalid")
-        }
+        dataRequestEntity.requestStatus = requestStatus
         dataRequestRepository.save(dataRequestEntity)
         dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         return StoredDataRequest(

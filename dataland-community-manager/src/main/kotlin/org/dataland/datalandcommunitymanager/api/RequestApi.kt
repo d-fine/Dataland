@@ -6,18 +6,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
-import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
-import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.*
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 
 /**
  * Defines the restful dataland-community-manager API regarding.
@@ -109,11 +101,12 @@ interface RequestApi {
         ],
     )
     @PatchMapping(
+        value = ["/{dataRequestId}/requestStatus"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun patchDataRequest(
-        @RequestParam dataRequestId: String,
-        @RequestParam requestStatus: String,
+        @PathVariable dataRequestId: String,
+        @RequestParam requestStatus: RequestStatus = RequestStatus.Open
     ): ResponseEntity<StoredDataRequest>
 }
