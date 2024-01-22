@@ -17,6 +17,9 @@ data class DataMetaInformationForMyDatasets(
     var uploadTime: Long,
 ) {
     companion object {
+        /**
+         * A function to construct a DatametaInformationForMyDatasets object from a entity object
+         */
         fun fromEntity(entity: DatasetMetaInfoEntityForMyDatasets) = DataMetaInformationForMyDatasets(
             companyId = entity.companyId,
             dataId = entity.dataId,
