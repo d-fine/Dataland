@@ -47,7 +47,9 @@ open class NumberBaseComponent(
         val annotations = mutableListOf<Annotation>()
 
         if (minimumValue != null || maximumValue != null) {
-            require(documentSupport is SimpleDocumentSupport || documentSupport is ExtendedDocumentSupport) { "There are currently no minimum/maximum value constraint annotation for non-datapoint fields." }
+            require(documentSupport is SimpleDocumentSupport || documentSupport is ExtendedDocumentSupport) {
+                "There are currently no minimum/maximum value constraint annotation for non-datapoint fields."
+            }
 
             annotations.add(ValidAnnotation)
             minimumValue?.let { annotations.add(DataPointMinimumValueAnnotation(it)) }
