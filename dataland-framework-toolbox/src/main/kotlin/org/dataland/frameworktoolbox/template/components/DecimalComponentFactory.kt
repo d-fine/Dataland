@@ -16,10 +16,14 @@ import org.springframework.stereotype.Component
 class DecimalComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
 
     companion object {
+        /**
+         * Pareses bounds for a numeric variable given in the format [LOWER BOUND, UPPER BOUND].
+         * An "INF" may be used to specify that there is no bound
+         */
         fun parseBounds(input: String): Pair<Long?, Long?> {
             if (input.isBlank()) return Pair(null, null)
 
-            val pattern = """\[(?<lower>(?:\d+|INF)),\s*(?<upper>(?:\d+|INF))\]""".toRegex()
+            val pattern = """\[(?<lower>(?:\-?\d+|INF)),\s*(?<upper>(?:\-?\d+|INF))\]""".toRegex()
             val matchResult = pattern.find(input)
                 ?: throw IllegalArgumentException(
                     "Decimal options $input does not" +

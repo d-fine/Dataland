@@ -68,8 +68,8 @@ object EsgQuestionnaireListOfBaseDataPointComponents {
                 "erklaerungDerEinhaltungDerUngcp",
             ) {
                 label = "Richtlinien zur Einhaltung der UNGCP"
-                uploadPageExplanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
-                    "liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht."
+                uploadPageExplanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen " +
+                    "darüber liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht."
                 descriptionColumnHeader = "Beschreibung der Richtlinie"
                 documentColumnHeader = "Richtlinie"
                 availableIf = DependsOnComponentValue(mechanismenZurUeberwachungDerEinhaltungDerUngcp, "Yes")
@@ -92,11 +92,14 @@ object EsgQuestionnaireListOfBaseDataPointComponents {
                 "erklaerungDerEinhaltungDerOecdLeitsaetze",
             ) {
                 label = "Richtlinien zur Einhaltung der OECD-Leitsätze"
-                uploadPageExplanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
-                    "liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht."
+                uploadPageExplanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen" +
+                    "darüber liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht."
                 descriptionColumnHeader = "Beschreibung der Richtlinie"
                 documentColumnHeader = "Richtlinie"
-                availableIf = DependsOnComponentValue(mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze, "Yes")
+                availableIf = DependsOnComponentValue(
+                    mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze,
+                    "Yes",
+                )
             }
         }
     }

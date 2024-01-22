@@ -31,14 +31,22 @@ class SfdrHighImpactClimateSectors(
             TypeReference(
                 "Map", isNullable,
                 listOf(
-                    TypeReference("org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSector", false),
-                    TypeReference("org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption", false),
+                    TypeReference(
+                        "org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSector",
+                        false,
+                    ),
+                    TypeReference(
+                        "org.dataland.datalandbackend.frameworks.sfdr." +
+                            "custom.SfdrHighImpactClimateSectorEnergyConsumption",
+                        false,
+                    ),
                 ),
             ),
             listOf(
                 Annotation(
                     fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
-                    rawParameterSpec = "example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE",
+                    rawParameterSpec =
+                    "example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE",
                     applicationTargetPrefix = "field",
                     additionalImports = setOf("org.dataland.datalandbackend.utils.JsonExampleFormattingConstants"),
                 ),

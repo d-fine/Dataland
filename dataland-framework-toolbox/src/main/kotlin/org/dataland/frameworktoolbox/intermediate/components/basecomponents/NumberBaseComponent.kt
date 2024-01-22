@@ -19,6 +19,9 @@ open class NumberBaseComponent(
 ) : ComponentBase(identifier, parent, fullyQualifiedNameOfKotlinType) {
     open var constantUnitSuffix: String? = null
 
+    /**
+     * Returns a FormKit validation rule for a number to be in the specified range
+     */
     fun getMinMaxValidationRule(minimumValue: Long?, maximumValue: Long?): String? {
         return if (minimumValue != null && maximumValue != null) {
             "between:$minimumValue,$maximumValue"

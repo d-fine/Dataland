@@ -1,6 +1,6 @@
 package org.dataland.frameworktoolbox.template.components
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -15,8 +15,8 @@ class DecimalComponentFactoryTest {
 
     @Test
     fun `Test that valid input with numeric bounds returns valid bounds`() {
-        val input = "[10, 20]"
-        val expected = Pair(10L, 20L)
+        val input = "[-10, 20]"
+        val expected = Pair(-10L, 20L)
         val actual = DecimalComponentFactory.parseBounds(input)
         assertEquals(expected, actual)
     }

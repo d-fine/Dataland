@@ -33,8 +33,8 @@ class ReportPreuploadComponent(
             listOf(
                 Annotation(
                     fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
-                    rawParameterSpec = "implementation = Map::class," +
-                        " example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE",
+                    rawParameterSpec = "implementation = Map::class,\n" +
+                        "example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE",
                     applicationTargetPrefix = "field",
                     additionalImports = setOf("org.dataland.datalandbackend.utils.JsonExampleFormattingConstants"),
                 ),

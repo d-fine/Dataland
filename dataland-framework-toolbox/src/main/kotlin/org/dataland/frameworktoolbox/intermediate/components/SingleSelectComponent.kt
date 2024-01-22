@@ -21,6 +21,10 @@ open class SingleSelectComponent(
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
 
+    /**
+     * The UploadMode of a SingleSelectComponent determines the form element styling for the upload
+     * page (i.e., dropdown or radio buttons?)
+     */
     enum class UploadMode(val component: String) {
         Dropdown("SingleSelectFormField"),
         RadioButtons("RadioButtonsFormField"),
