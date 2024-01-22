@@ -46,7 +46,7 @@ export const ONLY_AUXILIARY_DATA_PROVIDED = "Only auxiliary data provided";
  * @returns the list of data type enums sorted in a way, that German frameworks are the last elements
  */
 export function putGermanFrameworksAtTheEndOfList(frameworksToInclude: DataTypeEnum[]): DataTypeEnum[] {
-  const germanFrameworks = ["esg-questionnaire", "heimathafen"];
+  const germanFrameworks = [DataTypeEnum.EsgQuestionnaire, DataTypeEnum.Heimathafen] as string[];
   frameworksToInclude.sort((a, b) => {
     if (germanFrameworks.includes(a) && !germanFrameworks.includes(b)) {
       return 1;
