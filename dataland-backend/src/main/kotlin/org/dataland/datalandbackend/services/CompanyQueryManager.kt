@@ -34,7 +34,6 @@ class CompanyQueryManager(
         }
     }
 
-
     /**
      * Method to search for basic information of companies matching the company name or identifier
      * @param filter The filter to use during searching
@@ -49,13 +48,17 @@ class CompanyQueryManager(
         }
 
         return if (
-                filter.sectorFilterSize > 0 ||
-                filter.countryCodeFilterSize > 0 ||
-                filter.dataTypeFilterSize > 0 ||
-                filter.searchStringLength > 0
-            ) companyRepository.searchCompanies(
-                filter
-            ) else companyRepository.getAllCompaniesWithDataset()
+            filter.sectorFilterSize > 0 ||
+            filter.countryCodeFilterSize > 0 ||
+            filter.dataTypeFilterSize > 0 ||
+            filter.searchStringLength > 0
+        ) {
+            companyRepository.searchCompanies(
+                filter,
+            )
+        } else {
+            companyRepository.getAllCompaniesWithDataset()
+        }
     }
 
     /**

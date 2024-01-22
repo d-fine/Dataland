@@ -60,7 +60,6 @@ interface CompanyApi {
     ):
         ResponseEntity<StoredCompany>
 
-
     /**
      * A method to retrieve just the basic information about specific companies with approved framework data identified by different filters
      * If the filters are not set, all companies with approved data in the data store are returned.

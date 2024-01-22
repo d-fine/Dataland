@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.entities
 
-
 /**
  * A variation of DataMetaInformationForMyDatasets for database interaction
  */

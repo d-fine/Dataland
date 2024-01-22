@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.api.DataOwnerApi
-import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
+import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StoredCompany
