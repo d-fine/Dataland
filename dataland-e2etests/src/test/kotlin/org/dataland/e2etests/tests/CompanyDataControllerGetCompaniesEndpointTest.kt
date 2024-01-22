@@ -93,8 +93,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
                 .contains(convertStoredToBasicCompanyInformation(uploadInfo.actualStoredCompany)),
             "The posted company is in the query results," +
                 " even though the country code filter was set to a different country code.",
-
-            )
+        )
     }
 
     @Test
@@ -139,16 +138,15 @@ class CompanyDataControllerGetCompaniesEndpointTest {
     private fun testThatSearchForCompanyIdentifierWorks(identifierType: String, identifierValue: String) {
         val searchResponse = apiAccessor.companyDataControllerApi.getCompanies(
             searchString = identifierValue,
-
-            )
+        )
         val companyInformationOfSearchResponse = searchResponse
             .map { apiAccessor.companyDataControllerApi.getCompanyInfo(it.companyId) }
         assertTrue(
             companyInformationOfSearchResponse.all
-            { results ->
-                results.identifiers[identifierType]
-                    ?.any { it == identifierValue } ?: false
-            },
+                { results ->
+                    results.identifiers[identifierType]
+                        ?.any { it == identifierValue } ?: false
+                },
             "The search by identifier returns at least one company that does not contain the looked" +
                 "for value $identifierType.",
         )
