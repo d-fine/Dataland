@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 /**
  * Defines the restful dataland-backend API regarding user data exchange
  */
-@RequestMapping("/user")
+@RequestMapping("/users")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface UserUploadsApi {
