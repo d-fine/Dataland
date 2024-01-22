@@ -17,8 +17,9 @@ from dataland_backend_api_documentation_client.models.company_associated_data_eu
     CompanyAssociatedDataEuTaxonomyDataForFinancials,
 )
 from dataland_backend_api_documentation_client.models.company_associated_data_eu_taxonomy_data_for_non_financials \
-    import (CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
-)
+    import (
+        CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+    )
 from dataland_backend_api_documentation_client.models.company_associated_data_lksg_data import (
     CompanyAssociatedDataLksgData,
 )
