@@ -40,7 +40,7 @@ fun interface UserUploadsApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getUserDataMetaInformation(
+    fun getUserUploadsDataMetaInformation(
         @PathVariable("userId") userId: String,
     ): ResponseEntity<List<DataMetaInformationForMyDatasets>>
 }

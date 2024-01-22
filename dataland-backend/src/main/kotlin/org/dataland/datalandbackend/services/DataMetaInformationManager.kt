@@ -92,12 +92,8 @@ class DataMetaInformationManager(
     }
 
     /**
-     * Method to make the data manager search for meta info
-     * @param companyId if not empty, it filters the requested meta info to a specific company
-     * @param dataType if not empty, it filters the requested meta info to a specific data type
-     * @param reportingPeriod if not empty, it filters the requested meta info to a specific reporting period
-     * @param showOnlyActive if true, it will only return datasets marked "active"
-     * @return a list of meta info about data depending on the filters
+     * Method to make delete the data meta information for a given dataId
+     * @param dataId of the dataset that should be deleted
      */
     fun deleteDataMetaInfo(
         dataId: String,
@@ -112,7 +108,7 @@ class DataMetaInformationManager(
      * @returns the data meta information uploaded by the specified user
      */
     fun getUserDataMetaInformation(userId: String): List<DataMetaInformationForMyDatasets>? {
-        return dataMetaInformationRepositoryInterface.getUserDataMetaInfos(userId)
+        return dataMetaInformationRepositoryInterface.getUserUploadsDataMetaInfos(userId)
             .map { DataMetaInformationForMyDatasets.fromEntity(it) }
     }
 }
