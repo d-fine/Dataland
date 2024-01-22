@@ -11,6 +11,10 @@ import java.util.UUID
 
 class CompanyDataControllerGetCompaniesEndpointTest {
 
+    companion object {
+        const val WAIT_TIME_IN_MS = 1000L
+    }
+
     private val apiAccessor = ApiAccessor()
     private val company1 = "Company 1"
     private val company2 = "Company 2"
@@ -245,6 +249,31 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         ).map { it.companyName }
         assertTrue(otherCompanyNames.contains(company8))
         assertFalse(otherCompanyNames.contains("Company 7"))
+    }
+
+    @Test
+    fun `check that only companies with accepted data sets are returned by the query`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val acceptedDataCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        uploadDummyDataset(acceptedDataCompanyId, bypassQa = true)
+        uploadDummyDataset(acceptedDataCompanyId, bypassQa = false)
+        val noAcceptedDataCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        uploadDummyDataset(noAcceptedDataCompanyId, bypassQa = false)
+        Thread.sleep(WAIT_TIME_IN_MS)
+        val searchResultCompanyIds = apiAccessor.companyDataControllerApi.getCompanies().map { it.companyId }
+        assertTrue(searchResultCompanyIds.contains(acceptedDataCompanyId))
+        assertFalse(searchResultCompanyIds.contains(noAcceptedDataCompanyId))
+    }
+
+    private fun uploadDummyDataset(companyId: String, bypassQa: Boolean = false) {
+        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+                companyId = companyId,
+                reportingPeriod = "dummy",
+                data = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first(),
+            ),
+            bypassQa,
+        )
     }
 
     private fun createCompaniesForTestingOrdering(inputString: String): List<CompanyInformation> {
