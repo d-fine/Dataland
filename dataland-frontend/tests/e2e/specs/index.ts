@@ -43,7 +43,7 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
   require("./eu-taxonomy-financials");
   require("./eu-taxonomy-non-financials");
   require("./p2p");
-  require("./gdv");
+  require("./esg-questionnaire");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {

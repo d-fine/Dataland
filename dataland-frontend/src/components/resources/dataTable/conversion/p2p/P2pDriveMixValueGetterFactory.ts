@@ -9,7 +9,7 @@ import { type Field } from "@/utils/GenericFrameworkTypes";
 import { type P2pDriveMix } from "@clients/backend";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { type DriveMixType } from "@/api-models/DriveMixType";
 import { p2pModalColumnHeaders } from "@/components/resources/frameworkDataSearch/p2p/P2pModalColumnHeaders";
 

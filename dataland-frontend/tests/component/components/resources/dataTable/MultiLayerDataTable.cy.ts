@@ -251,8 +251,9 @@ describe("Tests for the MultiLayerDataTable component", () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
-        config: editMultiLayerDataTableConfigForHighlightingHiddenFields(dummyFrameworkMLDTConfig),
+        config: editMultiLayerDataTableConfigForHighlightingHiddenFields(dummyFrameworkMLDTConfig, true, false),
         mldtDatasets: [dummyFrameworkTestMldtDataset3],
+        inReviewMode: true,
       },
     });
     getCellValueContainerAndCheckIconForHiddenDisplay("Level 1 - String", true);

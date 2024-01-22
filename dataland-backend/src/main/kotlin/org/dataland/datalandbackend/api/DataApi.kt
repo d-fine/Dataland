@@ -41,7 +41,10 @@ interface DataApi<T> {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize(
+        "hasRole('ROLE_UPLOADER') or " +
+            "(hasRole('ROLE_USER') and @DataOwnersManager.isCurrentUserDataOwner(#companyAssociatedData.companyId))",
+    )
     fun postCompanyAssociatedData(
         @Valid @RequestBody
         companyAssociatedData: CompanyAssociatedData<T>,

@@ -315,7 +315,7 @@ import MultiSelect from "primevue/multiselect";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import Calendar from "primevue/calendar";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { ApiClientProvider } from "@/services/ApiClients";
 import Card from "primevue/card";
 import { useRoute } from "vue-router";
@@ -558,7 +558,7 @@ export default defineComponent({
           return item;
         })
         .filter((item) => Object.values(item)[0])
-        .reduce((all, one) => ({ ...all, ...one }));
+        .reduce((all, one) => ({ ...all, ...one }), []);
     },
 
     /**
@@ -606,7 +606,7 @@ export default defineComponent({
           const field = section[financialServiceType];
           return { [financialServiceType]: field };
         })
-        .reduce((all, one) => ({ ...all, ...one }));
+        .reduce((all, one) => ({ ...all, ...one }), []);
 
       const kpis = Object.keys(kpiSections)
         .filter((financialServiceTypeKey) => financialServiceTypeKey !== "assetManagementKpis")
@@ -620,7 +620,7 @@ export default defineComponent({
           }
           return kpi;
         })
-        .reduce((all, one) => ({ ...all, ...one }));
+        .reduce((all, one) => ({ ...all, ...one }), []);
 
       return { eligibilityKpis, ...kpis };
     },
