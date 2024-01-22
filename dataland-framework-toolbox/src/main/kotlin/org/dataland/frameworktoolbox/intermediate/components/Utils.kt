@@ -17,7 +17,7 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
         label = component.label ?: throw IllegalStateException(
             "You must specify a label for ${component.identifier} to generate a view configuration",
         ),
-        explanation = component.explanation,
+        explanation = component.viewPageExplanation ?: component.uploadPageExplanation,
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
         valueGetter = valueGetter,
     )
@@ -38,7 +38,7 @@ fun UploadCategoryBuilder.addStandardUploadConfigCell(
         label = component.label ?: throw IllegalStateException(
             "You must specify a label for ${component.identifier} to generate a view configuration",
         ),
-        explanation = component.explanation,
+        explanation = component.uploadPageExplanation,
         unit = unit,
         required = component.isRequired,
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),

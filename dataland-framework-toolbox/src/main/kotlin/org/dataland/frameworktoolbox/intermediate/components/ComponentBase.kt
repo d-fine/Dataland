@@ -31,9 +31,16 @@ open class ComponentBase(
     var label: String? = null
 
     /**
-     * The explanation of a component is a longer description of the component
+     * The explanation of a component is a longer description of the component. This variant will be displayed on the
+     * upload page.
      */
-    var explanation: String? = null
+    var uploadPageExplanation: String? = null
+
+    /**
+     * The explanation of a component is a longer description. If set, it will overwrite the explanation of the
+     * upload page. If unset, it will default to the upload page explanation.
+     */
+    var viewPageExplanation: String? = null
 
     /**
      * The dataModelGenerator allows users to overwrite the DataClass generation of this specific component instance

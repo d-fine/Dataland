@@ -24,12 +24,12 @@ object EsgQuestionnaireUmweltRollingWindowComponents {
     ) {
         val tCo2UnitString = "tCO2-Äquiv."
         componentGroupUmwelt.edit<ComponentGroup>("treibhausgasemissionen") {
-            create<EsgQuestionnaireYearlyDecimalTimeseriesDataComponent>(
+            create<org.dataland.frameworktoolbox.frameworks.esgquestionnaire.custom.EsgQuestionnaireYearlyDecimalTimeseriesDataComponent>(
                 "treibhausgasBerichterstattungUndPrognosen",
                 "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird",
             ) {
                 label = "Treibhausgas-Berichterstattung und Prognosen"
-                explanation = "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene " +
+                uploadPageExplanation = "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene " +
                     "berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen" +
                     "# für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die " +
                     "kommenden drei Jahre an (in tCO2-Äquiv.)."
@@ -62,7 +62,7 @@ object EsgQuestionnaireUmweltRollingWindowComponents {
                 "unternehmensGruppenStrategieBzglEnergieverbrauch",
             ) {
                 label = "Berichterstattung Energieverbrauch"
-                explanation = "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren " +
+                uploadPageExplanation = "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren " +
                     "Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle" +
                     " Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
@@ -94,7 +94,7 @@ object EsgQuestionnaireUmweltRollingWindowComponents {
                 "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen",
             ) {
                 label = "Berichterstattung Energieverbrauch von Immobilienvermoegen"
-                explanation = "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) " +
+                uploadPageExplanation = "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) " +
                     "für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die " +
                     "kommenden drei Jahre an."
                 decimalRows = mutableListOf(
@@ -118,7 +118,7 @@ object EsgQuestionnaireUmweltRollingWindowComponents {
                 "unternehmensGruppenStrategieBzglWasserverbrauch",
             ) {
                 label = "Berichterstattung Wasserverbrauch"
-                explanation = "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser " +
+                uploadPageExplanation = "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser " +
                     "(in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen " +
                     "für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
@@ -150,7 +150,7 @@ object EsgQuestionnaireUmweltRollingWindowComponents {
                 "unternehmensGruppenStrategieBzglAbfallproduktion",
             ) {
                 label = "Berichterstattung Abfallproduktion"
-                explanation = "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) " +
+                uploadPageExplanation = "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) " +
                     "der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der " +
                     "gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahre sowie " +
                     "die Prognosen für die kommenden drei Jahre an."
@@ -183,7 +183,7 @@ object EsgQuestionnaireUmweltRollingWindowComponents {
                 "gefaehrlicherAbfall",
             ) {
                 label = "Recycling im Produktionsprozess"
-                explanation = "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereits" +
+                uploadPageExplanation = "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereits" +
                     "recyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, " +
                     "die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre."
                 decimalRows = mutableListOf(
@@ -211,7 +211,7 @@ object EsgQuestionnaireUmweltRollingWindowComponents {
                 "berichterstattungEinnahmenAusFossilenBrennstoffen",
             ) {
                 label = "Berichterstattung Einnahmen aus fossilen Brennstoffen"
-                explanation = "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den " +
+                uploadPageExplanation = "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den " +
                     "gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die " +
                     "Prognosen für die kommenden drei Jahre an."
                 decimalRows = mutableListOf(
@@ -241,7 +241,7 @@ object EsgQuestionnaireUmweltRollingWindowComponents {
                     "Aktivitaeten",
             ) {
                 label = "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten"
-                explanation = "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen " +
+                uploadPageExplanation = "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen " +
                     "Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben " +
                     "zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen" +
                     " (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die " +

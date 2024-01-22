@@ -188,7 +188,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
 
     private fun setEuTaxonomieKompassAktivitaeten(component: MultiSelectComponent) {
         component.label = "EU Taxonomie Kompass Aktivitäten"
-        component.explanation = "Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?"
+        component.uploadPageExplanation = "Welche Aktivitäten gem. dem EU Taxonomie-Kompass übt das Unternehmen aus?"
         setEuTaxonomieKompassAktivitaetenFixtureGenerator(component)
         setEuTaxonomieKompassAktivitaetenViewConfigGenerator(component)
         setEuTaxonomieKompassAktivitaetenUploadGenerator(component)

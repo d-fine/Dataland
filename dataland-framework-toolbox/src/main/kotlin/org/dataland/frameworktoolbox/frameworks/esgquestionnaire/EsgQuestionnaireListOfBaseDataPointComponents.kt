@@ -23,7 +23,7 @@ object EsgQuestionnaireListOfBaseDataPointComponents {
 
             create<EsgQuestionnaireListOfBaseDataPointComponent>("aktuelleBerichte") {
                 label = "Aktuelle Berichte"
-                explanation = "Aktuelle Nachhaltigkeits- oder ESG-Berichte"
+                uploadPageExplanation = "Aktuelle Nachhaltigkeits- oder ESG-Berichte"
                 descriptionColumnHeader = "Beschreibung des Berichts"
                 documentColumnHeader = "Bericht"
                 availableIf = DependsOnComponentValue(
@@ -46,7 +46,7 @@ object EsgQuestionnaireListOfBaseDataPointComponents {
                 "weitereAkkreditierungen",
             ) {
                 label = "Weitere Akkreditierungen"
-                explanation = "Weitere Akkreditierungen, die noch nicht aufgeführt wurden"
+                uploadPageExplanation = "Weitere Akkreditierungen, die noch nicht aufgeführt wurden"
                 descriptionColumnHeader = "Beschreibung der Akkreditierung"
                 documentColumnHeader = "Akkreditierung"
                 availableIf = available
@@ -68,7 +68,7 @@ object EsgQuestionnaireListOfBaseDataPointComponents {
                 "erklaerungDerEinhaltungDerUngcp",
             ) {
                 label = "Richtlinien zur Einhaltung der UNGCP"
-                explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
+                uploadPageExplanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
                     "liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht."
                 descriptionColumnHeader = "Beschreibung der Richtlinie"
                 documentColumnHeader = "Richtlinie"
@@ -92,7 +92,7 @@ object EsgQuestionnaireListOfBaseDataPointComponents {
                 "erklaerungDerEinhaltungDerOecdLeitsaetze",
             ) {
                 label = "Richtlinien zur Einhaltung der OECD-Leitsätze"
-                explanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
+                uploadPageExplanation = "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber " +
                     "liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht."
                 descriptionColumnHeader = "Beschreibung der Richtlinie"
                 documentColumnHeader = "Richtlinie"
