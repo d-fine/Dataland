@@ -1,6 +1,12 @@
 package org.dataland.e2etests.tests
 
-import org.dataland.datalandbackend.openApiClient.model.*
+import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
+import org.dataland.datalandbackend.openApiClient.model.QaStatus
+import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -59,7 +65,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         )
     }
 
-    private fun convertStoredToBasicCompanyInformation(storedCompany: StoredCompany) : BasicCompanyInformation{
+    private fun convertStoredToBasicCompanyInformation(storedCompany: StoredCompany) : BasicCompanyInformation {
         return BasicCompanyInformation(
             companyId = storedCompany.companyId,
             countryCode = storedCompany.companyInformation.countryCode,
