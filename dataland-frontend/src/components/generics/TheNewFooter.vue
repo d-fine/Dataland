@@ -22,13 +22,12 @@
             :style="{ maxHeight: !isSmallScreen || (card.title && isAccordionOpen(card.title)) ? '500px' : '0px' }"
           >
             <li v-for="link in card.links" :key="link.text">
-              <a
+              <span
                 v-if="isExternalLink(link.url)"
-                v-bind:href="sanitizeUrl(link.url)"
+                @click="handleExternalLinkClick(link.url)"
                 class="footer__column-link"
-                target="_blank"
                 rel="noopener noreferrer"
-                >{{ link.text }}</a
+                >{{ link.text }}</span
               >
               <router-link v-else :to="link.url" class="footer__column-link">{{ link.text }}</router-link>
             </li>
@@ -65,6 +64,15 @@ const footerSection = computed(() => {
 });
 
 const openAccordions = ref<Record<string, boolean>>({});
+
+/**
+ * bla
+ * @param url
+ */
+function handleExternalLinkClick(url: string): void {
+  const sanitizedUrl = sanitizeUrl(url);
+  window.open(sanitizedUrl, "_blank");
+}
 
 /**
  * Toggles the open state of an accordion section. If the accordion section
