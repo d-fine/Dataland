@@ -704,8 +704,8 @@
         "tags": [
           "company-data-controller"
         ],
-        "summary": "Retrieve specific companies with framework data by different filters or just all companies from the data store.",
-        "description": "Companies with associated framework data identified via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+        "summary": "Retrieve just the basic information about specific companies with approved framework data by different filters.",
+        "description": "The basic information about companies with associated approved framework data identified via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
         "operationId": "getCompanies",
         "parameters": [
           {
@@ -751,33 +751,17 @@
                 "type": "string"
               }
             }
-          },
-          {
-            "name": "onlyCompanyNames",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "onlyWithDataFromCurrentUser",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved companies.",
+            "description": "Successfully retrieved basic company information.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StoredCompany"
+                    "$ref": "#/components/schemas/BasicCompanyInformation"
                   }
                 }
               }
@@ -2636,105 +2620,6 @@
                   "type": "object",
                   "additionalProperties": {
                     "$ref": "#/components/schemas/AggregatedFrameworkDataSummary"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/companies/v2": {
-      "get": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "summary": "Retrieve just the basic information about specific companies with approved framework data by different filters.",
-        "description": "The basic information about companies with associated approved framework data identified via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
-        "operationId": "getCompanies2",
-        "parameters": [
-          {
-            "name": "searchString",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "dataTypes",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "uniqueItems": true,
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/DataTypeEnum"
-              }
-            }
-          },
-          {
-            "name": "countryCodes",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "uniqueItems": true,
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "name": "sectors",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "uniqueItems": true,
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved basic company information.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BasicCompanyInformation"
                   }
                 }
               }
@@ -11227,18 +11112,6 @@
           }
         }
       },
-      "AggregatedFrameworkDataSummary": {
-        "required": [
-          "numberOfProvidedReportingPeriods"
-        ],
-        "type": "object",
-        "properties": {
-          "numberOfProvidedReportingPeriods": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
       "BasicCompanyInformation": {
         "required": [
           "companyId",
@@ -11248,14 +11121,13 @@
         ],
         "type": "object",
         "properties": {
-          "permId": {
-            "type": "string",
-            "nullable": true
-          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
+            "type": "string"
+          },
+          "headquarters": {
             "type": "string"
           },
           "sector": {
@@ -11265,8 +11137,21 @@
           "countryCode": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
+          "permId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "AggregatedFrameworkDataSummary": {
+        "required": [
+          "numberOfProvidedReportingPeriods"
+        ],
+        "type": "object",
+        "properties": {
+          "numberOfProvidedReportingPeriods": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
