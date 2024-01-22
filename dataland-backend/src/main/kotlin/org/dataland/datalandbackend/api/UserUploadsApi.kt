@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping("/user")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface UserApi {
+interface UserUploadsApi {
     /**
      * A method to retrieve dataset meta information uploaded by a specific user for the "My Datasets" page
      * @param userId the keycloak id of the user

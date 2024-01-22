@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.controller
 
-import org.dataland.datalandbackend.api.UserApi
+import org.dataland.datalandbackend.api.UserUploadsApi
 import org.dataland.datalandbackend.entities.DataMetaInformationForMyDatasets
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController
  * Defines the restful dataland-backend API regarding user data exchange
  */
 @RestController
-class UserController(
+class UserUploadsController(
     @Autowired val dataMetaInformationManager: DataMetaInformationManager
-) : UserApi {
+) : UserUploadsApi {
     override fun getUserDataMetaInformation(userId: String): ResponseEntity<List<DataMetaInformationForMyDatasets>> {
         if(DatalandAuthentication.fromContextOrNull()?.userId != userId) {
             throw InsufficientRightsApiException(
