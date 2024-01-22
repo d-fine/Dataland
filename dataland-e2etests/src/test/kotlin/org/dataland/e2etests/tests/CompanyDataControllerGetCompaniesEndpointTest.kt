@@ -56,11 +56,15 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             .copy(dataRegisteredByDataland = listOf(expectedDataMetaInfo))
         val getCompaniesByCountryCodeAndSectorResponse = apiAccessor.companyDataControllerApi.getCompanies(
             sectors = if (uploadInfo.actualStoredCompany.companyInformation.sector != null) {
-                setOf(uploadInfo.actualStoredCompany.companyInformation.sector!!) } else { null },
+                setOf(uploadInfo.actualStoredCompany.companyInformation.sector!!)
+            } else {
+                null
+            },
             countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode),
         )
         assertTrue(
-            getCompaniesByCountryCodeAndSectorResponse.contains(convertStoredToBasicCompanyInformation(expectedStoredCompany)),
+            getCompaniesByCountryCodeAndSectorResponse
+                .contains(convertStoredToBasicCompanyInformation(expectedStoredCompany)),
             "The posted company could not be found in the query results when querying for its country code and sector.",
         )
     }
@@ -85,11 +89,12 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode),
         )
         assertFalse(
-            getCompaniesByCountryCodeAndSectorResponse.contains(convertStoredToBasicCompanyInformation(uploadInfo.actualStoredCompany)),
+            getCompaniesByCountryCodeAndSectorResponse
+                .contains(convertStoredToBasicCompanyInformation(uploadInfo.actualStoredCompany)),
             "The posted company is in the query results," +
                 " even though the country code filter was set to a different country code.",
 
-        )
+            )
     }
 
     @Test
@@ -135,15 +140,15 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val searchResponse = apiAccessor.companyDataControllerApi.getCompanies(
             searchString = identifierValue,
 
-        )
-        val companyInformationOfSearchResponse = searchResponse.map { apiAccessor.companyDataControllerApi.getCompanyInfo(it.companyId) }
+            )
+        val companyInformationOfSearchResponse = searchResponse
+            .map { apiAccessor.companyDataControllerApi.getCompanyInfo(it.companyId) }
         assertTrue(
             companyInformationOfSearchResponse.all
-                {
-                        results ->
-                    results.identifiers[identifierType]
-                        ?.any { it == identifierValue } ?: false
-                },
+            { results ->
+                results.identifiers[identifierType]
+                    ?.any { it == identifierValue } ?: false
+            },
             "The search by identifier returns at least one company that does not contain the looked" +
                 "for value $identifierType.",
         )
@@ -218,14 +223,12 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         )
         val searchIdentifier = testIdentifier.drop(1).dropLast(1)
         val searchName = testName.drop(1).dropLast(1)
-        val searchResponseForName = apiAccessor.getCompaniesByNameAndIdentifier(searchName)
-        val searchResponseForIdentifier = apiAccessor.getCompaniesByNameAndIdentifier(searchIdentifier)
         assertTrue(
-            searchResponseForName.contains(expectedCompany),
+            apiAccessor.getCompaniesByNameAndIdentifier(searchName).contains(expectedCompany),
             "The search results do not contain the expected company.",
         )
         assertTrue(
-            searchResponseForIdentifier.contains(expectedCompany),
+            apiAccessor.getCompaniesByNameAndIdentifier(searchIdentifier).contains(expectedCompany),
             "The search results do not contain the expected company.",
         )
     }
@@ -307,6 +310,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             CompanyInformation(inputString, "", mapOf(), "", listOf()),
         )
     }
+
     private fun uploadTestEuTaxonomyFinancialsDataSet(companyId: String): DataMetaInformation {
         return apiAccessor.uploadSingleFrameworkDataSet(
             companyId = companyId,

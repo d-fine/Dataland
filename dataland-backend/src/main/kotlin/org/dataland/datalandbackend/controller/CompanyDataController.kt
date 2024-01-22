@@ -58,8 +58,8 @@ class CompanyDataController(
         sectors: Set<String>?,
     ): ResponseEntity<List<BasicCompanyInformation>> {
         logger.info(
-            "Received a request to get basic company information with searchString='$searchString', dataTypes='$dataTypes'" +
-                ", countryCodes='$countryCodes', sectors='$sectors'",
+            "Received a request to get basic company information with searchString='$searchString'" +
+                ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
         )
         return ResponseEntity.ok(
             companyQueryManager.searchCompaniesAndGetApiModel(

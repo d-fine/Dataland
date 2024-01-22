@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping("/users")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface UserUploadsApi {
+fun interface UserUploadsApi {
     /**
      * A method to retrieve dataset meta information uploaded by a specific user for the "My Datasets" page
      * @param userId the keycloak id of the user
@@ -25,7 +25,8 @@ interface UserUploadsApi {
      */
     @Operation(
         summary = "Retrieve an augmented dataset meta information uploaded by a specific user.",
-        description = "Retrieve an augmented dataset meta information uploaded by a specific user for the \"My Datasets\" page.",
+        description = "Retrieve an augmented dataset meta information uploaded" +
+            " by a specific user for the \"My Datasets\" page.",
     )
     @ApiResponses(
         value = [
@@ -35,7 +36,7 @@ interface UserUploadsApi {
         ],
     )
     @GetMapping(
-        value = ["/{userId}/datasets"],
+        value = ["/{userId}/uploads"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")

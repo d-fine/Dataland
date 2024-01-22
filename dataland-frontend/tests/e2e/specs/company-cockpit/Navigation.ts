@@ -79,7 +79,7 @@ describe("As a user, I expect the navigation around the company cockpit to work 
   }
 
   /**
-   * Searches for a company and chooses the first suggestion
+   * Searches a company visits the first suggestion's cockpit and waits for displayed data
    * @param companyToSearch the company to navigate to via the search bar
    */
   function searchCompanyAndInterceptRequest(companyToSearch: CompanyIdAndName): void {
