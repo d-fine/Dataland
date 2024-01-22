@@ -1198,7 +1198,7 @@
         ]
       }
     },
-    "/user/{userId}/datasets": {
+    "/users/{userId}/datasets": {
       "get": {
         "tags": [
           "user-uploads-controller"
@@ -11127,14 +11127,14 @@
           "companyId": {
             "type": "string"
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
           "permId": {
