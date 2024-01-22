@@ -168,7 +168,9 @@
             "default-bearer-auth": []
           }
         ]
-      },
+      }
+    },
+    "/requests/{dataRequestId}/requestStatus": {
       "patch": {
         "tags": [
           "request-controller"
@@ -179,10 +181,11 @@
         "parameters": [
           {
             "name": "dataRequestId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             }
           },
           {
@@ -190,13 +193,74 @@
             "in": "query",
             "required": true,
             "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/RequestStatus"
             }
           }
         ],
         "responses": {
           "200": {
             "description": "Successfully patched data request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredDataRequest"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/{dataRequestId}": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Get all stored data requests of the user making the request.",
+        "description": "Gets all the stored data request created by the user who is making the request.",
+        "operationId": "getDataRequestById",
+        "parameters": [
+          {
+            "name": "dataRequestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data request for the provided ID.",
             "content": {
               "application/json": {
                 "schema": {
@@ -588,6 +652,13 @@
           }
         }
       },
+      "RequestStatus": {
+        "type": "string",
+        "enum": [
+          "Open",
+          "Resolved"
+        ]
+      },
       "DataRequestCompanyIdentifierType": {
         "type": "string",
         "enum": [
@@ -676,13 +747,6 @@
             "format": "int64"
           }
         }
-      },
-      "RequestStatus": {
-        "type": "string",
-        "enum": [
-          "Open",
-          "Resolved"
-        ]
       },
       "StoredDataRequest": {
         "required": [

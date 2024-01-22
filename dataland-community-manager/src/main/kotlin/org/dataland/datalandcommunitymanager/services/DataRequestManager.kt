@@ -128,6 +128,18 @@ class DataRequestManager(
     }
 
     /**
+     * Method to retrieve a data request by its ID
+     * @param dataRequestId the ID of the data request to retrieve
+     * @return the data request corresponding to the provided ID
+     */
+    @Transactional
+    fun getDataRequestById(dataRequestId: String): StoredDataRequest {
+        throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId)
+        val dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
+        return buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
+    }
+
+    /**
      * Method to patch the status of a data request.
      * @param dataRequestId the id of the data request to patch
      * @param requestStatus the status to apply to the data request
@@ -135,22 +147,36 @@ class DataRequestManager(
      */
     @Transactional
     fun patchDataRequest(dataRequestId: String, requestStatus: RequestStatus): StoredDataRequest {
+        throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId)
+        var dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
+        logger.info("Patching Company ${dataRequestEntity.dataRequestId} with status $requestStatus")
+        dataRequestEntity.requestStatus = requestStatus
+        dataRequestRepository.save(dataRequestEntity)
+        dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
+        return buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
+    }
+
+    private fun throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId: String) {
         if (!dataRequestRepository.existsById(dataRequestId)) {
             throw ResourceNotFoundApiException(
                 "Data request not found",
                 "Dataland does not know the Data request ID $dataRequestId",
             )
         }
-        var dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
-        logger.info("Patching Company ${dataRequestEntity.dataRequestId} with status $requestStatus")
-        dataRequestEntity.requestStatus = requestStatus
-        dataRequestRepository.save(dataRequestEntity)
-        dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
+    }
+
+    private fun buildStoredDataRequestFromDataRequestEntity(dataRequestEntity: DataRequestEntity): StoredDataRequest {
         return StoredDataRequest(
-            dataRequestEntity.dataRequestId, dataRequestEntity.userId, dataRequestEntity.creationTimestamp,
-            getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName), dataRequestEntity.reportingPeriod,
-            dataRequestEntity.dataRequestCompanyIdentifierType, dataRequestEntity.dataRequestCompanyIdentifierValue,
-            dataRequestEntity.messageHistory, dataRequestEntity.lastModifiedDate, dataRequestEntity.requestStatus,
+            dataRequestEntity.dataRequestId,
+            dataRequestEntity.userId,
+            dataRequestEntity.creationTimestamp,
+            getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
+            dataRequestEntity.reportingPeriod,
+            dataRequestEntity.dataRequestCompanyIdentifierType,
+            dataRequestEntity.dataRequestCompanyIdentifierValue,
+            dataRequestEntity.messageHistory,
+            dataRequestEntity.lastModifiedDate,
+            dataRequestEntity.requestStatus,
         )
     }
 

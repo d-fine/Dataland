@@ -6,10 +6,21 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.model.dataRequest.*
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import java.util.UUID
 
 /**
  * Defines the restful dataland-community-manager API regarding.
@@ -23,7 +34,6 @@ interface RequestApi {
      * A method to post a bulk request to Dataland.
      * @param bulkDataRequest includes necessary info for the bulk request
      * @return response after posting a bulk data request to Dataland
-     *
      */
     @Operation(
         summary = "Send a bulk request",
@@ -67,7 +77,6 @@ interface RequestApi {
     /** Retrieves aggregated data requests by aggregating all userIds
      * @return aggregated data requests that match the given filters
      */
-
     @Operation(
         summary = "Get aggregated data requests.",
         description = "Gets all data requests that match the given filters, while aggregating userIDs.",
@@ -85,12 +94,30 @@ interface RequestApi {
         @RequestParam identifierValue: String? = null,
         @RequestParam dataTypes: Set<DataTypeEnum>? = null,
         @RequestParam reportingPeriod: String? = null,
-    ): List<AggregatedDataRequest>
+    ): ResponseEntity<List<AggregatedDataRequest>>
+
+    /** A method for users to get a data request by its ID.
+     * @return the data requests corresponding to the provided ID
+     */
+    @Operation(
+        summary = "Get all stored data requests of the user making the request.",
+        description = "Gets all the stored data request created by the user who is making the request.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data request for the provided ID."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{dataRequestId}"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun getDataRequestById(@PathVariable dataRequestId: UUID): ResponseEntity<StoredDataRequest>
 
     /** Changes request status of existing data request
      * @return the modified data request
      */
-
     @Operation(
         summary = "Update status of data request.",
         description = "Updates status of data request given data request id.",
@@ -106,7 +133,7 @@ interface RequestApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun patchDataRequest(
-        @PathVariable dataRequestId: String,
-        @RequestParam requestStatus: RequestStatus = RequestStatus.Open
+        @PathVariable dataRequestId: UUID,
+        @RequestParam requestStatus: RequestStatus = RequestStatus.Open,
     ): ResponseEntity<StoredDataRequest>
 }

@@ -2,11 +2,16 @@ package org.dataland.datalandcommunitymanager.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.api.RequestApi
-import org.dataland.datalandcommunitymanager.model.dataRequest.*
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.services.DataRequestManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 /**
  * Controller for the requests endpoint
@@ -25,20 +30,27 @@ class RequestController(
     }
 
     override fun getDataRequestsForUser(): ResponseEntity<List<StoredDataRequest>> {
-        return ResponseEntity.ok(
-            dataRequestManager.getDataRequestsForUser(),
-        )
+        return ResponseEntity.ok(dataRequestManager.getDataRequestsForUser())
     }
 
     override fun getAggregatedDataRequests(
         identifierValue: String?,
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriod: String?,
-    ): List<AggregatedDataRequest> {
-        return dataRequestManager.getAggregatedDataRequests(identifierValue, dataTypes, reportingPeriod)
+    ): ResponseEntity<List<AggregatedDataRequest>> {
+        return ResponseEntity.ok(
+            dataRequestManager.getAggregatedDataRequests(identifierValue, dataTypes, reportingPeriod),
+        )
     }
 
-    override fun patchDataRequest(dataRequestId: String, requestStatus: RequestStatus): ResponseEntity<StoredDataRequest> {
-        return ResponseEntity.ok(dataRequestManager.patchDataRequest(dataRequestId, requestStatus))
+    override fun getDataRequestById(dataRequestId: UUID): ResponseEntity<StoredDataRequest> {
+        return ResponseEntity.ok(dataRequestManager.getDataRequestById(dataRequestId.toString()))
+    }
+
+    override fun patchDataRequest(
+        dataRequestId: UUID,
+        requestStatus: RequestStatus,
+    ): ResponseEntity<StoredDataRequest> {
+        return ResponseEntity.ok(dataRequestManager.patchDataRequest(dataRequestId.toString(), requestStatus))
     }
 }
