@@ -18,19 +18,19 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = "SELECT company.company_id as companyId," +
-            " company.company_name as companyName," +
-            " company.headquarters as headquarters," +
-            " company.country_code as countryCode," +
-            " company.sector as sector," +
-            " permId.min_id as permId" +
+        value = "SELECT company.company_id AS companyId," +
+            " company.company_name AS companyName," +
+            " company.headquarters AS headquarters," +
+            " company.country_code AS countryCode," +
+            " company.sector AS sector," +
+            " permId.min_id AS permId" +
             " FROM stored_companies company" +
-            " JOIN (SELECT distinct company_id from data_meta_information where quality_status = 1) datainfo" +
+            " JOIN (SELECT DISTINCT company_id FROM data_meta_information WHERE quality_status = 1) datainfo" +
             " ON company.company_id = datainfo.company_id" +
-            " LEFT JOIN (SELECT company_id, min(identifier_value) as min_id from company_identifiers" +
-            " where identifier_type = 'PermId' group by company_id) permId" +
+            " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
+            " WHERE identifier_type = 'PermId' GROUP BY company_id) permId" +
             " ON company.company_id = permid.company_id" +
-            " ORDER by company.company_name asc",
+            " ORDER by company.company_name ASC",
     )
     fun getAllCompaniesWithDataset(): List<BasicCompanyInformation>
 
@@ -46,12 +46,12 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         nativeQuery = true,
         value = "WITH" +
             " has_data AS (SELECT DISTINCT company_id FROM data_meta_information" +
-            " where (:#{#searchFilter.dataTypeFilterSize} = 0" +
-            " OR data_type in :#{#searchFilter.dataTypeFilter}) and quality_status = 1)," +
-            " filtered_results as (" +
-            " SELECT intermediate_results.company_id as company_id, min(intermediate_results.match_quality)" +
-            " as match_quality from (" +
-            " (SELECT company.company_id as company_id," +
+            " WHERE (:#{#searchFilter.dataTypeFilterSize} = 0" +
+            " OR data_type IN :#{#searchFilter.dataTypeFilter}) AND quality_status = 1)," +
+            " filtered_results AS (" +
+            " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
+            " AS match_quality FROM (" +
+            " (SELECT company.company_id AS company_id," +
             " CASE " +
             " WHEN company_name = :#{#searchFilter.searchString} THEN 1" +
             " WHEN company_name" +
@@ -81,34 +81,34 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
 
             " UNION " +
             " (SELECT " +
-            " identifiers.company_id as company_id," +
+            " identifiers.company_id AS company_id," +
             " 5 match_quality " +
             " FROM company_identifiers identifiers" +
             " JOIN has_data datainfo" +
             " ON identifiers.company_id = datainfo.company_id " +
             " WHERE identifier_value" +
             " ILIKE '%' || :#{escape(#searchFilter.searchString)} || '%' ESCAPE :#{escapeCharacter()})) " +
-            " as intermediate_results group by intermediate_results.company_id) " +
+            " AS intermediate_results GROUP BY intermediate_results.company_id) " +
 
             // Combine Results
             " SELECT info.company_id AS companyId," +
             " info.company_name AS companyName, " +
-            " info.headquarters as headquarters, " +
-            " info.country_code as countryCode, " +
-            " info.sector as sector, " +
+            " info.headquarters AS headquarters, " +
+            " info.country_code AS countryCode, " +
+            " info.sector AS sector, " +
             " perm_id.identifier_value AS permId " +
             " FROM filtered_results " +
             " JOIN " +
-            " (select company_id, company_name, headquarters, country_code, sector from stored_companies " +
-            " WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector in :#{#searchFilter.sectorFilter}) " +
+            " (SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
+            " WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
             " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
-            " OR country_code in :#{#searchFilter.countryCodeFilter}) " +
+            " OR country_code IN :#{#searchFilter.countryCodeFilter}) " +
             " ) info " +
             " ON info.company_id = filtered_results.company_id " +
-            " LEFT JOIN (SELECT company_id, MIN(identifier_value) as identifier_value from company_identifiers" +
-            " where identifier_type = 'PermId' group by company_id) perm_id " +
+            " LEFT JOIN (SELECT company_id, MIN(identifier_value) AS identifier_value FROM company_identifiers" +
+            " WHERE identifier_type = 'PermId' GROUP BY company_id) perm_id " +
             " ON perm_id.company_id = filtered_results.company_id " +
-            " ORDER BY filtered_results.match_quality asc, info.company_name asc ",
+            " ORDER BY filtered_results.match_quality ASC, info.company_name ASC ",
     )
     fun searchCompanies(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
@@ -123,9 +123,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value =
-        "WITH filtered_text_results as (" +
+        "WITH filtered_text_results AS (" +
             // Fuzzy-Search Company Name
-            " (SELECT stored_companies.company_id, max(stored_companies.company_name) as company_name," +
+            " (SELECT stored_companies.company_id, max(stored_companies.company_name) AS company_name," +
             " max(CASE " +
             " WHEN company_name = :#{#searchString} THEN 10" +
             " WHEN company_name ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
@@ -222,7 +222,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.identifiers WHERE company in :companies",
+            "LEFT JOIN FETCH company.identifiers WHERE company IN :companies",
     )
     fun fetchIdentifiers(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
@@ -231,7 +231,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.companyAlternativeNames WHERE company in :companies",
+            "LEFT JOIN FETCH company.companyAlternativeNames WHERE company IN :companies",
     )
     fun fetchAlternativeNames(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
@@ -240,7 +240,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.dataRegisteredByDataland WHERE company in :companies",
+            "LEFT JOIN FETCH company.dataRegisteredByDataland WHERE company IN :companies",
     )
     fun fetchCompanyAssociatedByDataland(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
