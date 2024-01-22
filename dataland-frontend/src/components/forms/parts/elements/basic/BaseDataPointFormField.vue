@@ -42,7 +42,7 @@
             :file-names-for-prefill="fileNamesForPrefill"
           />
         </div>
-        <FormKit v-if="hasValidDataSource()" type="group" name="dataSource">
+        <FormKit v-if="isValidFileName(isMounted, documentName)" type="group" name="dataSource">
           <FormKit type="hidden" name="fileName" v-model="documentName" />
           <FormKit type="hidden" name="fileReference" v-model="documentReference" />
         </FormKit>
@@ -59,6 +59,7 @@ import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { type BaseDataPoint } from "@/utils/DataPoint";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
+import { isValidFileName } from "@/utils/DataSource";
 
 export default defineComponent({
   name: "BaseDataPointFormField",
@@ -86,7 +87,7 @@ export default defineComponent({
       documentReference: "",
       fileNamesForPrefill: [] as string[],
       isMounted: false,
-
+      isValidFileName: isValidFileName,
       currentValue: null,
       checkboxValue: [] as Array<string>,
     };
@@ -156,17 +157,6 @@ export default defineComponent({
       } else {
         this.dataPointIsAvailable = false;
       }
-    },
-
-    /**
-     * Determine whether dataSource should be added or blank
-     * @returns flase if file name is blank or value of 'None...'
-     */
-    hasValidDataSource() {
-      if (!this.isMounted) {
-        return true;
-      }
-      return this.documentName.length !== 0 && this.documentName !== "None...";
     },
   },
 });

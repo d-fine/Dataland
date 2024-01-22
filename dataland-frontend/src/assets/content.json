@@ -61,6 +61,12 @@
                             "date": "\"The Pathways to Paris PoC can be a simple way to make sure Dataland becomes the data platform you need.\""
                         },
                         {
+                            "icon": "Jx1v2Z-9cBw",
+                            "title": "Dr. Anna-Lisa Schwarz",
+                            "text": "Managing Director at Werte-Stiftung ",
+                            "date": "\"Dataland will help solve data issues by ensuring transparent, open and fair access to sustainability data.\""
+                        },
+                        {
                             "icon": "Hz-5xC8BSAg",
                             "title": "Matthias Kopp,",
                             "text": " Director of Sustainable Finance at WWF Germany",
@@ -112,7 +118,8 @@
                         "/static/logos/img_value_balancing_alliance.png",
                         "/static/logos/img_voeb.png",
                         "/static/logos/img_Atlas_Metrics.png",
-                        "/static/logos/img_sustainable_dividends.png"
+                        "/static/logos/img_sustainable_dividends.png",
+                        "/static/logos/img_Metzler.png"
                     ]
                 },
                 {

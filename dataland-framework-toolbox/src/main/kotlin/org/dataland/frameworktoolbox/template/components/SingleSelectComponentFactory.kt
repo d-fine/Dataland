@@ -21,7 +21,6 @@ class SingleSelectComponentFactory(@Autowired val templateDiagnostic: TemplateDi
         utils: ComponentGenerationUtils,
         componentGroup: ComponentGroupApi,
     ): ComponentBase {
-        templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
         return componentGroup.create<SingleSelectComponent>(

@@ -113,7 +113,7 @@ describeIf(
     });
 
     it("Visit framework data view page and assure that title is present and a Company Search Bar exists", () => {
-      const placeholder = "Search company by name or identifier";
+      const placeholder = "Search company by name or identifier (e.g. PermID, LEI, ...)";
       const inputValue = "A company name";
 
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {

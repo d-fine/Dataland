@@ -5,7 +5,7 @@
     <div class="card-wrapper">
       <div class="card-grid">
         <FrameworkSummaryPanel
-          v-for="framework of Object.values(DataTypeEnum)"
+          v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
           :key="framework"
           :company-id="companyId"
           :framework="framework"
@@ -27,12 +27,13 @@ import TheContent from "@/components/generics/TheContent.vue";
 import TheFooter from "@/components/generics/TheNewFooter.vue";
 import contentData from "@/assets/content.json";
 import type { Content, Page } from "@/types/ContentTypes";
-import { type AggregatedFrameworkDataSummary, DataTypeEnum } from "@clients/backend";
+import { type AggregatedFrameworkDataSummary, type DataTypeEnum } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
 import FrameworkSummaryPanel from "@/components/resources/companyCockpit/FrameworkSummaryPanel.vue";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -46,8 +47,16 @@ export default defineComponent({
     useMobileView() {
       return this.injectedUseMobileView;
     },
-    DataTypeEnum() {
-      return DataTypeEnum;
+  },
+  watch: {
+    async companyId(newCompanyId, oldCompanyId) {
+      if (newCompanyId !== oldCompanyId) {
+        try {
+          await this.getAggregatedFrameworkDataSummary();
+        } catch (error) {
+          console.error("Error fetching data for new company:", error);
+        }
+      }
     },
   },
   components: {
@@ -76,6 +85,7 @@ export default defineComponent({
       aggregatedFrameworkDataSummary: undefined as
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
+      ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
       footerContent,
     };
   },

@@ -1,5 +1,5 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
-import { ${frameworkIdentifier?cap_first}Data } from "@clients/backend";
+import { ${frameworkBaseNameInCamelCase?cap_first}Data } from "@clients/backend";
 <#list uploadConfig as element><@cats element/></#list><#macro subcats items>
 <#list items as element><@loopSubcats element/></#list>
 </#macro><#macro loop items><#list items as element><@loopOptions element/></#list></#macro>
@@ -9,7 +9,7 @@ import { ${frameworkIdentifier?cap_first}Data } from "@clients/backend";
 ${imp};
 </#list></#if></#macro>
 
-export const ${frameworkIdentifier}DataModel = [<@loopCategories uploadConfig/>] as Category[];
+export const ${frameworkBaseNameInCamelCase}DataModel = [<@loopCategories uploadConfig/>] as Category[];
 
 <#macro loopCategories items>
     <@indent>
@@ -49,12 +49,13 @@ export const ${frameworkIdentifier}DataModel = [<@loopCategories uploadConfig/>]
     name: "${fieldConfig.name?js_string}",
     label: "${fieldConfig.label?js_string}",
     <#if fieldConfig.explanation??>description: "${fieldConfig.explanation?js_string}",</#if>
-    options: <#if fieldConfig.frameworkUploadOptions??>${fieldConfig.frameworkUploadOptions.body},<#else>"",</#if>
-    unit: "<#if fieldConfig.unit??>${fieldConfig.unit?js_string}</#if>",
+    <#if fieldConfig.frameworkUploadOptions??>options: ${fieldConfig.frameworkUploadOptions.body},</#if>
+    <#if fieldConfig.unit??>unit: "${fieldConfig.unit?js_string}",</#if>
     component: "${fieldConfig.uploadComponentName?js_string}",
     required: ${fieldConfig.required?c},
     showIf: <@frameworklambda fieldConfig.shouldDisplay/>,
-    validation: <#if fieldConfig.validation??>${fieldConfig.validation.body}<#elseif fieldConfig.required>"required"<#else>""</#if>,
+    <#if fieldConfig.required>validation: "required<#if fieldConfig.validation??>|${fieldConfig.validation}</#if>",
+    <#else><#if fieldConfig.validation??>validation: "${fieldConfig.validation}",</#if></#if>
     },
 </#macro>
-<#macro frameworklambda lambda>(<#if lambda.usesDataset>dataset: ${frameworkDataType}</#if>):${lambda.returnParameter} => ${lambda.lambdaBody}</#macro>
+<#macro frameworklambda lambda>(<#if lambda.usesDataset>dataset: ${frameworkBaseNameInCamelCase?cap_first}Data</#if>):${lambda.returnParameter} => ${lambda.lambdaBody}</#macro>

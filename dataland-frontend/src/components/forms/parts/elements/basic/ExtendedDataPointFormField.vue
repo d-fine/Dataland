@@ -46,7 +46,7 @@
           :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
           v-if="isYesNoVariant"
         />
-        <div class="col-12" v-if="dataPoint.value === 'Yes' || (showDataPointFields && !isYesNoVariant)">
+        <div class="col-12" v-if="dataPoint.value || !isYesNoVariant">
           <UploadFormHeader
             v-if="!isDataPointToggleable && !isYesNoVariant"
             :label="label"
@@ -85,7 +85,7 @@
               />
             </div>
 
-            <FormKit v-if="hasValidDataSource()" type="group" name="dataSource">
+            <FormKit v-if="isValidFileName(isMounted, currentReportValue)" type="group" name="dataSource">
               <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
               <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
               <FormKit type="hidden" name="page" v-model="pageForFileReference" />
@@ -110,12 +110,11 @@
               :options="computeQualityOption"
             />
           </div>
-        </div>
-        <div class="col-12">
           <div class="form-field">
             <FormKit
               type="textarea"
               name="comment"
+              v-model="commentValue"
               placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
             />
           </div>
@@ -137,6 +136,7 @@ import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
 import { type ExtendedDataPoint } from "@/utils/DataPoint";
+import { isValidFileName, noReportLabel } from "@/utils/DataSource";
 
 export default defineComponent({
   name: "ExtendedDataPointFormField",
@@ -160,13 +160,15 @@ export default defineComponent({
         value: qualityOption,
       })),
       qualityValue: "NA",
+      commentValue: "",
       currentReportValue: "" as string,
       dataPoint: {} as ExtendedDataPoint<unknown>,
       currentValue: null,
       checkboxValue: [] as Array<string>,
       firstAssignmentWhileEditModeWasDone: false,
-      noReportLabel: "None...",
+      noReportLabel: noReportLabel,
       pageForFileReference: undefined as string | undefined,
+      isValidFileName: isValidFileName,
     };
   },
   mounted() {
@@ -174,7 +176,7 @@ export default defineComponent({
   },
   computed: {
     showDataPointFields(): boolean {
-      return this.dataPointIsAvailable || (!this.isDataPointToggleable && !this.isYesNoVariant);
+      return this.dataPointIsAvailable || !this.isDataPointToggleable;
     },
     isDataValueProvided(): boolean {
       return (assertDefined(this.checkValueValidity) as (dataPoint: unknown) => boolean)(this.dataPoint);
@@ -248,7 +250,7 @@ export default defineComponent({
      * @param isDataValueProvided boolean which gives information whether data is provided or not
      */
     handleBlurValue(isDataValueProvided: boolean) {
-      if (!isDataValueProvided) {
+      if (!isDataValueProvided && !this.isYesNoVariant) {
         this.qualityValue = QualityOptions.Na;
       } else if (this.qualityValue === QualityOptions.Na) {
         this.qualityValue = "";
@@ -273,16 +275,6 @@ export default defineComponent({
         this.currentValue = null;
         this.dataPoint = {};
       }
-    },
-    /**
-     * Checks whether the Assurance data source has appropriate values
-     * @returns if no file selected or 'None...' selected it returns undefined. Else it returns the data source
-     */
-    hasValidDataSource(): boolean {
-      if (!this.isMounted) {
-        return true;
-      }
-      return this.currentReportValue?.length > 0 && this.currentReportValue !== this.noReportLabel;
     },
   },
 });

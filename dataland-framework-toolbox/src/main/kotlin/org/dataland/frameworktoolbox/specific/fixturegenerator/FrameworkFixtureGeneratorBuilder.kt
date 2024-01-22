@@ -4,6 +4,7 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
+import org.dataland.frameworktoolbox.utils.Naming.getNameFromLabel
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import org.dataland.frameworktoolbox.utils.typescript.EsLintRunner
@@ -32,6 +33,7 @@ class FrameworkFixtureGeneratorBuilder(
     private fun buildIndexTs(indexTsPath: Path) {
         val freeMarkerContext = mapOf(
             "frameworkIdentifier" to framework.identifier,
+            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
         )
 
         val freemarkerTemplate = FreeMarker.configuration
@@ -46,6 +48,7 @@ class FrameworkFixtureGeneratorBuilder(
     private fun buildPreparedFixturesTs(preparedFixturesTsPath: Path) {
         val freeMarkerContext = mapOf(
             "frameworkIdentifier" to framework.identifier,
+            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
         )
 
         val freemarkerTemplate = FreeMarker.configuration
@@ -61,7 +64,7 @@ class FrameworkFixtureGeneratorBuilder(
 
     private fun buildFrameworkGeneratorsTs(frameworkGeneratorTsPath: Path) {
         val freeMarkerContext = mapOf(
-            "frameworkIdentifier" to framework.identifier,
+            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
         )
 
         val freemarkerTemplate = FreeMarker.configuration
@@ -78,6 +81,7 @@ class FrameworkFixtureGeneratorBuilder(
     private fun buildDataFixtures(dataFixturesTsPath: Path) {
         val freeMarkerContext = mapOf(
             "frameworkIdentifier" to framework.identifier,
+            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
             "imports" to rootSectionBuilder.imports,
             "rootSection" to rootSectionBuilder,
         )
@@ -103,12 +107,18 @@ class FrameworkFixtureGeneratorBuilder(
         frameworkConfigDir.toFile().mkdirs()
 
         buildIndexTs(frameworkConfigDir / "index.ts")
-        buildDataFixtures(frameworkConfigDir / "${framework.identifier.capitalizeEn()}DataFixtures.ts")
+        buildDataFixtures(
+            frameworkConfigDir / "${getNameFromLabel(
+                framework.identifier,
+            ).capitalizeEn()}DataFixtures.ts",
+        )
         buildPreparedFixturesTs(
             frameworkConfigDir /
-                "${framework.identifier.capitalizeEn()}PreparedFixtures.ts",
+                "${getNameFromLabel(framework.identifier).capitalizeEn()}PreparedFixtures.ts",
         )
-        buildFrameworkGeneratorsTs(frameworkConfigDir / "${framework.identifier.capitalizeEn()}Generator.ts")
+        buildFrameworkGeneratorsTs(
+            frameworkConfigDir / "${getNameFromLabel(framework.identifier).capitalizeEn()}Generator.ts",
+        )
 
         into.gradleInterface.executeGradleTasks(
             listOf(

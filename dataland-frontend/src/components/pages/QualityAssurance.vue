@@ -89,7 +89,7 @@ import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue"
 import { KEYCLOAK_ROLE_REVIEWER } from "@/utils/KeycloakUtils";
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from "primevue/datatable";
 import Column from "primevue/column";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { AxiosError } from "axios";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import { convertUnixTimeInMsToDateString } from "@/utils/DataFormatUtils";

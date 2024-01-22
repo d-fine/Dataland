@@ -1,16 +1,17 @@
 import { DataTypeEnum } from "@clients/backend";
 
 // - Available frameworks settings
-export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE: DataTypeEnum[] = Object.values(DataTypeEnum);
 
-export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM: DataTypeEnum[] = [
+export const ARRAY_OF_SUPPORTED_FRAMEWORKS = putEsgQuestionnaireAtTheEndOfList(Object.values(DataTypeEnum));
+export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = putEsgQuestionnaireAtTheEndOfList(Object.values(DataTypeEnum));
+export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = putEsgQuestionnaireAtTheEndOfList([
   DataTypeEnum.P2p,
   DataTypeEnum.EutaxonomyFinancials,
   DataTypeEnum.Sfdr,
   DataTypeEnum.Lksg,
   DataTypeEnum.EutaxonomyNonFinancials,
-  DataTypeEnum.Gdv,
-];
+  DataTypeEnum.EsgQuestionnaire,
+]);
 
 // - Keycloak and session management related settings
 
@@ -36,3 +37,24 @@ export const REGEX_FOR_FILE_NAMES = /^[^<>:"|?/*\\\s][^<>:"|?/*\\]{0,252}[^<>:"|
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 export const NO_DATA_PROVIDED = "No data provided";
+export const ONLY_AUXILIARY_DATA_PROVIDED = "Only auxiliary data provided";
+
+/**
+ * Changes the sorting of a list of data type enums by putting the Esg Questionnaire framework at the very end.
+ * @param frameworksToInclude a unsorted list of data type enums
+ * @returns the list of data type enums sorted in a way, that Esg Questionnaire framework is the last element
+ */
+export function putEsgQuestionnaireAtTheEndOfList(frameworksToInclude: DataTypeEnum[]): DataTypeEnum[] {
+  const customSort = (a: DataTypeEnum, b: DataTypeEnum): number => {
+    if (a === DataTypeEnum.EsgQuestionnaire && b !== DataTypeEnum.EsgQuestionnaire) {
+      return 1;
+    } else if (a !== DataTypeEnum.EsgQuestionnaire && b === DataTypeEnum.EsgQuestionnaire) {
+      return -1;
+    } else {
+      return 0;
+    }
+  };
+  return frameworksToInclude.includes(DataTypeEnum.EsgQuestionnaire)
+    ? [...frameworksToInclude].sort(customSort)
+    : frameworksToInclude;
+}

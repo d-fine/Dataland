@@ -27,13 +27,13 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
  * Add a cell to the upload-config section with configuration shared between components
  */
 fun UploadCategoryBuilder.addStandardUploadConfigCell(
-    frameworkUploadOptions: FrameworkUploadOptions?,
     component: ComponentBase,
     uploadComponentName: String,
+    frameworkUploadOptions: FrameworkUploadOptions? = null,
     unit: String? = null,
-    validation: FrameworkUploadOptions?,
+    validation: String? = null,
 ) {
-    addCell(
+    addUploadCell(
         identifier = component.identifier,
         label = component.label ?: throw IllegalStateException(
             "You must specify a label for ${component.identifier} to generate a view configuration",
