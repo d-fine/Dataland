@@ -24,7 +24,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val expectedDataset = uploadTestEuTaxonomyFinancialsDataSet(uploadInfo.actualStoredCompany.companyId)
             .copy(uploaderUserId = null)
-        val getCompaniesOnlyByNameResponse = apiAccessor.getCompaniesOnlyByName(
+        val getCompaniesOnlyByNameResponse = apiAccessor.getCompaniesByNameAndIdentifier(
             uploadInfo.actualStoredCompany.companyInformation.companyName,
         )
         val expectedCompany = StoredCompany(
@@ -33,7 +33,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             listOf(expectedDataset),
         )
         assertTrue(
-            getCompaniesOnlyByNameResponse.contains(expectedCompany),
+            getCompaniesOnlyByNameResponse.contains(convertStoredToBasicCompanyInformation(expectedCompany)),
             "Dataland does not contain the posted company.",
         )
     }
@@ -179,9 +179,9 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             listOf(uploadedData),
         )
 
-        val retrievedCompanies = apiAccessor.getCompaniesOnlyByName("")
+        val retrievedCompanies = apiAccessor.getCompaniesByNameAndIdentifier("")
         assertTrue(
-            retrievedCompanies.contains(expectedCompany),
+            retrievedCompanies.contains(convertStoredToBasicCompanyInformation(expectedCompany)),
             "Not all the companyInformation of the posted companies could be found in the stored companies.",
         )
     }
@@ -199,15 +199,15 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         )
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
         val uploadedData = uploadTestEuTaxonomyFinancialsDataSet(uploadedCompany.companyId).copy(uploaderUserId = null)
-        val expectedCompany = StoredCompany(
+        val expectedCompany = convertStoredToBasicCompanyInformation(StoredCompany(
             uploadedCompany.companyId,
             uploadedCompany.companyInformation,
             listOf(uploadedData),
+            )
         )
-
         val searchIdentifier = testIdentifier.drop(1).dropLast(1)
         val searchName = testName.drop(1).dropLast(1)
-        val searchResponseForName = apiAccessor.getCompaniesOnlyByName(searchName)
+        val searchResponseForName = apiAccessor.getCompaniesByNameAndIdentifier(searchName)
         val searchResponseForIdentifier = apiAccessor.getCompaniesByNameAndIdentifier(searchIdentifier)
         assertTrue(
             searchResponseForName.contains(expectedCompany),
