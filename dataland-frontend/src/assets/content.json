@@ -251,6 +251,47 @@
                     ]
                 }
             ]
+        },
+        {
+            "title": "About Page",
+            "url": "/about",
+            "sections": [
+                {
+                    "title": "START YOUR DATALAND JOURNEY",
+                    "text": [
+                        "Our joint purpose, promise & passion is to ",
+                        "let the data flow ",
+                        "in order to create value.",
+                        "EXPLORE OUR PRINCIPLES"
+                    ]
+                },
+                {
+                    "title": "Our principles",
+                    "text": [
+                        "Our principles"
+                    ],
+                    "cards": [
+                        {
+                            "title": "We need comparable and reliable sustainability data to create value."
+                        },
+                        {
+                            "title": "We will seek disclosure of sustainability data from our business relations."
+                        },
+                        {
+                            "title": "We will respect and promote data soveignty."
+                        },
+                        {
+                            "title": "Data should be timely and easliy accessible at fair cost."
+                        },
+                        {
+                            "title": "Common data spaces should be neutral, transparent, non-competitive and not-for-profit."
+                        },
+                        {
+                            "title": "We will work together to achieve these principles and promote their acceptance."
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
