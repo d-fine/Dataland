@@ -78,8 +78,8 @@ describe("As a user, I expect the navigation around the company cockpit to work 
     cy.get(".p-autocomplete-item").first().click();
   }
 
-  /** TODO comment wrong
-   * Searches for a company and check if GET request for framework data is sent
+  /**
+   * Search a company visits its cockpit and wait for displayed data
    * @param companyToSearch the company to navigate to via the search bar
    */
   function searchCompanyAndInterceptRequest(companyToSearch: CompanyIdAndName): void {

@@ -35,7 +35,7 @@ interface UserUploadsApi {
         ],
     )
     @GetMapping(
-        value = ["/{userId}/datasets"],
+        value = ["/{userId}/uploads"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")

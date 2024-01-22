@@ -1198,7 +1198,7 @@
         ]
       }
     },
-    "/users/{userId}/datasets": {
+    "/users/{userId}/uploads": {
       "get": {
         "tags": [
           "user-uploads-controller"
