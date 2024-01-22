@@ -27,7 +27,7 @@
     :validation="validation"
     :validation-label="validationLabel"
     :validation-messages="validationMessages"
-    v-if="!shouldBeIgnored"
+    v-if="!shouldBeIgnoredByFormKit"
     :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
   />
 </template>
@@ -43,8 +43,8 @@ export default defineComponent({
   data() {
     return {
       key: 0,
-      shouldBeIgnored: false,
-      currentValue: null,
+      shouldBeIgnoredByFormKit: false,
+      currentValue: null as string | null,
       checkboxValue: [] as Array<string>,
     };
   },
@@ -52,33 +52,18 @@ export default defineComponent({
     disabledOnMoreThanOne,
     /**
      * Updates the currentValue when the checkboxes value has been changed
-     * @param checkboxValue current selection in the checkbox
+     * @param newCheckboxValue is the selected value in the checkbox that triggered this @input event
      */
-    updateCurrentValue(checkboxValue: [string]) {
-      if (checkboxValue[0]) {
-        this.shouldBeIgnored = false;
-        this.currentValue = checkboxValue[0].toString();
+    updateCurrentValue(newCheckboxValue: [string]) {
+      const newCheckboxValueAsString = newCheckboxValue[0];
+      if (newCheckboxValueAsString && newCheckboxValueAsString !== "") {
+        this.shouldBeIgnoredByFormKit = false;
+        this.currentValue = newCheckboxValueAsString;
+        this.checkboxValue = newCheckboxValue;
       } else {
+        this.shouldBeIgnoredByFormKit = !this.validation.includes("is:");
         this.currentValue = null;
-        this.shouldBeIgnored = !this.validation.includes("is:");
       }
-    },
-    /**
-     * Function that sets whether value should be ignored or not
-     * @param currentValue current value
-     */
-    setIgnoreToFields(currentValue: string) {
-      if (currentValue && currentValue !== "") {
-        this.shouldBeIgnored = false;
-        this.checkboxValue = [currentValue];
-      } else {
-        this.shouldBeIgnored = !this.validation.includes("is:");
-      }
-    },
-  },
-  watch: {
-    currentValue(newVal: string) {
-      this.setIgnoreToFields(newVal);
     },
   },
   props: {
