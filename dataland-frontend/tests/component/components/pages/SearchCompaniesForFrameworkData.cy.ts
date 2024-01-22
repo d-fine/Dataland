@@ -3,7 +3,7 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import type Keycloak from "keycloak-js";
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 import { verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
-import { BasicCompanyInformation } from "@clients/backend";
+import { type BasicCompanyInformation } from "@clients/backend";
 
 let mockDataSearchResponse: Array<BasicCompanyInformation>;
 

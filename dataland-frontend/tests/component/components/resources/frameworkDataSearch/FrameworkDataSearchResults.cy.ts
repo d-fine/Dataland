@@ -1,6 +1,6 @@
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import {BasicCompanyInformation} from "../../../../../build/clients/backend";
+import { type BasicCompanyInformation } from "@clients/backend";
 
 let mockDataSearchResponse: Array<BasicCompanyInformation>;
 before(function () {
