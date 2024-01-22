@@ -18,7 +18,7 @@
     :id="fieldName + name"
     :ignore="true"
     :plugins="[disabledOnMoreThanOne]"
-    @input="updateCurrentValue($event)"
+    @input="handleCheckboxSelectionByUser($event)"
   />
   <FormKit
     type="text"
@@ -51,19 +51,31 @@ export default defineComponent({
   methods: {
     disabledOnMoreThanOne,
     /**
-     * Updates the currentValue when the checkboxes value has been changed
+     * Handles the input event in the checkboxes
      * @param newCheckboxValue is the selected value in the checkbox that triggered this @input event
      */
-    updateCurrentValue(newCheckboxValue: [string]) {
+    handleCheckboxSelectionByUser(newCheckboxValue: [string]) {
       const newCheckboxValueAsString = newCheckboxValue[0];
-      if (newCheckboxValueAsString && newCheckboxValueAsString !== "") {
+      this.updateCurrentValue(newCheckboxValueAsString);
+    },
+    /**
+     * Updates the currentValue when the checkboxes value has been changed
+     * @param newCheckBoxValue is the new value in the checkbox
+     */
+    updateCurrentValue(newCheckBoxValue: string) {
+      if (newCheckBoxValue && newCheckBoxValue !== "") {
         this.shouldBeIgnoredByFormKit = false;
-        this.currentValue = newCheckboxValueAsString;
-        this.checkboxValue = newCheckboxValue;
+        this.currentValue = newCheckBoxValue;
+        this.checkboxValue = [newCheckBoxValue];
       } else {
         this.shouldBeIgnoredByFormKit = !this.validation.includes("is:");
         this.currentValue = null;
       }
+    },
+  },
+  watch: {
+    currentValue(newVal: string) {
+      this.updateCurrentValue(newVal);
     },
   },
   props: {
