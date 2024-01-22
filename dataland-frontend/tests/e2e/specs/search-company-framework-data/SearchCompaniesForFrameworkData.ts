@@ -133,9 +133,9 @@ describeIf(
       });
     });
 
-    it("Search with autocompletion for companies with b in it, click and use arrow keys, find searched company in recommendation", () => {
+    it("Search with autocompletion for companies with 'abs' in it, click and use arrow keys, find searched company in recommendation", () => {
       const primevueHighlightedSuggestionClass = "p-focus";
-      const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
+      const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "abs";
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
         cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
           (basicCompanyInformations: Array<BasicCompanyInformation>) => {
@@ -143,14 +143,16 @@ describeIf(
             cy.visitAndCheckAppMount("/companies");
 
             verifySearchResultTableExists();
-            cy.get("input[id=search_bar_top]").type("b");
+            cy.get("input[id=search_bar_top]").type("abs");
             cy.get(".p-autocomplete-item").contains("View all results").click();
 
             verifySearchResultTableExists();
-            cy.url().should("include", "/companies?input=b");
+            cy.url().should("include", "/companies?input=abs");
             cy.get("input[id=search_bar_top]")
               .click({ force: true })
               .type("{backspace}")
+                .type("{backspace}")
+                .type("{backspace}")
               .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
             cy.get("ul[class=p-autocomplete-items]").should("exist");
             cy.get("input[id=search_bar_top]").type("{downArrow}");
@@ -162,7 +164,7 @@ describeIf(
             cy.get("input[id=search_bar_top]").type("{upArrow}");
             cy.get(".p-autocomplete-item").eq(0).should("have.class", primevueHighlightedSuggestionClass);
             cy.get(".p-autocomplete-item").eq(1).should("not.have.class", primevueHighlightedSuggestionClass);
-            cy.get("input[id=search_bar_top]").click({ force: true }).type("{backspace}").type(testCompany.companyName);
+            cy.get("input[id=search_bar_top]").click({ force: true }).type("{backspace}").type("{backspace}").type("{backspace}").type(testCompany.companyName);
             cy.get(".p-autocomplete-item").eq(0).should("contain.text", testCompany.companyName).click({ force: true });
 
             validateCompanyCockpitPage(testCompany.companyName, testCompany.companyId);
