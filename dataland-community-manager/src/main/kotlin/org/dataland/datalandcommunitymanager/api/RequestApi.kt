@@ -10,6 +10,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataReq
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import java.util.UUID
+import java.util.*
 
 /**
  * Defines the restful dataland-community-manager API regarding.
@@ -118,6 +119,7 @@ interface RequestApi {
     /** Changes request status of existing data request
      * @return the modified data request
      */
+
     @Operation(
         summary = "Update status of data request.",
         description = "Updates status of data request given data request id.",
@@ -136,4 +138,29 @@ interface RequestApi {
         @PathVariable dataRequestId: UUID,
         @RequestParam requestStatus: RequestStatus = RequestStatus.Open,
     ): ResponseEntity<StoredDataRequest>
+
+    /**
+     * A method to post a single request to Dataland.
+     * @param singleDataRequest includes necessary info for the single request
+     * @return response after posting a single data request to Dataland
+     *
+     */
+    @Operation(
+        summary = "Send a single request",
+        description = "A single of data requests for specific frameworks and companies is being sent.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully processed a single data request."),
+        ],
+    )
+    @PostMapping(
+        consumes = ["application/json"],
+
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun postSingleDataRequest(
+        @RequestParam singleDataRequest: SingleDataRequest,
+    ):
+        ResponseEntity<StoredDataRequest>
 }

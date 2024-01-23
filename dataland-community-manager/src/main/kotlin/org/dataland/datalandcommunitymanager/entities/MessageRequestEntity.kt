@@ -20,7 +20,7 @@ data class MessageRequestEntity(
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "data_request_id")
-    val dataRequestId: DataRequestEntity?,
+    val dataRequestEntity: DataRequestEntity,
 
     @ElementCollection
     var contactList: List<String>? = null,
