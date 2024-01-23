@@ -6,9 +6,9 @@ Field Identifier,Category,Sub-Category,Field Name,Tooltip,Component,Options,Unit
 Bitte machen Sie Angaben zu den Komponenten, die Sie bei der Bewertung des Grades der Nachhaltigkeit von Unternehmen berücksichtigen.",String,,,,,,
 5,General,Methodik,Kriterien für Ihre Nachhaltigkeitsratings,Welche Kriterien legen Sie für Ihre Nachhaltigkeitsratings zugrunde?,String,,,,,,
 6,General,Methodik,Verfahren zur Vorbereitung der Analyse oder Methodik,"Bitte beschreiben Sie uns das Vorgehen zur Erstellung Ihrer Analysen, bzw. die zugrunde liegende Methodik.",String,,,,,,
-7,General,Methodik,Wie ist Ihre Bewertungsskala definiert,Wie ist Ihre Ratingskala definiert?,String,,,,,,
+7,General,Methodik,Wie ist Ihre Bewertungsskala definiert?,Wie ist Ihre Ratingskala definiert?,String,,,,,,
 8,General,Methodik,Bewertung aktuell,Wie stellen Sie die Aktualität ihrer Ratings sicher? Wie häufig/in welchen Zeitabständen werden Updates zur Verfügung gestellt?,String,,,,,,
-9,General,Methodik,Sind Ihre Bewertungen unabhängig,"Erfolgen Ihre Ratings unabhängig (von Kunden, Kooperationspartnern, Unternehmen, etc.)
+9,General,Methodik,Sind Ihre Bewertungen unabhängig?,"Erfolgen Ihre Ratings unabhängig (von Kunden, Kooperationspartnern, Unternehmen, etc.)
 Welche Parteien können aktiv Einfluss auf die Gestaltung des Ratings nehmen?",String,,,,,,
 10,General,Methodik,Datenerfassung,"Wie erfolgt die Datenerhebung?
 Hier sollten Angaben zur Vorgehensweise bei der Datenerhebung gemacht werden, z.B. mithilfe eines Fragebogens, Interviews, etc.",String,,,,,,
@@ -47,7 +47,7 @@ Angaben dazu, wie Adhoc/kurzfristige Meldungen bei Emittenten und kurzfristige r
 31,General,Methodik,Kontroversen um die Quellenerfassung,Welche Quellen werden zur Erfassung von Kontroversen genutzt?,String,,,,,,
 32,Environmental,Nachhaltigskeitsrisiken,Methodik für ökologische Nachhaltigkeitsrisiken,"Werden Nachhaltigkeitsrisiken bezogen auf den Bereich Umwelt in der Methodik abgebildet?
 Nachhaltigkeitsrisiken können einen wesentlichen negativen Einfluss auf die Performance eines Unternehmens haben. Angaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Umwelt in der Methodik abgebildet werden.",Yes/No,,,,,,
-"32,1",Environmental,Nachhaltigskeitsrisiken,"Wenn Nein, bitte begründen (ökologische Nachhaltigkeitsrisiken)",,String,,,,32,No,
+"32,1",Environmental,Nachhaltigskeitsrisiken,"Wenn Nein, bitte begründen",,String,,,,32,No,
 33,Environmental,Nachhaltigskeitsrisiken,Kartierte Risiken für die ökologische Nachhaltigkeit,"Welche Nachhaltigkeitsrisiken im Bereich Umwelt werden abgebildet?
 Aufführung der Nachhaltigkeitsrisiken, die abgebildet werden können. (z.B. Klimarisiken, Risiken bzgl. Biodiversität, Risiken bzgl. Wasser)",String,,,,32,Yes,
 34,Environmental,Nachhaltigskeitsrisiken,Identifizierung der wesentlichen Risiken für die ökologische Nachhaltigkeit und der Konstruktionsmethodik,"Wie werden wesentliche Nachhaltigkeitsrisiken eines Unternehmens im Bereich Umwelt identifiziert und in der Methodik berücksichtigt?
@@ -64,13 +64,13 @@ Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von N
 Ja/Nein bezogen auf Annex I C(2022)1931",Yes/No,,,,,,
 "40,1",Environmental,PAIs,"Wenn Nein, bitte begründen",,String,,,,40,No,
 "40,2",Environmental,PAIs,"Wenn Ja, bitte die PAIs auflisten",,String,,,,40,Yes,
-41,Environmental,PAIs,Verwendete Schlüsselzahlen (Treibhausgasemissionen),"Welche Kennzahlen werden verwendet?
+41,Environmental,PAIs,Verwendete Schlüsselzahlen,"Welche Kennzahlen werden verwendet?
 Angabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werden.",String,,,,40,Yes,
-42,Environmental,PAIs,Datenerfassung (Treibhausgasemissionen),"Wie erfolgt die Datenerhebung?
+42,Environmental,PAIs,Datenerfassung,"Wie erfolgt die Datenerhebung?
 Angaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten, Benchmarking)",String,,,,40,Yes,
-43,Environmental,PAIs,Daten Plausibilitätsprüfung (Treibhausgasemissionen),"Wie erfolgt die Datenplausibilisierung?
+43,Environmental,PAIs,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde erfasst.",String,,,,40,Yes,
-44,Environmental,PAIs,Datenquelle (Treibhausgasemissionen),"Welche Quellen werden genutzt?
+44,Environmental,PAIs,Datenquelle,"Welche Quellen werden genutzt?
 Angabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen etc.",String,,,,40,Yes,
 45,Environmental,PAIs,PAIs - biologische Vielfalt,"Wird der PAI auf Biodiversität abgebildet?
 Ja/Nein bezogen auf Annex I C(2022)1931",Yes/No,,,,,,
