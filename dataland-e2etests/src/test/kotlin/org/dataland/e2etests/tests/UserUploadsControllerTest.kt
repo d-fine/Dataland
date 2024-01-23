@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformationForMyDatasets
 import org.dataland.e2etests.ADMIN_USER_ID
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
-import org.dataland.e2etests.READER_USER_ID
+import org.dataland.e2etests.REVIEWER_USER_ID
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -31,7 +31,7 @@ class UserUploadsControllerTest {
 
     @Test
     fun `check that a reading user has no uploads`() {
-        val shouldBeEmpty = getUserUploads(READER_USER_ID, TechnicalUser.Reader)
+        val shouldBeEmpty = getUserUploads(REVIEWER_USER_ID, TechnicalUser.Reviewer)
         assertTrue(shouldBeEmpty.isEmpty())
     }
 }
