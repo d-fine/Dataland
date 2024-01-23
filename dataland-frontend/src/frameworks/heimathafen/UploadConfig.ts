@@ -1694,8 +1694,8 @@ export const heimathafenDataModel = [
         fields: [
           {
             name: "sdgKeineArmut",
-            label: "abctest",
-            description: "deftestHU",
+            label: "SDG - Keine Armut",
+            description: 'Kann mit der Methodik ein Beitrag zum SDG "keine Armut" gemessen werden?',
 
             component: "YesNoFormField",
             required: false,

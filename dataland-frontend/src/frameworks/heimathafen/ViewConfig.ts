@@ -1695,8 +1695,8 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
         children: [
           {
             type: "cell",
-            label: "abctest",
-            explanation: "deftestHU",
+            label: "SDG - Keine Armut",
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "keine Armut" gemessen werden?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.sdg?.keineArmut?.sdgKeineArmut),
