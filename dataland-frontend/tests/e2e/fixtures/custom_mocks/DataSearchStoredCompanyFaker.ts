@@ -1,5 +1,4 @@
-import { type CompanyInformation, IdentifierType } from "@clients/backend";
-import { type DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import { type CompanyInformation, IdentifierType, type BasicCompanyInformation } from "@clients/backend";
 import { generateCompanyInformation } from "@e2e/fixtures/CompanyFixtures";
 import { DataMetaInformationGenerator } from "@e2e/fixtures/data_meta_information/DataMetaInformationFixtures";
 
@@ -7,15 +6,16 @@ import { DataMetaInformationGenerator } from "@e2e/fixtures/data_meta_informatio
  * Generates a single search result for the framework data search
  * @returns the object representing the search result
  */
-function generateDataSearchStoredCompany(): DataSearchStoredCompany {
+function generateBasicCompanyInformation(): BasicCompanyInformation {
   const mockCompanyInformation: CompanyInformation = generateCompanyInformation();
   const mockDataMetaInformation = new DataMetaInformationGenerator().generateDataMetaInformation();
   return {
     companyName: mockCompanyInformation.companyName,
-    companyInformation: mockCompanyInformation,
     companyId: mockDataMetaInformation.companyId,
     permId: mockCompanyInformation.identifiers[IdentifierType.PermId][0],
-    dataRegisteredByDataland: [mockDataMetaInformation],
+    headquarters: mockCompanyInformation.headquarters,
+    sector: mockCompanyInformation.sector,
+    countryCode: mockCompanyInformation.countryCode,
   };
 }
 
@@ -23,6 +23,6 @@ function generateDataSearchStoredCompany(): DataSearchStoredCompany {
  * Prepares an array consisting of search results to be displayed in the framework data search
  * @returns the list of search result objects
  */
-export function generateListOfDataSearchStoredCompany(): DataSearchStoredCompany[] {
-  return Array.from({ length: 100 }, () => ({ ...generateDataSearchStoredCompany() }));
+export function generateListOfDataSearchStoredCompany(): BasicCompanyInformation[] {
+  return Array.from({ length: 100 }, () => ({ ...generateBasicCompanyInformation() }));
 }

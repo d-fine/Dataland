@@ -83,16 +83,13 @@
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import {
-  type FrameworkDataSearchFilterInterface,
-  type DataSearchStoredCompany,
-} from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import { type FrameworkDataSearchFilterInterface } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { type RouteLocationNormalizedLoaded, useRoute } from "vue-router";
 import { defineComponent, inject, ref } from "vue";
-import { type DataTypeEnum } from "@clients/backend";
+import { type DataTypeEnum, type BasicCompanyInformation } from "@clients/backend";
 import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
@@ -148,7 +145,7 @@ export default defineComponent({
       pageScrolled: false,
       route: useRoute(),
       footerContent,
-      resultsArray: [] as Array<DataSearchStoredCompany>,
+      resultsArray: [] as Array<BasicCompanyInformation>,
       latestScrollPosition: 0,
       currentSearchBarInput: "",
       currentFilteredFrameworks: ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
@@ -355,7 +352,7 @@ export default defineComponent({
      * @param companiesReceived the received companies
      * @returns the promise of the router push with the new query parameters
      */
-    handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
+    handleCompanyQuery(companiesReceived: Array<BasicCompanyInformation>) {
       this.resultsArray = companiesReceived;
       this.setFirstShownRow(0);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
