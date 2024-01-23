@@ -133,7 +133,6 @@ sonar {
                 "dataland-frontend/src/components/generics/TheNewHeader.vue," +
                 "dataland-frontend/src/components/resources/aboutPage/**," +
                 "dataland-frontend/src/components/resources/newLandingPage/**," +
-                "dataland-frontend/src/components/generics/TheNewHeader.vue," +
                 "dataland-frontend/src/components/pages/AboutPage.vue",
         )
     }
