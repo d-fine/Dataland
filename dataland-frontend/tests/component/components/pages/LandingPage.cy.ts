@@ -99,7 +99,7 @@ function checkNewFooter(): void {
  */
 function getLandingPageSection(sectionTitle: string): Section {
   return assertDefined(
-    (content.pages?.find((page) => page.title == "Landing Page") as Page | undefined)?.sections.find(
+    (content.pages?.find((page) => page.title == "Home") as Page | undefined)?.sections.find(
       (section) => section.title == sectionTitle,
     ),
   );
