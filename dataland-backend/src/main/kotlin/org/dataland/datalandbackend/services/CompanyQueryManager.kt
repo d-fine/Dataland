@@ -48,10 +48,12 @@ class CompanyQueryManager(
         }
 
         return if (
-            (filter.sectorFilterSize +
-            filter.countryCodeFilterSize +
-            filter.dataTypeFilterSize +
-            filter.searchStringLength ) > 0
+            (
+                filter.sectorFilterSize +
+                    filter.countryCodeFilterSize +
+                    filter.dataTypeFilterSize +
+                    filter.searchStringLength
+                ) > 0
         ) {
             companyRepository.searchCompanies(
                 filter,
