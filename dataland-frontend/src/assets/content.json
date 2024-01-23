@@ -1,7 +1,7 @@
 {
     "pages": [
         {
-            "title": "Landing Page",
+            "title": "Home",
             "url": "/",
             "sections": [
                 {
@@ -253,7 +253,7 @@
             ]
         },
         {
-            "title": "About Page",
+            "title": "About",
             "url": "/about",
             "sections": [
                 {
