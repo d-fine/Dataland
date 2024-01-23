@@ -16,15 +16,15 @@ import org.junit.jupiter.api.assertThrows
 class UserUploadsControllerTest {
 
     val jwtHelper = JwtAuthenticationHelper()
-    fun getUserUploads(userId: String, technicalUser: TechnicalUser): List<DataMetaInformationForMyDatasets> {
+    private fun getUserUploads(userId: String, technicalUser: TechnicalUser): List<DataMetaInformationForMyDatasets> {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         return UserUploadsControllerApi(BASE_PATH_TO_DATALAND_BACKEND).getUserUploadsDataMetaInformation(userId)
     }
 
     @Test
-    fun `check if userUploads of another user than expected requested returns an 403 - insufficient rights error`() {
+    fun `check if user uploads of another user than expected requested returns a 403 insufficient rights error`() {
         val exception = assertThrows<ClientException> {
-            getUserUploads(ADMIN_USER_ID, TechnicalUser.Reader)
+            getUserUploads(ADMIN_USER_ID, TechnicalUser.Uploader)
         }
         assertEquals("Client error : 403 ", exception.message)
     }
