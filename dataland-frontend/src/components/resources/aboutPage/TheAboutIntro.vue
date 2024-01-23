@@ -67,17 +67,17 @@ const register = (): void => {
     padding: 0 32px;
   }
   h2 {
-    grid-column: 1 / -1;
-    font-size: 100px;
     font-style: normal;
-    font-weight: 700;
-    line-height: 106px;
-    letter-spacing: 0.25px;
-    margin: 0;
     transition:
       font-size 0.4s ease,
       line-height 0.4s ease;
     text-wrap: pretty;
+    grid-column: 1 / -1;
+    font-size: 64px;
+    line-height: 72px;
+    letter-spacing: 0.25px;
+    margin: 0 auto;
+    max-width: 900px;
     span {
       color: var(--primary-orange);
     }
@@ -91,20 +91,15 @@ const register = (): void => {
       padding: 0 22px;
       gap: 40px 22px;
     }
-    h2 {
-      grid-column: 2 / 12;
-      font-size: 64px;
-      line-height: 72px;
-      letter-spacing: 0.25px;
-      margin: 0;
-    }
   }
 }
 
 @media only screen and (max-width: $small) {
   .about-intro {
-    padding: 32px 0;
+    padding: 32px 0 40px;
     background-color: var(--grey-tones-100);
+    gap: 112px;
+
     button {
       display: none;
     }
