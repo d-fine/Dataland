@@ -192,7 +192,7 @@ export const esgQuestionnaireDataModel = [
           {
             name: "aktuelleBerichte",
             label: "Aktuelle Berichte",
-            description: "Aktuelle Nachhaltigkeits- oder ESG-Berichte",
+            description: "Bitte teilen Sie die letzten Berichte mit uns (vorzugsweise die letzten drei).",
 
             component: "ListOfBaseDataPointsFormField",
             required: false,
@@ -252,7 +252,8 @@ export const esgQuestionnaireDataModel = [
           {
             name: "weitereAkkreditierungen",
             label: "Weitere Akkreditierungen",
-            description: "Weitere Akkreditierungen, die noch nicht aufgeführt wurden",
+            description:
+              "Bitte führen Sie weitere Akkreditierungen auf, sofern diese nicht bereits gelistet sind, und teilen Sie entsprechende Zertifikate mit uns.",
 
             component: "ListOfBaseDataPointsFormField",
             required: false,
