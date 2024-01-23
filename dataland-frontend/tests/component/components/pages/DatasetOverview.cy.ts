@@ -7,7 +7,7 @@ import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } fr
 describe("Component tests for the DatasetOverview page", () => {
   it("Should not display the New Dataset button to non-uploader users", () => {
     const keycloakMock = minimalKeycloakMock({});
-    cy.intercept("**/api/companies?**", []);
+    cy.intercept("**/api/users/**", []);
     cy.mountWithPlugins(DatasetOverview, {
       keycloak: keycloakMock,
     });
@@ -20,7 +20,7 @@ describe("Component tests for the DatasetOverview page", () => {
     const keycloakMock = minimalKeycloakMock({
       roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER],
     });
-    cy.intercept("**/api/companies?**", []);
+    cy.intercept("**/api/users/**", []);
     cy.mountWithPlugins(DatasetOverview, {
       keycloak: keycloakMock,
     });

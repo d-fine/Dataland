@@ -1,5 +1,5 @@
-import { getStoredCompaniesForDataType } from "@e2e//utils/GeneralApiUtils";
-import { DataTypeEnum, type EuTaxonomyDataForFinancials, type StoredCompany } from "@clients/backend";
+import { searchBasicCompanyInformationForDataType } from "@e2e//utils/GeneralApiUtils";
+import { DataTypeEnum, type EuTaxonomyDataForFinancials, type BasicCompanyInformation } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { validateCompanyCockpitPage, verifySearchResultTableExists } from "@sharedUtils/ElementChecks";
 import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
@@ -117,10 +117,10 @@ describeIf(
       const inputValue = "A company name";
 
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-          (storedCompanies: Array<StoredCompany>) => {
+        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
+          (basicCompanyInformations: Array<BasicCompanyInformation>) => {
             cy.visitAndCheckAppMount(
-              `/companies/${storedCompanies[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
+              `/companies/${basicCompanyInformations[0].companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`,
             );
             cy.get("input[id=company_search_bar_standard]")
               .should("not.be.disabled")
@@ -133,23 +133,25 @@ describeIf(
       });
     });
 
-    it("Search with autocompletion for companies with b in it, click and use arrow keys, find searched company in recommendation", () => {
+    it("Search with autocompletion for companies with 'abs' in it, click and use arrow keys, find searched company in recommendation", () => {
       const primevueHighlightedSuggestionClass = "p-focus";
-      const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "a";
+      const searchStringResultingInAtLeastTwoAutocompleteSuggestions = "abs";
       getKeycloakToken(uploader_name, uploader_pw).then((token) => {
-        cy.browserThen(getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
-          (storedCompanies: Array<StoredCompany>) => {
-            const testCompany = storedCompanies[0];
+        cy.browserThen(searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyFinancials)).then(
+          (basicCompanyInformations: Array<BasicCompanyInformation>) => {
+            const testCompany = basicCompanyInformations[0];
             cy.visitAndCheckAppMount("/companies");
 
             verifySearchResultTableExists();
-            cy.get("input[id=search_bar_top]").type("b");
+            cy.get("input[id=search_bar_top]").type("abs");
             cy.get(".p-autocomplete-item").contains("View all results").click();
 
             verifySearchResultTableExists();
-            cy.url().should("include", "/companies?input=b");
+            cy.url().should("include", "/companies?input=abs");
             cy.get("input[id=search_bar_top]")
               .click({ force: true })
+              .type("{backspace}")
+              .type("{backspace}")
               .type("{backspace}")
               .type(searchStringResultingInAtLeastTwoAutocompleteSuggestions);
             cy.get("ul[class=p-autocomplete-items]").should("exist");
@@ -165,13 +167,12 @@ describeIf(
             cy.get("input[id=search_bar_top]")
               .click({ force: true })
               .type("{backspace}")
-              .type(testCompany.companyInformation.companyName);
-            cy.get(".p-autocomplete-item")
-              .eq(0)
-              .should("contain.text", testCompany.companyInformation.companyName)
-              .click({ force: true });
+              .type("{backspace}")
+              .type("{backspace}")
+              .type(testCompany.companyName);
+            cy.get(".p-autocomplete-item").eq(0).should("contain.text", testCompany.companyName).click({ force: true });
 
-            validateCompanyCockpitPage(testCompany.companyInformation.companyName, testCompany.companyId);
+            validateCompanyCockpitPage(testCompany.companyName, testCompany.companyId);
           },
         );
       });
