@@ -2,8 +2,10 @@
 package org.dataland.datalandbackend.frameworks.heimathafen.model.social
 
 import org.dataland.datalandbackend.frameworks.heimathafen.model.social.kontroverseGeschaeftsfelder.HeimathafenSocialKontroverseGeschaeftsfelder
+import org.dataland.datalandbackend.frameworks.heimathafen.model.social.kontroverseGeschaeftsfelderWaffen.HeimathafenSocialKontroverseGeschaeftsfelderWaffen
 import org.dataland.datalandbackend.frameworks.heimathafen.model.social.nachhaltigskeitsrisiken.HeimathafenSocialNachhaltigskeitsrisiken
-import org.dataland.datalandbackend.frameworks.heimathafen.model.social.pais.HeimathafenSocialPais
+import org.dataland.datalandbackend.frameworks.heimathafen.model.social.paiSozial.HeimathafenSocialPaiSozial
+import org.dataland.datalandbackend.frameworks.heimathafen.model.social.paiSozialesAufDemLand.HeimathafenSocialPaiSozialesAufDemLand
 import org.dataland.datalandbackend.frameworks.heimathafen.model.social.sfdr.HeimathafenSocialSfdr
 
 /**
@@ -11,7 +13,9 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.social.sfdr.Hei
  */
 data class HeimathafenSocial(
     val nachhaltigskeitsrisiken: HeimathafenSocialNachhaltigskeitsrisiken? = null,
-    val pais: HeimathafenSocialPais? = null,
+    val paiSozial: HeimathafenSocialPaiSozial? = null,
+    val paiSozialesAufDemLand: HeimathafenSocialPaiSozialesAufDemLand? = null,
     val sfdr: HeimathafenSocialSfdr? = null,
+    val kontroverseGeschaeftsfelderWaffen: HeimathafenSocialKontroverseGeschaeftsfelderWaffen? = null,
     val kontroverseGeschaeftsfelder: HeimathafenSocialKontroverseGeschaeftsfelder? = null,
 )

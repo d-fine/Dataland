@@ -86,11 +86,11 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           },
           {
             type: "cell",
-            label: "Wie ist Ihre Bewertungsskala definiert",
+            label: "Definition Bewertungsskala",
             explanation: "Wie ist Ihre Ratingskala definiert?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.wieIstIhreBewertungsskalaDefiniert),
+              formatStringForDatatable(dataset.general?.methodik?.definitionBewertungsskala),
           },
           {
             type: "cell",
@@ -103,12 +103,12 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           },
           {
             type: "cell",
-            label: "Sind Ihre Bewertungen unabhängig",
+            label: "Unabhängigkeit der Ratings",
             explanation:
               "Erfolgen Ihre Ratings unabhängig (von Kunden, Kooperationspartnern, Unternehmen, etc.)\nWelche Parteien können aktiv Einfluss auf die Gestaltung des Ratings nehmen?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.sindIhreBewertungenUnabhaengig),
+              formatStringForDatatable(dataset.general?.methodik?.unabhaengigkeitDerRatings),
           },
           {
             type: "cell",
@@ -324,6 +324,1254 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       },
       {
         type: "section",
+        label: "Impactmerkmale - Keine Armut",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Keine Armut",
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "keine Armut" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleKeineArmut?.wennNeinBitteBegruenden),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleKeineArmut?.verwendeteSchluesselzahlen),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleKeineArmut?.datenerfassung),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleKeineArmut?.datenPlausibilitaetspruefung),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleKeineArmut?.datenquelle),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Kein Hunger",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Kein Hunger",
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "kein Hunger" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleKeinHunger?.verwendeteSchluesselzahlen),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleKeinHunger?.datenerfassung),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleKeinHunger?.datenPlausibilitaetspruefung),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleKeinHunger?.datenquelle),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Gesundheit und Wohlergehen",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Gesundheit und Wohlergehen",
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Gesundheit und Wohlergehen" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.wennNeinBitteBegruenden,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.verwendeteSchluesselzahlen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten).",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.datenerfassung),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.datenPlausibilitaetspruefung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.datenquelle),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Hochwertige Bildung",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Hochwertige Bildung",
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Hochwertige Bildung" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleHochwertigeBildung?.wennNeinBitteBegruenden),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleHochwertigeBildung?.verwendeteSchluesselzahlen),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleHochwertigeBildung?.datenerfassung),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleHochwertigeBildung?.datenPlausibilitaetspruefung),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleHochwertigeBildung?.datenquelle),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Geschlechtergleichheit",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Geschlechtergleichheit",
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Geschlechtergleichheit" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleGeschlechtergleichheit?.wennNeinBitteBegruenden),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleGeschlechtergleichheit?.verwendeteSchluesselzahlen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleGeschlechtergleichheit?.datenerfassung),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleGeschlechtergleichheit?.datenPlausibilitaetspruefung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleGeschlechtergleichheit?.datenquelle),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Sauberes Wasser und sanitäre Einrichtungen",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Sauberes Wasser und sanitäre Einrichtungen",
+            explanation:
+              'Kann mit der Methodik ein Beitrag zum SDG "Sauberes Wasser und Sanitäreinrichtungen" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
+                  ?.sdgSauberesWasserUndSanitaereEinrichtungen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
+                ?.sdgSauberesWasserUndSanitaereEinrichtungen == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen?.wennNeinBitteBegruenden,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
+                ?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen?.verwendeteSchluesselzahlen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
+                ?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen?.datenerfassung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
+                ?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen?.datenPlausibilitaetspruefung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
+                ?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen?.datenquelle,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Bezahlbare und saubere Energie",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Bezahlbare und saubere Energie",
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Bezahlbare und saubere Energie" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.wennNeinBitteBegruenden,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.verwendeteSchluesselzahlen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.datenerfassung),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.datenPlausibilitaetspruefung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.datenquelle),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Menschenwürdige Arbeit und Wirtschaftswachstum",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Menschenwürdige Arbeit und Wirtschaftswachstum",
+            explanation:
+              'Kann mit der Methodik ein Beitrag zum SDG "Menschenwürdige Arbeit und Wirtschaftswachstum" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
+                  ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
+                ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum?.wennNeinBitteBegruenden,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
+                ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum?.verwendeteSchluesselzahlen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
+                ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum?.datenerfassung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
+                ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
+                  ?.datenPlausibilitaetspruefung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
+                ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum?.datenquelle,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Industrie, Innovation und Infrastruktur",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Industrie, Innovation und Infrastruktur",
+            explanation:
+              'Kann mit der Methodik ein Beitrag zum SDG "Industrie, Innovation und Infrastruktur" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
+                  ?.sdgIndustrieInnovationUndInfrastruktur,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
+                ?.sdgIndustrieInnovationUndInfrastruktur == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur?.wennNeinBitteBegruenden,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
+                ?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur?.verwendeteSchluesselzahlen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
+                ?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur?.datenerfassung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
+                ?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur?.datenPlausibilitaetspruefung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
+                ?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur?.datenquelle),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Weniger Ungleichheiten",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Weniger Ungleichheiten",
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Weniger Ungleichheiten" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleWenigerUngleichheiten?.wennNeinBitteBegruenden),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleWenigerUngleichheiten?.verwendeteSchluesselzahlen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleWenigerUngleichheiten?.datenerfassung),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleWenigerUngleichheiten?.datenPlausibilitaetspruefung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleWenigerUngleichheiten?.datenquelle),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Nachhaltige Städte und Gemeinden",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Nachhaltige Städte und Gemeinden",
+            explanation:
+              'Kann mit der Methodik ein Beitrag zum SDG "Nachhaltige Städte und Gemeinden" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.wennNeinBitteBegruenden,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.verwendeteSchluesselzahlen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.datenerfassung),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.datenPlausibilitaetspruefung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.datenquelle),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Nachhaltiger Konsum und Produktion",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Nachhaliger Konsum und Produktion",
+            explanation:
+              'Kann mit der Methodik ein Beitrag zum SDG "Nachhaliger Konsum und Produktion" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.wennNeinBitteBegruenden,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion ==
+              "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.verwendeteSchluesselzahlen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion ==
+              "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.datenerfassung),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion ==
+              "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.datenPlausibilitaetspruefung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion ==
+              "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.datenquelle),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Maßnahmen zum Klimaschutz",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Maßnahmen zum Klimaschutz",
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Maßnahmen zum Klimaschutz" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.wennNeinBitteBegruenden,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.verwendeteSchluesselzahlen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.datenerfassung),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.datenPlausibilitaetspruefung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.datenquelle),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Leben unter Wasser",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Leben unter Wasser",
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Leben unter Wasser" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.wennNeinBitteBegruenden),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.verwendeteSchluesselzahlen),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.datenerfassung),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.datenPlausibilitaetspruefung),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.datenquelle),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Leben and Land",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Leben an Land",
+            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Leben an Land" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.wennNeinBitteBegruenden),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.verwendeteSchluesselzahlen),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.datenerfassung),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.datenPlausibilitaetspruefung),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.datenquelle),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Frieden, Gerechtigkeit und starke Institutionen",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Frieden, Gerechtigkeit und starke Institutionen",
+            explanation:
+              'Kann mit der Methodik ein Beitrag zum SDG "Frieden, Gerechtigkeit und starke Institutionen" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
+                  ?.sdgFriedenGerechtigkeitUndStarkeInstitutionen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
+                ?.sdgFriedenGerechtigkeitUndStarkeInstitutionen == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen?.wennNeinBitteBegruenden,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
+                ?.sdgFriedenGerechtigkeitUndStarkeInstitutionen == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen?.verwendeteSchluesselzahlen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
+                ?.sdgFriedenGerechtigkeitUndStarkeInstitutionen == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen?.datenerfassung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
+                ?.sdgFriedenGerechtigkeitUndStarkeInstitutionen == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen?.datenPlausibilitaetspruefung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
+                ?.sdgFriedenGerechtigkeitUndStarkeInstitutionen == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen?.datenquelle,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Impactmerkmale - Partnerschaften zur Erreichung der Ziele",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "SDG - Partnerschaften zur Erreichung der Ziele",
+            explanation:
+              'Kann mit der Methodik ein Beitrag zum SDG "Partnerschaften zur Erreichung der Ziele" gemessen werden?',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatYesNoValueForDatatable(
+                dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
+                  ?.sdgPartnerschaftenZurErreichungDerZiele,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
+                ?.sdgPartnerschaftenZurErreichungDerZiele == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele?.wennNeinBitteBegruenden,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Verwendete Schlüsselzahlen",
+            explanation:
+              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
+                ?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele?.verwendeteSchluesselzahlen,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenerfassung",
+            explanation:
+              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
+                ?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele?.datenerfassung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Daten Plausibilitätsprüfung",
+            explanation:
+              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
+                ?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele?.datenPlausibilitaetspruefung,
+              ),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
+                ?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele?.datenquelle,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
         label: "Implementierung",
         expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
@@ -519,11 +1767,11 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           },
           {
             type: "cell",
-            label: "dauerhafte Verfügbarkeit",
+            label: "Rund um die Uhr Verfügbarkeit",
             explanation: "Wird eine jederzeitige Verfügbarkeit (24hrs,7d) angeboten?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.general?.implementierung?.dauerhafteVerfuegbarkeit),
+              formatYesNoValueForDatatable(dataset.general?.implementierung?.rundUmDieUhrVerfuegbarkeit),
           },
           {
             type: "cell",
@@ -621,15 +1869,12 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (ökologische Nachhaltigkeitsrisiken)",
+            label: "Wenn Nein, bitte begründen",
 
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.environmental?.nachhaltigskeitsrisiken
-                  ?.wennNeinBitteBegruendenOekologischeNachhaltigkeitsrisiken,
-              ),
+              formatStringForDatatable(dataset.environmental?.nachhaltigskeitsrisiken?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -707,12 +1952,14 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen",
+            label: "Wenn keine Vier-Augen-Prüfung, bitte begründen",
 
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.vierAugenPruefung == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.nachhaltigskeitsrisiken?.wennNeinBitteBegruenden),
+              formatStringForDatatable(
+                dataset.environmental?.nachhaltigskeitsrisiken?.wennKeineVierAugenPruefungBitteBegruenden,
+              ),
           },
           {
             type: "cell",
@@ -762,261 +2009,293 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           },
           {
             type: "cell",
-            label: "Verwendete Schlüsselzahlen (Treibhausgasemissionen)",
+            label: "Verwendete Schlüsselzahlen",
             explanation:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.verwendeteSchluesselzahlenTreibhausgasemissionen),
+              formatStringForDatatable(dataset.environmental?.pais?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
-            label: "Datenerfassung (Treibhausgasemissionen)",
+            label: "Datenerfassung",
             explanation:
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten, Benchmarking)",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenerfassungTreibhausgasemissionen),
+              formatStringForDatatable(dataset.environmental?.pais?.datenerfassung),
           },
           {
             type: "cell",
-            label: "Daten Plausibilitätsprüfung (Treibhausgasemissionen)",
+            label: "Daten Plausibilitätsprüfung",
             explanation:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde erfasst.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenPlausibilitaetspruefungTreibhausgasemissionen),
+              formatStringForDatatable(dataset.environmental?.pais?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle (Treibhausgasemissionen)",
+            label: "Datenquelle",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenquelleTreibhausgasemissionen),
+              formatStringForDatatable(dataset.environmental?.pais?.datenquelle),
           },
+        ],
+      },
+      {
+        type: "section",
+        label: "PAI - biologische Vielfalt",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
           {
             type: "cell",
             label: "PAIs - biologische Vielfalt",
             explanation: "Wird der PAI auf Biodiversität abgebildet?\nJa/Nein bezogen auf Annex I C(2022)1931",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.environmental?.pais?.paisBiologischeVielfalt),
+              formatYesNoValueForDatatable(dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt),
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (Biodiversität)",
+            label: "Wenn Nein, bitte begründen",
 
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.pais?.paisBiologischeVielfalt == "No",
+              dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.wennNeinBitteBegruendenBiodiversitaet),
+              formatStringForDatatable(dataset.environmental?.paiBiologischeVielfalt?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
-            label: "Verwendete Schlüsselzahlen (Biodiversität)",
+            label: "Verwendete Schlüsselzahlen",
             explanation:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung des PAIs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.pais?.paisBiologischeVielfalt == "Yes",
+              dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.verwendeteSchluesselzahlenBiodiversitaet),
+              formatStringForDatatable(dataset.environmental?.paiBiologischeVielfalt?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
-            label: "Datenerfassung (Biodiversität)",
+            label: "Datenerfassung",
             explanation:
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.pais?.paisBiologischeVielfalt == "Yes",
+              dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenerfassungBiodiversitaet),
+              formatStringForDatatable(dataset.environmental?.paiBiologischeVielfalt?.datenerfassung),
           },
           {
             type: "cell",
-            label: "Daten Plausibilitätsprüfung (Biodiversität)",
+            label: "Daten Plausibilitätsprüfung",
             explanation:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.pais?.paisBiologischeVielfalt == "Yes",
+              dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenPlausibilitaetspruefungBiodiversitaet),
+              formatStringForDatatable(dataset.environmental?.paiBiologischeVielfalt?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle (Biodiversität)",
+            label: "Datenquelle",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.pais?.paisBiologischeVielfalt == "Yes",
+              dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenquelleBiodiversitaet),
+              formatStringForDatatable(dataset.environmental?.paiBiologischeVielfalt?.datenquelle),
           },
+        ],
+      },
+      {
+        type: "section",
+        label: "PAI - Wasser",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
           {
             type: "cell",
             label: "PAI - Wasser",
             explanation: "Wird der PAI auf Wasser abgebildet?\nJa/Nein bezogen auf Annex I C(2022)1931",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.environmental?.pais?.paiWasser),
+              formatYesNoValueForDatatable(dataset.environmental?.paiWasser?.paiWasser),
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (Wasser)",
+            label: "Wenn Nein, bitte begründen",
 
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.pais?.paiWasser == "No",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.wennNeinBitteBegruendenWasser),
+              formatStringForDatatable(dataset.environmental?.paiWasser?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
-            label: "Verwendete Schlüsselzahlen (Wasser)",
+            label: "Verwendete Schlüsselzahlen",
             explanation:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.pais?.paiWasser == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.verwendeteSchluesselzahlenWasser),
+              formatStringForDatatable(dataset.environmental?.paiWasser?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
-            label: "Datenerfassung (Wasser)",
+            label: "Datenerfassung",
             explanation:
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.pais?.paiWasser == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenerfassungWasser),
+              formatStringForDatatable(dataset.environmental?.paiWasser?.datenerfassung),
           },
           {
             type: "cell",
-            label: "Daten Plausibilitätsprüfung (Wasser)",
+            label: "Daten Plausibilitätsprüfung",
             explanation:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.pais?.paiWasser == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenPlausibilitaetspruefungWasser),
+              formatStringForDatatable(dataset.environmental?.paiWasser?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle (Wasser)",
+            label: "Datenquelle",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews, Daten von NGOs etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.pais?.paiWasser == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenquelleWasser),
+              formatStringForDatatable(dataset.environmental?.paiWasser?.datenquelle),
           },
+        ],
+      },
+      {
+        type: "section",
+        label: "PAI - Abfall",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
           {
             type: "cell",
             label: "PAI - Abfall",
             explanation: "Wird der PAI auf Abfall abgebildet?\nJa/Nein bezogen auf Annex I C(2022)1931",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.environmental?.pais?.paiAbfall),
+              formatYesNoValueForDatatable(dataset.environmental?.paiAbfall?.paiAbfall),
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (Abfall)",
+            label: "Wenn Nein, bitte begründen",
 
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.pais?.paiAbfall == "No",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.wennNeinBitteBegruendenAbfall),
+              formatStringForDatatable(dataset.environmental?.paiAbfall?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
-            label: "Verwendete Schlüsselzahlen (Abfall)",
+            label: "Verwendete Schlüsselzahlen",
             explanation:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung des PAIs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.pais?.paiAbfall == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.verwendeteSchluesselzahlenAbfall),
+              formatStringForDatatable(dataset.environmental?.paiAbfall?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
-            label: "Datenerfassung (Abfall)",
+            label: "Datenerfassung",
             explanation:
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.pais?.paiAbfall == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenerfassungAbfall),
+              formatStringForDatatable(dataset.environmental?.paiAbfall?.datenerfassung),
           },
           {
             type: "cell",
-            label: "Daten Plausibilitätsprüfung (Abfall)",
+            label: "Daten Plausibilitätsprüfung",
             explanation:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.pais?.paiAbfall == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenPlausibilitaetspruefungAbfall),
+              formatStringForDatatable(dataset.environmental?.paiAbfall?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle (Abfall)",
+            label: "Datenquelle",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärung, Daten von NGOs etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.pais?.paiAbfall == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenquelleAbfall),
+              formatStringForDatatable(dataset.environmental?.paiAbfall?.datenquelle),
           },
+        ],
+      },
+      {
+        type: "section",
+        label: "PAI - Umwelt auf dem Land",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
           {
             type: "cell",
             label: "PAI - Umwelt auf dem Land",
             explanation: "Wir der PAI auf Umwelt bei Staaten abgebildet?\nJa/Nein bezogen auf Annex I C(2022)1931",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.environmental?.pais?.paiUmweltAufDemLand),
+              formatYesNoValueForDatatable(dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand),
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (Umwelt auf dem Land)",
+            label: "Wenn Nein, bitte begründen",
 
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.pais?.paiUmweltAufDemLand == "No",
+              dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.wennNeinBitteBegruendenUmweltAufDemLand),
+              formatStringForDatatable(dataset.environmental?.paiUmweltAufDemLand?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
-            label: "Verwendete Schlüsselzahlen (Umwelt auf dem Land)",
+            label: "Verwendete Schlüsselzahlen",
             explanation:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung des PAIs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.pais?.paiUmweltAufDemLand == "Yes",
+              dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.verwendeteSchluesselzahlenUmweltAufDemLand),
+              formatStringForDatatable(dataset.environmental?.paiUmweltAufDemLand?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
-            label: "Datenerfassung (Umwelt auf dem Land)",
+            label: "Datenerfassung",
             explanation:
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen)",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.pais?.paiUmweltAufDemLand == "Yes",
+              dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenerfassungUmweltAufDemLand),
+              formatStringForDatatable(dataset.environmental?.paiUmweltAufDemLand?.datenerfassung),
           },
           {
             type: "cell",
-            label: "Daten Plausibilitätsprüfung (Umwelt auf dem Land)",
+            label: "Daten Plausibilitätsprüfung",
             explanation:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.pais?.paiUmweltAufDemLand == "Yes",
+              dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenPlausibilitaetspruefungUmweltAufDemLand),
+              formatStringForDatatable(dataset.environmental?.paiUmweltAufDemLand?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle (Umwelt auf dem Land)",
+            label: "Datenquelle",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Umweltbundesamt)",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.pais?.paiUmweltAufDemLand == "Yes",
+              dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenquelleUmweltAufDemLand),
+              formatStringForDatatable(dataset.environmental?.paiUmweltAufDemLand?.datenquelle),
           },
         ],
       },
@@ -1041,67 +2320,75 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       },
       {
         type: "section",
-        label: "Kontroverse Geschäftsfelder",
+        label: "Kontroverse Geschäftsfelder - Tabakerzeugung",
         expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: "cell",
-            label: "Ausschluss der Tabakerzeugung (Tabakerzeugung)",
+            label: "Ausschluss der Tabakerzeugung",
             explanation: "Kann mit der Methodik Umsatz aus der Tabakproduktion ausgeschlossen werden?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.environmental?.kontroverseGeschaeftsfelder?.ausschlussDerTabakerzeugungTabakerzeugung,
+                dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.ausschlussDerTabakerzeugung,
               ),
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (Tabakerzeugung)",
+            label: "Wenn Nein, bitte begründen",
 
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.kontroverseGeschaeftsfelder?.ausschlussDerTabakerzeugungTabakerzeugung == "No",
+              dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.ausschlussDerTabakerzeugung == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
-                dataset.environmental?.kontroverseGeschaeftsfelder?.wennNeinBitteBegruendenTabakerzeugung,
+                dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.wennNeinBitteBegruenden,
               ),
           },
           {
             type: "cell",
-            label: "Metrisch verwendet (Tabakerzeugung)",
+            label: "Verwendete Kennzahl",
             explanation:
               "Welche Kennzahl wird für die Messung des Umsatzes aus Tabakproduktion herangezogen?\nAngaben zu der Zusammensetzung der Kennzahl zur Berechnung des Umsatzes aus der Tabakproduktion.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.kontroverseGeschaeftsfelder?.ausschlussDerTabakerzeugungTabakerzeugung == "Yes",
+              dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.ausschlussDerTabakerzeugung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
-                dataset.environmental?.kontroverseGeschaeftsfelder?.metrischVerwendetTabakerzeugung,
+                dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.verwendeteKennzahl,
               ),
           },
           {
             type: "cell",
-            label: "Methodik der Berechnung (Tabakerzeugung)",
+            label: "Methodik der Berechnung",
             explanation:
               "Wie erfolgt die Berechnung?\nAngaben zur Methodik zur Berechnung des Umsatzes aus der Tabakproduktion.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.kontroverseGeschaeftsfelder?.ausschlussDerTabakerzeugungTabakerzeugung == "Yes",
+              dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.ausschlussDerTabakerzeugung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
-                dataset.environmental?.kontroverseGeschaeftsfelder?.methodikDerBerechnungTabakerzeugung,
+                dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.methodikDerBerechnung,
               ),
           },
           {
             type: "cell",
-            label: "Verwendete Quellen (Tabakerzeugung)",
+            label: "Verwendete Quellen",
             explanation:
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.kontroverseGeschaeftsfelder?.ausschlussDerTabakerzeugungTabakerzeugung == "Yes",
+              dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.ausschlussDerTabakerzeugung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
-                dataset.environmental?.kontroverseGeschaeftsfelder?.verwendeteQuellenTabakerzeugung,
+                dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.verwendeteQuellen,
               ),
           },
+        ],
+      },
+      {
+        type: "section",
+        label: "Kontroverse Geschäftsfelder - Kohleförderung und -verteilung",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
           {
             type: "cell",
             label: "Ausschluss der Kohleförderung und -verteilung",
@@ -1110,53 +2397,58 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.environmental?.kontroverseGeschaeftsfelder?.ausschlussDerKohlefoerderungUndVerteilung,
+                dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung
+                  ?.ausschlussDerKohlefoerderungUndVerteilung,
               ),
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (Kohleerzeugung)",
+            label: "Wenn Nein, bitte begründen",
 
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.kontroverseGeschaeftsfelder?.ausschlussDerKohlefoerderungUndVerteilung == "No",
+              dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung
+                ?.ausschlussDerKohlefoerderungUndVerteilung == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
-                dataset.environmental?.kontroverseGeschaeftsfelder?.wennNeinBitteBegruendenKohleerzeugung,
+                dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung?.wennNeinBitteBegruenden,
               ),
           },
           {
             type: "cell",
-            label: "Metrisch verwendet (Kohleerzeugung)",
+            label: "Verwendete Kennzahl",
             explanation:
               "Welche Kennzahl wird für die Messung des Umsatzes aus Kohle herangezogen?\nAngaben zu der Zusammensetzung der Kennzahl zur Berechnung des Umsatzes aus Kohle.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.kontroverseGeschaeftsfelder?.ausschlussDerKohlefoerderungUndVerteilung == "Yes",
+              dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung
+                ?.ausschlussDerKohlefoerderungUndVerteilung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
-                dataset.environmental?.kontroverseGeschaeftsfelder?.metrischVerwendetKohleerzeugung,
+                dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung?.verwendeteKennzahl,
               ),
           },
           {
             type: "cell",
-            label: "Methodik der Berechnung (Kohleerzeugung)",
+            label: "Methodik der Berechnung",
             explanation: "Wie erfolgt die Berechnung?\nAngaben zur Methodik zur Berechnung des Umsatzes aus Kohle.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.kontroverseGeschaeftsfelder?.ausschlussDerKohlefoerderungUndVerteilung == "Yes",
+              dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung
+                ?.ausschlussDerKohlefoerderungUndVerteilung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
-                dataset.environmental?.kontroverseGeschaeftsfelder?.methodikDerBerechnungKohleerzeugung,
+                dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung?.methodikDerBerechnung,
               ),
           },
           {
             type: "cell",
-            label: "Verwendete Quellen (Kohleerzeugung)",
+            label: "Verwendete Quellen",
             explanation:
               "Welche Quellen werden verwendet?Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.environmental?.kontroverseGeschaeftsfelder?.ausschlussDerKohlefoerderungUndVerteilung == "Yes",
+              dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung
+                ?.ausschlussDerKohlefoerderungUndVerteilung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
-                dataset.environmental?.kontroverseGeschaeftsfelder?.verwendeteQuellenKohleerzeugung,
+                dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung?.verwendeteQuellen,
               ),
           },
         ],
@@ -1188,18 +2480,16 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (Nachhaltigkeitsrisiken)",
+            label: "Wenn Nein, bitte begründen",
 
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.nachhaltigskeitsrisiken?.methodikSozialeNachhaltigkeitsrisiken == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.social?.nachhaltigskeitsrisiken?.wennNeinBitteBegruendenNachhaltigkeitsrisiken,
-              ),
+              formatStringForDatatable(dataset.social?.nachhaltigskeitsrisiken?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
-            label: "Kartierte soziale Nachhaltigkeitsrisiken ",
+            label: "Kartierte soziale Nachhaltigkeitsrisiken",
             explanation:
               "Welche Nachhaltigkeitsrisiken im Bereich Soziales werden abgebildet?\nAufführung der Nachhaltigkeitsrisiken, die abgebildet werden können (z.B. Risiken in Bezug auf Arbeitnehmerbelange, Demographie, Gesundheitsschutz).",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
@@ -1259,18 +2549,18 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (Vier-Augen-Prüfung)",
+            label: "Wenn keine Vier-Augen-Prüfung, bitte begründen",
 
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.nachhaltigskeitsrisiken?.vierAugenPruefung == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
-                dataset.social?.nachhaltigskeitsrisiken?.wennNeinBitteBegruendenVierAugenPruefung,
+                dataset.social?.nachhaltigskeitsrisiken?.wennKeineVierAugenPruefungBitteBegruenden,
               ),
           },
           {
             type: "cell",
-            label: "Beschreibung der Vier-Augen- Prüfung",
+            label: "Beschreibung der Vier-Augen-Prüfung",
             explanation: "Wie erfolgt die Vier-Augen-Verifizierung?",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.nachhaltigskeitsrisiken?.vierAugenPruefung == "Yes",
@@ -1281,114 +2571,127 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       },
       {
         type: "section",
-        label: "PAIs",
+        label: "PAI - sozial",
         expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
         children: [
           {
             type: "cell",
-            label: "PAI - sozial ",
+            label: "PAI - sozial",
             explanation:
               "Werden die Sozialen PAIs bei Unternehmen abgebildet?\nJa/Nein bezogen auf Annex I C(2022)1931",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.social?.pais?.paiSozial),
+              formatYesNoValueForDatatable(dataset.social?.paiSozial?.paiSozial),
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (soziale Unternehmen)",
+            label: "Wenn Nein, bitte begründen",
 
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozial == "No",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.pais?.wennNeinBitteBegruendenSozialeUnternehmen),
+              formatStringForDatatable(dataset.social?.paiSozial?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
-            label: "Verwendete Schlüsselzahlen (soziale Unternehmen)",
+            label: "Verwendete Schlüsselzahlen",
             explanation:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozial == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.pais?.verwendeteSchluesselzahlenSozialeUnternehmen),
+              formatStringForDatatable(dataset.social?.paiSozial?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
-            label: "Datenerfassung (soziale Unternehmen)",
+            label: "Datenerfassung",
             explanation:
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozial == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.pais?.datenerfassungSozialeUnternehmen),
+              formatStringForDatatable(dataset.social?.paiSozial?.datenerfassung),
           },
           {
             type: "cell",
-            label: "Daten Plausibilitätsprüfung (soziale Unternehmen)",
+            label: "Daten Plausibilitätsprüfung",
             explanation:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozial == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.pais?.datenPlausibilitaetspruefungSozialeUnternehmen),
+              formatStringForDatatable(dataset.social?.paiSozial?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle (soziale Unternehmen)",
+            label: "Datenquelle",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, Gender Pay Report etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozial == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.pais?.datenquelleSozialeUnternehmen),
+              formatStringForDatatable(dataset.social?.paiSozial?.datenquelle),
           },
+        ],
+      },
+      {
+        type: "section",
+        label: "PAI - Soziales auf dem Land",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
           {
             type: "cell",
             label: "PAI - Soziales auf dem Land",
             explanation: "Werden die Sozialen PAIs bei Staaten abgebildet?\nJa/Nein bezogen auf Annex I C(2022)1931",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.social?.pais?.paiSozialesAufDemLand),
+              formatYesNoValueForDatatable(dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand),
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (Soziales auf dem Land)",
+            label: "Wenn Nein, bitte begründen",
 
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozialesAufDemLand == "No",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.pais?.wennNeinBitteBegruendenSozialesAufDemLand),
+              formatStringForDatatable(dataset.social?.paiSozialesAufDemLand?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
-            label: "Verwendete Schlüsselzahlen (Soziales auf dem Land)",
+            label: "Verwendete Schlüsselzahlen",
             explanation:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozialesAufDemLand == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.pais?.verwendeteSchluesselzahlenSozialesAufDemLand),
+              formatStringForDatatable(dataset.social?.paiSozialesAufDemLand?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
-            label: "Datenerfassung (Soziales auf dem Land)",
+            label: "Datenerfassung",
             explanation:
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozialesAufDemLand == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.pais?.datenerfassungSozialesAufDemLand),
+              formatStringForDatatable(dataset.social?.paiSozialesAufDemLand?.datenerfassung),
           },
           {
             type: "cell",
-            label: "Daten Plausibilitätsprüfung (Soziales auf dem Land)",
+            label: "Daten Plausibilitätsprüfung",
             explanation:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozialesAufDemLand == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.pais?.datenPlausibilitaetspruefungSozialesAufDemLand),
+              formatStringForDatatable(dataset.social?.paiSozialesAufDemLand?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle (Soziales auf dem Land)",
+            label: "Datenquelle",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Freedom House Index",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.pais?.paiSozialesAufDemLand == "Yes",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.pais?.datenquelleSozialesAufDemLand),
+              formatStringForDatatable(dataset.social?.paiSozialesAufDemLand?.datenquelle),
           },
         ],
       },
@@ -1413,7 +2716,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
       },
       {
         type: "section",
-        label: "Kontroverse Geschäftsfelder",
+        label: "Kontroverse Geschäftsfelder - Waffen",
         expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
         children: [
@@ -1425,46 +2728,48 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.social?.kontroverseGeschaeftsfelder?.herstellungOderVertriebVonWaffenAusschluss,
+                dataset.social?.kontroverseGeschaeftsfelderWaffen?.herstellungOderVertriebVonWaffenAusschluss,
               ),
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (Waffen)",
+            label: "Wenn Nein, bitte begründen",
 
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.social?.kontroverseGeschaeftsfelder?.herstellungOderVertriebVonWaffenAusschluss == "No",
+              dataset.social?.kontroverseGeschaeftsfelderWaffen?.herstellungOderVertriebVonWaffenAusschluss == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.kontroverseGeschaeftsfelder?.wennNeinBitteBegruendenWaffen),
+              formatStringForDatatable(dataset.social?.kontroverseGeschaeftsfelderWaffen?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
-            label: "Metrisch verwendet (Waffen)",
+            label: "Verwendete Kennzahl für die Umsatzmessung",
             explanation:
               "Welche Kennzahl wird für die Messung des Umsatzes aus Waffen herangezogen?\nAngaben zu der Zusammensetzung der Kennzahl zur Berechnung des Umsatzes aus Waffen.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.social?.kontroverseGeschaeftsfelder?.herstellungOderVertriebVonWaffenAusschluss == "Yes",
+              dataset.social?.kontroverseGeschaeftsfelderWaffen?.herstellungOderVertriebVonWaffenAusschluss == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.kontroverseGeschaeftsfelder?.metrischVerwendetWaffen),
+              formatStringForDatatable(
+                dataset.social?.kontroverseGeschaeftsfelderWaffen?.verwendeteKennzahlFuerDieUmsatzmessung,
+              ),
           },
           {
             type: "cell",
-            label: "Methodik der Berechnung (Waffen)",
+            label: "Methodik der Berechnung",
             explanation: "Wie erfolgt die Berechnung?\nAngaben zur Methodik zur Berechnung des Umsatzes aus Waffen.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.social?.kontroverseGeschaeftsfelder?.herstellungOderVertriebVonWaffenAusschluss == "Yes",
+              dataset.social?.kontroverseGeschaeftsfelderWaffen?.herstellungOderVertriebVonWaffenAusschluss == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.kontroverseGeschaeftsfelder?.methodikDerBerechnungWaffen),
+              formatStringForDatatable(dataset.social?.kontroverseGeschaeftsfelderWaffen?.methodikDerBerechnung),
           },
           {
             type: "cell",
-            label: "Verwendete Quellen (Waffen)",
+            label: "Verwendete Quellen",
             explanation:
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.social?.kontroverseGeschaeftsfelder?.herstellungOderVertriebVonWaffenAusschluss == "Yes",
+              dataset.social?.kontroverseGeschaeftsfelderWaffen?.herstellungOderVertriebVonWaffenAusschluss == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.kontroverseGeschaeftsfelder?.verwendeteQuellenWaffen),
+              formatStringForDatatable(dataset.social?.kontroverseGeschaeftsfelderWaffen?.verwendeteQuellen),
           },
           {
             type: "cell",
@@ -1472,38 +2777,50 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "Können mit der Methodik geächtete Waffen ausgeschlossen werden?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.social?.kontroverseGeschaeftsfelder?.ausschlussVerbotenerWaffen),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (verbotene Waffen)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.social?.kontroverseGeschaeftsfelder?.ausschlussVerbotenerWaffen == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.social?.kontroverseGeschaeftsfelder?.wennNeinBitteBegruendenVerboteneWaffen,
+              formatYesNoValueForDatatable(
+                dataset.social?.kontroverseGeschaeftsfelderWaffen?.ausschlussVerbotenerWaffen,
               ),
           },
           {
             type: "cell",
-            label: "Metrisch verwendet (verbotene Waffen)",
-            explanation:
-              "Welche Kennzahl wird für geächtete Waffen herangezogen?\nAngaben zu den Bestandteilen der Kennzahl zur Abbildung geächteter Waffen.",
+            label: "Wenn Auschluss nicht möglich, bitte begründen",
+
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.social?.kontroverseGeschaeftsfelder?.ausschlussVerbotenerWaffen == "Yes",
+              dataset.social?.kontroverseGeschaeftsfelderWaffen?.ausschlussVerbotenerWaffen == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.kontroverseGeschaeftsfelder?.metrischVerwendetVerboteneWaffen),
+              formatStringForDatatable(
+                dataset.social?.kontroverseGeschaeftsfelderWaffen?.wennAuschlussNichtMoeglichBitteBegruenden,
+              ),
           },
           {
             type: "cell",
-            label: "Verwendete Quellen (verbotene Waffen)",
+            label: "Verwendete Kennzahl zur Abbildung geächteter Waffen",
+            explanation:
+              "Welche Kennzahl wird für geächtete Waffen herangezogen?\nAngaben zu den Bestandteilen der Kennzahl zur Abbildung geächteter Waffen.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.social?.kontroverseGeschaeftsfelderWaffen?.ausschlussVerbotenerWaffen == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(
+                dataset.social?.kontroverseGeschaeftsfelderWaffen?.verwendeteKennzahlZurAbbildungGeaechteterWaffen,
+              ),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Kontroverse Geschäftsfelder",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Verwendete Quellen",
             explanation:
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.social?.kontroverseGeschaeftsfelder?.ausschlussVerbotenerWaffen == "Yes",
+              dataset.social?.kontroverseGeschaeftsfelderWaffen?.ausschlussVerbotenerWaffen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.kontroverseGeschaeftsfelder?.verwendeteQuellenVerboteneWaffen),
+              formatStringForDatatable(dataset.social?.kontroverseGeschaeftsfelder?.verwendeteQuellen),
           },
         ],
       },
@@ -1531,12 +2848,12 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (Good Governance)",
+            label: "Wenn Nein, bitte begründen",
 
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernance?.methodikDerGutenRegierungsfuehrung == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.goodGovernance?.wennNeinBitteBegruendenGoodGovernance),
+              formatStringForDatatable(dataset.governance?.goodGovernance?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -1560,19 +2877,19 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           },
           {
             type: "cell",
-            label: "Verwendete Quellen (Good Governance)",
+            label: "Verwendete Quellen",
             explanation:
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel Nachhaltigkeitsberichte, Internetseiten von Unternehmen.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernance?.methodikDerGutenRegierungsfuehrung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.goodGovernance?.verwendeteQuellenGoodGovernance),
+              formatStringForDatatable(dataset.governance?.goodGovernance?.verwendeteQuellen),
           },
         ],
       },
       {
         type: "section",
-        label: "Global Compact",
+        label: "Good Governance - UNGC",
         expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
         children: [
@@ -1582,16 +2899,16 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "Werden die UNGC in der Analyse berücksichtigt?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.governance?.globalCompact?.beruecksichtigungDesUngc),
+              formatYesNoValueForDatatable(dataset.governance?.goodGovernanceUngc?.beruecksichtigungDesUngc),
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (Global Compact)",
+            label: "Wenn Nein, bitte begründen",
 
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.governance?.globalCompact?.beruecksichtigungDesUngc == "No",
+              dataset.governance?.goodGovernanceUngc?.beruecksichtigungDesUngc == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.globalCompact?.wennNeinBitteBegruendenGlobalCompact),
+              formatStringForDatatable(dataset.governance?.goodGovernanceUngc?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -1599,25 +2916,25 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation:
               "Wie erfolgt die Berücksichtigung der UNGC?\nWenn eine Berücksichtigung der UNGC erfolgt Angaben darüber, wie die Berücksichtigung abgebildet wird.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.governance?.globalCompact?.beruecksichtigungDesUngc == "Yes",
+              dataset.governance?.goodGovernanceUngc?.beruecksichtigungDesUngc == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.globalCompact?.beruecksichtigungDerUngcBeschreibung),
+              formatStringForDatatable(dataset.governance?.goodGovernanceUngc?.beruecksichtigungDerUngcBeschreibung),
           },
           {
             type: "cell",
-            label: "Verwendete Quellen (Global Compact)",
+            label: "Verwendete Quellen",
             explanation:
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel UNGC, Nachhaltigkeitsberichte",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.governance?.globalCompact?.beruecksichtigungDesUngc == "Yes",
+              dataset.governance?.goodGovernanceUngc?.beruecksichtigungDesUngc == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.globalCompact?.verwendeteQuellenGlobalCompact),
+              formatStringForDatatable(dataset.governance?.goodGovernanceUngc?.verwendeteQuellen),
           },
         ],
       },
       {
         type: "section",
-        label: "Kontroverse Geschäftsfelder",
+        label: "Bestechung und Korruption",
         expandOnPageLoad: false,
         shouldDisplay: (): boolean => true,
         children: [
@@ -1628,19 +2945,17 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
-                dataset.governance?.kontroverseGeschaeftsfelder?.kontroversenImBereichDerBestechungUndKorruption,
+                dataset.governance?.bestechungUndKorruption?.kontroversenImBereichDerBestechungUndKorruption,
               ),
           },
           {
             type: "cell",
-            label: "Wenn Nein, bitte begründen (Kontroverse Geschäftsfelder)",
+            label: "Wenn Nein, bitte begründen",
 
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.governance?.kontroverseGeschaeftsfelder?.kontroversenImBereichDerBestechungUndKorruption == "No",
+              dataset.governance?.bestechungUndKorruption?.kontroversenImBereichDerBestechungUndKorruption == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.governance?.kontroverseGeschaeftsfelder?.wennNeinBitteBegruendenKontroverseGeschaeftsfelder,
-              ),
+              formatStringForDatatable(dataset.governance?.bestechungUndKorruption?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -1648,21 +2963,19 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation:
               "Wie werden Kontroversen im Bereich Bestechung und Korruption abgebildet?\nAngabe von Kennzahlen und Methodiken zur Abbildung von Kontroversen im Bereich Bestechung und Korruption.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.governance?.kontroverseGeschaeftsfelder?.kontroversenImBereichDerBestechungUndKorruption == "Yes",
+              dataset.governance?.bestechungUndKorruption?.kontroversenImBereichDerBestechungUndKorruption == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.kontroverseGeschaeftsfelder?.verwendeteMetrikenUndMethodik),
+              formatStringForDatatable(dataset.governance?.bestechungUndKorruption?.verwendeteMetrikenUndMethodik),
           },
           {
             type: "cell",
-            label: "Verwendete Quellen (Kontroverse Geschäftsfelder)",
+            label: "Verwendete Quellen",
             explanation:
               "Welche Datenquellen werden verwendet?\nAngabe von Quellen, zum Beispiel rennomierte Wirtschafts- und Finanzzeitungen, Glass Lewis",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.governance?.kontroverseGeschaeftsfelder?.kontroversenImBereichDerBestechungUndKorruption == "Yes",
+              dataset.governance?.bestechungUndKorruption?.kontroversenImBereichDerBestechungUndKorruption == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.governance?.kontroverseGeschaeftsfelder?.verwendeteQuellenKontroverseGeschaeftsfelder,
-              ),
+              formatStringForDatatable(dataset.governance?.bestechungUndKorruption?.verwendeteQuellen),
           },
           {
             type: "cell",
@@ -1670,1258 +2983,11 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation:
               "Wie wird die Aktualität der Kontroversen im Bereich Bestechung und Korruption gewährleistet?\nAngaben dazu, wie Adhoc/kurzfristige Meldungen bei Emittenten überwacht und in die Methodik integriert werden sowie darüber in welchem Zeitraum die Kontroversen angepasst werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.governance?.kontroverseGeschaeftsfelder?.kontroversenImBereichDerBestechungUndKorruption == "Yes",
+              dataset.governance?.bestechungUndKorruption?.kontroversenImBereichDerBestechungUndKorruption == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(
-                dataset.governance?.kontroverseGeschaeftsfelder
+                dataset.governance?.bestechungUndKorruption
                   ?.dieAktualitaetDerKontroversenImBereichBestechungUndKorruption,
-              ),
-          },
-        ],
-      },
-    ],
-  },
-  {
-    type: "section",
-    label: "SDG",
-    expandOnPageLoad: false,
-    shouldDisplay: (): boolean => true,
-    children: [
-      {
-        type: "section",
-        label: "Keine Armut",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Keine Armut",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "keine Armut" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.sdg?.keineArmut?.sdgKeineArmut),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Keine Armut)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.sdg?.keineArmut?.sdgKeineArmut == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.keineArmut?.wennNeinBitteBegruendenKeineArmut),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Keine Armut)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.sdg?.keineArmut?.sdgKeineArmut == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.keineArmut?.verwendeteSchluesselzahlenKeineArmut),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Keine Armut)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.sdg?.keineArmut?.sdgKeineArmut == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.keineArmut?.datenerfassungKeineArmut),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Keine Armut)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.sdg?.keineArmut?.sdgKeineArmut == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.keineArmut?.datenPlausibilitaetspruefungKeineArmut),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Keine Armut)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.sdg?.keineArmut?.sdgKeineArmut == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.keineArmut?.datenquelleKeineArmut),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Kein Hunger",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Kein Hunger",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "kein Hunger" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.sdg?.keinHunger?.sdgKeinHunger),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Kein Hunger)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.sdg?.keinHunger?.sdgKeinHunger == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.keinHunger?.verwendeteSchluesselzahlenKeinHunger),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Kein Hunger)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.sdg?.keinHunger?.sdgKeinHunger == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.keinHunger?.datenerfassungKeinHunger),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Kein Hunger)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.sdg?.keinHunger?.sdgKeinHunger == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.keinHunger?.datenPlausibilitaetspruefungKeinHunger),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Kein Hunger)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.sdg?.keinHunger?.sdgKeinHunger == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.keinHunger?.datenquelleKeinHunger),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Gesundheit und Wohlergehen",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Gesundheit und Wohlergehen",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Gesundheit und Wohlergehen" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.sdg?.gesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Gesundheit und Wohlergehen)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.gesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.gesundheitUndWohlergehen?.wennNeinBitteBegruendenGesundheitUndWohlergehen,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Gesundheit und Wohlergehen)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.gesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.gesundheitUndWohlergehen?.verwendeteSchluesselzahlenGesundheitUndWohlergehen,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Gesundheit und Wohlergehen)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten).",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.gesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.gesundheitUndWohlergehen?.datenerfassungGesundheitUndWohlergehen),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Gesundheit und Wohlergehen)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.gesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.gesundheitUndWohlergehen?.datenPlausibilitaetspruefungGesundheitUndWohlergehen,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Gesundheit und Wohlergehen)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.gesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.gesundheitUndWohlergehen?.datenquelleGesundheitUndWohlergehen),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Hochwertige Bildung",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Hochwertige Bildung",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Hochwertige Bildung" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.sdg?.hochwertigeBildung?.sdgHochwertigeBildung),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Hochwertige Bildung)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.hochwertigeBildung?.sdgHochwertigeBildung == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.hochwertigeBildung?.wennNeinBitteBegruendenHochwertigeBildung),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Hochwertige Bildung)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.hochwertigeBildung?.sdgHochwertigeBildung == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.hochwertigeBildung?.verwendeteSchluesselzahlenHochwertigeBildung),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Hochwertige Bildung)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.hochwertigeBildung?.sdgHochwertigeBildung == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.hochwertigeBildung?.datenerfassungHochwertigeBildung),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Hochwertige Bildung)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.hochwertigeBildung?.sdgHochwertigeBildung == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.hochwertigeBildung?.datenPlausibilitaetspruefungHochwertigeBildung),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Hochwertige Bildung)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.hochwertigeBildung?.sdgHochwertigeBildung == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.hochwertigeBildung?.datenquelleHochwertigeBildung),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Geschlechtergleichheit",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Geschlechtergleichheit",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Geschlechtergleichheit" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.sdg?.geschlechtergleichheit?.sdgGeschlechtergleichheit),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Geschlechtergleichheit)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.geschlechtergleichheit?.sdgGeschlechtergleichheit == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.geschlechtergleichheit?.wennNeinBitteBegruendenGeschlechtergleichheit,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Geschlechtergleichheit)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.geschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.geschlechtergleichheit?.verwendeteSchluesselzahlenGeschlechtergleichheit,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Geschlechtergleichheit)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.geschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.geschlechtergleichheit?.datenerfassungGeschlechtergleichheit),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Geschlechtergleichheit)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.geschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.geschlechtergleichheit?.datenPlausibilitaetspruefungGeschlechtergleichheit,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Geschlechtergleichheit)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.geschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.geschlechtergleichheit?.datenquelleGeschlechtergleichheit),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Sauberes Wasser und sanitäre Einrichtungen",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Sauberes Wasser und sanitäre Einrichtungen",
-            explanation:
-              'Kann mit der Methodik ein Beitrag zum SDG "Sauberes Wasser und Sanitäreinrichtungen" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.sdg?.sauberesWasserUndSanitaereEinrichtungen?.sdgSauberesWasserUndSanitaereEinrichtungen,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Sauberes Wasser und sanitäre Einrichtungen)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.sauberesWasserUndSanitaereEinrichtungen?.sdgSauberesWasserUndSanitaereEinrichtungen == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.sauberesWasserUndSanitaereEinrichtungen
-                  ?.wennNeinBitteBegruendenSauberesWasserUndSanitaereEinrichtungen,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Sauberes Wasser und sanitäre Einrichtungen)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.sauberesWasserUndSanitaereEinrichtungen?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.sauberesWasserUndSanitaereEinrichtungen
-                  ?.verwendeteSchluesselzahlenSauberesWasserUndSanitaereEinrichtungen,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Sauberes Wasser und sanitäre Einrichtungen)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.sauberesWasserUndSanitaereEinrichtungen?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.sauberesWasserUndSanitaereEinrichtungen
-                  ?.datenerfassungSauberesWasserUndSanitaereEinrichtungen,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Sauberes Wasser und sanitäre Einrichtungen)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.sauberesWasserUndSanitaereEinrichtungen?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.sauberesWasserUndSanitaereEinrichtungen
-                  ?.datenPlausibilitaetspruefungSauberesWasserUndSanitaereEinrichtungen,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Sauberes Wasser und sanitäre Einrichtungen)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.sauberesWasserUndSanitaereEinrichtungen?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.sauberesWasserUndSanitaereEinrichtungen
-                  ?.datenquelleSauberesWasserUndSanitaereEinrichtungen,
-              ),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Bezahlbare und saubere Energie",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Bezahlbare und saubere Energie",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Bezahlbare und saubere Energie" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.sdg?.bezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Bezahlbare und saubere Energie)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.bezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.bezahlbareUndSaubereEnergie?.wennNeinBitteBegruendenBezahlbareUndSaubereEnergie,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Bezahlbare und saubere Energie)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.bezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.bezahlbareUndSaubereEnergie?.verwendeteSchluesselzahlenBezahlbareUndSaubereEnergie,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Bezahlbare und saubere Energie)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.bezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.bezahlbareUndSaubereEnergie?.datenerfassungBezahlbareUndSaubereEnergie,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Bezahlbare und saubere Energie)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.bezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.bezahlbareUndSaubereEnergie?.datenPlausibilitaetspruefungBezahlbareUndSaubereEnergie,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Bezahlbare und saubere Energie)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.bezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.bezahlbareUndSaubereEnergie?.datenquelleBezahlbareUndSaubereEnergie,
-              ),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Menschenwürdige Arbeit und Wirtschaftswachstum",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Menschenwürdige Arbeit und Wirtschaftswachstum",
-            explanation:
-              'Kann mit der Methodik ein Beitrag zum SDG "Menschenwürdige Arbeit und Wirtschaftswachstum" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.sdg?.menschenwuerdigeArbeitUndWirtschaftswachstum
-                  ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Menschenwürdige Arbeit und Wirtschaftswachstum)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.menschenwuerdigeArbeitUndWirtschaftswachstum
-                ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.menschenwuerdigeArbeitUndWirtschaftswachstum
-                  ?.wennNeinBitteBegruendenMenschenwuerdigeArbeitUndWirtschaftswachstum,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Menschenwürdige Arbeit und Wirtschaftswachstum)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.menschenwuerdigeArbeitUndWirtschaftswachstum
-                ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.menschenwuerdigeArbeitUndWirtschaftswachstum
-                  ?.verwendeteSchluesselzahlenMenschenwuerdigeArbeitUndWirtschaftswachstum,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Menschenwürdige Arbeit und Wirtschaftswachstum)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.menschenwuerdigeArbeitUndWirtschaftswachstum
-                ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.menschenwuerdigeArbeitUndWirtschaftswachstum
-                  ?.datenerfassungMenschenwuerdigeArbeitUndWirtschaftswachstum,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Menschenwürdige Arbeit und Wirtschaftswachstum)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.menschenwuerdigeArbeitUndWirtschaftswachstum
-                ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.menschenwuerdigeArbeitUndWirtschaftswachstum
-                  ?.datenPlausibilitaetspruefungMenschenwuerdigeArbeitUndWirtschaftswachstum,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Menschenwürdige Arbeit und Wirtschaftswachstum)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.menschenwuerdigeArbeitUndWirtschaftswachstum
-                ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.menschenwuerdigeArbeitUndWirtschaftswachstum
-                  ?.datenquelleMenschenwuerdigeArbeitUndWirtschaftswachstum,
-              ),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: " Industrie, Innovation und Infrastruktur",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Industrie, Innovation und Infrastruktur",
-            explanation:
-              'Kann mit der Methodik ein Beitrag zum SDG "Industrie, Innovation und Infrastruktur" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.sdg?.industrieInnovationUndInfrastruktur?.sdgIndustrieInnovationUndInfrastruktur,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Industrie, Innovation und Infrastruktur)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.industrieInnovationUndInfrastruktur?.sdgIndustrieInnovationUndInfrastruktur == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.industrieInnovationUndInfrastruktur
-                  ?.wennNeinBitteBegruendenIndustrieInnovationUndInfrastruktur,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Industrie, Innovation und Infrastruktur)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.industrieInnovationUndInfrastruktur?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.industrieInnovationUndInfrastruktur
-                  ?.verwendeteSchluesselzahlenIndustrieInnovationUndInfrastruktur,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Industrie, Innovation und Infrastruktur)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.industrieInnovationUndInfrastruktur?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.industrieInnovationUndInfrastruktur?.datenerfassungIndustrieInnovationUndInfrastruktur,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Industrie, Innovation und Infrastruktur)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.industrieInnovationUndInfrastruktur?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.industrieInnovationUndInfrastruktur
-                  ?.datenPlausibilitaetspruefungIndustrieInnovationUndInfrastruktur,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Industrie, Innovation und Infrastruktur)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.industrieInnovationUndInfrastruktur?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.industrieInnovationUndInfrastruktur?.datenquelleIndustrieInnovationUndInfrastruktur,
-              ),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Weniger Ungleichheiten",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Weniger Ungleichheiten",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Weniger Ungleichheiten" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.sdg?.wenigerUngleichheiten?.sdgWenigerUngleichheiten),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Weniger Ungleichheiten)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.wenigerUngleichheiten?.sdgWenigerUngleichheiten == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.wenigerUngleichheiten?.wennNeinBitteBegruendenWenigerUngleichheiten,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Weniger Ungleichheiten)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.wenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.wenigerUngleichheiten?.verwendeteSchluesselzahlenWenigerUngleichheiten,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Weniger Ungleichheiten)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.wenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.wenigerUngleichheiten?.datenerfassungWenigerUngleichheiten),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Weniger Ungleichheiten)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.wenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.wenigerUngleichheiten?.datenPlausibilitaetspruefungWenigerUngleichheiten,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Weniger Ungleichheiten)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.wenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.wenigerUngleichheiten?.datenquelleWenigerUngleichheiten),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Nachhaltige Städte und Gemeinden",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Nachhaltige Städte und Gemeinden",
-            explanation:
-              'Kann mit der Methodik ein Beitrag zum SDG "Nachhaltige Städte und Gemeinden" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.sdg?.nachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Nachhaltige Städte und Gemeinden)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.nachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.nachhaltigeStaedteUndGemeinden?.wennNeinBitteBegruendenNachhaltigeStaedteUndGemeinden,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Nachhaltige Städte und Gemeinden)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.nachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.nachhaltigeStaedteUndGemeinden?.verwendeteSchluesselzahlenNachhaltigeStaedteUndGemeinden,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Nachhaltige Städte und Gemeinden)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.nachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.nachhaltigeStaedteUndGemeinden?.datenerfassungNachhaltigeStaedteUndGemeinden,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Nachhaltige Städte und Gemeinden)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.nachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.nachhaltigeStaedteUndGemeinden?.datenPlausibilitaetspruefungNachhaltigeStaedteUndGemeinden,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Nachhaltige Städte und Gemeinden)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.nachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.nachhaltigeStaedteUndGemeinden?.datenquelleNachhaltigeStaedteUndGemeinden,
-              ),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Nachhaliger Konsum und Produktion",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Nachhaliger Konsum und Produktion",
-            explanation:
-              'Kann mit der Methodik ein Beitrag zum SDG "Nachhaliger Konsum und Produktion" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.sdg?.nachhaligerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Nachhaliger Konsum und Produktion)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.nachhaligerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.nachhaligerKonsumUndProduktion?.wennNeinBitteBegruendenNachhaligerKonsumUndProduktion,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Nachhaliger Konsum und Produktion)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.nachhaligerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.nachhaligerKonsumUndProduktion?.verwendeteSchluesselzahlenNachhaligerKonsumUndProduktion,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Nachhaliger Konsum und Produktion)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.nachhaligerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.nachhaligerKonsumUndProduktion?.datenerfassungNachhaligerKonsumUndProduktion,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Nachhaliger Konsum und Produktion)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.nachhaligerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.nachhaligerKonsumUndProduktion?.datenPlausibilitaetspruefungNachhaligerKonsumUndProduktion,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Nachhaliger Konsum und Produktion)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.nachhaligerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.nachhaligerKonsumUndProduktion?.datenquelleNachhaligerKonsumUndProduktion,
-              ),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Maßnahmen zum Klimaschutz",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Maßnahmen zum Klimaschutz",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Maßnahmen zum Klimaschutz" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.sdg?.massnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Maßnahmen zum Klimaschutz)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.massnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.massnahmenZumKlimaschutz?.wennNeinBitteBegruendenMassnahmenZumKlimaschutz,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Maßnahmen zum Klimaschutz)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.massnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.massnahmenZumKlimaschutz?.verwendeteSchluesselzahlenMassnahmenZumKlimaschutz,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Maßnahmen zum Klimaschutz)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.massnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.massnahmenZumKlimaschutz?.datenerfassungMassnahmenZumKlimaschutz),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Maßnahmen zum Klimaschutz)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.massnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.massnahmenZumKlimaschutz?.datenPlausibilitaetspruefungMassnahmenZumKlimaschutz,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Maßnahmen zum Klimaschutz)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.massnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.massnahmenZumKlimaschutz?.datenquelleMassnahmenZumKlimaschutz),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Leben unter Wasser",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Leben unter Wasser",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Leben unter Wasser" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.sdg?.lebenUnterWasser?.sdgLebenUnterWasser),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Leben unter Wasser)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.lebenUnterWasser?.sdgLebenUnterWasser == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.lebenUnterWasser?.wennNeinBitteBegruendenLebenUnterWasser),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Leben unter Wasser)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.lebenUnterWasser?.sdgLebenUnterWasser == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.lebenUnterWasser?.verwendeteSchluesselzahlenLebenUnterWasser),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Leben unter Wasser)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.lebenUnterWasser?.sdgLebenUnterWasser == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.lebenUnterWasser?.datenerfassungLebenUnterWasser),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Leben unter Wasser)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.lebenUnterWasser?.sdgLebenUnterWasser == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.lebenUnterWasser?.datenPlausibilitaetspruefungLebenUnterWasser),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Leben unter Wasser)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.lebenUnterWasser?.sdgLebenUnterWasser == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.lebenUnterWasser?.datenquelleLebenUnterWasser),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Leben an Land",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Leben an Land",
-            explanation: 'Kann mit der Methodik ein Beitrag zum SDG "Leben an Land" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.sdg?.lebenAnLand?.sdgLebenAnLand),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Leben an Land)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.sdg?.lebenAnLand?.sdgLebenAnLand == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.lebenAnLand?.wennNeinBitteBegruendenLebenAnLand),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Leben an Land)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.sdg?.lebenAnLand?.sdgLebenAnLand == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.lebenAnLand?.verwendeteSchluesselzahlenLebenAnLand),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Leben an Land)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.sdg?.lebenAnLand?.sdgLebenAnLand == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.lebenAnLand?.datenerfassungLebenAnLand),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Leben an Land)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.sdg?.lebenAnLand?.sdgLebenAnLand == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.lebenAnLand?.datenPlausibilitaetspruefungLebenAnLand),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Leben an Land)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean => dataset.sdg?.lebenAnLand?.sdgLebenAnLand == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.sdg?.lebenAnLand?.datenquelleLebenAnLand),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Frieden, Gerechtigkeit und starke Institutionen",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Frieden, Gerechtigkeit und starke Institutionen",
-            explanation:
-              'Kann mit der Methodik ein Beitrag zum SDG "Frieden, Gerechtigkeit und starke Institutionen" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.sdg?.friedenGerechtigkeitUndStarkeInstitutionen?.sdgFriedenGerechtigkeitUndStarkeInstitutionen,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Frieden, Gerechtigkeit und starke Institutionen)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.friedenGerechtigkeitUndStarkeInstitutionen?.sdgFriedenGerechtigkeitUndStarkeInstitutionen ==
-              "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.friedenGerechtigkeitUndStarkeInstitutionen
-                  ?.wennNeinBitteBegruendenFriedenGerechtigkeitUndStarkeInstitutionen,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Frieden, Gerechtigkeit und starke Institutionen)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.friedenGerechtigkeitUndStarkeInstitutionen?.sdgFriedenGerechtigkeitUndStarkeInstitutionen ==
-              "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.friedenGerechtigkeitUndStarkeInstitutionen
-                  ?.verwendeteSchluesselzahlenFriedenGerechtigkeitUndStarkeInstitutionen,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Frieden, Gerechtigkeit und starke Institutionen)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.friedenGerechtigkeitUndStarkeInstitutionen?.sdgFriedenGerechtigkeitUndStarkeInstitutionen ==
-              "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.friedenGerechtigkeitUndStarkeInstitutionen
-                  ?.datenerfassungFriedenGerechtigkeitUndStarkeInstitutionen,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Frieden, Gerechtigkeit und starke Institutionen)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.friedenGerechtigkeitUndStarkeInstitutionen?.sdgFriedenGerechtigkeitUndStarkeInstitutionen ==
-              "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.friedenGerechtigkeitUndStarkeInstitutionen
-                  ?.datenPlausibilitaetspruefungFriedenGerechtigkeitUndStarkeInstitutionen,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Frieden, Gerechtigkeit und starke Institutionen)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.friedenGerechtigkeitUndStarkeInstitutionen?.sdgFriedenGerechtigkeitUndStarkeInstitutionen ==
-              "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.friedenGerechtigkeitUndStarkeInstitutionen
-                  ?.datenquelleFriedenGerechtigkeitUndStarkeInstitutionen,
-              ),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Partnerschaften zur Erreichung der Ziele",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "SDG - Partnerschaften zur Erreichung der Ziele",
-            explanation:
-              'Kann mit der Methodik ein Beitrag zum SDG "Partnerschaften zur Erreichung der Ziele" gemessen werden?',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(
-                dataset.sdg?.partnerschaftenZurErreichungDerZiele?.sdgPartnerschaftenZurErreichungDerZiele,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Wenn Nein, bitte begründen (Partnerschaften zur Erreichung der Ziele)",
-
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.partnerschaftenZurErreichungDerZiele?.sdgPartnerschaftenZurErreichungDerZiele == "No",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.partnerschaftenZurErreichungDerZiele
-                  ?.wennNeinBitteBegruendenPartnerschaftenZurErreichungDerZiele,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Verwendete Schlüsselzahlen (Partnerschaften zur Erreichung der Ziele)",
-            explanation:
-              "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.partnerschaftenZurErreichungDerZiele?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.partnerschaftenZurErreichungDerZiele
-                  ?.verwendeteSchluesselzahlenPartnerschaftenZurErreichungDerZiele,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenerfassung (Partnerschaften zur Erreichung der Ziele)",
-            explanation:
-              "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.partnerschaftenZurErreichungDerZiele?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.partnerschaftenZurErreichungDerZiele?.datenerfassungPartnerschaftenZurErreichungDerZiele,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Daten Plausibilitätsprüfung (Partnerschaften zur Erreichung der Ziele)",
-            explanation:
-              "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.partnerschaftenZurErreichungDerZiele?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.partnerschaftenZurErreichungDerZiele
-                  ?.datenPlausibilitaetspruefungPartnerschaftenZurErreichungDerZiele,
-              ),
-          },
-          {
-            type: "cell",
-            label: "Datenquelle (Partnerschaften zur Erreichung der Ziele)",
-            explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
-            shouldDisplay: (dataset: HeimathafenData): boolean =>
-              dataset.sdg?.partnerschaftenZurErreichungDerZiele?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.sdg?.partnerschaftenZurErreichungDerZiele?.datenquellePartnerschaftenZurErreichungDerZiele,
               ),
           },
         ],

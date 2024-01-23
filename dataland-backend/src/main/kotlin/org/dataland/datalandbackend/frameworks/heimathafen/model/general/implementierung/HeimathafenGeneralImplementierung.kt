@@ -32,7 +32,7 @@ data class HeimathafenGeneralImplementierung(
     val unterstuetzungDerStapelverarbeitung: YesNo? = null,
     val unterstuetzteBiLoesung: String? = null,
     val flexibilitaetBeimImportExportVonDaten: YesNo? = null,
-    val dauerhafteVerfuegbarkeit: YesNo? = null,
+    val rundUmDieUhrVerfuegbarkeit: YesNo? = null,
     val uebertragenVonDatenhistorien: String? = null,
     val unterstuetzterZeitraumDerDatenhistorien: String? = null,
     val fruehesterStartterminFuerEinIntegrationsprojekt: LocalDate? = null,

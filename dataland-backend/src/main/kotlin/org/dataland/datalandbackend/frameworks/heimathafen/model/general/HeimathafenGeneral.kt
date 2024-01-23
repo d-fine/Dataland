@@ -2,6 +2,23 @@
 package org.dataland.datalandbackend.frameworks.heimathafen.model.general
 
 import org.dataland.datalandbackend.frameworks.heimathafen.model.general.datenanbieter.HeimathafenGeneralDatenanbieter
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleBezahlbareUndSaubereEnergie.HeimathafenGeneralImpactmerkmaleBezahlbareUndSaubereEnergie
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen.HeimathafenGeneralImpactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleGeschlechtergleichheit.HeimathafenGeneralImpactmerkmaleGeschlechtergleichheit
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleGesundheitUndWohlergehen.HeimathafenGeneralImpactmerkmaleGesundheitUndWohlergehen
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleHochwertigeBildung.HeimathafenGeneralImpactmerkmaleHochwertigeBildung
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleIndustrieInnovationUndInfrastruktur.HeimathafenGeneralImpactmerkmaleIndustrieInnovationUndInfrastruktur
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleKeinHunger.HeimathafenGeneralImpactmerkmaleKeinHunger
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleKeineArmut.HeimathafenGeneralImpactmerkmaleKeineArmut
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleLebenAndLand.HeimathafenGeneralImpactmerkmaleLebenAndLand
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleLebenUnterWasser.HeimathafenGeneralImpactmerkmaleLebenUnterWasser
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleMassnahmenZumKlimaschutz.HeimathafenGeneralImpactmerkmaleMassnahmenZumKlimaschutz
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum.HeimathafenGeneralImpactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleNachhaltigeStaedteUndGemeinden.HeimathafenGeneralImpactmerkmaleNachhaltigeStaedteUndGemeinden
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleNachhaltigerKonsumUndProduktion.HeimathafenGeneralImpactmerkmaleNachhaltigerKonsumUndProduktion
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmalePartnerschaftenZurErreichungDerZiele.HeimathafenGeneralImpactmerkmalePartnerschaftenZurErreichungDerZiele
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen.HeimathafenGeneralImpactmerkmaleSauberesWasserUndSanitaereEinrichtungen
+import org.dataland.datalandbackend.frameworks.heimathafen.model.general.impactmerkmaleWenigerUngleichheiten.HeimathafenGeneralImpactmerkmaleWenigerUngleichheiten
 import org.dataland.datalandbackend.frameworks.heimathafen.model.general.implementierung.HeimathafenGeneralImplementierung
 import org.dataland.datalandbackend.frameworks.heimathafen.model.general.methodik.HeimathafenGeneralMethodik
 
@@ -11,5 +28,29 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.general.methodi
 data class HeimathafenGeneral(
     val datenanbieter: HeimathafenGeneralDatenanbieter? = null,
     val methodik: HeimathafenGeneralMethodik? = null,
+    val impactmerkmaleKeineArmut: HeimathafenGeneralImpactmerkmaleKeineArmut? = null,
+    val impactmerkmaleKeinHunger: HeimathafenGeneralImpactmerkmaleKeinHunger? = null,
+    val impactmerkmaleGesundheitUndWohlergehen: HeimathafenGeneralImpactmerkmaleGesundheitUndWohlergehen? = null,
+    val impactmerkmaleHochwertigeBildung: HeimathafenGeneralImpactmerkmaleHochwertigeBildung? = null,
+    val impactmerkmaleGeschlechtergleichheit: HeimathafenGeneralImpactmerkmaleGeschlechtergleichheit? = null,
+    val impactmerkmaleSauberesWasserUndSanitaereEinrichtungen:
+    HeimathafenGeneralImpactmerkmaleSauberesWasserUndSanitaereEinrichtungen? = null,
+    val impactmerkmaleBezahlbareUndSaubereEnergie: HeimathafenGeneralImpactmerkmaleBezahlbareUndSaubereEnergie? = null,
+    val impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum:
+    HeimathafenGeneralImpactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum? = null,
+    val impactmerkmaleIndustrieInnovationUndInfrastruktur:
+    HeimathafenGeneralImpactmerkmaleIndustrieInnovationUndInfrastruktur? = null,
+    val impactmerkmaleWenigerUngleichheiten: HeimathafenGeneralImpactmerkmaleWenigerUngleichheiten? = null,
+    val impactmerkmaleNachhaltigeStaedteUndGemeinden:
+    HeimathafenGeneralImpactmerkmaleNachhaltigeStaedteUndGemeinden? = null,
+    val impactmerkmaleNachhaltigerKonsumUndProduktion:
+    HeimathafenGeneralImpactmerkmaleNachhaltigerKonsumUndProduktion? = null,
+    val impactmerkmaleMassnahmenZumKlimaschutz: HeimathafenGeneralImpactmerkmaleMassnahmenZumKlimaschutz? = null,
+    val impactmerkmaleLebenUnterWasser: HeimathafenGeneralImpactmerkmaleLebenUnterWasser? = null,
+    val impactmerkmaleLebenAndLand: HeimathafenGeneralImpactmerkmaleLebenAndLand? = null,
+    val impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen:
+    HeimathafenGeneralImpactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen? = null,
+    val impactmerkmalePartnerschaftenZurErreichungDerZiele:
+    HeimathafenGeneralImpactmerkmalePartnerschaftenZurErreichungDerZiele? = null,
     val implementierung: HeimathafenGeneralImplementierung? = null,
 )

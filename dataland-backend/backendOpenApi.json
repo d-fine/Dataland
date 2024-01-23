@@ -8481,14 +8481,6 @@
                 "$ref": "#/components/schemas/HeimathafenGovernance"
               }
             ]
-          },
-          "sdg": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdg"
-              }
-            ]
           }
         }
       },
@@ -8511,6 +8503,38 @@
               }
             ]
           },
+          "paiBiologischeVielfalt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenEnvironmentalPaiBiologischeVielfalt"
+              }
+            ]
+          },
+          "paiWasser": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenEnvironmentalPaiWasser"
+              }
+            ]
+          },
+          "paiAbfall": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenEnvironmentalPaiAbfall"
+              }
+            ]
+          },
+          "paiUmweltAufDemLand": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenEnvironmentalPaiUmweltAufDemLand"
+              }
+            ]
+          },
           "sfdr": {
             "nullable": true,
             "allOf": [
@@ -8519,43 +8543,27 @@
               }
             ]
           },
-          "kontroverseGeschaeftsfelder": {
+          "kontroverseGeschaeftsfelderTabakerzeugung": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/HeimathafenEnvironmentalKontroverseGeschaeftsfelder"
+                "$ref": "#/components/schemas/HeimathafenEnvironmentalKontroverseGeschaeftsfelderTabakerzeugung"
+              }
+            ]
+          },
+          "kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenEnvironmentalKontroverseGeschaeftsfelderKohlefoerderungUndVerteilung"
               }
             ]
           }
         }
       },
-      "HeimathafenEnvironmentalKontroverseGeschaeftsfelder": {
+      "HeimathafenEnvironmentalKontroverseGeschaeftsfelderKohlefoerderungUndVerteilung": {
         "type": "object",
         "properties": {
-          "ausschlussDerTabakerzeugungTabakerzeugung": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenTabakerzeugung": {
-            "type": "string",
-            "nullable": true
-          },
-          "metrischVerwendetTabakerzeugung": {
-            "type": "string",
-            "nullable": true
-          },
-          "methodikDerBerechnungTabakerzeugung": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteQuellenTabakerzeugung": {
-            "type": "string",
-            "nullable": true
-          },
           "ausschlussDerKohlefoerderungUndVerteilung": {
             "nullable": true,
             "allOf": [
@@ -8564,19 +8572,48 @@
               }
             ]
           },
-          "wennNeinBitteBegruendenKohleerzeugung": {
+          "wennNeinBitteBegruenden": {
             "type": "string",
             "nullable": true
           },
-          "metrischVerwendetKohleerzeugung": {
+          "verwendeteKennzahl": {
             "type": "string",
             "nullable": true
           },
-          "methodikDerBerechnungKohleerzeugung": {
+          "methodikDerBerechnung": {
             "type": "string",
             "nullable": true
           },
-          "verwendeteQuellenKohleerzeugung": {
+          "verwendeteQuellen": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenEnvironmentalKontroverseGeschaeftsfelderTabakerzeugung": {
+        "type": "object",
+        "properties": {
+          "ausschlussDerTabakerzeugung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteKennzahl": {
+            "type": "string",
+            "nullable": true
+          },
+          "methodikDerBerechnung": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteQuellen": {
             "type": "string",
             "nullable": true
           }
@@ -8593,7 +8630,7 @@
               }
             ]
           },
-          "wennNeinBitteBegruendenOekologischeNachhaltigkeitsrisiken": {
+          "wennNeinBitteBegruenden": {
             "type": "string",
             "nullable": true
           },
@@ -8628,11 +8665,143 @@
               }
             ]
           },
-          "wennNeinBitteBegruenden": {
+          "wennKeineVierAugenPruefungBitteBegruenden": {
             "type": "string",
             "nullable": true
           },
           "beschreibungDerVierAugenPruefung": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenEnvironmentalPaiAbfall": {
+        "type": "object",
+        "properties": {
+          "paiAbfall": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenEnvironmentalPaiBiologischeVielfalt": {
+        "type": "object",
+        "properties": {
+          "paisBiologischeVielfalt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenEnvironmentalPaiUmweltAufDemLand": {
+        "type": "object",
+        "properties": {
+          "paiUmweltAufDemLand": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenEnvironmentalPaiWasser": {
+        "type": "object",
+        "properties": {
+          "paiWasser": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
             "type": "string",
             "nullable": true
           }
@@ -8657,131 +8826,19 @@
             "type": "string",
             "nullable": true
           },
-          "verwendeteSchluesselzahlenTreibhausgasemissionen": {
+          "verwendeteSchluesselzahlen": {
             "type": "string",
             "nullable": true
           },
-          "datenerfassungTreibhausgasemissionen": {
+          "datenerfassung": {
             "type": "string",
             "nullable": true
           },
-          "datenPlausibilitaetspruefungTreibhausgasemissionen": {
+          "datenPlausibilitaetspruefung": {
             "type": "string",
             "nullable": true
           },
-          "datenquelleTreibhausgasemissionen": {
-            "type": "string",
-            "nullable": true
-          },
-          "paisBiologischeVielfalt": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenBiodiversitaet": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenBiodiversitaet": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungBiodiversitaet": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungBiodiversitaet": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleBiodiversitaet": {
-            "type": "string",
-            "nullable": true
-          },
-          "paiWasser": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenWasser": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenWasser": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungWasser": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungWasser": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleWasser": {
-            "type": "string",
-            "nullable": true
-          },
-          "paiAbfall": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenAbfall": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenAbfall": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungAbfall": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungAbfall": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleAbfall": {
-            "type": "string",
-            "nullable": true
-          },
-          "paiUmweltAufDemLand": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenUmweltAufDemLand": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenUmweltAufDemLand": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungUmweltAufDemLand": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungUmweltAufDemLand": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleUmweltAufDemLand": {
+          "datenquelle": {
             "type": "string",
             "nullable": true
           }
@@ -8815,6 +8872,142 @@
               }
             ]
           },
+          "impactmerkmaleKeineArmut": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleKeineArmut"
+              }
+            ]
+          },
+          "impactmerkmaleKeinHunger": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleKeinHunger"
+              }
+            ]
+          },
+          "impactmerkmaleGesundheitUndWohlergehen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleGesundheitUndWohlergehen"
+              }
+            ]
+          },
+          "impactmerkmaleHochwertigeBildung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleHochwertigeBildung"
+              }
+            ]
+          },
+          "impactmerkmaleGeschlechtergleichheit": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleGeschlechtergleichheit"
+              }
+            ]
+          },
+          "impactmerkmaleSauberesWasserUndSanitaereEinrichtungen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleSauberesWasserUndSanitaereEinrichtungen"
+              }
+            ]
+          },
+          "impactmerkmaleBezahlbareUndSaubereEnergie": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleBezahlbareUndSaubereEnergie"
+              }
+            ]
+          },
+          "impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum"
+              }
+            ]
+          },
+          "impactmerkmaleIndustrieInnovationUndInfrastruktur": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleIndustrieInnovationUndInfrastruktur"
+              }
+            ]
+          },
+          "impactmerkmaleWenigerUngleichheiten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleWenigerUngleichheiten"
+              }
+            ]
+          },
+          "impactmerkmaleNachhaltigeStaedteUndGemeinden": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleNachhaltigeStaedteUndGemeinden"
+              }
+            ]
+          },
+          "impactmerkmaleNachhaltigerKonsumUndProduktion": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleNachhaltigerKonsumUndProduktion"
+              }
+            ]
+          },
+          "impactmerkmaleMassnahmenZumKlimaschutz": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleMassnahmenZumKlimaschutz"
+              }
+            ]
+          },
+          "impactmerkmaleLebenUnterWasser": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleLebenUnterWasser"
+              }
+            ]
+          },
+          "impactmerkmaleLebenAndLand": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleLebenAndLand"
+              }
+            ]
+          },
+          "impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen"
+              }
+            ]
+          },
+          "impactmerkmalePartnerschaftenZurErreichungDerZiele": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenGeneralImpactmerkmalePartnerschaftenZurErreichungDerZiele"
+              }
+            ]
+          },
           "implementierung": {
             "nullable": true,
             "allOf": [
@@ -8841,6 +9034,563 @@
           },
           "anzahlDerFuerEsgZustaendigenMitarbeiter": {
             "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleBezahlbareUndSaubereEnergie": {
+        "type": "object",
+        "properties": {
+          "sdgBezahlbareUndSaubereEnergie": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen": {
+        "type": "object",
+        "properties": {
+          "sdgFriedenGerechtigkeitUndStarkeInstitutionen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleGeschlechtergleichheit": {
+        "type": "object",
+        "properties": {
+          "sdgGeschlechtergleichheit": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleGesundheitUndWohlergehen": {
+        "type": "object",
+        "properties": {
+          "sdgGesundheitUndWohlergehen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleHochwertigeBildung": {
+        "type": "object",
+        "properties": {
+          "sdgHochwertigeBildung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleIndustrieInnovationUndInfrastruktur": {
+        "type": "object",
+        "properties": {
+          "sdgIndustrieInnovationUndInfrastruktur": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleKeinHunger": {
+        "type": "object",
+        "properties": {
+          "sdgKeinHunger": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleKeineArmut": {
+        "type": "object",
+        "properties": {
+          "sdgKeineArmut": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleLebenAndLand": {
+        "type": "object",
+        "properties": {
+          "sdgLebenAnLand": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleLebenUnterWasser": {
+        "type": "object",
+        "properties": {
+          "sdgLebenUnterWasser": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleMassnahmenZumKlimaschutz": {
+        "type": "object",
+        "properties": {
+          "sdgMassnahmenZumKlimaschutz": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum": {
+        "type": "object",
+        "properties": {
+          "sdgMenschenwuerdigeArbeitUndWirtschaftswachstum": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleNachhaltigeStaedteUndGemeinden": {
+        "type": "object",
+        "properties": {
+          "sdgNachhaltigeStaedteUndGemeinden": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleNachhaltigerKonsumUndProduktion": {
+        "type": "object",
+        "properties": {
+          "sdgNachhaligerKonsumUndProduktion": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmalePartnerschaftenZurErreichungDerZiele": {
+        "type": "object",
+        "properties": {
+          "sdgPartnerschaftenZurErreichungDerZiele": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleSauberesWasserUndSanitaereEinrichtungen": {
+        "type": "object",
+        "properties": {
+          "sdgSauberesWasserUndSanitaereEinrichtungen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenGeneralImpactmerkmaleWenigerUngleichheiten": {
+        "type": "object",
+        "properties": {
+          "sdgWenigerUngleichheiten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
+          "verwendeteSchluesselzahlen": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenerfassung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenPlausibilitaetspruefung": {
+            "type": "string",
+            "nullable": true
+          },
+          "datenquelle": {
+            "type": "string",
             "nullable": true
           }
         }
@@ -8992,7 +9742,7 @@
               }
             ]
           },
-          "dauerhafteVerfuegbarkeit": {
+          "rundUmDieUhrVerfuegbarkeit": {
             "nullable": true,
             "allOf": [
               {
@@ -9046,7 +9796,7 @@
             "type": "string",
             "nullable": true
           },
-          "wieIstIhreBewertungsskalaDefiniert": {
+          "definitionBewertungsskala": {
             "type": "string",
             "nullable": true
           },
@@ -9054,7 +9804,7 @@
             "type": "string",
             "nullable": true
           },
-          "sindIhreBewertungenUnabhaengig": {
+          "unabhaengigkeitDerRatings": {
             "type": "string",
             "nullable": true
           },
@@ -9178,28 +9928,28 @@
               }
             ]
           },
-          "globalCompact": {
+          "goodGovernanceUngc": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/HeimathafenGovernanceGlobalCompact"
+                "$ref": "#/components/schemas/HeimathafenGovernanceGoodGovernanceUngc"
               }
             ]
           },
-          "kontroverseGeschaeftsfelder": {
+          "bestechungUndKorruption": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/HeimathafenGovernanceKontroverseGeschaeftsfelder"
+                "$ref": "#/components/schemas/HeimathafenGovernanceBestechungUndKorruption"
               }
             ]
           }
         }
       },
-      "HeimathafenGovernanceGlobalCompact": {
+      "HeimathafenGovernanceBestechungUndKorruption": {
         "type": "object",
         "properties": {
-          "beruecksichtigungDesUngc": {
+          "kontroversenImBereichDerBestechungUndKorruption": {
             "nullable": true,
             "allOf": [
               {
@@ -9207,15 +9957,19 @@
               }
             ]
           },
-          "wennNeinBitteBegruendenGlobalCompact": {
+          "wennNeinBitteBegruenden": {
             "type": "string",
             "nullable": true
           },
-          "beruecksichtigungDerUngcBeschreibung": {
+          "verwendeteMetrikenUndMethodik": {
             "type": "string",
             "nullable": true
           },
-          "verwendeteQuellenGlobalCompact": {
+          "verwendeteQuellen": {
+            "type": "string",
+            "nullable": true
+          },
+          "dieAktualitaetDerKontroversenImBereichBestechungUndKorruption": {
             "type": "string",
             "nullable": true
           }
@@ -9232,7 +9986,7 @@
               }
             ]
           },
-          "wennNeinBitteBegruendenGoodGovernance": {
+          "wennNeinBitteBegruenden": {
             "type": "string",
             "nullable": true
           },
@@ -9244,16 +9998,16 @@
             "type": "string",
             "nullable": true
           },
-          "verwendeteQuellenGoodGovernance": {
+          "verwendeteQuellen": {
             "type": "string",
             "nullable": true
           }
         }
       },
-      "HeimathafenGovernanceKontroverseGeschaeftsfelder": {
+      "HeimathafenGovernanceGoodGovernanceUngc": {
         "type": "object",
         "properties": {
-          "kontroversenImBereichDerBestechungUndKorruption": {
+          "beruecksichtigungDesUngc": {
             "nullable": true,
             "allOf": [
               {
@@ -9261,717 +10015,15 @@
               }
             ]
           },
-          "wennNeinBitteBegruendenKontroverseGeschaeftsfelder": {
+          "wennNeinBitteBegruenden": {
             "type": "string",
             "nullable": true
           },
-          "verwendeteMetrikenUndMethodik": {
+          "beruecksichtigungDerUngcBeschreibung": {
             "type": "string",
             "nullable": true
           },
-          "verwendeteQuellenKontroverseGeschaeftsfelder": {
-            "type": "string",
-            "nullable": true
-          },
-          "dieAktualitaetDerKontroversenImBereichBestechungUndKorruption": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdg": {
-        "type": "object",
-        "properties": {
-          "keineArmut": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgKeineArmut"
-              }
-            ]
-          },
-          "keinHunger": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgKeinHunger"
-              }
-            ]
-          },
-          "gesundheitUndWohlergehen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgGesundheitUndWohlergehen"
-              }
-            ]
-          },
-          "hochwertigeBildung": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgHochwertigeBildung"
-              }
-            ]
-          },
-          "geschlechtergleichheit": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgGeschlechtergleichheit"
-              }
-            ]
-          },
-          "sauberesWasserUndSanitaereEinrichtungen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgSauberesWasserUndSanitaereEinrichtungen"
-              }
-            ]
-          },
-          "bezahlbareUndSaubereEnergie": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgBezahlbareUndSaubereEnergie"
-              }
-            ]
-          },
-          "menschenwuerdigeArbeitUndWirtschaftswachstum": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgMenschenwuerdigeArbeitUndWirtschaftswachstum"
-              }
-            ]
-          },
-          "industrieInnovationUndInfrastruktur": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgIndustrieInnovationUndInfrastruktur"
-              }
-            ]
-          },
-          "wenigerUngleichheiten": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgWenigerUngleichheiten"
-              }
-            ]
-          },
-          "nachhaltigeStaedteUndGemeinden": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgNachhaltigeStaedteUndGemeinden"
-              }
-            ]
-          },
-          "nachhaligerKonsumUndProduktion": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgNachhaligerKonsumUndProduktion"
-              }
-            ]
-          },
-          "massnahmenZumKlimaschutz": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgMassnahmenZumKlimaschutz"
-              }
-            ]
-          },
-          "lebenUnterWasser": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgLebenUnterWasser"
-              }
-            ]
-          },
-          "lebenAnLand": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgLebenAnLand"
-              }
-            ]
-          },
-          "friedenGerechtigkeitUndStarkeInstitutionen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgFriedenGerechtigkeitUndStarkeInstitutionen"
-              }
-            ]
-          },
-          "partnerschaftenZurErreichungDerZiele": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HeimathafenSdgPartnerschaftenZurErreichungDerZiele"
-              }
-            ]
-          }
-        }
-      },
-      "HeimathafenSdgBezahlbareUndSaubereEnergie": {
-        "type": "object",
-        "properties": {
-          "sdgBezahlbareUndSaubereEnergie": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenBezahlbareUndSaubereEnergie": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenBezahlbareUndSaubereEnergie": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungBezahlbareUndSaubereEnergie": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungBezahlbareUndSaubereEnergie": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleBezahlbareUndSaubereEnergie": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgFriedenGerechtigkeitUndStarkeInstitutionen": {
-        "type": "object",
-        "properties": {
-          "sdgFriedenGerechtigkeitUndStarkeInstitutionen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenFriedenGerechtigkeitUndStarkeInstitutionen": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenFriedenGerechtigkeitUndStarkeInstitutionen": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungFriedenGerechtigkeitUndStarkeInstitutionen": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungFriedenGerechtigkeitUndStarkeInstitutionen": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleFriedenGerechtigkeitUndStarkeInstitutionen": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgGeschlechtergleichheit": {
-        "type": "object",
-        "properties": {
-          "sdgGeschlechtergleichheit": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenGeschlechtergleichheit": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenGeschlechtergleichheit": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungGeschlechtergleichheit": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungGeschlechtergleichheit": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleGeschlechtergleichheit": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgGesundheitUndWohlergehen": {
-        "type": "object",
-        "properties": {
-          "sdgGesundheitUndWohlergehen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenGesundheitUndWohlergehen": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenGesundheitUndWohlergehen": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungGesundheitUndWohlergehen": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungGesundheitUndWohlergehen": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleGesundheitUndWohlergehen": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgHochwertigeBildung": {
-        "type": "object",
-        "properties": {
-          "sdgHochwertigeBildung": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenHochwertigeBildung": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenHochwertigeBildung": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungHochwertigeBildung": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungHochwertigeBildung": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleHochwertigeBildung": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgIndustrieInnovationUndInfrastruktur": {
-        "type": "object",
-        "properties": {
-          "sdgIndustrieInnovationUndInfrastruktur": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenIndustrieInnovationUndInfrastruktur": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenIndustrieInnovationUndInfrastruktur": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungIndustrieInnovationUndInfrastruktur": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungIndustrieInnovationUndInfrastruktur": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleIndustrieInnovationUndInfrastruktur": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgKeinHunger": {
-        "type": "object",
-        "properties": {
-          "sdgKeinHunger": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "verwendeteSchluesselzahlenKeinHunger": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungKeinHunger": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungKeinHunger": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleKeinHunger": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgKeineArmut": {
-        "type": "object",
-        "properties": {
-          "sdgKeineArmut": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenKeineArmut": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenKeineArmut": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungKeineArmut": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungKeineArmut": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleKeineArmut": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgLebenAnLand": {
-        "type": "object",
-        "properties": {
-          "sdgLebenAnLand": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenLebenAnLand": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenLebenAnLand": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungLebenAnLand": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungLebenAnLand": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleLebenAnLand": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgLebenUnterWasser": {
-        "type": "object",
-        "properties": {
-          "sdgLebenUnterWasser": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenLebenUnterWasser": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenLebenUnterWasser": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungLebenUnterWasser": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungLebenUnterWasser": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleLebenUnterWasser": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgMassnahmenZumKlimaschutz": {
-        "type": "object",
-        "properties": {
-          "sdgMassnahmenZumKlimaschutz": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenMassnahmenZumKlimaschutz": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenMassnahmenZumKlimaschutz": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungMassnahmenZumKlimaschutz": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungMassnahmenZumKlimaschutz": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleMassnahmenZumKlimaschutz": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgMenschenwuerdigeArbeitUndWirtschaftswachstum": {
-        "type": "object",
-        "properties": {
-          "sdgMenschenwuerdigeArbeitUndWirtschaftswachstum": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenMenschenwuerdigeArbeitUndWirtschaftswachstum": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenMenschenwuerdigeArbeitUndWirtschaftswachstum": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungMenschenwuerdigeArbeitUndWirtschaftswachstum": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungMenschenwuerdigeArbeitUndWirtschaftswachstum": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleMenschenwuerdigeArbeitUndWirtschaftswachstum": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgNachhaligerKonsumUndProduktion": {
-        "type": "object",
-        "properties": {
-          "sdgNachhaligerKonsumUndProduktion": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenNachhaligerKonsumUndProduktion": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenNachhaligerKonsumUndProduktion": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungNachhaligerKonsumUndProduktion": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungNachhaligerKonsumUndProduktion": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleNachhaligerKonsumUndProduktion": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgNachhaltigeStaedteUndGemeinden": {
-        "type": "object",
-        "properties": {
-          "sdgNachhaltigeStaedteUndGemeinden": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenNachhaltigeStaedteUndGemeinden": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenNachhaltigeStaedteUndGemeinden": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungNachhaltigeStaedteUndGemeinden": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungNachhaltigeStaedteUndGemeinden": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleNachhaltigeStaedteUndGemeinden": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgPartnerschaftenZurErreichungDerZiele": {
-        "type": "object",
-        "properties": {
-          "sdgPartnerschaftenZurErreichungDerZiele": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenPartnerschaftenZurErreichungDerZiele": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenPartnerschaftenZurErreichungDerZiele": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungPartnerschaftenZurErreichungDerZiele": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungPartnerschaftenZurErreichungDerZiele": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquellePartnerschaftenZurErreichungDerZiele": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgSauberesWasserUndSanitaereEinrichtungen": {
-        "type": "object",
-        "properties": {
-          "sdgSauberesWasserUndSanitaereEinrichtungen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenSauberesWasserUndSanitaereEinrichtungen": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenSauberesWasserUndSanitaereEinrichtungen": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungSauberesWasserUndSanitaereEinrichtungen": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungSauberesWasserUndSanitaereEinrichtungen": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleSauberesWasserUndSanitaereEinrichtungen": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "HeimathafenSdgWenigerUngleichheiten": {
-        "type": "object",
-        "properties": {
-          "sdgWenigerUngleichheiten": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "wennNeinBitteBegruendenWenigerUngleichheiten": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteSchluesselzahlenWenigerUngleichheiten": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenerfassungWenigerUngleichheiten": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenPlausibilitaetspruefungWenigerUngleichheiten": {
-            "type": "string",
-            "nullable": true
-          },
-          "datenquelleWenigerUngleichheiten": {
+          "verwendeteQuellen": {
             "type": "string",
             "nullable": true
           }
@@ -9988,11 +10040,19 @@
               }
             ]
           },
-          "pais": {
+          "paiSozial": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/HeimathafenSocialPais"
+                "$ref": "#/components/schemas/HeimathafenSocialPaiSozial"
+              }
+            ]
+          },
+          "paiSozialesAufDemLand": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenSocialPaiSozialesAufDemLand"
               }
             ]
           },
@@ -10001,6 +10061,14 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/HeimathafenSocialSfdr"
+              }
+            ]
+          },
+          "kontroverseGeschaeftsfelderWaffen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HeimathafenSocialKontroverseGeschaeftsfelderWaffen"
               }
             ]
           },
@@ -10017,6 +10085,15 @@
       "HeimathafenSocialKontroverseGeschaeftsfelder": {
         "type": "object",
         "properties": {
+          "verwendeteQuellen": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "HeimathafenSocialKontroverseGeschaeftsfelderWaffen": {
+        "type": "object",
+        "properties": {
           "herstellungOderVertriebVonWaffenAusschluss": {
             "nullable": true,
             "allOf": [
@@ -10025,19 +10102,19 @@
               }
             ]
           },
-          "wennNeinBitteBegruendenWaffen": {
+          "wennNeinBitteBegruenden": {
             "type": "string",
             "nullable": true
           },
-          "metrischVerwendetWaffen": {
+          "verwendeteKennzahlFuerDieUmsatzmessung": {
             "type": "string",
             "nullable": true
           },
-          "methodikDerBerechnungWaffen": {
+          "methodikDerBerechnung": {
             "type": "string",
             "nullable": true
           },
-          "verwendeteQuellenWaffen": {
+          "verwendeteQuellen": {
             "type": "string",
             "nullable": true
           },
@@ -10049,15 +10126,11 @@
               }
             ]
           },
-          "wennNeinBitteBegruendenVerboteneWaffen": {
+          "wennAuschlussNichtMoeglichBitteBegruenden": {
             "type": "string",
             "nullable": true
           },
-          "metrischVerwendetVerboteneWaffen": {
-            "type": "string",
-            "nullable": true
-          },
-          "verwendeteQuellenVerboteneWaffen": {
+          "verwendeteKennzahlZurAbbildungGeaechteterWaffen": {
             "type": "string",
             "nullable": true
           }
@@ -10074,7 +10147,7 @@
               }
             ]
           },
-          "wennNeinBitteBegruendenNachhaltigkeitsrisiken": {
+          "wennNeinBitteBegruenden": {
             "type": "string",
             "nullable": true
           },
@@ -10106,7 +10179,7 @@
               }
             ]
           },
-          "wennNeinBitteBegruendenVierAugenPruefung": {
+          "wennKeineVierAugenPruefungBitteBegruenden": {
             "type": "string",
             "nullable": true
           },
@@ -10116,7 +10189,7 @@
           }
         }
       },
-      "HeimathafenSocialPais": {
+      "HeimathafenSocialPaiSozial": {
         "type": "object",
         "properties": {
           "paiSozial": {
@@ -10127,26 +10200,31 @@
               }
             ]
           },
-          "wennNeinBitteBegruendenSozialeUnternehmen": {
+          "wennNeinBitteBegruenden": {
             "type": "string",
             "nullable": true
           },
-          "verwendeteSchluesselzahlenSozialeUnternehmen": {
+          "verwendeteSchluesselzahlen": {
             "type": "string",
             "nullable": true
           },
-          "datenerfassungSozialeUnternehmen": {
+          "datenerfassung": {
             "type": "string",
             "nullable": true
           },
-          "datenPlausibilitaetspruefungSozialeUnternehmen": {
+          "datenPlausibilitaetspruefung": {
             "type": "string",
             "nullable": true
           },
-          "datenquelleSozialeUnternehmen": {
+          "datenquelle": {
             "type": "string",
             "nullable": true
-          },
+          }
+        }
+      },
+      "HeimathafenSocialPaiSozialesAufDemLand": {
+        "type": "object",
+        "properties": {
           "paiSozialesAufDemLand": {
             "nullable": true,
             "allOf": [
@@ -10155,23 +10233,23 @@
               }
             ]
           },
-          "wennNeinBitteBegruendenSozialesAufDemLand": {
+          "wennNeinBitteBegruenden": {
             "type": "string",
             "nullable": true
           },
-          "verwendeteSchluesselzahlenSozialesAufDemLand": {
+          "verwendeteSchluesselzahlen": {
             "type": "string",
             "nullable": true
           },
-          "datenerfassungSozialesAufDemLand": {
+          "datenerfassung": {
             "type": "string",
             "nullable": true
           },
-          "datenPlausibilitaetspruefungSozialesAufDemLand": {
+          "datenPlausibilitaetspruefung": {
             "type": "string",
             "nullable": true
           },
-          "datenquelleSozialesAufDemLand": {
+          "datenquelle": {
             "type": "string",
             "nullable": true
           }
@@ -13099,10 +13177,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
           "countryCode": {
@@ -13140,10 +13218,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

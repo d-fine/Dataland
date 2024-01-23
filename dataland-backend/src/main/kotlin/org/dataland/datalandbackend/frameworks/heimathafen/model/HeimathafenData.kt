@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.frameworks.heimathafen.model.environmental.HeimathafenEnvironmental
 import org.dataland.datalandbackend.frameworks.heimathafen.model.general.HeimathafenGeneral
 import org.dataland.datalandbackend.frameworks.heimathafen.model.governance.HeimathafenGovernance
-import org.dataland.datalandbackend.frameworks.heimathafen.model.sdg.HeimathafenSdg
 import org.dataland.datalandbackend.frameworks.heimathafen.model.social.HeimathafenSocial
 
 /**
@@ -17,5 +16,4 @@ data class HeimathafenData(
     val environmental: HeimathafenEnvironmental? = null,
     val social: HeimathafenSocial? = null,
     val governance: HeimathafenGovernance? = null,
-    val sdg: HeimathafenSdg? = null,
 )
