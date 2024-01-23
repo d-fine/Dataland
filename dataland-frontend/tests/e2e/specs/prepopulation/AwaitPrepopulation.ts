@@ -18,9 +18,12 @@ describeIf(
     before(function () {
       const dataTypesWithoutToolboxSupport = Object.keys(frameworkFixtureMap);
       const dataTypesWithToolboxSupport = getAllFrameworkIdentifiers();
-      prepopulatedDataTypes = dataTypesWithoutToolboxSupport.concat(dataTypesWithToolboxSupport)
-      const fixtures = Object.values(frameworkFixtureMap).concat(dataTypesWithToolboxSupport.map((dataType) =>
-        `CompanyInformationWith${convertKebabCaseToPascalCase(dataType)}Data`.replace("-", "")));
+      prepopulatedDataTypes = dataTypesWithoutToolboxSupport.concat(dataTypesWithToolboxSupport);
+      const fixtures = Object.values(frameworkFixtureMap).concat(
+        dataTypesWithToolboxSupport.map((dataType) =>
+          `CompanyInformationWith${convertKebabCaseToPascalCase(dataType)}Data`.replace("-", ""),
+        ),
+      );
       fixtures.forEach((fixtureFile) => {
         cy.fixture(fixtureFile).then(function (companies: []) {
           expectedNumberOfCompanies += companies.length;
