@@ -18,7 +18,7 @@
     :id="fieldName + name"
     :ignore="true"
     :plugins="[disabledOnMoreThanOne]"
-    @input="emitUpdateCurrentValue($event)"
+    @input="handleCheckboxSelectionByUser($event)"
   />
   <FormKit
     type="text"
@@ -27,7 +27,7 @@
     :validation="validation"
     :validation-label="validationLabel"
     :validation-messages="validationMessages"
-    v-if="!shouldBeIgnored"
+    v-if="!shouldBeIgnoredByFormKit"
     :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
   />
 </template>
@@ -43,43 +43,39 @@ export default defineComponent({
   data() {
     return {
       key: 0,
-      shouldBeIgnored: false,
-      currentValue: null,
+      shouldBeIgnoredByFormKit: false,
+      currentValue: null as string | null,
       checkboxValue: [] as Array<string>,
     };
   },
   methods: {
     disabledOnMoreThanOne,
     /**
-     * Emits an event when the currentValue has been changed
-     * @param checkboxValue current value
+     * Handles the input event in the checkboxes
+     * @param newCheckboxValue is the selected value in the checkbox that triggered this @input event
      */
-    emitUpdateCurrentValue(checkboxValue: [string]) {
-      if (checkboxValue[0]) {
-        this.shouldBeIgnored = false;
-        this.currentValue = checkboxValue[0].toString();
-        this.$emit("update:currentValue", checkboxValue[0].toString());
-      } else {
-        this.shouldBeIgnored = true;
-        this.$emit("update:currentValue", null);
-      }
+    handleCheckboxSelectionByUser(newCheckboxValue: [string]) {
+      const newCheckboxValueAsString = newCheckboxValue[0];
+      this.updateCurrentValue(newCheckboxValueAsString);
     },
     /**
-     * Function that sets whether value should be ignored or not
-     * @param currentValue current value
+     * Updates the currentValue when the checkboxes value has been changed
+     * @param newCheckBoxValue is the new value in the checkbox
      */
-    setIgnoreToFields(currentValue: string) {
-      if (currentValue && currentValue !== "") {
-        this.shouldBeIgnored = false;
-        this.checkboxValue = [currentValue];
+    updateCurrentValue(newCheckBoxValue: string) {
+      if (newCheckBoxValue && newCheckBoxValue !== "") {
+        this.shouldBeIgnoredByFormKit = false;
+        this.currentValue = newCheckBoxValue;
+        this.checkboxValue = [newCheckBoxValue];
       } else {
-        this.shouldBeIgnored = true;
+        this.shouldBeIgnoredByFormKit = !this.validation.includes("is:");
+        this.currentValue = null;
       }
     },
   },
   watch: {
     currentValue(newVal: string) {
-      this.setIgnoreToFields(newVal);
+      this.updateCurrentValue(newVal);
     },
   },
   props: {
@@ -107,6 +103,5 @@ export default defineComponent({
       default: "",
     },
   },
-  emits: ["update:currentValue"],
 });
 </script>
