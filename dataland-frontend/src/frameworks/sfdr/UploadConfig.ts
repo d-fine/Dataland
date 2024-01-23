@@ -1,4 +1,5 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
+import { SfdrData } from "@clients/backend";
 
 export const sfdrDataModel = [
   {
@@ -882,6 +883,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "between:-100,100",
           },
           {
             name: "femaleBoardMembers",
@@ -945,7 +947,7 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "min:0",
+            validation: "between:0,100",
           },
           {
             name: "workdaysLostInDays",

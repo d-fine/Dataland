@@ -51,10 +51,10 @@ describe("As a user, I expect the search functionality on the /companies page to
         "eq",
         getBaseUrl() +
           "/companies?" +
-          `framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
+          `framework=${DataTypeEnum.Sfdr}` +
+          `&framework=${DataTypeEnum.EutaxonomyNonFinancials}` +
           `&framework=${DataTypeEnum.Lksg}` +
           `&framework=${DataTypeEnum.P2p}` +
-          `&framework=${DataTypeEnum.Sfdr}` +
           `&framework=${DataTypeEnum.Sme}` +
           `&framework=${DataTypeEnum.EsgQuestionnaire}`,
       )

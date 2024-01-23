@@ -57,6 +57,9 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:DataPointMinimumValue(minimumValue = 0)
     val averageGrossHourlyEarningsFemaleEmployees: CurrencyDataPoint? = null,
 
+    @field:Valid()
+    @field:DataPointMinimumValue(minimumValue = -100)
+    @field:DataPointMaximumValue(maximumValue = 100)
     val unadjustedGenderPayGapInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
@@ -78,6 +81,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
 
     @field:Valid()
     @field:DataPointMinimumValue(minimumValue = 0)
+    @field:DataPointMaximumValue(maximumValue = 100)
     val rateOfAccidentsInPercent: ExtendedDataPoint<BigDecimal?>? = null,
 
     @field:Valid()
