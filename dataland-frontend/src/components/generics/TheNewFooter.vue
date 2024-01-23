@@ -3,6 +3,13 @@
     <div class="footer__row footer__row--top">
       <div class="footer__section footer__section--logo">
         <img v-if="footerLogo" :src="footerLogo" alt="Dataland Logo" class="footer__logo" />
+        <div v-if="ownedByCard && ownedByCard.links && ownedByCard.links.length > 0" class="footer__owned-by">
+          <p class="footer__owned-by-title">{{ ownedByCard.title }}</p>
+          <img :src="ownedByCard.icon" alt="Owned by Logo" class="footer__owned-by-logo" />
+          <a :href="ownedByCard.links[0].url" target="_blank" rel="noopener noreferrer" class="footer__owned-by-link">
+            {{ ownedByCard.links[0].text }}
+          </a>
+        </div>
       </div>
       <div class="footer__section footer__section--columns" aria-labelledby="footer-navigation">
         <div
@@ -72,7 +79,17 @@ const isAccordionOpen = (title: string | undefined): boolean => (title ? openAcc
 
 const footerLogo = computed(() => footerSection.value?.image?.[0] ?? "");
 
-const nonLegalCards = computed(() => footerSection.value?.cards?.filter((card) => card.title !== "Legal") ?? []);
+const ownedByCard = computed(() => {
+  const card = footerSection.value?.cards?.find((card) => card.title === "Owned by:");
+  if (card && !card.links) {
+    card.links = [];
+  }
+  return card;
+});
+
+const nonLegalCards = computed(() => {
+  return footerSection.value?.cards?.filter((card) => card.title !== "Legal" && card.title !== "Owned by:") ?? [];
+});
 
 const legalLinks = computed(() => footerSection.value?.cards?.find((card) => card.title === "Legal")?.links ?? []);
 
@@ -121,9 +138,57 @@ onUnmounted(() => {
     &--logo {
       flex: 1;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
+      flex-direction: column;
+      text-align: left;
+      gap: 1em;
       img {
         height: auto;
+      }
+      .footer__owned-by {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        &-title {
+          color: var(--grey-tones-300);
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 20px;
+          letter-spacing: 0.25px;
+          margin: 0;
+        }
+
+        &-logo {
+          width: 79px;
+          height: 26px;
+        }
+
+        &-link {
+          color: var(--default-neutral-white);
+          font-weight: 600;
+          line-height: 24px;
+          letter-spacing: 0.75px;
+          text-transform: uppercase;
+          text-decoration: none;
+          &:hover {
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            text-decoration-thickness: 2px;
+          }
+          &::after {
+            content: "";
+            display: inline-block;
+            top: 3px;
+            width: 16px;
+            height: 16px;
+            background-image: url(/static/icons/Arrow--up-right.svg);
+            background-size: cover;
+            position: relative;
+            margin-left: 8px;
+            filter: invert(1);
+          }
+        }
       }
     }
 

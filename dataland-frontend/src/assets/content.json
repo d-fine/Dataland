@@ -301,6 +301,16 @@
                                     "url": "/dataprivacy"
                                 }
                             ]
+                        },
+                        {
+                            "title": "Owned by:",
+                            "links": [
+                                {
+                                    "text": "WERTESTIFTUNG.ORG",
+                                    "url": "https://www.wertestiftung.org"
+                                }
+                            ],
+                            "icon": "/static/logos/werte-stiftung-logo.png"
                         }
                     ]
                 }
