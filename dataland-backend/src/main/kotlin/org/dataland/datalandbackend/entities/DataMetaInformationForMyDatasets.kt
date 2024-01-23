@@ -20,15 +20,16 @@ data class DataMetaInformationForMyDatasets(
         /**
          * A function to construct a DatametaInformationForMyDatasets object from a entity object
          */
-        fun fromEntity(entity: DatasetMetaInfoEntityForMyDatasets) = DataMetaInformationForMyDatasets(
-            companyId = entity.companyId,
-            dataId = entity.dataId,
-            companyName = entity.companyName,
-            dataType = DataType.valueOf(entity.dataType),
-            reportingPeriod = entity.reportingPeriod,
-            qualityStatus = QaStatus.values().find { it.ordinal == entity.qualityStatus }!!,
-            currentlyActive = entity.currentlyActive,
-            uploadTime = entity.uploadTime,
-        )
+        fun fromDatasetMetaInfoEntityForMyDatasets(entity: DatasetMetaInfoEntityForMyDatasets) =
+            DataMetaInformationForMyDatasets(
+                companyId = entity.companyId,
+                dataId = entity.dataId,
+                companyName = entity.companyName,
+                dataType = DataType.valueOf(entity.dataType),
+                reportingPeriod = entity.reportingPeriod,
+                qualityStatus = QaStatus.values().find { it.ordinal == entity.qualityStatus }!!,
+                currentlyActive = entity.currentlyActive,
+                uploadTime = entity.uploadTime,
+            )
     }
 }

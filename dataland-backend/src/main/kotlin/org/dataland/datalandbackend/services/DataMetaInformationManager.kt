@@ -109,6 +109,6 @@ class DataMetaInformationManager(
      */
     fun getUserDataMetaInformation(userId: String): List<DataMetaInformationForMyDatasets>? {
         return dataMetaInformationRepositoryInterface.getUserUploadsDataMetaInfos(userId)
-            .map { DataMetaInformationForMyDatasets.fromEntity(it) }
+            .map { DataMetaInformationForMyDatasets.fromDatasetMetaInfoEntityForMyDatasets(it) }
     }
 }
