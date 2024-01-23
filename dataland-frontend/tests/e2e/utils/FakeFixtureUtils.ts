@@ -12,12 +12,7 @@ import {
   type YesNo,
   type YesNoNa,
 } from "@clients/backend";
-import {
-  generateCurrencyValue,
-  generateFloat,
-  generateInt,
-  generatePercentageValue,
-} from "@e2e/fixtures/common/NumberFixtures";
+import { generateCurrencyValue, generateFloat, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReferencedDocuments, getReferencedDocumentId } from "@e2e/utils/DocumentReference";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { type BaseDataPoint, type ExtendedDataPoint } from "@/utils/DataPoint";
