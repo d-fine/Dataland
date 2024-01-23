@@ -32,7 +32,7 @@ describeIf(
       () => {
         cy.wait(5000)
           .then(() => getKeycloakToken(reader_name, reader_pw))
-          .then(async (token) => {
+          .then({timeout: 120000},async (token) => {
             const responsePromises = Object.keys(frameworkFixtureMap).map((key) =>
               countCompaniesAndDataSetsForDataType(token, key as keyof typeof frameworkFixtureMap),
             );
