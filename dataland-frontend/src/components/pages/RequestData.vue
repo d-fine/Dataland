@@ -8,7 +8,7 @@
         </div>
       </MarginWrapper>
 
-      <FormKit :actions="false" type="form" @submit="submitRequest" id="requestDataFormId" name="requestDataFormName">
+      <FormKit :actions="false" v-model="bulkDataRequestModel" type="form" @submit="submitRequest" id="requestDataFormId" name="requestDataFormName">
         <div class="grid p-8 justify-content-center uploadFormWrapper">
           <div class="col-12" v-if="postBulkDataRequestObjectProcessed">
             <div data-test="submittingSuccededMessage" v-if="submittingSucceded">
@@ -257,6 +257,7 @@ export default defineComponent({
 
   data() {
     return {
+      bulkDataRequestModel: {},
       availableFrameworks: [] as { value: DataTypeEnum; label: string }[],
       selectedFrameworks: [] as Array<DataTypeEnum>,
       identifiersInString: "",
@@ -393,7 +394,9 @@ export default defineComponent({
           closeOnEscape: false,
           showHeader: true,
         },
-        data: {},
+        data: {
+          bulkDataRequestModel: this.bulkDataRequestModel,
+        },
       });
     },
   },

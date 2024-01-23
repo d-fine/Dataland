@@ -1,5 +1,6 @@
 <template>
-  <h1>Bulk Data Response Dialog</h1>
+  <h2>Bulk Data Response Dialog</h2>
+  <pre wrap>{{ bulkDataRequestModel }}</pre>
 </template>
 
 <script lang="ts">
@@ -8,7 +9,11 @@ import { defineComponent } from "vue";
 export default defineComponent({
   components: {},
   name: "BulkDataResponseDialog",
-  props: {},
+  data() {
+    return {
+      bulkDataRequestModel: {},
+    };
+  },
   computed: {},
 });
 </script>
