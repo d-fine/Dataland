@@ -704,8 +704,8 @@
         "tags": [
           "company-data-controller"
         ],
-        "summary": "Retrieve specific companies with framework data by different filters or just all companies from the data store.",
-        "description": "Companies with associated framework data identified via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+        "summary": "Retrieve just the basic information about specific companies with approved framework data by different filters.",
+        "description": "The basic information about companies with associated approved framework data identified via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
         "operationId": "getCompanies",
         "parameters": [
           {
@@ -751,33 +751,17 @@
                 "type": "string"
               }
             }
-          },
-          {
-            "name": "onlyCompanyNames",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "onlyWithDataFromCurrentUser",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved companies.",
+            "description": "Successfully retrieved basic company information.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StoredCompany"
+                    "$ref": "#/components/schemas/BasicCompanyInformation"
                   }
                 }
               }
@@ -1182,6 +1166,69 @@
           },
           "404": {
             "description": "Successfully checked that identifier does not exist."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}/uploads": {
+      "get": {
+        "tags": [
+          "user-uploads-controller"
+        ],
+        "summary": "Retrieve an augmented dataset meta information uploaded by a specific user.",
+        "description": "Retrieve an augmented dataset meta information uploaded by a specific user for the \"My Datasets\" page.",
+        "operationId": "getUserUploadsDataMetaInformation",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved augmented dataset meta information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataMetaInformationForMyDatasets"
+                  }
+                }
+              }
+            }
           },
           "default": {
             "description": "An error occurred",
@@ -10920,6 +10967,46 @@
           "VatNumber"
         ]
       },
+      "DataMetaInformationForMyDatasets": {
+        "required": [
+          "companyId",
+          "companyName",
+          "dataId",
+          "dataType",
+          "qualityStatus",
+          "reportingPeriod",
+          "uploadTime"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "dataId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/DataTypeEnum"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "qualityStatus": {
+            "$ref": "#/components/schemas/QaStatus"
+          },
+          "currentlyActive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "DataAndMetaInformationSmeData": {
         "required": [
           "data",
@@ -11025,6 +11112,37 @@
           }
         }
       },
+      "BasicCompanyInformation": {
+        "required": [
+          "companyId",
+          "companyName",
+          "countryCode",
+          "headquarters"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "permId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "AggregatedFrameworkDataSummary": {
         "required": [
           "numberOfProvidedReportingPeriods"
@@ -11044,10 +11162,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

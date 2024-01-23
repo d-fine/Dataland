@@ -9,7 +9,10 @@ import { prepareSimpleDataSearchStoredCompanyArray } from "@ct/testUtils/Prepare
 function intercept(arr: undefined | [] = undefined): undefined {
   const mockDataSearchStoredCompanyArray = prepareSimpleDataSearchStoredCompanyArray(200);
   cy.intercept("**/api/companies?**", arr ?? mockDataSearchStoredCompanyArray);
-  cy.intercept("**/api/companies/meta-information", mockDataSearchStoredCompanyArray[0].dataRegisteredByDataland[0]);
+  cy.intercept("**/api/companies/meta-information", {
+    countryCodes: ["CV"],
+    sectors: ["partnerships"],
+  });
   const keycloakMock = minimalKeycloakMock({
     roles: ["ROLE_USER", "ROLE_UPLOADER", "ROLE_REVIEWER"],
   });
@@ -56,16 +59,16 @@ describe("As a user, I expect there to be multiple result pages if there are man
     paginatorShouldNotExist();
   });
 
-  it("Search for all companies containing 'a' and verify that results are paginated, only first 100 are shown", () => {
+  it("Search for all companies containing 'abs' and verify that results are paginated, only first 100 are shown", () => {
     intercept();
-    enterSearch("a");
+    enterSearch("abs");
     paginatorShouldExist();
   });
 
   it("Search for all companies, go to page 2 of the search results, then run a another query and verify that paginator and the page text are reset", () => {
     intercept();
     cy.get('button[class="p-paginator-page p-paginator-element p-link"]').eq(0).should("contain.text", "2").click();
-    enterSearch("a");
+    enterSearch("abs");
     paginatorShouldExist();
   });
 });

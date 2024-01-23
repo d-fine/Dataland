@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.P2pDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
@@ -333,14 +334,7 @@ class ApiAccessor {
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 
-    fun getCompaniesOnlyByName(searchString: String): List<StoredCompany> {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        return companyDataControllerApi.getCompanies(
-            searchString,
-            onlyCompanyNames = true,
-        )
-    }
-    fun getCompaniesByNameAndIdentifier(searchString: String): List<StoredCompany> {
+    fun getCompaniesByNameAndIdentifier(searchString: String): List<BasicCompanyInformation> {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         return companyDataControllerApi.getCompanies(
             searchString,

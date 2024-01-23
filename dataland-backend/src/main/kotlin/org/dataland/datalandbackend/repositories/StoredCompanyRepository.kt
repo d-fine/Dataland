@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.repositories
 
+import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
@@ -13,43 +14,102 @@ import org.springframework.data.repository.query.Param
 
 interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     /**
-     * A function for querying companies by various filters:
+     * A function for querying basic information for all companies with approved datasets
+     */
+    @Query(
+        nativeQuery = true,
+        value = "SELECT company.company_id AS companyId," +
+            " company.company_name AS companyName," +
+            " company.headquarters AS headquarters," +
+            " company.country_code AS countryCode," +
+            " company.sector AS sector," +
+            " permId.min_id AS permId" +
+            " FROM stored_companies company" +
+            " JOIN (SELECT DISTINCT company_id FROM data_meta_information WHERE quality_status = 1) datainfo" +
+            " ON company.company_id = datainfo.company_id" +
+            " LEFT JOIN (SELECT company_id, min(identifier_value) AS min_id FROM company_identifiers" +
+            " WHERE identifier_type = 'PermId' GROUP BY company_id) permId" +
+            " ON company.company_id = permid.company_id" +
+            " ORDER by company.company_name ASC",
+    )
+    fun getAllCompaniesWithDataset(): List<BasicCompanyInformation>
+
+    /**
+     * A function for querying basic information of companies with approved datasets by various filters:
      * - dataTypeFilter: If set, only companies with at least one datapoint
      * of one of the supplied dataTypes are returned
      * - searchString: If not empty, only companies that contain the search string in their name are returned
      * (Prefix-Matches are ordered before Center-Matches,
      * e.g. when searching for "a" Allianz will come before Deutsche Bank)
-     * - nameOnlyFilter: If false, it suffices if the searchString is contained
-     * in one of the company identifiers or the name
      */
     @Query(
-        "SELECT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN company.dataRegisteredByDataland data " +
-            "LEFT JOIN company.identifiers identifier " +
-            "LEFT JOIN company.companyAlternativeNames alternativeName " +
-            "WHERE " +
-            "(:#{#searchFilter.dataTypeFilterSize} = 0 " +
-            "OR (data.dataType in :#{#searchFilter.dataTypeFilter})) AND " +
-            "(:#{#searchFilter.sectorFilterSize} = 0 " +
-            "OR (company.sector in :#{#searchFilter.sectorFilter})) AND " +
-            "(:#{#searchFilter.countryCodeFilterSize} = 0 " +
-            "OR (company.countryCode in :#{#searchFilter.countryCodeFilter})) AND " +
-            "(:#{#searchFilter.uploaderIdLength} = 0 " +
-            "OR (data.uploaderUserId = :#{#searchFilter.uploaderId})) AND " +
-            "(:#{#searchFilter.searchStringLength} = 0 " +
-            "OR (lower(company.companyName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
-            "(lower(alternativeName) LIKE %:#{#searchFilter.searchStringLower}%) OR " +
-            "(:#{#searchFilter.nameOnlyFilter} = false " +
-            "AND lower(identifier.identifierValue) LIKE %:#{#searchFilter.searchStringLower}%)) " +
-            "GROUP BY company.companyId " +
-            "ORDER BY " +
-            "(CASE WHEN lower(company.companyName) = :#{#searchFilter.searchStringLower} THEN 1 " +
-            "WHEN lower(max(alternativeName)) = :#{#searchFilter.searchStringLower} THEN 2 " +
-            "WHEN lower(company.companyName) LIKE :#{#searchFilter.searchStringLower}% THEN 3 " +
-            "WHEN lower(max(alternativeName)) LIKE :#{#searchFilter.searchStringLower}% THEN 4 ELSE 5 END) ASC, " +
-            "company.companyName ASC",
+        nativeQuery = true,
+        value = "WITH" +
+            " has_data AS (SELECT DISTINCT company_id FROM data_meta_information" +
+            " WHERE (:#{#searchFilter.dataTypeFilterSize} = 0" +
+            " OR data_type IN :#{#searchFilter.dataTypeFilter}) AND quality_status = 1)," +
+            " filtered_results AS (" +
+            " SELECT intermediate_results.company_id AS company_id, min(intermediate_results.match_quality)" +
+            " AS match_quality FROM (" +
+            " (SELECT company.company_id AS company_id," +
+            " CASE " +
+            " WHEN company_name = :#{#searchFilter.searchString} THEN 1" +
+            " WHEN company_name ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 3" +
+            " ELSE 5" +
+            " END match_quality " +
+            " FROM (SELECT company_id, company_name FROM stored_companies) company " +
+            " JOIN has_data datainfo" +
+            " ON company.company_id = datainfo.company_id " +
+            " WHERE company.company_name ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})" +
+
+            " UNION " +
+            " (SELECT " +
+            " stored_company_entity_company_id AS company_id," +
+            " CASE " +
+            " WHEN company_alternative_names = :#{#searchFilter.searchString} THEN 2" +
+            " WHEN company_alternative_names" +
+            " ILIKE :#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()} THEN 4" +
+            " ELSE 5 " +
+            " END match_quality " +
+            " FROM stored_company_entity_company_alternative_names alt_names" +
+            " JOIN has_data datainfo" +
+            " ON alt_names.stored_company_entity_company_id = datainfo.company_id " +
+            " WHERE company_alternative_names" +
+            " ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})" +
+
+            " UNION " +
+            " (SELECT " +
+            " identifiers.company_id AS company_id," +
+            " 5 match_quality " +
+            " FROM company_identifiers identifiers" +
+            " JOIN has_data datainfo" +
+            " ON identifiers.company_id = datainfo.company_id " +
+            " WHERE identifier_value ILIKE %:#{escape(#searchFilter.searchString)}% ESCAPE :#{escapeCharacter()})) " +
+            " AS intermediate_results GROUP BY intermediate_results.company_id) " +
+
+            // Combine Results
+            " SELECT info.company_id AS companyId," +
+            " info.company_name AS companyName, " +
+            " info.headquarters AS headquarters, " +
+            " info.country_code AS countryCode, " +
+            " info.sector AS sector, " +
+            " perm_id.identifier_value AS permId " +
+            " FROM filtered_results " +
+            " JOIN " +
+            " (SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
+            " WHERE (:#{#searchFilter.sectorFilterSize} = 0 OR sector IN :#{#searchFilter.sectorFilter}) " +
+            " AND (:#{#searchFilter.countryCodeFilterSize} = 0" +
+            " OR country_code IN :#{#searchFilter.countryCodeFilter}) " +
+            " ) info " +
+            " ON info.company_id = filtered_results.company_id " +
+            " LEFT JOIN (SELECT company_id, MIN(identifier_value) AS identifier_value FROM company_identifiers" +
+            " WHERE identifier_type = 'PermId' GROUP BY company_id) perm_id " +
+            " ON perm_id.company_id = filtered_results.company_id " +
+            " ORDER BY filtered_results.match_quality ASC, info.company_name ASC ",
     )
-    fun searchCompanies(@Param("searchFilter") searchFilter: StoredCompanySearchFilter): List<StoredCompanyEntity>
+    fun searchCompanies(
+        @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
+    ): List<BasicCompanyInformation>
 
     /**
      * A function for querying companies by search string:
@@ -60,9 +120,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value =
-        "WITH filtered_text_results as (" +
+        "WITH filtered_text_results AS (" +
             // Fuzzy-Search Company Name
-            " (SELECT stored_companies.company_id, max(stored_companies.company_name) as company_name," +
+            " (SELECT stored_companies.company_id, max(stored_companies.company_name) AS company_name," +
             " max(CASE " +
             " WHEN company_name = :#{#searchString} THEN 10" +
             " WHEN company_name ILIKE :#{escape(#searchString)}% ESCAPE :#{escapeCharacter()} THEN 5" +
@@ -159,7 +219,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.identifiers WHERE company in :companies",
+            "LEFT JOIN FETCH company.identifiers WHERE company IN :companies",
     )
     fun fetchIdentifiers(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
@@ -168,7 +228,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.companyAlternativeNames WHERE company in :companies",
+            "LEFT JOIN FETCH company.companyAlternativeNames WHERE company IN :companies",
     )
     fun fetchAlternativeNames(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
@@ -177,7 +237,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      */
     @Query(
         "SELECT DISTINCT company FROM StoredCompanyEntity company " +
-            "LEFT JOIN FETCH company.dataRegisteredByDataland WHERE company in :companies",
+            "LEFT JOIN FETCH company.dataRegisteredByDataland WHERE company IN :companies",
     )
     fun fetchCompanyAssociatedByDataland(companies: List<StoredCompanyEntity>): List<StoredCompanyEntity>
 
