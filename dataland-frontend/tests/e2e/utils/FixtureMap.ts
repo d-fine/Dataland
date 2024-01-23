@@ -7,4 +7,5 @@ export const frameworkFixtureMap = {
   [DataTypeEnum.P2p]: "CompanyInformationWithP2pData",
   [DataTypeEnum.Sfdr]: "CompanyInformationWithSfdrData",
   [DataTypeEnum.Sme]: "CompanyInformationWithSmeData",
+  [DataTypeEnum.EsgQuestionnaire]: "CompanyInformationWithEsgQuestionnaireData",
 };

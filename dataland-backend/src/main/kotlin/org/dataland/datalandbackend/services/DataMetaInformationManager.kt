@@ -92,7 +92,7 @@ class DataMetaInformationManager(
     }
 
     /**
-     * Method to make delete the data meta information for a given dataId
+     * Method to delete the data meta information for a given dataId
      * @param dataId of the dataset that should be deleted
      */
     fun deleteDataMetaInfo(
@@ -109,6 +109,6 @@ class DataMetaInformationManager(
      */
     fun getUserDataMetaInformation(userId: String): List<DataMetaInformationForMyDatasets>? {
         return dataMetaInformationRepositoryInterface.getUserUploadsDataMetaInfos(userId)
-            .map { DataMetaInformationForMyDatasets.fromEntity(it) }
+            .map { DataMetaInformationForMyDatasets.fromDatasetMetaInfoEntityForMyDatasets(it) }
     }
 }
