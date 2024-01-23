@@ -1,10 +1,7 @@
-package org.dataland.frameworktoolbox.frameworks.esgquestionnaire.custom
+package org.dataland.frameworktoolbox.intermediate.components
 
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
-import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
-import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
-import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
 import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
@@ -18,12 +15,12 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
  * In-memory representation of a field that contains a list of base-data-points.
  * The base-data-points have strings as their values.
  */
-class EsgQuestionnaireListOfBaseDataPointComponent(
+class ListOfStringBaseDataPointComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
-    var descriptionColumnHeader: String? = null
-    var documentColumnHeader: String? = null
+    var descriptionColumnHeader: String = "Description"
+    var documentColumnHeader: String = "Document"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addProperty(
@@ -42,8 +39,6 @@ class EsgQuestionnaireListOfBaseDataPointComponent(
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        requireNotNull(descriptionColumnHeader)
-        requireNotNull(documentColumnHeader)
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
