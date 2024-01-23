@@ -74,30 +74,30 @@ Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erken
 Angabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen etc.",String,,,,40,Yes,
 45,Environmental,PAIs,PAIs - biologische Vielfalt,"Wird der PAI auf Biodiversität abgebildet?
 Ja/Nein bezogen auf Annex I C(2022)1931",Yes/No,,,,,,
-"45,1",Environmental,PAIs,"Wenn Nein, bitte begründen (Biodiversität)",,String,,,,45,No,
-46,Environmental,PAIs,Verwendete Schlüsselzahlen (Biodiversität),"Welche Kennzahlen werden verwendet?
+"45,1",Environmental,PAIs,"Wenn Nein, bitte begründen",,String,,,,45,No,
+46,Environmental,PAIs,Verwendete Schlüsselzahlen,"Welche Kennzahlen werden verwendet?
 Angabe der Kennzahlen, die zur Berechnung und Abbildung des PAIs verwendet werden.",String,,,,45,Yes,
-47,Environmental,PAIs,Datenerfassung (Biodiversität),"Wie erfolgt die Datenerhebung?
+47,Environmental,PAIs,Datenerfassung,"Wie erfolgt die Datenerhebung?
 Angaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",String,,,,45,Yes,
-48,Environmental,PAIs,Daten Plausibilitätsprüfung (Biodiversität),"Wie erfolgt die Datenplausibilisierung?
+48,Environmental,PAIs,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",String,,,,45,Yes,
-49,Environmental,PAIs,Datenquelle (Biodiversität),"Welche Quellen werden genutzt?
+49,Environmental,PAIs,Datenquelle,"Welche Quellen werden genutzt?
 Angabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews etc.",String,,,,45,Yes,
 50,Environmental,PAIs,PAI - Wasser,"Wird der PAI auf Wasser abgebildet?
 Ja/Nein bezogen auf Annex I C(2022)1931",Yes/No,,,,,,
-"50,1",Environmental,PAIs,"Wenn Nein, bitte begründen (Wasser)",,String,,,,50,No,
-51,Environmental,PAIs,Verwendete Schlüsselzahlen (Wasser),"Welche Kennzahlen werden verwendet?
+"50,1",Environmental,PAIs,"Wenn Nein, bitte begründen",,String,,,,50,No,
+51,Environmental,PAIs,Verwendete Schlüsselzahlen,"Welche Kennzahlen werden verwendet?
 Angabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werden.",String,,,,50,Yes,
-52,Environmental,PAIs,Datenerfassung (Wasser),"Wie erfolgt die Datenerhebung?
+52,Environmental,PAIs,Datenerfassung,"Wie erfolgt die Datenerhebung?
 Angaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",String,,,,50,Yes,
-53,Environmental,PAIs,Daten Plausibilitätsprüfung (Wasser),"Wie erfolgt die Datenplausibilisierung?
+53,Environmental,PAIs,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",String,,,,50,Yes,
-54,Environmental,PAIs,Datenquelle (Wasser),"Welche Quellen werden genutzt?
+54,Environmental,PAIs,Datenquelle,"Welche Quellen werden genutzt?
 Angabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews, Daten von NGOs etc.",String,,,,50,Yes,
 55,Environmental,PAIs,PAI - Abfall,"Wird der PAI auf Abfall abgebildet?
 Ja/Nein bezogen auf Annex I C(2022)1931",Yes/No,,,,,,
-"55,1",Environmental,PAIs,"Wenn Nein, bitte begründen (Abfall)",,String,,,,55,No,
-56,Environmental,PAIs,Verwendete Schlüsselzahlen (Abfall),"Welche Kennzahlen werden verwendet?
+"55,1",Environmental,PAIs,"Wenn Nein, bitte begründen",,String,,,,55,No,
+56,Environmental,PAIs,Verwendete Schlüsselzahlen,"Welche Kennzahlen werden verwendet?
 Angabe der Kennzahlen, die zur Berechnung und Abbildung des PAIs verwendet werden.",String,,,,55,Yes,
 57,Environmental,PAIs,Datenerfassung (Abfall),"Wie erfolgt die Datenerhebung?
 Angaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",String,,,,55,Yes,
