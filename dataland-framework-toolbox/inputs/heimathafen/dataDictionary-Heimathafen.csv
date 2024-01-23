@@ -15,7 +15,7 @@ Hier sollten Angaben zur Vorgehensweise bei der Datenerhebung gemacht werden, z.
 11,General,Methodik,"Die Methodik umfasst Umwelt, Soziales und Governance","Deckt die Methodik die Bereiche Umwelt, Soziales und Governance ab?
 Hier sollte darauf eingangen werden, ob die Methodik alle drei Bereiche abdeckt oder ein Fokus auf bestimmte Themenbereiche vorliegt.",Yes/No,,,,,,
 12,General,Methodik,Datenquelle,"Welche Quellen werden für die Datenerhebung verwendet?
-Angabe von Quellen für die Datenerhebung, zum Beispiel Nachhaltigkeitsberichte von Unternehmen, Daten von NGOs etc.",Custom - List of BaseDataPoint<string>,,,,,,
+Angabe von Quellen für die Datenerhebung, zum Beispiel Nachhaltigkeitsberichte von Unternehmen, Daten von NGOs etc.",Multiple Documents With Descriptions,,,,,,
 13,General,Methodik,Daten Plausibilitätsprüfung,"Wie werden die erhobenen Daten plausibilisiert?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten (z.B. numerische Daten werden verlangt und Text wurde eingetragen)",String,,,,,,
 14,General,Methodik,Intervalle für die Datenaktualisierung,"In welchen Zeiträumen erfolgt eine Aktualisierung der Daten?
@@ -56,7 +56,7 @@ Angaben zur Wesentlichkeitsanalyse bei der Einstufung der Wesentlichkeit eines R
 Angaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Umwelt in die Erstellung des Ratings miteinbezogen werden und wenn ja wie.",String,,,,32,Yes,
 36,Environmental,Nachhaltigskeitsrisiken,Risiken für die ökologische Nachhaltigkeit absichern,Wie wird die Überwachung von Nachhaltigkeitsrisiken im Bereich Umwelt sichergestellt?,String,,,,32,Yes,
 37,Environmental,Nachhaltigskeitsrisiken,Quelle,"Welche Quellen werden für die Erfassung von Nachhaltigkeitsrisiken im Bereich Umwelt verwendet?
-Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc.",Custom - List of BaseDataPoint<string>,,,,32,Yes,
+Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc.",Multiple Documents With Descriptions,,,,32,Yes,
 38,Environmental,Nachhaltigskeitsrisiken,Vier-Augen-Prüfung,Ist eine Vier-Augen-Verifizierung vorhanden?,Yes/No,,,,,,
 "38,1",Environmental,Nachhaltigskeitsrisiken,"Wenn Nein, bitte begründen",,String,,,,38,No,
 39,Environmental,Nachhaltigskeitsrisiken,Beschreibung der Vier-Augen- Prüfung,Wie erfolgt die Vier-Augen-Verifizierung?,String,,,,38,Yes,

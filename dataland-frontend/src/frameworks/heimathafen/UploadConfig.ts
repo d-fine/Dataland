@@ -126,6 +126,16 @@ export const heimathafenDataModel = [
             showIf: (): boolean => true,
           },
           {
+            name: "datenquelle",
+            label: "Datenquelle",
+            description:
+              "Welche Quellen werden für die Datenerhebung verwendet?\nAngabe von Quellen für die Datenerhebung, zum Beispiel Nachhaltigkeitsberichte von Unternehmen, Daten von NGOs etc.",
+
+            component: "ListOfBaseDataPointsFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
             name: "datenPlausibilitaetspruefung",
             label: "Daten Plausibilitätsprüfung",
             description:
@@ -677,6 +687,17 @@ export const heimathafenDataModel = [
             description: "Wie wird die Überwachung von Nachhaltigkeitsrisiken im Bereich Umwelt sichergestellt?",
 
             component: "InputTextFormField",
+            required: false,
+            showIf: (dataset: HeimathafenData): boolean =>
+              dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",
+          },
+          {
+            name: "quelle",
+            label: "Quelle",
+            description:
+              "Welche Quellen werden für die Erfassung von Nachhaltigkeitsrisiken im Bereich Umwelt verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc.",
+
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",

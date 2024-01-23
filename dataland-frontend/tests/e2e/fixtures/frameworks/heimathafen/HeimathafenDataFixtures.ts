@@ -4,6 +4,7 @@ import { type FixtureData } from "@sharedUtils/Fixtures";
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type HeimathafenData } from "@clients/backend";
 import { HeimathafenGenerator } from "@e2e/fixtures/frameworks/heimathafen/HeimathafenGenerator";
+import { generateArray } from "@e2e/fixtures/FixtureUtils";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";
 
 /**
@@ -42,6 +43,9 @@ export function generateHeimathafenData(nullProbability = DEFAULT_PROBABILITY): 
         sindIhreBewertungenUnabhaengig: dataGenerator.randomShortString(),
         datenerfassung: dataGenerator.randomShortString(),
         dieMethodikUmfasstUmweltSozialesUndGovernance: dataGenerator.randomYesNo(),
+        datenquelle: dataGenerator.valueOrNull(
+          generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0),
+        ),
         datenPlausibilitaetspruefung: dataGenerator.randomShortString(),
         intervalleFuerDieDatenaktualisierung: dataGenerator.randomShortString(),
         zuverlaessigkeitDerMethodikSicherstellen: dataGenerator.randomShortString(),
@@ -107,6 +111,9 @@ export function generateHeimathafenData(nullProbability = DEFAULT_PROBABILITY): 
           dataGenerator.randomShortString(),
         umweltbewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken: dataGenerator.randomShortString(),
         risikenFuerDieOekologischeNachhaltigkeitAbsichern: dataGenerator.randomShortString(),
+        quelle: dataGenerator.valueOrNull(
+          generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0),
+        ),
         vierAugenPruefung: dataGenerator.randomYesNo(),
         wennNeinBitteBegruenden: dataGenerator.randomShortString(),
         beschreibungDerVierAugenPruefung: dataGenerator.randomShortString(),

@@ -4,6 +4,7 @@ import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
+import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireListOfBaseDataPointGetterFactory";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
@@ -126,6 +127,21 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.methodik?.dieMethodikUmfasstUmweltSozialesUndGovernance),
+          },
+          {
+            type: "cell",
+            label: "Datenquelle",
+            explanation:
+              "Welche Quellen werden für die Datenerhebung verwendet?\nAngabe von Quellen für die Datenerhebung, zum Beispiel Nachhaltigkeitsberichte von Unternehmen, Daten von NGOs etc.",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquelle",
+                dataset.general?.methodik?.datenquelle,
+                "Description",
+                "Document",
+              );
+            },
           },
           {
             type: "cell",
@@ -664,6 +680,22 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               formatStringForDatatable(
                 dataset.environmental?.nachhaltigskeitsrisiken?.risikenFuerDieOekologischeNachhaltigkeitAbsichern,
               ),
+          },
+          {
+            type: "cell",
+            label: "Quelle",
+            explanation:
+              "Welche Quellen werden für die Erfassung von Nachhaltigkeitsrisiken im Bereich Umwelt verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc.",
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Quelle",
+                dataset.environmental?.nachhaltigskeitsrisiken?.quelle,
+                "Description",
+                "Document",
+              );
+            },
           },
           {
             type: "cell",
