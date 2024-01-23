@@ -115,7 +115,9 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts," +
                 "dataland-frontend/src/frameworks/esg-questionnaire/ViewConfig.ts," +
-                "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts",
+                "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts" +
+                "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts",
         )
         property(
             "sonar.exclusions",
@@ -124,7 +126,8 @@ sonar {
                 "dataland-frontend/src/components/general/SlideShow.vue," +
                 "dataland-frontend/src/components/resources/newLandingPage/TheQuotes.vue," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
-                "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts",
+                "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts" +
+                "dataland-frontend/tests/e2e/fixtures/frameworks/sfdr/SfdrDataFixtures.ts"
         )
     }
 }
