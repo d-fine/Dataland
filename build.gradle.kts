@@ -128,7 +128,10 @@ sonar {
                 "dataland-frontend/src/components/resources/aboutPage/TheAboutIntro.vue" +
                 "dataland-frontend/src/components/resources/aboutPage/TheAboutPrinciples.vue" +
                 "dataland-frontend/src/components/pages/AboutPage.vue" +
-                "dataland-frontend/src/components/generics/TheNewFooter.vue",
+                "dataland-frontend/src/components/generics/TheNewFooter.vue" +
+                "dataland-frontend/src/components/pages/AboutPage.vue" +
+                "dataland-frontend/src/components/generics/TheNewHeader.vue" +
+                "dataland-frontend/src/components/resources/aboutPage/**",
         )
     }
 }
