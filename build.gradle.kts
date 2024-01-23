@@ -124,7 +124,10 @@ sonar {
                 "dataland-frontend/src/components/general/SlideShow.vue," +
                 "dataland-frontend/src/components/resources/newLandingPage/TheQuotes.vue," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
-                "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts",
+                "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts" +
+                "dataland-frontend/src/components/resources/aboutPage/TheAboutIntro.vue" +
+                "dataland-frontend/src/components/resources/aboutPage/TheAboutPrinciples.vue" +
+                "dataland-frontend/src/components/pages/AboutPage.vue",
         )
     }
 }
