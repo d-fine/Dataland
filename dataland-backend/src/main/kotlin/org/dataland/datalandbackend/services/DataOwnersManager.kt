@@ -1,10 +1,9 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
-import org.dataland.datalandbackend.model.email.Email
-import org.dataland.datalandbackend.model.email.EmailContent
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.dataland.datalandbackendutils.email.EmailSender
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -166,10 +165,17 @@ class DataOwnersManager(
         }
     }
 
+    /**
+     * Method to send an data ownership request if an ownership does not already exist
+     * @param companyId the ID of the company for which data ownership is being requested
+     * @param userAuthentication the DatalandAuthentication of the user who should become a data owner
+     */
     @Transactional(readOnly = true)
     fun sendDataOwnershipRequestIfNecessary(companyId: String, userAuthentication: DatalandAuthentication) {
         checkIfCompanyIsValid(companyId)
-        if(dataOwnerRepository.findById(companyId).getOrNull()?.dataOwners?.contains(userAuthentication.userId) == true) {
+        if (
+            dataOwnerRepository.findById(companyId).getOrNull()?.dataOwners?.contains(userAuthentication.userId) == true
+        ) {
             throw InvalidInputApiException(
                 "User is already a data owner for company.",
                 "User with id: ${userAuthentication.userId} is already a data owner of company with id: $companyId.",

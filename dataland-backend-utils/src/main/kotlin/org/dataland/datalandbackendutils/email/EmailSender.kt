@@ -1,12 +1,10 @@
-package org.dataland.datalandbackend.services
+package org.dataland.datalandbackendutils.email
 
 import com.mailjet.client.ClientOptions
 import com.mailjet.client.MailjetClient
 import com.mailjet.client.errors.MailjetException
 import com.mailjet.client.transactional.SendEmailsRequest
 import com.mailjet.client.transactional.TransactionalEmail
-import org.dataland.datalandbackend.model.email.Email
-import org.dataland.datalandbackend.model.email.integrateEmailIntoTransactionalEmailBuilder
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component

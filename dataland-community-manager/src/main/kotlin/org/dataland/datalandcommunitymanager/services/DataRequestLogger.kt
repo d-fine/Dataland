@@ -1,8 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.model.email.Email
-import org.dataland.datalandcommunitymanager.model.email.EmailContact
+import org.dataland.datalandbackendutils.email.Email
+import org.dataland.datalandbackendutils.email.EmailContact
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.*

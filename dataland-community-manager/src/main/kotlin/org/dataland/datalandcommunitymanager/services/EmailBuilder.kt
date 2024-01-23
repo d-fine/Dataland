@@ -1,9 +1,9 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackendutils.email.Email
+import org.dataland.datalandbackendutils.email.EmailContact
+import org.dataland.datalandbackendutils.email.EmailContent
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
-import org.dataland.datalandcommunitymanager.model.email.Email
-import org.dataland.datalandcommunitymanager.model.email.EmailContact
-import org.dataland.datalandcommunitymanager.model.email.EmailContent
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory

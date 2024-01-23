@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.email
+package org.dataland.datalandbackendutils.email
 
 import com.mailjet.client.transactional.Attachment
 import com.mailjet.client.transactional.TransactionalEmail

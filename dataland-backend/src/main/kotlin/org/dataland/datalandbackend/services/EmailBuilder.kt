@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.services
 
-import org.dataland.datalandbackend.model.email.Email
-import org.dataland.datalandbackend.model.email.EmailContact
-import org.dataland.datalandbackend.model.email.EmailContent
+import org.dataland.datalandbackendutils.email.Email
+import org.dataland.datalandbackendutils.email.EmailContact
+import org.dataland.datalandbackendutils.email.EmailContent
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
@@ -94,11 +94,10 @@ class EmailBuilder(
     private fun buildUserInfo(
         userAuthentication: DatalandAuthentication,
     ): String {
-        return if(userAuthentication is DatalandJwtAuthentication) {
+        return if (userAuthentication is DatalandJwtAuthentication) {
             "User ${userAuthentication.username} (Keycloak id: ${userAuthentication.userId})"
         } else {
             "User (Keycloak id: ${userAuthentication.userId})"
-
         }
     }
 

@@ -1,4 +1,4 @@
-package org.dataland.datalandcommunitymanager.model.email
+package org.dataland.datalandbackendutils.email
 
 import com.mailjet.client.transactional.TransactionalEmail
 
