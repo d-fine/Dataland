@@ -1,6 +1,8 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
+import org.dataland.datalandbackend.model.email.Email
+import org.dataland.datalandbackend.model.email.EmailContent
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import kotlin.jvm.optionals.getOrElse
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Implementation of a (company) data ownership manager for Dataland
@@ -22,6 +25,8 @@ import kotlin.jvm.optionals.getOrElse
 class DataOwnersManager(
     @Autowired private val dataOwnerRepository: DataOwnerRepository,
     @Autowired private val companyRepository: StoredCompanyRepository,
+    @Autowired private val emailSender: EmailSender,
+    @Autowired private val emailBuilder: EmailBuilder,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -159,5 +164,20 @@ class DataOwnersManager(
         } catch (resourceNotFoundApiException: ResourceNotFoundApiException) {
             throw exceptionToThrow(resourceNotFoundApiException)
         }
+    }
+
+    @Transactional(readOnly = true)
+    fun sendDataOwnershipRequestIfNecessary(companyId: String, userAuthentication: DatalandAuthentication) {
+        checkIfCompanyIsValid(companyId)
+        if(dataOwnerRepository.findById(companyId).getOrNull()?.dataOwners?.contains(userAuthentication.userId) == true) {
+            throw InvalidInputApiException(
+                "User is already a data owner for company.",
+                "User with id: ${userAuthentication.userId} is already a data owner of company with id: $companyId.",
+            )
+        }
+        emailSender.sendEmail(
+            emailBuilder.buildDataOwnershipRequest(companyId, userAuthentication),
+            {},
+        )
     }
 }

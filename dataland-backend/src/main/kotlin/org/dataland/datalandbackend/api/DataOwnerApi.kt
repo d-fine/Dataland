@@ -131,4 +131,25 @@ interface DataOwnerApi {
         @PathVariable("companyId") companyId: UUID,
         @PathVariable("userId") userId: UUID,
     )
+
+    /**
+     * A method to request the current user to become data owner for the
+     * @param companyId the ID of the company for which data ownership is requested
+     */
+    @Operation(
+        summary = "Request data ownership for a company.",
+        description = "Request data ownership for one of the existing company on Dataland.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully requested data ownership."),
+        ],
+    )
+    @PostMapping(
+        value = ["/{companyId}/data-ownership-request"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')") // TODO validate if this is correct
+    fun postDataOwnershipRequest(
+        @PathVariable("companyId") companyId: UUID,
+    )
 }

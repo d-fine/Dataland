@@ -856,6 +856,60 @@
         ]
       }
     },
+    "/companies/{companyId}/data-ownership-request": {
+      "post": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Request data ownership for a company.",
+        "description": "Request data ownership for one of the existing company on Dataland.",
+        "operationId": "postDataOwnershipRequest",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully requested data ownership."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies/{companyId}/data-owners/{userId}": {
       "post": {
         "tags": [
@@ -11121,13 +11175,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
-          },
           "companyName": {
             "type": "string"
           },
-          "countryCode": {
+          "companyId": {
             "type": "string"
           },
           "sector": {
@@ -11135,6 +11186,9 @@
             "nullable": true
           },
           "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "permId": {
@@ -11162,10 +11216,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

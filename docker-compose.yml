@@ -141,10 +141,13 @@ services:
       - backend-db
     <<: *uncritical-constants-env
     environment:
+      <<: *mailjet-api-id-and-secret
       <<: *rabbit-mq-user-and-pass
       BACKEND_DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
+      NOTIFICATION_RECEIVERS_DATA_OWNERSHIP_REQUEST: ${NOTIFICATION_RECEIVERS_DATA_OWNERSHIP_REQUEST}
+      NOTIFICATION_RECEIVERS_CC_DATA_OWNERSHIP_REQUEST: ${NOTIFICATION_RECEIVERS_CC_DATA_OWNERSHIP_REQUEST}
   backend-db:
     restart: always
     profiles: ["production", "testing", "development"]
