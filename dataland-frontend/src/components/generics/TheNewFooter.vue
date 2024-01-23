@@ -22,14 +22,7 @@
             :style="{ maxHeight: !isSmallScreen || (card.title && isAccordionOpen(card.title)) ? '500px' : '0px' }"
           >
             <li v-for="link in card.links" :key="link.text">
-              <span
-                v-if="isExternalLink(link.url)"
-                @click="handleExternalLinkClick(link.url)"
-                class="footer__column-link"
-                rel="noopener noreferrer"
-                >{{ link.text }}</span
-              >
-              <router-link v-else :to="link.url" class="footer__column-link">{{ link.text }}</router-link>
+              <a :href="link.url" class="footer__column-link" rel="noopener noreferrer">{{ link.text }}</a>
             </li>
           </ul>
         </div>
@@ -66,15 +59,6 @@ const footerSection = computed(() => {
 const openAccordions = ref<Record<string, boolean>>({});
 
 /**
- * Opens the link if the user clicks on it
- * @param url the url to sanitize and click
- */
-function handleExternalLinkClick(url: string): void {
-  const sanitizedUrl = sanitizeUrl(url);
-  window.open(sanitizedUrl, "_blank");
-}
-
-/**
  * Toggles the open state of an accordion section. If the accordion section
  * corresponding to the provided title is currently closed, it will be opened,
  * and vice versa.
@@ -92,8 +76,6 @@ const nonLegalCards = computed(() => footerSection.value?.cards?.filter((card) =
 
 const legalLinks = computed(() => footerSection.value?.cards?.find((card) => card.title === "Legal")?.links ?? []);
 
-const isExternalLink = (url: string): boolean => /^https?:\/\//.test(url);
-
 const copyrightText = computed(() => {
   if (!footerSection.value?.text) return "";
   const currentYear = new Date().getFullYear();
@@ -104,15 +86,6 @@ const isSmallScreen: Ref<boolean> = ref(window.innerWidth < 768);
 
 const updateScreenSize = (): void => {
   isSmallScreen.value = window.innerWidth < 768;
-};
-
-const sanitizeUrl = (url: string): string | undefined => {
-  const uriEncoded = encodeURI(url);
-  const safeUrlPattern = /^(https?|mailto|tel):/;
-  if (safeUrlPattern.test(uriEncoded)) {
-    return url;
-  }
-  return undefined;
 };
 
 onMounted(() => {
