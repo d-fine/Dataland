@@ -8364,6 +8364,23 @@
           "Greater50"
         ]
       },
+      "BaseDataPointString": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        }
+      },
       "CompanyAssociatedDataHeimathafenData": {
         "required": [
           "companyId",
@@ -8548,6 +8565,13 @@
           "risikenFuerDieOekologischeNachhaltigkeitAbsichern": {
             "type": "string",
             "nullable": true
+          },
+          "quelle": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           },
           "vierAugenPruefung": {
             "nullable": true,
@@ -8998,6 +9022,13 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
+          },
+          "datenquelle": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           },
           "datenPlausibilitaetspruefung": {
             "type": "string",
@@ -11070,23 +11101,6 @@
           }
         }
       },
-      "BaseDataPointString": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        }
-      },
       "BerichterstattungAbfallproduktionValues": {
         "type": "object",
         "properties": {
@@ -13008,10 +13022,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
