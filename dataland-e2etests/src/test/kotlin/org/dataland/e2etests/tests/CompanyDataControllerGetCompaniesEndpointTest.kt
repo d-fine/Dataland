@@ -1,5 +1,7 @@
 package org.dataland.e2etests.tests
 
+import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
@@ -15,6 +17,10 @@ import java.util.UUID
 
 class CompanyDataControllerGetCompaniesEndpointTest {
 
+    companion object {
+        const val WAIT_TIME_IN_MS = 1000L
+    }
+
     private val apiAccessor = ApiAccessor()
     private val company1 = "Company 1"
     private val company2 = "Company 2"
@@ -28,7 +34,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         val uploadInfo = apiAccessor.uploadNCompaniesWithoutIdentifiers(1).first()
         val expectedDataset = uploadTestEuTaxonomyFinancialsDataSet(uploadInfo.actualStoredCompany.companyId)
             .copy(uploaderUserId = null)
-        val getCompaniesOnlyByNameResponse = apiAccessor.getCompaniesOnlyByName(
+        val getCompaniesResponse = apiAccessor.getCompaniesByNameAndIdentifier(
             uploadInfo.actualStoredCompany.companyInformation.companyName,
         )
         val expectedCompany = StoredCompany(
@@ -37,7 +43,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             listOf(expectedDataset),
         )
         assertTrue(
-            getCompaniesOnlyByNameResponse.contains(expectedCompany),
+            getCompaniesResponse.contains(convertStoredToBasicCompanyInformation(expectedCompany)),
             "Dataland does not contain the posted company.",
         )
     }
@@ -50,12 +56,28 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             .copy(dataRegisteredByDataland = listOf(expectedDataMetaInfo))
         val getCompaniesByCountryCodeAndSectorResponse = apiAccessor.companyDataControllerApi.getCompanies(
             sectors = if (uploadInfo.actualStoredCompany.companyInformation.sector != null) {
-                setOf(uploadInfo.actualStoredCompany.companyInformation.sector!!) } else { null },
+                setOf(uploadInfo.actualStoredCompany.companyInformation.sector!!)
+            } else {
+                null
+            },
             countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode),
         )
         assertTrue(
-            getCompaniesByCountryCodeAndSectorResponse.contains(expectedStoredCompany),
+            getCompaniesByCountryCodeAndSectorResponse
+                .contains(convertStoredToBasicCompanyInformation(expectedStoredCompany)),
             "The posted company could not be found in the query results when querying for its country code and sector.",
+        )
+    }
+
+    private fun convertStoredToBasicCompanyInformation(storedCompany: StoredCompany): BasicCompanyInformation {
+        return BasicCompanyInformation(
+            companyId = storedCompany.companyId,
+            countryCode = storedCompany.companyInformation.countryCode,
+            sector = storedCompany.companyInformation.sector,
+            companyName = storedCompany.companyInformation.companyName,
+            permId = storedCompany.companyInformation.identifiers.getOrDefault(IdentifierType.permId.value, null)
+                ?.minOrNull(),
+            headquarters = storedCompany.companyInformation.headquarters,
         )
     }
 
@@ -67,10 +89,10 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             countryCodes = setOf(uploadInfo.actualStoredCompany.companyInformation.countryCode),
         )
         assertFalse(
-            getCompaniesByCountryCodeAndSectorResponse.contains(uploadInfo.actualStoredCompany),
+            getCompaniesByCountryCodeAndSectorResponse
+                .contains(convertStoredToBasicCompanyInformation(uploadInfo.actualStoredCompany)),
             "The posted company is in the query results," +
                 " even though the country code filter was set to a different country code.",
-
         )
     }
 
@@ -97,7 +119,6 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         assertTrue(
             apiAccessor.companyDataControllerApi.getCompanies(
                 searchString = firstIdentifier,
-                onlyCompanyNames = false,
             ).isEmpty(),
             "The posted company was found in the query results.",
         )
@@ -109,7 +130,6 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         assertTrue(
             apiAccessor.companyDataControllerApi.getCompanies(
                 searchString = firstIdentifier,
-                onlyCompanyNames = false,
             ).any { it.companyId == uploadInfo.actualStoredCompany.companyId },
             "The posted company could not be found in the query results when querying for its first identifiers value.",
         )
@@ -118,15 +138,13 @@ class CompanyDataControllerGetCompaniesEndpointTest {
     private fun testThatSearchForCompanyIdentifierWorks(identifierType: String, identifierValue: String) {
         val searchResponse = apiAccessor.companyDataControllerApi.getCompanies(
             searchString = identifierValue,
-            onlyCompanyNames = false,
-
         )
-            .toMutableList()
+        val companyInformationOfSearchResponse = searchResponse
+            .map { apiAccessor.companyDataControllerApi.getCompanyInfo(it.companyId) }
         assertTrue(
-            searchResponse.all
-                {
-                        results ->
-                    results.companyInformation.identifiers[identifierType]
+            companyInformationOfSearchResponse.all
+                { results ->
+                    results.identifiers[identifierType]
                         ?.any { it == identifierValue } ?: false
                 },
             "The search by identifier returns at least one company that does not contain the looked" +
@@ -174,9 +192,9 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             listOf(uploadedData),
         )
 
-        val retrievedCompanies = apiAccessor.getCompaniesOnlyByName("")
+        val retrievedCompanies = apiAccessor.getCompaniesByNameAndIdentifier("")
         assertTrue(
-            retrievedCompanies.contains(expectedCompany),
+            retrievedCompanies.contains(convertStoredToBasicCompanyInformation(expectedCompany)),
             "Not all the companyInformation of the posted companies could be found in the stored companies.",
         )
     }
@@ -194,22 +212,21 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         )
         val uploadedCompany = apiAccessor.companyDataControllerApi.postCompany(companyInformation)
         val uploadedData = uploadTestEuTaxonomyFinancialsDataSet(uploadedCompany.companyId).copy(uploaderUserId = null)
-        val expectedCompany = StoredCompany(
-            uploadedCompany.companyId,
-            uploadedCompany.companyInformation,
-            listOf(uploadedData),
+        val expectedCompany = convertStoredToBasicCompanyInformation(
+            StoredCompany(
+                uploadedCompany.companyId,
+                uploadedCompany.companyInformation,
+                listOf(uploadedData),
+            ),
         )
-
         val searchIdentifier = testIdentifier.drop(1).dropLast(1)
         val searchName = testName.drop(1).dropLast(1)
-        val searchResponseForName = apiAccessor.getCompaniesOnlyByName(searchName)
-        val searchResponseForIdentifier = apiAccessor.getCompaniesByNameAndIdentifier(searchIdentifier)
         assertTrue(
-            searchResponseForName.contains(expectedCompany),
+            apiAccessor.getCompaniesByNameAndIdentifier(searchName).contains(expectedCompany),
             "The search results do not contain the expected company.",
         )
         assertTrue(
-            searchResponseForIdentifier.contains(expectedCompany),
+            apiAccessor.getCompaniesByNameAndIdentifier(searchIdentifier).contains(expectedCompany),
             "The search results do not contain the expected company.",
         )
     }
@@ -225,7 +242,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
         }
         val sortedCompanyNames = apiAccessor.companyDataControllerApi.getCompanies(
             searchString = testString,
-        ).map { it.companyInformation.companyName }
+        ).map { it.companyName }
         assertEquals(
             listOf(testString, company2, "${testString}2", company5, "3$testString", company9),
             sortedCompanyNames.filter { it != company8 && it != company3 },
@@ -237,9 +254,34 @@ class CompanyDataControllerGetCompaniesEndpointTest {
 
         val otherCompanyNames = apiAccessor.companyDataControllerApi.getCompanies(
             searchString = "other_name",
-        ).map { it.companyInformation.companyName }
+        ).map { it.companyName }
         assertTrue(otherCompanyNames.contains(company8))
         assertFalse(otherCompanyNames.contains("Company 7"))
+    }
+
+    @Test
+    fun `check that only companies with accepted data sets are returned by the query`() {
+        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val acceptedDataCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        uploadDummyDataset(acceptedDataCompanyId, bypassQa = true)
+        uploadDummyDataset(acceptedDataCompanyId, bypassQa = false)
+        val noAcceptedDataCompanyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        uploadDummyDataset(noAcceptedDataCompanyId, bypassQa = false)
+        Thread.sleep(WAIT_TIME_IN_MS)
+        val searchResultCompanyIds = apiAccessor.companyDataControllerApi.getCompanies().map { it.companyId }
+        assertTrue(searchResultCompanyIds.contains(acceptedDataCompanyId))
+        assertFalse(searchResultCompanyIds.contains(noAcceptedDataCompanyId))
+    }
+
+    private fun uploadDummyDataset(companyId: String, bypassQa: Boolean = false) {
+        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+                companyId = companyId,
+                reportingPeriod = "dummy",
+                data = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first(),
+            ),
+            bypassQa,
+        )
     }
 
     private fun createCompaniesForTestingOrdering(inputString: String): List<CompanyInformation> {
@@ -266,6 +308,7 @@ class CompanyDataControllerGetCompaniesEndpointTest {
             CompanyInformation(inputString, "", mapOf(), "", listOf()),
         )
     }
+
     private fun uploadTestEuTaxonomyFinancialsDataSet(companyId: String): DataMetaInformation {
         return apiAccessor.uploadSingleFrameworkDataSet(
             companyId = companyId,

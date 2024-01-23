@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
+import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
@@ -34,30 +35,32 @@ class CompanyQueryManager(
     }
 
     /**
-     * Method to search for companies matching the company name or identifier
+     * Method to search for basic information of companies matching the company name or identifier
      * @param filter The filter to use during searching
-     * @param viewingUser The user that is viewing the API model
-     * @return list of all matching companies in Dataland
+     * @return list of basic information of all matching companies in Dataland
      */
     @Transactional
     fun searchCompaniesAndGetApiModel(
         filter: StoredCompanySearchFilter,
-        viewingUser: DatalandAuthentication? = null,
-    ): List<StoredCompany> {
-        if (filter.dataTypeFilter.isEmpty()) {
-            filter.dataTypeFilter = DataTypesExtractor().getAllDataTypes()
+    ): List<BasicCompanyInformation> {
+        if (filter.dataTypeFilter.size == DataTypesExtractor().getAllDataTypes().size) {
+            filter.dataTypeFilter = emptyList()
         }
 
-        val filteredAndSortedResults = companyRepository.searchCompanies(filter)
-        val sortingMap = filteredAndSortedResults.mapIndexed { index, storedCompanyEntity ->
-            storedCompanyEntity.companyId to index
-        }.toMap()
-
-        val results = fetchAllStoredCompanyFields(filteredAndSortedResults).sortedBy {
-            sortingMap.getValue(it.companyId)
+        return if (
+            (
+                filter.sectorFilterSize +
+                    filter.countryCodeFilterSize +
+                    filter.dataTypeFilterSize +
+                    filter.searchStringLength
+                ) > 0
+        ) {
+            companyRepository.searchCompanies(
+                filter,
+            )
+        } else {
+            companyRepository.getAllCompaniesWithDataset()
         }
-
-        return results.map { it.toApiModel(viewingUser) }
     }
 
     /**
