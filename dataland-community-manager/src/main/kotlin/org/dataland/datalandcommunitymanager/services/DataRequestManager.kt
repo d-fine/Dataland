@@ -6,10 +6,12 @@ import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSuppo
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.MessageRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -31,6 +33,7 @@ class DataRequestManager(
     @Autowired private val companyGetter: CompanyGetter,
     @Autowired private val emailBuilder: EmailBuilder,
     @Autowired private val emailSender: EmailSender,
+
 ) {
     val isinRegex = Regex("^[A-Z]{2}[A-Z\\d]{10}$")
     val leiRegex = Regex("^[0-9A-Z]{18}[0-9]{2}$")
@@ -325,7 +328,6 @@ class DataRequestManager(
         dataRequestRepository.save(dataRequestEntity)
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId, bulkDataRequestId)
     }
-
     private fun buildDataRequestEntity(
         currentUserId: String,
         framework: DataTypeEnum,
@@ -420,5 +422,69 @@ class DataRequestManager(
 
     private fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? {
         return DataTypeEnum.values().find { it.value == frameworkName }
+    }
+
+    private fun checkIfFrameworkIsValid(frameworkName: DataTypeEnum) {
+        if (!DataRequestCompanyIdentifierType.entries.map { it.name }.contains(frameworkName.toString())) {
+            throw ResourceNotFoundApiException(
+                "Framework is invalid",
+                "There is no framework corresponding to the provided framework name $frameworkName used in Dataland.",
+            )
+        }
+    }
+    private fun buildMessageRequestEntity(
+        messageRequestId: String,
+        dataRequestEntity: DataRequestEntity,
+        contactList: List<String>?,
+        message: String?,
+        updateTimestamp: Long?,
+    ): MessageRequestEntity {
+        return MessageRequestEntity(
+            messageRequestId,
+            dataRequestEntity,
+            contactList,
+            message,
+            updateTimestamp,
+        )
+    }
+
+    @Transactional
+    fun processSingleDataRequest(singleDataRequest: SingleDataRequest): StoredDataRequest {
+        // company check einfügen -> failed
+        checkIfFrameworkIsValid(singleDataRequest.frameworkName)
+        // ToDo invalide Listen abfangen
+        val listOfReportingPeriods = singleDataRequest.listOfReportingPeriods.distinct()
+        // ToDo check if a duplicate Request
+        val singleDataRequestId = UUID.randomUUID().toString()
+        val dataRequestId = UUID.randomUUID().toString()
+        val userId = DatalandAuthentication.fromContext().userId
+        val currentTimestamp = Instant.now().toEpochMilli()
+        val matchedIdentifierType = determineIdentifierTypeViaRegex(singleDataRequest.companyId)
+        dataRequestLogger.logMessageForBulkDataRequest(dataRequestId)
+        if (matchedIdentifierType != null) {
+            processAcceptedIdentifier(
+                userProvidedIdentifierValue = singleDataRequest.companyId,
+                matchedIdentifierType,
+                requestedFrameworks = listOf(singleDataRequest.frameworkName),
+                requestedReportingPeriods = listOfReportingPeriods,
+                userId,
+                singleDataRequestId,
+            )
+        } else {
+            throw InvalidInputApiException("Invalid Company", "$singleDataRequest.companyId is invalid")
+        }
+        val dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
+        if (singleDataRequest.contactList != null || singleDataRequest.message != null) {
+            dataRequestEntity.messageHistory.add(
+                buildMessageRequestEntity(
+                    messageRequestId = UUID.randomUUID().toString(),
+                    dataRequestEntity,
+                    singleDataRequest.contactList,
+                    singleDataRequest.message,
+                    currentTimestamp,
+                ),
+            )
+        }
+        return buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
     }
 }

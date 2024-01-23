@@ -6,6 +6,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataReq
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.services.DataRequestManager
 import org.springframework.beans.factory.annotation.Autowired
@@ -52,5 +53,9 @@ class RequestController(
         requestStatus: RequestStatus,
     ): ResponseEntity<StoredDataRequest> {
         return ResponseEntity.ok(dataRequestManager.patchDataRequest(dataRequestId.toString(), requestStatus))
+    }
+
+    override fun postSingleDataRequest(singleDataRequest: SingleDataRequest): ResponseEntity<StoredDataRequest> {
+        return ResponseEntity.ok(dataRequestManager.processSingleDataRequest(singleDataRequest))
     }
 }
