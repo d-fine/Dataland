@@ -43,16 +43,34 @@
                             "date": "\"Dataland is the only platform we know that is open to everyone and based on a non-profit business model.\""
                         },
                         {
-                            "icon": "eOsUGR6KafI",
+                            "icon": "NqEjkz-3hPw",
+                            "title": "Jonas Weisbach,",
+                            "text": "Business Development Manager ESG\n at Metzler Asset Management",
+                            "date": "\"We believe that open source, reliable and comparable data is the single best way to identify the companies that walk the walk.\""
+                        },
+                        {
+                            "icon": "rCkISSQreCI",
+                            "title": "Dr. Egbert Schark,",
+                            "text": "Founder and Managing Director\n at d-fine GmbH",
+                            "date": "\"I believe the fascinating idea is worth supporting. Join the mission! Join Dataland!\""
+                        },
+                        {
+                            "icon": "g40FkVQZjUc",
                             "title": "Daniel Sailer,",
                             "text": " Head of Sustainable Investment Office\n at Metzler Asset Management GmbH",
                             "date": "\"The Pathways to Paris PoC can be a simple way to make sure Dataland becomes the data platform you need.\""
                         },
                         {
-                            "icon": "nNf1Ui9Keug",
+                            "icon": "Jx1v2Z-9cBw",
+                            "title": "Dr. Anna-Lisa Schwarz",
+                            "text": "Managing Director at Werte-Stiftung ",
+                            "date": "\"Dataland will help solve data issues by ensuring transparent, open and fair access to sustainability data.\""
+                        },
+                        {
+                            "icon": "Hz-5xC8BSAg",
                             "title": "Matthias Kopp,",
                             "text": " Director of Sustainable Finance at WWF Germany",
-                            "date": "\"Test whether Dataland can be one or the solution to [...] make data available at the scale, the quality and the ease of use that we need.\""
+                            "date": "\"Dataland can provide the data ecosystem we all need [to support our] transition to stay within 1.5 degrees or within the planetary boundaries.\""
                         },
                         {
                             "icon": "34qs_8D78JY",
@@ -75,7 +93,7 @@
                         {
                             "icon": "1CArXxrcsvg",
                             "title": "Christoph Benner,",
-                            "text": " CEO of Chom Capital",
+                            "text": "CEO of Chom Capital",
                             "date": "\"Our partnership with Dataland is instrumental in progressively addressing and bridging data gaps.\""
                         }
                     ]
@@ -100,7 +118,8 @@
                         "/static/logos/img_value_balancing_alliance.png",
                         "/static/logos/img_voeb.png",
                         "/static/logos/img_Atlas_Metrics.png",
-                        "/static/logos/img_sustainable_dividends.png"
+                        "/static/logos/img_sustainable_dividends.png",
+                        "/static/logos/img_Metzler.png"
                     ]
                 },
                 {

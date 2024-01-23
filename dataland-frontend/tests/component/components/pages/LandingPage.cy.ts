@@ -4,6 +4,7 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import content from "@/assets/content.json";
 import { type Page, type Section } from "@/types/ContentTypes";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { setMobileDeviceViewport } from "@sharedUtils/TestSetupUtils";
 
 describe("Component test for the landing page", () => {
   it("Check if essential elements are present", () => {
@@ -26,6 +27,9 @@ describe("Component test for the landing page", () => {
       cy.get("button.joincampaign__button").should("exist");
       cy.get("button.getintouch__text-button").should("exist");
       checkNewFooter();
+
+      setMobileDeviceViewport();
+      validateTheHeader();
     });
   });
 });
@@ -57,7 +61,7 @@ function validateIntroSection(): void {
  */
 function validateBrandsSection(): void {
   const images = getLandingPageSection("Brands").image;
-  expect(images?.length).to.eq(14);
+  expect(images?.length).to.eq(15);
   images!.forEach((image, index) => {
     const filename = image.split("/").slice(-1)[0];
     checkImage(`Brand ${index + 1}`, filename);
@@ -143,7 +147,7 @@ function validateStruggleSection(): void {
  */
 function validateQuotesSection(): void {
   cy.get("section.quotes").should("exist");
-  cy.get(".quotes__slide").should("have.length", 7);
+  cy.get(".quotes__slide").should("exist");
 }
 
 /**

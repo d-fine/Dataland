@@ -1,5 +1,5 @@
 <template>
-  <div :data-test="`upload-reports-${name}`">
+  <div :data-test="`upload-reports-${name}`" class="display-contents">
     <div v-if="isEuTaxonomy" class="col-3 p-3 topicLabel">
       <h4 class="anchor title">Upload company reports</h4>
       <p>Please upload all relevant reports for this dataset in the PDF format.</p>

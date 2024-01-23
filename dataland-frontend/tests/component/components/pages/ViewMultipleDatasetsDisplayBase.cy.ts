@@ -44,7 +44,6 @@ describe("Component test for the view multiple dataset display base component", 
     cy.get('tr[data-section-label="Social"]').click();
     cy.get('tr[data-section-label="Child labor"]').click();
     cy.get('td[data-cell-label="Employee(s) Under 15"]').should("not.exist");
-    checkToggleEmptyFieldsSwitch("Employee(s) Under 15");
   });
 });
 

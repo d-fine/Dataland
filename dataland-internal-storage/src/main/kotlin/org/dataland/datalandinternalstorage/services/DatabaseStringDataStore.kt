@@ -6,6 +6,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -54,37 +55,54 @@ class DatabaseStringDataStore(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "dataReceivedInternalStorageDatabaseDataStore",
+                    "requestReceivedInternalStorageDatabaseDataStore",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                         Argument(name = "defaultRequeueRejected", value = "false"),
                     ],
                 ),
-                exchange = Exchange(ExchangeName.DataReceived, declare = "false"),
+                exchange = Exchange(ExchangeName.RequestReceived, declare = "false"),
                 key = [""],
             ),
         ],
     )
-    fun persistentlyStoreDataAndSendMessage(
+    fun distributeIncomingRequests(
         @Payload payload: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.DataReceived)
         val dataId = JSONObject(payload).getString("dataId")
+        val actionType = JSONObject(payload).getString("actionType")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty.")
         }
         messageUtils.rejectMessageOnException {
-            logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-            val data = temporarilyCachedDataClient.getReceivedData(dataId)
-            logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
-            storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                payload, MessageType.DataStored, correlationId, ExchangeName.ItemStored, RoutingKeyNames.data,
-            )
+            if (actionType == ActionType.StoreData) {
+                persistentlyStoreDataAndSendMessage(dataId, correlationId, payload)
+            }
+            if (actionType == ActionType.DeleteData) {
+                deleteDataItemWithoutTransaction(dataId, correlationId)
+            }
         }
+    }
+
+    /**
+     * Method that stores data into the database in case there is a message on the storage_queue and sends a message to
+     * the message queue
+     * @param payload the content of the message
+     * @param correlationId the correlation ID of the current user process
+     * @param dataId the dataId of the dataset to be stored
+     */
+    fun persistentlyStoreDataAndSendMessage(dataId: String, correlationId: String, payload: String) {
+        logger.info("Received DataID $dataId and CorrelationId: $correlationId")
+        val data = temporarilyCachedDataClient.getReceivedData(dataId)
+        logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
+        storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            payload, MessageType.DataStored, correlationId, ExchangeName.ItemStored, RoutingKeyNames.data,
+        )
     }
 
     /**
@@ -110,5 +128,18 @@ class DatabaseStringDataStore(
                 "No dataset with the ID: $dataId could be found in the data store.",
             )
         }.data
+    }
+
+    /**
+     * Deletes a Data Item while ensuring that there is no active transaction. This will guarantee that the write
+     * is commited after exit of this method.
+     * @param dataId the DataItem to be removed from the storage
+     * @param correlationId the correlationId ot the current user process
+     */
+    @Transactional(propagation = Propagation.NEVER)
+    fun deleteDataItemWithoutTransaction(dataId: String, correlationId: String) {
+        logger.info("Received DataID $dataId and CorrelationId: $correlationId")
+        logger.info("Deleting data from database with data ID: $dataId and correlation ID: $correlationId.")
+        dataItemRepository.deleteById(dataId)
     }
 }

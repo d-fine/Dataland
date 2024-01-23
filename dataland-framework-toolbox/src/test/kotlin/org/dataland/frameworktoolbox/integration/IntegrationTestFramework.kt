@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.integration
 
+import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import java.io.File
 
@@ -11,8 +12,13 @@ class IntegrationTestFramework : PavedRoadFramework(
     identifier = "integrationTesting",
     label = "Integration Testing",
     explanation = "This framework is used for testing the framework-toolbox",
-    File(
+    frameworkTemplateCsvFile = File(
         "./dataland-framework-toolbox/src/test/resources/org/dataland/" +
             "frameworktoolbox/integration/integrationTestFrameworkDefinition.csv",
+    ),
+    enabledFeatures = setOf(
+        FrameworkGenerationFeatures.DataModel,
+        FrameworkGenerationFeatures.ViewPage,
+        FrameworkGenerationFeatures.FakeFixtures,
     ),
 )

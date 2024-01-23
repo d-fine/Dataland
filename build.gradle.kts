@@ -82,16 +82,19 @@ sonar {
         property("sonar.coverage.jacoco.xmlReportPaths", file("$buildDir/reports/jacoco/test/jacocoTestReport.xml"))
         property("sonar.qualitygate.wait", true)
         property("sonar.javascript.lcov.reportPaths", fileTree("$projectDir/fe-coverage").files)
+        property("sonar.python.coverage.reportPaths", fileTree("$projectDir/python-coverage").files)
         property(
             "sonar.coverage.exclusions",
             "**/test/**," +
                 "**/tests/**," +
                 "**/LocalCorsConfig.kt," +
-                "dataland-frontend/src/main.ts",
+                "dataland-frontend/src/main.ts," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/**",
         )
         property(
             "sonar.sources",
-            subprojects.flatMap { project -> project.properties["sonarSources"] as Iterable<*> },
+            subprojects.flatMap { project -> project.properties["sonarSources"] as Iterable<*> } +
+                fileTree("$projectDir/dataland-automated-qa-service").files,
         )
         property("sonar.verbose", "true")
         property("sonar.scanner.metadataFilePath", "$projectDir/build/reports/report_task.txt")
@@ -110,15 +113,18 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
                 "EuTaxonomyForNonFinancialsDisplayDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
-                "configForEutaxonomyFinancialsMLDT.ts",
-
+                "configForEutaxonomyFinancialsMLDT.ts," +
+                "dataland-frontend/src/frameworks/esg-questionnaire/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts",
         )
         property(
             "sonar.exclusions",
             "dataland-backend/src/main/kotlin/" +
                 "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt," +
                 "dataland-frontend/src/components/general/SlideShow.vue," +
-                "dataland-frontend/src/components/resources/newLandingPage/TheQuotes.vue",
+                "dataland-frontend/src/components/resources/newLandingPage/TheQuotes.vue," +
+                "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
+                "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts",
         )
     }
 }

@@ -46,7 +46,7 @@
           :outer-class="{ 'hidden-input': true, 'formkit-outer': false }"
           v-if="isYesNoVariant"
         />
-        <div class="col-12" v-if="dataPoint.value === 'Yes' || (showDataPointFields && !isYesNoVariant)">
+        <div class="col-12" v-if="dataPoint.value || !isYesNoVariant">
           <UploadFormHeader
             v-if="!isDataPointToggleable && !isYesNoVariant"
             :label="label"
@@ -55,36 +55,43 @@
           />
           <slot v-if="!isYesNoVariant" />
           <div class="grid align-content-end">
-            <FormKit type="group" name="dataSource">
-              <div class="col-8">
-                <UploadFormHeader
-                  :label="`${label} Report`"
-                  description="Select a report as a reference for this data point."
-                />
-                <FormKit
-                  type="select"
-                  name="fileName"
-                  v-model="currentReportValue"
-                  placeholder="Select a report"
-                  :options="['None...', ...reportsName]"
-                />
-                <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
-              </div>
-              <div class="col-4">
-                <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
-                <FormKit
-                  outer-class="w-100"
-                  type="number"
-                  name="page"
-                  placeholder="Page"
-                  validation-label="Page"
-                  step="1"
-                  min="0"
-                  validation="min:0"
-                />
-              </div>
+            <div class="col-8">
+              <UploadFormHeader
+                :label="`${label} Report`"
+                description="Select a report as a reference for this data point."
+              />
+              <FormKit
+                type="select"
+                name="fileName"
+                v-model="currentReportValue"
+                placeholder="Select a report"
+                :options="[noReportLabel, ...reportsName]"
+                ignore="true"
+              />
+            </div>
+            <div class="col-4">
+              <UploadFormHeader :label="'Page'" :description="'Page where information was found'" />
+              <FormKit
+                outer-class="w-100"
+                type="number"
+                name="page"
+                placeholder="Page"
+                v-model="pageForFileReference"
+                validation-label="Page"
+                step="1"
+                min="0"
+                validation="min:0"
+                ignore="true"
+              />
+            </div>
+
+            <FormKit v-if="isValidFileName(isMounted, currentReportValue)" type="group" name="dataSource">
+              <FormKit type="hidden" name="fileName" v-model="currentReportValue" />
+              <FormKit type="hidden" name="fileReference" :modelValue="fileReferenceAccordingToName" />
+              <FormKit type="hidden" name="page" v-model="pageForFileReference" />
             </FormKit>
           </div>
+
           <!-- Data quality -->
           <div class="md:col-8 col-12 p-0 mb-4" data-test="dataQuality">
             <UploadFormHeader
@@ -103,12 +110,11 @@
               :options="computeQualityOption"
             />
           </div>
-        </div>
-        <div class="col-12">
           <div class="form-field">
             <FormKit
               type="textarea"
               name="comment"
+              v-model="commentValue"
               placeholder="(Optional) Add comment that might help Quality Assurance to approve the datapoint. "
             />
           </div>
@@ -130,6 +136,7 @@ import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
 import { type ExtendedDataPoint } from "@/utils/DataPoint";
+import { isValidFileName, noReportLabel } from "@/utils/DataSource";
 
 export default defineComponent({
   name: "ExtendedDataPointFormField",
@@ -146,22 +153,30 @@ export default defineComponent({
   },
   data() {
     return {
+      isMounted: false,
       dataPointIsAvailable: (this.injectlistOfFilledKpis as unknown as Array<string>).includes(this.name as string),
       qualityOptions: Object.values(QualityOptions).map((qualityOption: string) => ({
         label: qualityOption,
         value: qualityOption,
       })),
       qualityValue: "NA",
-      currentReportValue: "",
+      commentValue: "",
+      currentReportValue: "" as string,
       dataPoint: {} as ExtendedDataPoint<unknown>,
       currentValue: null,
       checkboxValue: [] as Array<string>,
       firstAssignmentWhileEditModeWasDone: false,
+      noReportLabel: noReportLabel,
+      pageForFileReference: undefined as string | undefined,
+      isValidFileName: isValidFileName,
     };
+  },
+  mounted() {
+    setTimeout(() => (this.isMounted = true));
   },
   computed: {
     showDataPointFields(): boolean {
-      return this.dataPointIsAvailable || (!this.isDataPointToggleable && !this.isYesNoVariant);
+      return this.dataPointIsAvailable || !this.isDataPointToggleable;
     },
     isDataValueProvided(): boolean {
       return (assertDefined(this.checkValueValidity) as (dataPoint: unknown) => boolean)(this.dataPoint);
@@ -186,7 +201,6 @@ export default defineComponent({
       return Object.keys(this.options).length;
     },
   },
-
   props: {
     ...FormFieldPropsWithPlaceholder,
     checkValueValidity: {
@@ -236,7 +250,7 @@ export default defineComponent({
      * @param isDataValueProvided boolean which gives information whether data is provided or not
      */
     handleBlurValue(isDataValueProvided: boolean) {
-      if (!isDataValueProvided) {
+      if (!isDataValueProvided && !this.isYesNoVariant) {
         this.qualityValue = QualityOptions.Na;
       } else if (this.qualityValue === QualityOptions.Na) {
         this.qualityValue = "";

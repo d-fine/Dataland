@@ -1,5 +1,6 @@
 package org.dataland.e2etests.utils
 
+import org.dataland.datalandbackend.openApiClient.api.AdminDataManipulationControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
@@ -34,6 +35,7 @@ import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedEuTaxonomyDa
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedMetaDataControllerApi
 
 class ApiAccessor {
+
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
 
@@ -52,6 +54,7 @@ class ApiAccessor {
     val unauthorizedEuTaxonomyDataNonFinancialsControllerApi = UnauthorizedEuTaxonomyDataNonFinancialsControllerApi()
     val testDataProviderForEuTaxonomyDataForNonFinancials =
         FrameworkTestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
+    val adminDataManipulationControllerApi = AdminDataManipulationControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     fun euTaxonomyNonFinancialsUploaderFunction(
         companyId: String,
         euTaxonomyNonFinancialsData: EuTaxonomyDataForNonFinancials,
@@ -242,6 +245,9 @@ class ApiAccessor {
                 testDataProvider = testDataProviderForP2pData,
                 frameworkDataUploadFunction = this::p2pUploaderFunction,
             )
+            else -> {
+                throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
+            }
         }
     }
 

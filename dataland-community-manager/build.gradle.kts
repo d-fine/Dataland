@@ -109,7 +109,7 @@ sourceSets {
 
 ktlint {
     filter {
-        exclude("**/openApiClient/**") // TODO somehow this does not work
+        exclude("**/openApiClient/**")
     }
 }
 

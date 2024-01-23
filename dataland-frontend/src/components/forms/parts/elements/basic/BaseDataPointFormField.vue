@@ -41,11 +41,11 @@
             :more-than-one-document-allowed="false"
             :file-names-for-prefill="fileNamesForPrefill"
           />
-          <FormKit type="group" name="dataSource">
-            <FormKit type="hidden" name="fileName" v-model="documentName" />
-            <FormKit type="hidden" name="fileReference" v-model="documentReference" />
-          </FormKit>
         </div>
+        <FormKit v-if="isValidFileName(isMounted, documentName)" type="group" name="dataSource">
+          <FormKit type="hidden" name="fileName" v-model="documentName" />
+          <FormKit type="hidden" name="fileReference" v-model="documentReference" />
+        </FormKit>
       </FormKit>
     </div>
   </div>
@@ -59,6 +59,7 @@ import { type DocumentToUpload } from "@/utils/FileUploadUtils";
 import { type BaseDataPoint } from "@/utils/DataPoint";
 import UploadFormHeader from "@/components/forms/parts/elements/basic/UploadFormHeader.vue";
 import { disabledOnMoreThanOne } from "@/utils/FormKitPlugins";
+import { isValidFileName } from "@/utils/DataSource";
 
 export default defineComponent({
   name: "BaseDataPointFormField",
@@ -86,7 +87,7 @@ export default defineComponent({
       documentReference: "",
       fileNamesForPrefill: [] as string[],
       isMounted: false,
-
+      isValidFileName: isValidFileName,
       currentValue: null,
       checkboxValue: [] as Array<string>,
     };
@@ -98,8 +99,10 @@ export default defineComponent({
   },
   emits: ["fieldSpecificDocumentsUpdated"],
   mounted() {
-    this.updateFileUploadFiles();
-    this.isMounted = true;
+    setTimeout(() => {
+      this.isMounted = true;
+      this.updateFileUploadFiles();
+    });
   },
   watch: {
     documentName() {

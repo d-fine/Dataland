@@ -91,9 +91,10 @@ import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
 import MetaInfoPerCompanyAndFramework from "@/components/resources/chooseFrameworkForDataUpload/MetaInfoPerCompanyAndFramework.vue";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import TheFooter from "@/components/generics/TheFooter.vue";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
+import { ARRAY_OF_SUPPORTED_FRAMEWORKS } from "@/utils/Constants";
 
 export default defineComponent({
   name: "ChooseFramework",
@@ -121,12 +122,12 @@ export default defineComponent({
 
   data() {
     return {
-      allFrameworksExceptEuTaxonomy: Object.values(DataTypeEnum).filter(
+      allFrameworksExceptEuTaxonomy: ARRAY_OF_SUPPORTED_FRAMEWORKS.filter(
         (frameworkName) =>
           [DataTypeEnum.EutaxonomyFinancials as string, DataTypeEnum.EutaxonomyNonFinancials as string].indexOf(
             frameworkName,
           ) === -1,
-      ) as DataTypeEnum[],
+      ),
       waitingForData: true,
       DataTypeEnum,
       humanizeString: humanizeStringOrNumber,

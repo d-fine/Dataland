@@ -5,6 +5,8 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilde
 import org.dataland.frameworktoolbox.specific.datamodel.elements.PackageBuilder
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
+import org.dataland.frameworktoolbox.utils.Naming.getNameFromLabel
+import org.dataland.frameworktoolbox.utils.Naming.removeUnallowedJavaIdentifierCharacters
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import java.io.FileWriter
@@ -20,7 +22,8 @@ class FrameworkDataModelBuilder(
 ) {
     private val logger by LoggerDelegate()
 
-    private val frameworkBasePackageQualifier = "org.dataland.datalandbackend.frameworks.${framework.identifier}"
+    private val frameworkBasePackageQualifier =
+        "org.dataland.datalandbackend.frameworks.${removeUnallowedJavaIdentifierCharacters(framework.identifier)}"
 
     val rootPackageBuilder: PackageBuilder = PackageBuilder(
         "$frameworkBasePackageQualifier.model",
@@ -28,7 +31,7 @@ class FrameworkDataModelBuilder(
     )
 
     val rootDataModelClass: DataClassBuilder = rootPackageBuilder.addClass(
-        "${framework.identifier.capitalizeEn()}Data",
+        "${getNameFromLabel(framework.identifier).capitalizeEn()}Data",
         "The root data-model for the ${framework.identifier.capitalizeEn()} Framework",
         mutableListOf(
             Annotation("org.dataland.datalandbackend.annotations.DataType", "\"${framework.identifier}\""),
@@ -49,9 +52,9 @@ class FrameworkDataModelBuilder(
         val writer = FileWriter(targetPath.toFile())
         freemarkerTemplate.process(
             mapOf(
-                "frameworkDataType" to rootDataModelClass.getTypeReference(false),
-                "frameworkCapitalizedName" to framework.identifier.capitalizeEn(),
                 "frameworkIdentifier" to framework.identifier,
+                "frameworkPackageName" to removeUnallowedJavaIdentifierCharacters(framework.identifier),
+                "frameworkDataType" to rootDataModelClass.getTypeReference(false),
             ),
             writer,
         )
@@ -69,6 +72,7 @@ class FrameworkDataModelBuilder(
 
         logger.info("Generation completed. Verifying generated files and updating OpenApi-Spec")
         into.gradleInterface.executeGradleTasks(listOf("assemble"))
+        into.gradleInterface.executeGradleTasks(listOf("dataland-backend:ktlintFormat"))
         into.gradleInterface.executeGradleTasks(listOf("dataland-backend:generateOpenApiDocs"), force = true)
         into.gradleInterface.executeGradleTasks(listOf("generateClients"))
 
