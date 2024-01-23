@@ -43,8 +43,8 @@ class CompanyQueryManager(
     fun searchCompaniesAndGetApiModel(
         filter: StoredCompanySearchFilter,
     ): List<BasicCompanyInformation> {
-        if (filter.dataTypeFilter.isEmpty()) {
-            filter.dataTypeFilter = DataTypesExtractor().getAllDataTypes()
+        if (filter.dataTypeFilter.size == DataTypesExtractor().getAllDataTypes().size) {
+            filter.dataTypeFilter = emptyList()
         }
 
         return if (
