@@ -450,11 +450,8 @@ class DataRequestManager(
 
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): StoredDataRequest {
-        // company check einfügen -> failed
         checkIfFrameworkIsValid(singleDataRequest.frameworkName)
-        // ToDo invalide Listen abfangen
         val listOfReportingPeriods = singleDataRequest.listOfReportingPeriods.distinct()
-        // ToDo check if a duplicate Request
         val singleDataRequestId = UUID.randomUUID().toString()
         val dataRequestId = UUID.randomUUID().toString()
         val userId = DatalandAuthentication.fromContext().userId
