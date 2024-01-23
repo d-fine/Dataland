@@ -15,7 +15,7 @@
             :suggestions="autocompleteArrayDisplayed"
             optionLabel="companyName"
             :autoOptionFocus="false"
-            placeholder="Search company by name or PermID"
+            placeholder="Search company by name or identifier (e.g. PermID, LEI, ...)"
             inputClass="h-3rem d-framework-searchbar-input"
             panelClass="d-framework-searchbar-panel"
             style="z-index: 10"
