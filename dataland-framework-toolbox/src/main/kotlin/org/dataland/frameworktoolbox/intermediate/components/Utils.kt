@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
+import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -46,4 +47,14 @@ fun UploadCategoryBuilder.addStandardUploadConfigCell(
         frameworkUploadOptions = frameworkUploadOptions,
         validation = validation,
     )
+}
+
+/**
+ * Asserts that a component-bases document-support is in the set of  pre-defined values.
+ * Used to ensure a unified error-message across components
+ */
+fun ComponentBase.requireDocumentSupportIn(allowedValues: Set<DocumentSupport>) {
+    require(documentSupport in allowedValues) {
+        "This component does not support document-support $documentSupport. Supported values are $allowedValues."
+    }
 }

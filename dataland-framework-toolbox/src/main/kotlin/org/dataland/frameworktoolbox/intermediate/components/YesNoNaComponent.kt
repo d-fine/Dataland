@@ -33,9 +33,7 @@ class YesNoNaComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        require(documentSupport is NoDocumentSupport) {
-            "YesNoNaComponent does not support doucment support '$documentSupport'"
-        }
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = "YesNoNaFormField",

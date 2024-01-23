@@ -24,9 +24,7 @@ class CurrencyComponent(
     var maximumValue: Long? = null
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        require(documentSupport is ExtendedDocumentSupport) {
-            "CurrencyComponent only supports Extended document support"
-        }
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         val annotations = getMinMaxDatamodelAnnotations(minimumValue, maximumValue)
 
         dataClassBuilder.addProperty(
@@ -37,9 +35,7 @@ class CurrencyComponent(
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        require(documentSupport is ExtendedDocumentSupport) {
-            "CurrencyComponent only supports Extended document support"
-        }
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
@@ -57,9 +53,7 @@ class CurrencyComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        require(documentSupport is ExtendedDocumentSupport) {
-            "CurrencyComponent only supports Extended document support"
-        }
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = "CurrencyDataPointFormField",
@@ -67,9 +61,7 @@ class CurrencyComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        require(documentSupport is ExtendedDocumentSupport) {
-            "CurrencyComponent only supports Extended document support"
-        }
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         val rangeParameterSpecification = getFakeFixtureMinMaxRangeParameterSpec(minimumValue, maximumValue)
         val expression = if (isRequired) {
             "dataGenerator.guaranteedCurrencyDataPoint($rangeParameterSpecification)"

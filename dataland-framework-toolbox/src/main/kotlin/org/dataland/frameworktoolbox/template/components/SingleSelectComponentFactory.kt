@@ -34,7 +34,9 @@ class SingleSelectComponentFactory(@Autowired val templateDiagnostic: TemplateDi
         ) {
             utils.setCommonProperties(row, this)
             this.options = utils.getSelectionOptionsFromOptionColumn(row)
-            this.uploadMode = nameMap[row.component]!!
+            val mappedMode = nameMap[row.component]
+            requireNotNull(mappedMode) { "Unknown upload mode ${row.component}" }
+            this.uploadMode = mappedMode
         }
     }
 

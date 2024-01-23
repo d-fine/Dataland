@@ -65,9 +65,7 @@ open class MultiSelectComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        require(documentSupport is NoDocumentSupport) {
-            "Upload-Page generation for this component does not support any document support"
-        }
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             frameworkUploadOptions = FrameworkUploadOptions(
                 body = generateTsCodeForOptionsOfSelectionFormFields(this.options),

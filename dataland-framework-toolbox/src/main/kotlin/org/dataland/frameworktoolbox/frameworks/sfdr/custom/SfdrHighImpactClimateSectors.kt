@@ -4,6 +4,7 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.addStandardUploadConfigCell
+import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
@@ -23,9 +24,7 @@ class SfdrHighImpactClimateSectors(
 ) : ComponentBase(identifier, parent) {
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        require(documentSupport is NoDocumentSupport) {
-            "Data-Model generation for this component does not support any document support"
-        }
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
             identifier,
             TypeReference(
@@ -55,9 +54,7 @@ class SfdrHighImpactClimateSectors(
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        require(documentSupport is NoDocumentSupport) {
-            "View-Page generation for this component does not support any document support"
-        }
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
@@ -71,9 +68,7 @@ class SfdrHighImpactClimateSectors(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        require(documentSupport is NoDocumentSupport) {
-            "Upload-Page generation for this component does not support any document support"
-        }
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = "HighImpactClimateSectorsFormField",
@@ -81,9 +76,7 @@ class SfdrHighImpactClimateSectors(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        require(documentSupport is NoDocumentSupport) {
-            "Fake-Fixture generation for this component does not support any document support"
-        }
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
         sectionBuilder.addAtomicExpression(
             identifier,
             "dataGenerator.generateHighImpactClimateSectors()",

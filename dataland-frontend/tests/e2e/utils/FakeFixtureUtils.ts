@@ -82,7 +82,7 @@ export class Generator {
   }
 
   guaranteedInt(min: number = 0, max: number = 10000): number {
-    return generateInt(max);
+    return faker.number.int({ min: min, max: max });
   }
 
   randomFloat(min: number = 0, max: number = 1e5): number | null {

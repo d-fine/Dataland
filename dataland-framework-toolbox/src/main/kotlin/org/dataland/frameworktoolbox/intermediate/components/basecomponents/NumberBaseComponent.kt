@@ -29,14 +29,19 @@ open class NumberBaseComponent(
      * Returns a FormKit validation rule for a number to be in the specified range
      */
     fun getMinMaxValidationRule(minimumValue: Long?, maximumValue: Long?): String? {
-        return if (minimumValue != null && maximumValue != null) {
-            "between:$minimumValue,$maximumValue"
-        } else if (minimumValue != null) {
-            "min:$minimumValue"
-        } else if (maximumValue != null) {
-            "max:$maximumValue"
-        } else {
-            null
+        return when {
+            minimumValue != null && maximumValue != null -> {
+                "between:$minimumValue,$maximumValue"
+            }
+            minimumValue != null -> {
+                "min:$minimumValue"
+            }
+            maximumValue != null -> {
+                "max:$maximumValue"
+            }
+            else -> {
+                null
+            }
         }
     }
 
@@ -62,14 +67,19 @@ open class NumberBaseComponent(
      * Returns the parameter list for the fake fixture generation to respect minimum and maximum bounds
      */
     fun getFakeFixtureMinMaxRangeParameterSpec(minimumValue: Long?, maximumValue: Long?): String {
-        return if (minimumValue != null && maximumValue != null) {
-            "$minimumValue, $maximumValue"
-        } else if (minimumValue != null) {
-            "$minimumValue"
-        } else if (maximumValue != null) {
-            "0, $maximumValue"
-        } else {
-            ""
+        return when {
+            minimumValue != null && maximumValue != null -> {
+                "$minimumValue, $maximumValue"
+            }
+            minimumValue != null -> {
+                "$minimumValue"
+            }
+            maximumValue != null -> {
+                "0, $maximumValue"
+            }
+            else -> {
+                ""
+            }
         }
     }
 

@@ -18,9 +18,7 @@ class ReportPreuploadComponent(
 ) : ComponentBase(identifier, parent) {
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        require(documentSupport is NoDocumentSupport) {
-            "Data-Model generation for this component does not support any document support"
-        }
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
             identifier,
             TypeReference(
@@ -47,9 +45,7 @@ class ReportPreuploadComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        require(documentSupport is NoDocumentSupport) {
-            "Upload-Page generation for this component does not support any document support"
-        }
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = "UploadReports",
@@ -57,9 +53,7 @@ class ReportPreuploadComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        require(documentSupport is NoDocumentSupport) {
-            "Fake-Fixture generation for this component does not support any document support"
-        }
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
         sectionBuilder.addAtomicExpression(
             identifier,
             "dataGenerator.reports",
