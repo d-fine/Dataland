@@ -272,22 +272,28 @@
                     ],
                     "cards": [
                         {
-                            "title": "We need comparable and reliable sustainability data to create value."
+                            "title": "Integrity",
+                            "text": "We need comparable and reliable sustainability data to create value."
                         },
                         {
-                            "title": "We will seek disclosure of sustainability data from our business relations."
+                            "title": "Disclosure",
+                            "text": "We will seek disclosure of sustainability data from our business relations."
                         },
                         {
-                            "title": "We will respect and promote data soveignty."
+                            "title": "Transparency",
+                            "text": "We will respect and promote data soveignty."
                         },
                         {
-                            "title": "Data should be timely and easliy accessible at fair cost."
+                            "title": "Accountability",
+                            "text": "Data should be timely and easliy accessible at fair cost."
                         },
                         {
-                            "title": "Common data spaces should be neutral, transparent, non-competitive and not-for-profit."
+                            "title": "Neutrality",
+                            "text": "Common data spaces should be neutral, transparent, non-competitive and not-for-profit."
                         },
                         {
-                            "title": "We will work together to achieve these principles and promote their acceptance."
+                            "title": "Collaboration",
+                            "text": "We will work together to achieve these principles and promote their acceptance."
                         }
                     ]
                 }
