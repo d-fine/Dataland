@@ -2,374 +2,404 @@
 	{
 		"companyInformation": {
 			"companyName": "Heimathafen-dataset-with-no-null-fields",
-			"headquarters": "Mayertfurt",
-			"headquartersPostalCode": "06911",
-			"sector": "partnerships",
+			"headquarters": "Osbaldotown",
+			"headquartersPostalCode": "31452-2616",
+			"sector": null,
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"TRoQewPZtjUr"
+					"VQosy6iq1J9j",
+					"0id72qfu5xLy"
 				],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [
-					"0Id93tRa1"
-				],
-				"VatNumber": [
-					"PSKT7h3Iq"
-				],
+				"Duns": [],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"JitIRhN3lWT506k"
+					"6ELDYipdqifMJGE"
 				]
 			},
-			"countryCode": "NG",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "AG",
-			"website": "https://soft-ginger.biz",
+			"countryCode": "DE",
+			"companyAlternativeNames": [
+				"Hoppe Inc"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://worried-redesign.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"datenanbieter": {
-					"unternehmenseigentumUndEigentuemerstruktur": "bandwidth",
+					"unternehmenseigentumUndEigentuemerstruktur": "experiences",
 					"kernkompetenzenUndGeschaeftsbereiche": [
-						"46.39",
-						"46.69"
+						"46.35"
 					],
-					"anzahlDerFuerEsgZustaendigenMitarbeiter": 21246.61
+					"anzahlDerFuerEsgZustaendigenMitarbeiter": 27317.64
 				},
 				"methodik": {
-					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "content",
-					"kriterienFuerIhreNachhaltigkeitsratings": "models",
-					"verfahrenZurVorbereitungDerAnalyseOderMethodik": "ROI",
-					"wieIstIhreBewertungsskalaDefiniert": "platforms",
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "partnerships",
+					"kriterienFuerIhreNachhaltigkeitsratings": "convergence",
+					"verfahrenZurVorbereitungDerAnalyseOderMethodik": "portals",
+					"wieIstIhreBewertungsskalaDefiniert": "niches",
 					"bewertungAktuell": "niches",
-					"sindIhreBewertungenUnabhaengig": "portals",
-					"datenerfassung": "platforms",
+					"sindIhreBewertungenUnabhaengig": "methodologies",
+					"datenerfassung": "solutions",
 					"dieMethodikUmfasstUmweltSozialesUndGovernance": "Yes",
-					"datenPlausibilitaetspruefung": "ROI",
-					"intervalleFuerDieDatenaktualisierung": "paradigms",
-					"zuverlaessigkeitDerMethodikSicherstellen": "web services",
-					"minimierenOderVerhindernSieSubjektiveFaktoren": "ROI",
-					"listePotenziellerInteressenkonflikte": "web services",
-					"interessenkonfliktenEntgegenwirken": "models",
-					"dokumentationDerDatenerfassungUndSicherstellungDesProzesses": "solutions",
+					"datenquelle": [
+						{
+							"value": "e-business",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							}
+						},
+						{
+							"value": "interfaces",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							}
+						}
+					],
+					"datenPlausibilitaetspruefung": "relationships",
+					"intervalleFuerDieDatenaktualisierung": "channels",
+					"zuverlaessigkeitDerMethodikSicherstellen": "supply-chains",
+					"minimierenOderVerhindernSieSubjektiveFaktoren": "schemas",
+					"listePotenziellerInteressenkonflikte": "e-markets",
+					"interessenkonfliktenEntgegenwirken": "deliverables",
+					"dokumentationDerDatenerfassungUndSicherstellungDesProzesses": "users",
 					"bewertungVonQualitaetsstandards": "mindshare",
-					"ratingTransparenzstandards": "initiatives",
+					"ratingTransparenzstandards": "ROI",
 					"qualitaetssicherungsprozess": "No",
-					"fallsNeinGebenSieBitteDieGruendeAn": "technologies",
-					"strukturDesQualitaetssicherungsprozesses": "synergies",
-					"dieAktualitaetDerMethodik": "portals",
+					"fallsNeinGebenSieBitteDieGruendeAn": "convergence",
+					"strukturDesQualitaetssicherungsprozesses": "markets",
+					"dieAktualitaetDerMethodik": "e-markets",
 					"paisInDieAnalyseEinbezogen": "Yes",
-					"listeDerEingeschlossenenPais": "initiatives",
-					"quelleDerPaiSammlung": "synergies",
-					"umgangMitAusreissern": "metrics",
-					"identifizierungVonKontroversenGeschaeften": "lifetime value",
-					"aktuelleKontroversen": "eyeballs",
-					"kontroversenUmDieQuellenerfassung": "paradigms"
+					"listeDerEingeschlossenenPais": "metrics",
+					"quelleDerPaiSammlung": "metrics",
+					"umgangMitAusreissern": "platforms",
+					"identifizierungVonKontroversenGeschaeften": "methodologies",
+					"aktuelleKontroversen": "niches",
+					"kontroversenUmDieQuellenerfassung": "platforms"
 				},
 				"implementierung": {
 					"angeboteneSprachen": "ROI",
-					"bereitgestellteDokumentationsarten": "models",
+					"bereitgestellteDokumentationsarten": "communities",
 					"bereitgestellteDokumentationAufDeutsch": "Yes",
-					"leistungstests": "No",
-					"sicherheitstests": "Yes",
-					"beschreibungDerSystemarchitektur": "networks",
-					"erforderlichesClientBetriebssystem": "mindshare",
+					"leistungstests": "Yes",
+					"sicherheitstests": "No",
+					"beschreibungDerSystemarchitektur": "supply-chains",
+					"erforderlichesClientBetriebssystem": "technologies",
 					"angebotFuerFetteDuenneZitrischeKunden": "No",
-					"serverBackup": "metrics",
+					"serverBackup": "mindshare",
 					"standardisiertesKonzeptZurWiederherstellungImKatastrophenfall": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
-							"fileName": "Policy",
+							"fileName": "Certification",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 						}
 					},
-					"stammUndBewegungsdatenLesen": "No",
+					"stammUndBewegungsdatenLesen": "Yes",
 					"kompatibilitaetMitAnderenDatenquellen": "No",
-					"importDerErgebnisseInDasDataWarehouse": "Yes",
-					"erforderlichesDatenbanksystem": "experiences",
-					"beschreibungDesDesignsUndDerStrukturDerDatenbankEn": "bandwidth",
+					"importDerErgebnisseInDasDataWarehouse": "No",
+					"erforderlichesDatenbanksystem": "lifetime value",
+					"beschreibungDesDesignsUndDerStrukturDerDatenbankEn": "channels",
 					"direkterZugriffAufDieDatenbank": "No",
-					"schreibenderZugriffAufDieDatenbank": "No",
-					"unterstuetzungDerEchtzeitverarbeitung": "No",
-					"unterstuetzungFuerZeitnaheVerarbeitung": "Yes",
-					"unterstuetzungDerStapelverarbeitung": "No",
-					"unterstuetzteBiLoesung": "deliverables",
-					"flexibilitaetBeimImportExportVonDaten": "Yes",
+					"schreibenderZugriffAufDieDatenbank": "Yes",
+					"unterstuetzungDerEchtzeitverarbeitung": "Yes",
+					"unterstuetzungFuerZeitnaheVerarbeitung": "No",
+					"unterstuetzungDerStapelverarbeitung": "Yes",
+					"unterstuetzteBiLoesung": "eyeballs",
+					"flexibilitaetBeimImportExportVonDaten": "No",
 					"dauerhafteVerfuegbarkeit": "No",
-					"uebertragenVonDatenhistorien": "lifetime value",
-					"unterstuetzterZeitraumDerDatenhistorien": "supply-chains",
-					"fruehesterStartterminFuerEinIntegrationsprojekt": "2024-04-10",
-					"geschaetzterZeitrahmenFuerDieVollstaendigeIntegrationDesProjekts": "content",
-					"durchschnittlicheAnzahlDerBenoetigtenRessourcen": 21808.25,
-					"anzahlDerVerfuegbarenRessourcen": 42816.72,
-					"kundenbetreuung": "infrastructures"
+					"uebertragenVonDatenhistorien": "ROI",
+					"unterstuetzterZeitraumDerDatenhistorien": "portals",
+					"fruehesterStartterminFuerEinIntegrationsprojekt": "2024-02-12",
+					"geschaetzterZeitrahmenFuerDieVollstaendigeIntegrationDesProjekts": "action-items",
+					"durchschnittlicheAnzahlDerBenoetigtenRessourcen": 69627.67,
+					"anzahlDerVerfuegbarenRessourcen": 15607.79,
+					"kundenbetreuung": "partnerships"
 				}
 			},
 			"environmental": {
 				"nachhaltigskeitsrisiken": {
-					"methodikFuerOekologischeNachhaltigkeitsrisiken": "Yes",
-					"wennNeinBitteBegruendenOekologischeNachhaltigkeitsrisiken": "blockchains",
-					"kartierteRisikenFuerDieOekologischeNachhaltigkeit": "infrastructures",
-					"identifizierungDerWesentlichenRisikenFuerDieOekologischeNachhaltigkeitUndDerKonstruktionsmethodik": "supply-chains",
-					"umweltbewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken": "eyeballs",
-					"risikenFuerDieOekologischeNachhaltigkeitAbsichern": "methodologies",
-					"vierAugenPruefung": "No",
-					"wennNeinBitteBegruenden": "paradigms",
-					"beschreibungDerVierAugenPruefung": "experiences"
+					"methodikFuerOekologischeNachhaltigkeitsrisiken": "No",
+					"wennNeinBitteBegruendenOekologischeNachhaltigkeitsrisiken": "lifetime value",
+					"kartierteRisikenFuerDieOekologischeNachhaltigkeit": "lifetime value",
+					"identifizierungDerWesentlichenRisikenFuerDieOekologischeNachhaltigkeitUndDerKonstruktionsmethodik": "methodologies",
+					"umweltbewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken": "initiatives",
+					"risikenFuerDieOekologischeNachhaltigkeitAbsichern": "e-commerce",
+					"quelle": [
+						{
+							"value": "web services",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							}
+						},
+						{
+							"value": "deliverables",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							}
+						}
+					],
+					"vierAugenPruefung": "Yes",
+					"wennNeinBitteBegruenden": "synergies",
+					"beschreibungDerVierAugenPruefung": "markets"
 				},
 				"pais": {
-					"sechsPaisTreibhausgasemissionen": "No",
-					"wennNeinBitteBegruenden": "functionalities",
-					"wennJaBitteDiePaisAuflisten": "action-items",
-					"verwendeteSchluesselzahlenTreibhausgasemissionen": "partnerships",
-					"datenerfassungTreibhausgasemissionen": "solutions",
-					"datenPlausibilitaetspruefungTreibhausgasemissionen": "mindshare",
-					"datenquelleTreibhausgasemissionen": "platforms",
+					"sechsPaisTreibhausgasemissionen": "Yes",
+					"wennNeinBitteBegruenden": "supply-chains",
+					"wennJaBitteDiePaisAuflisten": "content",
+					"verwendeteSchluesselzahlenTreibhausgasemissionen": "e-commerce",
+					"datenerfassungTreibhausgasemissionen": "supply-chains",
+					"datenPlausibilitaetspruefungTreibhausgasemissionen": "synergies",
+					"datenquelleTreibhausgasemissionen": "methodologies",
 					"paisBiologischeVielfalt": "Yes",
-					"wennNeinBitteBegruendenBiodiversitaet": "relationships",
-					"verwendeteSchluesselzahlenBiodiversitaet": "markets",
+					"wennNeinBitteBegruendenBiodiversitaet": "e-business",
+					"verwendeteSchluesselzahlenBiodiversitaet": "systems",
 					"datenerfassungBiodiversitaet": "web services",
-					"datenPlausibilitaetspruefungBiodiversitaet": "technologies",
-					"datenquelleBiodiversitaet": "niches",
-					"paiWasser": "Yes",
-					"wennNeinBitteBegruendenWasser": "action-items",
-					"verwendeteSchluesselzahlenWasser": "supply-chains",
-					"datenerfassungWasser": "metrics",
-					"datenPlausibilitaetspruefungWasser": "lifetime value",
-					"datenquelleWasser": "markets",
+					"datenPlausibilitaetspruefungBiodiversitaet": "experiences",
+					"datenquelleBiodiversitaet": "schemas",
+					"paiWasser": "No",
+					"wennNeinBitteBegruendenWasser": "interfaces",
+					"verwendeteSchluesselzahlenWasser": "interfaces",
+					"datenerfassungWasser": "e-markets",
+					"datenPlausibilitaetspruefungWasser": "niches",
+					"datenquelleWasser": "web services",
 					"paiAbfall": "Yes",
-					"wennNeinBitteBegruendenAbfall": "platforms",
-					"verwendeteSchluesselzahlenAbfall": "infrastructures",
-					"datenerfassungAbfall": "platforms",
-					"datenPlausibilitaetspruefungAbfall": "deliverables",
-					"datenquelleAbfall": "deliverables",
-					"paiUmweltAufDemLand": "Yes",
-					"wennNeinBitteBegruendenUmweltAufDemLand": "functionalities",
-					"verwendeteSchluesselzahlenUmweltAufDemLand": "bandwidth",
-					"datenerfassungUmweltAufDemLand": "systems",
-					"datenPlausibilitaetspruefungUmweltAufDemLand": "content",
-					"datenquelleUmweltAufDemLand": "applications"
+					"wennNeinBitteBegruendenAbfall": "initiatives",
+					"verwendeteSchluesselzahlenAbfall": "eyeballs",
+					"datenerfassungAbfall": "architectures",
+					"datenPlausibilitaetspruefungAbfall": "methodologies",
+					"datenquelleAbfall": "partnerships",
+					"paiUmweltAufDemLand": "No",
+					"wennNeinBitteBegruendenUmweltAufDemLand": "metrics",
+					"verwendeteSchluesselzahlenUmweltAufDemLand": "ROI",
+					"datenerfassungUmweltAufDemLand": "methodologies",
+					"datenPlausibilitaetspruefungUmweltAufDemLand": "deliverables",
+					"datenquelleUmweltAufDemLand": "deliverables"
 				},
 				"sfdr": {
-					"methodikZurMessungEinesSignifikantenBeitragsZuEinemUmweltziel": "models"
+					"methodikZurMessungEinesSignifikantenBeitragsZuEinemUmweltziel": "action-items"
 				},
 				"kontroverseGeschaeftsfelder": {
-					"ausschlussDerTabakerzeugungTabakerzeugung": "Yes",
-					"wennNeinBitteBegruendenTabakerzeugung": "content",
-					"metrischVerwendetTabakerzeugung": "supply-chains",
-					"methodikDerBerechnungTabakerzeugung": "markets",
-					"verwendeteQuellenTabakerzeugung": "niches",
+					"ausschlussDerTabakerzeugungTabakerzeugung": "No",
+					"wennNeinBitteBegruendenTabakerzeugung": "blockchains",
+					"metrischVerwendetTabakerzeugung": "paradigms",
+					"methodikDerBerechnungTabakerzeugung": "methodologies",
+					"verwendeteQuellenTabakerzeugung": "systems",
 					"ausschlussDerKohlefoerderungUndVerteilung": "Yes",
-					"wennNeinBitteBegruendenKohleerzeugung": "systems",
-					"metrischVerwendetKohleerzeugung": "web services",
-					"methodikDerBerechnungKohleerzeugung": "supply-chains",
+					"wennNeinBitteBegruendenKohleerzeugung": "schemas",
+					"metrischVerwendetKohleerzeugung": "portals",
+					"methodikDerBerechnungKohleerzeugung": "models",
 					"verwendeteQuellenKohleerzeugung": "synergies"
 				}
 			},
 			"social": {
 				"nachhaltigskeitsrisiken": {
-					"methodikSozialeNachhaltigkeitsrisiken": "No",
-					"wennNeinBitteBegruendenNachhaltigkeitsrisiken": "communities",
-					"kartierteSozialeNachhaltigkeitsrisiken": "solutions",
-					"identifizierungWesentlicherSozialerNachhaltigkeitsrisikenUndKonstruktionsmethodik": "interfaces",
-					"sozialeBewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken": "partnerships",
-					"sozialeNachhaltigkeitsrisikenAbsichern": "action-items",
-					"quelle": "action-items",
-					"vierAugenPruefung": "Yes",
-					"wennNeinBitteBegruendenVierAugenPruefung": "interfaces",
-					"beschreibungDerVierAugenPruefung": "schemas"
+					"methodikSozialeNachhaltigkeitsrisiken": "Yes",
+					"wennNeinBitteBegruendenNachhaltigkeitsrisiken": "channels",
+					"kartierteSozialeNachhaltigkeitsrisiken": "bandwidth",
+					"identifizierungWesentlicherSozialerNachhaltigkeitsrisikenUndKonstruktionsmethodik": "methodologies",
+					"sozialeBewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken": "paradigms",
+					"sozialeNachhaltigkeitsrisikenAbsichern": "supply-chains",
+					"quelle": "systems",
+					"vierAugenPruefung": "No",
+					"wennNeinBitteBegruendenVierAugenPruefung": "eyeballs",
+					"beschreibungDerVierAugenPruefung": "e-markets"
 				},
 				"pais": {
-					"paiSozial": "No",
-					"wennNeinBitteBegruendenSozialeUnternehmen": "networks",
-					"verwendeteSchluesselzahlenSozialeUnternehmen": "experiences",
-					"datenerfassungSozialeUnternehmen": "portals",
-					"datenPlausibilitaetspruefungSozialeUnternehmen": "e-markets",
-					"datenquelleSozialeUnternehmen": "eyeballs",
+					"paiSozial": "Yes",
+					"wennNeinBitteBegruendenSozialeUnternehmen": "synergies",
+					"verwendeteSchluesselzahlenSozialeUnternehmen": "metrics",
+					"datenerfassungSozialeUnternehmen": "e-commerce",
+					"datenPlausibilitaetspruefungSozialeUnternehmen": "experiences",
+					"datenquelleSozialeUnternehmen": "lifetime value",
 					"paiSozialesAufDemLand": "Yes",
-					"wennNeinBitteBegruendenSozialesAufDemLand": "channels",
-					"verwendeteSchluesselzahlenSozialesAufDemLand": "blockchains",
-					"datenerfassungSozialesAufDemLand": "channels",
-					"datenPlausibilitaetspruefungSozialesAufDemLand": "e-markets",
-					"datenquelleSozialesAufDemLand": "bandwidth"
+					"wennNeinBitteBegruendenSozialesAufDemLand": "technologies",
+					"verwendeteSchluesselzahlenSozialesAufDemLand": "interfaces",
+					"datenerfassungSozialesAufDemLand": "functionalities",
+					"datenPlausibilitaetspruefungSozialesAufDemLand": "methodologies",
+					"datenquelleSozialesAufDemLand": "action-items"
 				},
 				"sfdr": {
-					"methodikZurMessungDesSignifikantenBeitragsZuEinemGesellschaftlichenZiel": "channels"
+					"methodikZurMessungDesSignifikantenBeitragsZuEinemGesellschaftlichenZiel": "interfaces"
 				},
 				"kontroverseGeschaeftsfelder": {
-					"herstellungOderVertriebVonWaffenAusschluss": "Yes",
-					"wennNeinBitteBegruendenWaffen": "methodologies",
-					"metrischVerwendetWaffen": "experiences",
-					"methodikDerBerechnungWaffen": "interfaces",
-					"verwendeteQuellenWaffen": "channels",
-					"ausschlussVerbotenerWaffen": "No",
-					"wennNeinBitteBegruendenVerboteneWaffen": "e-commerce",
-					"metrischVerwendetVerboteneWaffen": "content",
-					"verwendeteQuellenVerboteneWaffen": "technologies"
+					"herstellungOderVertriebVonWaffenAusschluss": "No",
+					"wennNeinBitteBegruendenWaffen": "blockchains",
+					"metrischVerwendetWaffen": "convergence",
+					"methodikDerBerechnungWaffen": "supply-chains",
+					"verwendeteQuellenWaffen": "web services",
+					"ausschlussVerbotenerWaffen": "Yes",
+					"wennNeinBitteBegruendenVerboteneWaffen": "mindshare",
+					"metrischVerwendetVerboteneWaffen": "architectures",
+					"verwendeteQuellenVerboteneWaffen": "interfaces"
 				}
 			},
 			"governance": {
 				"goodGovernance": {
-					"methodikDerGutenRegierungsfuehrung": "No",
-					"wennNeinBitteBegruendenGoodGovernance": "solutions",
+					"methodikDerGutenRegierungsfuehrung": "Yes",
+					"wennNeinBitteBegruendenGoodGovernance": "channels",
 					"definitionVonGuterRegierungsfuehrung": "platforms",
-					"listeDerKpisFuerGuteUnternehmensfuehrung": "action-items",
-					"verwendeteQuellenGoodGovernance": "communities"
+					"listeDerKpisFuerGuteUnternehmensfuehrung": "convergence",
+					"verwendeteQuellenGoodGovernance": "infrastructures"
 				},
 				"globalCompact": {
-					"beruecksichtigungDesUngc": "No",
-					"wennNeinBitteBegruendenGlobalCompact": "ROI",
-					"beruecksichtigungDerUngcBeschreibung": "networks",
-					"verwendeteQuellenGlobalCompact": "relationships"
+					"beruecksichtigungDesUngc": "Yes",
+					"wennNeinBitteBegruendenGlobalCompact": "interfaces",
+					"beruecksichtigungDerUngcBeschreibung": "solutions",
+					"verwendeteQuellenGlobalCompact": "ROI"
 				},
 				"kontroverseGeschaeftsfelder": {
-					"kontroversenImBereichDerBestechungUndKorruption": "Yes",
-					"wennNeinBitteBegruendenKontroverseGeschaeftsfelder": "action-items",
-					"verwendeteMetrikenUndMethodik": "methodologies",
-					"verwendeteQuellenKontroverseGeschaeftsfelder": "deliverables",
-					"dieAktualitaetDerKontroversenImBereichBestechungUndKorruption": "niches"
+					"kontroversenImBereichDerBestechungUndKorruption": "No",
+					"wennNeinBitteBegruendenKontroverseGeschaeftsfelder": "content",
+					"verwendeteMetrikenUndMethodik": "solutions",
+					"verwendeteQuellenKontroverseGeschaeftsfelder": "communities",
+					"dieAktualitaetDerKontroversenImBereichBestechungUndKorruption": "solutions"
 				}
 			},
 			"sdg": {
 				"keineArmut": {
-					"sdgKeineArmut": "Yes",
-					"wennNeinBitteBegruendenKeineArmut": "lifetime value",
-					"verwendeteSchluesselzahlenKeineArmut": "communities",
-					"datenerfassungKeineArmut": "networks",
-					"datenPlausibilitaetspruefungKeineArmut": "systems",
-					"datenquelleKeineArmut": "e-business"
+					"sdgKeineArmut": "No",
+					"wennNeinBitteBegruendenKeineArmut": "experiences",
+					"verwendeteSchluesselzahlenKeineArmut": "markets",
+					"datenerfassungKeineArmut": "synergies",
+					"datenPlausibilitaetspruefungKeineArmut": "experiences",
+					"datenquelleKeineArmut": "convergence"
 				},
 				"keinHunger": {
 					"sdgKeinHunger": "Yes",
-					"verwendeteSchluesselzahlenKeinHunger": "web services",
-					"datenerfassungKeinHunger": "lifetime value",
-					"datenPlausibilitaetspruefungKeinHunger": "technologies",
-					"datenquelleKeinHunger": "synergies"
+					"verwendeteSchluesselzahlenKeinHunger": "channels",
+					"datenerfassungKeinHunger": "networks",
+					"datenPlausibilitaetspruefungKeinHunger": "networks",
+					"datenquelleKeinHunger": "ROI"
 				},
 				"gesundheitUndWohlergehen": {
 					"sdgGesundheitUndWohlergehen": "Yes",
-					"wennNeinBitteBegruendenGesundheitUndWohlergehen": "architectures",
-					"verwendeteSchluesselzahlenGesundheitUndWohlergehen": "metrics",
-					"datenerfassungGesundheitUndWohlergehen": "users",
-					"datenPlausibilitaetspruefungGesundheitUndWohlergehen": "convergence",
-					"datenquelleGesundheitUndWohlergehen": "paradigms"
+					"wennNeinBitteBegruendenGesundheitUndWohlergehen": "users",
+					"verwendeteSchluesselzahlenGesundheitUndWohlergehen": "solutions",
+					"datenerfassungGesundheitUndWohlergehen": "portals",
+					"datenPlausibilitaetspruefungGesundheitUndWohlergehen": "action-items",
+					"datenquelleGesundheitUndWohlergehen": "infrastructures"
 				},
 				"hochwertigeBildung": {
-					"sdgHochwertigeBildung": "Yes",
-					"wennNeinBitteBegruendenHochwertigeBildung": "networks",
-					"verwendeteSchluesselzahlenHochwertigeBildung": "partnerships",
-					"datenerfassungHochwertigeBildung": "users",
-					"datenPlausibilitaetspruefungHochwertigeBildung": "communities",
-					"datenquelleHochwertigeBildung": "channels"
+					"sdgHochwertigeBildung": "No",
+					"wennNeinBitteBegruendenHochwertigeBildung": "initiatives",
+					"verwendeteSchluesselzahlenHochwertigeBildung": "systems",
+					"datenerfassungHochwertigeBildung": "e-markets",
+					"datenPlausibilitaetspruefungHochwertigeBildung": "e-commerce",
+					"datenquelleHochwertigeBildung": "systems"
 				},
 				"geschlechtergleichheit": {
 					"sdgGeschlechtergleichheit": "No",
-					"wennNeinBitteBegruendenGeschlechtergleichheit": "interfaces",
+					"wennNeinBitteBegruendenGeschlechtergleichheit": "convergence",
 					"verwendeteSchluesselzahlenGeschlechtergleichheit": "portals",
-					"datenerfassungGeschlechtergleichheit": "e-commerce",
-					"datenPlausibilitaetspruefungGeschlechtergleichheit": "solutions",
-					"datenquelleGeschlechtergleichheit": "channels"
+					"datenerfassungGeschlechtergleichheit": "synergies",
+					"datenPlausibilitaetspruefungGeschlechtergleichheit": "ROI",
+					"datenquelleGeschlechtergleichheit": "ROI"
 				},
 				"sauberesWasserUndSanitaereEinrichtungen": {
-					"sdgSauberesWasserUndSanitaereEinrichtungen": "No",
-					"wennNeinBitteBegruendenSauberesWasserUndSanitaereEinrichtungen": "experiences",
-					"verwendeteSchluesselzahlenSauberesWasserUndSanitaereEinrichtungen": "markets",
-					"datenerfassungSauberesWasserUndSanitaereEinrichtungen": "eyeballs",
-					"datenPlausibilitaetspruefungSauberesWasserUndSanitaereEinrichtungen": "metrics",
-					"datenquelleSauberesWasserUndSanitaereEinrichtungen": "architectures"
+					"sdgSauberesWasserUndSanitaereEinrichtungen": "Yes",
+					"wennNeinBitteBegruendenSauberesWasserUndSanitaereEinrichtungen": "web services",
+					"verwendeteSchluesselzahlenSauberesWasserUndSanitaereEinrichtungen": "deliverables",
+					"datenerfassungSauberesWasserUndSanitaereEinrichtungen": "functionalities",
+					"datenPlausibilitaetspruefungSauberesWasserUndSanitaereEinrichtungen": "initiatives",
+					"datenquelleSauberesWasserUndSanitaereEinrichtungen": "e-business"
 				},
 				"bezahlbareUndSaubereEnergie": {
-					"sdgBezahlbareUndSaubereEnergie": "No",
-					"wennNeinBitteBegruendenBezahlbareUndSaubereEnergie": "partnerships",
-					"verwendeteSchluesselzahlenBezahlbareUndSaubereEnergie": "synergies",
-					"datenerfassungBezahlbareUndSaubereEnergie": "infrastructures",
-					"datenPlausibilitaetspruefungBezahlbareUndSaubereEnergie": "niches",
+					"sdgBezahlbareUndSaubereEnergie": "Yes",
+					"wennNeinBitteBegruendenBezahlbareUndSaubereEnergie": "users",
+					"verwendeteSchluesselzahlenBezahlbareUndSaubereEnergie": "action-items",
+					"datenerfassungBezahlbareUndSaubereEnergie": "eyeballs",
+					"datenPlausibilitaetspruefungBezahlbareUndSaubereEnergie": "action-items",
 					"datenquelleBezahlbareUndSaubereEnergie": "metrics"
 				},
 				"menschenwuerdigeArbeitUndWirtschaftswachstum": {
 					"sdgMenschenwuerdigeArbeitUndWirtschaftswachstum": "Yes",
-					"wennNeinBitteBegruendenMenschenwuerdigeArbeitUndWirtschaftswachstum": "eyeballs",
-					"verwendeteSchluesselzahlenMenschenwuerdigeArbeitUndWirtschaftswachstum": "ROI",
-					"datenerfassungMenschenwuerdigeArbeitUndWirtschaftswachstum": "deliverables",
-					"datenPlausibilitaetspruefungMenschenwuerdigeArbeitUndWirtschaftswachstum": "architectures",
-					"datenquelleMenschenwuerdigeArbeitUndWirtschaftswachstum": "markets"
+					"wennNeinBitteBegruendenMenschenwuerdigeArbeitUndWirtschaftswachstum": "bandwidth",
+					"verwendeteSchluesselzahlenMenschenwuerdigeArbeitUndWirtschaftswachstum": "solutions",
+					"datenerfassungMenschenwuerdigeArbeitUndWirtschaftswachstum": "experiences",
+					"datenPlausibilitaetspruefungMenschenwuerdigeArbeitUndWirtschaftswachstum": "methodologies",
+					"datenquelleMenschenwuerdigeArbeitUndWirtschaftswachstum": "methodologies"
 				},
 				"industrieInnovationUndInfrastruktur": {
 					"sdgIndustrieInnovationUndInfrastruktur": "Yes",
-					"wennNeinBitteBegruendenIndustrieInnovationUndInfrastruktur": "web services",
-					"verwendeteSchluesselzahlenIndustrieInnovationUndInfrastruktur": "synergies",
-					"datenerfassungIndustrieInnovationUndInfrastruktur": "synergies",
-					"datenPlausibilitaetspruefungIndustrieInnovationUndInfrastruktur": "platforms",
-					"datenquelleIndustrieInnovationUndInfrastruktur": "convergence"
+					"wennNeinBitteBegruendenIndustrieInnovationUndInfrastruktur": "solutions",
+					"verwendeteSchluesselzahlenIndustrieInnovationUndInfrastruktur": "infrastructures",
+					"datenerfassungIndustrieInnovationUndInfrastruktur": "infrastructures",
+					"datenPlausibilitaetspruefungIndustrieInnovationUndInfrastruktur": "e-markets",
+					"datenquelleIndustrieInnovationUndInfrastruktur": "users"
 				},
 				"wenigerUngleichheiten": {
-					"sdgWenigerUngleichheiten": "Yes",
-					"wennNeinBitteBegruendenWenigerUngleichheiten": "users",
-					"verwendeteSchluesselzahlenWenigerUngleichheiten": "channels",
-					"datenerfassungWenigerUngleichheiten": "web services",
-					"datenPlausibilitaetspruefungWenigerUngleichheiten": "paradigms",
-					"datenquelleWenigerUngleichheiten": "bandwidth"
+					"sdgWenigerUngleichheiten": "No",
+					"wennNeinBitteBegruendenWenigerUngleichheiten": "mindshare",
+					"verwendeteSchluesselzahlenWenigerUngleichheiten": "synergies",
+					"datenerfassungWenigerUngleichheiten": "solutions",
+					"datenPlausibilitaetspruefungWenigerUngleichheiten": "ROI",
+					"datenquelleWenigerUngleichheiten": "lifetime value"
 				},
 				"nachhaltigeStaedteUndGemeinden": {
-					"sdgNachhaltigeStaedteUndGemeinden": "No",
-					"wennNeinBitteBegruendenNachhaltigeStaedteUndGemeinden": "convergence",
-					"verwendeteSchluesselzahlenNachhaltigeStaedteUndGemeinden": "action-items",
-					"datenerfassungNachhaltigeStaedteUndGemeinden": "platforms",
+					"sdgNachhaltigeStaedteUndGemeinden": "Yes",
+					"wennNeinBitteBegruendenNachhaltigeStaedteUndGemeinden": "supply-chains",
+					"verwendeteSchluesselzahlenNachhaltigeStaedteUndGemeinden": "mindshare",
+					"datenerfassungNachhaltigeStaedteUndGemeinden": "schemas",
 					"datenPlausibilitaetspruefungNachhaltigeStaedteUndGemeinden": "ROI",
-					"datenquelleNachhaltigeStaedteUndGemeinden": "portals"
+					"datenquelleNachhaltigeStaedteUndGemeinden": "markets"
 				},
 				"nachhaligerKonsumUndProduktion": {
-					"sdgNachhaligerKonsumUndProduktion": "Yes",
-					"wennNeinBitteBegruendenNachhaligerKonsumUndProduktion": "solutions",
-					"verwendeteSchluesselzahlenNachhaligerKonsumUndProduktion": "niches",
-					"datenerfassungNachhaligerKonsumUndProduktion": "initiatives",
-					"datenPlausibilitaetspruefungNachhaligerKonsumUndProduktion": "infrastructures",
-					"datenquelleNachhaligerKonsumUndProduktion": "applications"
+					"sdgNachhaligerKonsumUndProduktion": "No",
+					"wennNeinBitteBegruendenNachhaligerKonsumUndProduktion": "e-markets",
+					"verwendeteSchluesselzahlenNachhaligerKonsumUndProduktion": "schemas",
+					"datenerfassungNachhaligerKonsumUndProduktion": "niches",
+					"datenPlausibilitaetspruefungNachhaligerKonsumUndProduktion": "architectures",
+					"datenquelleNachhaligerKonsumUndProduktion": "initiatives"
 				},
 				"massnahmenZumKlimaschutz": {
 					"sdgMassnahmenZumKlimaschutz": "Yes",
-					"wennNeinBitteBegruendenMassnahmenZumKlimaschutz": "content",
-					"verwendeteSchluesselzahlenMassnahmenZumKlimaschutz": "web services",
-					"datenerfassungMassnahmenZumKlimaschutz": "mindshare",
-					"datenPlausibilitaetspruefungMassnahmenZumKlimaschutz": "mindshare",
+					"wennNeinBitteBegruendenMassnahmenZumKlimaschutz": "e-commerce",
+					"verwendeteSchluesselzahlenMassnahmenZumKlimaschutz": "functionalities",
+					"datenerfassungMassnahmenZumKlimaschutz": "systems",
+					"datenPlausibilitaetspruefungMassnahmenZumKlimaschutz": "experiences",
 					"datenquelleMassnahmenZumKlimaschutz": "infrastructures"
 				},
 				"lebenUnterWasser": {
 					"sdgLebenUnterWasser": "Yes",
-					"wennNeinBitteBegruendenLebenUnterWasser": "applications",
-					"verwendeteSchluesselzahlenLebenUnterWasser": "blockchains",
-					"datenerfassungLebenUnterWasser": "bandwidth",
+					"wennNeinBitteBegruendenLebenUnterWasser": "content",
+					"verwendeteSchluesselzahlenLebenUnterWasser": "channels",
+					"datenerfassungLebenUnterWasser": "users",
 					"datenPlausibilitaetspruefungLebenUnterWasser": "portals",
-					"datenquelleLebenUnterWasser": "web services"
+					"datenquelleLebenUnterWasser": "technologies"
 				},
 				"lebenAnLand": {
-					"sdgLebenAnLand": "Yes",
+					"sdgLebenAnLand": "No",
 					"wennNeinBitteBegruendenLebenAnLand": "eyeballs",
-					"verwendeteSchluesselzahlenLebenAnLand": "infrastructures",
-					"datenerfassungLebenAnLand": "experiences",
-					"datenPlausibilitaetspruefungLebenAnLand": "partnerships",
-					"datenquelleLebenAnLand": "initiatives"
+					"verwendeteSchluesselzahlenLebenAnLand": "systems",
+					"datenerfassungLebenAnLand": "portals",
+					"datenPlausibilitaetspruefungLebenAnLand": "blockchains",
+					"datenquelleLebenAnLand": "functionalities"
 				},
 				"friedenGerechtigkeitUndStarkeInstitutionen": {
-					"sdgFriedenGerechtigkeitUndStarkeInstitutionen": "No",
-					"wennNeinBitteBegruendenFriedenGerechtigkeitUndStarkeInstitutionen": "paradigms",
-					"verwendeteSchluesselzahlenFriedenGerechtigkeitUndStarkeInstitutionen": "paradigms",
-					"datenerfassungFriedenGerechtigkeitUndStarkeInstitutionen": "infrastructures",
-					"datenPlausibilitaetspruefungFriedenGerechtigkeitUndStarkeInstitutionen": "bandwidth",
-					"datenquelleFriedenGerechtigkeitUndStarkeInstitutionen": "markets"
+					"sdgFriedenGerechtigkeitUndStarkeInstitutionen": "Yes",
+					"wennNeinBitteBegruendenFriedenGerechtigkeitUndStarkeInstitutionen": "e-business",
+					"verwendeteSchluesselzahlenFriedenGerechtigkeitUndStarkeInstitutionen": "initiatives",
+					"datenerfassungFriedenGerechtigkeitUndStarkeInstitutionen": "applications",
+					"datenPlausibilitaetspruefungFriedenGerechtigkeitUndStarkeInstitutionen": "architectures",
+					"datenquelleFriedenGerechtigkeitUndStarkeInstitutionen": "blockchains"
 				},
 				"partnerschaftenZurErreichungDerZiele": {
-					"sdgPartnerschaftenZurErreichungDerZiele": "Yes",
-					"wennNeinBitteBegruendenPartnerschaftenZurErreichungDerZiele": "communities",
-					"verwendeteSchluesselzahlenPartnerschaftenZurErreichungDerZiele": "applications",
-					"datenerfassungPartnerschaftenZurErreichungDerZiele": "paradigms",
-					"datenPlausibilitaetspruefungPartnerschaftenZurErreichungDerZiele": "ROI",
-					"datenquellePartnerschaftenZurErreichungDerZiele": "e-commerce"
+					"sdgPartnerschaftenZurErreichungDerZiele": "No",
+					"wennNeinBitteBegruendenPartnerschaftenZurErreichungDerZiele": "applications",
+					"verwendeteSchluesselzahlenPartnerschaftenZurErreichungDerZiele": "e-commerce",
+					"datenerfassungPartnerschaftenZurErreichungDerZiele": "ROI",
+					"datenPlausibilitaetspruefungPartnerschaftenZurErreichungDerZiele": "paradigms",
+					"datenquellePartnerschaftenZurErreichungDerZiele": "channels"
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2019"
 	}
 ]
