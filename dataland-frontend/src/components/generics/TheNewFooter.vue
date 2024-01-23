@@ -66,8 +66,8 @@ const footerSection = computed(() => {
 const openAccordions = ref<Record<string, boolean>>({});
 
 /**
- * bla
- * @param url
+ * Opens the link if the user clicks on it
+ * @param url the url to sanitize and click
  */
 function handleExternalLinkClick(url: string): void {
   const sanitizedUrl = sanitizeUrl(url);
