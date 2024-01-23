@@ -8,7 +8,14 @@
         </div>
       </MarginWrapper>
 
-      <FormKit :actions="false" v-model="bulkDataRequestModel" type="form" @submit="submitRequest" id="requestDataFormId" name="requestDataFormName">
+      <FormKit
+        :actions="false"
+        v-model="bulkDataRequestModel"
+        type="form"
+        @submit="submitRequest"
+        id="requestDataFormId"
+        name="requestDataFormName"
+      >
         <div class="grid p-8 justify-content-center uploadFormWrapper">
           <div class="col-12" v-if="postBulkDataRequestObjectProcessed">
             <div data-test="submittingSuccededMessage" v-if="submittingSucceded">
@@ -134,7 +141,7 @@
               <div class="col-12">
                 <BasicFormSection header="Select at least one reporting period">
                   <div class="flex flex-wrap mt-4 py-2">
-                    <ToggleChipFormInputs :name="'reportingPeriods'" :options="reportingPeriods" />
+                    <ToggleChipFormInputs :name="'listOfReportingPeriods'" :options="reportingPeriods" />
                   </div>
                 </BasicFormSection>
 
@@ -142,7 +149,6 @@
                   <MultiSelectFormFieldBindData
                     data-test="selectFrameworkSelect"
                     placeholder="Select framework"
-                    name="listOfFrameworkNames"
                     :options="availableFrameworks"
                     optionValue="value"
                     optionLabel="label"
@@ -152,6 +158,7 @@
                   <FormKit
                     :modelValue="selectedFrameworks"
                     type="text"
+                    name="listOfFrameworkNames"
                     validation="required"
                     validation-label="List of framework names"
                     :validation-messages="{
@@ -221,10 +228,10 @@ import MultiSelectFormFieldBindData from "@/components/forms/parts/fields/MultiS
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
-import { type BulkDataRequest } from "@clients/communitymanager";
+import { type BulkDataRequestResponse, type BulkDataRequest } from "@clients/communitymanager";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import MessageComponent from "@/components/messages/MessageComponent.vue";
-import { AxiosError } from "axios";
+import { AxiosError, type AxiosResponse, type AxiosPromise } from "axios";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
 import ToggleChip from "@/components/general/ToggleChip.vue";
 import BasicFormSection from "@/components/general/BasicFormSection.vue";
@@ -274,7 +281,7 @@ export default defineComponent({
         { name: "2023", value: false },
         { name: "2022", value: false },
         { name: "2021", value: false },
-        { name: "2020", value: false }
+        { name: "2020", value: false },
       ],
     };
   },
@@ -299,6 +306,9 @@ export default defineComponent({
      */
     collectDataToSend(): BulkDataRequest {
       return {
+        listOfReportingPeriods: this.reportingPeriods
+          .filter((reportingPeriod) => reportingPeriod.value)
+          .map((reportingPeriod) => reportingPeriod.name),
         listOfCompanyIdentifiers: this.identifiers,
         listOfFrameworkNames: this.selectedFrameworks,
       };
@@ -310,43 +320,48 @@ export default defineComponent({
       const uniqueIdentifiers = new Set(this.identifiersInString.replace(/(\r\n|\n|\r|;| )/gm, ",").split(","));
       uniqueIdentifiers.delete("");
       this.identifiers = [...uniqueIdentifiers];
+      this.identifiersInString = this.identifiers.join(", ");
     },
 
     /**
      * Submits the data request to the request service
      */
     async submitRequest(): Promise<void> {
-      this.openRequestModal();
-
+      this.processInput();
       // this.messageCounter++;
-      // this.processInput();
-      // try {
-      //   this.submittingInProgress = true;
-      //   const bulkDataRequestObject = this.collectDataToSend();
-      //   const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-      //     .requestController;
-      //   const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
 
-      //   this.messageCounter++;
-      //   this.message = response.data.message;
-      //   this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
-      //   this.acceptedCompanyIdentifiers = response.data.acceptedCompanyIdentifiers;
-      //   this.submittingSucceded = true;
-      // } catch (error) {
-      //   this.messageCounter++;
-      //   console.error(error);
-      //   if (error instanceof AxiosError) {
-      //     const responseMessages = (error.response?.data as ErrorResponse)?.errors;
-      //     this.message = responseMessages ? responseMessages[0].message : error.message;
-      //     this.summary = responseMessages[0].summary;
-      //   } else {
-      //     this.message =
-      //       "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
-      //   }
-      // } finally {
-      //   this.submittingInProgress = false;
-      //   this.postBulkDataRequestObjectProcessed = true;
-      // }
+      try {
+        this.submittingInProgress = true;
+        const bulkDataRequestObject = this.collectDataToSend();
+        const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+          .requestController;
+        // const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
+        const response = await mockResponse(bulkDataRequestObject);
+
+        if (response.data.rejectedCompanyIdentifiers.length) {
+          this.openRequestModal(response.data);
+        }
+
+        this.messageCounter++;
+        this.message = response.data.message;
+        this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
+        this.acceptedCompanyIdentifiers = response.data.acceptedCompanyIdentifiers;
+        this.submittingSucceded = true;
+      } catch (error) {
+        this.messageCounter++;
+        console.error(error);
+        if (error instanceof AxiosError) {
+          const responseMessages = (error.response?.data as ErrorResponse)?.errors;
+          this.message = responseMessages ? responseMessages[0].message : error.message;
+          this.summary = responseMessages[0].summary;
+        } else {
+          this.message =
+            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+        }
+      } finally {
+        this.submittingInProgress = false;
+        this.postBulkDataRequestObjectProcessed = true;
+      }
     },
 
     /**
@@ -385,17 +400,30 @@ export default defineComponent({
      * Opens a pop-up to warn the user that the session will expire soon and offers a button to refresh it.
      * If the refresh button is clicked soon enough, the session is refreshed.
      * Else the text changes and tells the user that the session was closed.
+     * @param response
+     * @param responseData
      */
-    openRequestModal(): void {
+    openRequestModal(responseData: BulkDataRequestResponse): void {
+      const rejectedIdentifiersCount = responseData.rejectedCompanyIdentifiers.length;
+
       this.$dialog.open(BulkDataResponseDialog, {
         props: {
           modal: true,
-          closable: false,
-          closeOnEscape: false,
+          closable: true,
+          closeOnEscape: true,
           showHeader: true,
+          header: `${rejectedIdentifiersCount} identifier${rejectedIdentifiersCount > 1 ? "s" : ""} can't be found.`,
+          style: {
+            width: "50vw",
+          },
+          breakpoints: {
+            "1199px": "75vw",
+            "575px": "90vw",
+          },
         },
         data: {
           bulkDataRequestModel: this.bulkDataRequestModel,
+          responseData,
         },
       });
     },
@@ -404,6 +432,32 @@ export default defineComponent({
     this.retrieveAvailableFrameworks();
   },
 });
+
+// TODO: MOCKS - DELETE EVERYTHING BELOW
+
+/**
+ * @param bulkDataRequestObject
+ * @returns mock promise response
+ */
+async function mockResponse(bulkDataRequestObject: any): AxiosPromise<BulkDataRequestResponse> {
+  const identifiers = splitArrayRandomly(bulkDataRequestObject.listOfCompanyIdentifiers);
+
+  const data = {
+    message: "Mock message!",
+    rejectedCompanyIdentifiers: identifiers[0],
+    acceptedCompanyIdentifiers: identifiers[1],
+  };
+  return Promise.resolve({ data } as AxiosResponse);
+}
+
+function splitArrayRandomly(inputArray) {
+  return inputArray.reduce(
+    ([arr1, arr2], item) => {
+      return Math.random() > 0.5 ? [[...arr1, item], arr2] : [arr1, [...arr2, item]];
+    },
+    [[], []],
+  );
+}
 </script>
 
 <style scoped>
