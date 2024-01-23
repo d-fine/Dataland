@@ -4,7 +4,7 @@
       <div class="footer__section footer__section--logo">
         <img v-if="footerLogo" :src="footerLogo" alt="Dataland Logo" class="footer__logo" />
         <div v-if="ownedByCard && ownedByCard.links && ownedByCard.links.length > 0" class="footer__owned-by">
-          <p class="footer__owned-by-title">{{ ownedByCard.title }}</p>
+          <p class="footer__owned-by-title">{{ ownedByCard.text }}</p>
           <img :src="ownedByCard.icon" alt="Owned by Logo" class="footer__owned-by-logo" />
           <a :href="ownedByCard.links[0].url" target="_blank" rel="noopener noreferrer" class="footer__owned-by-link">
             {{ ownedByCard.links[0].text }}
@@ -161,7 +161,7 @@ onUnmounted(() => {
 
         &-logo {
           width: 79px;
-          height: 26px;
+          filter: invert(1);
         }
 
         &-link {
@@ -307,9 +307,13 @@ onUnmounted(() => {
   &--light {
     background-color: #f6f5f0;
     color: #0b191f;
-    .footer__column {
+    .footer__column,
+    .footer__owned-by {
       &-list {
         max-height: 500px;
+      }
+      &-logo {
+        filter: invert(0);
       }
       &-title,
       &-link {
@@ -361,6 +365,9 @@ onUnmounted(() => {
       &--logo {
         justify-content: left;
         margin-bottom: 1.5em;
+        .footer__owned-by {
+          gap: 0.5em;
+        }
       }
 
       &--columns {

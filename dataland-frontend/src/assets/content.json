@@ -304,13 +304,14 @@
                         },
                         {
                             "title": "Owned by:",
+                            "text": "A Werte-Stiftung Company",
                             "links": [
                                 {
                                     "text": "WERTESTIFTUNG.ORG",
                                     "url": "https://www.wertestiftung.org"
                                 }
                             ],
-                            "icon": "/static/logos/werte-stiftung-logo.png"
+                            "icon": "/static/logos/werte-stiftung-logo__light.png"
                         }
                     ]
                 }
