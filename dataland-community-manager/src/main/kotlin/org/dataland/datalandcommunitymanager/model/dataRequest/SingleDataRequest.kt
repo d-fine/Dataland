@@ -16,7 +16,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
  */
 data class SingleDataRequest(
     @field:JsonProperty(required = true)
-    @field:Schema(example = "60e2c00d-8053-4e86-a492-eba79b479519")
+    @field:Schema(example = "DE0005190003")
     val companyIdentifier: String,
 
     @field:JsonProperty(required = true)

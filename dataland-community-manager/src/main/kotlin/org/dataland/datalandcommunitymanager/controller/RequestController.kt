@@ -44,7 +44,7 @@ class RequestController(
         )
     }
 
-    override fun postSingleDataRequest(singleDataRequest: SingleDataRequest): ResponseEntity<StoredDataRequest> {
+    override fun postSingleDataRequest(singleDataRequest: SingleDataRequest): ResponseEntity<List<StoredDataRequest>> {
         return ResponseEntity.ok(dataRequestManager.processSingleDataRequest(singleDataRequest))
     }
 
