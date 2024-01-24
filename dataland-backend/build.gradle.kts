@@ -67,7 +67,7 @@ openApi {
     customBootRun {
         args.set(listOf("--spring.profiles.active=nodb", "--server.port=8482"))
     }
-    outputFileName.set("$projectDir/backendOpenApi2.json")
+    outputFileName.set("$projectDir/backendOpenApi.json")
     waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 
@@ -75,7 +75,7 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        destinationFile = file("${layout.buildDirectory}/jacoco/jacoco.exec")
+        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
     }
 }
 
@@ -85,7 +85,7 @@ jacoco {
 
 tasks.register<Copy>("getTestData") {
     from("$rootDir/testing/data/CompanyInformationWithEuTaxonomyDataForNonFinancials.json")
-    into("${layout.buildDirectory}/resources/test")
+    into("$buildDir/resources/test")
 }
 
 tasks.getByName("processTestResources") {
@@ -100,7 +100,7 @@ tasks.register("generateInternalStorageClient", org.openapitools.generator.gradl
     val internalStorageClientDestinationPackage = "org.dataland.datalandinternalstorage.openApiClient"
     input = project.file("${project.rootDir}/dataland-internal-storage/internalStorageOpenApi.json")
         .path
-    outputDir.set("${layout.buildDirectory}/clients/internal-storage")
+    outputDir.set("$buildDir/clients/internal-storage")
     packageName.set(internalStorageClientDestinationPackage)
     modelPackage.set("$internalStorageClientDestinationPackage.model")
     apiPackage.set("$internalStorageClientDestinationPackage.api")
@@ -133,7 +133,7 @@ tasks.getByName("runKtlintCheckOverMainSourceSet") {
 
 sourceSets {
     val main by getting
-    main.kotlin.srcDir("${layout.buildDirectory}/clients/internal-storage/src/main/kotlin")
+    main.kotlin.srcDir("$buildDir/clients/internal-storage/src/main/kotlin")
 }
 
 ktlint {
