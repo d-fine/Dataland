@@ -1,7 +1,7 @@
 {
     "pages": [
         {
-            "title": "Landing Page",
+            "title": "Home",
             "url": "/",
             "sections": [
                 {
@@ -248,6 +248,118 @@
                     ],
                     "image": [
                         "/static/logos/gfx_logo_dataland_orange_S.svg"
+                    ],
+                    "cards": [
+                        {
+                            "title": "Tech Hub",
+                            "links": [
+                                {
+                                    "text": "DATASETS",
+                                    "url": "/api/swagger-ui/index.html"
+                                },
+                                {
+                                    "text": "DOCUMENTS",
+                                    "url": "/documents/swagger-ui/index.html"
+                                },
+                                {
+                                    "text": "REQUESTS",
+                                    "url": "/community/swagger-ui/index.html"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "ESG Frameworks",
+                            "links": [
+                                {
+                                    "text": "OVERVIEW",
+                                    "url": "https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Follow Dataland",
+                            "links": [
+                                {
+                                    "text": "LINKEDIN",
+                                    "url": "https://www.linkedin.com/company/dataland-gmbh/"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Legal",
+                            "links": [
+                                {
+                                    "text": "LEGAL",
+                                    "url": "/terms"
+                                },
+                                {
+                                    "text": "IMPRINT",
+                                    "url": "/imprint"
+                                },
+                                {
+                                    "text": "DATA PRIVACY",
+                                    "url": "/dataprivacy"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Owned by:",
+                            "text": "A Werte-Stiftung Company",
+                            "links": [
+                                {
+                                    "text": "WERTESTIFTUNG.ORG",
+                                    "url": "https://www.wertestiftung.org"
+                                }
+                            ],
+                            "icon": "/static/logos/werte-stiftung-logo__light.png"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "About",
+            "url": "/about",
+            "sections": [
+                {
+                    "title": "START YOUR DATALAND JOURNEY",
+                    "text": [
+                        "Our joint purpose, promise & passion is to ",
+                        "let the data flow ",
+                        "in order to create value.",
+                        "EXPLORE OUR PRINCIPLES"
+                    ]
+                },
+                {
+                    "title": "Our principles",
+                    "text": [
+                        "Our principles"
+                    ],
+                    "cards": [
+                        {
+                            "title": "Integrity",
+                            "text": "We need comparable and reliable sustainability data to create value."
+                        },
+                        {
+                            "title": "Disclosure",
+                            "text": "We will seek disclosure of sustainability data from our business relations."
+                        },
+                        {
+                            "title": "Transparency",
+                            "text": "We will respect and promote data soveignty."
+                        },
+                        {
+                            "title": "Accountability",
+                            "text": "Data should be timely and easliy accessible at fair cost."
+                        },
+                        {
+                            "title": "Neutrality",
+                            "text": "Common data spaces should be neutral, transparent, non-competitive and not-for-profit."
+                        },
+                        {
+                            "title": "Collaboration",
+                            "text": "We will work together to achieve these principles and promote their acceptance."
+                        }
                     ]
                 }
             ]
