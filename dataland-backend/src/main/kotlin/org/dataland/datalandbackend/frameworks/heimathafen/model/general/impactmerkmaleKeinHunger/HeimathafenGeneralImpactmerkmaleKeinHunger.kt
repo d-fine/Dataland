@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class HeimathafenGeneralImpactmerkmaleKeinHunger(
     val sdgKeinHunger: YesNo? = null,
+    val wennNeinBitteBegruenden: String? = null,
     val verwendeteSchluesselzahlen: String? = null,
     val datenerfassung: String? = null,
     val datenPlausibilitaetspruefung: String? = null,

@@ -76,6 +76,7 @@ export function generateHeimathafenData(nullProbability = DEFAULT_PROBABILITY): 
       },
       impactmerkmaleKeinHunger: {
         sdgKeinHunger: dataGenerator.randomYesNo(),
+        wennNeinBitteBegruenden: dataGenerator.randomParagraphs(),
         verwendeteSchluesselzahlen: dataGenerator.randomShortString(),
         datenerfassung: dataGenerator.randomShortString(),
         datenPlausibilitaetspruefung: dataGenerator.randomShortString(),

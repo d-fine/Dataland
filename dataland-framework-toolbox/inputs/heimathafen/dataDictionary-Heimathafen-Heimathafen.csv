@@ -219,7 +219,7 @@ Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erken
 115,General,Impactmerkmale - Keine Armut,Datenquelle,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",String,,,,111,Yes,
 116,General,Impactmerkmale - Kein Hunger,SDG - Kein Hunger,"Kann mit der Methodik ein Beitrag zum SDG ""kein Hunger"" gemessen werden?",Yes/No,,,,,,
-"116,1",General,Impactmerkmale - Kein Hunger,"Wenn Nein, bitte begründen",,,,,,116,No,
+"116,1",General,Impactmerkmale - Kein Hunger,"Wenn Nein, bitte begründen",,FreeText,,,,116,No,
 117,General,Impactmerkmale - Kein Hunger,Verwendete Schlüsselzahlen,"Welche Kennzahlen werden verwendet?
 Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",String,,,,116,Yes,
 118,General,Impactmerkmale - Kein Hunger,Datenerfassung,"Wie erfolgt die Datenerhebung?
@@ -387,7 +387,7 @@ Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigk
 202,General,Implementierung,Erforderliches Client- Betriebssystem,Welches Client Betriebssystem wird benötigt?,String,,,,,,
 203,General,Implementierung,Angebot für fette/dünne/zitrische Kunden,"Wird der Client als Fat-Client, Thin-Client, Citrix-Client angeboten?",Yes/No,,,,,,
 204,General,Implementierung,Server Backup,Wie wird das Backup der Server durchgeführt?,String,,,,,,
-205,General,Implementierung,Standardisiertes Konzept zur Wiederherstellung im Katastrophenfall,Haben Sie ein standardisiertes Disaster Recovery Konzept? Fügen Sie hierzu bitte ein Testat oder einen Auszug seitens eines Prüfers bei.,Yes/No,,,Simple,,Yes,
+205,General,Implementierung,Standardisiertes Konzept zur Wiederherstellung im Katastrophenfall,Haben Sie ein standardisiertes Disaster Recovery Konzept? Fügen Sie hierzu bitte ein Testat oder einen Auszug seitens eines Prüfers bei.,Yes/No,,,Simple,,,
 206,General,Implementierung,Stamm- und Bewegungsdaten lesen,Können Stamm- und Bewegungsdaten über eine Datawarehouse-Lösung eingelesen werden?,Yes/No,,,,,,
 207,General,Implementierung,Kompatibilität mit anderen Datenquellen,Ist Ihre Lösung mit anderen Datenquellen nutzbar?,Yes/No,,,,,,
 208,General,Implementierung,Import der Ergebnisse in das Data Warehouse,Können die Ergebnisse einem Datawarehouse zum Einlesen zur Verfügung gestellt werden?,Yes/No,,,,,,

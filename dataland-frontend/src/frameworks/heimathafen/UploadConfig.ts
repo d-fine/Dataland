@@ -414,6 +414,15 @@ export const heimathafenDataModel = [
             showIf: (): boolean => true,
           },
           {
+            name: "wennNeinBitteBegruenden",
+            label: "Wenn Nein, bitte begründen",
+
+            component: "FreeTextFormField",
+            required: false,
+            showIf: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger == "No",
+          },
+          {
             name: "verwendeteSchluesselzahlen",
             label: "Verwendete Schlüsselzahlen",
             description:

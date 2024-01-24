@@ -1,7 +1,7 @@
 package org.dataland.frameworktoolbox.frameworks.heimathafen
 
 import ComponentGenerationUtilsForGermanFrameworks
-import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.edit
@@ -13,11 +13,11 @@ import java.io.File
  * Definition of the Heimathafen Framework
  */
 @Component
-class HeimathafenFramework : InDevelopmentPavedRoadFramework(
+class HeimathafenFramework : PavedRoadFramework(
     identifier = "heimathafen",
     label = "Heimathafen",
     explanation = "Das Heimathafen Framework",
-    File("./dataland-framework-toolbox/inputs/heimathafen/dataDictionary-Heimathafen.csv"),
+    File("./dataland-framework-toolbox/inputs/heimathafen/dataDictionary-Heimathafen-Heimathafen.csv"),
 ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
         return ComponentGenerationUtilsForGermanFrameworks()

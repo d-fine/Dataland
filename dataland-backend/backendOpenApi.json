@@ -9247,6 +9247,10 @@
               }
             ]
           },
+          "wennNeinBitteBegruenden": {
+            "type": "string",
+            "nullable": true
+          },
           "verwendeteSchluesselzahlen": {
             "type": "string",
             "nullable": true

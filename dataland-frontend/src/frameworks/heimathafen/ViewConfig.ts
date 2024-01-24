@@ -7,6 +7,7 @@ import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/c
 import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireListOfBaseDataPointGetterFactory";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
+import { formatFreeTextForDatatable } from "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory";
 import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
   {
@@ -400,6 +401,15 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger),
+          },
+          {
+            type: "cell",
+            label: "Wenn Nein, bitte begründen",
+
+            shouldDisplay: (dataset: HeimathafenData): boolean =>
+              dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger == "No",
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleKeinHunger?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
