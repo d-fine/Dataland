@@ -44,6 +44,10 @@ class RequestController(
         )
     }
 
+    override fun postSingleDataRequest(singleDataRequest: SingleDataRequest): ResponseEntity<StoredDataRequest> {
+        return ResponseEntity.ok(dataRequestManager.processSingleDataRequest(singleDataRequest))
+    }
+
     override fun getDataRequestById(dataRequestId: UUID): ResponseEntity<StoredDataRequest> {
         return ResponseEntity.ok(dataRequestManager.getDataRequestById(dataRequestId.toString()))
     }
@@ -53,9 +57,5 @@ class RequestController(
         requestStatus: RequestStatus,
     ): ResponseEntity<StoredDataRequest> {
         return ResponseEntity.ok(dataRequestManager.patchDataRequest(dataRequestId.toString(), requestStatus))
-    }
-
-    override fun postSingleDataRequest(singleDataRequest: SingleDataRequest): ResponseEntity<StoredDataRequest> {
-        return ResponseEntity.ok(dataRequestManager.processSingleDataRequest(singleDataRequest))
     }
 }

@@ -8,27 +8,19 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 /**
  * --- API model ---
  * Contains all necessary info that a user has to provide in order to perform a single data request on Dataland.
- * @param listOfCompanyIdentifiers contains company identifiers for which the user wants to request framework data
- * @param listOfFrameworkNames contains the names of frameworks, for which the user wants to request framework data
+ * @param companyIdentifier the company identifier for which the user wants to request framework data
+ * @param frameworkName the name of the framework for which the user wants to request framework data
+ * @param listOfReportingPeriods a list of reporting periods for which the user wants to request framework data
+ * @param contactList a list of e-mail addresses related to the company to which a notification shall be sent
+ * @param message a message that shall accompany the notification to the provided contacts
  */
 data class SingleDataRequest(
     @field:JsonProperty(required = true)
-    @field:ArraySchema(
-        arraySchema = Schema(
-            type = "string",
-            example = "[\"DE0005190003\", \"exampleForAnInvalidIdentifier\"]",
-        ),
-        schema = Schema(type = "string"),
-    )
-    val companyId: String,
+    @field:Schema(example = "60e2c00d-8053-4e86-a492-eba79b479519")
+    val companyIdentifier: String,
 
     @field:JsonProperty(required = true)
-    @field:ArraySchema(
-        arraySchema = Schema(
-            implementation = DataTypeEnum::class,
-            example = "[\"p2p\"]",
-        ),
-    )
+    @field:Schema(example = "p2p")
     val frameworkName: DataTypeEnum,
 
     @field:JsonProperty(required = true)
@@ -41,7 +33,6 @@ data class SingleDataRequest(
     )
     val listOfReportingPeriods: List<String>,
 
-    @field:JsonProperty(required = true)
     @field:ArraySchema(
         arraySchema = Schema(
             type = "string",
@@ -51,14 +42,5 @@ data class SingleDataRequest(
     )
     val contactList: List<String>?,
 
-    @field:JsonProperty(required = true)
-    @field:ArraySchema(
-        arraySchema = Schema(
-            type = "string",
-            example = "[\"testuser@dataland.com\"]",
-        ),
-        schema = Schema(type = "string"),
-    )
     val message: String?,
-
 )

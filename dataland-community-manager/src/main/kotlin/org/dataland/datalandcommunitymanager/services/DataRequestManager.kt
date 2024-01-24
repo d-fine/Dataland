@@ -448,6 +448,11 @@ class DataRequestManager(
         )
     }
 
+    /**
+     * Processes a single data request from a user
+     * @param singleDataRequest info provided by a user in order to request a single dataset on Dataland
+     * @return the stored data request object
+     */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): StoredDataRequest {
         checkIfFrameworkIsValid(singleDataRequest.frameworkName)
@@ -456,11 +461,11 @@ class DataRequestManager(
         val dataRequestId = UUID.randomUUID().toString()
         val userId = DatalandAuthentication.fromContext().userId
         val currentTimestamp = Instant.now().toEpochMilli()
-        val matchedIdentifierType = determineIdentifierTypeViaRegex(singleDataRequest.companyId)
+        val matchedIdentifierType = determineIdentifierTypeViaRegex(singleDataRequest.companyIdentifier)
         dataRequestLogger.logMessageForBulkDataRequest(dataRequestId)
         if (matchedIdentifierType != null) {
             processAcceptedIdentifier(
-                userProvidedIdentifierValue = singleDataRequest.companyId,
+                userProvidedIdentifierValue = singleDataRequest.companyIdentifier,
                 matchedIdentifierType,
                 requestedFrameworks = listOf(singleDataRequest.frameworkName),
                 requestedReportingPeriods = listOfReportingPeriods,

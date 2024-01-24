@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import java.util.*
+import java.util.UUID
 
 /**
  * Defines the restful dataland-community-manager API regarding.
@@ -46,6 +46,7 @@ interface RequestApi {
         ],
     )
     @PostMapping(
+        value = ["/bulk"],
         produces = ["application/json"],
         consumes = ["application/json"],
     )
@@ -97,6 +98,33 @@ interface RequestApi {
         @RequestParam reportingPeriod: String? = null,
     ): ResponseEntity<List<AggregatedDataRequest>>
 
+    /**
+     * A method to post a single request to Dataland.
+     * @param singleDataRequest includes necessary info for the single request
+     * @return response after posting a single data request to Dataland
+     *
+     */
+    @Operation(
+        summary = "Send a single request",
+        description = "A single of data requests for specific frameworks and companies is being sent.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully processed a single data request."),
+        ],
+    )
+    @PostMapping(
+        value = ["/single"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun postSingleDataRequest(
+        @Valid @RequestBody
+        singleDataRequest: SingleDataRequest,
+    ):
+        ResponseEntity<StoredDataRequest>
+
     /** A method for users to get a data request by its ID.
      * @return the data requests corresponding to the provided ID
      */
@@ -138,29 +166,4 @@ interface RequestApi {
         @PathVariable dataRequestId: UUID,
         @RequestParam requestStatus: RequestStatus = RequestStatus.Open,
     ): ResponseEntity<StoredDataRequest>
-
-    /**
-     * A method to post a single request to Dataland.
-     * @param singleDataRequest includes necessary info for the single request
-     * @return response after posting a single data request to Dataland
-     *
-     */
-    @Operation(
-        summary = "Send a single request",
-        description = "A single of data requests for specific frameworks and companies is being sent.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully processed a single data request."),
-        ],
-    )
-    @PostMapping(
-        consumes = ["application/json"],
-
-    )
-    @PreAuthorize("hasRole('ROLE_USER')")
-    fun postSingleDataRequest(
-        @RequestParam singleDataRequest: SingleDataRequest,
-    ):
-        ResponseEntity<StoredDataRequest>
 }
