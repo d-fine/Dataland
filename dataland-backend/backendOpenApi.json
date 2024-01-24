@@ -11665,23 +11665,23 @@
         ],
         "type": "object",
         "properties": {
-          "permId": {
-            "type": "string",
-            "nullable": true
-          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "countryCode": {
             "type": "string"
           },
-          "sector": {
+          "headquarters": {
+            "type": "string"
+          },
+          "permId": {
             "type": "string",
             "nullable": true
           }
