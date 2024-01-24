@@ -2,6 +2,10 @@
   <TheHeader v-if="!useMobileView"/>
   <TheContent class="paper-section flex">
     <CompanyInfoSheet :company-id="companyId" @fetched-company-information="getCompanyName"/>
+    <div class="card flex justify-content-center">
+      <Button type="button" icon="pi pi-ellipsis-v" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu"/>
+      <Menu ref="menu" id="overlay_menu" :model="menuItems" :popup="true"/>
+    </div>
     <div class="card-wrapper">
       <div class="card-grid">
         <ClaimOwnershipPanel :company-name="companyName"/>
@@ -34,6 +38,8 @@ import FrameworkSummaryPanel from "@/components/resources/companyCockpit/Framewo
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import {ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE} from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
+import Menu from "primevue/menu";
+import Button from "primevue/button";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -66,8 +72,11 @@ export default defineComponent({
     TheContent,
     TheHeader,
     TheFooter,
+    Menu,
+    Button,
   },
   setup() {
+
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
@@ -85,7 +94,20 @@ export default defineComponent({
           | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
       companyName: "wait",
-    };
+      menuItems: [
+        {
+          label: 'Manage Company Details',
+
+        },
+        {
+          label: 'Claim Company Ownership',
+          command: () => {
+            console.log("clik- this will lead to the known dialog")
+          }
+        }
+      ]
+      ,
+    }
   },
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
@@ -104,6 +126,9 @@ export default defineComponent({
     getCompanyName(companyInfo: CompanyInformation) {
       this.companyName = companyInfo.companyName;
     },
+    toggle(event: Event) {
+      this.$refs.menu.toggle(event)
+    }
   },
 });
 </script>
