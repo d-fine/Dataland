@@ -201,7 +201,7 @@
                   class="p-button p-button-sm d-letters ml-auto"
                   name="submit_request_button"
                 >
-                  Next
+                  NEXT
                 </PrimeButton>
               </div>
             </div>
@@ -342,11 +342,11 @@ export default defineComponent({
           this.openRequestModal(response.data);
         }
 
-        this.messageCounter++;
-        this.message = response.data.message;
-        this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
-        this.acceptedCompanyIdentifiers = response.data.acceptedCompanyIdentifiers;
-        this.submittingSucceded = true;
+        // this.messageCounter++;
+        // this.message = response.data.message;
+        // this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
+        // this.acceptedCompanyIdentifiers = response.data.acceptedCompanyIdentifiers;
+        // this.submittingSucceded = true;
       } catch (error) {
         this.messageCounter++;
         console.error(error);
@@ -422,9 +422,32 @@ export default defineComponent({
           },
         },
         data: {
-          bulkDataRequestModel: this.bulkDataRequestModel,
+          onItemChangeHandler: (eventName: "removed" | "undo", identifier: string) =>
+            this.handleIdentifierChange(eventName, identifier),
           responseData,
         },
+      });
+    },
+
+    /**
+     * @param eventName whether "removed" or "undo"
+     * @param identifier the identifier to be processed
+     */
+    handleIdentifierChange(eventName: string, identifier: string) {
+      if (eventName === "removed") {
+        this.identifiersInString = this.identifiers
+          .filter((currentIdentifier) => currentIdentifier !== identifier)
+          .join(", ");
+      } else if (eventName === "undo") {
+        console.log(eventName);
+      }
+
+      this.processInput();
+      console.log({
+        identifier,
+        identifiers: this.identifiers,
+        identifiersInString: this.identifiersInString,
+        bulkDataRequestModel: this.bulkDataRequestModel,
       });
     },
   },
