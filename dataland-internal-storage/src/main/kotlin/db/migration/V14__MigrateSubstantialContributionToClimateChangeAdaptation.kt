@@ -17,15 +17,22 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaption : BaseJavaMigra
 
 
     /**
-     * Migrates substantialContributionToClimateChangeAdapation field to substantialContributionToClimateChangeAdaptation
+     * Migrates substantialContributionToClimateChangeAdaption field to substantialContributionToClimateChangeAdaptation
      */
     fun migrateSubstantialContributionToClimateChangeAdaption(dataTableEntity: DataTableEntity) {
         val companyAssociatedDatasetAsString = dataTableEntity.companyAssociatedData
+        println("Here")
+        println(companyAssociatedDatasetAsString)
+        println("Here2")
         val euTaxoDataset = JSONObject(companyAssociatedDatasetAsString.getString("data"))
+        println(euTaxoDataset)
+        //TODO go into revenue, capex, opex
         mapOfOldToNewFieldNames.forEach {
             euTaxoDataset.put(it.value, euTaxoDataset.get(it.key))
             euTaxoDataset.remove(it.key)
         }
+        println("Here3")
+        println(euTaxoDataset)
         dataTableEntity.companyAssociatedData.put("data", euTaxoDataset.toString())
     }
     override fun migrate(context: Context?) {
