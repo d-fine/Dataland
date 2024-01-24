@@ -1,4 +1,4 @@
-Field Identifier,Category,Sub-category,Field Name,Tooltip - upload page,Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory,Expected value,Guidance/Comment,Cross-check indicators,checks when uploading data,Optional/Required,API Name,Uploading screens,Display screens
+Field Identifier,Category,Sub-Category,Field Name,Tooltip,Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory Field,Expected value,Guidance/Comment,Cross-check indicators,checks when uploading data,Optional/Required,API Name,Uploading screens,Display screens
 0,General,General,Reporting period,The reporting period the dataset belongs to (e.g. fiscal year).,Date, ,,,,,Yes,YYYY,,,,Required,,+,+
 1,General,General,Fiscal Year Deviation,Does the fiscal year deviate from the calendar year?,RadioButtonsFormField,"[{""label"": ""Deviation"", ""value"": ""Deviation""}, {""label"": ""No Deviation"", ""value"": ""NoDeviation""}]",,,,,,Text: Deviation or No Deviation,,,,Optional,,+,+
 2,General,General,Fiscal Year End,The date at which the fiscal year ends.,Date, ,,,,,Yes,YYYY-MM-DD,,,,Required,,+,
