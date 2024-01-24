@@ -32,10 +32,9 @@ data class StoredDataRequest(
 
     val dataRequestCompanyIdentifierValue: String,
 
-    val messageHistory: List<MessageRequestEntity>,
+    val messageHistory: MutableList<MessageRequest>,
 
     val lastModifiedDate: Long,
 
     val requestStatus: RequestStatus,
-
 )

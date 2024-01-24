@@ -123,7 +123,7 @@ interface RequestApi {
         @Valid @RequestBody
         singleDataRequest: SingleDataRequest,
     ):
-        ResponseEntity<StoredDataRequest>
+        ResponseEntity<List<StoredDataRequest>>
 
     /** A method for users to get a data request by its ID.
      * @return the data requests corresponding to the provided ID
