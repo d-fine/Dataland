@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.model.dataRequest
 
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.entities.MessageRequestEntity
 
 /**
  * --- API model ---
@@ -32,7 +31,7 @@ data class StoredDataRequest(
 
     val dataRequestCompanyIdentifierValue: String,
 
-    val messageHistory: MutableList<MessageRequest>,
+    val messageHistory: MutableList<StoredDataRequestMessageObject>,
 
     val lastModifiedDate: Long,
 

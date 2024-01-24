@@ -1,20 +1,21 @@
 package org.dataland.datalandcommunitymanager.services
 
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.entities.MessageRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.repositories.MessageRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
@@ -30,13 +31,12 @@ import java.util.*
 @Service("DataRequestManager")
 class DataRequestManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
-    @Autowired private val messageRequestRepository: MessageRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyGetter: CompanyGetter,
     @Autowired private val emailBuilder: EmailBuilder,
     @Autowired private val emailSender: EmailSender,
-
-    ) {
+    @Autowired private val objectMapper: ObjectMapper,
+) {
     val isinRegex = Regex("^[A-Z]{2}[A-Z\\d]{10}$")
     val leiRegex = Regex("^[0-9A-Z]{18}[0-9]{2}$")
     val permIdRegex = Regex("^\\d+$")
@@ -94,7 +94,10 @@ class DataRequestManager(
                 dataRequestEntity.reportingPeriod,
                 dataRequestEntity.dataRequestCompanyIdentifierType,
                 dataRequestEntity.dataRequestCompanyIdentifierValue,
-                dataRequestEntity.messageHistory,
+                objectMapper.readValue(
+                    dataRequestEntity.messageHistory,
+                    object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
+                ),
                 dataRequestEntity.lastModifiedDate,
                 dataRequestEntity.requestStatus,
             )
@@ -179,7 +182,10 @@ class DataRequestManager(
             dataRequestEntity.reportingPeriod,
             dataRequestEntity.dataRequestCompanyIdentifierType,
             dataRequestEntity.dataRequestCompanyIdentifierValue,
-            dataRequestEntity.messageHistory,
+            objectMapper.readValue(
+                dataRequestEntity.messageHistory,
+                object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
+            ),
             dataRequestEntity.lastModifiedDate,
             dataRequestEntity.requestStatus,
         )
@@ -271,8 +277,8 @@ class DataRequestManager(
         reportingPeriod: String,
         userId: String,
         bulkDataRequestId: String,
-        contactList: List<String>?,
-        message: String?,
+        contactList: List<String>? = null,
+        message: String? = null,
     ): DataRequestEntity {
         val dataRequestEntity = buildDataRequestEntity(
             userId,
@@ -296,8 +302,6 @@ class DataRequestManager(
         requestedReportingPeriods: List<String>,
         userId: String,
         bulkDataRequestId: String,
-        contactList: List<String>? = null,
-        message: String? = null,
     ) {
         val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
         val identifierTypeToStore = datalandCompanyId?.let {
@@ -313,8 +317,6 @@ class DataRequestManager(
                     reportingPeriod,
                     userId,
                     bulkDataRequestId,
-                    contactList,
-                    message,
                 )
             }
         }
@@ -343,11 +345,16 @@ class DataRequestManager(
         reportingPeriod: String,
         identifierType: DataRequestCompanyIdentifierType,
         identifierValue: String,
-        contactList: List<String>? = null,
-        message: String? = null,
+        contactList: List<String>?,
+        message: String?,
     ): DataRequestEntity {
         val currentTimestamp = Instant.now().toEpochMilli()
         val dataRequestId = UUID.randomUUID().toString()
+        val messageHistory = if (contactList != null || message != null) {
+            mutableListOf(StoredDataRequestMessageObject(contactList, message, currentTimestamp))
+        } else {
+            mutableListOf()
+        }
         return DataRequestEntity(
             dataRequestId = dataRequestId,
             userId = currentUserId,
@@ -356,7 +363,7 @@ class DataRequestManager(
             reportingPeriod = reportingPeriod,
             dataRequestCompanyIdentifierType = identifierType,
             dataRequestCompanyIdentifierValue = identifierValue,
-            messageHistory = mutableListOf(),
+            messageHistory = objectMapper.writeValueAsString(messageHistory),
             lastModifiedDate = currentTimestamp,
             requestStatus = RequestStatus.Open,
         )
@@ -435,48 +442,6 @@ class DataRequestManager(
         return DataTypeEnum.entries.find { it.value == frameworkName }
     }
 
-    private fun checkIfFrameworkIsValid(frameworkName: DataTypeEnum) {
-        if (!DataRequestCompanyIdentifierType.entries.map { it.name }.contains(frameworkName.toString())) {
-            throw ResourceNotFoundApiException(
-                "Framework is invalid",
-                "There is no framework corresponding to the provided framework name $frameworkName used in Dataland.",
-            )
-        }
-    }
-    private fun buildMessageRequestEntity(
-        messageRequestId: String,
-        dataRequestEntity: DataRequestEntity,
-        contactList: List<String>?,
-        message: String?,
-        updateTimestamp: Long?,
-    ): MessageRequestEntity {
-        return MessageRequestEntity(
-            messageRequestId,
-            dataRequestEntity,
-            contactList,
-            message,
-            updateTimestamp,
-        )
-    }
-
-    private fun createMessageObjectForDataRequestEntity(
-        dataRequestEntity: DataRequestEntity,
-        contactList: List<String>?,
-        message: String?
-    ): DataRequestEntity {
-        val messageRequestEntity = buildMessageRequestEntity(
-            messageRequestId = UUID.randomUUID().toString(),
-            dataRequestEntity,
-            contactList,
-            message,
-            dataRequestEntity.creationTimestamp,
-        )
-        messageRequestRepository.save(messageRequestEntity)
-        dataRequestEntity.messageHistory.add(messageRequestEntity)
-        dataRequestRepository.save(dataRequestEntity)
-        return dataRequestRepository.findById(dataRequestEntity.dataRequestId).get()
-    }
-
     /**
      * Processes a single data request from a user
      * @param singleDataRequest info provided by a user in order to request a single dataset on Dataland
@@ -489,7 +454,7 @@ class DataRequestManager(
         val dataRequestId = UUID.randomUUID().toString()
         val userId = DatalandAuthentication.fromContext().userId
         val matchedIdentifierType = determineIdentifierTypeViaRegex(singleDataRequest.companyIdentifier)
-        dataRequestLogger.logMessageForBulkDataRequest(dataRequestId)
+        dataRequestLogger.logMessageForSingleDataRequest(dataRequestId)
         val storedDataRequests = mutableListOf<StoredDataRequest>()
         if (matchedIdentifierType != null) {
             val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(singleDataRequest.companyIdentifier)
@@ -498,21 +463,19 @@ class DataRequestManager(
             } ?: matchedIdentifierType
             val identifierValueToStore = datalandCompanyId ?: singleDataRequest.companyIdentifier
             for (reportingPeriod in listOfReportingPeriods) {
-                var dataRequestEntity = storeDataRequestEntityIfNotExisting(
-                    identifierValueToStore,
-                    identifierTypeToStore,
-                    singleDataRequest.frameworkName,
-                    reportingPeriod,
-                    userId,
-                    singleDataRequestId,
-                    singleDataRequest.contactList,
-                    singleDataRequest.message,
-                )
-                if (singleDataRequest.contactList != null || singleDataRequest.message != null) {
-                    dataRequestEntity = createMessageObjectForDataRequestEntity(dataRequestEntity, singleDataRequest.contactList, singleDataRequest.message)
-                }
                 storedDataRequests.add(
-                    buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
+                    buildStoredDataRequestFromDataRequestEntity(
+                        storeDataRequestEntityIfNotExisting(
+                            identifierValueToStore,
+                            identifierTypeToStore,
+                            singleDataRequest.frameworkName,
+                            reportingPeriod,
+                            userId,
+                            singleDataRequestId,
+                            singleDataRequest.contactList,
+                            singleDataRequest.message,
+                        ),
+                    ),
                 )
             }
         } else {
