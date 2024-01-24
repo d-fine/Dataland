@@ -10,7 +10,8 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaptation {
             "eutaxonomy-non-financials",
             "V14/originalDatabaseEntry.json",
             "V14/expectedDatabaseEntry.json",
-            V14__MigrateSubstantialContributionToClimateChangeAdaption()::migrateSubstantialContributionToClimateChangeAdaption,
+            V14__MigrateSubstantialContributionToClimateChangeAdaption()
+            ::migrateSubstantialContributionToClimateChangeAdaption,
         )
     }
 }

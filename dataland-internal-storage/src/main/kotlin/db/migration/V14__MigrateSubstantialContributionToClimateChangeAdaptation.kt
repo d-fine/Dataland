@@ -12,12 +12,13 @@ import org.json.JSONObject
  */
 class V14__MigrateSubstantialContributionToClimateChangeAdaption : BaseJavaMigration() {
     private val mapOfOldToNewFieldNames = mapOf(
-        "substantialContributionToClimateChangeAdaptionInPercent" to "substantialContributionToClimateChangeAdaptationInPercent",
+        "substantialContributionToClimateChangeAdaptionInPercent" to
+            "substantialContributionToClimateChangeAdaptationInPercent",
     )
 
-
     /**
-     * Migrates substantialContributionToClimateChangeAdapation field to substantialContributionToClimateChangeAdaptation
+     * Migrates substantialContributionToClimateChangeAdapation field to
+     * substantialContributionToClimateChangeAdaptation
      */
     fun migrateSubstantialContributionToClimateChangeAdaption(dataTableEntity: DataTableEntity) {
         val companyAssociatedDatasetAsString = dataTableEntity.companyAssociatedData
@@ -29,6 +30,9 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaption : BaseJavaMigra
         dataTableEntity.companyAssociatedData.put("data", euTaxoDataset.toString())
     }
     override fun migrate(context: Context?) {
-            migrateCompanyAssociatedDataOfDatatype(context, "eutaxonomy-non-financials", this::migrateSubstantialContributionToClimateChangeAdaption)
+        migrateCompanyAssociatedDataOfDatatype(
+            context, "eutaxonomy-non-financials",
+            this::migrateSubstantialContributionToClimateChangeAdaption,
+        )
     }
 }
