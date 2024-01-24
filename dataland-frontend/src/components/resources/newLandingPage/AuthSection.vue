@@ -40,9 +40,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
-
 const isUseLoggedIn = ref<undefined | boolean>(undefined);
-
 const { isLandingPage } = defineProps<{
   isLandingPage: boolean;
 }>();
@@ -69,7 +67,6 @@ const backToPlatform = (): void => {
 onMounted(() => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
-      console.log("keycloak.authenticated", keycloak.authenticated);
       isUseLoggedIn.value = keycloak.authenticated;
     })
     .catch((error) => console.log(error));
