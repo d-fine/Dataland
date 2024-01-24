@@ -25,7 +25,7 @@ class DataOwnersManager(
     @Autowired private val dataOwnerRepository: DataOwnerRepository,
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val emailSender: EmailSender,
-    @Autowired private val emailBuilder: EmailBuilder,
+    @Autowired private val dataOwnershipRequestEmailBuilder: DataOwnershipRequestEmailBuilder,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -182,7 +182,7 @@ class DataOwnersManager(
             )
         }
         emailSender.sendEmail(
-            emailBuilder.buildDataOwnershipRequest(companyId, userAuthentication),
+            dataOwnershipRequestEmailBuilder.buildDataOwnershipRequest(companyId, userAuthentication),
             {},
         )
     }

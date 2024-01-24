@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component
 
 
 /**
- * A class that manages generating emails
+ * A class that manages generating emails regarding data ownership requests
  */
-@Component("EmailBuilder")
-class EmailBuilder(
+@Component
+class DataOwnershipRequestEmailBuilder(
     @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,

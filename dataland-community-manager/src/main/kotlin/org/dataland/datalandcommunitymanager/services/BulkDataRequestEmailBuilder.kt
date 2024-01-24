@@ -22,10 +22,10 @@ enum class CauseOfMail(val description: String) {
 }
 
 /**
- * A class that manages generating emails
+ * A class that manages generating emails regarding bulk data requests
  */
-@Component("EmailBuilder")
-class EmailBuilder(
+@Component
+class BulkDataRequestEmailBuilder(
     @Value("\${dataland.proxy.primary.url}") private val propProxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,

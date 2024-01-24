@@ -27,7 +27,7 @@ class DataRequestManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyGetter: CompanyGetter,
-    @Autowired private val emailBuilder: EmailBuilder,
+    @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
     @Autowired private val emailSender: EmailSender,
 ) {
     val isinRegex = Regex("^[A-Z]{2}[A-Z\\d]{10}$")
