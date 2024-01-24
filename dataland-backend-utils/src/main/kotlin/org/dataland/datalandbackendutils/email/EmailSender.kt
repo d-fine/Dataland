@@ -53,7 +53,7 @@ class EmailSender(
             .append("(sender: ${email.sender.emailAddress})\n")
             .append("(receivers: ${convertListOfEmailContactsToJoinedString(email.receivers)})")
             .apply {
-                if(!email.cc.isNullOrEmpty()) {
+                if (!email.cc.isNullOrEmpty()) {
                     append("\n(cc receivers: ${convertListOfEmailContactsToJoinedString(email.cc)})")
                 }
             }

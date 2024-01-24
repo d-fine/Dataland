@@ -2,12 +2,10 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackendutils.email.BaseEmailBuilder
 import org.dataland.datalandbackendutils.email.Email
-import org.dataland.datalandbackendutils.email.EmailContent
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-
 
 /**
  * A class that manages generating emails regarding data ownership requests
@@ -54,7 +52,7 @@ class DataOwnershipRequestEmailBuilder(
                     "Environment" to proxyPrimaryUrl,
                     "User" to buildUserInfo(userAuthentication),
                     "Company (Dataland ID)" to companyId,
-                )
+                ),
             ),
         )
     }

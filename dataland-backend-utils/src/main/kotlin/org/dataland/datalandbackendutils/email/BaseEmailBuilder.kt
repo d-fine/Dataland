@@ -3,7 +3,6 @@ package org.dataland.datalandbackendutils.email
 import org.slf4j.LoggerFactory
 import kotlin.system.exitProcess
 
-
 /**
  * A class that manages generating emails
  */
@@ -97,28 +96,36 @@ open class BaseEmailBuilder(
 
     private fun buildPropertyStyleHtmlContent(title: String, properties: Map<String, String>): String {
         return StringBuilder()
-            .append("""
+            .append(
+                """
         <html>
         <head>
                 $mailStyleHtml
         </head>
         <body>
             <div class="container">
-        """)
-            .append("""
+        """,
+            )
+            .append(
+                """
                 <div class="header">$title</div>
-            """)
+            """,
+            )
             .apply {
                 properties.forEach {
-                    append("""
+                    append(
+                        """
                 <div class="section"> <span class="bold">${it.key}: </span> ${it.value} </div>
-                    """)
+                    """,
+                    )
                 }
             }
-            .append("""
+            .append(
+                """
                 </div>
         </body>
         </html>
-            """).toString().trimIndent()
+            """,
+            ).toString().trimIndent()
     }
 }
