@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test
 
 class V14__MigrateSubstantialContributionToClimateChangeAdaptation {
     @Test
-    fun `check migration script for blank file references in sfdr works properly`() {
+    fun `check migration script for field name change in eu taxonomy non financials works properly`() {
         TestUtils().testMigrationOfSingleDataset(
-            "sfdr",
-            "V13/originalDatabaseEntry.json",
-            "V13/expectedDatabaseEntry.json",
-            V13__MigrateBlankFileReferencesInSfdr()::migrateBlankFileReferences,
+            "eutaxonomy-non-financials",
+            "V14/originalDatabaseEntry.json",
+            "V14/expectedDatabaseEntry.json",
+            V14__MigrateSubstantialContributionToClimateChangeAdaption()::migrateSubstantialContributionToClimateChangeAdaption,
         )
     }
 }
