@@ -97,6 +97,9 @@ export default defineComponent({
       menuItems: [
         {
           label: 'Manage Company Details',
+          command: () => {
+            console.log("I dont know where to route this ? #TODO TODO")
+          }
 
         },
         {
