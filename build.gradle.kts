@@ -135,7 +135,7 @@ sonar {
                 "dataland-frontend/src/components/resources/newLandingPage/**," +
                 "dataland-frontend/src/components/pages/AboutPage.vue," +
                 "dataland-frontend/src/components/generics/TheNewFooter.vue" +
-                "dataland-frontend/tests/e2e/fixtures/frameworks/sfdr/SfdrDataFixtures.ts"
+                "dataland-frontend/tests/e2e/fixtures/frameworks/sfdr/SfdrDataFixtures.ts",
         )
     }
 }
