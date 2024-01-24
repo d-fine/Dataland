@@ -183,7 +183,6 @@ class DataOwnersManager(
         }
         emailSender.sendEmail(
             dataOwnershipRequestEmailBuilder.buildDataOwnershipRequest(companyId, userAuthentication),
-            {},
         )
     }
 }

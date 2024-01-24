@@ -26,7 +26,7 @@ enum class CauseOfMail(val description: String) {
  */
 @Component
 class BulkDataRequestEmailBuilder(
-    @Value("\${dataland.proxy.primary.url}") private val propProxyPrimaryUrl: String,
+    @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
     @Value("\${dataland.notification.bulk-data-request.receivers}") semicolonSeparatedReceiverEmails: String,
@@ -42,41 +42,6 @@ class BulkDataRequestEmailBuilder(
         return "User ${user.username} (Keycloak id: ${user.userId})"
     }
 
-    private fun buildBulkDataRequestEmailText(
-        bulkDataRequest: BulkDataRequest,
-        acceptedCompanyIdentifiers: List<String>,
-    ): String {
-        return "A bulk data request has been submitted: " +
-            "Environment: $propProxyPrimaryUrl " +
-            "User: ${buildUserInfo()} " +
-            "Requested frameworks: ${bulkDataRequest.listOfFrameworkNames.joinToString(", ")}. " +
-            "Accepted company identifiers: ${acceptedCompanyIdentifiers.joinToString(", ")}."
-    }
-
-    private fun buildBulkDataRequestEmailHtml(
-        bulkDataRequest: BulkDataRequest,
-        acceptedCompanyIdentifiers: List<String>,
-    ): String {
-        return """
-        <html>
-        <head>
-                $defaultMailStyleHtml
-        </head>
-        <body>
-            <div class="container">
-                <div class="header">Bulk Data Request</div>
-                <div class="section"> <span class="bold">Environment: </span> $propProxyPrimaryUrl </div>
-                <div class="section"> <span class="bold">User: </span> ${buildUserInfo()} </div>
-                <div class="section"> <span class="bold">Requested Frameworks: </span> 
-                    ${bulkDataRequest.listOfFrameworkNames.joinToString(", ")} </div>
-                <div class="section"> <span class="bold">Accepted Company Identifiers: </span> 
-                    ${acceptedCompanyIdentifiers.joinToString(", ")} </div>
-            </div>
-        </body>
-        </html>
-        """.trimIndent()
-    }
-
     /**
      * Function that generates the email to be sent
      */
@@ -84,16 +49,21 @@ class BulkDataRequestEmailBuilder(
         bulkDataRequest: BulkDataRequest,
         acceptedCompanyIdentifiers: List<String>,
     ): Email {
-        val content = EmailContent(
-            "Dataland Bulk Data Request",
-            buildBulkDataRequestEmailText(bulkDataRequest, acceptedCompanyIdentifiers),
-            buildBulkDataRequestEmailHtml(bulkDataRequest, acceptedCompanyIdentifiers),
-        )
         return Email(
             senderEmailContact,
             receiverEmailContacts,
             ccEmailContacts,
-            content,
+            buildPropertyStyleEmailContent(
+                "Dataland Bulk Data Request",
+                "A bulk data request has been submitted",
+                "Bulk Data Request",
+                mapOf(
+                    "Environment" to proxyPrimaryUrl,
+                    "User" to buildUserInfo(),
+                    "Requested Frameworks" to bulkDataRequest.listOfFrameworkNames.joinToString(", "),
+                    "Accepted Company Identifiers" to acceptedCompanyIdentifiers.joinToString(", "),
+                ),
+            ),
         )
     }
 }

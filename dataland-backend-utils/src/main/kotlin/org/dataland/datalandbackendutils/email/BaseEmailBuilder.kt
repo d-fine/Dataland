@@ -21,7 +21,7 @@ open class BaseEmailBuilder(
     protected val receiverEmailContacts = getEmailContactsFromProp(semicolonSeparatedReceiverEmails)
     protected val ccEmailContacts = getEmailContactsFromProp(semicolonSeparatedCcEmails)
 
-    protected val defaultMailStyleHtml =
+    protected val mailStyleHtml =
         """
     <style>
     body {
@@ -66,5 +66,59 @@ open class BaseEmailBuilder(
                 emailAddressString ->
             EmailContact(assertEmailAddressFormatAndReturnIt(emailAddressString))
         }
+    }
+
+    protected fun buildPropertyStyleEmailContent(
+        subject: String,
+        textTitle: String,
+        htmlTitle: String,
+        properties: Map<String, String>,
+    ): EmailContent {
+        return EmailContent(
+            subject,
+            buildPropertyStyleTextContent(textTitle, properties),
+            buildPropertyStyleHtmlContent(htmlTitle, properties),
+        )
+    }
+
+    private fun buildPropertyStyleTextContent(title: String, properties: Map<String, String>): String {
+        return StringBuilder()
+            .append("$title:\n")
+            .apply {
+                properties.forEach {
+                    append(it.key)
+                    append(": ")
+                    append(it.value)
+                    append("\n")
+                }
+            }
+            .toString()
+    }
+
+    private fun buildPropertyStyleHtmlContent(title: String, properties: Map<String, String>): String {
+        return StringBuilder()
+            .append("""
+        <html>
+        <head>
+                $mailStyleHtml
+        </head>
+        <body>
+            <div class="container">
+        """)
+            .append("""
+                <div class="header">$title</div>
+            """)
+            .apply {
+                properties.forEach {
+                    append("""
+                <div class="section"> <span class="bold">${it.key}: </span> ${it.value} </div>
+                    """)
+                }
+            }
+            .append("""
+                </div>
+        </body>
+        </html>
+            """).toString().trimIndent()
     }
 }

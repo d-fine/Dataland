@@ -299,11 +299,9 @@ class DataRequestManager(
             bulkDataRequest,
             acceptedCompanyIdentifiers,
         )
-        val bulkDataRequestNotificationMailLoggerFunction = {
-            dataRequestLogger
-                .logMessageForBulkDataRequestNotificationMail(emailToSend, bulkDataRequestId)
-        }
-        emailSender.sendEmail(emailToSend, bulkDataRequestNotificationMailLoggerFunction)
+        dataRequestLogger
+            .logMessageForBulkDataRequestNotificationMail(emailToSend, bulkDataRequestId)
+        emailSender.sendEmail(emailToSend)
     }
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {

@@ -35,37 +35,6 @@ class DataOwnershipRequestEmailBuilder(
         }
     }
 
-    private fun buildDataOwnershipRequestEmailText(
-        companyId: String,
-        userAuthentication: DatalandAuthentication,
-    ): String {
-        return "A data ownership request has been submitted: " +
-            "Environment: $proxyPrimaryUrl " +
-            "User: ${buildUserInfo(userAuthentication)} " +
-            "Company (Dataland ID): $companyId"
-    }
-
-    private fun buildDataOwnershipRequestEmailHtml(
-        companyId: String,
-        userAuthentication: DatalandAuthentication,
-    ): String {
-        return """
-        <html>
-        <head>
-                $defaultMailStyleHtml
-        </head>
-        <body>
-            <div class="container">
-                <div class="header">Data Ownership Request</div>
-                <div class="section"> <span class="bold">Environment: </span> $proxyPrimaryUrl </div>
-                <div class="section"> <span class="bold">User: </span> ${buildUserInfo(userAuthentication)} </div>
-                <div class="section"> <span class="bold">Company (Dataland ID): </span> $companyId </div>
-            </div>
-        </body>
-        </html>
-        """.trimIndent()
-    }
-
     /**
      * Function that generates an email for a data ownership request
      */
@@ -73,16 +42,20 @@ class DataOwnershipRequestEmailBuilder(
         companyId: String,
         userAuthentication: DatalandAuthentication,
     ): Email {
-        val content = EmailContent(
-            "Dataland Data Ownership Request",
-            buildDataOwnershipRequestEmailText(companyId, userAuthentication),
-            buildDataOwnershipRequestEmailHtml(companyId, userAuthentication),
-        )
         return Email(
             senderEmailContact,
             receiverEmailContacts,
             ccEmailContacts,
-            content,
+            buildPropertyStyleEmailContent(
+                "Dataland Data Ownership Request",
+                "A data ownership request has been submitted",
+                "Data Ownership Request",
+                mapOf(
+                    "Environment" to proxyPrimaryUrl,
+                    "User" to buildUserInfo(userAuthentication),
+                    "Company (Dataland ID)" to companyId,
+                )
+            ),
         )
     }
 }
