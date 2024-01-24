@@ -33,7 +33,8 @@ class EutaxonomynonfinancialsDataController(
     EutaxonomynonfinancialsData::class.java,
 ) {
     @Operation(operationId = "getCompanyAssociatedEutaxonomynonfinancialsData")
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EutaxonomynonfinancialsData>> {
+    override fun getCompanyAssociatedData(dataId: String):
+        ResponseEntity<CompanyAssociatedData<EutaxonomynonfinancialsData>> {
         return super.getCompanyAssociatedData(dataId)
     }
 

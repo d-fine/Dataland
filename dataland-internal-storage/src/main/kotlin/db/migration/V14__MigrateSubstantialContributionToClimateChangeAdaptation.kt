@@ -10,11 +10,11 @@ import org.json.JSONObject
  * This migration script updates the existing SFDR datasets, more specifically it introduces an additional layer to
  * each sector in the high-impact climate sectors
  */
-class V14__MigrateSubstantialContributionToClimateChangeAdaption : BaseJavaMigration() {
+class V14__MigrateSubstantialContributionToClimateChangeAdaptation : BaseJavaMigration() {
     private val mapOfOldToNewFieldNames = mapOf(
-        "substantialContributionToClimateChangeAdaptionInPercent" to "substantialContributionToClimateChangeAdaptationInPercent",
+        "substantialContributionToClimateChangeAdaptionInPercent" to
+            "substantialContributionToClimateChangeAdaptationInPercent",
     )
-
 
     /**
      * Migrates substantialContributionToClimateChangeAdaption field to substantialContributionToClimateChangeAdaptation
@@ -26,7 +26,7 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaption : BaseJavaMigra
         println("Here2")
         val euTaxoDataset = JSONObject(companyAssociatedDatasetAsString.getString("data"))
         println(euTaxoDataset)
-        //TODO go into revenue, capex, opex
+        // TODO go into revenue, capex, opex
         mapOfOldToNewFieldNames.forEach {
             euTaxoDataset.put(it.value, euTaxoDataset.get(it.key))
             euTaxoDataset.remove(it.key)
@@ -36,6 +36,9 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaption : BaseJavaMigra
         dataTableEntity.companyAssociatedData.put("data", euTaxoDataset.toString())
     }
     override fun migrate(context: Context?) {
-            migrateCompanyAssociatedDataOfDatatype(context, "eutaxonomy-non-financials", this::migrateSubstantialContributionToClimateChangeAdaption)
+        migrateCompanyAssociatedDataOfDatatype(
+            context, "eutaxonomy-non-financials",
+            this::migrateSubstantialContributionToClimateChangeAdaption,
+        )
     }
 }
