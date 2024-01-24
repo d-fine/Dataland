@@ -9474,6 +9474,14 @@
             "type": "string",
             "format": "date"
           },
+          "scopeOfEntities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNoNa"
+              }
+            ]
+          },
           "euTaxonomyActivityLevelReporting": {
             "nullable": true,
             "allOf": [
@@ -11663,15 +11671,15 @@
           "companyId": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "headquarters": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "countryCode": {
+            "type": "string"
           },
           "permId": {
             "type": "string",

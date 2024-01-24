@@ -37,6 +37,18 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
           },
           {
             type: "cell",
+            label: "Scope Of Entities",
+            explanation: "Are all Group legal entities covered in the reports?",
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.general?.general?.scopeOfEntities?.value),
+                "Scope Of Entities",
+                dataset.general?.general?.scopeOfEntities,
+              ),
+          },
+          {
+            type: "cell",
             label: "EU Taxonomy Activity Level Reporting",
             explanation: "Activity level disclosure",
             shouldDisplay: (): boolean => true,
