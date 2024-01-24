@@ -630,6 +630,75 @@
         ]
       }
     },
+    "/data/euTaxonomyNonFinancials": {
+      "post": {
+        "tags": [
+          "eutaxonomynonfinancials-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedEutaxonomynonfinancialsData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomynonfinancialsData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/esg-questionnaire": {
       "post": {
         "tags": [
@@ -2284,6 +2353,142 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationEuTaxonomyDataForFinancials"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/euTaxonomyNonFinancials/{dataId}": {
+      "get": {
+        "tags": [
+          "eutaxonomynonfinancials-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedEutaxonomynonfinancialsData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomynonfinancialsData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/euTaxonomyNonFinancials/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "eutaxonomynonfinancials-data-controller"
+        ],
+        "operationId": "getAllCompanyEutaxonomynonfinancialsData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationEutaxonomynonfinancialsData"
                   }
                 }
               }
@@ -9115,6 +9320,322 @@
           }
         }
       },
+      "CompanyAssociatedDataEutaxonomynonfinancialsData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EutaxonomynonfinancialsData"
+          }
+        }
+      },
+      "EutaxonomynonfinancialsCapex": {
+        "type": "object",
+        "properties": {
+          "capex": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomynonfinancialsCapexCapex"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomynonfinancialsCapexCapex": {
+        "type": "object",
+        "properties": {
+          "totalCapex": {
+            "type": "number",
+            "nullable": true
+          },
+          "eligibleCapex": {
+            "type": "number",
+            "nullable": true
+          },
+          "alignedCapex": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeMitigation": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptation": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomy": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControl": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": {
+            "type": "number",
+            "nullable": true
+          },
+          "nonAlignedCapex": {
+            "type": "number",
+            "nullable": true
+          },
+          "nonEligibleCapex": {
+            "type": "number",
+            "nullable": true
+          },
+          "enablingCapex": {
+            "type": "number",
+            "nullable": true
+          },
+          "transitionalCapex": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EutaxonomynonfinancialsData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomynonfinancialsGeneral"
+              }
+            ]
+          },
+          "revenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomynonfinancialsRevenue"
+              }
+            ]
+          },
+          "capex": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomynonfinancialsCapex"
+              }
+            ]
+          },
+          "opex": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomynonfinancialsOpex"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomynonfinancialsGeneral": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomynonfinancialsGeneralGeneral"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomynonfinancialsGeneralGeneral": {
+        "required": [
+          "fiscalYearEnd",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "reportingPeriod": {
+            "type": "string",
+            "format": "date"
+          },
+          "fiscalYearEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "euTaxonomyActivityLevelReporting": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "numberOfEmployees": {
+            "type": "number",
+            "nullable": true
+          },
+          "nfrdMandatory": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomynonfinancialsOpex": {
+        "type": "object",
+        "properties": {
+          "opex": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomynonfinancialsOpexOpex"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomynonfinancialsOpexOpex": {
+        "type": "object",
+        "properties": {
+          "totalOpex": {
+            "type": "number",
+            "nullable": true
+          },
+          "eligibleOpex": {
+            "type": "number",
+            "nullable": true
+          },
+          "alignedOpex": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeMitigation": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptation": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomy": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControl": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": {
+            "type": "number",
+            "nullable": true
+          },
+          "nonAlignedOpex": {
+            "type": "number",
+            "nullable": true
+          },
+          "nonEligibleOpex": {
+            "type": "number",
+            "nullable": true
+          },
+          "enablingOpex": {
+            "type": "number",
+            "nullable": true
+          },
+          "transitionalOpex": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EutaxonomynonfinancialsRevenue": {
+        "type": "object",
+        "properties": {
+          "revenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomynonfinancialsRevenueRevenue"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomynonfinancialsRevenueRevenue": {
+        "type": "object",
+        "properties": {
+          "totalRevenue": {
+            "type": "number",
+            "nullable": true
+          },
+          "eligibleRevenue": {
+            "type": "number",
+            "nullable": true
+          },
+          "alignedRevenue": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeMitigation": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptation": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomy": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControl": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": {
+            "type": "number",
+            "nullable": true
+          },
+          "nonAlignedRevenue": {
+            "type": "number",
+            "nullable": true
+          },
+          "nonEligibleRevenue": {
+            "type": "number",
+            "nullable": true
+          },
+          "enablingRevenue": {
+            "type": "number",
+            "nullable": true
+          },
+          "transitionalRevenue": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
       "AnreizmechanismenFuerDasManagementSozialesOptions": {
         "type": "string",
         "enum": [
@@ -11097,6 +11618,21 @@
           }
         }
       },
+      "DataAndMetaInformationEutaxonomynonfinancialsData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EutaxonomynonfinancialsData"
+          }
+        }
+      },
       "DataAndMetaInformationEsgQuestionnaireData": {
         "required": [
           "data",
@@ -11121,21 +11657,21 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
           "countryCode": {
             "type": "string"
           },
+          "headquarters": {
+            "type": "string"
+          },
           "sector": {
             "type": "string",
             "nullable": true
-          },
-          "headquarters": {
-            "type": "string"
           },
           "permId": {
             "type": "string",
@@ -11162,10 +11698,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
@@ -11221,6 +11757,7 @@
         "type": "string",
         "enum": [
           "esg-questionnaire",
+          "euTaxonomyNonFinancials",
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "lksg",
