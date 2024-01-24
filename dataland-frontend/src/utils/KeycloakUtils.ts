@@ -1,4 +1,4 @@
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import {assertDefined} from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
 
 /**
@@ -8,10 +8,10 @@ import type Keycloak from "keycloak-js";
  * @returns the Keycloak-promise returned by the getter-function
  */
 export async function waitForAndReturnResolvedKeycloakPromise(
-  keycloakPromiseGetter: () => Promise<Keycloak>,
+    keycloakPromiseGetter: () => Promise<Keycloak>,
 ): Promise<Keycloak> {
-  const keycloakPromiseGetterAsserted: () => Promise<Keycloak> = assertDefined(keycloakPromiseGetter);
-  return keycloakPromiseGetterAsserted();
+    const keycloakPromiseGetterAsserted: () => Promise<Keycloak> = assertDefined(keycloakPromiseGetter);
+    return keycloakPromiseGetterAsserted();
 }
 
 /**
@@ -20,11 +20,12 @@ export async function waitForAndReturnResolvedKeycloakPromise(
  * @returns a promise, which resolves to an array containing the roles of the user as strings
  */
 export async function getKeycloakRolesForUser(keycloakPromiseGetter: () => Promise<Keycloak>): Promise<Array<string>> {
-  const resolvedKeycloakPromise = await waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter);
-  if (resolvedKeycloakPromise.realmAccess) {
-    return resolvedKeycloakPromise.realmAccess.roles;
-  } else return [];
+    const resolvedKeycloakPromise = await waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter);
+    if (resolvedKeycloakPromise.realmAccess) {
+        return resolvedKeycloakPromise.realmAccess.roles;
+    } else return [];
 }
+
 export const KEYCLOAK_ROLE_USER = "ROLE_USER";
 export const KEYCLOAK_ROLE_UPLOADER = "ROLE_UPLOADER";
 export const KEYCLOAK_ROLE_REVIEWER = "ROLE_REVIEWER";
@@ -38,17 +39,17 @@ export const KEYCLOAK_ROLE_ADMIN = "ROLE_ADMIN";
  * @returns a promise, which resolves to a boolean
  */
 export async function checkIfUserHasRole(
-  expectedKeycloakRole: string,
-  keycloakPromiseGetter?: () => Promise<Keycloak>,
+    expectedKeycloakRole: string,
+    keycloakPromiseGetter?: () => Promise<Keycloak>,
 ): Promise<boolean> {
-  if (keycloakPromiseGetter) {
-    const rolesOfUser = await getKeycloakRolesForUser(keycloakPromiseGetter);
-    if (rolesOfUser) {
-      return rolesOfUser.includes(expectedKeycloakRole);
-    } else {
-      return false;
-    }
-  } else return false;
+    if (keycloakPromiseGetter) {
+        const rolesOfUser = await getKeycloakRolesForUser(keycloakPromiseGetter);
+        if (rolesOfUser) {
+            return rolesOfUser.includes(expectedKeycloakRole);
+        } else {
+            return false;
+        }
+    } else return false;
 }
 
 /**
@@ -58,9 +59,9 @@ export async function checkIfUserHasRole(
  * redirected to
  */
 export function logoutAndRedirectToUri(keycloak: Keycloak, additionToBasePath: string): void {
-  const baseUrl = window.location.origin;
-  const url = keycloak.createLogoutUrl({ redirectUri: `${baseUrl}${additionToBasePath}` });
-  location.assign(url);
+    const baseUrl = window.location.origin;
+    const url = keycloak.createLogoutUrl({redirectUri: `${baseUrl}${additionToBasePath}`});
+    location.assign(url);
 }
 
 /**
@@ -68,9 +69,9 @@ export function logoutAndRedirectToUri(keycloak: Keycloak, additionToBasePath: s
  * @param keycloak is the keycloak adaptor used to do the login
  */
 export function loginAndRedirectToSearchPage(keycloak: Keycloak): void {
-  const baseUrl = window.location.origin;
-  const url = keycloak.createLoginUrl({ redirectUri: `${baseUrl}/companies` });
-  location.assign(url);
+    const baseUrl = window.location.origin;
+    const url = keycloak.createLoginUrl({redirectUri: `${baseUrl}/companies`});
+    location.assign(url);
 }
 
 /**
@@ -78,7 +79,19 @@ export function loginAndRedirectToSearchPage(keycloak: Keycloak): void {
  * @param keycloak is the keycloak adaptor used to do the login
  */
 export function registerAndRedirectToSearchPage(keycloak: Keycloak): void {
-  const baseUrl = window.location.origin;
-  const url = keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/companies` });
-  location.assign(url);
+    const baseUrl = window.location.origin;
+    const url = keycloak.createRegisterUrl({redirectUri: `${baseUrl}/companies`});
+    location.assign(url);
+}
+
+/**
+ * Gets the user id
+ * */
+export async function getUserId(getKeycloakPromise: () => Promise<Keycloak>): Promise<string | undefined> {
+    const parsedIdToken = (await getKeycloakPromise()).idTokenParsed;
+    if (parsedIdToken) {
+        return parsedIdToken.sub;
+    } else {
+        return undefined
+    }
 }

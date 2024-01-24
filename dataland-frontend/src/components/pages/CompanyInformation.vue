@@ -2,12 +2,13 @@
   <div>
     <div v-if="waitingForData" class="inline-loading text-center">
       <p class="font-medium text-xl">Loading company information...</p>
-      <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+      <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f"/>
     </div>
     <div v-else-if="companyInformation && !waitingForData" class="text-left company-details">
       <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
-
-      <div class="company-details__separator" />
+      <div v-if="isUserDataOwner"> User is Verified and Data Owner - Todo TODO</div>
+      <div v-else> User Is NOT DATA OWNER</div>
+      <div class="company-details__separator"/>
 
       <div class="company-details__info-holder">
         <div class="company-details__info">
@@ -31,11 +32,12 @@
 </template>
 
 <script lang="ts">
-import { ApiClientProvider } from "@/services/ApiClients";
-import { defineComponent, inject } from "vue";
-import { type CompanyInformation, IdentifierType } from "@clients/backend";
+import {ApiClientProvider} from "@/services/ApiClients";
+import {defineComponent, inject} from "vue";
+import {type CompanyInformation, IdentifierType} from "@clients/backend";
 import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import {assertDefined} from "@/utils/TypeScriptUtils";
+import {getUserId} from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -50,6 +52,7 @@ export default defineComponent({
       companyInformation: null as CompanyInformation | null,
       waitingForData: true,
       companyIdDoesNotExist: false,
+      isUserDataOwner: false,
     };
   },
   computed: {
@@ -63,6 +66,9 @@ export default defineComponent({
     displayIsin() {
       return this.companyInformation?.identifiers?.[IdentifierType.Isin]?.[0] ?? "—";
     },
+    userId() {
+      return getUserId(assertDefined(this.getKeycloakPromise));
+    }
   },
   props: {
     companyId: {
@@ -76,7 +82,9 @@ export default defineComponent({
   watch: {
     companyId() {
       void this.getCompanyInformation();
+      void this.getDataOwnerInformation();
     },
+
   },
   methods: {
     /**
@@ -88,7 +96,7 @@ export default defineComponent({
         this.waitingForData = true;
         if (this.companyId !== undefined) {
           const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-            .backendClients.companyDataController;
+              .backendClients.companyDataController;
           this.companyInformation = (await companyDataControllerApi.getCompanyInfo(this.companyId)).data;
           this.waitingForData = false;
           this.$emit("fetchedCompanyInformation", this.companyInformation);
@@ -111,6 +119,15 @@ export default defineComponent({
       const noStringMessage = error instanceof Error ? error.message : "";
       return typeof error === "string" ? error : noStringMessage;
     },
+    async getDataOwnerInformation() {
+      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
+          .backendClients.companyDataController;
+      const axiosResponse = (await companyDataControllerApi.isUserDataOwnerForCompany(
+              this.companyId, assertDefined(await this.userId))
+      );
+      axiosResponse ? this.isUserDataOwner = true : this.isUserDataOwner = false;
+
+    }
   },
 });
 </script>
