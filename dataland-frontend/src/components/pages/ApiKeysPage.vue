@@ -140,7 +140,7 @@
         />
       </template>
     </PrimeDialog>
-    <TheFooter />
+    <TheFooter :is-light-version="true" :sections="footerContent?.sections" />
   </AuthenticationWrapper>
 </template>
 
@@ -161,7 +161,9 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
 import { type ApiKeyControllerApiInterface } from "@clients/apikeymanager";
-import TheFooter from "@/components/generics/TheFooter.vue";
+import TheFooter from "@/components/generics/TheNewFooter.vue";
+import contentData from "@/assets/content.json";
+import type { Content, Page } from "@/types/ContentTypes";
 
 export default defineComponent({
   name: "ApiKeysPage",
@@ -195,6 +197,8 @@ export default defineComponent({
       expiryDate: undefined as undefined | number,
       userRolesAccordingToApiKey: [] as Array<string>,
       userRolesAccordingToKeycloak: [] as Array<string>,
+      content: {} as Content,
+      footerContent: undefined as Page | undefined,
     };
   },
   computed: {
@@ -222,6 +226,8 @@ export default defineComponent({
      * Updates the UI according to the retrieved meta-information.
      */
     async getApiKeyMetaInfoForUser() {
+      this.content = contentData;
+      this.footerContent = this.content.pages.find((page) => page.url === "/");
       try {
         const keycloakPromiseGetter = assertDefined(this.getKeycloakPromise);
         const resolvedKeycloakPromise = await keycloakPromiseGetter();
