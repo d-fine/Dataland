@@ -1,5 +1,5 @@
 <template>
-  <div :class="`claim-panel${!useMobileView ? '--interactive' : ''}`"
+  <div :class="`claim-panel${!useMobileView ? '--interactive' : ''} col-12`"
        @fetchedCompanyInformation="onFetchedCompanyInformation">
     <div>
       <h1 class="claim-panel__ownership-question">
@@ -89,10 +89,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .claim-panel {
-  width: 100%;
-  height: 100px;
   background-color: var(--surface-card);
-  padding: 24px;
   border-radius: 8px;
   text-align: left;
   box-shadow: 0 0 12px #9494943d;

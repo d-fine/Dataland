@@ -150,10 +150,10 @@ export default defineComponent({
 
 .card-grid {
   width: 70%;
-  display: flex;
+  display: grid;
   flex-wrap: wrap;
-  gap: 40px;
-  justify-content: center;
+  gap: 40px 40px;
+  justify-content: space-between;
   @media only screen and (max-width: $small) {
     width: 100%;
   }
