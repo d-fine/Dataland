@@ -4,10 +4,16 @@
       <p class="font-medium text-xl">Loading company information...</p>
       <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f"/>
     </div>
-    <div v-else-if="companyInformation && !waitingForData" class="text-left company-details">
-      <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
-      <div v-if="isUserDataOwner"> User is Verified and Data Owner - Todo TODO</div>
-      <div v-else> User Is NOT DATA OWNER</div>
+    <div v-else-if="companyInformation && !waitingForData" class="company-details">
+      <div class="company-details__headline">
+        <h1 class="left-element" data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
+
+        <span class="left-element" v-if="isUserDataOwner"> User is Verified and Data Owner - Todo TODO</span>
+        <span class="left-element" v-else> User Is NOT DATA OWNER</span>
+        <span class="right right-element">
+          <ContextMenuButton :menu-items="contextMenuItems"/>
+        </span>
+      </div>
       <div class="company-details__separator"/>
 
       <div class="company-details__info-holder">
@@ -38,9 +44,11 @@ import {type CompanyInformation, IdentifierType} from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import {assertDefined} from "@/utils/TypeScriptUtils";
 import {getUserId} from "@/utils/KeycloakUtils";
+import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 
 export default defineComponent({
   name: "CompanyInformation",
+  components: {ContextMenuButton},
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -53,6 +61,21 @@ export default defineComponent({
       waitingForData: true,
       companyIdDoesNotExist: false,
       isUserDataOwner: false,
+      contextMenuItems: [
+        {
+          label: 'Manage Company Details',
+          command: () => {
+            console.log("I dont know where to route this ? #TODO TODO")
+          }
+
+        },
+        {
+          label: 'Claim Company Ownership',
+          command: () => {
+            console.log("clik- this will lead to the known dialog")
+          }
+        }
+      ],
     };
   },
   computed: {
@@ -142,6 +165,12 @@ export default defineComponent({
   flex-direction: column;
   width: 100%;
 
+  &__headline {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row
+  }
+
   &__separator {
     @media only screen and (max-width: $small) {
       width: 100%;
@@ -164,5 +193,13 @@ export default defineComponent({
       padding-right: 40px;
     }
   }
+}
+
+.left-element {
+  text-align: left;
+}
+
+.right-element {
+  text-align: right;
 }
 </style>
