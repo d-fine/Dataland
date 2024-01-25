@@ -3,7 +3,7 @@
     <div class="p-datatable-wrapper overflow-auto">
       <table v-if="dataPointDisplay" class="p-datatable-table" aria-label="Data point content">
         <tbody class="p-datatable-body">
-          <tr v-if="dataPointDisplay.value && dataPointDisplay.value != ONLY_AUXILIARY_DATA_PROVIDED()">
+          <tr v-if="dataPointDisplay.value">
             <th class="headers-bg width-auto"><span class="table-left-label">Value</span></th>
             <td>{{ dataPointDisplay.value }}</td>
           </tr>
@@ -37,18 +37,8 @@ import { defineComponent } from "vue";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 import { type DataPointDisplay } from "@/utils/DataPoint";
-import { ONLY_AUXILIARY_DATA_PROVIDED } from "@/utils/Constants";
 
 export default defineComponent({
-  methods: {
-    /**
-     * Returns only-auxiliary-data-provided string
-     * @class
-     */
-    ONLY_AUXILIARY_DATA_PROVIDED() {
-      return ONLY_AUXILIARY_DATA_PROVIDED;
-    },
-  },
   components: { DocumentLink },
   inject: ["dialogRef"],
   name: "DataPointDataTable",
