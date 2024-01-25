@@ -20,10 +20,10 @@ open class BaseEmailBuilder(
     protected val receiverEmailContacts = getEmailContactsFromProp(semicolonSeparatedReceiverEmails)
     protected val ccEmailContacts = getEmailContactsFromProp(semicolonSeparatedCcEmails)
 
-    protected open val mailStyleHtml =
+    private val mailStyleHtml =
         """
-    <style>
-    body {
+            <style>
+                body {
                     font-family: Arial, sans-serif;
                     color: #333;
                 }
@@ -44,7 +44,13 @@ open class BaseEmailBuilder(
                 .bold {
                     font-weight: bold;
                 }
-    </style>
+            </style>
+    """
+
+    private val htmlHead = """
+        <head>
+                $mailStyleHtml
+        </head>
     """
 
     private fun assertEmailAddressFormatAndReturnIt(emailAddress: String): String {
@@ -99,33 +105,43 @@ open class BaseEmailBuilder(
             .append(
                 """
         <html>
-        <head>
-                $mailStyleHtml
-        </head>
-        <body>
-            <div class="container">
+        $htmlHead
         """,
-            )
+            ).computePropertyStyleHtmlBody(title, properties)
             .append(
                 """
-                <div class="header">$title</div>
+        </html>
             """,
+            ).toString().trimIndent()
+    }
+
+    private fun StringBuilder.computePropertyStyleHtmlBody(title: String, properties: Map<String, String?>):
+        StringBuilder {
+        return this.append(
+            """
+        <body>
+        <div class="container">
+        """,
+        )
+            .append(
+                """
+        <div class="header">$title</div>
+        """,
             )
             .apply {
                 properties.filter { it.value != null }.forEach {
                     append(
                         """
-                <div class="section"> <span class="bold">${it.key}: </span> ${it.value} </div>
-                    """,
+        <div class="section"> <span class="bold">${it.key}: </span> ${it.value} </div>
+        """,
                     )
                 }
             }
             .append(
                 """
-                </div>
+        </div>
         </body>
-        </html>
-            """,
-            ).toString().trimIndent()
+        """,
+            )
     }
 }
