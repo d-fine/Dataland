@@ -873,6 +873,14 @@
               "type": "string",
               "format": "uuid"
             }
+          },
+          {
+            "name": "comment",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -11175,20 +11183,20 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
-          "countryCode": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
             "type": "string"
           },
           "permId": {

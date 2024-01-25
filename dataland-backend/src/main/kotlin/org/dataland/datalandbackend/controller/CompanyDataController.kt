@@ -212,9 +212,9 @@ class CompanyDataController(
         dataOwnersManager.checkUserCompanyCombinationForDataOwnership(companyId.toString(), userId.toString())
     }
 
-    override fun postDataOwnershipRequest(companyId: UUID) {
+    override fun postDataOwnershipRequest(companyId: UUID, comment: String) {
         val userAuthentication = DatalandAuthentication.fromContext()
         logger.info("User (id: ${userAuthentication.userId}) requested data ownership for company with id: $companyId.")
-        dataOwnersManager.sendDataOwnershipRequestIfNecessary(companyId.toString(), userAuthentication)
+        dataOwnersManager.sendDataOwnershipRequestIfNecessary(companyId.toString(), userAuthentication, comment)
     }
 }

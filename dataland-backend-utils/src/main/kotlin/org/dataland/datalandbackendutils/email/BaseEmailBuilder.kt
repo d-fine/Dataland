@@ -20,7 +20,7 @@ open class BaseEmailBuilder(
     protected val receiverEmailContacts = getEmailContactsFromProp(semicolonSeparatedReceiverEmails)
     protected val ccEmailContacts = getEmailContactsFromProp(semicolonSeparatedCcEmails)
 
-    protected val mailStyleHtml =
+    protected open val mailStyleHtml =
         """
     <style>
     body {

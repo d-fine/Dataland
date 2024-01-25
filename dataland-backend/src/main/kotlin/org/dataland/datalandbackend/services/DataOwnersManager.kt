@@ -4,10 +4,12 @@ import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackendutils.email.EmailSender
+import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -171,7 +173,14 @@ class DataOwnersManager(
      * @param userAuthentication the DatalandAuthentication of the user who should become a data owner
      */
     @Transactional(readOnly = true)
-    fun sendDataOwnershipRequestIfNecessary(companyId: String, userAuthentication: DatalandAuthentication) {
+    fun sendDataOwnershipRequestIfNecessary(
+        companyId: String,
+        userAuthentication: DatalandAuthentication,
+        comment: String,
+    ) {
+        if (userAuthentication !is DatalandJwtAuthentication) {
+            throw AuthenticationMethodNotSupportedException()
+        }
         checkIfCompanyIsValid(companyId)
         if (
             dataOwnerRepository.findById(companyId).getOrNull()?.dataOwners?.contains(userAuthentication.userId) == true
@@ -182,7 +191,7 @@ class DataOwnersManager(
             )
         }
         emailSender.sendEmail(
-            dataOwnershipRequestEmailBuilder.buildDataOwnershipRequest(companyId, userAuthentication),
+            dataOwnershipRequestEmailBuilder.buildDataOwnershipRequest(companyId, userAuthentication, comment),
         )
     }
 }

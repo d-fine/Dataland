@@ -26,10 +26,8 @@ class DataOwnershipRequestEmailBuilder(
     private fun buildUserInfo(
         userAuthentication: DatalandAuthentication,
     ): String {
-        return if (userAuthentication is DatalandJwtAuthentication) {
-            "User ${userAuthentication.username} (Keycloak id: ${userAuthentication.userId})"
-        } else {
-            "User (Keycloak id: ${userAuthentication.userId})"
+        return (userAuthentication as DatalandJwtAuthentication).let {
+            "User ${it.username} (Keycloak ID: ${it.userId})"
         }
     }
 
@@ -39,6 +37,7 @@ class DataOwnershipRequestEmailBuilder(
     fun buildDataOwnershipRequest(
         companyId: String,
         userAuthentication: DatalandAuthentication,
+        comment: String,
     ): Email {
         return Email(
             senderEmailContact,
@@ -52,6 +51,7 @@ class DataOwnershipRequestEmailBuilder(
                     "Environment" to proxyPrimaryUrl,
                     "User" to buildUserInfo(userAuthentication),
                     "Company (Dataland ID)" to companyId,
+                    "Comment" to comment
                 ),
             ),
         )
