@@ -1,8 +1,6 @@
 package db.migration
 
 import db.migration.utils.DataTableEntity
-import db.migration.utils.MigrationHelper
-import db.migration.utils.getOrJavaNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
@@ -53,6 +51,9 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaption : BaseJavaMigra
 
 
     override fun migrate(context: Context?) {
-            migrateCompanyAssociatedDataOfDatatype(context, "eutaxonomy-non-financials", this::migrateSubstantialContributionToClimateChangeAdaption)
+        migrateCompanyAssociatedDataOfDatatype(
+            context, "eutaxonomy-non-financials",
+            this::migrateSubstantialContributionToClimateChangeAdaption,
+        )
     }
 }
