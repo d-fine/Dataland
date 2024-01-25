@@ -66,7 +66,7 @@ export function generateHeimathafenData(nullProbability = DEFAULT_PROBABILITY): 
         umgangMitAusreissern: dataGenerator.randomParagraphs(),
         identifizierungVonKontroversenGeschaeften: dataGenerator.randomParagraphs(),
         aktuelleKontroversen: dataGenerator.randomParagraphs(),
-        kontroversenUmDieQuellenerfassung: dataGenerator.valueOrNull(
+        quellenZurErfassungVonKontroversen: dataGenerator.valueOrNull(
           generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0),
         ),
       },

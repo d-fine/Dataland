@@ -44,7 +44,7 @@ Angaben dazu, wie Adhoc/kurzfristige Meldungen bei Emittenten und kurzfristige r
 28,General,Methodik,Umgang mit Ausreißern,Wie erfolgt der Umgang mit Ausreißern?,FreeText,,,,25,Yes,
 29,General,Methodik,Identifizierung von kontroversen Geschäften,Wie werden kontroverse Geschäftsfelder identifiziert?,FreeText,,,,,,
 30,General,Methodik,Aktuelle Kontroversen,Wie wird die Aktualität der Kontroversen gewährleistet?,FreeText,,,,,,
-31,General,Methodik,Kontroversen um die Quellenerfassung,Welche Quellen werden zur Erfassung von Kontroversen genutzt?,Multiple Documents With Descriptions,,,,,,
+31,General,Methodik,Quellen zur Erfassung von Kontroversen,Welche Quellen werden zur Erfassung von Kontroversen genutzt?,Multiple Documents With Descriptions,,,,,,
 32,Environmental,Nachhaltigskeitsrisiken,Methodik für ökologische Nachhaltigkeitsrisiken,"Werden Nachhaltigkeitsrisiken bezogen auf den Bereich Umwelt in der Methodik abgebildet?
 Nachhaltigkeitsrisiken können einen wesentlichen negativen Einfluss auf die Performance eines Unternehmens haben.",Yes/No,,,,,,
 "32,1",Environmental,Nachhaltigskeitsrisiken,"Wenn Nein, bitte begründen",,FreeText,,,,32,No,

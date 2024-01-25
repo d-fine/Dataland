@@ -9966,7 +9966,7 @@
             "type": "string",
             "nullable": true
           },
-          "kontroversenUmDieQuellenerfassung": {
+          "quellenZurErfassungVonKontroversen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -13279,20 +13279,20 @@
         ],
         "type": "object",
         "properties": {
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
-          "headquarters": {
+          "companyId": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "companyName": {
+          "countryCode": {
             "type": "string"
           },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           },
           "permId": {

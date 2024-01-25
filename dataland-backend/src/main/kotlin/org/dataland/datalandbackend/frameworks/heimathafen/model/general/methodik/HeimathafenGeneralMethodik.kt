@@ -36,5 +36,5 @@ data class HeimathafenGeneralMethodik(
     val umgangMitAusreissern: String? = null,
     val identifizierungVonKontroversenGeschaeften: String? = null,
     val aktuelleKontroversen: String? = null,
-    val kontroversenUmDieQuellenerfassung: List<BaseDataPoint<String>>? = null,
+    val quellenZurErfassungVonKontroversen: List<BaseDataPoint<String>>? = null,
 )

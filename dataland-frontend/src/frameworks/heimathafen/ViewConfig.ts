@@ -321,13 +321,13 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
           },
           {
             type: "cell",
-            label: "Kontroversen um die Quellenerfassung",
+            label: "Quellen zur Erfassung von Kontroversen",
             explanation: "Welche Quellen werden zur Erfassung von Kontroversen genutzt?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
-                "Kontroversen um die Quellenerfassung",
-                dataset.general?.methodik?.kontroversenUmDieQuellenerfassung,
+                "Quellen zur Erfassung von Kontroversen",
+                dataset.general?.methodik?.quellenZurErfassungVonKontroversen,
                 "Description",
                 "Document",
               );

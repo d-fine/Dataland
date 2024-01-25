@@ -323,8 +323,8 @@ export const heimathafenDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "kontroversenUmDieQuellenerfassung",
-            label: "Kontroversen um die Quellenerfassung",
+            name: "quellenZurErfassungVonKontroversen",
+            label: "Quellen zur Erfassung von Kontroversen",
             description: "Welche Quellen werden zur Erfassung von Kontroversen genutzt?",
 
             component: "ListOfBaseDataPointsFormField",
