@@ -1,7 +1,10 @@
 package db.migration
 
 import db.migration.utils.DataTableEntity
+import db.migration.utils.getOrJavaNull
+import db.migration.utils.getOrJsonNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
+import org.dataland.datalandbackend.openApiClient.model.Activity
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
@@ -30,20 +33,26 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaption : BaseJavaMigra
         val euTaxoDataset2 = euTaxoDataset.getOrJavaNull("data") as JSONObject
         println(euTaxoDataset2)
 
-
-        //TODO go into revenue, capex, opex
-        listOf("revenue").forEach { cashFlowType -> //, "capex", "opex"
+        listOf("revenue", "capex", "opex").forEach { cashFlowType ->
             mapOfOldToNewFieldNames.forEach {
-//                euTaxoDataset.put(it.value, euTaxoDataset.get(it.key))
-                val euTaxoDataSetRename = euTaxoDataset2.getJSONObject(cashFlowType)
                 euTaxoDataset2.getJSONObject(cashFlowType).put(it.value, euTaxoDataset2.getJSONObject(cashFlowType).getInt(it.key))
                 euTaxoDataset2.getJSONObject(cashFlowType).remove(it.key)
+                println(euTaxoDataset2.getJSONObject(cashFlowType).getJSONArray("alignedActivities").getJSONObject(0).get("substantialContributionToClimateChangeAdaptionInPercent"))
+                println(euTaxoDataset2.getJSONObject(cashFlowType).getJSONArray("alignedActivities").getJSONObject(0).get("activityName"))
+                euTaxoDataset2.getJSONObject(cashFlowType).getJSONArray("alignedActivities").forEach { actitivy ->
+                    actitivy as JSONObject
+                    actitivy.put(it.value, actitivy.get(it.key))
+                    actitivy.remove((it.key))
+                }
             }
         }
         println("Here5")
         println(euTaxoDataset2)
-        dataTableEntity.companyAssociatedData.put("data", euTaxoDataset2.toString())
-
+        println("Here6")
+        euTaxoDataset.put("data",euTaxoDataset2)
+        println(euTaxoDataset)
+        dataTableEntity.companyAssociatedData.put("data", euTaxoDataset.toString())
+        println(dataTableEntity.companyAssociatedData)
     }
     /**
      * This function iterates through all cash flow categories in order to migrate the "DataSource" Object
