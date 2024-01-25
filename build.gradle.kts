@@ -127,8 +127,15 @@ sonar {
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
                 "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts," +
                 // no need to cover the heimathafen-ViewConfig because there are no custom fields
-                "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts,",
-
+                "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts," +
+                "dataland-frontend/src/components/resources/aboutPage/TheAboutIntro.vue," +
+                "dataland-frontend/src/components/resources/aboutPage/TheAboutPrinciples.vue," +
+                "dataland-frontend/src/components/pages/AboutPage.vue," +
+                "dataland-frontend/src/components/generics/TheNewHeader.vue," +
+                "dataland-frontend/src/components/resources/aboutPage/**," +
+                "dataland-frontend/src/components/resources/newLandingPage/**," +
+                "dataland-frontend/src/components/pages/AboutPage.vue," +
+                "dataland-frontend/src/components/generics/TheNewFooter.vue,",
         )
     }
 }
