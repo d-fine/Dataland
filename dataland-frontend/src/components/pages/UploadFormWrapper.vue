@@ -14,7 +14,7 @@
         />
       </AuthorizationWrapper>
     </TheContent>
-    <TheFooter />
+    <TheFooter :is-light-version="true" :sections="footerContent" />
   </AuthenticationWrapper>
 </template>
 
@@ -31,7 +31,9 @@ import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEuTaxonom
 import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
 
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import TheFooter from "@/components/generics/TheFooter.vue";
+import TheFooter from "@/components/generics/TheNewFooter.vue";
+import contentData from "@/assets/content.json";
+import type { Content, Page } from "@/types/ContentTypes";
 import BackButton from "@/components/general/BackButton.vue";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import { redirectToMyDatasets } from "@/components/resources/uploadDataset/DatasetCreationRedirect";
@@ -53,8 +55,12 @@ export default defineComponent({
     BackButton,
   },
   data() {
+    const content: Content = contentData;
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerContent = footerPage?.sections;
     return {
       KEYCLOAK_ROLE_UPLOADER,
+      footerContent,
     };
   },
   props: {

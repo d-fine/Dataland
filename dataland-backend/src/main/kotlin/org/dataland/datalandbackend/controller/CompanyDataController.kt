@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.api.DataOwnerApi
+import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
 import org.dataland.datalandbackend.model.DataType
@@ -55,25 +56,19 @@ class CompanyDataController(
         dataTypes: Set<DataType>?,
         countryCodes: Set<String>?,
         sectors: Set<String>?,
-        onlyCompanyNames: Boolean,
-        onlyWithDataFromCurrentUser: Boolean,
-    ): ResponseEntity<List<StoredCompany>> {
+    ): ResponseEntity<List<BasicCompanyInformation>> {
         logger.info(
-            "Received a request to get companies with searchString='$searchString', onlyCompanyNames" +
-                "='$onlyCompanyNames', dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors', " +
-                "onlyWithDataFromCurrentUser='$onlyWithDataFromCurrentUser'",
+            "Received a request to get basic company information with searchString='$searchString'" +
+                ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
         )
         return ResponseEntity.ok(
             companyQueryManager.searchCompaniesAndGetApiModel(
                 StoredCompanySearchFilter(
                     searchString = searchString ?: "",
-                    nameOnlyFilter = onlyCompanyNames,
                     dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
                     countryCodeFilter = countryCodes?.toList() ?: listOf(),
                     sectorFilter = sectors?.toList() ?: listOf(),
-                    uploaderId = if (onlyWithDataFromCurrentUser) DatalandAuthentication.fromContext().userId else "",
                 ),
-                DatalandAuthentication.fromContextOrNull(),
             ),
         )
     }

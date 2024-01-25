@@ -1,4 +1,4 @@
-import { checkButton, checkImage, checkAnchorByContent, checkAnchorByTarget } from "@ct/testUtils/ExistenceChecks";
+import { checkButton, checkImage, checkAnchorByContent } from "@ct/testUtils/ExistenceChecks";
 import NewLandingPage from "@/components/pages/NewLandingPage.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import content from "@/assets/content.json";
@@ -69,16 +69,27 @@ function validateBrandsSection(): void {
 }
 
 /**
- * Check the new footer
+ * Check the new footer for long-term sustainability.
  */
 function checkNewFooter(): void {
   cy.get("footer").should("exist");
 
-  checkImage("Copyright ©   Dataland", getSingleImageNameInSection("Footer"));
-  cy.get(".footer__copyright").should("contain.text", `Copyright © ${new Date().getFullYear()} Dataland`);
+  cy.get(".footer__logo").should("exist");
 
-  checkAnchorByTarget("/imprint", "Imprint");
-  checkAnchorByTarget("/dataprivacy", "Data Privacy");
+  const currentYear = new Date().getFullYear();
+  const expectedCopyrightText = `Copyright © ${currentYear} Dataland`;
+
+  cy.get(".footer__copyright").should("contain.text", expectedCopyrightText);
+
+  const essentialLinks = [
+    { href: "/imprint", text: "IMPRINT" },
+    { href: "/dataprivacy", text: "DATA PRIVACY" },
+    { href: "/terms", text: "LEGAL" },
+  ];
+
+  essentialLinks.forEach((link) => {
+    cy.get(`footer a[href='${link.href}']`).should("contain.text", link.text);
+  });
 }
 
 /**
@@ -88,7 +99,7 @@ function checkNewFooter(): void {
  */
 function getLandingPageSection(sectionTitle: string): Section {
   return assertDefined(
-    (content.pages?.find((page) => page.title == "Landing Page") as Page | undefined)?.sections.find(
+    (content.pages?.find((page) => page.title == "Home") as Page | undefined)?.sections.find(
       (section) => section.title == sectionTitle,
     ),
   );
