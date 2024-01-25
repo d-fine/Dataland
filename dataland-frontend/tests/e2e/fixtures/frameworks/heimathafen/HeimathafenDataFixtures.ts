@@ -284,7 +284,7 @@ export function generateHeimathafenData(nullProbability = DEFAULT_PROBABILITY): 
           dataGenerator.randomParagraphs(),
         umweltbewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken: dataGenerator.randomParagraphs(),
         risikenFuerDieOekologischeNachhaltigkeitAbsichern: dataGenerator.randomParagraphs(),
-        quelle: dataGenerator.valueOrNull(
+        quellen: dataGenerator.valueOrNull(
           generateArray(() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0),
         ),
         vierAugenPruefung: dataGenerator.randomYesNo(),

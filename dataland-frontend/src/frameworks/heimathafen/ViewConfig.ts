@@ -2,12 +2,12 @@
 import { type HeimathafenData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
-import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireListOfBaseDataPointGetterFactory";
-import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
-import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 import { formatFreeTextForDatatable } from "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory";
+import { formatListOfBaseDataPoint } from "@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireListOfBaseDataPointGetterFactory";
+import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
+import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
+import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
+import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 import { formatNaceCodesForDatatable } from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
   {
@@ -18,7 +18,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
     children: [
       {
         type: "section",
-        label: "Datenanbieter",
+        label: "Unternehmen",
         expandOnPageLoad: true,
         shouldDisplay: (): boolean => true,
         children: [
@@ -29,16 +29,16 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Bitte geben Sie eine kurze Auskunft über die Besitzverhältnisse und Eigentümerstruktur des Unternehmens.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.datenanbieter?.unternehmenseigentumUndEigentuemerstruktur),
+              formatFreeTextForDatatable(dataset.general?.unternehmen?.unternehmenseigentumUndEigentuemerstruktur),
           },
           {
             type: "cell",
             label: "Kernkompetenzen und Geschäftsbereiche",
-            explanation: "Bitte beschreiben Sie kurz Ihre Kernkompetenzen und Geschäftsfelder",
+            explanation: "Bitte wählen Sie Ihre Kernkompetenzen und Geschäftsfelder",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatNaceCodesForDatatable(
-                dataset.general?.datenanbieter?.kernkompetenzenUndGeschaeftsbereiche,
+                dataset.general?.unternehmen?.kernkompetenzenUndGeschaeftsbereiche,
                 "Kernkompetenzen und Gesch\u00E4ftsbereiche",
               ),
           },
@@ -49,7 +49,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie viele Mitarbeiter in Ihrem Unternehmen sind für den ESG-Bereich in Ihrem Unternehmen verantwortlich",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.general?.datenanbieter?.anzahlDerFuerEsgZustaendigenMitarbeiter, ""),
+              formatNumberForDatatable(dataset.general?.unternehmen?.anzahlDerFuerEsgZustaendigenMitarbeiter, ""),
           },
         ],
       },
@@ -66,7 +66,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Bitte führen Sie Ihr Verständnis von Nachhaltigkeit im Rahmen der Bewertung aus.\nBitte machen Sie Angaben zu den Komponenten, die Sie bei der Bewertung des Grades der Nachhaltigkeit von Unternehmen berücksichtigen.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.verstaendnisVonNachhaltigkeitAlsTeilDerBewertung),
+              formatFreeTextForDatatable(dataset.general?.methodik?.verstaendnisVonNachhaltigkeitAlsTeilDerBewertung),
           },
           {
             type: "cell",
@@ -74,7 +74,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "Welche Kriterien legen Sie für Ihre Nachhaltigkeitsratings zugrunde?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.kriterienFuerIhreNachhaltigkeitsratings),
+              formatFreeTextForDatatable(dataset.general?.methodik?.kriterienFuerIhreNachhaltigkeitsratings),
           },
           {
             type: "cell",
@@ -83,7 +83,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Bitte beschreiben Sie uns das Vorgehen zur Erstellung Ihrer Analysen, bzw. die zugrunde liegende Methodik.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.verfahrenZurVorbereitungDerAnalyseOderMethodik),
+              formatFreeTextForDatatable(dataset.general?.methodik?.verfahrenZurVorbereitungDerAnalyseOderMethodik),
           },
           {
             type: "cell",
@@ -91,25 +91,25 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "Wie ist Ihre Ratingskala definiert?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.definitionBewertungsskala),
+              formatFreeTextForDatatable(dataset.general?.methodik?.definitionBewertungsskala),
           },
           {
             type: "cell",
-            label: "Bewertung aktuell",
+            label: "Aktualität der Ratings",
             explanation:
               "Wie stellen Sie die Aktualität ihrer Ratings sicher? Wie häufig/in welchen Zeitabständen werden Updates zur Verfügung gestellt?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.bewertungAktuell),
+              formatFreeTextForDatatable(dataset.general?.methodik?.aktualitaetDerRatings),
           },
           {
             type: "cell",
             label: "Unabhängigkeit der Ratings",
             explanation:
-              "Erfolgen Ihre Ratings unabhängig (von Kunden, Kooperationspartnern, Unternehmen, etc.)\nWelche Parteien können aktiv Einfluss auf die Gestaltung des Ratings nehmen?",
+              "Erfolgen Ihre Ratings unabhängig (von Kunden, Kooperationspartnern, Unternehmen, etc.)?\nWelche Parteien können aktiv Einfluss auf die Gestaltung des Ratings nehmen?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.unabhaengigkeitDerRatings),
+              formatFreeTextForDatatable(dataset.general?.methodik?.unabhaengigkeitDerRatings),
           },
           {
             type: "cell",
@@ -118,27 +118,27 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie erfolgt die Datenerhebung?\nHier sollten Angaben zur Vorgehensweise bei der Datenerhebung gemacht werden, z.B. mithilfe eines Fragebogens, Interviews, etc.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.datenerfassung),
+              formatFreeTextForDatatable(dataset.general?.methodik?.datenerfassung),
           },
           {
             type: "cell",
-            label: "Die Methodik umfasst Umwelt, Soziales und Governance",
+            label: "Methodik umfasst Umwelt, Soziales und Governance",
             explanation:
               "Deckt die Methodik die Bereiche Umwelt, Soziales und Governance ab?\nHier sollte darauf eingangen werden, ob die Methodik alle drei Bereiche abdeckt oder ein Fokus auf bestimmte Themenbereiche vorliegt.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.general?.methodik?.dieMethodikUmfasstUmweltSozialesUndGovernance),
+              formatFreeTextForDatatable(dataset.general?.methodik?.methodikUmfasstUmweltSozialesUndGovernance),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden für die Datenerhebung verwendet?\nAngabe von Quellen für die Datenerhebung, zum Beispiel Nachhaltigkeitsberichte von Unternehmen, Daten von NGOs etc.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
-                "Datenquelle",
-                dataset.general?.methodik?.datenquelle,
+                "Datenquellen",
+                dataset.general?.methodik?.datenquellen,
                 "Description",
                 "Document",
               );
@@ -151,7 +151,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie werden die erhobenen Daten plausibilisiert?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten (z.B. numerische Daten werden verlangt und Text wurde eingetragen)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.datenPlausibilitaetspruefung),
+              formatFreeTextForDatatable(dataset.general?.methodik?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
@@ -169,16 +169,16 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie wird die Reliabilität der Methodik sichergestellt?\nBei einer Methodik muss sichergestellt werden, dass mehrere Anwender zum selben Ergebnis kommen. Angaben dazu, wie das gewährleistet wird.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.zuverlaessigkeitDerMethodikSicherstellen),
+              formatFreeTextForDatatable(dataset.general?.methodik?.zuverlaessigkeitDerMethodikSicherstellen),
           },
           {
             type: "cell",
-            label: "Minimieren oder verhindern Sie subjektive Faktoren",
+            label: "Minimierung oder Verhinderung subjektiver Faktoren",
             explanation:
               "Wie werden subjektive Einflussfaktoren minimiert bzw. verhindert?\nSubjektive Einschätzungen spielen im Rating Markt eine große Rolle, Angaben dazu, wie Subjektivität reduziert wird. (z.B. durch Vier-Augen Prinzip, automatische Prozesse)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.minimierenOderVerhindernSieSubjektiveFaktoren),
+              formatFreeTextForDatatable(dataset.general?.methodik?.minimierungOderVerhinderungSubjektiverFaktoren),
           },
           {
             type: "cell",
@@ -187,7 +187,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Bitte führen Sie mögliche Interessenskonflikte auf.\nKurze Beschreibung möglicher entstehender Interessenskonflikte bei der Bewertung eines Unternehmens.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.listePotenziellerInteressenkonflikte),
+              formatFreeTextForDatatable(dataset.general?.methodik?.listePotenziellerInteressenkonflikte),
           },
           {
             type: "cell",
@@ -196,7 +196,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie wird Interessenskonflikten entgegengewirkt?\nWenn der Erheber der Daten zugleich der Nutzer der Daten ist, kann es zu Interessenskonflikten kommen. Beschreibung der Prozesse, um dem entgegenzuwirken (z.B. Maßnahmen zur Erhöhung der Transparenz, Erfüllung bestimmter Vorgaben, Vier-Augen Prinzip)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.interessenkonfliktenEntgegenwirken),
+              formatFreeTextForDatatable(dataset.general?.methodik?.interessenkonfliktenEntgegenwirken),
           },
           {
             type: "cell",
@@ -205,7 +205,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie wird die Dokumentation der erhobenen Daten und der Prozesse sichergestellt?\nAngabe des Dokumentationsortes von Daten und Prozessen und Ausführung der Art und Weise der Dokumentation. Angabe von Maßnahmen zur Unveränderlichkeit von Informationen.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.methodik?.dokumentationDerDatenerfassungUndSicherstellungDesProzesses,
               ),
           },
@@ -215,7 +215,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "Welche Qualitätsstandards liegen Ihrem Rating zugrunde?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.bewertungVonQualitaetsstandards),
+              formatFreeTextForDatatable(dataset.general?.methodik?.bewertungVonQualitaetsstandards),
           },
           {
             type: "cell",
@@ -223,7 +223,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "Welche Transparenzstandards liegen Ihrem Rating zugrunde?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.ratingTransparenzstandards),
+              formatFreeTextForDatatable(dataset.general?.methodik?.ratingTransparenzstandards),
           },
           {
             type: "cell",
@@ -240,7 +240,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.methodik?.qualitaetssicherungsprozess == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.fallsNeinGebenSieBitteDieGruendeAn),
+              formatFreeTextForDatatable(dataset.general?.methodik?.fallsNeinGebenSieBitteDieGruendeAn),
           },
           {
             type: "cell",
@@ -250,7 +250,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.methodik?.qualitaetssicherungsprozess == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.strukturDesQualitaetssicherungsprozesses),
+              formatFreeTextForDatatable(dataset.general?.methodik?.strukturDesQualitaetssicherungsprozesses),
           },
           {
             type: "cell",
@@ -260,7 +260,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.methodik?.qualitaetssicherungsprozess == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.dieAktualitaetDerMethodik),
+              formatFreeTextForDatatable(dataset.general?.methodik?.dieAktualitaetDerMethodik),
           },
           {
             type: "cell",
@@ -277,7 +277,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.methodik?.paisInDieAnalyseEinbezogen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.listeDerEingeschlossenenPais),
+              formatFreeTextForDatatable(dataset.general?.methodik?.listeDerEingeschlossenenPais),
           },
           {
             type: "cell",
@@ -285,8 +285,14 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "Welche Quellen werden für die Erhebung der PAIs verwendet?",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.methodik?.paisInDieAnalyseEinbezogen == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.quelleDerPaiSammlung),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Quelle der PAI-Sammlung",
+                dataset.general?.methodik?.quelleDerPaiSammlung,
+                "Description",
+                "Document",
+              );
+            },
           },
           {
             type: "cell",
@@ -295,7 +301,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.methodik?.paisInDieAnalyseEinbezogen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.umgangMitAusreissern),
+              formatFreeTextForDatatable(dataset.general?.methodik?.umgangMitAusreissern),
           },
           {
             type: "cell",
@@ -303,7 +309,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "Wie werden kontroverse Geschäftsfelder identifiziert?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.identifizierungVonKontroversenGeschaeften),
+              formatFreeTextForDatatable(dataset.general?.methodik?.identifizierungVonKontroversenGeschaeften),
           },
           {
             type: "cell",
@@ -311,15 +317,21 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "Wie wird die Aktualität der Kontroversen gewährleistet?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.aktuelleKontroversen),
+              formatFreeTextForDatatable(dataset.general?.methodik?.aktuelleKontroversen),
           },
           {
             type: "cell",
             label: "Kontroversen um die Quellenerfassung",
             explanation: "Welche Quellen werden zur Erfassung von Kontroversen genutzt?",
             shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.methodik?.kontroversenUmDieQuellenerfassung),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Kontroversen um die Quellenerfassung",
+                dataset.general?.methodik?.kontroversenUmDieQuellenerfassung,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -344,7 +356,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleKeineArmut?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleKeineArmut?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -354,7 +366,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleKeineArmut?.verwendeteSchluesselzahlen),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleKeineArmut?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
@@ -364,7 +376,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleKeineArmut?.datenerfassung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleKeineArmut?.datenerfassung),
           },
           {
             type: "cell",
@@ -374,17 +386,23 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleKeineArmut?.datenPlausibilitaetspruefung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleKeineArmut?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleKeineArmut?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleKeineArmut?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -419,7 +437,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleKeinHunger?.verwendeteSchluesselzahlen),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleKeinHunger?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
@@ -429,7 +447,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleKeinHunger?.datenerfassung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleKeinHunger?.datenerfassung),
           },
           {
             type: "cell",
@@ -439,17 +457,23 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleKeinHunger?.datenPlausibilitaetspruefung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleKeinHunger?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleKeinHunger?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleKeinHunger?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -476,7 +500,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.wennNeinBitteBegruenden,
               ),
           },
@@ -488,7 +512,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.verwendeteSchluesselzahlen,
               ),
           },
@@ -500,7 +524,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.datenerfassung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.datenerfassung),
           },
           {
             type: "cell",
@@ -510,19 +534,25 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.datenPlausibilitaetspruefung,
               ),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -547,7 +577,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleHochwertigeBildung?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleHochwertigeBildung?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -557,7 +587,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleHochwertigeBildung?.verwendeteSchluesselzahlen),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleHochwertigeBildung?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
@@ -567,7 +597,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleHochwertigeBildung?.datenerfassung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleHochwertigeBildung?.datenerfassung),
           },
           {
             type: "cell",
@@ -577,17 +607,25 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleHochwertigeBildung?.datenPlausibilitaetspruefung),
+              formatFreeTextForDatatable(
+                dataset.general?.impactmerkmaleHochwertigeBildung?.datenPlausibilitaetspruefung,
+              ),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleHochwertigeBildung?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleHochwertigeBildung?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -614,7 +652,9 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleGeschlechtergleichheit?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(
+                dataset.general?.impactmerkmaleGeschlechtergleichheit?.wennNeinBitteBegruenden,
+              ),
           },
           {
             type: "cell",
@@ -624,7 +664,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleGeschlechtergleichheit?.verwendeteSchluesselzahlen,
               ),
           },
@@ -636,7 +676,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleGeschlechtergleichheit?.datenerfassung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleGeschlechtergleichheit?.datenerfassung),
           },
           {
             type: "cell",
@@ -646,19 +686,25 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleGeschlechtergleichheit?.datenPlausibilitaetspruefung,
               ),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleGeschlechtergleichheit?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleGeschlechtergleichheit?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -688,7 +734,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
                 ?.sdgSauberesWasserUndSanitaereEinrichtungen == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen?.wennNeinBitteBegruenden,
               ),
           },
@@ -701,7 +747,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
                 ?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen?.verwendeteSchluesselzahlen,
               ),
           },
@@ -714,7 +760,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
                 ?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen?.datenerfassung,
               ),
           },
@@ -727,22 +773,26 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
                 ?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen?.datenPlausibilitaetspruefung,
               ),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
                 ?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen?.datenquelle,
-              ),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -769,7 +819,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.wennNeinBitteBegruenden,
               ),
           },
@@ -781,7 +831,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.verwendeteSchluesselzahlen,
               ),
           },
@@ -793,7 +843,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.datenerfassung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.datenerfassung),
           },
           {
             type: "cell",
@@ -803,19 +853,25 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.datenPlausibilitaetspruefung,
               ),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -845,7 +901,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
                 ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum?.wennNeinBitteBegruenden,
               ),
           },
@@ -858,7 +914,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
                 ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum?.verwendeteSchluesselzahlen,
               ),
           },
@@ -871,7 +927,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
                 ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum?.datenerfassung,
               ),
           },
@@ -884,23 +940,27 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
                 ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
                   ?.datenPlausibilitaetspruefung,
               ),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
                 ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum?.datenquelle,
-              ),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -930,7 +990,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
                 ?.sdgIndustrieInnovationUndInfrastruktur == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur?.wennNeinBitteBegruenden,
               ),
           },
@@ -943,7 +1003,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
                 ?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur?.verwendeteSchluesselzahlen,
               ),
           },
@@ -956,7 +1016,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
                 ?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur?.datenerfassung,
               ),
           },
@@ -969,20 +1029,26 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
                 ?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur?.datenPlausibilitaetspruefung,
               ),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
                 ?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -1009,7 +1075,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleWenigerUngleichheiten?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleWenigerUngleichheiten?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -1019,7 +1085,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleWenigerUngleichheiten?.verwendeteSchluesselzahlen,
               ),
           },
@@ -1031,7 +1097,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleWenigerUngleichheiten?.datenerfassung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleWenigerUngleichheiten?.datenerfassung),
           },
           {
             type: "cell",
@@ -1041,19 +1107,25 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleWenigerUngleichheiten?.datenPlausibilitaetspruefung,
               ),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleWenigerUngleichheiten?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleWenigerUngleichheiten?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -1081,7 +1153,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.wennNeinBitteBegruenden,
               ),
           },
@@ -1093,7 +1165,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.verwendeteSchluesselzahlen,
               ),
           },
@@ -1105,7 +1177,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.datenerfassung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.datenerfassung),
           },
           {
             type: "cell",
@@ -1115,19 +1187,25 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.datenPlausibilitaetspruefung,
               ),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -1155,7 +1233,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.wennNeinBitteBegruenden,
               ),
           },
@@ -1168,7 +1246,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion ==
               "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.verwendeteSchluesselzahlen,
               ),
           },
@@ -1181,7 +1259,9 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion ==
               "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.datenerfassung),
+              formatFreeTextForDatatable(
+                dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.datenerfassung,
+              ),
           },
           {
             type: "cell",
@@ -1192,20 +1272,26 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion ==
               "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.datenPlausibilitaetspruefung,
               ),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion ==
               "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -1232,7 +1318,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.wennNeinBitteBegruenden,
               ),
           },
@@ -1244,7 +1330,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.verwendeteSchluesselzahlen,
               ),
           },
@@ -1256,7 +1342,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.datenerfassung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.datenerfassung),
           },
           {
             type: "cell",
@@ -1266,19 +1352,25 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.datenPlausibilitaetspruefung,
               ),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -1303,7 +1395,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -1313,7 +1405,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.verwendeteSchluesselzahlen),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
@@ -1323,7 +1415,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.datenerfassung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.datenerfassung),
           },
           {
             type: "cell",
@@ -1333,17 +1425,23 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.datenPlausibilitaetspruefung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleLebenUnterWasser?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleLebenUnterWasser?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -1368,7 +1466,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -1378,7 +1476,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.verwendeteSchluesselzahlen),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
@@ -1388,7 +1486,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.datenerfassung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.datenerfassung),
           },
           {
             type: "cell",
@@ -1398,17 +1496,23 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.datenPlausibilitaetspruefung),
+              formatFreeTextForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.impactmerkmaleLebenAndLand?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleLebenAndLand?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -1438,7 +1542,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
                 ?.sdgFriedenGerechtigkeitUndStarkeInstitutionen == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen?.wennNeinBitteBegruenden,
               ),
           },
@@ -1451,7 +1555,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
                 ?.sdgFriedenGerechtigkeitUndStarkeInstitutionen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen?.verwendeteSchluesselzahlen,
               ),
           },
@@ -1464,7 +1568,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
                 ?.sdgFriedenGerechtigkeitUndStarkeInstitutionen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen?.datenerfassung,
               ),
           },
@@ -1477,22 +1581,26 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
                 ?.sdgFriedenGerechtigkeitUndStarkeInstitutionen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen?.datenPlausibilitaetspruefung,
               ),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
                 ?.sdgFriedenGerechtigkeitUndStarkeInstitutionen == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen?.datenquelle,
-              ),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -1522,7 +1630,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
                 ?.sdgPartnerschaftenZurErreichungDerZiele == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele?.wennNeinBitteBegruenden,
               ),
           },
@@ -1535,7 +1643,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
                 ?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele?.verwendeteSchluesselzahlen,
               ),
           },
@@ -1548,7 +1656,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
                 ?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele?.datenerfassung,
               ),
           },
@@ -1561,22 +1669,26 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
                 ?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele?.datenPlausibilitaetspruefung,
               ),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
                 ?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
-                dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele?.datenquelle,
-              ),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -1592,7 +1704,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "In welchen Sprachen wird das Produkt/Tool/System angeboten?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.implementierung?.angeboteneSprachen),
+              formatFreeTextForDatatable(dataset.general?.implementierung?.angeboteneSprachen),
           },
           {
             type: "cell",
@@ -1600,7 +1712,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "Welche Arten von Dokumentationen stellen Sie in welcher Form zur Verfügung?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.implementierung?.bereitgestellteDokumentationsarten),
+              formatFreeTextForDatatable(dataset.general?.implementierung?.bereitgestellteDokumentationsarten),
           },
           {
             type: "cell",
@@ -1634,7 +1746,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Geben Sie bitte eine kurze Beschreibung Ihrer Systemarchitektur (Datenbank, CPU, Prozessoren, Schnittstellen, Server etc.) bei ASP Betrieb an.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.implementierung?.beschreibungDerSystemarchitektur),
+              formatFreeTextForDatatable(dataset.general?.implementierung?.beschreibungDerSystemarchitektur),
           },
           {
             type: "cell",
@@ -1658,7 +1770,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "Wie wird das Backup der Server durchgeführt?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.implementierung?.serverBackup),
+              formatFreeTextForDatatable(dataset.general?.implementierung?.serverBackup),
           },
           {
             type: "cell",
@@ -1714,7 +1826,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "Bitte beschreiben Sie den Aufbau und die Struktur der Datenbank(en).",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.general?.implementierung?.beschreibungDesDesignsUndDerStrukturDerDatenbankEn,
               ),
           },
@@ -1789,7 +1901,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "Welche Funktionen stellt das System zur Übernahme der Datenhistorien zur Verfügung?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.implementierung?.uebertragenVonDatenhistorien),
+              formatFreeTextForDatatable(dataset.general?.implementierung?.uebertragenVonDatenhistorien),
           },
           {
             type: "cell",
@@ -1839,7 +1951,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wieviele Ressourcen stehen ab wann und mit welcher Kapazität zur Umsetzung des Projekts zur Verfügung (Support, Entwicklung, Beratung)?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.general?.implementierung?.anzahlDerVerfuegbarenRessourcen, ""),
+              formatFreeTextForDatatable(dataset.general?.implementierung?.anzahlDerVerfuegbarenRessourcen),
           },
           {
             type: "cell",
@@ -1848,7 +1960,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie und mit wievielen Mitarbeitern können Sie einen Kunden in den ersten sechs Monaten nach Einführung unterstützen?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.general?.implementierung?.kundenbetreuung),
+              formatNumberForDatatable(dataset.general?.implementierung?.kundenbetreuung, ""),
           },
         ],
       },
@@ -1870,7 +1982,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Methodik für ökologische Nachhaltigkeitsrisiken",
             explanation:
-              "Werden Nachhaltigkeitsrisiken bezogen auf den Bereich Umwelt in der Methodik abgebildet?\nNachhaltigkeitsrisiken können einen wesentlichen negativen Einfluss auf die Performance eines Unternehmens haben. Angaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Umwelt in der Methodik abgebildet werden.",
+              "Werden Nachhaltigkeitsrisiken bezogen auf den Bereich Umwelt in der Methodik abgebildet?\nNachhaltigkeitsrisiken können einen wesentlichen negativen Einfluss auf die Performance eines Unternehmens haben.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
@@ -1884,7 +1996,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.nachhaltigskeitsrisiken?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.environmental?.nachhaltigskeitsrisiken?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -1894,7 +2006,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.environmental?.nachhaltigskeitsrisiken?.kartierteRisikenFuerDieOekologischeNachhaltigkeit,
               ),
           },
@@ -1907,7 +2019,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.environmental?.nachhaltigskeitsrisiken
                   ?.identifizierungDerWesentlichenRisikenFuerDieOekologischeNachhaltigkeitUndDerKonstruktionsmethodik,
               ),
@@ -1920,7 +2032,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.environmental?.nachhaltigskeitsrisiken
                   ?.umweltbewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken,
               ),
@@ -1932,21 +2044,21 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.environmental?.nachhaltigskeitsrisiken?.risikenFuerDieOekologischeNachhaltigkeitAbsichern,
               ),
           },
           {
             type: "cell",
-            label: "Quelle",
+            label: "Quellen",
             explanation:
               "Welche Quellen werden für die Erfassung von Nachhaltigkeitsrisiken im Bereich Umwelt verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
               return formatListOfBaseDataPoint(
-                "Quelle",
-                dataset.environmental?.nachhaltigskeitsrisiken?.quelle,
+                "Quellen",
+                dataset.environmental?.nachhaltigskeitsrisiken?.quellen,
                 "Description",
                 "Document",
               );
@@ -1967,7 +2079,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.vierAugenPruefung == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.environmental?.nachhaltigskeitsrisiken?.wennKeineVierAugenPruefungBitteBegruenden,
               ),
           },
@@ -1978,7 +2090,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.vierAugenPruefung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.environmental?.nachhaltigskeitsrisiken?.beschreibungDerVierAugenPruefung,
               ),
           },
@@ -2006,7 +2118,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.environmental?.pais?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -2015,7 +2127,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.wennJaBitteDiePaisAuflisten),
+              formatFreeTextForDatatable(dataset.environmental?.pais?.wennJaBitteDiePaisAuflisten),
           },
           {
             type: "cell",
@@ -2025,7 +2137,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.verwendeteSchluesselzahlen),
+              formatFreeTextForDatatable(dataset.environmental?.pais?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
@@ -2035,7 +2147,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenerfassung),
+              formatFreeTextForDatatable(dataset.environmental?.pais?.datenerfassung),
           },
           {
             type: "cell",
@@ -2045,17 +2157,23 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenPlausibilitaetspruefung),
+              formatFreeTextForDatatable(dataset.environmental?.pais?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.pais?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.environmental?.pais?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -2080,7 +2198,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiBiologischeVielfalt?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.environmental?.paiBiologischeVielfalt?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -2090,7 +2208,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiBiologischeVielfalt?.verwendeteSchluesselzahlen),
+              formatFreeTextForDatatable(dataset.environmental?.paiBiologischeVielfalt?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
@@ -2100,7 +2218,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiBiologischeVielfalt?.datenerfassung),
+              formatFreeTextForDatatable(dataset.environmental?.paiBiologischeVielfalt?.datenerfassung),
           },
           {
             type: "cell",
@@ -2110,17 +2228,23 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiBiologischeVielfalt?.datenPlausibilitaetspruefung),
+              formatFreeTextForDatatable(dataset.environmental?.paiBiologischeVielfalt?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiBiologischeVielfalt?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.environmental?.paiBiologischeVielfalt?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -2144,7 +2268,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
 
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiWasser?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.environmental?.paiWasser?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -2153,7 +2277,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiWasser?.verwendeteSchluesselzahlen),
+              formatFreeTextForDatatable(dataset.environmental?.paiWasser?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
@@ -2162,7 +2286,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiWasser?.datenerfassung),
+              formatFreeTextForDatatable(dataset.environmental?.paiWasser?.datenerfassung),
           },
           {
             type: "cell",
@@ -2171,16 +2295,22 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiWasser?.datenPlausibilitaetspruefung),
+              formatFreeTextForDatatable(dataset.environmental?.paiWasser?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews, Daten von NGOs etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiWasser?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.environmental?.paiWasser?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -2204,7 +2334,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
 
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiAbfall?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.environmental?.paiAbfall?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -2213,7 +2343,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung des PAIs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiAbfall?.verwendeteSchluesselzahlen),
+              formatFreeTextForDatatable(dataset.environmental?.paiAbfall?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
@@ -2222,7 +2352,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiAbfall?.datenerfassung),
+              formatFreeTextForDatatable(dataset.environmental?.paiAbfall?.datenerfassung),
           },
           {
             type: "cell",
@@ -2231,16 +2361,22 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiAbfall?.datenPlausibilitaetspruefung),
+              formatFreeTextForDatatable(dataset.environmental?.paiAbfall?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärung, Daten von NGOs etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiAbfall?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.environmental?.paiAbfall?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -2265,7 +2401,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiUmweltAufDemLand?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.environmental?.paiUmweltAufDemLand?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -2275,7 +2411,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiUmweltAufDemLand?.verwendeteSchluesselzahlen),
+              formatFreeTextForDatatable(dataset.environmental?.paiUmweltAufDemLand?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
@@ -2285,7 +2421,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiUmweltAufDemLand?.datenerfassung),
+              formatFreeTextForDatatable(dataset.environmental?.paiUmweltAufDemLand?.datenerfassung),
           },
           {
             type: "cell",
@@ -2295,17 +2431,23 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiUmweltAufDemLand?.datenPlausibilitaetspruefung),
+              formatFreeTextForDatatable(dataset.environmental?.paiUmweltAufDemLand?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Umweltbundesamt)",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Umweltbundesamt.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.environmental?.paiUmweltAufDemLand?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.environmental?.paiUmweltAufDemLand?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -2322,7 +2464,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie erfolgt die Abbildung eines wesentlichen Beitrages zu einem Umweltziel?\nAngaben darüber ob mit der Methodik ein wesentlicher Beitrag zu einem Umweltziel gemessen werden kann und wenn ja, zu welchem und wie.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.environmental?.sfdr?.methodikZurMessungEinesSignifikantenBeitragsZuEinemUmweltziel,
               ),
           },
@@ -2351,7 +2493,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.ausschlussDerTabakerzeugung == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.wennNeinBitteBegruenden,
               ),
           },
@@ -2363,7 +2505,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.ausschlussDerTabakerzeugung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.verwendeteKennzahl,
               ),
           },
@@ -2375,7 +2517,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.ausschlussDerTabakerzeugung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.methodikDerBerechnung,
               ),
           },
@@ -2386,10 +2528,14 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.ausschlussDerTabakerzeugung == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Verwendete Quellen",
                 dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.verwendeteQuellen,
-              ),
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -2419,7 +2565,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung
                 ?.ausschlussDerKohlefoerderungUndVerteilung == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung?.wennNeinBitteBegruenden,
               ),
           },
@@ -2432,7 +2578,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung
                 ?.ausschlussDerKohlefoerderungUndVerteilung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung?.verwendeteKennzahl,
               ),
           },
@@ -2444,7 +2590,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung
                 ?.ausschlussDerKohlefoerderungUndVerteilung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung?.methodikDerBerechnung,
               ),
           },
@@ -2456,10 +2602,14 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung
                 ?.ausschlussDerKohlefoerderungUndVerteilung == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Verwendete Quellen",
                 dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung?.verwendeteQuellen,
-              ),
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -2481,7 +2631,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             type: "cell",
             label: "Methodik Soziale Nachhaltigkeitsrisiken",
             explanation:
-              "Werden Nachhaltigkeitsrisiken bezogen auf den Bereich Soziales in der Methodik abgebildet?\nNachhaltigkeitsrisiken können einen wesentlichen negativen Einfluss auf die Performance eines Unternehmens haben. Angaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Soziales in der Methodik abgebildet werden.",
+              "Werden Nachhaltigkeitsrisiken bezogen auf den Bereich Soziales in der Methodik abgebildet?\nNachhaltigkeitsrisiken können einen wesentlichen negativen Einfluss auf die Performance eines Unternehmens haben.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(
@@ -2495,7 +2645,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.nachhaltigskeitsrisiken?.methodikSozialeNachhaltigkeitsrisiken == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.nachhaltigskeitsrisiken?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.social?.nachhaltigskeitsrisiken?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -2505,7 +2655,9 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.nachhaltigskeitsrisiken?.methodikSozialeNachhaltigkeitsrisiken == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.nachhaltigskeitsrisiken?.kartierteSozialeNachhaltigkeitsrisiken),
+              formatFreeTextForDatatable(
+                dataset.social?.nachhaltigskeitsrisiken?.kartierteSozialeNachhaltigkeitsrisiken,
+              ),
           },
           {
             type: "cell",
@@ -2515,7 +2667,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.nachhaltigskeitsrisiken?.methodikSozialeNachhaltigkeitsrisiken == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.social?.nachhaltigskeitsrisiken
                   ?.identifizierungWesentlicherSozialerNachhaltigkeitsrisikenUndKonstruktionsmethodik,
               ),
@@ -2527,7 +2679,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie werden Nachhaltigkeitsrisiken in der Bewertung bezogen auf den Bereich Soziales berücksichtigt?\nAngaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Soziales in die Erstellung des Ratings miteinbezogen werden und wenn ja wie.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.social?.nachhaltigskeitsrisiken
                   ?.sozialeBewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken,
               ),
@@ -2538,7 +2690,9 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation: "Wie wird die Überwachung von Nachhaltigkeitsrisiken im Bereich Soziales sichergestellt?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.nachhaltigskeitsrisiken?.sozialeNachhaltigkeitsrisikenAbsichern),
+              formatFreeTextForDatatable(
+                dataset.social?.nachhaltigskeitsrisiken?.sozialeNachhaltigkeitsrisikenAbsichern,
+              ),
           },
           {
             type: "cell",
@@ -2546,8 +2700,14 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             explanation:
               "Welche Quellen werden für die Erfassung von Nachhaltigkeitsrisiken im Bereich Soziales verwendet?\nAngabe von Quellen, zum Beispiel Nachhaltigkeitsberichte, ethische Richtlinien, etc.)",
             shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.nachhaltigskeitsrisiken?.quelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Quelle",
+                dataset.social?.nachhaltigskeitsrisiken?.quelle,
+                "Description",
+                "Document",
+              );
+            },
           },
           {
             type: "cell",
@@ -2564,7 +2724,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.nachhaltigskeitsrisiken?.vierAugenPruefung == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.social?.nachhaltigskeitsrisiken?.wennKeineVierAugenPruefungBitteBegruenden,
               ),
           },
@@ -2575,7 +2735,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.nachhaltigskeitsrisiken?.vierAugenPruefung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.nachhaltigskeitsrisiken?.beschreibungDerVierAugenPruefung),
+              formatFreeTextForDatatable(dataset.social?.nachhaltigskeitsrisiken?.beschreibungDerVierAugenPruefung),
           },
         ],
       },
@@ -2600,7 +2760,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
 
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.paiSozial?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.social?.paiSozial?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -2609,7 +2769,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werden.",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.paiSozial?.verwendeteSchluesselzahlen),
+              formatFreeTextForDatatable(dataset.social?.paiSozial?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
@@ -2618,7 +2778,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.paiSozial?.datenerfassung),
+              formatFreeTextForDatatable(dataset.social?.paiSozial?.datenerfassung),
           },
           {
             type: "cell",
@@ -2627,16 +2787,22 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.paiSozial?.datenPlausibilitaetspruefung),
+              formatFreeTextForDatatable(dataset.social?.paiSozial?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, Gender Pay Report etc.",
             shouldDisplay: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.paiSozial?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.social?.paiSozial?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -2661,7 +2827,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.paiSozialesAufDemLand?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.social?.paiSozialesAufDemLand?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -2671,7 +2837,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.paiSozialesAufDemLand?.verwendeteSchluesselzahlen),
+              formatFreeTextForDatatable(dataset.social?.paiSozialesAufDemLand?.verwendeteSchluesselzahlen),
           },
           {
             type: "cell",
@@ -2681,7 +2847,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.paiSozialesAufDemLand?.datenerfassung),
+              formatFreeTextForDatatable(dataset.social?.paiSozialesAufDemLand?.datenerfassung),
           },
           {
             type: "cell",
@@ -2691,17 +2857,23 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.paiSozialesAufDemLand?.datenPlausibilitaetspruefung),
+              formatFreeTextForDatatable(dataset.social?.paiSozialesAufDemLand?.datenPlausibilitaetspruefung),
           },
           {
             type: "cell",
-            label: "Datenquelle",
+            label: "Datenquellen",
             explanation:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Freedom House Index",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.paiSozialesAufDemLand?.datenquelle),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Datenquellen",
+                dataset.social?.paiSozialesAufDemLand?.datenquellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -2718,7 +2890,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Wie erfolgt die Abbildung eines wesentlichen Beitrages zu einem sozialen Ziel?\nAngaben darüber ob mit der Methodik ein wesentlicher Beitrag zu einem sozialen Ziel gemessen werden kann und wenn ja, wie.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.social?.sfdr?.methodikZurMessungDesSignifikantenBeitragsZuEinemGesellschaftlichenZiel,
               ),
           },
@@ -2748,7 +2920,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelderWaffen?.herstellungOderVertriebVonWaffenAusschluss == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.kontroverseGeschaeftsfelderWaffen?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.social?.kontroverseGeschaeftsfelderWaffen?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -2758,7 +2930,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelderWaffen?.herstellungOderVertriebVonWaffenAusschluss == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.social?.kontroverseGeschaeftsfelderWaffen?.verwendeteKennzahlFuerDieUmsatzmessung,
               ),
           },
@@ -2769,7 +2941,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelderWaffen?.herstellungOderVertriebVonWaffenAusschluss == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.kontroverseGeschaeftsfelderWaffen?.methodikDerBerechnung),
+              formatFreeTextForDatatable(dataset.social?.kontroverseGeschaeftsfelderWaffen?.methodikDerBerechnung),
           },
           {
             type: "cell",
@@ -2778,8 +2950,14 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelderWaffen?.herstellungOderVertriebVonWaffenAusschluss == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.kontroverseGeschaeftsfelderWaffen?.verwendeteQuellen),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Verwendete Quellen",
+                dataset.social?.kontroverseGeschaeftsfelderWaffen?.verwendeteQuellen,
+                "Description",
+                "Document",
+              );
+            },
           },
           {
             type: "cell",
@@ -2798,7 +2976,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelderWaffen?.ausschlussVerbotenerWaffen == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.social?.kontroverseGeschaeftsfelderWaffen?.wennAuschlussNichtMoeglichBitteBegruenden,
               ),
           },
@@ -2810,7 +2988,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelderWaffen?.ausschlussVerbotenerWaffen == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.social?.kontroverseGeschaeftsfelderWaffen?.verwendeteKennzahlZurAbbildungGeaechteterWaffen,
               ),
           },
@@ -2829,8 +3007,14 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelderWaffen?.ausschlussVerbotenerWaffen == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.social?.kontroverseGeschaeftsfelder?.verwendeteQuellen),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Verwendete Quellen",
+                dataset.social?.kontroverseGeschaeftsfelder?.verwendeteQuellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -2863,7 +3047,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernance?.methodikDerGutenRegierungsfuehrung == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.goodGovernance?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.governance?.goodGovernance?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -2873,7 +3057,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernance?.methodikDerGutenRegierungsfuehrung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.goodGovernance?.definitionVonGuterRegierungsfuehrung),
+              formatFreeTextForDatatable(dataset.governance?.goodGovernance?.definitionVonGuterRegierungsfuehrung),
           },
           {
             type: "cell",
@@ -2883,7 +3067,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernance?.methodikDerGutenRegierungsfuehrung == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.goodGovernance?.listeDerKpisFuerGuteUnternehmensfuehrung),
+              formatFreeTextForDatatable(dataset.governance?.goodGovernance?.listeDerKpisFuerGuteUnternehmensfuehrung),
           },
           {
             type: "cell",
@@ -2892,8 +3076,14 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel Nachhaltigkeitsberichte, Internetseiten von Unternehmen.",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernance?.methodikDerGutenRegierungsfuehrung == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.goodGovernance?.verwendeteQuellen),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Verwendete Quellen",
+                dataset.governance?.goodGovernance?.verwendeteQuellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -2918,7 +3108,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernanceUngc?.beruecksichtigungDesUngc == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.goodGovernanceUngc?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.governance?.goodGovernanceUngc?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -2928,7 +3118,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernanceUngc?.beruecksichtigungDesUngc == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.goodGovernanceUngc?.beruecksichtigungDerUngcBeschreibung),
+              formatFreeTextForDatatable(dataset.governance?.goodGovernanceUngc?.beruecksichtigungDerUngcBeschreibung),
           },
           {
             type: "cell",
@@ -2937,8 +3127,14 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel UNGC, Nachhaltigkeitsberichte",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernanceUngc?.beruecksichtigungDesUngc == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.goodGovernanceUngc?.verwendeteQuellen),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Verwendete Quellen",
+                dataset.governance?.goodGovernanceUngc?.verwendeteQuellen,
+                "Description",
+                "Document",
+              );
+            },
           },
         ],
       },
@@ -2965,7 +3161,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.bestechungUndKorruption?.kontroversenImBereichDerBestechungUndKorruption == "No",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.bestechungUndKorruption?.wennNeinBitteBegruenden),
+              formatFreeTextForDatatable(dataset.governance?.bestechungUndKorruption?.wennNeinBitteBegruenden),
           },
           {
             type: "cell",
@@ -2975,7 +3171,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.bestechungUndKorruption?.kontroversenImBereichDerBestechungUndKorruption == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.bestechungUndKorruption?.verwendeteMetrikenUndMethodik),
+              formatFreeTextForDatatable(dataset.governance?.bestechungUndKorruption?.verwendeteMetrikenUndMethodik),
           },
           {
             type: "cell",
@@ -2984,8 +3180,14 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
               "Welche Datenquellen werden verwendet?\nAngabe von Quellen, zum Beispiel rennomierte Wirtschafts- und Finanzzeitungen, Glass Lewis",
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.bestechungUndKorruption?.kontroversenImBereichDerBestechungUndKorruption == "Yes",
-            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.governance?.bestechungUndKorruption?.verwendeteQuellen),
+            valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes => {
+              return formatListOfBaseDataPoint(
+                "Verwendete Quellen",
+                dataset.governance?.bestechungUndKorruption?.verwendeteQuellen,
+                "Description",
+                "Document",
+              );
+            },
           },
           {
             type: "cell",
@@ -2995,7 +3197,7 @@ export const heimathafenViewConfiguration: MLDTConfig<HeimathafenData> = [
             shouldDisplay: (dataset: HeimathafenData): boolean =>
               dataset.governance?.bestechungUndKorruption?.kontroversenImBereichDerBestechungUndKorruption == "Yes",
             valueGetter: (dataset: HeimathafenData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(
+              formatFreeTextForDatatable(
                 dataset.governance?.bestechungUndKorruption
                   ?.dieAktualitaetDerKontroversenImBereichBestechungUndKorruption,
               ),

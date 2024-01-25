@@ -8656,7 +8656,7 @@
             "type": "string",
             "nullable": true
           },
-          "quelle": {
+          "quellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -13279,20 +13279,20 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "countryCode": {
             "type": "string"
           },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
-          "headquarters": {
+          "companyId": {
             "type": "string"
           },
           "permId": {

@@ -15,7 +15,7 @@ data class HeimathafenEnvironmentalNachhaltigskeitsrisiken(
     String? = null,
     val umweltbewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken: String? = null,
     val risikenFuerDieOekologischeNachhaltigkeitAbsichern: String? = null,
-    val quelle: List<BaseDataPoint<String>>? = null,
+    val quellen: List<BaseDataPoint<String>>? = null,
     val vierAugenPruefung: YesNo? = null,
     val wennKeineVierAugenPruefungBitteBegruenden: String? = null,
     val beschreibungDerVierAugenPruefung: String? = null,

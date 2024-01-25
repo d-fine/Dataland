@@ -55,7 +55,7 @@ Angaben zur Wesentlichkeitsanalyse bei der Einstufung der Wesentlichkeit eines R
 35,Environmental,Nachhaltigskeitsrisiken,Umweltbewertung unter Berücksichtigung von Nachhaltigkeitsrisiken,"Wie werden Nachhaltigkeitsrisiken in der Bewertung bezogen auf den Bereich Umwelt berücksichtigt?
 Angaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Umwelt in die Erstellung des Ratings miteinbezogen werden und wenn ja wie.",FreeText,,,,32,Yes,
 36,Environmental,Nachhaltigskeitsrisiken,Risiken für die ökologische Nachhaltigkeit absichern,Wie wird die Überwachung von Nachhaltigkeitsrisiken im Bereich Umwelt sichergestellt?,FreeText,,,,32,Yes,
-37,Environmental,Nachhaltigskeitsrisiken,Quelle,"Welche Quellen werden für die Erfassung von Nachhaltigkeitsrisiken im Bereich Umwelt verwendet?
+37,Environmental,Nachhaltigskeitsrisiken,Quellen,"Welche Quellen werden für die Erfassung von Nachhaltigkeitsrisiken im Bereich Umwelt verwendet?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc.",Multiple Documents With Descriptions,,,,32,Yes,
 38,Environmental,Nachhaltigskeitsrisiken,Vier-Augen-Prüfung,Ist eine Vier-Augen-Verifizierung vorhanden?,Yes/No,,,,,,
 "38,1",Environmental,Nachhaltigskeitsrisiken,"Wenn keine Vier-Augen-Prüfung, bitte begründen",,FreeText,,,,38,No,

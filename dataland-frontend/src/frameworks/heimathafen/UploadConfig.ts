@@ -9,8 +9,8 @@ export const heimathafenDataModel = [
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: "datenanbieter",
-        label: "Datenanbieter",
+        name: "unternehmen",
+        label: "Unternehmen",
         fields: [
           {
             name: "unternehmenseigentumUndEigentuemerstruktur",
@@ -18,14 +18,14 @@ export const heimathafenDataModel = [
             description:
               "Bitte geben Sie eine kurze Auskunft über die Besitzverhältnisse und Eigentümerstruktur des Unternehmens.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
             name: "kernkompetenzenUndGeschaeftsbereiche",
             label: "Kernkompetenzen und Geschäftsbereiche",
-            description: "Bitte beschreiben Sie kurz Ihre Kernkompetenzen und Geschäftsfelder",
+            description: "Bitte wählen Sie Ihre Kernkompetenzen und Geschäftsfelder",
 
             component: "NaceCodeFormField",
             required: false,
@@ -40,6 +40,7 @@ export const heimathafenDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "integer",
           },
         ],
       },
@@ -53,7 +54,7 @@ export const heimathafenDataModel = [
             description:
               "Bitte führen Sie Ihr Verständnis von Nachhaltigkeit im Rahmen der Bewertung aus.\nBitte machen Sie Angaben zu den Komponenten, die Sie bei der Bewertung des Grades der Nachhaltigkeit von Unternehmen berücksichtigen.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -62,7 +63,7 @@ export const heimathafenDataModel = [
             label: "Kriterien für Ihre Nachhaltigkeitsratings",
             description: "Welche Kriterien legen Sie für Ihre Nachhaltigkeitsratings zugrunde?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -72,7 +73,7 @@ export const heimathafenDataModel = [
             description:
               "Bitte beschreiben Sie uns das Vorgehen zur Erstellung Ihrer Analysen, bzw. die zugrunde liegende Methodik.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -81,17 +82,17 @@ export const heimathafenDataModel = [
             label: "Definition Bewertungsskala",
             description: "Wie ist Ihre Ratingskala definiert?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
-            name: "bewertungAktuell",
-            label: "Bewertung aktuell",
+            name: "aktualitaetDerRatings",
+            label: "Aktualität der Ratings",
             description:
               "Wie stellen Sie die Aktualität ihrer Ratings sicher? Wie häufig/in welchen Zeitabständen werden Updates zur Verfügung gestellt?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -99,9 +100,9 @@ export const heimathafenDataModel = [
             name: "unabhaengigkeitDerRatings",
             label: "Unabhängigkeit der Ratings",
             description:
-              "Erfolgen Ihre Ratings unabhängig (von Kunden, Kooperationspartnern, Unternehmen, etc.)\nWelche Parteien können aktiv Einfluss auf die Gestaltung des Ratings nehmen?",
+              "Erfolgen Ihre Ratings unabhängig (von Kunden, Kooperationspartnern, Unternehmen, etc.)?\nWelche Parteien können aktiv Einfluss auf die Gestaltung des Ratings nehmen?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -111,23 +112,23 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nHier sollten Angaben zur Vorgehensweise bei der Datenerhebung gemacht werden, z.B. mithilfe eines Fragebogens, Interviews, etc.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
-            name: "dieMethodikUmfasstUmweltSozialesUndGovernance",
-            label: "Die Methodik umfasst Umwelt, Soziales und Governance",
+            name: "methodikUmfasstUmweltSozialesUndGovernance",
+            label: "Methodik umfasst Umwelt, Soziales und Governance",
             description:
               "Deckt die Methodik die Bereiche Umwelt, Soziales und Governance ab?\nHier sollte darauf eingangen werden, ob die Methodik alle drei Bereiche abdeckt oder ein Fokus auf bestimmte Themenbereiche vorliegt.",
 
-            component: "YesNoFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden für die Datenerhebung verwendet?\nAngabe von Quellen für die Datenerhebung, zum Beispiel Nachhaltigkeitsberichte von Unternehmen, Daten von NGOs etc.",
 
@@ -141,7 +142,7 @@ export const heimathafenDataModel = [
             description:
               "Wie werden die erhobenen Daten plausibilisiert?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten (z.B. numerische Daten werden verlangt und Text wurde eingetragen)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -161,17 +162,17 @@ export const heimathafenDataModel = [
             description:
               "Wie wird die Reliabilität der Methodik sichergestellt?\nBei einer Methodik muss sichergestellt werden, dass mehrere Anwender zum selben Ergebnis kommen. Angaben dazu, wie das gewährleistet wird.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
           {
-            name: "minimierenOderVerhindernSieSubjektiveFaktoren",
-            label: "Minimieren oder verhindern Sie subjektive Faktoren",
+            name: "minimierungOderVerhinderungSubjektiverFaktoren",
+            label: "Minimierung oder Verhinderung subjektiver Faktoren",
             description:
               "Wie werden subjektive Einflussfaktoren minimiert bzw. verhindert?\nSubjektive Einschätzungen spielen im Rating Markt eine große Rolle, Angaben dazu, wie Subjektivität reduziert wird. (z.B. durch Vier-Augen Prinzip, automatische Prozesse)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -181,7 +182,7 @@ export const heimathafenDataModel = [
             description:
               "Bitte führen Sie mögliche Interessenskonflikte auf.\nKurze Beschreibung möglicher entstehender Interessenskonflikte bei der Bewertung eines Unternehmens.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -191,7 +192,7 @@ export const heimathafenDataModel = [
             description:
               "Wie wird Interessenskonflikten entgegengewirkt?\nWenn der Erheber der Daten zugleich der Nutzer der Daten ist, kann es zu Interessenskonflikten kommen. Beschreibung der Prozesse, um dem entgegenzuwirken (z.B. Maßnahmen zur Erhöhung der Transparenz, Erfüllung bestimmter Vorgaben, Vier-Augen Prinzip)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -201,7 +202,7 @@ export const heimathafenDataModel = [
             description:
               "Wie wird die Dokumentation der erhobenen Daten und der Prozesse sichergestellt?\nAngabe des Dokumentationsortes von Daten und Prozessen und Ausführung der Art und Weise der Dokumentation. Angabe von Maßnahmen zur Unveränderlichkeit von Informationen.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -210,7 +211,7 @@ export const heimathafenDataModel = [
             label: "Bewertung von Qualitätsstandards",
             description: "Welche Qualitätsstandards liegen Ihrem Rating zugrunde?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -219,7 +220,7 @@ export const heimathafenDataModel = [
             label: "Rating-Transparenzstandards",
             description: "Welche Transparenzstandards liegen Ihrem Rating zugrunde?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -237,7 +238,7 @@ export const heimathafenDataModel = [
             label: "Falls nein, geben Sie bitte die Gründe an",
             description: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.methodik?.qualitaetssicherungsprozess == "No",
@@ -248,7 +249,7 @@ export const heimathafenDataModel = [
             description:
               "Wie ist der Qualitätssicherungsprozess aufgebaut?\nBeschreibung des Prozesses, wie z.B. sichergestellt wird, dass keine falschen Daten oder unvollständige Daten erhoben werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.methodik?.qualitaetssicherungsprozess == "Yes",
@@ -259,7 +260,7 @@ export const heimathafenDataModel = [
             description:
               "Wie wird die Aktualität der Methodik sichergestellt?\nAngaben dazu, wie Adhoc/kurzfristige Meldungen bei Emittenten und kurzfristige regulatorische Veränderungen überwacht und in die Methodik integriert werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.methodik?.qualitaetssicherungsprozess == "Yes",
@@ -278,7 +279,7 @@ export const heimathafenDataModel = [
             label: "Liste der eingeschlossenen PAIs",
             description: "Welche PAIs werden in der Analyse berücksichtigt?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.methodik?.paisInDieAnalyseEinbezogen == "Yes",
@@ -288,7 +289,7 @@ export const heimathafenDataModel = [
             label: "Quelle der PAI-Sammlung",
             description: "Welche Quellen werden für die Erhebung der PAIs verwendet?",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.methodik?.paisInDieAnalyseEinbezogen == "Yes",
@@ -298,7 +299,7 @@ export const heimathafenDataModel = [
             label: "Umgang mit Ausreißern",
             description: "Wie erfolgt der Umgang mit Ausreißern?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.methodik?.paisInDieAnalyseEinbezogen == "Yes",
@@ -308,7 +309,7 @@ export const heimathafenDataModel = [
             label: "Identifizierung von kontroversen Geschäften",
             description: "Wie werden kontroverse Geschäftsfelder identifiziert?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -317,7 +318,7 @@ export const heimathafenDataModel = [
             label: "Aktuelle Kontroversen",
             description: "Wie wird die Aktualität der Kontroversen gewährleistet?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -326,7 +327,7 @@ export const heimathafenDataModel = [
             label: "Kontroversen um die Quellenerfassung",
             description: "Welche Quellen werden zur Erfassung von Kontroversen genutzt?",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -349,7 +350,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "No",
@@ -360,7 +361,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "Yes",
@@ -371,7 +372,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "Yes",
@@ -382,18 +383,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeineArmut?.sdgKeineArmut == "Yes",
@@ -428,7 +429,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger == "Yes",
@@ -439,7 +440,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger == "Yes",
@@ -450,18 +451,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleKeinHunger?.sdgKeinHunger == "Yes",
@@ -485,7 +486,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "No",
@@ -496,7 +497,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
@@ -507,7 +508,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten).",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
@@ -518,18 +519,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGesundheitUndWohlergehen?.sdgGesundheitUndWohlergehen == "Yes",
@@ -553,7 +554,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "No",
@@ -564,7 +565,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "Yes",
@@ -575,7 +576,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "Yes",
@@ -586,18 +587,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleHochwertigeBildung?.sdgHochwertigeBildung == "Yes",
@@ -621,7 +622,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "No",
@@ -632,7 +633,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
@@ -643,7 +644,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
@@ -654,18 +655,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleGeschlechtergleichheit?.sdgGeschlechtergleichheit == "Yes",
@@ -690,7 +691,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
@@ -702,7 +703,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
@@ -714,7 +715,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
@@ -726,19 +727,19 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
                 ?.sdgSauberesWasserUndSanitaereEinrichtungen == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleSauberesWasserUndSanitaereEinrichtungen
@@ -763,7 +764,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "No",
@@ -774,7 +775,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
@@ -785,7 +786,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
@@ -796,18 +797,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleBezahlbareUndSaubereEnergie?.sdgBezahlbareUndSaubereEnergie == "Yes",
@@ -832,7 +833,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
@@ -844,7 +845,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
@@ -856,7 +857,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
@@ -868,19 +869,19 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
                 ?.sdgMenschenwuerdigeArbeitUndWirtschaftswachstum == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum
@@ -906,7 +907,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
@@ -918,7 +919,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
@@ -930,7 +931,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
@@ -942,19 +943,19 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
                 ?.sdgIndustrieInnovationUndInfrastruktur == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleIndustrieInnovationUndInfrastruktur
@@ -979,7 +980,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "No",
@@ -990,7 +991,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
@@ -1001,7 +1002,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
@@ -1012,18 +1013,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleWenigerUngleichheiten?.sdgWenigerUngleichheiten == "Yes",
@@ -1048,7 +1049,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "No",
@@ -1059,7 +1060,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
@@ -1070,7 +1071,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
@@ -1081,18 +1082,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigeStaedteUndGemeinden?.sdgNachhaltigeStaedteUndGemeinden == "Yes",
@@ -1117,7 +1118,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion == "No",
@@ -1128,7 +1129,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion ==
@@ -1140,7 +1141,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion ==
@@ -1152,19 +1153,19 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion ==
               "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleNachhaltigerKonsumUndProduktion?.sdgNachhaligerKonsumUndProduktion ==
@@ -1189,7 +1190,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "No",
@@ -1200,7 +1201,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
@@ -1211,7 +1212,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
@@ -1222,18 +1223,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleMassnahmenZumKlimaschutz?.sdgMassnahmenZumKlimaschutz == "Yes",
@@ -1257,7 +1258,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "No",
@@ -1268,7 +1269,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "Yes",
@@ -1279,7 +1280,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "Yes",
@@ -1290,18 +1291,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenUnterWasser?.sdgLebenUnterWasser == "Yes",
@@ -1325,7 +1326,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "No",
@@ -1336,7 +1337,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "Yes",
@@ -1347,7 +1348,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "Yes",
@@ -1358,18 +1359,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleLebenAndLand?.sdgLebenAnLand == "Yes",
@@ -1394,7 +1395,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
@@ -1406,7 +1407,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
@@ -1418,7 +1419,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
@@ -1430,19 +1431,19 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
                 ?.sdgFriedenGerechtigkeitUndStarkeInstitutionen == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen
@@ -1468,7 +1469,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
@@ -1480,7 +1481,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngaben zu den KPIs die zur Messung des SDGs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
@@ -1492,7 +1493,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
@@ -1504,19 +1505,19 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
                 ?.sdgPartnerschaftenZurErreichungDerZiele == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.general?.impactmerkmalePartnerschaftenZurErreichungDerZiele
@@ -1533,7 +1534,7 @@ export const heimathafenDataModel = [
             label: "Angebotene Sprachen",
             description: "In welchen Sprachen wird das Produkt/Tool/System angeboten?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -1542,7 +1543,7 @@ export const heimathafenDataModel = [
             label: "Bereitgestellte Dokumentationsarten",
             description: "Welche Arten von Dokumentationen stellen Sie in welcher Form zur Verfügung?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -1580,7 +1581,7 @@ export const heimathafenDataModel = [
             description:
               "Geben Sie bitte eine kurze Beschreibung Ihrer Systemarchitektur (Datenbank, CPU, Prozessoren, Schnittstellen, Server etc.) bei ASP Betrieb an.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -1607,7 +1608,7 @@ export const heimathafenDataModel = [
             label: "Server Backup",
             description: "Wie wird das Backup der Server durchgeführt?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -1662,7 +1663,7 @@ export const heimathafenDataModel = [
             label: "Beschreibung des Designs und der Struktur der Datenbank(en)",
             description: "Bitte beschreiben Sie den Aufbau und die Struktur der Datenbank(en).",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -1744,7 +1745,7 @@ export const heimathafenDataModel = [
             label: "Übertragen von Datenhistorien",
             description: "Welche Funktionen stellt das System zur Übernahme der Datenhistorien zur Verfügung?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -1785,6 +1786,7 @@ export const heimathafenDataModel = [
             component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "integer",
           },
           {
             name: "anzahlDerVerfuegbarenRessourcen",
@@ -1792,7 +1794,7 @@ export const heimathafenDataModel = [
             description:
               "Wieviele Ressourcen stehen ab wann und mit welcher Kapazität zur Umsetzung des Projekts zur Verfügung (Support, Entwicklung, Beratung)?",
 
-            component: "NumberFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -1802,9 +1804,10 @@ export const heimathafenDataModel = [
             description:
               "Wie und mit wievielen Mitarbeitern können Sie einen Kunden in den ersten sechs Monaten nach Einführung unterstützen?",
 
-            component: "InputTextFormField",
+            component: "NumberFormField",
             required: false,
             showIf: (): boolean => true,
+            validation: "integer",
           },
         ],
       },
@@ -1824,7 +1827,7 @@ export const heimathafenDataModel = [
             name: "methodikFuerOekologischeNachhaltigkeitsrisiken",
             label: "Methodik für ökologische Nachhaltigkeitsrisiken",
             description:
-              "Werden Nachhaltigkeitsrisiken bezogen auf den Bereich Umwelt in der Methodik abgebildet?\nNachhaltigkeitsrisiken können einen wesentlichen negativen Einfluss auf die Performance eines Unternehmens haben. Angaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Umwelt in der Methodik abgebildet werden.",
+              "Werden Nachhaltigkeitsrisiken bezogen auf den Bereich Umwelt in der Methodik abgebildet?\nNachhaltigkeitsrisiken können einen wesentlichen negativen Einfluss auf die Performance eines Unternehmens haben.",
 
             component: "YesNoFormField",
             required: false,
@@ -1834,7 +1837,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "No",
@@ -1845,7 +1848,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Nachhaltigkeitsrisiken im Bereich Umwelt werden abgebildet?\nAufführung der Nachhaltigkeitsrisiken, die abgebildet werden können. (z.B. Klimarisiken, Risiken bzgl. Biodiversität, Risiken bzgl. Wasser)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",
@@ -1857,7 +1860,7 @@ export const heimathafenDataModel = [
             description:
               "Wie werden wesentliche Nachhaltigkeitsrisiken eines Unternehmens im Bereich Umwelt identifiziert und in der Methodik berücksichtigt?\nAngaben zur Wesentlichkeitsanalyse bei der Einstufung der Wesentlichkeit eines Risikos bezogen auf ein Unternehmen. Sowie Angaben dazu, wie sich die unterschiedliche Risikoeinstufung in der Methodik widerspiegelt.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",
@@ -1868,7 +1871,7 @@ export const heimathafenDataModel = [
             description:
               "Wie werden Nachhaltigkeitsrisiken in der Bewertung bezogen auf den Bereich Umwelt berücksichtigt?\nAngaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Umwelt in die Erstellung des Ratings miteinbezogen werden und wenn ja wie.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",
@@ -1878,14 +1881,14 @@ export const heimathafenDataModel = [
             label: "Risiken für die ökologische Nachhaltigkeit absichern",
             description: "Wie wird die Überwachung von Nachhaltigkeitsrisiken im Bereich Umwelt sichergestellt?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.methodikFuerOekologischeNachhaltigkeitsrisiken == "Yes",
           },
           {
-            name: "quelle",
-            label: "Quelle",
+            name: "quellen",
+            label: "Quellen",
             description:
               "Welche Quellen werden für die Erfassung von Nachhaltigkeitsrisiken im Bereich Umwelt verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc.",
 
@@ -1907,7 +1910,7 @@ export const heimathafenDataModel = [
             name: "wennKeineVierAugenPruefungBitteBegruenden",
             label: "Wenn keine Vier-Augen-Prüfung, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.vierAugenPruefung == "No",
@@ -1917,7 +1920,7 @@ export const heimathafenDataModel = [
             label: "Beschreibung der Vier-Augen- Prüfung",
             description: "Wie erfolgt die Vier-Augen-Verifizierung?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.nachhaltigskeitsrisiken?.vierAugenPruefung == "Yes",
@@ -1942,7 +1945,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "No",
@@ -1951,7 +1954,7 @@ export const heimathafenDataModel = [
             name: "wennJaBitteDiePaisAuflisten",
             label: "Wenn Ja, bitte die PAIs auflisten",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
@@ -1962,7 +1965,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
@@ -1973,7 +1976,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten, Benchmarking)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
@@ -1984,18 +1987,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde erfasst.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.pais?.sechsPaisTreibhausgasemissionen == "Yes",
@@ -2019,7 +2022,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "No",
@@ -2030,7 +2033,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung des PAIs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "Yes",
@@ -2041,7 +2044,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "Yes",
@@ -2052,18 +2055,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiBiologischeVielfalt?.paisBiologischeVielfalt == "Yes",
@@ -2087,7 +2090,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "No",
           },
@@ -2097,7 +2100,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "Yes",
           },
@@ -2107,7 +2110,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "Yes",
           },
@@ -2117,17 +2120,17 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews, Daten von NGOs etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.environmental?.paiWasser?.paiWasser == "Yes",
           },
@@ -2150,7 +2153,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "No",
           },
@@ -2160,7 +2163,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung des PAIs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "Yes",
           },
@@ -2170,7 +2173,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "Yes",
           },
@@ -2180,17 +2183,17 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärung, Daten von NGOs etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.environmental?.paiAbfall?.paiAbfall == "Yes",
           },
@@ -2213,7 +2216,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "No",
@@ -2224,7 +2227,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung des PAIs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "Yes",
@@ -2235,7 +2238,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "Yes",
@@ -2246,18 +2249,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
-              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Umweltbundesamt)",
+              "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Umweltbundesamt.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.paiUmweltAufDemLand?.paiUmweltAufDemLand == "Yes",
@@ -2274,7 +2277,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Abbildung eines wesentlichen Beitrages zu einem Umweltziel?\nAngaben darüber ob mit der Methodik ein wesentlicher Beitrag zu einem Umweltziel gemessen werden kann und wenn ja, zu welchem und wie.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -2297,7 +2300,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.ausschlussDerTabakerzeugung == "No",
@@ -2308,7 +2311,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahl wird für die Messung des Umsatzes aus Tabakproduktion herangezogen?\nAngaben zu der Zusammensetzung der Kennzahl zur Berechnung des Umsatzes aus der Tabakproduktion.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.ausschlussDerTabakerzeugung == "Yes",
@@ -2319,7 +2322,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Berechnung?\nAngaben zur Methodik zur Berechnung des Umsatzes aus der Tabakproduktion.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.ausschlussDerTabakerzeugung == "Yes",
@@ -2330,7 +2333,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelderTabakerzeugung?.ausschlussDerTabakerzeugung == "Yes",
@@ -2355,7 +2358,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung
@@ -2367,7 +2370,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahl wird für die Messung des Umsatzes aus Kohle herangezogen?\nAngaben zu der Zusammensetzung der Kennzahl zur Berechnung des Umsatzes aus Kohle.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung
@@ -2378,7 +2381,7 @@ export const heimathafenDataModel = [
             label: "Methodik der Berechnung",
             description: "Wie erfolgt die Berechnung?\nAngaben zur Methodik zur Berechnung des Umsatzes aus Kohle.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung
@@ -2390,7 +2393,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Quellen werden verwendet?Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.environmental?.kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung
@@ -2414,7 +2417,7 @@ export const heimathafenDataModel = [
             name: "methodikSozialeNachhaltigkeitsrisiken",
             label: "Methodik Soziale Nachhaltigkeitsrisiken",
             description:
-              "Werden Nachhaltigkeitsrisiken bezogen auf den Bereich Soziales in der Methodik abgebildet?\nNachhaltigkeitsrisiken können einen wesentlichen negativen Einfluss auf die Performance eines Unternehmens haben. Angaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Soziales in der Methodik abgebildet werden.",
+              "Werden Nachhaltigkeitsrisiken bezogen auf den Bereich Soziales in der Methodik abgebildet?\nNachhaltigkeitsrisiken können einen wesentlichen negativen Einfluss auf die Performance eines Unternehmens haben.",
 
             component: "YesNoFormField",
             required: false,
@@ -2424,7 +2427,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.nachhaltigskeitsrisiken?.methodikSozialeNachhaltigkeitsrisiken == "No",
@@ -2435,7 +2438,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Nachhaltigkeitsrisiken im Bereich Soziales werden abgebildet?\nAufführung der Nachhaltigkeitsrisiken, die abgebildet werden können (z.B. Risiken in Bezug auf Arbeitnehmerbelange, Demographie, Gesundheitsschutz).",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.nachhaltigskeitsrisiken?.methodikSozialeNachhaltigkeitsrisiken == "Yes",
@@ -2446,7 +2449,7 @@ export const heimathafenDataModel = [
             description:
               "Wie werden wesentliche Nachhaltigkeitsrisiken eines Unternehmens im Bereich Soziales identifiziert und berücksichtigt?\nAngaben zur Wesentlichkeitsanalyse bei der Einstufung der Wesentlichkeit eines Risikos bezogen auf ein Unternehmen. Sowie Angaben dazu, wie sich die unterschiedliche Risikoeinstufung in der Methodik widerspiegelt.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.nachhaltigskeitsrisiken?.methodikSozialeNachhaltigkeitsrisiken == "Yes",
@@ -2457,7 +2460,7 @@ export const heimathafenDataModel = [
             description:
               "Wie werden Nachhaltigkeitsrisiken in der Bewertung bezogen auf den Bereich Soziales berücksichtigt?\nAngaben dazu, ob Nachhaltigkeitsrisiken aus dem Bereich Soziales in die Erstellung des Ratings miteinbezogen werden und wenn ja wie.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -2466,7 +2469,7 @@ export const heimathafenDataModel = [
             label: "Soziale Nachhaltigkeitsrisiken absichern",
             description: "Wie wird die Überwachung von Nachhaltigkeitsrisiken im Bereich Soziales sichergestellt?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -2476,7 +2479,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Quellen werden für die Erfassung von Nachhaltigkeitsrisiken im Bereich Soziales verwendet?\nAngabe von Quellen, zum Beispiel Nachhaltigkeitsberichte, ethische Richtlinien, etc.)",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -2493,7 +2496,7 @@ export const heimathafenDataModel = [
             name: "wennKeineVierAugenPruefungBitteBegruenden",
             label: "Wenn keine Vier-Augen-Prüfung, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.nachhaltigskeitsrisiken?.vierAugenPruefung == "No",
@@ -2503,7 +2506,7 @@ export const heimathafenDataModel = [
             label: "Beschreibung der Vier-Augen-Prüfung",
             description: "Wie erfolgt die Vier-Augen-Verifizierung?",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.nachhaltigskeitsrisiken?.vierAugenPruefung == "Yes",
@@ -2528,7 +2531,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "No",
           },
@@ -2538,7 +2541,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "Yes",
           },
@@ -2548,7 +2551,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "Yes",
           },
@@ -2558,17 +2561,17 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, Gender Pay Report etc.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean => dataset.social?.paiSozial?.paiSozial == "Yes",
           },
@@ -2591,7 +2594,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "No",
@@ -2602,7 +2605,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahlen werden verwendet?\nAngabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "Yes",
@@ -2613,7 +2616,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenerhebung?\nAngaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "Yes",
@@ -2624,18 +2627,18 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Datenplausibilisierung?\nErkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "Yes",
           },
           {
-            name: "datenquelle",
-            label: "Datenquelle",
+            name: "datenquellen",
+            label: "Datenquellen",
             description:
               "Welche Quellen werden genutzt?\nAngabe von Quellen zur Erhebung der KPIs, zum Beispiel Freedom House Index",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.paiSozialesAufDemLand?.paiSozialesAufDemLand == "Yes",
@@ -2652,7 +2655,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Abbildung eines wesentlichen Beitrages zu einem sozialen Ziel?\nAngaben darüber ob mit der Methodik ein wesentlicher Beitrag zu einem sozialen Ziel gemessen werden kann und wenn ja, wie.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (): boolean => true,
           },
@@ -2676,7 +2679,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelderWaffen?.herstellungOderVertriebVonWaffenAusschluss == "No",
@@ -2687,7 +2690,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahl wird für die Messung des Umsatzes aus Waffen herangezogen?\nAngaben zu der Zusammensetzung der Kennzahl zur Berechnung des Umsatzes aus Waffen.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelderWaffen?.herstellungOderVertriebVonWaffenAusschluss == "Yes",
@@ -2697,7 +2700,7 @@ export const heimathafenDataModel = [
             label: "Methodik der Berechnung",
             description: "Wie erfolgt die Berechnung?\nAngaben zur Methodik zur Berechnung des Umsatzes aus Waffen.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelderWaffen?.herstellungOderVertriebVonWaffenAusschluss == "Yes",
@@ -2708,7 +2711,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelderWaffen?.herstellungOderVertriebVonWaffenAusschluss == "Yes",
@@ -2726,7 +2729,7 @@ export const heimathafenDataModel = [
             name: "wennAuschlussNichtMoeglichBitteBegruenden",
             label: "Wenn Auschluss nicht möglich, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelderWaffen?.ausschlussVerbotenerWaffen == "No",
@@ -2737,7 +2740,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Kennzahl wird für geächtete Waffen herangezogen?\nAngaben zu den Bestandteilen der Kennzahl zur Abbildung geächteter Waffen.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelderWaffen?.ausschlussVerbotenerWaffen == "Yes",
@@ -2754,7 +2757,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.social?.kontroverseGeschaeftsfelderWaffen?.ausschlussVerbotenerWaffen == "Yes",
@@ -2786,7 +2789,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernance?.methodikDerGutenRegierungsfuehrung == "No",
@@ -2797,7 +2800,7 @@ export const heimathafenDataModel = [
             description:
               "Wie wird Good Governance im Rahmen der Methodik definiert?\nDefinition von Good Governance im Rahmen der Methodik.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernance?.methodikDerGutenRegierungsfuehrung == "Yes",
@@ -2808,7 +2811,7 @@ export const heimathafenDataModel = [
             description:
               "Welche KPIs werden zur Berurteilung einer Good Governance genutzt?\nAufführung der KPIs zur Beurteilung von Good Governance.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernance?.methodikDerGutenRegierungsfuehrung == "Yes",
@@ -2819,7 +2822,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel Nachhaltigkeitsberichte, Internetseiten von Unternehmen.",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernance?.methodikDerGutenRegierungsfuehrung == "Yes",
@@ -2843,7 +2846,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernanceUngc?.beruecksichtigungDesUngc == "No",
@@ -2854,7 +2857,7 @@ export const heimathafenDataModel = [
             description:
               "Wie erfolgt die Berücksichtigung der UNGC?\nWenn eine Berücksichtigung der UNGC erfolgt Angaben darüber, wie die Berücksichtigung abgebildet wird.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernanceUngc?.beruecksichtigungDesUngc == "Yes",
@@ -2865,7 +2868,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Quellen werden verwendet?\nAngabe von Quellen, zum Beispiel UNGC, Nachhaltigkeitsberichte",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.governance?.goodGovernanceUngc?.beruecksichtigungDesUngc == "Yes",
@@ -2889,7 +2892,7 @@ export const heimathafenDataModel = [
             name: "wennNeinBitteBegruenden",
             label: "Wenn Nein, bitte begründen",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.governance?.bestechungUndKorruption?.kontroversenImBereichDerBestechungUndKorruption == "No",
@@ -2900,7 +2903,7 @@ export const heimathafenDataModel = [
             description:
               "Wie werden Kontroversen im Bereich Bestechung und Korruption abgebildet?\nAngabe von Kennzahlen und Methodiken zur Abbildung von Kontroversen im Bereich Bestechung und Korruption.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.governance?.bestechungUndKorruption?.kontroversenImBereichDerBestechungUndKorruption == "Yes",
@@ -2911,7 +2914,7 @@ export const heimathafenDataModel = [
             description:
               "Welche Datenquellen werden verwendet?\nAngabe von Quellen, zum Beispiel rennomierte Wirtschafts- und Finanzzeitungen, Glass Lewis",
 
-            component: "InputTextFormField",
+            component: "ListOfBaseDataPointsFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.governance?.bestechungUndKorruption?.kontroversenImBereichDerBestechungUndKorruption == "Yes",
@@ -2922,7 +2925,7 @@ export const heimathafenDataModel = [
             description:
               "Wie wird die Aktualität der Kontroversen im Bereich Bestechung und Korruption gewährleistet?\nAngaben dazu, wie Adhoc/kurzfristige Meldungen bei Emittenten überwacht und in die Methodik integriert werden sowie darüber in welchem Zeitraum die Kontroversen angepasst werden.",
 
-            component: "InputTextFormField",
+            component: "FreeTextFormField",
             required: false,
             showIf: (dataset: HeimathafenData): boolean =>
               dataset.governance?.bestechungUndKorruption?.kontroversenImBereichDerBestechungUndKorruption == "Yes",
