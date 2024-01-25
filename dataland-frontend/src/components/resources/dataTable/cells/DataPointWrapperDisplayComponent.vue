@@ -1,12 +1,12 @@
 <template>
   <div class="flex">
-    <slot></slot>
     <a
       v-if="isAnyDataPointPropertyAvailableThatIsWorthShowingInModal"
       @click="$dialog.open(DataPointDataTable, modalOptions)"
       class="link"
     >
-      <em class="pl-2 material-icons" aria-label="View datapoint details"> description </em>
+      <slot></slot>
+      <em class="pl-2 material-icons" aria-label="View datapoint details"> dataset </em>
     </a>
     <DocumentLink
       v-else-if="dataPointProperties.dataSource"
