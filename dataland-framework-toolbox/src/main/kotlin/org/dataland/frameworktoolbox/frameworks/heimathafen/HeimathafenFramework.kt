@@ -26,7 +26,7 @@ class HeimathafenFramework : PavedRoadFramework(
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         framework.root.edit<ComponentGroup>("general") {
             viewPageExpandOnPageLoad = true
-            edit<ComponentGroup>("datenanbieter") {
+            edit<ComponentGroup>("unternehmen") {
                 viewPageExpandOnPageLoad = true
             }
         }

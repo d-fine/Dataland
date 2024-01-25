@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.frameworks.heimathafen.model.general.implem
 
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import java.math.BigDecimal
+import java.math.BigInteger
 import java.time.LocalDate
 
 /**
@@ -37,7 +37,7 @@ data class HeimathafenGeneralImplementierung(
     val unterstuetzterZeitraumDerDatenhistorien: String? = null,
     val fruehesterStartterminFuerEinIntegrationsprojekt: LocalDate? = null,
     val geschaetzterZeitrahmenFuerDieVollstaendigeIntegrationDesProjekts: String? = null,
-    val durchschnittlicheAnzahlDerBenoetigtenRessourcen: BigDecimal? = null,
-    val anzahlDerVerfuegbarenRessourcen: BigDecimal? = null,
-    val kundenbetreuung: String? = null,
+    val durchschnittlicheAnzahlDerBenoetigtenRessourcen: BigInteger? = null,
+    val anzahlDerVerfuegbarenRessourcen: String? = null,
+    val kundenbetreuung: BigInteger? = null,
 )

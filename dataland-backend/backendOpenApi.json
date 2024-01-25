@@ -8585,8 +8585,11 @@
             "nullable": true
           },
           "verwendeteQuellen": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -8614,8 +8617,11 @@
             "nullable": true
           },
           "verwendeteQuellen": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -8703,8 +8709,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -8736,8 +8745,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -8769,8 +8781,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -8802,8 +8817,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -8839,8 +8857,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -8856,11 +8877,11 @@
       "HeimathafenGeneral": {
         "type": "object",
         "properties": {
-          "datenanbieter": {
+          "unternehmen": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/HeimathafenGeneralDatenanbieter"
+                "$ref": "#/components/schemas/HeimathafenGeneralUnternehmen"
               }
             ]
           },
@@ -9018,26 +9039,6 @@
           }
         }
       },
-      "HeimathafenGeneralDatenanbieter": {
-        "type": "object",
-        "properties": {
-          "unternehmenseigentumUndEigentuemerstruktur": {
-            "type": "string",
-            "nullable": true
-          },
-          "kernkompetenzenUndGeschaeftsbereiche": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
-            }
-          },
-          "anzahlDerFuerEsgZustaendigenMitarbeiter": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
       "HeimathafenGeneralImpactmerkmaleBezahlbareUndSaubereEnergie": {
         "type": "object",
         "properties": {
@@ -9066,8 +9067,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9099,8 +9103,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9132,8 +9139,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9165,8 +9175,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9198,8 +9211,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9231,8 +9247,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9264,8 +9283,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9297,8 +9319,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9330,8 +9355,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9363,8 +9391,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9396,8 +9427,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9429,8 +9463,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9462,8 +9499,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9495,8 +9535,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9528,8 +9571,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9561,8 +9607,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9594,8 +9643,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -9772,15 +9824,15 @@
             "nullable": true
           },
           "durchschnittlicheAnzahlDerBenoetigtenRessourcen": {
-            "type": "number",
+            "type": "integer",
             "nullable": true
           },
           "anzahlDerVerfuegbarenRessourcen": {
-            "type": "number",
+            "type": "string",
             "nullable": true
           },
           "kundenbetreuung": {
-            "type": "string",
+            "type": "integer",
             "nullable": true
           }
         }
@@ -9804,7 +9856,7 @@
             "type": "string",
             "nullable": true
           },
-          "bewertungAktuell": {
+          "aktualitaetDerRatings": {
             "type": "string",
             "nullable": true
           },
@@ -9816,13 +9868,9 @@
             "type": "string",
             "nullable": true
           },
-          "dieMethodikUmfasstUmweltSozialesUndGovernance": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
+          "methodikUmfasstUmweltSozialesUndGovernance": {
+            "type": "string",
+            "nullable": true
           },
           "datenquelle": {
             "type": "array",
@@ -9843,7 +9891,7 @@
             "type": "string",
             "nullable": true
           },
-          "minimierenOderVerhindernSieSubjektiveFaktoren": {
+          "minimierungOderVerhinderungSubjektiverFaktoren": {
             "type": "string",
             "nullable": true
           },
@@ -9900,8 +9948,11 @@
             "nullable": true
           },
           "quelleDerPaiSammlung": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           },
           "umgangMitAusreissern": {
             "type": "string",
@@ -9916,7 +9967,30 @@
             "nullable": true
           },
           "kontroversenUmDieQuellenerfassung": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          }
+        }
+      },
+      "HeimathafenGeneralUnternehmen": {
+        "type": "object",
+        "properties": {
+          "unternehmenseigentumUndEigentuemerstruktur": {
             "type": "string",
+            "nullable": true
+          },
+          "kernkompetenzenUndGeschaeftsbereiche": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "anzahlDerFuerEsgZustaendigenMitarbeiter": {
+            "type": "integer",
             "nullable": true
           }
         }
@@ -9970,8 +10044,11 @@
             "nullable": true
           },
           "verwendeteQuellen": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           },
           "dieAktualitaetDerKontroversenImBereichBestechungUndKorruption": {
             "type": "string",
@@ -10003,8 +10080,11 @@
             "nullable": true
           },
           "verwendeteQuellen": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -10028,8 +10108,11 @@
             "nullable": true
           },
           "verwendeteQuellen": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -10090,8 +10173,11 @@
         "type": "object",
         "properties": {
           "verwendeteQuellen": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -10119,8 +10205,11 @@
             "nullable": true
           },
           "verwendeteQuellen": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           },
           "ausschlussVerbotenerWaffen": {
             "nullable": true,
@@ -10172,8 +10261,11 @@
             "nullable": true
           },
           "quelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           },
           "vierAugenPruefung": {
             "nullable": true,
@@ -10221,8 +10313,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -10254,8 +10349,11 @@
             "nullable": true
           },
           "datenquelle": {
-            "type": "string",
-            "nullable": true
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
           }
         }
       },
@@ -13181,10 +13279,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
           "countryCode": {
@@ -13222,10 +13320,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
