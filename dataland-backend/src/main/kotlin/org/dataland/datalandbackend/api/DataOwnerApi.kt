@@ -152,6 +152,6 @@ interface DataOwnerApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun postDataOwnershipRequest(
         @PathVariable("companyId") companyId: UUID,
-        @RequestParam comment: String,
+        @RequestParam comment: String? = null,
     )
 }

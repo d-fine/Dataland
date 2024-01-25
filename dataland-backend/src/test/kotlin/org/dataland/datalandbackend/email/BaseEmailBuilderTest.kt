@@ -24,6 +24,7 @@ class BaseEmailBuilderTest {
         val htmlTitle = "The HTML Title"
         val properties = mapOf(
             "first" to "1",
+            "leftOut" to null,
             "second" to "2",
         )
         val email = object : BaseEmailBuilder(
@@ -42,7 +43,7 @@ class BaseEmailBuilderTest {
                         textTitle,
                         htmlTitle,
                         properties,
-                    )
+                    ),
                 )
             }
         }.build()
@@ -60,11 +61,15 @@ class BaseEmailBuilderTest {
         assertTrue(!email.content.textContent.contains(htmlTitle))
         assertTrue(!email.content.htmlContent.contains(textTitle))
         assertTrue(email.content.htmlContent.contains("<div class=\"header\">$htmlTitle</div>"))
-        properties.forEach {
+        properties.filter { it.value != null }.forEach {
             assertTrue(email.content.textContent.contains("${it.key}: ${it.value}"))
-            assertTrue(email.content.htmlContent.contains("""
+            assertTrue(
+                email.content.htmlContent.contains(
+                    """
                 <div class="section"> <span class="bold">${it.key}: </span> ${it.value} </div>
-            """.trimIndent()))
+                    """.trimIndent(),
+                ),
+            )
         }
     }
 }

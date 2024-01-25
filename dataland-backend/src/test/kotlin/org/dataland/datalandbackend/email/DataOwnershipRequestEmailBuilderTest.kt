@@ -1,10 +1,7 @@
 package org.dataland.datalandbackend.email
 
 import org.dataland.datalandbackend.services.DataOwnershipRequestEmailBuilder
-import org.dataland.datalandbackendutils.email.BaseEmailBuilder
-import org.dataland.datalandbackendutils.email.Email
 import org.dataland.datalandbackendutils.email.EmailContact
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -41,7 +38,7 @@ class DataOwnershipRequestEmailBuilderTest {
         ).buildDataOwnershipRequest(
             companyId,
             mockAuthentication,
-            comment
+            comment,
         )
 
         assertEquals(EmailContact(senderEmail, senderName), email.sender)

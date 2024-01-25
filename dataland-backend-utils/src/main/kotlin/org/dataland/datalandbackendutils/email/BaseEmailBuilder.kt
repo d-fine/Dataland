@@ -71,7 +71,7 @@ open class BaseEmailBuilder(
         subject: String,
         textTitle: String,
         htmlTitle: String,
-        properties: Map<String, String>,
+        properties: Map<String, String?>,
     ): EmailContent {
         return EmailContent(
             subject,
@@ -80,11 +80,11 @@ open class BaseEmailBuilder(
         )
     }
 
-    private fun buildPropertyStyleTextContent(title: String, properties: Map<String, String>): String {
+    private fun buildPropertyStyleTextContent(title: String, properties: Map<String, String?>): String {
         return StringBuilder()
             .append("$title:\n")
             .apply {
-                properties.forEach {
+                properties.filter { it.value != null }.forEach {
                     append(it.key)
                     append(": ")
                     append(it.value)
@@ -94,7 +94,7 @@ open class BaseEmailBuilder(
             .toString()
     }
 
-    private fun buildPropertyStyleHtmlContent(title: String, properties: Map<String, String>): String {
+    private fun buildPropertyStyleHtmlContent(title: String, properties: Map<String, String?>): String {
         return StringBuilder()
             .append(
                 """
@@ -112,7 +112,7 @@ open class BaseEmailBuilder(
             """,
             )
             .apply {
-                properties.forEach {
+                properties.filter { it.value != null }.forEach {
                     append(
                         """
                 <div class="section"> <span class="bold">${it.key}: </span> ${it.value} </div>

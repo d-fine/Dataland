@@ -176,7 +176,7 @@ class DataOwnersManager(
     fun sendDataOwnershipRequestIfNecessary(
         companyId: String,
         userAuthentication: DatalandAuthentication,
-        comment: String,
+        comment: String?,
     ) {
         if (userAuthentication !is DatalandJwtAuthentication) {
             throw AuthenticationMethodNotSupportedException()
