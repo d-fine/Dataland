@@ -1,11 +1,11 @@
 <template>
   <template v-if="isLandingPage">
-    <div v-if="isUseLoggedIn == true" data-test="backToPlatformLink">
+    <div v-if="isUserLoggedIn == true" data-test="backToPlatformLink">
       <a class="fw-semi-bold vertical-middle cursor-pointer" @click="backToPlatform"
         >BACK TO PLATFORM <i class="material-icons pl-1" aria-hidden="true" alt="arrow_forward">arrow_forward</i></a
       >
     </div>
-    <div v-if="isUseLoggedIn == false" class="header__authsection">
+    <div v-if="isUserLoggedIn == false" class="header__authsection">
       <a aria-label="Login to account" class="header__authsection-login" @click="login"> Login </a>
       <ButtonComponent label="Sign Up" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" />
     </div>
@@ -40,7 +40,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
-const isUseLoggedIn = ref<undefined | boolean>(undefined);
+const isUserLoggedIn = ref<undefined | boolean>(undefined);
 const { isLandingPage } = defineProps<{
   isLandingPage: boolean;
 }>();
