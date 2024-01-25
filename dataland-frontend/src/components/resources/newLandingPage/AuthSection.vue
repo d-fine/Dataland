@@ -67,7 +67,7 @@ const backToPlatform = (): void => {
 onMounted(() => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
-      isUseLoggedIn.value = keycloak.authenticated;
+      isUserLoggedIn.value = keycloak.authenticated;
     })
     .catch((error) => console.log(error));
 });
