@@ -18,9 +18,9 @@
         <button @click="toggleDialog"></button>
         <div>
           <p>
-            Are you responsible for {{ companyName }}? Claim it in order to ensure high quality and transparency over
-            your
-            company.
+            Are you responsible for the datasets of {{ companyName }}? Claim dataset ownership in order to ensure high
+            quality and transparency over
+            your company's data.
           </p>
           <p>Feel free to share any additional information with us:</p>
         </div>
