@@ -30,11 +30,13 @@ data class DataRequestEntity(
     @Enumerated(EnumType.STRING)
     val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
 
+    @Column(columnDefinition = "varchar(4000)")
     val dataRequestCompanyIdentifierValue: String,
 
     var messageHistory: String?,
 
     val lastModifiedDate: Long,
 
+    @Enumerated(EnumType.STRING)
     var requestStatus: RequestStatus,
 )
