@@ -8708,7 +8708,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -8744,7 +8744,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -8780,7 +8780,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -8816,7 +8816,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -8856,7 +8856,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9066,7 +9066,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9102,7 +9102,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9138,7 +9138,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9174,7 +9174,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9210,7 +9210,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9246,7 +9246,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9282,7 +9282,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9318,7 +9318,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9354,7 +9354,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9390,7 +9390,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9426,7 +9426,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9462,7 +9462,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9498,7 +9498,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9534,7 +9534,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9570,7 +9570,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9606,7 +9606,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9642,7 +9642,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -9872,7 +9872,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -10312,7 +10312,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -10348,7 +10348,7 @@
             "type": "string",
             "nullable": true
           },
-          "datenquelle": {
+          "datenquellen": {
             "type": "array",
             "nullable": true,
             "items": {
@@ -13279,18 +13279,18 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
-          },
           "companyName": {
             "type": "string"
           },
-          "countryCode": {
+          "companyId": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
+          },
+          "countryCode": {
+            "type": "string"
           },
           "headquarters": {
             "type": "string"
@@ -13320,10 +13320,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

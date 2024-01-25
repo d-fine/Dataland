@@ -14,7 +14,7 @@ Welche Parteien können aktiv Einfluss auf die Gestaltung des Ratings nehmen?",F
 Hier sollten Angaben zur Vorgehensweise bei der Datenerhebung gemacht werden, z.B. mithilfe eines Fragebogens, Interviews, etc.",FreeText,,,,,,
 11,General,Methodik,"Methodik umfasst Umwelt, Soziales und Governance","Deckt die Methodik die Bereiche Umwelt, Soziales und Governance ab?
 Hier sollte darauf eingangen werden, ob die Methodik alle drei Bereiche abdeckt oder ein Fokus auf bestimmte Themenbereiche vorliegt.",FreeText,,,,,,
-12,General,Methodik,Datenquelle,"Welche Quellen werden für die Datenerhebung verwendet?
+12,General,Methodik,Datenquellen,"Welche Quellen werden für die Datenerhebung verwendet?
 Angabe von Quellen für die Datenerhebung, zum Beispiel Nachhaltigkeitsberichte von Unternehmen, Daten von NGOs etc.",Multiple Documents With Descriptions,,,,,,
 13,General,Methodik,Daten Plausibilitätsprüfung,"Wie werden die erhobenen Daten plausibilisiert?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten (z.B. numerische Daten werden verlangt und Text wurde eingetragen)",FreeText,,,,,,
@@ -70,7 +70,7 @@ Angabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werde
 Angaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten, Benchmarking)",FreeText,,,,40,Yes,
 43,Environmental,PAIs,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde erfasst.",FreeText,,,,40,Yes,
-44,Environmental,PAIs,Datenquelle,"Welche Quellen werden genutzt?
+44,Environmental,PAIs,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen etc.",Multiple Documents With Descriptions,,,,40,Yes,
 45,Environmental,PAI - biologische Vielfalt,PAIs - biologische Vielfalt,"Wird der PAI auf Biodiversität abgebildet?
 Ja/Nein bezogen auf Annex I C(2022)1931",Yes/No,,,,,,
@@ -81,7 +81,7 @@ Angabe der Kennzahlen, die zur Berechnung und Abbildung des PAIs verwendet werde
 Angaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",FreeText,,,,45,Yes,
 48,Environmental,PAI - biologische Vielfalt,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",FreeText,,,,45,Yes,
-49,Environmental,PAI - biologische Vielfalt,Datenquelle,"Welche Quellen werden genutzt?
+49,Environmental,PAI - biologische Vielfalt,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews etc.",Multiple Documents With Descriptions,,,,45,Yes,
 50,Environmental,PAI - Wasser,PAI - Wasser,"Wird der PAI auf Wasser abgebildet?
 Ja/Nein bezogen auf Annex I C(2022)1931",Yes/No,,,,,,
@@ -92,7 +92,7 @@ Angabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werde
 Angaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",FreeText,,,,50,Yes,
 53,Environmental,PAI - Wasser,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",FreeText,,,,50,Yes,
-54,Environmental,PAI - Wasser,Datenquelle,"Welche Quellen werden genutzt?
+54,Environmental,PAI - Wasser,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärungen, Interviews, Daten von NGOs etc.",Multiple Documents With Descriptions,,,,50,Yes,
 55,Environmental,PAI - Abfall,PAI - Abfall,"Wird der PAI auf Abfall abgebildet?
 Ja/Nein bezogen auf Annex I C(2022)1931",Yes/No,,,,,,
@@ -103,7 +103,7 @@ Angabe der Kennzahlen, die zur Berechnung und Abbildung des PAIs verwendet werde
 Angaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",FreeText,,,,55,Yes,
 58,Environmental,PAI - Abfall,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",FreeText,,,,55,Yes,
-59,Environmental,PAI - Abfall,Datenquelle,"Welche Quellen werden genutzt?
+59,Environmental,PAI - Abfall,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, nichtfinanzielle Erklärung, Daten von NGOs etc.",Multiple Documents With Descriptions,,,,55,Yes,
 60,Environmental,PAI - Umwelt auf dem Land,PAI - Umwelt auf dem Land,"Wir der PAI auf Umwelt bei Staaten abgebildet?
 Ja/Nein bezogen auf Annex I C(2022)1931",Yes/No,,,,,,
@@ -114,8 +114,8 @@ Angabe der Kennzahlen, die zur Berechnung und Abbildung des PAIs verwendet werde
 Angaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen)",FreeText,,,,60,Yes,
 63,Environmental,PAI - Umwelt auf dem Land,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",FreeText,,,,60,Yes,
-64,Environmental,PAI - Umwelt auf dem Land,Datenquelle,"Welche Quellen werden genutzt?
-Angabe von Quellen zur Erhebung der KPIs, zum Beispiel Umweltbundesamt)",Multiple Documents With Descriptions,,,,60,Yes,
+64,Environmental,PAI - Umwelt auf dem Land,Datenquellen,"Welche Quellen werden genutzt?
+Angabe von Quellen zur Erhebung der KPIs, zum Beispiel Umweltbundesamt.",Multiple Documents With Descriptions,,,,60,Yes,
 65,Environmental,SFDR,Methodik zur Messung eines signifikanten Beitrags zu einem Umweltziel,"Wie erfolgt die Abbildung eines wesentlichen Beitrages zu einem Umweltziel?
 Angaben darüber ob mit der Methodik ein wesentlicher Beitrag zu einem Umweltziel gemessen werden kann und wenn ja, zu welchem und wie.",FreeText,,,,,,
 66,Environmental,Kontroverse Geschäftsfelder - Tabakerzeugung,Ausschluss der Tabakerzeugung,Kann mit der Methodik Umsatz aus der Tabakproduktion ausgeschlossen werden?,Yes/No,,,,,,
@@ -157,7 +157,7 @@ Angabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werde
 Angaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",FreeText,,,,82,Yes,
 85,Social,PAI - sozial,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",FreeText,,,,82,Yes,
-86,Social,PAI - sozial,Datenquelle,"Welche Quellen werden genutzt?
+86,Social,PAI - sozial,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen zur Erhebung der KPIs, zum Beispiel Geschäftsberichte von Unternehmen, Gender Pay Report etc.",Multiple Documents With Descriptions,,,,82,Yes,
 87,Social,PAI - Soziales auf dem Land,PAI - Soziales auf dem Land,"Werden die Sozialen PAIs bei Staaten abgebildet?
 Ja/Nein bezogen auf Annex I C(2022)1931",Yes/No,,,,,,
@@ -168,7 +168,7 @@ Angabe der Kennzahlen, die zur Berechnung und Abbildung der PAIs verwendet werde
 Angaben zur Datenerhebung der o.g. Kennzahlen (z.B. Fragebogen, Interviews, Übernahme der Daten aus Geschäftsberichten)",FreeText,,,,87,Yes,
 90,Social,PAI - Soziales auf dem Land,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",FreeText,,,,87,Yes,
-91,Social,PAI - Soziales auf dem Land,Datenquelle,"Welche Quellen werden genutzt?
+91,Social,PAI - Soziales auf dem Land,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen zur Erhebung der KPIs, zum Beispiel Freedom House Index",Multiple Documents With Descriptions,,,,87,Yes,
 92,Social,SFDR,Methodik zur Messung des signifikanten Beitrags zu einem gesellschaftlichen Ziel,"Wie erfolgt die Abbildung eines wesentlichen Beitrages zu einem sozialen Ziel?
 Angaben darüber ob mit der Methodik ein wesentlicher Beitrag zu einem sozialen Ziel gemessen werden kann und wenn ja, wie.",FreeText,,,,,,
@@ -216,7 +216,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,111,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,111,Yes,
 114,General,Impactmerkmale - Keine Armut,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",FreeText,,,,111,Yes,
-115,General,Impactmerkmale - Keine Armut,Datenquelle,"Welche Quellen werden genutzt?
+115,General,Impactmerkmale - Keine Armut,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,111,Yes,
 116,General,Impactmerkmale - Kein Hunger,SDG - Kein Hunger,"Kann mit der Methodik ein Beitrag zum SDG ""kein Hunger"" gemessen werden?",Yes/No,,,,,,
 "116,1",General,Impactmerkmale - Kein Hunger,"Wenn Nein, bitte begründen",,FreeText,,,,116,No,
@@ -226,7 +226,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,116,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,116,Yes,
 119,General,Impactmerkmale - Kein Hunger,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",FreeText,,,,116,Yes,
-120,General,Impactmerkmale - Kein Hunger,Datenquelle,"Welche Quellen werden genutzt?
+120,General,Impactmerkmale - Kein Hunger,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,116,Yes,
 121,General,Impactmerkmale - Gesundheit und Wohlergehen,SDG - Gesundheit und Wohlergehen,"Kann mit der Methodik ein Beitrag zum SDG ""Gesundheit und Wohlergehen"" gemessen werden?",Yes/No,,,,,,
 "121,1",General,Impactmerkmale - Gesundheit und Wohlergehen,"Wenn Nein, bitte begründen",,FreeText,,,,121,No,
@@ -236,7 +236,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,121,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten).",FreeText,,,,121,Yes,
 124,General,Impactmerkmale - Gesundheit und Wohlergehen,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",FreeText,,,,121,Yes,
-125,General,Impactmerkmale - Gesundheit und Wohlergehen,Datenquelle,"Welche Quellen werden genutzt?
+125,General,Impactmerkmale - Gesundheit und Wohlergehen,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Daten von NGOs etc.",Multiple Documents With Descriptions,,,,121,Yes,
 126,General,Impactmerkmale - Hochwertige Bildung,SDG - Hochwertige Bildung,"Kann mit der Methodik ein Beitrag zum SDG ""Hochwertige Bildung"" gemessen werden?",Yes/No,,,,,,
 "126,1",General,Impactmerkmale - Hochwertige Bildung,"Wenn Nein, bitte begründen",,FreeText,,,,126,No,
@@ -246,7 +246,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,126,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,126,Yes,
 129,General,Impactmerkmale - Hochwertige Bildung,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen.",FreeText,,,,126,Yes,
-130,General,Impactmerkmale - Hochwertige Bildung,Datenquelle,"Welche Quellen werden genutzt?
+130,General,Impactmerkmale - Hochwertige Bildung,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,126,Yes,
 131,General,Impactmerkmale - Geschlechtergleichheit,SDG - Geschlechtergleichheit,"Kann mit der Methodik ein Beitrag zum SDG ""Geschlechtergleichheit"" gemessen werden?",Yes/No,,,,,,
 "131,1",General,Impactmerkmale - Geschlechtergleichheit,"Wenn Nein, bitte begründen",,FreeText,,,,131,No,
@@ -256,7 +256,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,131,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,131,Yes,
 134,General,Impactmerkmale - Geschlechtergleichheit,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",FreeText,,,,131,Yes,
-135,General,Impactmerkmale - Geschlechtergleichheit,Datenquelle,"Welche Quellen werden genutzt?
+135,General,Impactmerkmale - Geschlechtergleichheit,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,131,Yes,
 136,General,Impactmerkmale - Sauberes Wasser und sanitäre Einrichtungen,SDG - Sauberes Wasser und sanitäre Einrichtungen,"Kann mit der Methodik ein Beitrag zum SDG ""Sauberes Wasser und Sanitäreinrichtungen"" gemessen werden?",Yes/No,,,,,,
 "136,1",General,Impactmerkmale - Sauberes Wasser und sanitäre Einrichtungen,"Wenn Nein, bitte begründen",,FreeText,,,,136,No,
@@ -266,7 +266,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,136,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,136,Yes,
 139,General,Impactmerkmale - Sauberes Wasser und sanitäre Einrichtungen,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",FreeText,,,,136,Yes,
-140,General,Impactmerkmale - Sauberes Wasser und sanitäre Einrichtungen,Datenquelle,"Welche Quellen werden genutzt?
+140,General,Impactmerkmale - Sauberes Wasser und sanitäre Einrichtungen,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,136,Yes,
 141,General,Impactmerkmale - Bezahlbare und saubere Energie,SDG - Bezahlbare und saubere Energie,"Kann mit der Methodik ein Beitrag zum SDG ""Bezahlbare und saubere Energie"" gemessen werden?",Yes/No,,,,,,
 "141,1",General,Impactmerkmale - Bezahlbare und saubere Energie,"Wenn Nein, bitte begründen",,FreeText,,,,141,No,
@@ -276,7 +276,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,141,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,141,Yes,
 144,General,Impactmerkmale - Bezahlbare und saubere Energie,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",FreeText,,,,141,Yes,
-145,General,Impactmerkmale - Bezahlbare und saubere Energie,Datenquelle,"Welche Quellen werden genutzt?
+145,General,Impactmerkmale - Bezahlbare und saubere Energie,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,141,Yes,
 146,General,Impactmerkmale - Menschenwürdige Arbeit und Wirtschaftswachstum,SDG - Menschenwürdige Arbeit und Wirtschaftswachstum,"Kann mit der Methodik ein Beitrag zum SDG ""Menschenwürdige Arbeit und Wirtschaftswachstum"" gemessen werden?",Yes/No,,,,,,
 "146,1",General,Impactmerkmale - Menschenwürdige Arbeit und Wirtschaftswachstum,"Wenn Nein, bitte begründen",,FreeText,,,,146,No,
@@ -286,7 +286,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,146,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,146,Yes,
 149,General,Impactmerkmale - Menschenwürdige Arbeit und Wirtschaftswachstum,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",FreeText,,,,146,Yes,
-150,General,Impactmerkmale - Menschenwürdige Arbeit und Wirtschaftswachstum,Datenquelle,"Welche Quellen werden genutzt?
+150,General,Impactmerkmale - Menschenwürdige Arbeit und Wirtschaftswachstum,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,146,Yes,
 151,General,"Impactmerkmale - Industrie, Innovation und Infrastruktur","SDG - Industrie, Innovation und Infrastruktur","Kann mit der Methodik ein Beitrag zum SDG ""Industrie, Innovation und Infrastruktur"" gemessen werden?",Yes/No,,,,,,
 "151,1",General,"Impactmerkmale - Industrie, Innovation und Infrastruktur","Wenn Nein, bitte begründen",,FreeText,,,,151,No,
@@ -296,7 +296,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,151,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,151,Yes,
 154,General,"Impactmerkmale - Industrie, Innovation und Infrastruktur",Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",FreeText,,,,151,Yes,
-155,General,"Impactmerkmale - Industrie, Innovation und Infrastruktur",Datenquelle,"Welche Quellen werden genutzt?
+155,General,"Impactmerkmale - Industrie, Innovation und Infrastruktur",Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,151,Yes,
 156,General,Impactmerkmale - Weniger Ungleichheiten,SDG - Weniger Ungleichheiten,"Kann mit der Methodik ein Beitrag zum SDG ""Weniger Ungleichheiten"" gemessen werden?",Yes/No,,,,,,
 "156,1",General,Impactmerkmale - Weniger Ungleichheiten,"Wenn Nein, bitte begründen",,FreeText,,,,156,No,
@@ -306,7 +306,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,156,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,156,Yes,
 159,General,Impactmerkmale - Weniger Ungleichheiten,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",FreeText,,,,156,Yes,
-160,General,Impactmerkmale - Weniger Ungleichheiten,Datenquelle,"Welche Quellen werden genutzt?
+160,General,Impactmerkmale - Weniger Ungleichheiten,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,156,Yes,
 161,General,Impactmerkmale - Nachhaltige Städte und Gemeinden,SDG - Nachhaltige Städte und Gemeinden,"Kann mit der Methodik ein Beitrag zum SDG ""Nachhaltige Städte und Gemeinden"" gemessen werden?",Yes/No,,,,,,
 "161,1",General,Impactmerkmale - Nachhaltige Städte und Gemeinden,"Wenn Nein, bitte begründen",,FreeText,,,,161,No,
@@ -316,7 +316,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,161,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,161,Yes,
 164,General,Impactmerkmale - Nachhaltige Städte und Gemeinden,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",FreeText,,,,161,Yes,
-165,General,Impactmerkmale - Nachhaltige Städte und Gemeinden,Datenquelle,"Welche Quellen werden genutzt?
+165,General,Impactmerkmale - Nachhaltige Städte und Gemeinden,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,161,Yes,
 166,General,Impactmerkmale - Nachhaltiger Konsum und Produktion,SDG - Nachhaliger Konsum und Produktion,"Kann mit der Methodik ein Beitrag zum SDG ""Nachhaliger Konsum und Produktion"" gemessen werden?",Yes/No,,,,,,
 "166,1",General,Impactmerkmale - Nachhaltiger Konsum und Produktion,"Wenn Nein, bitte begründen",,FreeText,,,,166,No,
@@ -326,7 +326,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,166,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,166,Yes,
 169,General,Impactmerkmale - Nachhaltiger Konsum und Produktion,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",FreeText,,,,166,Yes,
-170,General,Impactmerkmale - Nachhaltiger Konsum und Produktion,Datenquelle,"Welche Quellen werden genutzt?
+170,General,Impactmerkmale - Nachhaltiger Konsum und Produktion,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,166,Yes,
 171,General,Impactmerkmale - Maßnahmen zum Klimaschutz,SDG - Maßnahmen zum Klimaschutz,"Kann mit der Methodik ein Beitrag zum SDG ""Maßnahmen zum Klimaschutz"" gemessen werden?",Yes/No,,,,,,
 "171,1",General,Impactmerkmale - Maßnahmen zum Klimaschutz,"Wenn Nein, bitte begründen",,FreeText,,,,171,No,
@@ -336,7 +336,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,171,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,171,Yes,
 174,General,Impactmerkmale - Maßnahmen zum Klimaschutz,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",FreeText,,,,171,Yes,
-175,General,Impactmerkmale - Maßnahmen zum Klimaschutz,Datenquelle,"Welche Quellen werden genutzt?
+175,General,Impactmerkmale - Maßnahmen zum Klimaschutz,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,171,Yes,
 176,General,Impactmerkmale - Leben unter Wasser,SDG - Leben unter Wasser,"Kann mit der Methodik ein Beitrag zum SDG ""Leben unter Wasser"" gemessen werden?",Yes/No,,,,,,
 "176,1",General,Impactmerkmale - Leben unter Wasser,"Wenn Nein, bitte begründen",,FreeText,,,,176,No,
@@ -346,7 +346,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,176,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,176,Yes,
 179,General,Impactmerkmale - Leben unter Wasser,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",FreeText,,,,176,Yes,
-180,General,Impactmerkmale - Leben unter Wasser,Datenquelle,"Welche Quellen werden genutzt?
+180,General,Impactmerkmale - Leben unter Wasser,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,176,Yes,
 181,General,Impactmerkmale - Leben and Land,SDG - Leben an Land,"Kann mit der Methodik ein Beitrag zum SDG ""Leben an Land"" gemessen werden?",Yes/No,,,,,,
 "181,1",General,Impactmerkmale - Leben and Land,"Wenn Nein, bitte begründen",,FreeText,,,,181,No,
@@ -356,7 +356,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,181,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,181,Yes,
 184,General,Impactmerkmale - Leben and Land,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",FreeText,,,,181,Yes,
-185,General,Impactmerkmale - Leben and Land,Datenquelle,"Welche Quellen werden genutzt?
+185,General,Impactmerkmale - Leben and Land,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,181,Yes,
 186,General,"Impactmerkmale - Frieden, Gerechtigkeit und starke Institutionen","SDG - Frieden, Gerechtigkeit und starke Institutionen","Kann mit der Methodik ein Beitrag zum SDG ""Frieden, Gerechtigkeit und starke Institutionen"" gemessen werden?",Yes/No,,,,,,
 "186,1",General,"Impactmerkmale - Frieden, Gerechtigkeit und starke Institutionen","Wenn Nein, bitte begründen",,FreeText,,,,186,No,
@@ -366,7 +366,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,186,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,186,Yes,
 189,General,"Impactmerkmale - Frieden, Gerechtigkeit und starke Institutionen",Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",FreeText,,,,186,Yes,
-190,General,"Impactmerkmale - Frieden, Gerechtigkeit und starke Institutionen",Datenquelle,"Welche Quellen werden genutzt?
+190,General,"Impactmerkmale - Frieden, Gerechtigkeit und starke Institutionen",Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,186,Yes,
 191,General,Impactmerkmale - Partnerschaften zur Erreichung der Ziele,SDG - Partnerschaften zur Erreichung der Ziele,"Kann mit der Methodik ein Beitrag zum SDG ""Partnerschaften zur Erreichung der Ziele"" gemessen werden?",Yes/No,,,,,,
 "191,1",General,Impactmerkmale - Partnerschaften zur Erreichung der Ziele,"Wenn Nein, bitte begründen",,FreeText,,,,191,No,
@@ -376,7 +376,7 @@ Angaben zu den KPIs die zur Messung des SDGs verwendet werden.",FreeText,,,,191,
 Angaben zu dem Vorgang bei der Datenerhebung (z.B. Fragebogen, Interviews, Nutzung der Daten aus Geschäftsberichten)",FreeText,,,,191,Yes,
 194,General,Impactmerkmale - Partnerschaften zur Erreichung der Ziele,Daten Plausibilitätsprüfung,"Wie erfolgt die Datenplausibilisierung?
 Erkennung von Ausreißern (z.B. mithilfe von Benchmarking), Maßnahmen zur Erkennung von unplausiblen Daten z.B. numerische Daten werden verlangt und Text wurde eingetragen",FreeText,,,,191,Yes,
-195,General,Impactmerkmale - Partnerschaften zur Erreichung der Ziele,Datenquelle,"Welche Quellen werden genutzt?
+195,General,Impactmerkmale - Partnerschaften zur Erreichung der Ziele,Datenquellen,"Welche Quellen werden genutzt?
 Angabe von Quellen, zum Beispiel Geschäftsberichte von Unternehmen, Nachhaltigkeitsberichte etc.",Multiple Documents With Descriptions,,,,191,Yes,
 196,General,Implementierung,Angebotene Sprachen,In welchen Sprachen wird das Produkt/Tool/System angeboten?,FreeText,,,,,,
 197,General,Implementierung,Bereitgestellte Dokumentationsarten,Welche Arten von Dokumentationen stellen Sie in welcher Form zur Verfügung?,FreeText,,,,,,

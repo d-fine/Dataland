@@ -16,7 +16,7 @@ data class HeimathafenGeneralMethodik(
     val unabhaengigkeitDerRatings: String? = null,
     val datenerfassung: String? = null,
     val methodikUmfasstUmweltSozialesUndGovernance: String? = null,
-    val datenquelle: List<BaseDataPoint<String>>? = null,
+    val datenquellen: List<BaseDataPoint<String>>? = null,
     val datenPlausibilitaetspruefung: String? = null,
     val intervalleFuerDieDatenaktualisierung: String? = null,
     val zuverlaessigkeitDerMethodikSicherstellen: String? = null,
