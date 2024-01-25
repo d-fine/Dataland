@@ -9,19 +9,28 @@
         />
       </router-link>
     </div>
-
+    <nav class="header__navigation">
+      <router-link to="/" class="header__link" :class="{ 'active-link': isActiveHome }">HOME</router-link>
+      <router-link to="/about" class="header__link" :class="{ 'active-link': isActiveAbout }">ABOUT</router-link>
+    </nav>
     <AuthSection :is-landing-page="true" />
   </header>
 </template>
 
 <script setup lang="ts">
 import AuthSection from "@/components/resources/newLandingPage/AuthSection.vue";
-
+import { useRoute } from "vue-router";
+import { computed } from "vue";
 import type { Page } from "@/types/ContentTypes";
+
+const route = useRoute();
 
 const { landingPage } = defineProps<{
   landingPage?: Page;
 }>();
+
+const isActiveHome = computed(() => route.path === "/");
+const isActiveAbout = computed(() => route.path === "/about");
 </script>
 
 <style lang="scss" scoped>
@@ -46,6 +55,30 @@ const { landingPage } = defineProps<{
       height: auto;
     }
   }
+  &__navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    gap: 2em;
+  }
+
+  &__link {
+    color: var(--basic-dark);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.75px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    &:hover,
+    &.active-link {
+      color: var(--primary-orange);
+      border-bottom: 2px solid var(--primary-orange);
+    }
+  }
 }
 @media only screen and (max-width: $small) {
   .header {
@@ -57,6 +90,9 @@ const { landingPage } = defineProps<{
       img {
         width: 79px;
       }
+    }
+    &__navigation {
+      display: none;
     }
   }
 }

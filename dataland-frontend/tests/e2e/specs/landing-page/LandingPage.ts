@@ -16,14 +16,14 @@ describe("Check that the Landing Page to work properly", () => {
 
     cy.get("a[href='/imprint']").click();
     cy.get("h2:contains('Impressum')");
-    cy.get("a[href='/']").click();
+    cy.get("a[href='/']").eq(0).click();
 
     cy.get("a[href='/dataprivacy']").click();
     cy.get("h1:contains('Datenschutzhinweise')");
-    cy.get("a[href='/']").click();
+    cy.get("a[href='/']").eq(0).click();
 
     cy.get("a[href='/terms']").click();
     cy.get("h1:contains('Allgemeine Bedingungen für die Teilnahme an Dataland')");
-    cy.get("a[href='/']").click();
+    cy.get("a[href='/']").eq(0).click();
   });
 });
