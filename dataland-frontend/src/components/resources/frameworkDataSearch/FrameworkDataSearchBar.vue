@@ -15,7 +15,8 @@
             :suggestions="autocompleteArrayDisplayed"
             optionLabel="companyName"
             :autoOptionFocus="false"
-            placeholder="Search company by name or PermID"
+            :min-length="3"
+            placeholder="Search company by name or identifier (e.g. PermID, LEI, ...)"
             inputClass="h-3rem d-framework-searchbar-input"
             panelClass="d-framework-searchbar-panel"
             style="z-index: 10"
@@ -53,7 +54,6 @@
 import AutoComplete from "primevue/autocomplete";
 import SearchResultHighlighter from "@/components/resources/frameworkDataSearch/SearchResultHighlighter.vue";
 import {
-  type DataSearchStoredCompany,
   getCompanyDataForFrameworkDataSearchPage,
   type FrameworkDataSearchFilterInterface,
 } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
@@ -62,6 +62,7 @@ import type Keycloak from "keycloak-js";
 import { useRoute } from "vue-router";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { type BasicCompanyInformation } from "@clients/backend";
 
 export default defineComponent({
   setup() {
@@ -182,7 +183,7 @@ export default defineComponent({
      * @param event the click event
      * @param event.value the company that was clicked on
      */
-    handleItemSelect(event: { value: DataSearchStoredCompany }) {
+    handleItemSelect(event: { value: BasicCompanyInformation }) {
       const companyIdOfSelectedItem = event.value.companyId;
       void this.$router.push(`/companies/${companyIdOfSelectedItem}`);
     },
@@ -208,7 +209,6 @@ export default defineComponent({
       if (this.emitSearchResultsArray) {
         const resultsArray = await getCompanyDataForFrameworkDataSearchPage(
           this.searchBarInput,
-          false,
           new Set(this.filter?.frameworkFilter),
           new Set(this.filter?.countryCodeFilter),
           new Set(this.filter?.sectorFilter),
@@ -226,7 +226,6 @@ export default defineComponent({
     async searchCompanyName(companyName: { query: string }) {
       this.autocompleteArray = await getCompanyDataForFrameworkDataSearchPage(
         companyName.query,
-        true,
         new Set(this.filter?.frameworkFilter),
         new Set(this.filter?.countryCodeFilter),
         new Set(this.filter?.sectorFilter),

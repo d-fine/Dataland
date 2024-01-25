@@ -61,7 +61,7 @@ import { type ApiClientProvider } from "@/services/ApiClients";
 import { getCountryNameFromCountryCode } from "@/utils/CountryCodeConverter";
 import FrameworkDataSearchDropdownFilter from "@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue";
 import { type DataTypeEnum } from "@clients/backend";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import {
@@ -179,16 +179,21 @@ export default defineComponent({
       const companyDataControllerApi = assertDefined(this.apiClientProvider).backendClients.companyDataController;
 
       const availableSearchFilters = await companyDataControllerApi.getAvailableCompanySearchFilters();
-      this.availableCountries = [...(availableSearchFilters.data.countryCodes ?? [])].map((countryCode) => {
-        return {
-          countryCode: countryCode,
-          displayName: getCountryNameFromCountryCode(countryCode) as string,
-          disabled: false,
-        };
-      });
-      this.availableSectors = [...(availableSearchFilters.data.sectors ?? [])].map((sector) => {
-        return { displayName: sector, disabled: false };
-      });
+      this.availableCountries = [...(availableSearchFilters.data.countryCodes ?? [])]
+        .map((countryCode) => {
+          return {
+            countryCode: countryCode,
+            displayName: getCountryNameFromCountryCode(countryCode) as string,
+            disabled: false,
+          };
+        })
+        .sort((a, b) => a.displayName.localeCompare(b.displayName));
+
+      this.availableSectors = [...(availableSearchFilters.data.sectors ?? [])]
+        .map((sector) => {
+          return { displayName: sector, disabled: false };
+        })
+        .sort((a, b) => a.displayName.localeCompare(b.displayName));
     },
     /**
      * Populates the availableFrameworks property in the format expected by the dropdown filter

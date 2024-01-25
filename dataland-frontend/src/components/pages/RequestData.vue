@@ -247,7 +247,7 @@
         </FormKit>
       </div>
     </TheContent>
-    <TheFooter />
+    <TheFooter :is-light-version="true" :sections="footerContent" />
   </AuthenticationWrapper>
 </template>
 
@@ -261,11 +261,13 @@ import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import TheContent from "@/components/generics/TheContent.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
-import TheFooter from "@/components/generics/TheFooter.vue";
+import TheFooter from "@/components/generics/TheNewFooter.vue";
+import contentData from "@/assets/content.json";
+import type { Content, Page } from "@/types/ContentTypes";
 import MultiSelectFormFieldBindData from "@/components/forms/parts/fields/MultiSelectFormFieldBindData.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { type BulkDataRequestResponse, type BulkDataRequest } from "@clients/communitymanager";
 import FailMessage from "@/components/messages/FailMessage.vue";
 import MessageComponent from "@/components/messages/MessageComponent.vue";
@@ -301,6 +303,9 @@ export default defineComponent({
   },
 
   data() {
+    const content: Content = contentData;
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerContent = footerPage?.sections;
     return {
       bulkDataRequestModel: {},
       availableFrameworks: [] as { value: DataTypeEnum; label: string }[],
@@ -315,6 +320,7 @@ export default defineComponent({
       postBulkDataRequestObjectProcessed: false,
       message: "",
       summary: "",
+      footerContent,
       reportingPeriods: [
         { name: "2023", value: false },
         { name: "2022", value: false },

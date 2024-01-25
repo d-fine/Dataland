@@ -90,7 +90,7 @@ import {
   euTaxonomyKpiInfoMappings,
   euTaxonomyKpiNameMappings,
 } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { AssuranceDataPointValueEnum } from "@clients/backend";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
 import { getFileName, getFileReferenceByFileName } from "@/utils/FileUploadUtils";

@@ -9,7 +9,13 @@ import { FrameworkDefinitions } from "@/frameworks/BaseFrameworkRegistryImports"
  * @returns the framework definition if it exists
  */
 export function getBaseFrameworkDefinition(identifier: string): BaseFrameworkDefinition<object> | undefined {
-  return FrameworkDefinitions[identifier];
+  for (const key in FrameworkDefinitions) {
+    const frameworkDefinition = FrameworkDefinitions[key];
+    if (frameworkDefinition.identifier === identifier) {
+      return frameworkDefinition;
+    }
+  }
+  return undefined;
 }
 
 /**

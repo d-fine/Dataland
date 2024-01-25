@@ -20,7 +20,7 @@
         </div>
       </DatasetsTabMenu>
     </TheContent>
-    <TheFooter />
+    <TheFooter :is-light-version="true" :sections="footerContent" />
   </AuthenticationWrapper>
 </template>
 
@@ -29,7 +29,9 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import { defineComponent, inject } from "vue";
-import TheFooter from "@/components/generics/TheFooter.vue";
+import TheFooter from "@/components/generics/TheNewFooter.vue";
+import contentData from "@/assets/content.json";
+import type { Content, Page } from "@/types/ContentTypes";
 import DatasetOverviewTable from "@/components/resources/datasetOverview/DatasetOverviewTable.vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
@@ -50,10 +52,14 @@ export default defineComponent({
     DatasetOverviewTable,
   },
   data() {
+    const content: Content = contentData;
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerContent = footerPage?.sections;
     return {
       datasetTableInfos: [] as DatasetTableInfo[],
       waitingForData: true,
       hasUserUploaderRights: undefined,
+      footerContent,
     };
   },
   setup() {
