@@ -1,6 +1,6 @@
 import ViewFrameworkBase from "@/components/generics/ViewFrameworkBase.vue";
 import { type DataMetaInformation, DataTypeEnum } from "@clients/backend";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 

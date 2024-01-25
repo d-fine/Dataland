@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { computed, inject, onBeforeMount, ref } from "vue";
 import { DataTypeEnum } from "@clients/backend";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import type Keycloak from "keycloak-js";

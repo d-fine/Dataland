@@ -34,7 +34,7 @@ import { defineComponent } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import DataPointDataTableInModal from "@/components/general/DataPointDataTableInModal.vue";
 
 export default defineComponent({
