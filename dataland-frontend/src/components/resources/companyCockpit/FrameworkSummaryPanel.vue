@@ -123,38 +123,27 @@ function onCursorLeaveProvideButton(): void {
 </script>
 
 <style scoped lang="scss">
-.summary-panel {
+.summary-panel,
+.summary-panel--interactive {
   width: 100%;
-  max-width: 339px;
-  height: 282px;
   background-color: var(--surface-card);
-  padding: 24px;
-  border-radius: 8px;
+  padding: $spacing-md;
+  border-radius: $radius-xxs;
   text-align: left;
-  box-shadow: 0 0 12px #9494943d;
+  box-shadow: 0 0 12px var(--gray-300);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 282px;
 
-  @media only screen and (min-width: $small) {
-    &--interactive {
-      width: 339px;
-      height: 282px;
-      background-color: var(--surface-card);
-      padding: 24px;
-      border-radius: 8px;
-      text-align: left;
-      box-shadow: 0 0 12px #9494943d;
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-      justify-content: space-between;
+  @media only screen and (max-width: $small) {
+  }
 
-      &:hover {
-        box-shadow: 0 0 32px 8px #1e1e1e14;
-        .summary-panel__separator {
-          border-bottom-color: var(--primary-color);
-        }
+  &--interactive {
+    &:hover {
+      box-shadow: 0 0 32px 8px #1e1e1e14;
+      .summary-panel__separator {
+        border-bottom-color: var(--primary-color);
       }
     }
   }
