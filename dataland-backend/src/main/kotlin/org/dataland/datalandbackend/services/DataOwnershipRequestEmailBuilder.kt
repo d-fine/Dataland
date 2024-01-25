@@ -36,6 +36,7 @@ class DataOwnershipRequestEmailBuilder(
      */
     fun buildDataOwnershipRequest(
         companyId: String,
+        companyName: String,
         userAuthentication: DatalandAuthentication,
         comment: String?,
     ): Email {
@@ -51,6 +52,7 @@ class DataOwnershipRequestEmailBuilder(
                     "Environment" to proxyPrimaryUrl,
                     "User" to buildUserInfo(userAuthentication),
                     "Company (Dataland ID)" to companyId,
+                    "Company Name" to companyName,
                     "Comment" to comment,
                 ),
             ),

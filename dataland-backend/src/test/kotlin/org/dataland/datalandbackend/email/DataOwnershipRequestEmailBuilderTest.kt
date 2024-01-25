@@ -16,6 +16,7 @@ class DataOwnershipRequestEmailBuilderTest {
     private val ccEmails = listOf("cc1@dataland.com")
     private val environment = "test.dataland.com"
     private val companyId = "8"
+    private val companyName = "Test Inc."
     private val comment = "This is a comment"
 
     @Test
@@ -31,6 +32,7 @@ class DataOwnershipRequestEmailBuilderTest {
             semicolonSeparatedCcEmails = ccEmails.joinToString(";"),
         ).buildDataOwnershipRequest(
             companyId,
+            companyName,
             mockAuthentication,
             comment,
         )
@@ -40,6 +42,7 @@ class DataOwnershipRequestEmailBuilderTest {
             "Environment" to environment,
             "User" to "User ${mockAuthentication.username} (Keycloak ID: ${mockAuthentication.userId})",
             "Company (Dataland ID)" to companyId,
+            "Company Name" to companyName,
             "Comment" to comment,
         ).forEach {
             assertTrue(email.content.textContent.contains("${it.key}: ${it.value}"))

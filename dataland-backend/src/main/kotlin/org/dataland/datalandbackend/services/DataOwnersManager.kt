@@ -178,10 +178,13 @@ class DataOwnersManager(
         userAuthentication: DatalandAuthentication,
         comment: String?,
     ) {
-        if (userAuthentication !is DatalandJwtAuthentication) {
-            throw AuthenticationMethodNotSupportedException()
-        }
-        checkIfCompanyIsValid(companyId)
+        assertAuthenticationViaJwtToken(userAuthentication)
+        val companyName = companyRepository.findById(companyId).getOrElse {
+            throw ResourceNotFoundApiException(
+                "Company is invalid",
+                "There is no company corresponding to the provided Id $companyId stored on Dataland.",
+            )
+        }.companyName
         if (
             dataOwnerRepository.findById(companyId).getOrNull()?.dataOwners?.contains(userAuthentication.userId) == true
         ) {
@@ -191,7 +194,18 @@ class DataOwnersManager(
             )
         }
         emailSender.sendEmail(
-            dataOwnershipRequestEmailBuilder.buildDataOwnershipRequest(companyId, userAuthentication, comment),
+            dataOwnershipRequestEmailBuilder.buildDataOwnershipRequest(
+                companyId,
+                companyName,
+                userAuthentication,
+                comment,
+            ),
         )
+    }
+
+    private fun assertAuthenticationViaJwtToken(userAuthentication: DatalandAuthentication) {
+        if (userAuthentication !is DatalandJwtAuthentication) {
+            throw AuthenticationMethodNotSupportedException()
+        }
     }
 }
