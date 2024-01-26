@@ -182,7 +182,7 @@ class DataRequestManager(
         dataRequestCompanyIdentifierValue: String?,
     ): List<StoredDataRequest>? {
         var result = dataRequestRepository.findAll()
-        fun updateResult(otherList: List<DataRequestEntity>){
+        fun updateResult(otherList: List<DataRequestEntity>) {
             result = result.intersect(otherList.toSet()).toMutableList()
         }
 
