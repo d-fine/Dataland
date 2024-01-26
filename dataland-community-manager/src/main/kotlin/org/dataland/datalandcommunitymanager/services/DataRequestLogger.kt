@@ -28,9 +28,10 @@ class DataRequestLogger {
     /**
      * Logs an appropriate message when a single data request has happened.
      */
-    fun logMessageForSingleDataRequest(dataRequestId: String) {
+    fun logMessageForSingleDataRequest(companyIdentifier: String) {
         logger.info(
-            "Received a single data request by a user. -> Processing it with dataRequestId $dataRequestId",
+            "Received a single data request with companyIdentifier $companyIdentifier by a user. " +
+                    "-> Processing it",
         )
     }
 

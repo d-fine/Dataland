@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.repositories
 
 import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -16,7 +17,10 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @returns a list with all data request for that user
      */
     fun findByUserId(userId: String): List<DataRequestEntity>
-
+    fun findByDataTypeName(dataTypeName: String): List<DataRequestEntity>
+    fun findByReportingPeriod(reportingPeriod: String): List<DataRequestEntity>
+    fun findByRequestStatus(requestStatus: RequestStatus): List<DataRequestEntity>
+    fun findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue: String): List<DataRequestEntity>
     /** This method checks if a data request with the provided params already exists in the database.
      * @param userId to check for
      * @param dataRequestCompanyIdentifierValue to check for
