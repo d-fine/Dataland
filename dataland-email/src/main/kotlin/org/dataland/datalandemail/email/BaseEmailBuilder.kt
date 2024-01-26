@@ -174,7 +174,7 @@ abstract class BaseEmailBuilder(
                 subject,
                 textTitle,
                 htmlTitle,
-                properties
+                properties,
             ),
         )
     }

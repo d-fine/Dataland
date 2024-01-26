@@ -1,8 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandemail.email.BaseEmailBuilder
 import org.dataland.datalandemail.email.Email
-import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
