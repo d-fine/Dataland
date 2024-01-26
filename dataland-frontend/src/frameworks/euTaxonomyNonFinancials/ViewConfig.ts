@@ -103,7 +103,10 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             explanation: "Grade of the substantial contribution criterion fulfillment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.revenue?.revenue?.substantialContributionToClimateChangeMitigation, ""),
+              formatNumberForDatatable(
+                dataset.revenue?.revenue?.substantialContributionToClimateChangeMitigation,
+                "Percent",
+              ),
           },
           {
             type: "cell",
@@ -111,7 +114,10 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             explanation: "Grade of the substantial contribution criterion fulfillment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.revenue?.revenue?.substantialContributionToClimateChangeAdaptation, ""),
+              formatNumberForDatatable(
+                dataset.revenue?.revenue?.substantialContributionToClimateChangeAdaptation,
+                "Percent",
+              ),
           },
           {
             type: "cell",
@@ -121,7 +127,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.revenue?.revenue?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
-                "",
+                "Percent",
               ),
           },
           {
@@ -132,7 +138,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.revenue?.revenue?.substantialContributionToTransitionToACircularEconomy,
-                "",
+                "Percent",
               ),
           },
           {
@@ -143,7 +149,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.revenue?.revenue?.substantialContributionToPollutionPreventionAndControl,
-                "",
+                "Percent",
               ),
           },
           {
@@ -154,7 +160,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.revenue?.revenue?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
-                "",
+                "Percent",
               ),
           },
           {
@@ -182,7 +188,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
               "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities that enable reduction of GHG in other sectors",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.revenue?.revenue?.enablingRevenue, ""),
+              formatNumberForDatatable(dataset.revenue?.revenue?.enablingRevenue, "Percent"),
           },
           {
             type: "cell",
@@ -191,7 +197,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
               "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities with significantly lower GHG emissions than the sector or industry average",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.revenue?.revenue?.transitionalRevenue, ""),
+              formatNumberForDatatable(dataset.revenue?.revenue?.transitionalRevenue, "Percent"),
           },
         ],
       },
@@ -242,7 +248,10 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             explanation: "Grade of the substantial contribution criterion fulfillment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.capex?.capex?.substantialContributionToClimateChangeMitigation, ""),
+              formatNumberForDatatable(
+                dataset.capex?.capex?.substantialContributionToClimateChangeMitigation,
+                "Percent",
+              ),
           },
           {
             type: "cell",
@@ -250,7 +259,10 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             explanation: "Grade of the substantial contribution criterion fulfillment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.capex?.capex?.substantialContributionToClimateChangeAdaptation, ""),
+              formatNumberForDatatable(
+                dataset.capex?.capex?.substantialContributionToClimateChangeAdaptation,
+                "Percent",
+              ),
           },
           {
             type: "cell",
@@ -260,7 +272,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.capex?.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
-                "",
+                "Percent",
               ),
           },
           {
@@ -269,7 +281,10 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             explanation: "Grade of the substantial contribution criterion fulfillment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.capex?.capex?.substantialContributionToTransitionToACircularEconomy, ""),
+              formatNumberForDatatable(
+                dataset.capex?.capex?.substantialContributionToTransitionToACircularEconomy,
+                "Percent",
+              ),
           },
           {
             type: "cell",
@@ -279,7 +294,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.capex?.capex?.substantialContributionToPollutionPreventionAndControl,
-                "",
+                "Percent",
               ),
           },
           {
@@ -290,7 +305,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.capex?.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
-                "",
+                "Percent",
               ),
           },
           {
@@ -318,7 +333,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
               "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities that enable reduction of GHG in other sectors",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.capex?.capex?.enablingCapex, ""),
+              formatNumberForDatatable(dataset.capex?.capex?.enablingCapex, "Percent"),
           },
           {
             type: "cell",
@@ -327,7 +342,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
               "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.capex?.capex?.transitionalCapex, ""),
+              formatNumberForDatatable(dataset.capex?.capex?.transitionalCapex, "Percent"),
           },
         ],
       },
@@ -378,7 +393,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             explanation: "Grade of the substantial contribution criterion fulfillment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.opex?.opex?.substantialContributionToClimateChangeMitigation, ""),
+              formatNumberForDatatable(dataset.opex?.opex?.substantialContributionToClimateChangeMitigation, "Percent"),
           },
           {
             type: "cell",
@@ -386,7 +401,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             explanation: "Grade of the substantial contribution criterion fulfillment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.opex?.opex?.substantialContributionToClimateChangeAdaptation, ""),
+              formatNumberForDatatable(dataset.opex?.opex?.substantialContributionToClimateChangeAdaptation, "Percent"),
           },
           {
             type: "cell",
@@ -396,7 +411,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.opex?.opex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
-                "",
+                "Percent",
               ),
           },
           {
@@ -405,7 +420,10 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             explanation: "Grade of the substantial contribution criterion fulfillment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.opex?.opex?.substantialContributionToTransitionToACircularEconomy, ""),
+              formatNumberForDatatable(
+                dataset.opex?.opex?.substantialContributionToTransitionToACircularEconomy,
+                "Percent",
+              ),
           },
           {
             type: "cell",
@@ -413,7 +431,10 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             explanation: "Grade of the substantial contribution criterion fulfillment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.opex?.opex?.substantialContributionToPollutionPreventionAndControl, ""),
+              formatNumberForDatatable(
+                dataset.opex?.opex?.substantialContributionToPollutionPreventionAndControl,
+                "Percent",
+              ),
           },
           {
             type: "cell",
@@ -423,7 +444,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.opex?.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
-                "",
+                "Percent",
               ),
           },
           {
@@ -451,7 +472,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
               "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities that enable reduction of GHG in other sectors",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.opex?.opex?.enablingOpex, ""),
+              formatNumberForDatatable(dataset.opex?.opex?.enablingOpex, "Percent"),
           },
           {
             type: "cell",
@@ -460,7 +481,7 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
               "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.opex?.opex?.transitionalOpex, ""),
+              formatNumberForDatatable(dataset.opex?.opex?.transitionalOpex, "Percent"),
           },
         ],
       },

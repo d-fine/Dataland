@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
+import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -9,7 +10,6 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkU
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
-import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
 
@@ -21,8 +21,18 @@ open class SingleSelectComponent(
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
 
+    /**
+     * The UploadMode of a SingleSelectComponent determines the form element styling for the upload
+     * page (i.e., dropdown or radio buttons?)
+     */
+    enum class UploadMode(val component: String) {
+        Dropdown("SingleSelectFormField"),
+        RadioButtons("RadioButtonsFormField"),
+    }
+
     var options: Set<SelectionOption> = mutableSetOf()
-    val enumName = "${identifier.capitalizeEn()}Options"
+    var enumName = "${camelCaseComponentIdentifier}Options"
+    var uploadMode: UploadMode = UploadMode.Dropdown
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val enum = dataClassBuilder.parentPackage.addEnum(
@@ -61,13 +71,14 @@ open class SingleSelectComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             frameworkUploadOptions = FrameworkUploadOptions(
                 body = generateTsCodeForOptionsOfSelectionFormFields(this.options),
                 imports = null,
             ),
             component = this,
-            uploadComponentName = "SingleSelectFormField",
+            uploadComponentName = uploadMode.component,
         )
     }
 

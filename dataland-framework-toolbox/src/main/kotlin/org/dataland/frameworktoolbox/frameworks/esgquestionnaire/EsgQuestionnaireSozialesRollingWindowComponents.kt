@@ -29,8 +29,8 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
                 "auswirkungenAufAnteilBefristerVertraegeUndFluktuation",
             ) {
                 label = "Auswirkungen auf Anteil befrister Verträge und Fluktuation"
-                explanation = "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die" +
-                    " letzten drei Jahre an."
+                uploadPageExplanation = "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation" +
+                    " (%) für die letzten drei Jahre an."
                 decimalRows = mutableListOf(
                     EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "anzahlDerBefristetenVertraege",
@@ -59,8 +59,8 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
                 "budgetFuerSchulungAusbildung",
             ) {
                 label = "Budget für Schulung/Ausbildung"
-                explanation = "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für " +
-                    "Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde."
+                uploadPageExplanation = "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und " +
+                    "Jahr für Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde."
                 decimalRows = mutableListOf(
                     EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "budgetProMitarbeiter",
@@ -83,8 +83,8 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
                 "budgetFuerSchulungAusbildung",
             ) {
                 label = "Unfallrate"
-                explanation = "Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten " +
-                    "drei Jahre?"
+                uploadPageExplanation = "Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust " +
+                    "für die letzten drei Jahre?"
                 decimalRows = mutableListOf(
                     EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust",
@@ -110,7 +110,7 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
                 "massnahmenZurVerbesserungDerEinkommensungleichheit",
             ) {
                 label = "Überwachung der Einkommensungleichheit"
-                explanation = "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das " +
+                uploadPageExplanation = "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das " +
                     "Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für" +
                     " die letzten drei Jahre an."
                 decimalRows = mutableListOf(

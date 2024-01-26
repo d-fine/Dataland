@@ -122,7 +122,10 @@ sonar {
                 "dataland-frontend/src/frameworks/heimathafen/UploadConfig.ts," +
 
                 // backend
-                "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt,",
+                "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
+                "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts",
         )
         property(
             "sonar.exclusions",
@@ -137,6 +140,8 @@ sonar {
                 "dataland-frontend/src/components/resources/aboutPage/**," +
                 "dataland-frontend/src/components/resources/newLandingPage/**," +
                 "dataland-frontend/src/components/pages/AboutPage.vue," +
+                "dataland-frontend/src/components/generics/TheNewFooter.vue," +
+                "dataland-frontend/tests/e2e/fixtures/frameworks/sfdr/SfdrDataFixtures.ts," +
                 "dataland-frontend/src/components/generics/TheNewFooter.vue," +
 
                 // frontend fixtures

@@ -8,16 +8,29 @@ import java.math.BigDecimal
  */
 data class EutaxonomynonfinancialsCapexCapex(
     val totalCapex: BigDecimal? = null,
+
     val eligibleCapex: BigDecimal? = null,
+
     val alignedCapex: BigDecimal? = null,
+
     val substantialContributionToClimateChangeMitigation: BigDecimal? = null,
+
     val substantialContributionToClimateChangeAdaptation: BigDecimal? = null,
+
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: BigDecimal? = null,
+
     val substantialContributionToTransitionToACircularEconomy: BigDecimal? = null,
+
     val substantialContributionToPollutionPreventionAndControl: BigDecimal? = null,
+
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: BigDecimal? = null,
+
     val nonAlignedCapex: BigDecimal? = null,
+
     val nonEligibleCapex: BigDecimal? = null,
+
     val enablingCapex: BigDecimal? = null,
+
     val transitionalCapex: BigDecimal? = null,
+
 )

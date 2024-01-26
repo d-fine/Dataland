@@ -1,7 +1,9 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -27,6 +29,14 @@ class YesNoNaComponent(
                 ),
                 label, getTypescriptFieldAccessor(),
             ),
+        )
+    }
+
+    override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        uploadCategoryBuilder.addStandardUploadConfigCell(
+            component = this,
+            uploadComponentName = "YesNoNaFormField",
         )
     }
 

@@ -3,9 +3,11 @@ import { type BaseFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 import esgQuestionnaireBaseFrameworkDefinition from "@/frameworks/esg-questionnaire/BaseFrameworkDefinition";
 import eutaxonomynonfinancialsBaseFrameworkDefinition from "@/frameworks/euTaxonomyNonFinancials/BaseFrameworkDefinition";
 import heimathafenBaseFrameworkDefinition from "@/frameworks/heimathafen/BaseFrameworkDefinition";
+import sfdrBaseFrameworkDefinition from "@/frameworks/sfdr/BaseFrameworkDefinition";
 
 export const FrameworkDefinitions: Record<string, BaseFrameworkDefinition<object>> = {
   esgQuestionnaire: esgQuestionnaireBaseFrameworkDefinition,
   eutaxonomynonfinancials: eutaxonomynonfinancialsBaseFrameworkDefinition,
   heimathafen: heimathafenBaseFrameworkDefinition,
+  sfdr: sfdrBaseFrameworkDefinition,
 };

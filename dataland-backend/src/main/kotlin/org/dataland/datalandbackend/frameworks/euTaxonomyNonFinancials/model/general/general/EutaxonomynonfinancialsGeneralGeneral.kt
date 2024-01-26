@@ -10,7 +10,11 @@ import java.time.LocalDate
  */
 data class EutaxonomynonfinancialsGeneralGeneral(
     val reportingPeriod: LocalDate,
+
     val fiscalYearEnd: LocalDate,
+
     val euTaxonomyActivityLevelReporting: BaseDataPoint<YesNo>? = null,
+
     val nfrdMandatory: YesNo? = null,
+
 )
