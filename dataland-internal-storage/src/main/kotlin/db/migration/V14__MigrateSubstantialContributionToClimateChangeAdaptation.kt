@@ -23,7 +23,7 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaptation : BaseJavaMig
     /**
      * Migrates substantialContributionToClimateChangeAdaption field to substantialContributionToClimateChangeAdaptation
      */
-    fun migrateSubstantialContributionToClimateChangeAdaption(dataTableEntity: DataTableEntity) {
+    fun migrateSubstantialContributionToClimateChangeAdaptation(dataTableEntity: DataTableEntity) {
         val companyAssociatedDatasetAsString = dataTableEntity.companyAssociatedData
         val euTaxoDataset = JSONObject(companyAssociatedDatasetAsString.getString("data"))
         val euTaxoDataset2 = euTaxoDataset.getOrJavaNull("data") as JSONObject
@@ -55,7 +55,7 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaptation : BaseJavaMig
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
             context, "eutaxonomy-non-financials",
-            this::migrateSubstantialContributionToClimateChangeAdaption,
+            this::migrateSubstantialContributionToClimateChangeAdaptation,
         )
     }
 }
