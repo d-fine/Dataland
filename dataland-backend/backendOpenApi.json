@@ -492,75 +492,6 @@
         ]
       }
     },
-    "/data/gdv": {
-      "post": {
-        "tags": [
-          "gdv-data-controller"
-        ],
-        "operationId": "postCompanyAssociatedGdvData",
-        "parameters": [
-          {
-            "name": "bypassQa",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompanyAssociatedDataGdvData"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully added data to the data store.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DataMetaInformation"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/eutaxonomy-non-financials": {
       "post": {
         "tags": [
@@ -699,13 +630,82 @@
         ]
       }
     },
+    "/data/esg-questionnaire": {
+      "post": {
+        "tags": [
+          "esg-questionnaire-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedEsgQuestionnaireData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataEsgQuestionnaireData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies": {
       "get": {
         "tags": [
           "company-data-controller"
         ],
-        "summary": "Retrieve specific companies with framework data by different filters or just all companies from the data store.",
-        "description": "Companies with associated framework data identified via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
+        "summary": "Retrieve just the basic information about specific companies with approved framework data by different filters.",
+        "description": "The basic information about companies with associated approved framework data identified via the provided company name/identifier are retrieved and filtered by countryCode, sector and available framework data. Empty/Unspecified filters are ignored.",
         "operationId": "getCompanies",
         "parameters": [
           {
@@ -751,33 +751,17 @@
                 "type": "string"
               }
             }
-          },
-          {
-            "name": "onlyCompanyNames",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "onlyWithDataFromCurrentUser",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved companies.",
+            "description": "Successfully retrieved basic company information.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StoredCompany"
+                    "$ref": "#/components/schemas/BasicCompanyInformation"
                   }
                 }
               }
@@ -1182,6 +1166,69 @@
           },
           "404": {
             "description": "Successfully checked that identifier does not exist."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}/uploads": {
+      "get": {
+        "tags": [
+          "user-uploads-controller"
+        ],
+        "summary": "Retrieve an augmented dataset meta information uploaded by a specific user.",
+        "description": "Retrieve an augmented dataset meta information uploaded by a specific user for the \"My Datasets\" page.",
+        "operationId": "getUserUploadsDataMetaInformation",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved augmented dataset meta information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataMetaInformationForMyDatasets"
+                  }
+                }
+              }
+            }
           },
           "default": {
             "description": "An error occurred",
@@ -2001,142 +2048,6 @@
         ]
       }
     },
-    "/data/gdv/{dataId}": {
-      "get": {
-        "tags": [
-          "gdv-data-controller"
-        ],
-        "operationId": "getCompanyAssociatedGdvData",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved data set.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataGdvData"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/gdv/companies/{companyId}": {
-      "get": {
-        "tags": [
-          "gdv-data-controller"
-        ],
-        "operationId": "getAllCompanyGdvData",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "showOnlyActive",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "boolean",
-              "default": true
-            }
-          },
-          {
-            "name": "reportingPeriod",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved framework datasets with meta info.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DataAndMetaInformationGdvData"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/eutaxonomy-non-financials/{dataId}": {
       "get": {
         "tags": [
@@ -2373,6 +2284,142 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationEuTaxonomyDataForFinancials"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/esg-questionnaire/{dataId}": {
+      "get": {
+        "tags": [
+          "esg-questionnaire-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedEsgQuestionnaireData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEsgQuestionnaireData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/esg-questionnaire/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "esg-questionnaire-data-controller"
+        ],
+        "operationId": "getAllCompanyEsgQuestionnaireData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationEsgQuestionnaireData"
                   }
                 }
               }
@@ -8271,1763 +8318,6 @@
           "MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities"
         ]
       },
-      "AnreizmechanismenFuerDasManagementSozialesOptions": {
-        "type": "string",
-        "enum": [
-          "Nein",
-          "JaAufsichtsrat",
-          "JaGeschaeftsleitung",
-          "JaAufsichtsratUndGeschaeftsleitung"
-        ]
-      },
-      "AnreizmechanismenFuerDasManagementUmweltOptions": {
-        "type": "string",
-        "enum": [
-          "Nein",
-          "JaAufsichtsrat",
-          "JaGeschaeftsleitung",
-          "JaAufsichtsratUndGeschaeftsleitung"
-        ]
-      },
-      "ArtDesAuditsOptions": {
-        "type": "string",
-        "enum": [
-          "InterneAnhoerung",
-          "PruefungDurchDritte",
-          "SowohlInternAlsAuchVonDrittanbietern"
-        ]
-      },
-      "AuflistungDerSektorenOptions": {
-        "type": "string",
-        "enum": [
-          "ALandwirtschaftForstwirtschaftUndFischerei",
-          "BBergbauUndGewinnungVonSteinenUndErden",
-          "CVerarbeitendesGewerbeHerstellungVonWaren",
-          "DEnergieversorgung",
-          "EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen",
-          "FBaugewerbeBau",
-          "GHandelInstandhaltungUndReparaturVonKraftfahrzeugen",
-          "HVerkehrUndLagerhaltung",
-          "LGrundstuecksUndWohnungswesen"
-        ]
-      },
-      "AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues": {
-        "type": "object",
-        "properties": {
-          "anzahlDerBefristetenVertraege": {
-            "type": "number",
-            "nullable": true
-          },
-          "fluktuation": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "BaseDataPointString": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDocumentReference"
-              }
-            ]
-          }
-        }
-      },
-      "BerichterstattungAbfallproduktionValues": {
-        "type": "object",
-        "properties": {
-          "gesamteAbfallmenge": {
-            "type": "number",
-            "nullable": true
-          },
-          "prozentAbfallRecyclet": {
-            "type": "number",
-            "nullable": true
-          },
-          "prozentGefaehrlicherAbfall": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "BerichterstattungEinnahmenAusFossilenBrennstoffenValues": {
-        "type": "object",
-        "properties": {
-          "prozentDerEinnahmenAusFossilenBrennstoffen": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "BerichterstattungEnergieverbrauchValues": {
-        "type": "object",
-        "properties": {
-          "energieverbrauch": {
-            "type": "number",
-            "nullable": true
-          },
-          "prozentDesVerbrauchsErneuerbarerEnergien": {
-            "type": "number",
-            "nullable": true
-          },
-          "ggfProzentDerErneuerbarenEnergieerzeugung": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues": {
-        "type": "object",
-        "properties": {
-          "engagementAnteilInEnergieineffizientenImmobilienanlagen": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "BerichterstattungWasserverbrauchValues": {
-        "type": "object",
-        "properties": {
-          "wasserverbrauch": {
-            "type": "number",
-            "nullable": true
-          },
-          "emissionenInWasser": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "BudgetFuerSchulungAusbildungValues": {
-        "type": "object",
-        "properties": {
-          "budgetProMitarbeiter": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "CompanyAssociatedDataGdvData": {
-        "required": [
-          "companyId",
-          "data",
-          "reportingPeriod"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/GdvData"
-          }
-        },
-        "example": "{\n  \"companyId\": \"string\",\n  \"reportingPeriod\": \"2022\",\n  \"data\": {\n    \"general\": {\n      \"masterData\": {\n        \"berichtspflichtUndEinwilligungZurVeroeffentlichung\": \"Yes\",\n        \"gueltigkeitsDatum\": \"2022-12-31\"\n      }\n    },\n    \"allgemein\": {\n      \"esgZiele\": {\n        \"existenzVonEsgZielen\": \"Yes\",\n        \"beschreibungDerEsgZiele\": \"Transitioning to energy consumption from 100% renewable resources\",\n        \"investitionenInZielerreichung\": \"50000 EUR\"\n      },\n      \"sektoren\": {\n        \"sektorenMitHohenKlimaauswirkungen\": \"Yes\",\n        \"auflistungDerSektoren\": [\n          \"GHandelInstandhaltungUndReparaturVonKraftfahrzeugen\",\n          \"LGrundstuecksUndWohnungswesen\"\n        ]\n      },\n      \"esgBerichte\": {\n        \"nachhaltigkeitsberichte\": \"Yes\",\n        \"frequenzDerBerichterstattung\": \"Halbjaehrlich\",\n        \"aktuelleBerichte\": [\n          {\n            \"value\": \"Bayer Geschäftsbericht 2022\",\n            \"dataSource\": {\n              \"fileName\": \"Bayer-Geschaeftsbericht-2022\",\n              \"fileReference\": \"3bbdc1879acbc211af4b87a8593cfd7523adedd7100ca59326df05f8adbfe881\"\n            }\n          }\n        ]\n      },\n      \"akkreditierungen\": {\n        \"iso14001\": {\n          \"value\": \"Yes\",\n          \"dataSource\": {\n            \"fileName\": \"\",\n            \"fileReference\": \"\"\n          }\n        },\n        \"iso45001\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"iso27001\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"iso50001\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"weitereAkkreditierungen\": [\n          {\n            \"value\": \"Data quality\",\n            \"dataSource\": {\n              \"fileName\": \"Data_Quality_1_28_2019_FINAL_1\",\n              \"fileReference\": \"21567034fc692753175270d7eadeb135e9e885c77f71b79358a1fb897d992a7d\"\n            }\n          }\n        ]\n      },\n      \"unGlobalConceptPrinzipien\": {\n        \"mechanismenZurUeberwachungDerEinhaltungDerUngcp\": \"No\",\n        \"richtlinienZurEinhaltungDerUngcp\": null,\n        \"erklaerungDerEinhaltungDerUngcp\": null\n      },\n      \"oecdLeitsaetze\": {\n        \"mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze\": \"Yes\",\n        \"richtlinienZurEinhaltungDerOecdLeitsaetze\": [\n          {\n            \"value\": \"Annual report\",\n            \"dataSource\": {\n              \"fileName\": \"Bayer-Geschaeftsbericht-2022\",\n              \"fileReference\": \"3bbdc1879acbc211af4b87a8593cfd7523adedd7100ca59326df05f8adbfe881\"\n            }\n          }\n        ],\n        \"erklaerungDerEinhaltungDerOecdLeitsaetze\": \"Erklärung der Einhaltung\"\n      },\n      \"sonstige\": {\n        \"ausrichtungAufDieUnSdgsUndAktivesVerfolgen\": \"n/a\",\n        \"ausschlusslistenAufBasisVonEsgKriterien\": \"Yes\",\n        \"ausschlusslisten\": \"controversial weapons, tobacco, alcohol, gambling, adult entertainment, fossil fuels\"\n      },\n      \"fuehrungsstandards\": {\n        \"oekologischeSozialeFuehrungsstandardsOderPrinzipien\": \"Yes\",\n        \"anreizmechanismenFuerDasManagementUmwelt\": \"JaGeschaeftsleitung\",\n        \"anreizmechanismenFuerDasManagementSoziales\": \"JaAufsichtsrat\"\n      },\n      \"rechtsstreitigkeiten\": {\n        \"esgBezogeneRechtsstreitigkeiten\": \"Yes\",\n        \"rechtsstreitigkeitenMitBezugZuE\": \"Yes\",\n        \"statusZuE\": \"Geklaert\",\n        \"einzelheitenZuDenRechtsstreitigkeitenZuE\": \"Wasserverschmutzung\",\n        \"rechtsstreitigkeitenMitBezugZuS\": \"No\",\n        \"statusZuS\": null,\n        \"einzelheitenZuDenRechtsstreitigkeitenZuS\": null,\n        \"rechtsstreitigkeitenMitBezugZuG\": \"No\",\n        \"statusZuG\": null,\n        \"einzelheitenZuDenRechtsstreitigkeitenZuG\": null\n      },\n      \"rating\": {\n        \"esgRating\": \"Yes\",\n        \"agentur\": \"MSCI\",\n        \"ergebnis\": \"A\",\n        \"ratingbericht\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"kritischePunkte\": \"n/a\"\n      },\n      \"anleihen\": {\n        \"grueneSozialeUndOderNachhaltigeEmissionen\": \"Yes\",\n        \"ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen\": 10000,\n        \"sustainibilityLinkedDebt\": \"Yes\",\n        \"ausstehendeSustainibilityLinkedDebt\": 20000\n      },\n      \"risiken\": {\n        \"wichtigsteESUndGRisikenUndBewertung\": \"Risiken und Bewertung\",\n        \"hindernisseBeimUmgangMitEsgBedenken\": \"Hindernisse 1, Hindernisse 2\"\n      }\n    },\n    \"umwelt\": {\n      \"treibhausgasemissionen\": {\n        \"treibhausgasBerichterstattungUndPrognosen\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            },\n            \"2020\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            },\n            \"2021\": {\n              \"scope1\": 305000,\n              \"scope2\": 51900,\n              \"scope3\": 223000\n            },\n            \"2022\": {\n              \"scope1\": 351000,\n              \"scope2\": 195000,\n              \"scope3\": 405000\n            },\n            \"2023\": {\n              \"scope1\": 293000,\n              \"scope2\": 318000,\n              \"scope3\": 561000\n            },\n            \"2024\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            },\n            \"2025\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            }\n          }\n        },\n        \"treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird\": \"223000\",\n        \"strategieUndZieleZurReduzierungVonTreibhausgasEmissionen\": \"Strategie und Ziele\"\n      },\n      \"produktion\": {\n        \"produkteZurVerringerungDerUmweltbelastung\": \"Yes\",\n        \"verringerungenDerUmweltbelastung\": null,\n        \"oekologischerMindestStandardFuerProduktionsprozesse\": \"No\"\n      },\n      \"energieverbrauch\": {\n        \"berichterstattungEnergieverbrauch\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2020\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2021\": {\n              \"energieverbrauch\": 195000,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": 25,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2022\": {\n              \"energieverbrauch\": 561000,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": 70,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2023\": {\n              \"energieverbrauch\": 51900,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": 100,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": 5\n            },\n            \"2024\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2025\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglEnergieverbrauch\": null\n      },\n      \"energieeffizienzImmobilienanlagen\": {\n        \"berichterstattungEnergieverbrauchVonImmobilienvermoegen\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            },\n            \"2020\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            },\n            \"2021\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": 30\n            },\n            \"2022\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": 70\n            },\n            \"2023\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": 90\n            },\n            \"2024\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            },\n            \"2025\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen\": null\n      },\n      \"wasserverbrauch\": {\n        \"berichterstattungWasserverbrauch\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            },\n            \"2020\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            },\n            \"2021\": {\n              \"wasserverbrauch\": 30000,\n              \"emissionenInWasser\": 5\n            },\n            \"2022\": {\n              \"wasserverbrauch\": 15000,\n              \"emissionenInWasser\": 0\n            },\n            \"2023\": {\n              \"wasserverbrauch\": 10000,\n              \"emissionenInWasser\": 0\n            },\n            \"2024\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            },\n            \"2025\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglWasserverbrauch\": null\n      },\n      \"abfallproduktion\": {\n        \"berichterstattungAbfallproduktion\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            },\n            \"2020\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            },\n            \"2021\": {\n              \"gesamteAbfallmenge\": 30,\n              \"prozentAbfallRecyclet\": 15,\n              \"prozentGefaehrlicherAbfall\": 0\n            },\n            \"2022\": {\n              \"gesamteAbfallmenge\": 20,\n              \"prozentAbfallRecyclet\": 47,\n              \"prozentGefaehrlicherAbfall\": 0\n            },\n            \"2023\": {\n              \"gesamteAbfallmenge\": 10,\n              \"prozentAbfallRecyclet\": 68,\n              \"prozentGefaehrlicherAbfall\": 0\n            },\n            \"2024\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            },\n            \"2025\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglAbfallproduktion\": null,\n        \"recyclingImProduktionsprozess\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            },\n            \"2020\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            },\n            \"2021\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": 0\n            },\n            \"2022\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": 0\n            },\n            \"2023\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": 0\n            },\n            \"2024\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            },\n            \"2025\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            }\n          }\n        },\n        \"gefaehrlicherAbfall\": \"0\"\n      },\n      \"biodiversitaet\": {\n        \"negativeAktivitaetenFuerDieBiologischeVielfalt\": \"No\",\n        \"negativeMassnahmenFuerDieBiologischeVielfalt\": null,\n        \"positiveAktivitaetenFuerDieBiologischeVielfalt\": \"Yes\",\n        \"positiveMassnahmenFuerDieBiologischeVielfalt\": \"Positive Maßnahme\"\n      },\n      \"fossileBrennstoffe\": {\n        \"einnahmenAusFossilenBrennstoffen\": \"Yes\",\n        \"berichterstattungEinnahmenAusFossilenBrennstoffen\": {\n          \"currentYear\": 2022,\n          \"yearlyData\": {\n            \"2019\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            },\n            \"2020\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            },\n            \"2021\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": 60\n            },\n            \"2022\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": 15\n            },\n            \"2023\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": 0\n            },\n            \"2024\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            },\n            \"2025\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            }\n          }\n        }\n      },\n      \"taxonomie\": {\n        \"taxonomieBerichterstattung\": \"Nfrd\",\n        \"euTaxonomieKompassAktivitaeten\": [\n          \"ForestManagement\",\n          \"ManufactureOfLowCarbonTechnologiesForTransport\",\n          \"ManufactureOfIronAndSteel\"\n        ],\n        \"umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            },\n            \"2020\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            },\n            \"2021\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": 25,\n              \"taxonomieGeeignetNachProzentCapex\": 7,\n              \"taxonomieKonformNachProzentUmsatz\": 15,\n              \"taxonomieKonformNachProzentCapex\": 5\n            },\n            \"2022\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": 56,\n              \"taxonomieGeeignetNachProzentCapex\": 8,\n              \"taxonomieKonformNachProzentUmsatz\": 18,\n              \"taxonomieKonformNachProzentCapex\": 6\n            },\n            \"2023\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": 70,\n              \"taxonomieGeeignetNachProzentCapex\": 14,\n              \"taxonomieKonformNachProzentUmsatz\": 24,\n              \"taxonomieKonformNachProzentCapex\": 10\n            },\n            \"2024\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            },\n            \"2025\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            }\n          }\n        }\n      }\n    },\n    \"soziales\": {\n      \"unternehmensstrukturaenderungen\": {\n        \"vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur\": \"Yes\",\n        \"anzahlUnbefristeterVertraegeInDeutschland\": 543,\n        \"anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland\": 63,\n        \"anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland\": 34,\n        \"anzahlUnbefristeterVertraegeInDerGesamtgruppe\": 453,\n        \"anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe\": 75,\n        \"anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe\": 967,\n        \"auswirkungenAufAnteilBefristerVertraegeUndFluktuation\": {\n          \"currentYear\": 2022,\n          \"yearlyData\": {\n            \"2019\": {\n              \"anzahlDerBefristetenVertraege\": null,\n              \"fluktuation\": null\n            },\n            \"2020\": {\n              \"anzahlDerBefristetenVertraege\": null,\n              \"fluktuation\": null\n            },\n            \"2021\": {\n              \"anzahlDerBefristetenVertraege\": 456,\n              \"fluktuation\": 24\n            },\n            \"2022\": {\n              \"anzahlDerBefristetenVertraege\": 477,\n              \"fluktuation\": 57\n            }\n          }\n        }\n      },\n      \"sicherheitUndWeiterbildung\": {\n        \"sicherheitsmassnahmenFuerMitarbeiter\": \"Sicherheitsmaßnahme\",\n        \"unfallrate\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": null\n            },\n            \"2020\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": null\n            },\n            \"2021\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": 8\n            },\n            \"2022\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": 3\n            }\n          }\n        },\n        \"budgetFuerSchulungAusbildung\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"budgetProMitarbeiter\": null\n            },\n            \"2020\": {\n              \"budgetProMitarbeiter\": null\n            },\n            \"2021\": {\n              \"budgetProMitarbeiter\": 500\n            },\n            \"2022\": {\n              \"budgetProMitarbeiter\": 1000\n            }\n          }\n        }\n      },\n      \"einkommensgleichheit\": {\n        \"ueberwachungDerEinkommensungleichheit\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": null,\n              \"einkommensungleichheitsverhaeltnis\": null,\n              \"ceoEinkommensungleichheitsverhaeltnis\": null\n            },\n            \"2020\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": null,\n              \"einkommensungleichheitsverhaeltnis\": null,\n              \"ceoEinkommensungleichheitsverhaeltnis\": null\n            },\n            \"2021\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": 45,\n              \"einkommensungleichheitsverhaeltnis\": 23,\n              \"ceoEinkommensungleichheitsverhaeltnis\": 12\n            },\n            \"2022\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": 34,\n              \"einkommensungleichheitsverhaeltnis\": 34,\n              \"ceoEinkommensungleichheitsverhaeltnis\": 76\n            }\n          }\n        },\n        \"massnahmenZurVerbesserungDerEinkommensungleichheit\": null\n      },\n      \"geschlechterdiversitaet\": {\n        \"mitarbeiterAufTopManagementEbene\": 2,\n        \"frauenAufTopManagementEbene\": 6,\n        \"mitgliederGeschaeftsfuehrung\": 4671,\n        \"frauenInDerGeschaeftsfuehrung\": 2,\n        \"definitionTopManagement\": \"Definition \",\n        \"einhaltungRechtlicherVorgaben\": null\n      },\n      \"audit\": {\n        \"auditsZurEinhaltungVonArbeitsstandards\": \"Yes\",\n        \"artDesAudits\": \"PruefungDurchDritte\",\n        \"auditErgebnisse\": \"\"\n      }\n    },\n    \"unternehmensfuehrungGovernance\": {\n      \"aufsichtsrat\": {\n        \"anzahlDerMitgliederImAufsichtsrat\": 34,\n        \"anzahlUnabhaengigerMitgliederImAufsichtsrat\": 23,\n        \"anzahlVonFrauenImAufsichtsrat\": 15\n      },\n      \"verguetungsausschuss\": {\n        \"anzahlDerMitgliederImVerguetungsausschuss\": 36,\n        \"anzahlUnabhaengigerMitgliederImVerguetungsausschuss\": null,\n        \"anzahlVonFrauenImVerguetungsausschuss\": null\n      },\n      \"nominierungsausschuss\": {\n        \"anzahlDerMitgliederImNominierungsausschuss\": 43,\n        \"anzahlUnabhaengigerMitgliederImNominierungsausschuss\": null,\n        \"anzahlVonFrauenImVerguetungsausschuss\": 23\n      },\n      \"pruefungsausschuss\": {\n        \"anzahlDerMitgliederImPruefungsausschuss\": 41,\n        \"anzahlUnabhaengigerMitgliederImPruefungsausschuss\": 35,\n        \"anzahlVonFrauenImPruefungsausschuss\": null\n      },\n      \"nachhaltigkeitsausschuss\": {\n        \"anzahlDerMitgliederImNachhaltigkeitsausschuss\": 12,\n        \"anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss\": 4,\n        \"anzahlVonFrauenImNachhaltigkeitsausschuss\": 4\n      },\n      \"sonstige\": {\n        \"wirtschaftspruefer\": \"John Doe\",\n        \"trennungVonCeoOderVorsitzenden\": \"Yes\",\n        \"amtszeitBisZurTrennung\": \"4\"\n      },\n      \"stakeholder\": {\n        \"einbeziehungVonStakeholdern\": \"Yes\",\n        \"prozessDerEinbeziehungVonStakeholdern\": \"Prozess\",\n        \"mechanismenZurAusrichtungAufStakeholder\": null\n      },\n      \"unternehmensrichtlinien\": {\n        \"veroeffentlichteUnternehmensrichtlinien\": [\n          \"Verhaltenskodex\",\n          \"Zwangsarbeit\",\n          \"MgtVonUmweltgefahren\"\n        ],\n        \"weitereVeroeffentlicheUnternehmensrichtlinien\": \"Keine\"\n      },\n      \"lieferantenauswahl\": {\n        \"esgKriterienUndUeberwachungDerLieferanten\": \"Yes\",\n        \"auswahlkriterien\": null\n      }\n    }\n  }\n}"
-      },
-      "FrequenzDerBerichterstattungOptions": {
-        "type": "string",
-        "enum": [
-          "Jaehrlich",
-          "Halbjaehrlich",
-          "Vierteljaehrlich",
-          "Monatlich"
-        ]
-      },
-      "GdvAllgemein": {
-        "type": "object",
-        "properties": {
-          "esgZiele": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvAllgemeinEsgZiele"
-              }
-            ]
-          },
-          "sektoren": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvAllgemeinSektoren"
-              }
-            ]
-          },
-          "esgBerichte": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvAllgemeinEsgBerichte"
-              }
-            ]
-          },
-          "akkreditierungen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvAllgemeinAkkreditierungen"
-              }
-            ]
-          },
-          "unGlobalConceptPrinzipien": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvAllgemeinUnGlobalConceptPrinzipien"
-              }
-            ]
-          },
-          "oecdLeitsaetze": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvAllgemeinOecdLeitsaetze"
-              }
-            ]
-          },
-          "sonstige": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvAllgemeinSonstige"
-              }
-            ]
-          },
-          "fuehrungsstandards": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvAllgemeinFuehrungsstandards"
-              }
-            ]
-          },
-          "rechtsstreitigkeiten": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvAllgemeinRechtsstreitigkeiten"
-              }
-            ]
-          },
-          "rating": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvAllgemeinRating"
-              }
-            ]
-          },
-          "anleihen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvAllgemeinAnleihen"
-              }
-            ]
-          },
-          "risiken": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvAllgemeinRisiken"
-              }
-            ]
-          }
-        }
-      },
-      "GdvAllgemeinAkkreditierungen": {
-        "type": "object",
-        "properties": {
-          "iso14001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "iso45001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "iso27001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "iso50001": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "weitereAkkreditierungen": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/BaseDataPointString"
-            }
-          }
-        }
-      },
-      "GdvAllgemeinAnleihen": {
-        "type": "object",
-        "properties": {
-          "grueneSozialeUndOderNachhaltigeEmissionen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen": {
-            "type": "number",
-            "nullable": true
-          },
-          "sustainibilityLinkedDebt": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "ausstehendeSustainibilityLinkedDebt": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "GdvAllgemeinEsgBerichte": {
-        "type": "object",
-        "properties": {
-          "nachhaltigkeitsberichte": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "frequenzDerBerichterstattung": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FrequenzDerBerichterstattungOptions"
-              }
-            ]
-          },
-          "aktuelleBerichte": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/BaseDataPointString"
-            }
-          }
-        }
-      },
-      "GdvAllgemeinEsgZiele": {
-        "type": "object",
-        "properties": {
-          "existenzVonEsgZielen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "beschreibungDerEsgZiele": {
-            "type": "string",
-            "nullable": true
-          },
-          "investitionenInZielerreichung": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvAllgemeinFuehrungsstandards": {
-        "type": "object",
-        "properties": {
-          "oekologischeSozialeFuehrungsstandardsOderPrinzipien": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "anreizmechanismenFuerDasManagementUmwelt": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementUmweltOptions"
-              }
-            ]
-          },
-          "anreizmechanismenFuerDasManagementSoziales": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementSozialesOptions"
-              }
-            ]
-          }
-        }
-      },
-      "GdvAllgemeinOecdLeitsaetze": {
-        "type": "object",
-        "properties": {
-          "mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "richtlinienZurEinhaltungDerOecdLeitsaetze": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/BaseDataPointString"
-            }
-          },
-          "erklaerungDerEinhaltungDerOecdLeitsaetze": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvAllgemeinRating": {
-        "type": "object",
-        "properties": {
-          "esgRating": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "agentur": {
-            "type": "string",
-            "nullable": true
-          },
-          "ergebnis": {
-            "type": "string",
-            "nullable": true
-          },
-          "ratingbericht": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "kritischePunkte": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvAllgemeinRechtsstreitigkeiten": {
-        "type": "object",
-        "properties": {
-          "esgBezogeneRechtsstreitigkeiten": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "rechtsstreitigkeitenMitBezugZuE": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "statusZuE": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/StatusZuEOptions"
-              }
-            ]
-          },
-          "einzelheitenZuDenRechtsstreitigkeitenZuE": {
-            "type": "string",
-            "nullable": true
-          },
-          "rechtsstreitigkeitenMitBezugZuS": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "statusZuS": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/StatusZuSOptions"
-              }
-            ]
-          },
-          "einzelheitenZuDenRechtsstreitigkeitenZuS": {
-            "type": "string",
-            "nullable": true
-          },
-          "rechtsstreitigkeitenMitBezugZuG": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "statusZuG": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/StatusZuGOptions"
-              }
-            ]
-          },
-          "einzelheitenZuDenRechtsstreitigkeitenZuG": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvAllgemeinRisiken": {
-        "type": "object",
-        "properties": {
-          "wichtigsteESUndGRisikenUndBewertung": {
-            "type": "string",
-            "nullable": true
-          },
-          "hindernisseBeimUmgangMitEsgBedenken": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvAllgemeinSektoren": {
-        "type": "object",
-        "properties": {
-          "sektorenMitHohenKlimaauswirkungen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "auflistungDerSektoren": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/AuflistungDerSektorenOptions"
-            }
-          }
-        }
-      },
-      "GdvAllgemeinSonstige": {
-        "type": "object",
-        "properties": {
-          "ausrichtungAufDieUnSdgsUndAktivesVerfolgen": {
-            "type": "string",
-            "nullable": true
-          },
-          "ausschlusslistenAufBasisVonEsgKriterien": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "ausschlusslisten": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvAllgemeinUnGlobalConceptPrinzipien": {
-        "type": "object",
-        "properties": {
-          "mechanismenZurUeberwachungDerEinhaltungDerUngcp": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "richtlinienZurEinhaltungDerUngcp": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/BaseDataPointString"
-            }
-          },
-          "erklaerungDerEinhaltungDerUngcp": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvData": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvGeneral"
-              }
-            ]
-          },
-          "allgemein": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvAllgemein"
-              }
-            ]
-          },
-          "umwelt": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUmwelt"
-              }
-            ]
-          },
-          "soziales": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvSoziales"
-              }
-            ]
-          },
-          "unternehmensfuehrungGovernance": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernance"
-              }
-            ]
-          }
-        }
-      },
-      "GdvGeneral": {
-        "type": "object",
-        "properties": {
-          "masterData": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvGeneralMasterData"
-              }
-            ]
-          }
-        }
-      },
-      "GdvGeneralMasterData": {
-        "required": [
-          "berichtspflichtUndEinwilligungZurVeroeffentlichung"
-        ],
-        "type": "object",
-        "properties": {
-          "berichtspflichtUndEinwilligungZurVeroeffentlichung": {
-            "$ref": "#/components/schemas/YesNo"
-          },
-          "gueltigkeitsDatum": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          }
-        }
-      },
-      "GdvSoziales": {
-        "type": "object",
-        "properties": {
-          "unternehmensstrukturaenderungen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvSozialesUnternehmensstrukturaenderungen"
-              }
-            ]
-          },
-          "sicherheitUndWeiterbildung": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvSozialesSicherheitUndWeiterbildung"
-              }
-            ]
-          },
-          "einkommensgleichheit": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvSozialesEinkommensgleichheit"
-              }
-            ]
-          },
-          "geschlechterdiversitaet": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvSozialesGeschlechterdiversitaet"
-              }
-            ]
-          },
-          "audit": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvSozialesAudit"
-              }
-            ]
-          }
-        }
-      },
-      "GdvSozialesAudit": {
-        "type": "object",
-        "properties": {
-          "auditsZurEinhaltungVonArbeitsstandards": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "artDesAudits": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ArtDesAuditsOptions"
-              }
-            ]
-          },
-          "auditErgebnisse": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvSozialesEinkommensgleichheit": {
-        "type": "object",
-        "properties": {
-          "ueberwachungDerEinkommensungleichheit": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataUeberwachungDerEinkommensungleichheitValues"
-              }
-            ]
-          },
-          "massnahmenZurVerbesserungDerEinkommensungleichheit": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvSozialesGeschlechterdiversitaet": {
-        "type": "object",
-        "properties": {
-          "mitarbeiterAufTopManagementEbene": {
-            "type": "integer",
-            "nullable": true
-          },
-          "frauenAufTopManagementEbene": {
-            "type": "integer",
-            "nullable": true
-          },
-          "mitgliederGeschaeftsfuehrung": {
-            "type": "integer",
-            "nullable": true
-          },
-          "frauenInDerGeschaeftsfuehrung": {
-            "type": "integer",
-            "nullable": true
-          },
-          "definitionTopManagement": {
-            "type": "string",
-            "nullable": true
-          },
-          "einhaltungRechtlicherVorgaben": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvSozialesSicherheitUndWeiterbildung": {
-        "type": "object",
-        "properties": {
-          "sicherheitsmassnahmenFuerMitarbeiter": {
-            "type": "string",
-            "nullable": true
-          },
-          "unfallrate": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataUnfallrateValues"
-              }
-            ]
-          },
-          "budgetFuerSchulungAusbildung": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataBudgetFuerSchulungAusbildungValues"
-              }
-            ]
-          }
-        }
-      },
-      "GdvSozialesUnternehmensstrukturaenderungen": {
-        "type": "object",
-        "properties": {
-          "vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "anzahlUnbefristeterVertraegeInDeutschland": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlUnbefristeterVertraegeInDerGesamtgruppe": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": {
-            "type": "integer",
-            "nullable": true
-          },
-          "auswirkungenAufAnteilBefristerVertraegeUndFluktuation": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataAuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues"
-              }
-            ]
-          }
-        }
-      },
-      "GdvUmwelt": {
-        "type": "object",
-        "properties": {
-          "treibhausgasemissionen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUmweltTreibhausgasemissionen"
-              }
-            ]
-          },
-          "produktion": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUmweltProduktion"
-              }
-            ]
-          },
-          "energieverbrauch": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUmweltEnergieverbrauch"
-              }
-            ]
-          },
-          "energieeffizienzImmobilienanlagen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUmweltEnergieeffizienzImmobilienanlagen"
-              }
-            ]
-          },
-          "wasserverbrauch": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUmweltWasserverbrauch"
-              }
-            ]
-          },
-          "abfallproduktion": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUmweltAbfallproduktion"
-              }
-            ]
-          },
-          "biodiversitaet": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUmweltBiodiversitaet"
-              }
-            ]
-          },
-          "fossileBrennstoffe": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUmweltFossileBrennstoffe"
-              }
-            ]
-          },
-          "taxonomie": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUmweltTaxonomie"
-              }
-            ]
-          }
-        }
-      },
-      "GdvUmweltAbfallproduktion": {
-        "type": "object",
-        "properties": {
-          "berichterstattungAbfallproduktion": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungAbfallproduktionValues"
-              }
-            ]
-          },
-          "unternehmensGruppenStrategieBzglAbfallproduktion": {
-            "type": "string",
-            "nullable": true
-          },
-          "recyclingImProduktionsprozess": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataRecyclingImProduktionsprozessValues"
-              }
-            ]
-          },
-          "gefaehrlicherAbfall": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvUmweltBiodiversitaet": {
-        "type": "object",
-        "properties": {
-          "negativeAktivitaetenFuerDieBiologischeVielfalt": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "negativeMassnahmenFuerDieBiologischeVielfalt": {
-            "type": "string",
-            "nullable": true
-          },
-          "positiveAktivitaetenFuerDieBiologischeVielfalt": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "positiveMassnahmenFuerDieBiologischeVielfalt": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvUmweltEnergieeffizienzImmobilienanlagen": {
-        "type": "object",
-        "properties": {
-          "berichterstattungEnergieverbrauchVonImmobilienvermoegen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungEnergieverbrauchVonImmobilienvermoegenValues"
-              }
-            ]
-          },
-          "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvUmweltEnergieverbrauch": {
-        "type": "object",
-        "properties": {
-          "berichterstattungEnergieverbrauch": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungEnergieverbrauchValues"
-              }
-            ]
-          },
-          "unternehmensGruppenStrategieBzglEnergieverbrauch": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvUmweltFossileBrennstoffe": {
-        "type": "object",
-        "properties": {
-          "einnahmenAusFossilenBrennstoffen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "berichterstattungEinnahmenAusFossilenBrennstoffen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungEinnahmenAusFossilenBrennstoffenValues"
-              }
-            ]
-          }
-        }
-      },
-      "GdvUmweltProduktion": {
-        "type": "object",
-        "properties": {
-          "produkteZurVerringerungDerUmweltbelastung": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "verringerungenDerUmweltbelastung": {
-            "type": "string",
-            "nullable": true
-          },
-          "oekologischerMindestStandardFuerProduktionsprozesse": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          }
-        }
-      },
-      "GdvUmweltTaxonomie": {
-        "type": "object",
-        "properties": {
-          "taxonomieBerichterstattung": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TaxonomieBerichterstattungOptions"
-              }
-            ]
-          },
-          "euTaxonomieKompassAktivitaeten": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/Activity"
-            }
-          },
-          "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataUmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues"
-              }
-            ]
-          }
-        }
-      },
-      "GdvUmweltTreibhausgasemissionen": {
-        "type": "object",
-        "properties": {
-          "treibhausgasBerichterstattungUndPrognosen": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataTreibhausgasBerichterstattungUndPrognosenValues"
-              }
-            ]
-          },
-          "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird": {
-            "type": "string",
-            "nullable": true
-          },
-          "strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvUmweltWasserverbrauch": {
-        "type": "object",
-        "properties": {
-          "berichterstattungWasserverbrauch": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungWasserverbrauchValues"
-              }
-            ]
-          },
-          "unternehmensGruppenStrategieBzglWasserverbrauch": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvUnternehmensfuehrungGovernance": {
-        "type": "object",
-        "properties": {
-          "aufsichtsrat": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceAufsichtsrat"
-              }
-            ]
-          },
-          "verguetungsausschuss": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceVerguetungsausschuss"
-              }
-            ]
-          },
-          "nominierungsausschuss": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceNominierungsausschuss"
-              }
-            ]
-          },
-          "pruefungsausschuss": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernancePruefungsausschuss"
-              }
-            ]
-          },
-          "nachhaltigkeitsausschuss": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceNachhaltigkeitsausschuss"
-              }
-            ]
-          },
-          "sonstige": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceSonstige"
-              }
-            ]
-          },
-          "stakeholder": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceStakeholder"
-              }
-            ]
-          },
-          "unternehmensrichtlinien": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceUnternehmensrichtlinien"
-              }
-            ]
-          },
-          "lieferantenauswahl": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GdvUnternehmensfuehrungGovernanceLieferantenauswahl"
-              }
-            ]
-          }
-        }
-      },
-      "GdvUnternehmensfuehrungGovernanceAufsichtsrat": {
-        "type": "object",
-        "properties": {
-          "anzahlDerMitgliederImAufsichtsrat": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlUnabhaengigerMitgliederImAufsichtsrat": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlVonFrauenImAufsichtsrat": {
-            "type": "integer",
-            "nullable": true
-          }
-        }
-      },
-      "GdvUnternehmensfuehrungGovernanceLieferantenauswahl": {
-        "type": "object",
-        "properties": {
-          "esgKriterienUndUeberwachungDerLieferanten": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "auswahlkriterien": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvUnternehmensfuehrungGovernanceNachhaltigkeitsausschuss": {
-        "type": "object",
-        "properties": {
-          "anzahlDerMitgliederImNachhaltigkeitsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlVonFrauenImNachhaltigkeitsausschuss": {
-            "type": "integer",
-            "nullable": true
-          }
-        }
-      },
-      "GdvUnternehmensfuehrungGovernanceNominierungsausschuss": {
-        "type": "object",
-        "properties": {
-          "anzahlDerMitgliederImNominierungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlUnabhaengigerMitgliederImNominierungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlVonFrauenImVerguetungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          }
-        }
-      },
-      "GdvUnternehmensfuehrungGovernancePruefungsausschuss": {
-        "type": "object",
-        "properties": {
-          "anzahlDerMitgliederImPruefungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlUnabhaengigerMitgliederImPruefungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlVonFrauenImPruefungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          }
-        }
-      },
-      "GdvUnternehmensfuehrungGovernanceSonstige": {
-        "type": "object",
-        "properties": {
-          "wirtschaftspruefer": {
-            "type": "string",
-            "nullable": true
-          },
-          "trennungVonCeoOderVorsitzenden": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "amtszeitBisZurTrennung": {
-            "type": "integer",
-            "nullable": true
-          }
-        }
-      },
-      "GdvUnternehmensfuehrungGovernanceStakeholder": {
-        "type": "object",
-        "properties": {
-          "einbeziehungVonStakeholdern": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNo"
-              }
-            ]
-          },
-          "prozessDerEinbeziehungVonStakeholdern": {
-            "type": "string",
-            "nullable": true
-          },
-          "mechanismenZurAusrichtungAufStakeholder": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvUnternehmensfuehrungGovernanceUnternehmensrichtlinien": {
-        "type": "object",
-        "properties": {
-          "veroeffentlichteUnternehmensrichtlinien": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/VeroeffentlichteUnternehmensrichtlinienOptions"
-            }
-          },
-          "weitereVeroeffentlicheUnternehmensrichtlinien": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "GdvUnternehmensfuehrungGovernanceVerguetungsausschuss": {
-        "type": "object",
-        "properties": {
-          "anzahlDerMitgliederImVerguetungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlUnabhaengigerMitgliederImVerguetungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          },
-          "anzahlVonFrauenImVerguetungsausschuss": {
-            "type": "integer",
-            "nullable": true
-          }
-        }
-      },
-      "RecyclingImProduktionsprozessValues": {
-        "type": "object",
-        "properties": {
-          "prozentRecycelteWerkstoffeImProduktionsprozess": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "StatusZuEOptions": {
-        "type": "string",
-        "enum": [
-          "Offen",
-          "Geklaert"
-        ]
-      },
-      "StatusZuGOptions": {
-        "type": "string",
-        "enum": [
-          "Offen",
-          "Geklaert"
-        ]
-      },
-      "StatusZuSOptions": {
-        "type": "string",
-        "enum": [
-          "Offen",
-          "Geklaert"
-        ]
-      },
-      "TaxonomieBerichterstattungOptions": {
-        "type": "string",
-        "enum": [
-          "Nfrd",
-          "Csrd"
-        ]
-      },
-      "TreibhausgasBerichterstattungUndPrognosenValues": {
-        "type": "object",
-        "properties": {
-          "scope1": {
-            "type": "number",
-            "nullable": true
-          },
-          "scope2": {
-            "type": "number",
-            "nullable": true
-          },
-          "scope3": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "UeberwachungDerEinkommensungleichheitValues": {
-        "type": "object",
-        "properties": {
-          "unbereinigtesGeschlechtsspezifischesLohngefaelle": {
-            "type": "number",
-            "nullable": true
-          },
-          "einkommensungleichheitsverhaeltnis": {
-            "type": "number",
-            "nullable": true
-          },
-          "ceoEinkommensungleichheitsverhaeltnis": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues": {
-        "type": "object",
-        "properties": {
-          "taxonomieGeeignetNachProzentUmsatz": {
-            "type": "number",
-            "nullable": true
-          },
-          "taxonomieGeeignetNachProzentCapex": {
-            "type": "number",
-            "nullable": true
-          },
-          "taxonomieKonformNachProzentUmsatz": {
-            "type": "number",
-            "nullable": true
-          },
-          "taxonomieKonformNachProzentCapex": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "UnfallrateValues": {
-        "type": "object",
-        "properties": {
-          "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "VeroeffentlichteUnternehmensrichtlinienOptions": {
-        "type": "string",
-        "enum": [
-          "AntiKorruption",
-          "Verhaltenskodex",
-          "Interessenkonflikte",
-          "Datenschutz",
-          "DiversitaetAndInklusion",
-          "FaireBehandlungVonKunden",
-          "Zwangsarbeit",
-          "GesundheitUndSicherheit",
-          "MgtVonUmweltgefahren",
-          "VerantwortungsvollesMarketing",
-          "Whistleblowing",
-          "Other"
-        ]
-      },
-      "YearlyTimeseriesDataAuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataBerichterstattungAbfallproduktionValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/BerichterstattungAbfallproduktionValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataBerichterstattungEinnahmenAusFossilenBrennstoffenValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/BerichterstattungEinnahmenAusFossilenBrennstoffenValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataBerichterstattungEnergieverbrauchValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/BerichterstattungEnergieverbrauchValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataBerichterstattungEnergieverbrauchVonImmobilienvermoegenValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataBerichterstattungWasserverbrauchValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/BerichterstattungWasserverbrauchValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataBudgetFuerSchulungAusbildungValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/BudgetFuerSchulungAusbildungValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataRecyclingImProduktionsprozessValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/RecyclingImProduktionsprozessValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataTreibhausgasBerichterstattungUndPrognosenValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/TreibhausgasBerichterstattungUndPrognosenValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataUeberwachungDerEinkommensungleichheitValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/UeberwachungDerEinkommensungleichheitValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataUmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues"
-            }
-          }
-        }
-      },
-      "YearlyTimeseriesDataUnfallrateValues": {
-        "required": [
-          "currentYear",
-          "yearlyData"
-        ],
-        "type": "object",
-        "properties": {
-          "currentYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "yearlyData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/UnfallrateValues"
-            }
-          }
-        }
-      },
       "AmountWithCurrency": {
         "type": "object",
         "properties": {
@@ -10825,6 +9115,1763 @@
           }
         }
       },
+      "AnreizmechanismenFuerDasManagementSozialesOptions": {
+        "type": "string",
+        "enum": [
+          "Nein",
+          "JaAufsichtsrat",
+          "JaGeschaeftsleitung",
+          "JaAufsichtsratUndGeschaeftsleitung"
+        ]
+      },
+      "AnreizmechanismenFuerDasManagementUmweltOptions": {
+        "type": "string",
+        "enum": [
+          "Nein",
+          "JaAufsichtsrat",
+          "JaGeschaeftsleitung",
+          "JaAufsichtsratUndGeschaeftsleitung"
+        ]
+      },
+      "ArtDesAuditsOptions": {
+        "type": "string",
+        "enum": [
+          "InterneAnhoerung",
+          "PruefungDurchDritte",
+          "SowohlInternAlsAuchVonDrittanbietern"
+        ]
+      },
+      "AuflistungDerSektorenOptions": {
+        "type": "string",
+        "enum": [
+          "ALandwirtschaftForstwirtschaftUndFischerei",
+          "BBergbauUndGewinnungVonSteinenUndErden",
+          "CVerarbeitendesGewerbeHerstellungVonWaren",
+          "DEnergieversorgung",
+          "EWasserversorgungAbwasserAndAbfallentsorgungBeseitigungenVonUmweltverschmutzungen",
+          "FBaugewerbeBau",
+          "GHandelInstandhaltungUndReparaturVonKraftfahrzeugen",
+          "HVerkehrUndLagerhaltung",
+          "LGrundstuecksUndWohnungswesen"
+        ]
+      },
+      "AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues": {
+        "type": "object",
+        "properties": {
+          "anzahlDerBefristetenVertraege": {
+            "type": "number",
+            "nullable": true
+          },
+          "fluktuation": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "BaseDataPointString": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "BerichterstattungAbfallproduktionValues": {
+        "type": "object",
+        "properties": {
+          "gesamteAbfallmenge": {
+            "type": "number",
+            "nullable": true
+          },
+          "prozentAbfallRecyclet": {
+            "type": "number",
+            "nullable": true
+          },
+          "prozentGefaehrlicherAbfall": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "BerichterstattungEinnahmenAusFossilenBrennstoffenValues": {
+        "type": "object",
+        "properties": {
+          "prozentDerEinnahmenAusFossilenBrennstoffen": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "BerichterstattungEnergieverbrauchValues": {
+        "type": "object",
+        "properties": {
+          "energieverbrauch": {
+            "type": "number",
+            "nullable": true
+          },
+          "prozentDesVerbrauchsErneuerbarerEnergien": {
+            "type": "number",
+            "nullable": true
+          },
+          "ggfProzentDerErneuerbarenEnergieerzeugung": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues": {
+        "type": "object",
+        "properties": {
+          "engagementAnteilInEnergieineffizientenImmobilienanlagen": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "BerichterstattungWasserverbrauchValues": {
+        "type": "object",
+        "properties": {
+          "wasserverbrauch": {
+            "type": "number",
+            "nullable": true
+          },
+          "emissionenInWasser": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "BudgetFuerSchulungAusbildungValues": {
+        "type": "object",
+        "properties": {
+          "budgetProMitarbeiter": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "CompanyAssociatedDataEsgQuestionnaireData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EsgQuestionnaireData"
+          }
+        },
+        "example": "{\n  \"companyId\": \"string\",\n  \"reportingPeriod\": \"2022\",\n  \"data\": {\n    \"general\": {\n      \"masterData\": {\n        \"berichtspflichtUndEinwilligungZurVeroeffentlichung\": \"Yes\",\n        \"gueltigkeitsDatum\": \"2022-12-31\"\n      }\n    },\n    \"allgemein\": {\n      \"esgZiele\": {\n        \"existenzVonEsgZielen\": \"Yes\",\n        \"beschreibungDerEsgZiele\": \"Transitioning to energy consumption from 100% renewable resources\",\n        \"investitionenInZielerreichung\": \"50000 EUR\"\n      },\n      \"sektoren\": {\n        \"sektorenMitHohenKlimaauswirkungen\": \"Yes\",\n        \"auflistungDerSektoren\": [\n          \"GHandelInstandhaltungUndReparaturVonKraftfahrzeugen\",\n          \"LGrundstuecksUndWohnungswesen\"\n        ]\n      },\n      \"esgBerichte\": {\n        \"nachhaltigkeitsberichte\": \"Yes\",\n        \"frequenzDerBerichterstattung\": \"Halbjaehrlich\",\n        \"aktuelleBerichte\": [\n          {\n            \"value\": \"Bayer Geschäftsbericht 2022\",\n            \"dataSource\": {\n              \"fileName\": \"Bayer-Geschaeftsbericht-2022\",\n              \"fileReference\": \"3bbdc1879acbc211af4b87a8593cfd7523adedd7100ca59326df05f8adbfe881\"\n            }\n          }\n        ]\n      },\n      \"akkreditierungen\": {\n        \"iso14001\": {\n          \"value\": \"Yes\",\n          \"dataSource\": {\n            \"fileName\": \"\",\n            \"fileReference\": \"\"\n          }\n        },\n        \"iso45001\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"iso27001\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"iso50001\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"weitereAkkreditierungen\": [\n          {\n            \"value\": \"Data quality\",\n            \"dataSource\": {\n              \"fileName\": \"Data_Quality_1_28_2019_FINAL_1\",\n              \"fileReference\": \"21567034fc692753175270d7eadeb135e9e885c77f71b79358a1fb897d992a7d\"\n            }\n          }\n        ]\n      },\n      \"unGlobalConceptPrinzipien\": {\n        \"mechanismenZurUeberwachungDerEinhaltungDerUngcp\": \"No\",\n        \"richtlinienZurEinhaltungDerUngcp\": null,\n        \"erklaerungDerEinhaltungDerUngcp\": null\n      },\n      \"oecdLeitsaetze\": {\n        \"mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze\": \"Yes\",\n        \"richtlinienZurEinhaltungDerOecdLeitsaetze\": [\n          {\n            \"value\": \"Annual report\",\n            \"dataSource\": {\n              \"fileName\": \"Bayer-Geschaeftsbericht-2022\",\n              \"fileReference\": \"3bbdc1879acbc211af4b87a8593cfd7523adedd7100ca59326df05f8adbfe881\"\n            }\n          }\n        ],\n        \"erklaerungDerEinhaltungDerOecdLeitsaetze\": \"Erklärung der Einhaltung\"\n      },\n      \"sonstige\": {\n        \"ausrichtungAufDieUnSdgsUndAktivesVerfolgen\": \"n/a\",\n        \"ausschlusslistenAufBasisVonEsgKriterien\": \"Yes\",\n        \"ausschlusslisten\": \"controversial weapons, tobacco, alcohol, gambling, adult entertainment, fossil fuels\"\n      },\n      \"fuehrungsstandards\": {\n        \"oekologischeSozialeFuehrungsstandardsOderPrinzipien\": \"Yes\",\n        \"anreizmechanismenFuerDasManagementUmwelt\": \"JaGeschaeftsleitung\",\n        \"anreizmechanismenFuerDasManagementSoziales\": \"JaAufsichtsrat\"\n      },\n      \"rechtsstreitigkeiten\": {\n        \"esgBezogeneRechtsstreitigkeiten\": \"Yes\",\n        \"rechtsstreitigkeitenMitBezugZuE\": \"Yes\",\n        \"statusZuE\": \"Geklaert\",\n        \"einzelheitenZuDenRechtsstreitigkeitenZuE\": \"Wasserverschmutzung\",\n        \"rechtsstreitigkeitenMitBezugZuS\": \"No\",\n        \"statusZuS\": null,\n        \"einzelheitenZuDenRechtsstreitigkeitenZuS\": null,\n        \"rechtsstreitigkeitenMitBezugZuG\": \"No\",\n        \"statusZuG\": null,\n        \"einzelheitenZuDenRechtsstreitigkeitenZuG\": null\n      },\n      \"rating\": {\n        \"esgRating\": \"Yes\",\n        \"agentur\": \"MSCI\",\n        \"ergebnis\": \"A\",\n        \"ratingbericht\": {\n          \"value\": \"No\",\n          \"dataSource\": null\n        },\n        \"kritischePunkte\": \"n/a\"\n      },\n      \"anleihen\": {\n        \"grueneSozialeUndOderNachhaltigeEmissionen\": \"Yes\",\n        \"ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen\": 10000,\n        \"sustainibilityLinkedDebt\": \"Yes\",\n        \"ausstehendeSustainibilityLinkedDebt\": 20000\n      },\n      \"risiken\": {\n        \"wichtigsteESUndGRisikenUndBewertung\": \"Risiken und Bewertung\",\n        \"hindernisseBeimUmgangMitEsgBedenken\": \"Hindernisse 1, Hindernisse 2\"\n      }\n    },\n    \"umwelt\": {\n      \"treibhausgasemissionen\": {\n        \"treibhausgasBerichterstattungUndPrognosen\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            },\n            \"2020\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            },\n            \"2021\": {\n              \"scope1\": 305000,\n              \"scope2\": 51900,\n              \"scope3\": 223000\n            },\n            \"2022\": {\n              \"scope1\": 351000,\n              \"scope2\": 195000,\n              \"scope3\": 405000\n            },\n            \"2023\": {\n              \"scope1\": 293000,\n              \"scope2\": 318000,\n              \"scope3\": 561000\n            },\n            \"2024\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            },\n            \"2025\": {\n              \"scope1\": null,\n              \"scope2\": null,\n              \"scope3\": null\n            }\n          }\n        },\n        \"treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird\": \"223000\",\n        \"strategieUndZieleZurReduzierungVonTreibhausgasEmissionen\": \"Strategie und Ziele\"\n      },\n      \"produktion\": {\n        \"produkteZurVerringerungDerUmweltbelastung\": \"Yes\",\n        \"verringerungenDerUmweltbelastung\": null,\n        \"oekologischerMindestStandardFuerProduktionsprozesse\": \"No\"\n      },\n      \"energieverbrauch\": {\n        \"berichterstattungEnergieverbrauch\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2020\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2021\": {\n              \"energieverbrauch\": 195000,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": 25,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2022\": {\n              \"energieverbrauch\": 561000,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": 70,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2023\": {\n              \"energieverbrauch\": 51900,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": 100,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": 5\n            },\n            \"2024\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            },\n            \"2025\": {\n              \"energieverbrauch\": null,\n              \"prozentDesVerbrauchsErneuerbarerEnergien\": null,\n              \"ggfProzentDerErneuerbarenEnergieerzeugung\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglEnergieverbrauch\": null\n      },\n      \"energieeffizienzImmobilienanlagen\": {\n        \"berichterstattungEnergieverbrauchVonImmobilienvermoegen\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            },\n            \"2020\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            },\n            \"2021\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": 30\n            },\n            \"2022\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": 70\n            },\n            \"2023\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": 90\n            },\n            \"2024\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            },\n            \"2025\": {\n              \"engagementAnteilInEnergieineffizientenImmobilienanlagen\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen\": null\n      },\n      \"wasserverbrauch\": {\n        \"berichterstattungWasserverbrauch\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            },\n            \"2020\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            },\n            \"2021\": {\n              \"wasserverbrauch\": 30000,\n              \"emissionenInWasser\": 5\n            },\n            \"2022\": {\n              \"wasserverbrauch\": 15000,\n              \"emissionenInWasser\": 0\n            },\n            \"2023\": {\n              \"wasserverbrauch\": 10000,\n              \"emissionenInWasser\": 0\n            },\n            \"2024\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            },\n            \"2025\": {\n              \"wasserverbrauch\": null,\n              \"emissionenInWasser\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglWasserverbrauch\": null\n      },\n      \"abfallproduktion\": {\n        \"berichterstattungAbfallproduktion\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            },\n            \"2020\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            },\n            \"2021\": {\n              \"gesamteAbfallmenge\": 30,\n              \"prozentAbfallRecyclet\": 15,\n              \"prozentGefaehrlicherAbfall\": 0\n            },\n            \"2022\": {\n              \"gesamteAbfallmenge\": 20,\n              \"prozentAbfallRecyclet\": 47,\n              \"prozentGefaehrlicherAbfall\": 0\n            },\n            \"2023\": {\n              \"gesamteAbfallmenge\": 10,\n              \"prozentAbfallRecyclet\": 68,\n              \"prozentGefaehrlicherAbfall\": 0\n            },\n            \"2024\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            },\n            \"2025\": {\n              \"gesamteAbfallmenge\": null,\n              \"prozentAbfallRecyclet\": null,\n              \"prozentGefaehrlicherAbfall\": null\n            }\n          }\n        },\n        \"unternehmensGruppenStrategieBzglAbfallproduktion\": null,\n        \"recyclingImProduktionsprozess\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            },\n            \"2020\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            },\n            \"2021\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": 0\n            },\n            \"2022\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": 0\n            },\n            \"2023\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": 0\n            },\n            \"2024\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            },\n            \"2025\": {\n              \"prozentRecycelteWerkstoffeImProduktionsprozess\": null\n            }\n          }\n        },\n        \"gefaehrlicherAbfall\": \"0\"\n      },\n      \"biodiversitaet\": {\n        \"negativeAktivitaetenFuerDieBiologischeVielfalt\": \"No\",\n        \"negativeMassnahmenFuerDieBiologischeVielfalt\": null,\n        \"positiveAktivitaetenFuerDieBiologischeVielfalt\": \"Yes\",\n        \"positiveMassnahmenFuerDieBiologischeVielfalt\": \"Positive Maßnahme\"\n      },\n      \"fossileBrennstoffe\": {\n        \"einnahmenAusFossilenBrennstoffen\": \"Yes\",\n        \"berichterstattungEinnahmenAusFossilenBrennstoffen\": {\n          \"currentYear\": 2022,\n          \"yearlyData\": {\n            \"2019\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            },\n            \"2020\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            },\n            \"2021\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": 60\n            },\n            \"2022\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": 15\n            },\n            \"2023\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": 0\n            },\n            \"2024\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            },\n            \"2025\": {\n              \"prozentDerEinnahmenAusFossilenBrennstoffen\": null\n            }\n          }\n        }\n      },\n      \"taxonomie\": {\n        \"taxonomieBerichterstattung\": \"Nfrd\",\n        \"euTaxonomieKompassAktivitaeten\": [\n          \"ForestManagement\",\n          \"ManufactureOfLowCarbonTechnologiesForTransport\",\n          \"ManufactureOfIronAndSteel\"\n        ],\n        \"umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            },\n            \"2020\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            },\n            \"2021\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": 25,\n              \"taxonomieGeeignetNachProzentCapex\": 7,\n              \"taxonomieKonformNachProzentUmsatz\": 15,\n              \"taxonomieKonformNachProzentCapex\": 5\n            },\n            \"2022\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": 56,\n              \"taxonomieGeeignetNachProzentCapex\": 8,\n              \"taxonomieKonformNachProzentUmsatz\": 18,\n              \"taxonomieKonformNachProzentCapex\": 6\n            },\n            \"2023\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": 70,\n              \"taxonomieGeeignetNachProzentCapex\": 14,\n              \"taxonomieKonformNachProzentUmsatz\": 24,\n              \"taxonomieKonformNachProzentCapex\": 10\n            },\n            \"2024\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            },\n            \"2025\": {\n              \"taxonomieGeeignetNachProzentUmsatz\": null,\n              \"taxonomieGeeignetNachProzentCapex\": null,\n              \"taxonomieKonformNachProzentUmsatz\": null,\n              \"taxonomieKonformNachProzentCapex\": null\n            }\n          }\n        }\n      }\n    },\n    \"soziales\": {\n      \"unternehmensstrukturaenderungen\": {\n        \"vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur\": \"Yes\",\n        \"anzahlUnbefristeterVertraegeInDeutschland\": 543,\n        \"anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland\": 63,\n        \"anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland\": 34,\n        \"anzahlUnbefristeterVertraegeInDerGesamtgruppe\": 453,\n        \"anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe\": 75,\n        \"anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe\": 967,\n        \"auswirkungenAufAnteilBefristerVertraegeUndFluktuation\": {\n          \"currentYear\": 2022,\n          \"yearlyData\": {\n            \"2019\": {\n              \"anzahlDerBefristetenVertraege\": null,\n              \"fluktuation\": null\n            },\n            \"2020\": {\n              \"anzahlDerBefristetenVertraege\": null,\n              \"fluktuation\": null\n            },\n            \"2021\": {\n              \"anzahlDerBefristetenVertraege\": 456,\n              \"fluktuation\": 24\n            },\n            \"2022\": {\n              \"anzahlDerBefristetenVertraege\": 477,\n              \"fluktuation\": 57\n            }\n          }\n        }\n      },\n      \"sicherheitUndWeiterbildung\": {\n        \"sicherheitsmassnahmenFuerMitarbeiter\": \"Sicherheitsmaßnahme\",\n        \"unfallrate\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": null\n            },\n            \"2020\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": null\n            },\n            \"2021\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": 8\n            },\n            \"2022\": {\n              \"haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust\": 3\n            }\n          }\n        },\n        \"budgetFuerSchulungAusbildung\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"budgetProMitarbeiter\": null\n            },\n            \"2020\": {\n              \"budgetProMitarbeiter\": null\n            },\n            \"2021\": {\n              \"budgetProMitarbeiter\": 500\n            },\n            \"2022\": {\n              \"budgetProMitarbeiter\": 1000\n            }\n          }\n        }\n      },\n      \"einkommensgleichheit\": {\n        \"ueberwachungDerEinkommensungleichheit\": {\n          \"currentYear\": 2023,\n          \"yearlyData\": {\n            \"2019\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": null,\n              \"einkommensungleichheitsverhaeltnis\": null,\n              \"ceoEinkommensungleichheitsverhaeltnis\": null\n            },\n            \"2020\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": null,\n              \"einkommensungleichheitsverhaeltnis\": null,\n              \"ceoEinkommensungleichheitsverhaeltnis\": null\n            },\n            \"2021\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": 45,\n              \"einkommensungleichheitsverhaeltnis\": 23,\n              \"ceoEinkommensungleichheitsverhaeltnis\": 12\n            },\n            \"2022\": {\n              \"unbereinigtesGeschlechtsspezifischesLohngefaelle\": 34,\n              \"einkommensungleichheitsverhaeltnis\": 34,\n              \"ceoEinkommensungleichheitsverhaeltnis\": 76\n            }\n          }\n        },\n        \"massnahmenZurVerbesserungDerEinkommensungleichheit\": null\n      },\n      \"geschlechterdiversitaet\": {\n        \"mitarbeiterAufTopManagementEbene\": 2,\n        \"frauenAufTopManagementEbene\": 6,\n        \"mitgliederGeschaeftsfuehrung\": 4671,\n        \"frauenInDerGeschaeftsfuehrung\": 2,\n        \"definitionTopManagement\": \"Definition \",\n        \"einhaltungRechtlicherVorgaben\": null\n      },\n      \"audit\": {\n        \"auditsZurEinhaltungVonArbeitsstandards\": \"Yes\",\n        \"artDesAudits\": \"PruefungDurchDritte\",\n        \"auditErgebnisse\": \"\"\n      }\n    },\n    \"unternehmensfuehrungGovernance\": {\n      \"aufsichtsrat\": {\n        \"anzahlDerMitgliederImAufsichtsrat\": 34,\n        \"anzahlUnabhaengigerMitgliederImAufsichtsrat\": 23,\n        \"anzahlVonFrauenImAufsichtsrat\": 15\n      },\n      \"verguetungsausschuss\": {\n        \"anzahlDerMitgliederImVerguetungsausschuss\": 36,\n        \"anzahlUnabhaengigerMitgliederImVerguetungsausschuss\": null,\n        \"anzahlVonFrauenImVerguetungsausschuss\": null\n      },\n      \"nominierungsausschuss\": {\n        \"anzahlDerMitgliederImNominierungsausschuss\": 43,\n        \"anzahlUnabhaengigerMitgliederImNominierungsausschuss\": null,\n        \"anzahlVonFrauenImVerguetungsausschuss\": 23\n      },\n      \"pruefungsausschuss\": {\n        \"anzahlDerMitgliederImPruefungsausschuss\": 41,\n        \"anzahlUnabhaengigerMitgliederImPruefungsausschuss\": 35,\n        \"anzahlVonFrauenImPruefungsausschuss\": null\n      },\n      \"nachhaltigkeitsausschuss\": {\n        \"anzahlDerMitgliederImNachhaltigkeitsausschuss\": 12,\n        \"anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss\": 4,\n        \"anzahlVonFrauenImNachhaltigkeitsausschuss\": 4\n      },\n      \"sonstige\": {\n        \"wirtschaftspruefer\": \"John Doe\",\n        \"trennungVonCeoOderVorsitzenden\": \"Yes\",\n        \"amtszeitBisZurTrennung\": \"4\"\n      },\n      \"stakeholder\": {\n        \"einbeziehungVonStakeholdern\": \"Yes\",\n        \"prozessDerEinbeziehungVonStakeholdern\": \"Prozess\",\n        \"mechanismenZurAusrichtungAufStakeholder\": null\n      },\n      \"unternehmensrichtlinien\": {\n        \"veroeffentlichteUnternehmensrichtlinien\": [\n          \"Verhaltenskodex\",\n          \"Zwangsarbeit\",\n          \"MgtVonUmweltgefahren\"\n        ],\n        \"weitereVeroeffentlicheUnternehmensrichtlinien\": \"Keine\"\n      },\n      \"lieferantenauswahl\": {\n        \"esgKriterienUndUeberwachungDerLieferanten\": \"Yes\",\n        \"auswahlkriterien\": null\n      }\n    }\n  }\n}"
+      },
+      "EsgQuestionnaireAllgemein": {
+        "type": "object",
+        "properties": {
+          "esgZiele": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinEsgZiele"
+              }
+            ]
+          },
+          "sektoren": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinSektoren"
+              }
+            ]
+          },
+          "esgBerichte": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinEsgBerichte"
+              }
+            ]
+          },
+          "akkreditierungen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinAkkreditierungen"
+              }
+            ]
+          },
+          "unGlobalConceptPrinzipien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinUnGlobalConceptPrinzipien"
+              }
+            ]
+          },
+          "oecdLeitsaetze": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinOecdLeitsaetze"
+              }
+            ]
+          },
+          "sonstige": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinSonstige"
+              }
+            ]
+          },
+          "fuehrungsstandards": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinFuehrungsstandards"
+              }
+            ]
+          },
+          "rechtsstreitigkeiten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRechtsstreitigkeiten"
+              }
+            ]
+          },
+          "rating": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRating"
+              }
+            ]
+          },
+          "anleihen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinAnleihen"
+              }
+            ]
+          },
+          "risiken": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRisiken"
+              }
+            ]
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinAkkreditierungen": {
+        "type": "object",
+        "properties": {
+          "iso14001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso45001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso27001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "iso50001": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "weitereAkkreditierungen": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinAnleihen": {
+        "type": "object",
+        "properties": {
+          "grueneSozialeUndOderNachhaltigeEmissionen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen": {
+            "type": "number",
+            "nullable": true
+          },
+          "sustainibilityLinkedDebt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "ausstehendeSustainibilityLinkedDebt": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinEsgBerichte": {
+        "type": "object",
+        "properties": {
+          "nachhaltigkeitsberichte": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "frequenzDerBerichterstattung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FrequenzDerBerichterstattungOptions"
+              }
+            ]
+          },
+          "aktuelleBerichte": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinEsgZiele": {
+        "type": "object",
+        "properties": {
+          "existenzVonEsgZielen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "beschreibungDerEsgZiele": {
+            "type": "string",
+            "nullable": true
+          },
+          "investitionenInZielerreichung": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinFuehrungsstandards": {
+        "type": "object",
+        "properties": {
+          "oekologischeSozialeFuehrungsstandardsOderPrinzipien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "anreizmechanismenFuerDasManagementUmwelt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementUmweltOptions"
+              }
+            ]
+          },
+          "anreizmechanismenFuerDasManagementSoziales": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementSozialesOptions"
+              }
+            ]
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinOecdLeitsaetze": {
+        "type": "object",
+        "properties": {
+          "mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "richtlinienZurEinhaltungDerOecdLeitsaetze": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          },
+          "erklaerungDerEinhaltungDerOecdLeitsaetze": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinRating": {
+        "type": "object",
+        "properties": {
+          "esgRating": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "agentur": {
+            "type": "string",
+            "nullable": true
+          },
+          "ergebnis": {
+            "type": "string",
+            "nullable": true
+          },
+          "ratingbericht": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNo"
+              }
+            ]
+          },
+          "kritischePunkte": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinRechtsstreitigkeiten": {
+        "type": "object",
+        "properties": {
+          "esgBezogeneRechtsstreitigkeiten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "rechtsstreitigkeitenMitBezugZuE": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "statusZuE": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusZuEOptions"
+              }
+            ]
+          },
+          "einzelheitenZuDenRechtsstreitigkeitenZuE": {
+            "type": "string",
+            "nullable": true
+          },
+          "rechtsstreitigkeitenMitBezugZuS": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "statusZuS": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusZuSOptions"
+              }
+            ]
+          },
+          "einzelheitenZuDenRechtsstreitigkeitenZuS": {
+            "type": "string",
+            "nullable": true
+          },
+          "rechtsstreitigkeitenMitBezugZuG": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "statusZuG": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatusZuGOptions"
+              }
+            ]
+          },
+          "einzelheitenZuDenRechtsstreitigkeitenZuG": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinRisiken": {
+        "type": "object",
+        "properties": {
+          "wichtigsteESUndGRisikenUndBewertung": {
+            "type": "string",
+            "nullable": true
+          },
+          "hindernisseBeimUmgangMitEsgBedenken": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinSektoren": {
+        "type": "object",
+        "properties": {
+          "sektorenMitHohenKlimaauswirkungen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "auflistungDerSektoren": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/AuflistungDerSektorenOptions"
+            }
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinSonstige": {
+        "type": "object",
+        "properties": {
+          "ausrichtungAufDieUnSdgsUndAktivesVerfolgen": {
+            "type": "string",
+            "nullable": true
+          },
+          "ausschlusslistenAufBasisVonEsgKriterien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "ausschlusslisten": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireAllgemeinUnGlobalConceptPrinzipien": {
+        "type": "object",
+        "properties": {
+          "mechanismenZurUeberwachungDerEinhaltungDerUngcp": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "richtlinienZurEinhaltungDerUngcp": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/BaseDataPointString"
+            }
+          },
+          "erklaerungDerEinhaltungDerUngcp": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireGeneral"
+              }
+            ]
+          },
+          "allgemein": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemein"
+              }
+            ]
+          },
+          "umwelt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUmwelt"
+              }
+            ]
+          },
+          "soziales": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireSoziales"
+              }
+            ]
+          },
+          "unternehmensfuehrungGovernance": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrungGovernance"
+              }
+            ]
+          }
+        }
+      },
+      "EsgQuestionnaireGeneral": {
+        "type": "object",
+        "properties": {
+          "masterData": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireGeneralMasterData"
+              }
+            ]
+          }
+        }
+      },
+      "EsgQuestionnaireGeneralMasterData": {
+        "required": [
+          "berichtspflichtUndEinwilligungZurVeroeffentlichung"
+        ],
+        "type": "object",
+        "properties": {
+          "berichtspflichtUndEinwilligungZurVeroeffentlichung": {
+            "$ref": "#/components/schemas/YesNo"
+          },
+          "gueltigkeitsDatum": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireSoziales": {
+        "type": "object",
+        "properties": {
+          "unternehmensstrukturaenderungen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesUnternehmensstrukturaenderungen"
+              }
+            ]
+          },
+          "sicherheitUndWeiterbildung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesSicherheitUndWeiterbildung"
+              }
+            ]
+          },
+          "einkommensgleichheit": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesEinkommensgleichheit"
+              }
+            ]
+          },
+          "geschlechterdiversitaet": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesGeschlechterdiversitaet"
+              }
+            ]
+          },
+          "audit": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesAudit"
+              }
+            ]
+          }
+        }
+      },
+      "EsgQuestionnaireSozialesAudit": {
+        "type": "object",
+        "properties": {
+          "auditsZurEinhaltungVonArbeitsstandards": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "artDesAudits": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ArtDesAuditsOptions"
+              }
+            ]
+          },
+          "auditErgebnisse": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireSozialesEinkommensgleichheit": {
+        "type": "object",
+        "properties": {
+          "ueberwachungDerEinkommensungleichheit": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataUeberwachungDerEinkommensungleichheitValues"
+              }
+            ]
+          },
+          "massnahmenZurVerbesserungDerEinkommensungleichheit": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireSozialesGeschlechterdiversitaet": {
+        "type": "object",
+        "properties": {
+          "mitarbeiterAufTopManagementEbene": {
+            "type": "integer",
+            "nullable": true
+          },
+          "frauenAufTopManagementEbene": {
+            "type": "integer",
+            "nullable": true
+          },
+          "mitgliederGeschaeftsfuehrung": {
+            "type": "integer",
+            "nullable": true
+          },
+          "frauenInDerGeschaeftsfuehrung": {
+            "type": "integer",
+            "nullable": true
+          },
+          "definitionTopManagement": {
+            "type": "string",
+            "nullable": true
+          },
+          "einhaltungRechtlicherVorgaben": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireSozialesSicherheitUndWeiterbildung": {
+        "type": "object",
+        "properties": {
+          "sicherheitsmassnahmenFuerMitarbeiter": {
+            "type": "string",
+            "nullable": true
+          },
+          "unfallrate": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataUnfallrateValues"
+              }
+            ]
+          },
+          "budgetFuerSchulungAusbildung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataBudgetFuerSchulungAusbildungValues"
+              }
+            ]
+          }
+        }
+      },
+      "EsgQuestionnaireSozialesUnternehmensstrukturaenderungen": {
+        "type": "object",
+        "properties": {
+          "vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "anzahlUnbefristeterVertraegeInDeutschland": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlUnbefristeterVertraegeInDerGesamtgruppe": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": {
+            "type": "integer",
+            "nullable": true
+          },
+          "auswirkungenAufAnteilBefristerVertraegeUndFluktuation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataAuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues"
+              }
+            ]
+          }
+        }
+      },
+      "EsgQuestionnaireUmwelt": {
+        "type": "object",
+        "properties": {
+          "treibhausgasemissionen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltTreibhausgasemissionen"
+              }
+            ]
+          },
+          "produktion": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltProduktion"
+              }
+            ]
+          },
+          "energieverbrauch": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltEnergieverbrauch"
+              }
+            ]
+          },
+          "energieeffizienzImmobilienanlagen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltEnergieeffizienzImmobilienanlagen"
+              }
+            ]
+          },
+          "wasserverbrauch": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltWasserverbrauch"
+              }
+            ]
+          },
+          "abfallproduktion": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltAbfallproduktion"
+              }
+            ]
+          },
+          "biodiversitaet": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltBiodiversitaet"
+              }
+            ]
+          },
+          "fossileBrennstoffe": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltFossileBrennstoffe"
+              }
+            ]
+          },
+          "taxonomie": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltTaxonomie"
+              }
+            ]
+          }
+        }
+      },
+      "EsgQuestionnaireUmweltAbfallproduktion": {
+        "type": "object",
+        "properties": {
+          "berichterstattungAbfallproduktion": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungAbfallproduktionValues"
+              }
+            ]
+          },
+          "unternehmensGruppenStrategieBzglAbfallproduktion": {
+            "type": "string",
+            "nullable": true
+          },
+          "recyclingImProduktionsprozess": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataRecyclingImProduktionsprozessValues"
+              }
+            ]
+          },
+          "gefaehrlicherAbfall": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUmweltBiodiversitaet": {
+        "type": "object",
+        "properties": {
+          "negativeAktivitaetenFuerDieBiologischeVielfalt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "negativeMassnahmenFuerDieBiologischeVielfalt": {
+            "type": "string",
+            "nullable": true
+          },
+          "positiveAktivitaetenFuerDieBiologischeVielfalt": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "positiveMassnahmenFuerDieBiologischeVielfalt": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUmweltEnergieeffizienzImmobilienanlagen": {
+        "type": "object",
+        "properties": {
+          "berichterstattungEnergieverbrauchVonImmobilienvermoegen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungEnergieverbrauchVonImmobilienvermoegenValues"
+              }
+            ]
+          },
+          "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUmweltEnergieverbrauch": {
+        "type": "object",
+        "properties": {
+          "berichterstattungEnergieverbrauch": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungEnergieverbrauchValues"
+              }
+            ]
+          },
+          "unternehmensGruppenStrategieBzglEnergieverbrauch": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUmweltFossileBrennstoffe": {
+        "type": "object",
+        "properties": {
+          "einnahmenAusFossilenBrennstoffen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "berichterstattungEinnahmenAusFossilenBrennstoffen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungEinnahmenAusFossilenBrennstoffenValues"
+              }
+            ]
+          }
+        }
+      },
+      "EsgQuestionnaireUmweltProduktion": {
+        "type": "object",
+        "properties": {
+          "produkteZurVerringerungDerUmweltbelastung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "verringerungenDerUmweltbelastung": {
+            "type": "string",
+            "nullable": true
+          },
+          "oekologischerMindestStandardFuerProduktionsprozesse": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          }
+        }
+      },
+      "EsgQuestionnaireUmweltTaxonomie": {
+        "type": "object",
+        "properties": {
+          "taxonomieBerichterstattung": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TaxonomieBerichterstattungOptions"
+              }
+            ]
+          },
+          "euTaxonomieKompassAktivitaeten": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Activity"
+            }
+          },
+          "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataUmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues"
+              }
+            ]
+          }
+        }
+      },
+      "EsgQuestionnaireUmweltTreibhausgasemissionen": {
+        "type": "object",
+        "properties": {
+          "treibhausgasBerichterstattungUndPrognosen": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataTreibhausgasBerichterstattungUndPrognosenValues"
+              }
+            ]
+          },
+          "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird": {
+            "type": "string",
+            "nullable": true
+          },
+          "strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUmweltWasserverbrauch": {
+        "type": "object",
+        "properties": {
+          "berichterstattungWasserverbrauch": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YearlyTimeseriesDataBerichterstattungWasserverbrauchValues"
+              }
+            ]
+          },
+          "unternehmensGruppenStrategieBzglWasserverbrauch": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUnternehmensfuehrungGovernance": {
+        "type": "object",
+        "properties": {
+          "aufsichtsrat": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceAufsichtsrat"
+              }
+            ]
+          },
+          "verguetungsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceVerguetungsausschuss"
+              }
+            ]
+          },
+          "nominierungsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceNominierungsausschuss"
+              }
+            ]
+          },
+          "pruefungsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernancePruefungsausschuss"
+              }
+            ]
+          },
+          "nachhaltigkeitsausschuss": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceNachhaltigkeitsausschuss"
+              }
+            ]
+          },
+          "sonstige": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceSonstige"
+              }
+            ]
+          },
+          "stakeholder": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceStakeholder"
+              }
+            ]
+          },
+          "unternehmensrichtlinien": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceUnternehmensrichtlinien"
+              }
+            ]
+          },
+          "lieferantenauswahl": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EsgQuestionnaireUnternehmensfuehrunggovernanceLieferantenauswahl"
+              }
+            ]
+          }
+        }
+      },
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceAufsichtsrat": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImAufsichtsrat": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImAufsichtsrat": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlVonFrauenImAufsichtsrat": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceLieferantenauswahl": {
+        "type": "object",
+        "properties": {
+          "esgKriterienUndUeberwachungDerLieferanten": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "auswahlkriterien": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceNachhaltigkeitsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImNachhaltigkeitsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlVonFrauenImNachhaltigkeitsausschuss": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceNominierungsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImNominierungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImNominierungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlVonFrauenImVerguetungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUnternehmensfuehrunggovernancePruefungsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImPruefungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImPruefungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlVonFrauenImPruefungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceSonstige": {
+        "type": "object",
+        "properties": {
+          "wirtschaftspruefer": {
+            "type": "string",
+            "nullable": true
+          },
+          "trennungVonCeoOderVorsitzenden": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "amtszeitBisZurTrennung": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceStakeholder": {
+        "type": "object",
+        "properties": {
+          "einbeziehungVonStakeholdern": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "prozessDerEinbeziehungVonStakeholdern": {
+            "type": "string",
+            "nullable": true
+          },
+          "mechanismenZurAusrichtungAufStakeholder": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceUnternehmensrichtlinien": {
+        "type": "object",
+        "properties": {
+          "veroeffentlichteUnternehmensrichtlinien": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/VeroeffentlichteUnternehmensrichtlinienOptions"
+            }
+          },
+          "weitereVeroeffentlicheUnternehmensrichtlinien": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EsgQuestionnaireUnternehmensfuehrunggovernanceVerguetungsausschuss": {
+        "type": "object",
+        "properties": {
+          "anzahlDerMitgliederImVerguetungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlUnabhaengigerMitgliederImVerguetungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          },
+          "anzahlVonFrauenImVerguetungsausschuss": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "FrequenzDerBerichterstattungOptions": {
+        "type": "string",
+        "enum": [
+          "Jaehrlich",
+          "Halbjaehrlich",
+          "Vierteljaehrlich",
+          "Monatlich"
+        ]
+      },
+      "RecyclingImProduktionsprozessValues": {
+        "type": "object",
+        "properties": {
+          "prozentRecycelteWerkstoffeImProduktionsprozess": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "StatusZuEOptions": {
+        "type": "string",
+        "enum": [
+          "Offen",
+          "Geklaert"
+        ]
+      },
+      "StatusZuGOptions": {
+        "type": "string",
+        "enum": [
+          "Offen",
+          "Geklaert"
+        ]
+      },
+      "StatusZuSOptions": {
+        "type": "string",
+        "enum": [
+          "Offen",
+          "Geklaert"
+        ]
+      },
+      "TaxonomieBerichterstattungOptions": {
+        "type": "string",
+        "enum": [
+          "Nfrd",
+          "Csrd"
+        ]
+      },
+      "TreibhausgasBerichterstattungUndPrognosenValues": {
+        "type": "object",
+        "properties": {
+          "scope1": {
+            "type": "number",
+            "nullable": true
+          },
+          "scope2": {
+            "type": "number",
+            "nullable": true
+          },
+          "scope3": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "UeberwachungDerEinkommensungleichheitValues": {
+        "type": "object",
+        "properties": {
+          "unbereinigtesGeschlechtsspezifischesLohngefaelle": {
+            "type": "number",
+            "nullable": true
+          },
+          "einkommensungleichheitsverhaeltnis": {
+            "type": "number",
+            "nullable": true
+          },
+          "ceoEinkommensungleichheitsverhaeltnis": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues": {
+        "type": "object",
+        "properties": {
+          "taxonomieGeeignetNachProzentUmsatz": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomieGeeignetNachProzentCapex": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomieKonformNachProzentUmsatz": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomieKonformNachProzentCapex": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "UnfallrateValues": {
+        "type": "object",
+        "properties": {
+          "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "VeroeffentlichteUnternehmensrichtlinienOptions": {
+        "type": "string",
+        "enum": [
+          "AntiKorruption",
+          "Verhaltenskodex",
+          "Interessenkonflikte",
+          "Datenschutz",
+          "DiversitaetAndInklusion",
+          "FaireBehandlungVonKunden",
+          "Zwangsarbeit",
+          "GesundheitUndSicherheit",
+          "MgtVonUmweltgefahren",
+          "VerantwortungsvollesMarketing",
+          "Whistleblowing",
+          "Other"
+        ]
+      },
+      "YearlyTimeseriesDataAuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
+        "type": "object",
+        "properties": {
+          "currentYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yearlyData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/AuswirkungenAufAnteilBefristerVertraegeUndFluktuationValues"
+            }
+          }
+        }
+      },
+      "YearlyTimeseriesDataBerichterstattungAbfallproduktionValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
+        "type": "object",
+        "properties": {
+          "currentYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yearlyData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/BerichterstattungAbfallproduktionValues"
+            }
+          }
+        }
+      },
+      "YearlyTimeseriesDataBerichterstattungEinnahmenAusFossilenBrennstoffenValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
+        "type": "object",
+        "properties": {
+          "currentYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yearlyData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/BerichterstattungEinnahmenAusFossilenBrennstoffenValues"
+            }
+          }
+        }
+      },
+      "YearlyTimeseriesDataBerichterstattungEnergieverbrauchValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
+        "type": "object",
+        "properties": {
+          "currentYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yearlyData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/BerichterstattungEnergieverbrauchValues"
+            }
+          }
+        }
+      },
+      "YearlyTimeseriesDataBerichterstattungEnergieverbrauchVonImmobilienvermoegenValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
+        "type": "object",
+        "properties": {
+          "currentYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yearlyData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/BerichterstattungEnergieverbrauchVonImmobilienvermoegenValues"
+            }
+          }
+        }
+      },
+      "YearlyTimeseriesDataBerichterstattungWasserverbrauchValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
+        "type": "object",
+        "properties": {
+          "currentYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yearlyData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/BerichterstattungWasserverbrauchValues"
+            }
+          }
+        }
+      },
+      "YearlyTimeseriesDataBudgetFuerSchulungAusbildungValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
+        "type": "object",
+        "properties": {
+          "currentYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yearlyData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/BudgetFuerSchulungAusbildungValues"
+            }
+          }
+        }
+      },
+      "YearlyTimeseriesDataRecyclingImProduktionsprozessValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
+        "type": "object",
+        "properties": {
+          "currentYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yearlyData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/RecyclingImProduktionsprozessValues"
+            }
+          }
+        }
+      },
+      "YearlyTimeseriesDataTreibhausgasBerichterstattungUndPrognosenValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
+        "type": "object",
+        "properties": {
+          "currentYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yearlyData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/TreibhausgasBerichterstattungUndPrognosenValues"
+            }
+          }
+        }
+      },
+      "YearlyTimeseriesDataUeberwachungDerEinkommensungleichheitValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
+        "type": "object",
+        "properties": {
+          "currentYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yearlyData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/UeberwachungDerEinkommensungleichheitValues"
+            }
+          }
+        }
+      },
+      "YearlyTimeseriesDataUmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
+        "type": "object",
+        "properties": {
+          "currentYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yearlyData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues"
+            }
+          }
+        }
+      },
+      "YearlyTimeseriesDataUnfallrateValues": {
+        "required": [
+          "currentYear",
+          "yearlyData"
+        ],
+        "type": "object",
+        "properties": {
+          "currentYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yearlyData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/UnfallrateValues"
+            }
+          }
+        }
+      },
       "CompanyDataOwners": {
         "required": [
           "companyId",
@@ -10920,6 +10967,46 @@
           "VatNumber"
         ]
       },
+      "DataMetaInformationForMyDatasets": {
+        "required": [
+          "companyId",
+          "companyName",
+          "dataId",
+          "dataType",
+          "qualityStatus",
+          "reportingPeriod",
+          "uploadTime"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "dataId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/DataTypeEnum"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "qualityStatus": {
+            "$ref": "#/components/schemas/QaStatus"
+          },
+          "currentlyActive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "DataAndMetaInformationSmeData": {
         "required": [
           "data",
@@ -10980,21 +11067,6 @@
           }
         }
       },
-      "DataAndMetaInformationGdvData": {
-        "required": [
-          "data",
-          "metaInfo"
-        ],
-        "type": "object",
-        "properties": {
-          "metaInfo": {
-            "$ref": "#/components/schemas/DataMetaInformation"
-          },
-          "data": {
-            "$ref": "#/components/schemas/GdvData"
-          }
-        }
-      },
       "DataAndMetaInformationEuTaxonomyDataForNonFinancials": {
         "required": [
           "data",
@@ -11025,6 +11097,52 @@
           }
         }
       },
+      "DataAndMetaInformationEsgQuestionnaireData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EsgQuestionnaireData"
+          }
+        }
+      },
+      "BasicCompanyInformation": {
+        "required": [
+          "companyId",
+          "companyName",
+          "countryCode",
+          "headquarters"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "permId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "AggregatedFrameworkDataSummary": {
         "required": [
           "numberOfProvidedReportingPeriods"
@@ -11044,10 +11162,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
@@ -11102,7 +11220,7 @@
       "DataTypeEnum": {
         "type": "string",
         "enum": [
-          "gdv",
+          "esg-questionnaire",
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "lksg",

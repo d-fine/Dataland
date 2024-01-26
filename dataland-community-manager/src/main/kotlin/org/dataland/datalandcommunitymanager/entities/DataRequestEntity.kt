@@ -4,9 +4,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
-import jakarta.persistence.FetchType
 import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -32,11 +30,13 @@ data class DataRequestEntity(
     @Enumerated(EnumType.STRING)
     val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
 
+    @Column(columnDefinition = "varchar(4000)")
     val dataRequestCompanyIdentifierValue: String,
 
-    val messageHistory: String,
+    var messageHistory: String?,
 
     val lastModifiedDate: Long,
 
+    @Enumerated(EnumType.STRING)
     var requestStatus: RequestStatus,
 )

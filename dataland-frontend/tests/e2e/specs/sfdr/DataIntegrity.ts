@@ -10,6 +10,7 @@ import * as MLDT from "@sharedUtils/components/resources/dataTable/MultiLayerDat
 import { uploadCompanyAndFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { type ObjectType } from "@/utils/UpdateObjectUtils";
+import { type ExtendedDataPoint } from "@/utils/DataPoint";
 
 let testSfdrCompany: FixtureData<SfdrData>;
 before(function () {
@@ -87,6 +88,27 @@ describeIf(
     }
 
     /**
+     * Check if YesNoExtendedDataPointFormField component contain proper fields
+     * @param fieldData Data for field
+     */
+    function testYesNoExtendedDataPointFormField(fieldData: ExtendedDataPoint<string>): void {
+      cy.get('[data-test="protectedAreasExposure"]')
+        .find('div[data-test="dataQuality"] select')
+        .should("exist")
+        .should("has.value", fieldData.quality);
+      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="Yes"]').click();
+      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
+      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] select')
+        .should("exist")
+        .should("has.value", fieldData.quality);
+      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
+      cy.get('[data-test="protectedAreasExposure"] [data-test="toggleDataPointWrapper"] input[value="No"]').click();
+      cy.get('[data-test="protectedAreasExposure"] div[data-test="dataQuality"] select')
+        .should("exist")
+        .should("has.value", fieldData.quality);
+    }
+
+    /**
      * Removes the first high impact climate sector and checks that it has actually disappeared
      */
     function testRemovingOfHighImpactClimateSector(): void {
@@ -135,6 +157,9 @@ describeIf(
           setQualityInSfdrUploadForm();
           setReferenceToAllUploadedReports(
             Object.keys(testSfdrCompany.t.general.general.referencedReports as ObjectType),
+          );
+          testYesNoExtendedDataPointFormField(
+            testSfdrCompany.t.environmental?.biodiversity?.protectedAreasExposure as ExtendedDataPoint<string>,
           );
           testRemovingOfHighImpactClimateSector();
           submitButton.clickButton();

@@ -20,7 +20,10 @@ data class SingleDataRequest(
     val companyIdentifier: String,
 
     @field:JsonProperty(required = true)
-    @field:Schema(example = "p2p")
+    @field:Schema(
+        implementation = DataTypeEnum::class,
+        example = "p2p",
+    )
     val frameworkName: DataTypeEnum,
 
     @field:JsonProperty(required = true)

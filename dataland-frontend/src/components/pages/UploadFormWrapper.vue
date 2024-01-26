@@ -14,7 +14,7 @@
         />
       </AuthorizationWrapper>
     </TheContent>
-    <TheFooter />
+    <TheFooter :is-light-version="true" :sections="footerContent" />
   </AuthenticationWrapper>
 </template>
 
@@ -23,7 +23,7 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { DataTypeEnum } from "@clients/backend";
 
-import CreateGdvDataset from "@/components/forms/CreateGdvDataset.vue";
+import CreateEsgQuestionnaireDataset from "@/components/forms/CreateEsgQuestionnaireDataset.vue";
 import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
 import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
@@ -31,7 +31,9 @@ import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEuTaxonom
 import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
 
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import TheFooter from "@/components/generics/TheFooter.vue";
+import TheFooter from "@/components/generics/TheNewFooter.vue";
+import contentData from "@/assets/content.json";
+import type { Content, Page } from "@/types/ContentTypes";
 import BackButton from "@/components/general/BackButton.vue";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import { redirectToMyDatasets } from "@/components/resources/uploadDataset/DatasetCreationRedirect";
@@ -53,8 +55,12 @@ export default defineComponent({
     BackButton,
   },
   data() {
+    const content: Content = contentData;
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerContent = footerPage?.sections;
     return {
       KEYCLOAK_ROLE_UPLOADER,
+      footerContent,
     };
   },
   props: {
@@ -75,8 +81,8 @@ export default defineComponent({
           return CreateP2pDataset;
         case `${DataTypeEnum.Sfdr}`:
           return CreateSfdrDataset;
-        case `${DataTypeEnum.Gdv}`:
-          return CreateGdvDataset;
+        case `${DataTypeEnum.EsgQuestionnaire}`:
+          return CreateEsgQuestionnaireDataset;
         default:
           return null;
       }

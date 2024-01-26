@@ -5,7 +5,6 @@ import org.dataland.datalandcommunitymanager.model.email.Email
 import org.dataland.datalandcommunitymanager.model.email.EmailContact
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import java.util.*
 
 /**
  * Implementation of a request manager service for all operations concerning the processing of data requests
@@ -23,6 +22,15 @@ class DataRequestLogger {
             "Received a bulk data request by a user. " +
                 "-> Processing it with bulkDataRequestId $bulkDataRequestId",
 
+        )
+    }
+
+    /**
+     * Logs an appropriate message when a single data request has happened.
+     */
+    fun logMessageForSingleDataRequest(dataRequestId: String) {
+        logger.info(
+            "Received a single data request by a user. -> Processing it with dataRequestId $dataRequestId",
         )
     }
 

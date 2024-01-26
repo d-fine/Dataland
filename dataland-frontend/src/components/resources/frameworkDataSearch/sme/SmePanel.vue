@@ -27,7 +27,7 @@ import {
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
-import { humanizeStringOrNumber } from "@/utils/StringHumanizer";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import ThreeLayerTable from "@/components/resources/frameworkDataSearch/ThreeLayerDataTable.vue";
 import { type KpiValue } from "@/components/resources/frameworkDataSearch/KpiDataObject";
 import { type Field } from "@/utils/GenericFrameworkTypes";

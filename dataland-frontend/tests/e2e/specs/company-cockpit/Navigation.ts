@@ -1,5 +1,5 @@
 import { reader_name, reader_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { getStoredCompaniesForDataType } from "@e2e/utils/GeneralApiUtils";
+import { searchBasicCompanyInformationForDataType } from "@e2e/utils/GeneralApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { type CompanyIdAndName, DataTypeEnum } from "@clients/backend";
 
@@ -12,17 +12,17 @@ describe("As a user, I expect the navigation around the company cockpit to work 
   before(() => {
     getKeycloakToken(reader_name, reader_pw)
       .then((token: string) => {
-        return getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
+        return searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
       })
-      .then((storedCompanies) => {
-        expect(storedCompanies).to.be.not.empty;
+      .then((basicCompanyInfos) => {
+        expect(basicCompanyInfos).to.be.not.empty;
         someCompanyIdAndName = {
-          companyId: storedCompanies[0].companyId,
-          companyName: storedCompanies[0].companyInformation.companyName,
+          companyId: basicCompanyInfos[0].companyId,
+          companyName: basicCompanyInfos[0].companyName,
         };
         otherCompanyIdAndName = {
-          companyId: storedCompanies[1].companyId,
-          companyName: storedCompanies[1].companyInformation.companyName,
+          companyId: basicCompanyInfos[1].companyId,
+          companyName: basicCompanyInfos[1].companyName,
         };
       });
   });
@@ -79,7 +79,7 @@ describe("As a user, I expect the navigation around the company cockpit to work 
   }
 
   /**
-   * Searches for a company and check if GET request for framework data is sent
+   * Searches a company visits the first suggestion's cockpit and waits for displayed data
    * @param companyToSearch the company to navigate to via the search bar
    */
   function searchCompanyAndInterceptRequest(companyToSearch: CompanyIdAndName): void {

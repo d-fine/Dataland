@@ -64,7 +64,7 @@ export default defineComponent({
         DataTypeEnum.Sfdr,
         DataTypeEnum.P2p,
         DataTypeEnum.Sme,
-      ];
+      ] as string[];
 
       for (const frameworkId of getAllFrameworkIdentifiers()) {
         standardMultiViewFrameworks.push(frameworkId);
