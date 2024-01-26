@@ -124,6 +124,8 @@ export function wrapDisplayValueWithDatapointInformation(
       };
   } else {
     if (!inputValue || inputValue.displayValue == "") {
+      //TODO confirm that the first argument in the if statement
+      // can be removed
       return MLDTDisplayObjectForEmptyString;
     } else {
       return {
