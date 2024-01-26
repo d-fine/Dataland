@@ -26,16 +26,19 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaptation : BaseJavaMig
     fun migrateSubstantialContributionToClimateChangeAdaptation(dataTableEntity: DataTableEntity) {
         val companyAssociatedDatasetAsString = dataTableEntity.companyAssociatedData
         val euTaxoDataset = JSONObject(companyAssociatedDatasetAsString.getString("data"))
-        val euTaxoDataset2 = euTaxoDataset.getOrJavaNull("data") as JSONObject
+        val euTaxoDataset2 = euTaxoDataset.getOrJavaNull("data")  ?: return
+        euTaxoDataset2 as JSONObject
 
         listOf("revenue", "capex", "opex").forEach { cashFlowType ->
             mapOfOldToNewFieldNames.forEach {
-                euTaxoDataset2.getJSONObject(cashFlowType).put(
+                val euTaxoDataset3 = euTaxoDataset2.getOrJavaNull(cashFlowType) ?: return@forEach
+                    euTaxoDataset3 as JSONObject
+                    euTaxoDataset3.put(
                     it.value,
-                    euTaxoDataset2.getJSONObject(cashFlowType).getInt(it.key),
+                    euTaxoDataset3.getInt(it.key),
                 )
-                euTaxoDataset2.getJSONObject(cashFlowType).remove(it.key)
-                euTaxoDataset2.getJSONObject(cashFlowType).getJSONArray("alignedActivities").forEach { actitivy ->
+                euTaxoDataset3.remove(it.key)
+                euTaxoDataset3.getJSONArray("alignedActivities").forEach { actitivy ->
                     actitivy as JSONObject
                     actitivy.put(it.value, actitivy.get(it.key))
                     actitivy.remove(it.key)
