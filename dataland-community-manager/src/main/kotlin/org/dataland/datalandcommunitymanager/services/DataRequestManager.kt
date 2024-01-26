@@ -161,6 +161,46 @@ class DataRequestManager(
         return buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
     }
 
+    fun getDataRequests(dataType: DataTypeEnum?, userId: String?, requestStatus: RequestStatus?, reportingPeriod: String?, dataRequestCompanyIdentifierValue: String?): List<StoredDataRequest>? {
+        var result = listOf<DataRequestEntity>()
+        if(dataType != null) {
+            result = dataRequestRepository.findByDataTypeName(dataType.toString())
+        }
+        if(userId != null) {
+            val temp = dataRequestRepository.findByUserId(userId)
+            if(result.isEmpty()) {
+                result = temp
+            } else {
+                result = result.intersect(temp).toList()
+            }
+        }
+        if(requestStatus != null) {
+            val temp = dataRequestRepository.findByRequestStatus(requestStatus)
+            if(result.isEmpty()) {
+                result = temp
+            } else {
+                result = result.intersect(temp).toList()
+            }
+        }
+        if(reportingPeriod != null) {
+            val temp = dataRequestRepository.findByReportingPeriod(reportingPeriod)
+            if(result.isEmpty()) {
+                result = temp
+            } else {
+                result = result.intersect(temp).toList()
+            }
+        }
+        if(dataRequestCompanyIdentifierValue != null) {
+            val temp = dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue)
+            if(result.isEmpty()) {
+                result = temp
+            } else {
+                result = result.intersect(temp).toList()
+            }
+        }
+        return result.map { buildStoredDataRequestFromDataRequestEntity(it) }
+    }
+
     private fun throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId: String) {
         if (!dataRequestRepository.existsById(dataRequestId)) {
             throw ResourceNotFoundApiException(
@@ -356,7 +396,7 @@ class DataRequestManager(
             reportingPeriod = reportingPeriod,
             dataRequestCompanyIdentifierType = identifierType,
             dataRequestCompanyIdentifierValue = identifierValue,
-            messageHistory = mutableListOf(),
+            messageHistory = message.orEmpty(),
             lastModifiedDate = currentTimestamp,
             requestStatus = RequestStatus.Open,
         )
@@ -472,7 +512,7 @@ class DataRequestManager(
             dataRequestEntity.creationTimestamp,
         )
         messageRequestRepository.save(messageRequestEntity)
-        dataRequestEntity.messageHistory.add(messageRequestEntity)
+//        dataRequestEntity.messageHistory.add(messageRequestEntity)
         dataRequestRepository.save(dataRequestEntity)
         return dataRequestRepository.findById(dataRequestEntity.dataRequestId).get()
     }
