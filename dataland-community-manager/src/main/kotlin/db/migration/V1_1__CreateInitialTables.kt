@@ -11,7 +11,7 @@ class V1_1__CreateInitialTables : BaseJavaMigration() {
         context!!.connection.createStatement().execute(
             "CREATE TABLE data_requests (" +
                 "data_request_id varchar(255) NOT NULL, " +
-                "creation_time_stamp bigint NOT NULL, " +
+                "creation_timestamp bigint NOT NULL, " +
                 "data_request_company_identifier_type varchar(255) NOT NULL, " +
                 "data_request_company_identifier_value varchar(255) NOT NULL, " +
                 "data_type_name varchar(255) NOT NULL, " +
