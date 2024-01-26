@@ -164,6 +164,15 @@ class DataRequestManager(
         return buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
     }
 
+    /**
+     * Method to get all data requests based on filters.
+     * @param dataType the framework to apply to the data request
+     * @param requestStatus the status to apply to the data request
+     * @param userId the user to apply to the data request
+     * @param reportingPeriod the reporting period to apply to the data request
+     * @param dataRequestCompanyIdentifierValue the company identifier value to apply to the data request
+     * @return all filtered data requests
+     */
     fun getDataRequests(
         dataType: DataTypeEnum?,
         userId: String?,
@@ -172,23 +181,24 @@ class DataRequestManager(
         dataRequestCompanyIdentifierValue: String?
     ): List<StoredDataRequest>? {
         var result = dataRequestRepository.findAll()
+        fun updateResult(otherList: List<DataRequestEntity>){
+            result = result.intersect(otherList.toSet()).toMutableList()
+        }
 
         if (dataType != null) {
-            result = result.intersect(dataRequestRepository.findByDataTypeName(dataType.toString())).toMutableList()
+            updateResult(dataRequestRepository.findByDataTypeName(dataType.toString()))
         }
         if (userId != null) {
-            result = result.intersect(dataRequestRepository.findByUserId(userId)).toMutableList()
+            updateResult(dataRequestRepository.findByUserId(userId))
         }
         if (requestStatus != null) {
-            result = result.intersect(dataRequestRepository.findByRequestStatus(requestStatus)).toMutableList()
+            updateResult(dataRequestRepository.findByRequestStatus(requestStatus))
         }
         if (reportingPeriod != null) {
-            result = result.intersect(dataRequestRepository.findByReportingPeriod(reportingPeriod)).toMutableList()
+            updateResult(dataRequestRepository.findByReportingPeriod(reportingPeriod))
         }
         if (dataRequestCompanyIdentifierValue != null) {
-            result = result.intersect(
-                dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue)
-            ).toMutableList()
+            updateResult(dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue))
         }
         return result.map { buildStoredDataRequestFromDataRequestEntity(it) }
     }
