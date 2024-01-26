@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.esgquestionnaire
 
+import ComponentGenerationUtilsForGermanFrameworks
 import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
@@ -37,10 +38,6 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
 ) {
 
     override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
-        diagnosticManager.suppress("IgnoredRow-4.2-d76402cd")
-        diagnosticManager.suppress("IgnoredRow-9-0fb5f681")
-        diagnosticManager.suppress("IgnoredRow-10.1.1-dcf255e8")
-        diagnosticManager.suppress("IgnoredRow-10.2.1-7ac5f737")
         diagnosticManager.suppress("IgnoredRow-19-4a93a683")
         diagnosticManager.suppress("IgnoredRow-24-0ed74c4b")
         diagnosticManager.suppress("IgnoredRow-26-b760adfc")
@@ -117,14 +114,14 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
         }
     }
 
-    private fun createListOfBaseDatapointComponents(framework: Framework, showIfBerichtsPflicht: FrameworkConditional) {
+    private fun editListOfStringBaseDatapointComponents(framework: Framework) {
         framework.root.edit<ComponentGroup>("allgemein") {
-            val sozialesGroup = this
-            with(EsgQuestionnaireListOfBaseDataPointComponents) {
-                aktuelleBerichte(sozialesGroup)
-                weitereAkkreditierungen(sozialesGroup, showIfBerichtsPflicht)
-                richtlinienZurEinhaltungDerUngcp(sozialesGroup)
-                richtlinienZurEinhaltungDerOecdLeitsaetze(sozialesGroup)
+            val componentGroupAllgemein = this
+            with(EsgQuestionnaireListOfStringBaseDataPointComponents) {
+                aktuelleBerichte(componentGroupAllgemein)
+                weitereAkkreditierungen(componentGroupAllgemein)
+                richtlinienZurEinhaltungDerUngcp(componentGroupAllgemein)
+                richtlinienZurEinhaltungDerOecdLeitsaetze(componentGroupAllgemein)
             }
         }
     }
@@ -140,7 +137,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
         val showIfBerichtsPflicht = DependsOnComponentValue(berichtsPflicht, "Yes")
         createRollingWindowComponentsInCategoryUmwelt(framework, showIfBerichtsPflicht)
         createRollingWindowComponentsInCategorySoziales(framework, showIfBerichtsPflicht)
-        createListOfBaseDatapointComponents(framework, showIfBerichtsPflicht)
+        editListOfStringBaseDatapointComponents(framework)
         framework.root.edit<ComponentGroup>("general") {
             edit<ComponentGroup>("masterData") {
                 edit<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung") {
@@ -159,7 +156,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
     }
 
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
-        return EsgQuestionnaireComponentGenerationUtils()
+        return ComponentGenerationUtilsForGermanFrameworks()
     }
 
     private fun setEuTaxonomieKompassAktivitaeten(component: MultiSelectComponent) {

@@ -13,7 +13,7 @@ import {
 import EsgQuestionnaireYearlyDecimalTimeseriesModal from "@/components/resources/dataTable/modals/EsgQuestionnaireYearlyDecimalTimeseriesModal.vue";
 
 /**
- * Formtas a GDVYearlyDecimalTimeseries for display in the table using a modal
+ * Formtas a EsgQuestionnaireYearlyDecimalTimeseries for display in the table using a modal
  * @param input the input to display
  * @param options meta-data regarding the generic input
  * @param fieldLabel the label of the containing field
