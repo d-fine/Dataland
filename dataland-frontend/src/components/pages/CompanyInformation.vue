@@ -61,21 +61,6 @@ export default defineComponent({
       waitingForData: true,
       companyIdDoesNotExist: false,
       isUserDataOwner: false,
-      contextMenuItems: [
-        {
-          label: 'Manage Company Details',
-          command: () => {
-            console.log("I dont know where to route this ? #TODO TODO")
-          }
-
-        },
-        {
-          label: 'Claim Company Ownership',
-          command: () => {
-            console.log("clik- this will lead to the known dialog")
-          }
-        }
-      ],
     };
   },
   computed: {
@@ -90,7 +75,30 @@ export default defineComponent({
       return this.companyInformation?.identifiers?.[IdentifierType.Isin]?.[0] ?? "—";
     },
     userId() {
+      console.log("getUserId()");
+      console.log(getUserId(assertDefined(this.getKeycloakPromise)));
       return getUserId(assertDefined(this.getKeycloakPromise));
+    },
+    contextMenuItems() {
+      const listOfItems = [
+        {
+          label: 'Manage Company Details',
+          command: () => {
+            console.log("I dont know where to route this ? #TODO TODO")
+          }
+
+        }];
+      if (!this.isUserDataOwner) {
+        listOfItems.push(
+            {
+              label: 'Claim Company Ownership',
+              command: () => {
+                console.log("clik- this will lead to the known dialog")
+              }
+            }
+        )
+      }
+      return listOfItems;
     }
   },
   props: {
@@ -101,11 +109,11 @@ export default defineComponent({
   },
   mounted() {
     void this.getCompanyInformation();
+    void this.getDataOwnerInformation();
   },
   watch: {
     companyId() {
       void this.getCompanyInformation();
-      void this.getDataOwnerInformation();
     },
 
   },
@@ -142,12 +150,17 @@ export default defineComponent({
       const noStringMessage = error instanceof Error ? error.message : "";
       return typeof error === "string" ? error : noStringMessage;
     },
+    /**
+     * Get the Information about Data-ownership
+     */
     async getDataOwnerInformation() {
       const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
           .backendClients.companyDataController;
       const axiosResponse = (await companyDataControllerApi.isUserDataOwnerForCompany(
               this.companyId, assertDefined(await this.userId))
       );
+      console.log(axiosResponse);
+      console.log(axiosResponse);
       axiosResponse ? this.isUserDataOwner = true : this.isUserDataOwner = false;
 
     }
