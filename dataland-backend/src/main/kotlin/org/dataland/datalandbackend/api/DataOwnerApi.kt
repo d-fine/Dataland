@@ -134,7 +134,7 @@ interface DataOwnerApi {
     )
 
     /**
-     * A method to request the current user to become data owner for the
+     * A method to request data ownership on a specified company for the current user
      * @param companyId the ID of the company for which data ownership is requested
      */
     @Operation(
