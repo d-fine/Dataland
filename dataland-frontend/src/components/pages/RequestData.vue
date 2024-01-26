@@ -18,64 +18,75 @@
           name="requestDataFormName"
         >
           <div class="grid px-8 py-4 justify-content-center uploadFormWrapper">
-            <template v-if="postBulkDataRequestObjectProcessed">
+            <template v-if="submittingInProgress || postBulkDataRequestObjectProcessed">
               <div class="col-12 md:col-6 xl:col-8 flex align-items-center justify-content-center">
                 <div class="col-12 status text-center">
-                  <template v-if="submittingSucceded">
-                    <em class="material-icons info-icon green-text">check_circle</em>
-                    <h1 class="status-text">Success</h1>
+                  <template v-if="submittingInProgress">
+                    <i class="pi pi-spinner pi-spin text-primary text-6xl" aria-hidden="true" />
                   </template>
 
-                  <template v-if="!submittingSucceded">
-                    <em class="material-icons info-icon red-text">error</em>
-                    <h1 class="status-text">Request Unssuccessful</h1>
+                  <template v-else>
+                    <template v-if="submittingSucceded">
+                      <em class="material-icons info-icon green-text">check_circle</em>
+                      <h1 class="status-text">Success</h1>
+                    </template>
+
+                    <template v-if="!submittingSucceded">
+                      <em class="material-icons info-icon red-text">error</em>
+                      <h1 class="status-text">Request Unssuccessful</h1>
+                    </template>
+
+                    <p v-if="message" class="py-3">{{ message }}</p>
+
+                    <PrimeButton
+                      type="button"
+                      @click="goToCompanies()"
+                      label="TO COMPANIES"
+                      class="uppercase p-button-outlined"
+                    />
                   </template>
-
-                  <p v-if="message" class="py-3">{{ message }}</p>
-
-                  <PrimeButton
-                    type="button"
-                    @click="goToCompanies()"
-                    label="TO COMPANIES"
-                    class="uppercase p-button-outlined"
-                  />
                 </div>
               </div>
 
               <div class="col-12 md:col-6 xl:col-4 bg-white radius-1 p-4">
                 <h1 class="p-0">Data Request Summary</h1>
-                <div class="summary-section border-bottom py-5">
-                  <h6 class="summary-section-heading m-0">{{ summarySectionReportingPeriodsHeading }}</h6>
-                  <p class="summary-section-data m-0 mt-3">{{ humanizedReportingPeriods }}</p>
-                </div>
-                <div class="summary-section border-bottom py-5">
-                  <h6 class="summary-section-heading m-0">{{ summarySectionFrameworksHeading }}</h6>
-                  <p class="summary-section-data m-0 mt-3">{{ humanizedSelectedFrameworks.join(", ") }}</p>
-                </div>
+                <template v-if="submittingInProgress">
+                  <i class="pi pi-spinner pi-spin text-xl text-primary" aria-hidden="true" />
+                </template>
+                <templae v-else>
+                  <div class="summary-section border-bottom py-5">
+                    <h6 class="summary-section-heading m-0">{{ summarySectionReportingPeriodsHeading }}</h6>
+                    <p class="summary-section-data m-0 mt-3">{{ humanizedReportingPeriods }}</p>
+                  </div>
+                  <div class="summary-section border-bottom py-5">
+                    <h6 class="summary-section-heading m-0">{{ summarySectionFrameworksHeading }}</h6>
+                    <p class="summary-section-data m-0 mt-3">{{ humanizedSelectedFrameworks.join(", ") }}</p>
+                  </div>
 
-                <div v-if="acceptedCompanyIdentifiers.length" class="summary-section py-5">
-                  <h6 class="summary-section-heading m-0">
-                    <em class="material-icons info-icon green-text">check_circle</em>
-                    {{ summarySectionIdentifiersHeading(acceptedCompanyIdentifiers, "REQUESTED") }}
-                  </h6>
-                  <p class="summary-section-data m-0 mt-3">
-                    <template v-for="identifier in acceptedCompanyIdentifiers" :key="identifier">
-                      <div class="identifier mb-2">{{ identifier }}</div>
-                    </template>
-                  </p>
-                </div>
+                  <div v-if="acceptedCompanyIdentifiers.length" class="summary-section py-5">
+                    <h6 class="summary-section-heading m-0">
+                      <em class="material-icons info-icon green-text">check_circle</em>
+                      {{ summarySectionIdentifiersHeading(acceptedCompanyIdentifiers, "REQUESTED") }}
+                    </h6>
+                    <p class="summary-section-data m-0 mt-3">
+                      <template v-for="identifier in acceptedCompanyIdentifiers" :key="identifier">
+                        <div class="identifier mb-2">{{ identifier }}</div>
+                      </template>
+                    </p>
+                  </div>
 
-                <div v-if="rejectedCompanyIdentifiers.length" class="summary-section py-5">
-                  <h6 class="summary-section-heading m-0">
-                    <em class="material-icons info-icon red-text">error</em>
-                    {{ summarySectionIdentifiersHeading(rejectedCompanyIdentifiers, "REJECTED") }}
-                  </h6>
-                  <p class="summary-section-data m-0 mt-3">
-                    <template v-for="identifier in rejectedCompanyIdentifiers" :key="identifier">
-                      <div class="identifier mb-2">{{ identifier }}</div>
-                    </template>
-                  </p>
-                </div>
+                  <div v-if="rejectedCompanyIdentifiers.length" class="summary-section py-5">
+                    <h6 class="summary-section-heading m-0">
+                      <em class="material-icons info-icon red-text">error</em>
+                      {{ summarySectionIdentifiersHeading(rejectedCompanyIdentifiers, "REJECTED") }}
+                    </h6>
+                    <p class="summary-section-data m-0 mt-3">
+                      <template v-for="identifier in rejectedCompanyIdentifiers" :key="identifier">
+                        <div class="identifier mb-2">{{ identifier }}</div>
+                      </template>
+                    </p>
+                  </div>
+                </templae>
               </div>
             </template>
 
@@ -85,8 +96,15 @@
                   <div class="col-12">
                     <BasicFormSection header="Select at least one reporting period">
                       <div class="flex flex-wrap mt-4 py-2">
-                        <ToggleChipFormInputs :name="'listOfReportingPeriods'" :options="reportingPeriods" />
+                        <ToggleChipFormInputs
+                          :name="'listOfReportingPeriods'"
+                          :options="reportingPeriods"
+                          @changed="selectedReportingPeriodsError = false"
+                        />
                       </div>
+                      <p v-if="selectedReportingPeriodsError" class="text-danger text-xs">
+                        Select at least one reporting period.
+                      </p>
                     </BasicFormSection>
 
                     <BasicFormSection header="Select at least one framework">
@@ -144,6 +162,7 @@
                       label="Submit"
                       class="p-button p-button-sm d-letters ml-auto"
                       name="submit_request_button"
+                      @click="checkReportingPeriods()"
                     >
                       NEXT
                     </PrimeButton>
@@ -219,6 +238,7 @@ export default defineComponent({
       postBulkDataRequestObjectProcessed: false,
       message: "",
       footerContent,
+      selectedReportingPeriodsError: false,
       reportingPeriods: [
         { name: "2023", value: false },
         { name: "2022", value: false },
@@ -232,11 +252,13 @@ export default defineComponent({
     humanizedSelectedFrameworks(): string[] {
       return this.selectedFrameworks.map((it) => humanizeStringOrNumber(it));
     },
-    humanizedReportingPeriods(): string {
+    selectedReportingPeriods(): string[] {
       return this.reportingPeriods
         .filter((reportingPeriod) => reportingPeriod.value)
-        .map((reportingPeriod) => reportingPeriod.name)
-        .join(", ");
+        .map((reportingPeriod) => reportingPeriod.name);
+    },
+    humanizedReportingPeriods(): string {
+      return this.selectedReportingPeriods.join(", ");
     },
     summarySectionReportingPeriodsHeading(): string {
       const len = this.reportingPeriods.filter((reportingPeriod) => reportingPeriod.value).length;
@@ -249,6 +271,14 @@ export default defineComponent({
   },
 
   methods: {
+    /**
+     * Test
+     */
+    checkReportingPeriods(): void {
+      if (!this.selectedReportingPeriods.length) {
+        this.selectedReportingPeriodsError = true;
+      }
+    },
     /**
      * Creates section title for identifiers
      * @param items string array to calculate size and proper grammar
@@ -273,9 +303,7 @@ export default defineComponent({
      */
     collectDataToSend(): BulkDataRequest {
       return {
-        listOfReportingPeriods: this.reportingPeriods
-          .filter((reportingPeriod) => reportingPeriod.value)
-          .map((reportingPeriod) => reportingPeriod.name),
+        listOfReportingPeriods: this.selectedReportingPeriods,
         listOfCompanyIdentifiers: this.identifiers,
         listOfFrameworkNames: this.selectedFrameworks,
       };
@@ -295,18 +323,18 @@ export default defineComponent({
      */
     async submitRequest(): Promise<void> {
       this.processInput();
+      this.submittingInProgress = true;
 
       try {
-        this.submittingInProgress = true;
         const bulkDataRequestObject = this.collectDataToSend();
         const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .requestController;
-        // const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
-        const response = await mockResponse(bulkDataRequestObject);
+        const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
 
-        // if (response.data.rejectedCompanyIdentifiers.length) {
-        //   this.openRequestModal(response.data);
-        // }
+        // blocking for when check identifiers endpoint is ready
+        if (false || response.data.rejectedCompanyIdentifiers.length) {
+          this.openRequestModal(response.data);
+        }
 
         this.message = response.data.message;
         this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
@@ -337,19 +365,6 @@ export default defineComponent({
           label: humanizeStringOrNumber(dataTypeEnum),
         };
       });
-    },
-
-    /**
-     * Resets form to allow the user to make a new data request
-     */
-    resetForm() {
-      this.acceptedCompanyIdentifiers = [];
-      this.rejectedCompanyIdentifiers = [];
-      this.selectedFrameworks = [];
-      this.identifiersInString = "";
-      this.identifiers = [];
-      this.postBulkDataRequestObjectProcessed = false;
-      this.submittingSucceded = false;
     },
 
     /**
@@ -412,30 +427,6 @@ export default defineComponent({
     this.retrieveAvailableFrameworks();
   },
 });
-
-// TODO: MOCKS - DELETE EVERYTHING BELOW
-
-/**
- * @param bulkDataRequestObject
- * @returns mock promise response
- */
-async function mockResponse(bulkDataRequestObject: any): AxiosPromise<BulkDataRequestResponse> {
-  const identifiers = splitArrayRandomly(bulkDataRequestObject.listOfCompanyIdentifiers);
-
-  const data = {
-    message: "Mock message!",
-    rejectedCompanyIdentifiers: identifiers[0],
-    acceptedCompanyIdentifiers: identifiers[1],
-  };
-  return Promise.resolve({ data } as AxiosResponse);
-}
-
-function splitArrayRandomly(inputArray) {
-  return inputArray.reduce(
-    ([arr1, arr2], item) => [[...arr1, item], arr2],
-    [[], []],
-  );
-}
 </script>
 
 <style scoped lang="scss">

@@ -15,6 +15,7 @@ export type ToggleChipInputType = { name: string; value: boolean };
 
 export default defineComponent({
   name: "ToggleChipFormInputs",
+  emits: ["changed"],
   components: {
     ToggleChip,
   },
@@ -45,6 +46,7 @@ export default defineComponent({
     onToggleChange(option: ToggleChipInputType, value: boolean) {
       option.value = value;
       this.value = this.options?.filter((option) => option.value).map((option) => option.name) ?? [];
+      this.$emit("changed");
     },
   },
 });
