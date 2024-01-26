@@ -17,7 +17,7 @@ import {
 } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
-describe("Component Test for the GDV-VÖB view Page with its componenets", () => {
+describe("Component Test for the ESG Questionnaire view Page with its componenets", () => {
   let preparedFixtureForTest: FixtureData<EsgQuestionnaireData>;
   const companyId = "mock-company-id";
   before(function () {
@@ -33,7 +33,7 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
       data: preparedFixtureForTest.t,
     } as CompanyAssociatedDataEsgQuestionnaireData);
-    mountGDVFrameworkFromFakeFixture([preparedFixtureForTest]);
+    mountEsgQuestionnaireFrameworkFromFakeFixture([preparedFixtureForTest]);
     getSectionHead("Umwelt").click();
     getSectionHead("Treibhausgasemissionen").click();
     getCellValueContainer("Treibhausgas-Berichterstattung und Prognosen").click();
@@ -53,13 +53,13 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     getCellValueContainer("Berichterstattung Energieverbrauch").children().should("not.have.text");
   });
 
-  it("Check that on the GDV-VÖB view Page the string for datatable component works properly", () => {
+  it("Check that on the ESG Questionnaire view Page the string for datatable component works properly", () => {
     cy.intercept(`/api/data/${DataTypeEnum.EsgQuestionnaire}/mock-data-id`, {
       companyId: companyId,
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
       data: preparedFixtureForTest.t,
     } as CompanyAssociatedDataEsgQuestionnaireData);
-    mountGDVFrameworkFromFakeFixture([preparedFixtureForTest]);
+    mountEsgQuestionnaireFrameworkFromFakeFixture([preparedFixtureForTest]);
     getSectionHead("Unternehmensführung/ Governance").click();
     getSectionHead("Sonstige").eq(1).click();
     getCellValueContainer("Wirtschaftsprüfer").contains(
@@ -67,13 +67,13 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
     );
   });
 
-  it("Check that on the GDV-VÖB view Page the list base data point component works properly", () => {
+  it("Check that on the ESG Questionnaire view Page the list base data point component works properly", () => {
     cy.intercept(`/api/data/${DataTypeEnum.EsgQuestionnaire}/mock-data-id`, {
       companyId: companyId,
       reportingPeriod: preparedFixtureForTest.reportingPeriod,
       data: preparedFixtureForTest.t,
     } as CompanyAssociatedDataEsgQuestionnaireData);
-    mountGDVFrameworkFromFakeFixture([preparedFixtureForTest]);
+    mountEsgQuestionnaireFrameworkFromFakeFixture([preparedFixtureForTest]);
     getSectionHead("ESG Berichte").click();
     getCellValueContainer("Aktuelle Berichte").click();
     cy.get("span").contains("Beschreibung des Berichts");
@@ -91,11 +91,11 @@ describe("Component Test for the GDV-VÖB view Page with its componenets", () =>
 
 /**
  *
- * Mounts the MultiLayerDataTableFrameworkPanel with the given dataset for the GDV framework
+ * Mounts the MultiLayerDataTableFrameworkPanel with the given dataset for the ESG Questionnaire framework
  * @param fixtureDatasetsForDisplay the datasets from the fixtures to mount
  * @returns the component mounting chainable
  */
-function mountGDVFrameworkFromFakeFixture(
+function mountEsgQuestionnaireFrameworkFromFakeFixture(
   fixtureDatasetsForDisplay: Array<FixtureData<EsgQuestionnaireData>>,
 ): Cypress.Chainable {
   const dummyCompanyId = "mock-company-id";

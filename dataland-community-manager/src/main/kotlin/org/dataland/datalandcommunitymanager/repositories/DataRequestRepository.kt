@@ -17,10 +17,31 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @returns a list with all data request for that user
      */
     fun findByUserId(userId: String): List<DataRequestEntity>
+
+    /** This method gets all data request that are stored for a specific framework.
+     * @param dataTypeName defines for which framework the data request shall be retrieved
+     * @returns a list with all data request for that framework
+     */
     fun findByDataTypeName(dataTypeName: String): List<DataRequestEntity>
+
+    /** This method gets all data request that are stored for a specific Reporting Period.
+     * @param reportingPeriod defines for which Reporting Period the data request shall be retrieved
+     * @returns a list with all data request for that Reporting Period
+     */
     fun findByReportingPeriod(reportingPeriod: String): List<DataRequestEntity>
+
+    /** This method gets all data request that are stored for a specific requestStatus.
+     * @param requestStatus defines for which requestStatus the data request shall be retrieved
+     * @returns a list with all data request for that requestStatus
+     */
     fun findByRequestStatus(requestStatus: RequestStatus): List<DataRequestEntity>
+
+    /** This method gets all data request that are stored for a specific CompanyIdentifierValue.
+     * @param dataRequestCompanyIdentifierValue defines for which CompanyIdentifier the data request shall be retrieved
+     * @returns a list with all data request for that CompanyIdentifierValue
+     */
     fun findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue: String): List<DataRequestEntity>
+
     /** This method checks if a data request with the provided params already exists in the database.
      * @param userId to check for
      * @param dataRequestCompanyIdentifierValue to check for
