@@ -1,10 +1,14 @@
 <template>
   <TheHeader v-if="!useMobileView"/>
   <TheContent class="paper-section flex">
-    <CompanyInfoSheet :company-id="companyId" @fetched-company-information="getCompanyName"/>
+    <CompanyInfoSheet :company-id="companyId" @fetched-company-information="getCompanyName"
+                      @fetched-data-owner-information="getDataOwnerInformation"/>
     <div class="card-wrapper">
       <div class="card-grid">
-        <ClaimOwnershipPanel :company-name="companyName"/>
+
+        <ClaimOwnershipPanel v-if="!isUserDataOwner" :company-name="companyName" @toggle-dialog="toggleDialog"/>
+        <ClaimOwnershipDialog v-if="!isUserDataOwner" :dialog-is-open="dialogIsOpen" :company-name="companyName"
+                              @toggle-dialog="toggleDialog"/>
         <FrameworkSummaryPanel
             v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
             :key="framework"
@@ -34,6 +38,7 @@ import FrameworkSummaryPanel from "@/components/resources/companyCockpit/Framewo
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import {ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE} from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
+import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -64,6 +69,7 @@ export default defineComponent({
     CompanyInfoSheet,
     FrameworkSummaryPanel,
     TheContent,
+    ClaimOwnershipDialog,
     TheHeader,
     TheFooter,
   },
@@ -85,6 +91,8 @@ export default defineComponent({
           | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
       companyName: "wait",
+      dialogIsOpen: false,
+      isUserDataOwner: false,
     };
   },
   mounted() {
@@ -104,6 +112,14 @@ export default defineComponent({
     getCompanyName(companyInfo: CompanyInformation) {
       this.companyName = companyInfo.companyName;
     },
+    getDataOwnerInformation(isUserDataOwner: boolean) {
+      this.isUserDataOwner = isUserDataOwner;
+      console.log("Cockpitpage isUserDataOwner");
+      console.log(isUserDataOwner);
+    },
+    toggleDialog() {
+      this.dialogIsOpen = !this.dialogIsOpen;
+    }
   },
 });
 </script>

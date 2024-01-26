@@ -54,7 +54,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  emits: ["fetchedCompanyInformation"],
+  emits: ["fetchedCompanyInformation", "fetchedDataOwnerInformation"],
   data() {
     return {
       companyInformation: null as CompanyInformation | null,
@@ -75,8 +75,6 @@ export default defineComponent({
       return this.companyInformation?.identifiers?.[IdentifierType.Isin]?.[0] ?? "—";
     },
     userId() {
-      console.log("getUserId()");
-      console.log(getUserId(assertDefined(this.getKeycloakPromise)));
       return getUserId(assertDefined(this.getKeycloakPromise));
     },
     contextMenuItems() {
@@ -114,7 +112,11 @@ export default defineComponent({
   watch: {
     companyId() {
       void this.getCompanyInformation();
+      this.$emit('fetchedDataOwnerInformation', this.isUserDataOwner);
     },
+    isUserDataOwner(newValue) {
+      this.$emit('fetchedDataOwnerInformation', newValue);
+    }
 
   },
   methods: {
@@ -131,6 +133,7 @@ export default defineComponent({
           this.companyInformation = (await companyDataControllerApi.getCompanyInfo(this.companyId)).data;
           this.waitingForData = false;
           this.$emit("fetchedCompanyInformation", this.companyInformation);
+          this.$emit('fetchedDataOwnerInformation', this.isUserDataOwner);
         }
       } catch (error) {
         console.error(error);
@@ -159,8 +162,6 @@ export default defineComponent({
       const axiosResponse = (await companyDataControllerApi.isUserDataOwnerForCompany(
               this.companyId, assertDefined(await this.userId))
       );
-      console.log(axiosResponse);
-      console.log(axiosResponse);
       axiosResponse ? this.isUserDataOwner = true : this.isUserDataOwner = false;
 
     }
