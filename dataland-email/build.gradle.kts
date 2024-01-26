@@ -27,9 +27,7 @@ plugins {
 
 dependencies {
     implementation(libs.slf4j.api)
-    implementation(libs.spring.security.crypto)
     implementation(libs.spring.security.web)
-    implementation(libs.jakarta.servlet.api)
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-keycloak-adapter"))
     implementation(libs.mailjet.client)
