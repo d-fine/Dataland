@@ -23,7 +23,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      */
     fun findByDataTypeName(dataTypeName: String): List<DataRequestEntity>
     /** This method gets all data request that are stored for a specific Reporting Period.
-     * @param ReportingPeriod defines for which Reporting Period the data request shall be retrieved
+     * @param reportingPeriod defines for which Reporting Period the data request shall be retrieved
      * @returns a list with all data request for that Reporting Period
      */
     fun findByReportingPeriod(reportingPeriod: String): List<DataRequestEntity>
