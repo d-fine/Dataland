@@ -27,7 +27,7 @@ before(function () {
 });
 
 describeIf(
-  "As a user, I expect to be able to edit and submit GDV data via the upload form",
+  "As a user, I expect to be able to edit and submit ESG Questionnaire data via the upload form",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
@@ -37,8 +37,8 @@ describeIf(
     });
 
     it(
-      "Create a company and a GDV dataset via api, then re-upload it with the upload form in Edit mode and " +
-        "assure that the re-uploaded dataset equals the pre-uploaded one",
+      "Create a company and a ESG Questionnaire dataset via api, then re-upload it with the upload form in " +
+        "Edit mode and assure that the re-uploaded dataset equals the pre-uploaded one",
       () => {
         const uniqueCompanyMarkerWithDate = Date.now().toString();
         const testCompanyNameEsgQuestionnaire =
