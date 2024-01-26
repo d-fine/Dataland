@@ -168,7 +168,7 @@ interface RequestApi {
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.
-     * @return all data requests of the user in a list
+     * @return all filtered data requests in a list
      */
     @Operation(
         summary = "Get all stored data requests based on filters.",
@@ -191,5 +191,4 @@ interface RequestApi {
         @RequestParam reportingPeriod: String?,
         @RequestParam dataRequestCompanyIdentifierValue: String?,
     ): ResponseEntity<List<StoredDataRequest>>
-
 }

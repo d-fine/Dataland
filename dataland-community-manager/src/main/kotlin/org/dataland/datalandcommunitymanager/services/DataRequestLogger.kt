@@ -31,7 +31,7 @@ class DataRequestLogger {
     fun logMessageForSingleDataRequest(companyIdentifier: String) {
         logger.info(
             "Received a single data request with companyIdentifier $companyIdentifier by a user. " +
-                    "-> Processing it",
+                "-> Processing it",
         )
     }
 
