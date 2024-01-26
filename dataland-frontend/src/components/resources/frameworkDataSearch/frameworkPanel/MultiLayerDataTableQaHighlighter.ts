@@ -169,7 +169,7 @@ function checkShouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDispla
           // prettier-ignore
           (value.modalOptions?.data?.listOfRowContents?.length ||
             value.modalOptions?.data?.input ||
-            value.modalOptions?.data?.value?.length)
+            value.modalOptions?.data?.values?.length)
         );
       } else if (!!value && "innerContents" in value) {
         return value.innerContents.displayValue != NO_DATA_PROVIDED && value.innerContents.displayValue != "";

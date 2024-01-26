@@ -2,15 +2,16 @@ import { DataTypeEnum } from "@clients/backend";
 
 // - Available frameworks settings
 
-export const ARRAY_OF_SUPPORTED_FRAMEWORKS = putEsgQuestionnaireAtTheEndOfList(Object.values(DataTypeEnum));
-export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = putEsgQuestionnaireAtTheEndOfList(Object.values(DataTypeEnum));
-export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = putEsgQuestionnaireAtTheEndOfList([
+export const ARRAY_OF_SUPPORTED_FRAMEWORKS = putGermanFrameworksAtTheEndOfList(Object.values(DataTypeEnum));
+export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = putGermanFrameworksAtTheEndOfList(Object.values(DataTypeEnum));
+export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = putGermanFrameworksAtTheEndOfList([
   DataTypeEnum.P2p,
   DataTypeEnum.EutaxonomyFinancials,
   DataTypeEnum.Sfdr,
   DataTypeEnum.Lksg,
   DataTypeEnum.EutaxonomyNonFinancials,
   DataTypeEnum.EsgQuestionnaire,
+  DataTypeEnum.Heimathafen,
 ]);
 
 // - Keycloak and session management related settings
@@ -40,21 +41,21 @@ export const NO_DATA_PROVIDED = "No data provided";
 export const ONLY_AUXILIARY_DATA_PROVIDED = "Only auxiliary data provided";
 
 /**
- * Changes the sorting of a list of data type enums by putting the Esg Questionnaire framework at the very end.
+ * Changes the sorting of a list of data type enums by putting German frameworks at the very end.
  * @param frameworksToInclude a unsorted list of data type enums
- * @returns the list of data type enums sorted in a way, that Esg Questionnaire framework is the last element
+ * @returns the list of data type enums sorted in a way, that German frameworks are the last elements
  */
-export function putEsgQuestionnaireAtTheEndOfList(frameworksToInclude: DataTypeEnum[]): DataTypeEnum[] {
-  const customSort = (a: DataTypeEnum, b: DataTypeEnum): number => {
-    if (a === DataTypeEnum.EsgQuestionnaire && b !== DataTypeEnum.EsgQuestionnaire) {
+export function putGermanFrameworksAtTheEndOfList(frameworksToInclude: DataTypeEnum[]): DataTypeEnum[] {
+  const germanFrameworks = [DataTypeEnum.EsgQuestionnaire, DataTypeEnum.Heimathafen] as string[];
+  frameworksToInclude.sort((a, b) => {
+    if (germanFrameworks.includes(a) && !germanFrameworks.includes(b)) {
       return 1;
-    } else if (a !== DataTypeEnum.EsgQuestionnaire && b === DataTypeEnum.EsgQuestionnaire) {
+    } else if (!germanFrameworks.includes(a) && germanFrameworks.includes(b)) {
       return -1;
     } else {
       return 0;
     }
-  };
-  return frameworksToInclude.includes(DataTypeEnum.EsgQuestionnaire)
-    ? [...frameworksToInclude].sort(customSort)
-    : frameworksToInclude;
+  });
+
+  return frameworksToInclude;
 }
