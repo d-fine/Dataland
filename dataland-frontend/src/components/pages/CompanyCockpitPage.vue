@@ -2,7 +2,8 @@
   <TheHeader v-if="!useMobileView"/>
   <TheContent class="paper-section flex">
     <CompanyInfoSheet :company-id="companyId" @fetched-company-information="getCompanyName"
-                      @fetched-data-owner-information="getDataOwnerInformation"/>
+                      @fetched-data-owner-information="getDataOwnerInformation"
+                      @claim-data-owner-ship="openDialog"/>
     <div class="card-wrapper">
       <div class="card-grid">
 
@@ -114,11 +115,12 @@ export default defineComponent({
     },
     getDataOwnerInformation(isUserDataOwner: boolean) {
       this.isUserDataOwner = isUserDataOwner;
-      console.log("Cockpitpage isUserDataOwner");
-      console.log(isUserDataOwner);
     },
     toggleDialog() {
       this.dialogIsOpen = !this.dialogIsOpen;
+    },
+    openDialog() {
+      this.dialogIsOpen = true;
     }
   },
 });

@@ -16,6 +16,7 @@
         :companyId="companyId"
         @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
         @fetched-data-owner-information="onFetchedDataOwnerInformation($event)"
+        @claim-data-ownership="$emit('claimDataOwnerShip')"
         class="w-12"
     />
   </div>
@@ -46,12 +47,12 @@ const {companyId} = defineProps<{
   companyId: string;
 }>();
 
-const emit = defineEmits<{
-
-  fetchedCompanyInformation: [companyInformation: CompanyInformation];
-  fetchedDataOwnerInformation: [isUserDataOwner: boolean];
-
-}>();
+const emit = defineEmits(
+    [
+      'fetchedCompanyInformation',
+      'fetchedDataOwnerInformation',
+      'claimDataOwnerShip'
+    ]);
 
 /**
  * On fetched company information defines the companyName and emits an event of type "fetchedCompanyInformation"
@@ -74,6 +75,10 @@ const mobileTitle = computed<string>(() => {
 
 function onFetchedDataOwnerInformation(isUserDataOwner: boolean): void {
   emit("fetchedDataOwnerInformation", isUserDataOwner);
+}
+
+function onClaimDataOwnership(): void {
+  emit("claimDataOwnership");
 }
 
 const sheetRect = ref<DOMRect>();

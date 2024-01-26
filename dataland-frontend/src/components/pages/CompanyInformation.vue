@@ -54,7 +54,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  emits: ["fetchedCompanyInformation", "fetchedDataOwnerInformation"],
+  emits: ["fetchedCompanyInformation", "fetchedDataOwnerInformation", "claimDataOwnership"],
   data() {
     return {
       companyInformation: null as CompanyInformation | null,
@@ -89,9 +89,9 @@ export default defineComponent({
       if (!this.isUserDataOwner) {
         listOfItems.push(
             {
-              label: 'Claim Company Ownership',
+              label: 'Claim Data Ownership',
               command: () => {
-                console.log("clik- this will lead to the known dialog")
+                this.$emit('claimDataOwnership');
               }
             }
         )
