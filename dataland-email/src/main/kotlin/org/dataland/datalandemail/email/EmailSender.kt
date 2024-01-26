@@ -1,4 +1,4 @@
-package org.dataland.datalandbackendutils.email
+package org.dataland.datalandemail.email
 
 import com.mailjet.client.ClientOptions
 import com.mailjet.client.MailjetClient

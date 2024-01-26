@@ -1,4 +1,4 @@
-package org.dataland.datalandbackendutils.email
+package org.dataland.datalandemail.email
 
 import org.slf4j.LoggerFactory
 import kotlin.system.exitProcess

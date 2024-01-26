@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.utils
 
-import org.dataland.datalandbackendutils.email.Email
-import org.dataland.datalandbackendutils.email.EmailContact
+import org.dataland.datalandemail.email.Email
+import org.dataland.datalandemail.email.EmailContact
 import org.junit.jupiter.api.Assertions
 
 fun assertEmailContactInformationEquals(

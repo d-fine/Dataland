@@ -1,7 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackendutils.email.BaseEmailBuilder
-import org.dataland.datalandbackendutils.email.Email
+import org.dataland.datalandemail.email.BaseEmailBuilder
+import org.dataland.datalandemail.email.Email
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
