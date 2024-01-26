@@ -30,8 +30,6 @@ dependencies {
     implementation(libs.spring.security.crypto)
     implementation(libs.spring.security.web)
     implementation(libs.jakarta.servlet.api)
-    implementation(libs.bcpkix.jdk15on)
-    implementation(libs.bcprov.jdk15on)
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-keycloak-adapter"))
     implementation(libs.mailjet.client)
