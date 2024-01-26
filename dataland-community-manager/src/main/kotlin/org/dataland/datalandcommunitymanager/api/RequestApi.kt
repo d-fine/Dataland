@@ -191,5 +191,4 @@ interface RequestApi {
         @RequestParam reportingPeriod: String?,
         @RequestParam dataRequestCompanyIdentifierValue: String?,
     ): ResponseEntity<List<StoredDataRequest>>
-
 }

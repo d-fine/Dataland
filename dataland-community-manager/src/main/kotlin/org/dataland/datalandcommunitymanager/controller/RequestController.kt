@@ -64,14 +64,16 @@ class RequestController(
         userId: String?,
         requestStatus: RequestStatus?,
         reportingPeriod: String?,
-        dataRequestCompanyIdentifierValue: String?
+        dataRequestCompanyIdentifierValue: String?,
     ): ResponseEntity<List<StoredDataRequest>> {
-        return ResponseEntity.ok(dataRequestManager.getDataRequests(
-            dataType,
-            userId,
-            requestStatus,
-            reportingPeriod,
-            dataRequestCompanyIdentifierValue
-        ))
+        return ResponseEntity.ok(
+            dataRequestManager.getDataRequests(
+                dataType,
+                userId,
+                requestStatus,
+                reportingPeriod,
+                dataRequestCompanyIdentifierValue,
+            ),
+        )
     }
 }

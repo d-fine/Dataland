@@ -170,7 +170,7 @@ class DataRequestManager(
         userId: String?,
         requestStatus: RequestStatus?,
         reportingPeriod: String?,
-        dataRequestCompanyIdentifierValue: String?
+        dataRequestCompanyIdentifierValue: String?,
     ): List<StoredDataRequest>? {
         var result = dataRequestRepository.findAll()
 
@@ -188,7 +188,7 @@ class DataRequestManager(
         }
         if (dataRequestCompanyIdentifierValue != null) {
             result = result.intersect(
-                dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue)
+                dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue),
             ).toMutableList()
         }
         return result.map { buildStoredDataRequestFromDataRequestEntity(it) }
@@ -235,19 +235,19 @@ class DataRequestManager(
         return when {
             listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
                 "All " +
-                        "provided lists are empty."
+                    "provided lists are empty."
 
             listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() ->
                 "The lists of company identifiers and " +
-                        "frameworks are empty."
+                    "frameworks are empty."
 
             listOfIdentifiers.isEmpty() && listOfReportingPeriods.isEmpty() ->
                 "The lists of company identifiers and " +
-                        "reporting periods are empty."
+                    "reporting periods are empty."
 
             listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
                 "The lists of frameworks and reporting " +
-                        "periods are empty."
+                    "periods are empty."
 
             listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
             listOfFrameworks.isEmpty() -> "The list of frameworks is empty."
@@ -431,8 +431,8 @@ class DataRequestManager(
             0 -> "$totalNumberOfRequestedCompanyIdentifiers distinct company identifiers were accepted."
             else ->
                 "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers " +
-                        "distinct company identifiers were rejected because of a format that is not matching a valid " +
-                        "LEI, ISIN or PermId."
+                    "distinct company identifiers were rejected because of a format that is not matching a valid " +
+                    "LEI, ISIN or PermId."
         }
     }
 
@@ -469,8 +469,8 @@ class DataRequestManager(
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
         val summary = "All provided company identifiers have an invalid format."
-        val message = "The company identifiers you provided do not match the patterns "+
-                "of a valid LEI, ISIN, PermId or Dataland CompanyID."
+        val message = "The company identifiers you provided do not match the patterns " +
+            "of a valid LEI, ISIN, PermId or Dataland CompanyID."
         throw InvalidInputApiException(
             summary,
             message,
@@ -482,19 +482,21 @@ class DataRequestManager(
     }
 
     private fun checkIfCompanyIsValid(companyId: String) {
-        if(companyId.matches(companyIdRegex)) {
+        if (companyId.matches(companyIdRegex)) {
             val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(companyId)
             datalandCompanyId ?: throw ResourceNotFoundApiException(
-                    "Company is invalid",
-                    "There is no company corresponding to the provided Id $companyId stored on Dataland.",
+                "Company is invalid",
+                "There is no company corresponding to the provided Id $companyId stored on Dataland.",
             )
         }
     }
+
     /**
      * Processes a single data request from a user
      * @param singleDataRequest info provided by a user in order to request a single dataset on Dataland
      * @return the stored data request object
      */
+
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
         checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
@@ -527,7 +529,7 @@ class DataRequestManager(
                 )
             }
         } else {
-           throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
+            throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
         return storedDataRequests
     }

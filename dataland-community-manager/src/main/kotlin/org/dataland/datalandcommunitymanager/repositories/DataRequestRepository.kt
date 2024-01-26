@@ -21,6 +21,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     fun findByReportingPeriod(reportingPeriod: String): List<DataRequestEntity>
     fun findByRequestStatus(requestStatus: RequestStatus): List<DataRequestEntity>
     fun findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue: String): List<DataRequestEntity>
+
     /** This method checks if a data request with the provided params already exists in the database.
      * @param userId to check for
      * @param dataRequestCompanyIdentifierValue to check for
