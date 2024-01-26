@@ -1,51 +1,77 @@
 <template>
   <div
-    class="claim-panel"
-    @fetchedCompanyInformation="onFetchedCompanyInformation"
+      class="claim-panel"
+      @fetchedCompanyInformation="onFetchedCompanyInformation"
   >
     <div class="next-to-each-other vertical-middle">
       <h2 class="claim-panel__ownership-question">Responsible for {{ companyName }}?</h2>
-      <a class="link" @click="$dialog.open(ClaimDatasetOwnerShipDialog)" v-if="!claimIsSubmitted">Claim dataset ownership.</a>
+      <a class="link" @click="toggleDialog" v-if="!claimIsSubmitted">Claim dataset ownership.</a>
       <p v-else>Dataset ownership claimed.</p>
     </div>
 
-    <ClaimDatasetOwnerShipDialog v-if="dialogIsOpen">
-      <div v-if="!claimIsSubmitted">
-        <h1>Claim dataset ownership for your company.</h1>
-        <button @click="toggleDialog"></button>
-        <div>
-          <p>
-            Are you responsible for the datasets of {{ companyName }}? Claim dataset ownership in order to ensure high
-            quality and transparency over your company's data.
-          </p>
-          <p>Feel free to share any additional information with us:</p>
-        </div>
-        <input v-model="claimOwnershipMessage" placeholder="Write your message here." />
+    <PrimeDialog
+        id="claimOwnerShipDialog"
+        :dismissable-mask="true"
+        :modal="true"
+        header="Header"
+        footer="Footer"
+        class="col-6"
+        v-model:visible="dialogIsOpen"
+    >
 
-        <button @click="submitInput">SUBMIT</button>
+      <template #header>
+        <h2 v-if="!claimIsSubmitted" class="m-0">Claim dataset ownership for your company.</h2>
+        <h2 v-else class="m-0">Thank you for claiming data ownership for {{ companyName }}.</h2>
+      </template>
+
+      <div v-if="!claimIsSubmitted">
+        <p>Are you responsible for the datasets of {{ companyName }}? Claim dataset ownership in order to ensure high
+          quality and transparency over your company's data.</p>
+        <p>Feel free to share any additional information with us:</p>
+        <FormKit v-model="claimOwnershipMessage"
+                 type="textarea"
+                 name="claimOwnershipMessage"
+                 placeholder="Write your message."
+                 class="w-full p-inputtext "
+
+        />
       </div>
       <div v-else>
-        <h1>Thank you for claiming data ownership for {{ companyName }}.</h1>
-        <p>We will reach out to you soon via email.</p>
-        <button @click="toggleDialog">CLOSE</button>
+        <p> We will reach out to you soon via email.</p>
       </div>
-    </ClaimDatasetOwnerShipDialog>
+      <template #footer v-if="!claimIsSubmitted">
+        <PrimeButton
+            label="SUBMIT"
+            @click="submitInput"
+        />
+      </template>
+      <template #footer v-else>
+        <PrimeButton
+            label="CLOSE"
+            @click="toggleDialog"
+        />
+      </template>
+    </PrimeDialog>
+
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import ClaimDatasetOwnerShipDialog from "@/components/general/ClaimDatasetOwnerShipDialog.vue";
-import { CompanyInformation } from "@clients/backend";
+import {defineComponent} from "vue";
+import {CompanyInformation} from "@clients/backend";
+import PrimeDialog from "primevue/dialog";
+import PrimeButton from "primevue/button";
+import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
+import InputText from "primevue/inputtext";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
-  computed: {
-    ClaimDatasetOwnerShipDialog() {
-      return ClaimDatasetOwnerShipDialog
-    }
+  components: {
+    InputTextFormField,
+    PrimeDialog,
+    PrimeButton,
+    InputText
   },
-  components: { ClaimDatasetOwnerShipDialog },
   inject: {
     injectedUseMobileView: {
       from: "useMobileView",
