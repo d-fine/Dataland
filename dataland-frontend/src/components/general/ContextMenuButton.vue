@@ -1,16 +1,19 @@
 <template>
   <div class="flex justify-content-center">
-    <Button class="p-button-icon p-button-rounded" type="button" icon="pi pi-ellipsis-v" @click="toggle"
-            aria-haspopup="true"
-            aria-controls="overlay_menu"/>
-    <Menu class="p-menu-white" ref="menu" id="overlay_menu" :model="menuItems" :popup="true"/>
+    <PrimeButton class="p-button-icon p-button-textcolor p-button-rounded " type="button"
+                 icon="pi pi-ellipsis-v"
+                 @click="toggle"
+                 aria-haspopup="true"
+                 aria-controls="overlay_menu"/>
+    <PrimeMenu class="p-menu-white" ref="menu" id="overlay_menu" :model="menuItems" :popup="true"/>
   </div>
 </template>
 
+
 <script lang="ts">
 
-import Button from "primevue/button";
-import Menu from "primevue/menu";
+import PrimeButton from "primevue/button";
+import PrimeMenu from "primevue/menu" ;
 
 export default {
   name: "ContextMenuButton",
@@ -20,7 +23,7 @@ export default {
     },
   },
   components: {
-    Button, Menu
+    PrimeButton, PrimeMenu
   },
   props: {
     menuItems: Array,
