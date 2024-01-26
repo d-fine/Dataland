@@ -7,6 +7,7 @@ import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
 import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdentifierType
+import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.tests.CommunityManagerTest
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertThrows
 import org.slf4j.LoggerFactory
 import java.time.Instant
+import java.util.*
 
 fun retrieveTimeAndWaitOneMillisecond(): Long {
     val timestamp = Instant.now().toEpochMilli()
@@ -282,4 +284,17 @@ fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWit
             }
         }
     }
+}
+
+fun assertStatusForDataRequestId(dataRequestId: UUID, expectedStatus: RequestStatus) {
+    val retrievedStoredDataRequest = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
+        .getDataRequestById(dataRequestId)
+    assertEquals(expectedStatus, retrievedStoredDataRequest.requestStatus)
+}
+
+fun patchDataRequestAndAssertNewStatus(dataRequestId: UUID, newStatus: RequestStatus) {
+    val storedDataRequestAfterPatch = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
+        .patchDataRequest(dataRequestId, newStatus)
+    assertEquals(newStatus, storedDataRequestAfterPatch.requestStatus)
+    assertStatusForDataRequestId(dataRequestId, newStatus)
 }
