@@ -196,7 +196,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { type BulkDataRequestResponse, type BulkDataRequest } from "@clients/communitymanager";
-import { AxiosError, type AxiosResponse, type AxiosPromise } from "axios";
+import { AxiosError } from "axios";
 import BasicFormSection from "@/components/general/BasicFormSection.vue";
 import BulkDataResponseDialog from "@/components/general/BulkDataResponseDialog.vue";
 import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue";
@@ -245,6 +245,7 @@ export default defineComponent({
         { name: "2021", value: false },
         { name: "2020", value: false },
       ],
+      bulkDataResponseDialog: BulkDataResponseDialog,
     };
   },
 
@@ -378,13 +379,12 @@ export default defineComponent({
      * Opens a pop-up to warn the user that the session will expire soon and offers a button to refresh it.
      * If the refresh button is clicked soon enough, the session is refreshed.
      * Else the text changes and tells the user that the session was closed.
-     * @param response
-     * @param responseData
+     * @param responseData returned data from the request to pass to dialog
      */
     openRequestModal(responseData: BulkDataRequestResponse): void {
       const rejectedIdentifiersCount = responseData.rejectedCompanyIdentifiers.length;
 
-      this.$dialog.open(BulkDataResponseDialog, {
+      this.$dialog.open(this.bulkDataResponseDialog, {
         props: {
           modal: true,
           closable: true,
