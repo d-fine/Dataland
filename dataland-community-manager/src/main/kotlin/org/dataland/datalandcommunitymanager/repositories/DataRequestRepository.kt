@@ -37,7 +37,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     fun findByRequestStatus(requestStatus: RequestStatus): List<DataRequestEntity>
 
     /** This method gets all data request that are stored for a specific CompanyIdentifierValue.
-     * @param dataRequestCompanyIdentifierValue defines for which CompanyIdentifierValue the data request shall be retrieved
+     * @param dataRequestCompanyIdentifierValue defines for which CompanyIdentifier the data request shall be retrieved
      * @returns a list with all data request for that CompanyIdentifierValue
      */
     fun findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue: String): List<DataRequestEntity>

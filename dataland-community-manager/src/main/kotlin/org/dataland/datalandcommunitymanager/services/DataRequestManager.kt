@@ -202,7 +202,8 @@ class DataRequestManager(
             result = result.intersect(
                 dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue),
             ).toMutableList()
-            updateResult(dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue))
+            updateResult(
+                dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue))
         }
         return result.map { buildStoredDataRequestFromDataRequestEntity(it) }
     }
