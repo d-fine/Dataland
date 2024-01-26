@@ -28,13 +28,12 @@ class EmailSender(
 
     /** This method sends an email
      * @param email the email to send
-     * @param logMessage a message that will be logged and shall contain information about the contents
      * @return a sending success indicator which is true if the sending was successful
      */
-    fun sendEmail(email: Email, logMessage: String = "Sending email with subject \"${email.content.subject}\""):
+    fun sendEmail(email: Email):
         Boolean {
         return try {
-            logEmail(email, logMessage)
+            logEmail(email)
             val mailjetEmail = TransactionalEmail.builder().integrateEmailIntoTransactionalEmailBuilder(email).build()
             val request = SendEmailsRequest.builder().message(mailjetEmail).build()
             val response = request.sendWith(mailjetClient)
@@ -47,9 +46,9 @@ class EmailSender(
         }
     }
 
-    private fun logEmail(email: Email, logMessage: String) {
+    private fun logEmail(email: Email) {
         val emailLog = StringBuilder()
-            .append("${logMessage}\n")
+            .append("Sending email with subject \"${email.content.subject}\"\n")
             .append("(sender: ${email.sender.emailAddress})\n")
             .append("(receivers: ${convertListOfEmailContactsToJoinedString(email.receivers)})")
             .apply {

@@ -299,11 +299,8 @@ class DataRequestManager(
             bulkDataRequest,
             acceptedCompanyIdentifiers,
         )
-        emailSender.sendEmail(
-            emailToSend,
-            "Sending email after ${CauseOfMail.BulkDataRequest}" +
-                " with bulkDataRequestId $bulkDataRequestId has been processed",
-        )
+        dataRequestLogger.logMessageForSendBulkDataRequestEmail(bulkDataRequestId)
+        emailSender.sendEmail(emailToSend)
     }
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
