@@ -212,7 +212,6 @@ export default defineComponent({
     PrimeButton,
     FormKit,
     BasicFormSection,
-    BulkDataResponseDialog,
     ToggleChipFormInputs,
   },
   setup() {
