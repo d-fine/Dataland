@@ -1,22 +1,17 @@
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { type DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import { type BasicCompanyInformation } from "@clients/backend";
 
-let modifiedMockDataSearchResponse: Array<DataSearchStoredCompany>;
+let modifiedMockDataSearchResponse: Array<BasicCompanyInformation>;
 const highlightedSubString = "this_is_expected_to_be_highlighted";
 before(function () {
   cy.fixture("DataSearchStoredCompanyMocks").then(function (jsonContent) {
-    const mockDataSearchResponse = jsonContent as Array<DataSearchStoredCompany>;
+    const mockDataSearchResponse = jsonContent as Array<BasicCompanyInformation>;
     const customCompanyName = "ABCDEFG" + highlightedSubString + "HIJKLMNOP";
     modifiedMockDataSearchResponse = [...mockDataSearchResponse.slice(0, 4)];
-    modifiedMockDataSearchResponse[0].dataRegisteredByDataland[0].qaStatus = "Accepted";
     modifiedMockDataSearchResponse[0] = {
       ...modifiedMockDataSearchResponse[0],
       companyName: customCompanyName,
-      companyInformation: {
-        ...modifiedMockDataSearchResponse[0].companyInformation,
-        companyName: customCompanyName,
-      },
     };
   });
 });

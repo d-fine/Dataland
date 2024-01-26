@@ -1,11 +1,11 @@
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
-import { type DataSearchStoredCompany } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import { type BasicCompanyInformation } from "@clients/backend";
 
-let mockDataSearchResponse: Array<DataSearchStoredCompany>;
+let mockDataSearchResponse: Array<BasicCompanyInformation>;
 before(function () {
   cy.fixture("DataSearchStoredCompanyMocks").then(function (jsonContent) {
-    mockDataSearchResponse = jsonContent as Array<DataSearchStoredCompany>;
+    mockDataSearchResponse = jsonContent as Array<BasicCompanyInformation>;
   });
 });
 

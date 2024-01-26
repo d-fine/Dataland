@@ -58,4 +58,20 @@ class RequestController(
     ): ResponseEntity<StoredDataRequest> {
         return ResponseEntity.ok(dataRequestManager.patchDataRequest(dataRequestId.toString(), requestStatus))
     }
+
+    override fun getDataRequests(
+        dataType: DataTypeEnum?,
+        userId: String?,
+        requestStatus: RequestStatus?,
+        reportingPeriod: String?,
+        dataRequestCompanyIdentifierValue: String?
+    ): ResponseEntity<List<StoredDataRequest>> {
+        return ResponseEntity.ok(dataRequestManager.getDataRequests(
+            dataType,
+            userId,
+            requestStatus,
+            reportingPeriod,
+            dataRequestCompanyIdentifierValue
+        ))
+    }
 }

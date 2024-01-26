@@ -44,7 +44,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StoredDataRequest"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredDataRequest"
+                  }
                 }
               }
             }
@@ -236,7 +239,7 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "gdv",
+                  "esg-questionnaire",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
@@ -373,6 +376,110 @@
         "responses": {
           "200": {
             "description": "Successfully retrieved data requests for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoredDataRequest"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/requests/all": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Get all stored data requests based on filters.",
+        "description": "Gets all the stored data request based on filters.",
+        "operationId": "getDataRequests",
+        "parameters": [
+          {
+            "name": "dataType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "esg-questionnaire",
+                "eutaxonomy-financials",
+                "eutaxonomy-non-financials",
+                "lksg",
+                "p2p",
+                "sfdr",
+                "sme"
+              ]
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/RequestStatus"
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataRequestCompanyIdentifierValue",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data requests",
             "content": {
               "application/json": {
                 "schema": {
@@ -650,13 +757,13 @@
         "properties": {
           "companyIdentifier": {
             "type": "string",
-            "example": "60e2c00d-8053-4e86-a492-eba79b479519"
+            "example": "DE0005190003"
           },
           "frameworkName": {
             "type": "string",
             "example": "p2p",
             "enum": [
-              "gdv",
+              "esg-questionnaire",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
@@ -699,86 +806,6 @@
           "DatalandCompanyId"
         ]
       },
-      "DataRequestEntity": {
-        "required": [
-          "creationTimestamp",
-          "dataRequestCompanyIdentifierType",
-          "dataRequestCompanyIdentifierValue",
-          "dataRequestId",
-          "dataTypeName",
-          "lastModifiedDate",
-          "messageHistory",
-          "reportingPeriod",
-          "requestStatus",
-          "userId"
-        ],
-        "type": "object",
-        "properties": {
-          "dataRequestId": {
-            "type": "string"
-          },
-          "userId": {
-            "type": "string"
-          },
-          "creationTimestamp": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "dataTypeName": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "dataRequestCompanyIdentifierType": {
-            "$ref": "#/components/schemas/DataRequestCompanyIdentifierType"
-          },
-          "dataRequestCompanyIdentifierValue": {
-            "type": "string"
-          },
-          "messageHistory": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MessageRequestEntity"
-            }
-          },
-          "lastModifiedDate": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "requestStatus": {
-            "$ref": "#/components/schemas/RequestStatus"
-          }
-        }
-      },
-      "MessageRequestEntity": {
-        "required": [
-          "dataRequestEntity",
-          "messageRequestId"
-        ],
-        "type": "object",
-        "properties": {
-          "messageRequestId": {
-            "type": "string"
-          },
-          "dataRequestEntity": {
-            "$ref": "#/components/schemas/DataRequestEntity"
-          },
-          "contactList": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "message": {
-            "type": "string"
-          },
-          "updateTimestamp": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
       "RequestStatus": {
         "type": "string",
         "enum": [
@@ -813,7 +840,7 @@
           "dataType": {
             "type": "string",
             "enum": [
-              "gdv",
+              "esg-questionnaire",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
@@ -834,7 +861,7 @@
           "messageHistory": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MessageRequestEntity"
+              "$ref": "#/components/schemas/StoredDataRequestMessageObject"
             }
           },
           "lastModifiedDate": {
@@ -843,6 +870,24 @@
           },
           "requestStatus": {
             "$ref": "#/components/schemas/RequestStatus"
+          }
+        }
+      },
+      "StoredDataRequestMessageObject": {
+        "type": "object",
+        "properties": {
+          "contactList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "updateTimestamp": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -873,7 +918,7 @@
             "items": {
               "type": "string",
               "enum": [
-                "gdv",
+                "esg-questionnaire",
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
                 "lksg",
@@ -931,7 +976,7 @@
           "dataType": {
             "type": "string",
             "enum": [
-              "gdv",
+              "esg-questionnaire",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
