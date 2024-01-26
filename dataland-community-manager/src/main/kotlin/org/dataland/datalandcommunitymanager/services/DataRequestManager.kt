@@ -164,42 +164,31 @@ class DataRequestManager(
         return buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
     }
 
-    fun getDataRequests(dataType: DataTypeEnum?, userId: String?, requestStatus: RequestStatus?, reportingPeriod: String?, dataRequestCompanyIdentifierValue: String?): List<StoredDataRequest>? {
-        var result = listOf<DataRequestEntity>()
-        if(dataType != null) {
-            result = dataRequestRepository.findByDataTypeName(dataType.toString())
+    fun getDataRequests(
+        dataType: DataTypeEnum?,
+        userId: String?,
+        requestStatus: RequestStatus?,
+        reportingPeriod: String?,
+        dataRequestCompanyIdentifierValue: String?
+    ): List<StoredDataRequest>? {
+        var result = dataRequestRepository.findAll()
+
+        if (dataType != null) {
+            result = result.intersect(dataRequestRepository.findByDataTypeName(dataType.toString())).toMutableList()
         }
-        if(userId != null) {
-            val temp = dataRequestRepository.findByUserId(userId)
-            result = if(result.isEmpty()) {
-                temp
-            } else {
-                result.intersect(temp).toList()
-            }
+        if (userId != null) {
+            result = result.intersect(dataRequestRepository.findByUserId(userId)).toMutableList()
         }
-        if(requestStatus != null) {
-            val temp = dataRequestRepository.findByRequestStatus(requestStatus)
-            result = if(result.isEmpty()) {
-                temp
-            } else {
-                result.intersect(temp).toList()
-            }
+        if (requestStatus != null) {
+            result = result.intersect(dataRequestRepository.findByRequestStatus(requestStatus)).toMutableList()
         }
-        if(reportingPeriod != null) {
-            val temp = dataRequestRepository.findByReportingPeriod(reportingPeriod)
-            result = if(result.isEmpty()) {
-                temp
-            } else {
-                result.intersect(temp).toList()
-            }
+        if (reportingPeriod != null) {
+            result = result.intersect(dataRequestRepository.findByReportingPeriod(reportingPeriod)).toMutableList()
         }
-        if(dataRequestCompanyIdentifierValue != null) {
-            val temp = dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue)
-            result = if(result.isEmpty()) {
-                temp
-            } else {
-                result.intersect(temp).toList()
-            }
+        if (dataRequestCompanyIdentifierValue != null) {
+            result = result.intersect(
+                dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue)
+            ).toMutableList()
         }
         return result.map { buildStoredDataRequestFromDataRequestEntity(it) }
     }
@@ -245,16 +234,20 @@ class DataRequestManager(
         return when {
             listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
                 "All " +
-                    "provided lists are empty."
+                        "provided lists are empty."
+
             listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() ->
                 "The lists of company identifiers and " +
-                    "frameworks are empty."
+                        "frameworks are empty."
+
             listOfIdentifiers.isEmpty() && listOfReportingPeriods.isEmpty() ->
                 "The lists of company identifiers and " +
-                    "reporting periods are empty."
+                        "reporting periods are empty."
+
             listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
                 "The lists of frameworks and reporting " +
-                    "periods are empty."
+                        "periods are empty."
+
             listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
             listOfFrameworks.isEmpty() -> "The list of frameworks is empty."
             else -> "The list of reporting periods is empty."
@@ -379,6 +372,7 @@ class DataRequestManager(
         dataRequestRepository.save(dataRequestEntity)
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId, bulkDataRequestId)
     }
+
     private fun buildDataRequestEntity(
         currentUserId: String,
         framework: DataTypeEnum,
@@ -421,6 +415,7 @@ class DataRequestManager(
                     else -> null
                 }
             }
+
             else -> DataRequestCompanyIdentifierType.MultipleRegexMatches
         }
     }
@@ -433,8 +428,8 @@ class DataRequestManager(
             0 -> "$totalNumberOfRequestedCompanyIdentifiers distinct company identifiers were accepted."
             else ->
                 "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers " +
-                    "distinct company identifiers were rejected because of a format that is not matching a valid " +
-                    "LEI, ISIN or PermId."
+                        "distinct company identifiers were rejected because of a format that is not matching a valid " +
+                        "LEI, ISIN or PermId."
         }
     }
 

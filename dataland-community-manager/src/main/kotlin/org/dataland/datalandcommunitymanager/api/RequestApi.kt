@@ -180,7 +180,7 @@ interface RequestApi {
         ],
     )
     @GetMapping(
-        value = ["/user"],
+        value = ["/all"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
