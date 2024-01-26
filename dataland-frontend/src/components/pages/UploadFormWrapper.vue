@@ -41,6 +41,7 @@ import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import { defineComponent } from "vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
+import CreateHeimathafenDataset from "@/components/forms/CreateHeimathafenDataset.vue";
 
 export default defineComponent({
   name: "UploadFormWrapper",
@@ -81,6 +82,8 @@ export default defineComponent({
           return CreateP2pDataset;
         case `${DataTypeEnum.Sfdr}`:
           return CreateSfdrDataset;
+        case `${DataTypeEnum.Heimathafen}`:
+          return CreateHeimathafenDataset;
         case `${DataTypeEnum.EsgQuestionnaire}`:
           return CreateEsgQuestionnaireDataset;
         default:

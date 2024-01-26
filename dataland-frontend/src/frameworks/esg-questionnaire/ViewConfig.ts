@@ -179,7 +179,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Aktuelle Berichte",
-            explanation: "Aktuelle Nachhaltigkeits- oder ESG-Berichte",
+            explanation: "Bitte teilen Sie die letzten Berichte mit uns (vorzugsweise die letzten drei).",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
@@ -258,7 +258,8 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Weitere Akkreditierungen",
-            explanation: "Weitere Akkreditierungen, die noch nicht aufgeführt wurden",
+            explanation:
+              "Bitte führen Sie weitere Akkreditierungen auf, sofern diese nicht bereits gelistet sind, und teilen Sie entsprechende Zertifikate mit uns.",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
