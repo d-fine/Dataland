@@ -503,7 +503,7 @@ class DataRequestManager(
         val userId = DatalandAuthentication.fromContext().userId
         val matchedIdentifierType = determineIdentifierTypeViaRegex(singleDataRequest.companyIdentifier)
         val storedDataRequests = mutableListOf<StoredDataRequest>()
-        checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
+        dataRequestLogger.logMessageForSingleDataRequest(singleDataRequest.companyIdentifier)
         if (matchedIdentifierType != null) {
             val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(singleDataRequest.companyIdentifier)
             val identifierTypeToStore = datalandCompanyId?.let {
