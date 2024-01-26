@@ -36,7 +36,6 @@ export function generateEutaxonomynonfinancialsData(
         reportingPeriod: dataGenerator.guaranteedFutureDate(),
         fiscalYearEnd: dataGenerator.guaranteedFutureDate(),
         euTaxonomyActivityLevelReporting: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-        numberOfEmployees: dataGenerator.randomFloat(),
         nfrdMandatory: dataGenerator.randomYesNo(),
       },
     },

@@ -1,23 +1,26 @@
 {
 	"esg-questionnaire": {
-		"numberOfProvidedReportingPeriods": 8
+		"numberOfProvidedReportingPeriods": 28
+	},
+	"heimathafen": {
+		"numberOfProvidedReportingPeriods": 13
 	},
 	"eutaxonomy-financials": {
-		"numberOfProvidedReportingPeriods": 12
+		"numberOfProvidedReportingPeriods": 7
 	},
 	"eutaxonomy-non-financials": {
-		"numberOfProvidedReportingPeriods": 15
+		"numberOfProvidedReportingPeriods": 11
 	},
 	"lksg": {
-		"numberOfProvidedReportingPeriods": 12
+		"numberOfProvidedReportingPeriods": 18
 	},
 	"p2p": {
-		"numberOfProvidedReportingPeriods": 8
+		"numberOfProvidedReportingPeriods": 28
 	},
 	"sfdr": {
 		"numberOfProvidedReportingPeriods": 22
 	},
 	"sme": {
-		"numberOfProvidedReportingPeriods": 11
+		"numberOfProvidedReportingPeriods": 3
 	}
 }

@@ -49,14 +49,6 @@ export const eutaxonomynonfinancialsViewConfiguration: MLDTConfig<Eutaxonomynonf
           },
           {
             type: "cell",
-            label: "Number Of Employees",
-            explanation: "Total number of employees (including temporary workers with assignment duration >6 months)",
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomynonfinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatNumberForDatatable(dataset.general?.general?.numberOfEmployees, ""),
-          },
-          {
-            type: "cell",
             label: "NFRD Mandatory",
             explanation: "Is the NFRD mandatory for your company?",
             shouldDisplay: (): boolean => true,

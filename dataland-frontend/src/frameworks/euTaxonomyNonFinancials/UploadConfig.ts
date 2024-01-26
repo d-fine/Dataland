@@ -41,15 +41,6 @@ export const eutaxonomynonfinancialsDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: "numberOfEmployees",
-            label: "Number Of Employees",
-            description: "Total number of employees (including temporary workers with assignment duration >6 months)",
-
-            component: "NumberFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
             name: "nfrdMandatory",
             label: "NFRD Mandatory",
             description: "Is the NFRD mandatory for your company?",

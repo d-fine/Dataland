@@ -3,7 +3,7 @@
     <template #title>New Dataset - ESG Questionnaire für Corporate Schuldscheindarlehen</template>
     <template #content>
       <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
-        <p class="font-medium text-xl">Loading GDV data...</p>
+        <p class="font-medium text-xl">Loading ESG Questionnaire data...</p>
         <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
       </div>
       <div v-else class="grid uploadFormWrapper">
@@ -204,7 +204,7 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
-      formId: "createGDVForm",
+      formId: "createEsgQuestionnaireForm",
       waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedEsgQuestionnaireData: {} as CompanyAssociatedDataEsgQuestionnaireData,
@@ -258,8 +258,8 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Loads the GDV-Dataset identified by the provided dataId and pre-configures the form to contain the data
-     * from the dataset
+     * Loads the EsgQuestionnaire-Dataset identified by the provided dataId and pre-configures the form to contain
+     * the data from the dataset
      * @param dataId the id of the dataset to load
      */
     async loadEsgQuestionnaireData(dataId: string): Promise<void> {

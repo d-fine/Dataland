@@ -2,8 +2,10 @@
 import { type FrontendFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 import esgQuestionnaireFrontendFrameworkDefinition from "@/frameworks/esg-questionnaire/FrontendFrameworkDefinition";
 import eutaxonomynonfinancialsFrontendFrameworkDefinition from "@/frameworks/euTaxonomyNonFinancials/FrontendFrameworkDefinition";
+import heimathafenFrontendFrameworkDefinition from "@/frameworks/heimathafen/FrontendFrameworkDefinition";
 
 export const FrameworkDefinitions: Record<string, FrontendFrameworkDefinition<object>> = {
   esgQuestionnaire: esgQuestionnaireFrontendFrameworkDefinition,
   eutaxonomynonfinancials: eutaxonomynonfinancialsFrontendFrameworkDefinition,
+  heimathafen: heimathafenFrontendFrameworkDefinition,
 };

@@ -363,6 +363,7 @@ class CompanyDataControllerTest {
         val expectedMap = mapOf(
             DataTypeEnum.esgMinusQuestionnaire.toString() to
                 AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
+            DataTypeEnum.heimathafen.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
             DataTypeEnum.eutaxonomyMinusFinancials.toString() to AggregatedFrameworkDataSummary(
                 numberOfProvidedReportingPeriods = 0,
             ),

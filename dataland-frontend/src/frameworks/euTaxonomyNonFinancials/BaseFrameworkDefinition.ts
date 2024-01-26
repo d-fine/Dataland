@@ -10,7 +10,7 @@ export class BaseEutaxonomynonfinancialsFrameworkDefinition
 {
   readonly identifier = "euTaxonomyNonFinancials";
   readonly explanation = "Das Eu Taxonomy Non-Financials Framework";
-  readonly label = "toolbox EU Taxonomy Non-Financials";
+  readonly label = "EU Taxonomy Non-Financials";
   getFrameworkApiClient(
     configuration?: Configuration,
     axiosInstance?: AxiosInstance,

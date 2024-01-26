@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.frameworks.euTaxonomyNonFinancials.model.ge
 
 import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.enums.commons.YesNo
-import java.math.BigDecimal
 import java.time.LocalDate
 
 /**
@@ -13,6 +12,5 @@ data class EutaxonomynonfinancialsGeneralGeneral(
     val reportingPeriod: LocalDate,
     val fiscalYearEnd: LocalDate,
     val euTaxonomyActivityLevelReporting: BaseDataPoint<YesNo>? = null,
-    val numberOfEmployees: BigDecimal? = null,
     val nfrdMandatory: YesNo? = null,
 )
