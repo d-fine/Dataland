@@ -161,9 +161,35 @@ interface RequestApi {
         value = ["/{dataRequestId}/requestStatus"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchDataRequest(
         @PathVariable dataRequestId: UUID,
         @RequestParam requestStatus: RequestStatus = RequestStatus.Open,
     ): ResponseEntity<StoredDataRequest>
+
+    /** A method for searching data requests based on filters.
+     * @return all data requests of the user in a list
+     */
+    @Operation(
+        summary = "Get all stored data requests based on filters.",
+        description = "Gets all the stored data request based on filters.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data requests"),
+        ],
+    )
+    @GetMapping(
+        value = ["/all"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun getDataRequests(
+        @RequestParam dataType: DataTypeEnum?,
+        @RequestParam userId: String?,
+        @RequestParam requestStatus: RequestStatus?,
+        @RequestParam reportingPeriod: String?,
+        @RequestParam dataRequestCompanyIdentifierValue: String?,
+    ): ResponseEntity<List<StoredDataRequest>>
+
 }

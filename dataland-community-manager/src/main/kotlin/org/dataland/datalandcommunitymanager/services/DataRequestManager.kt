@@ -40,6 +40,7 @@ class DataRequestManager(
     val isinRegex = Regex("^[A-Z]{2}[A-Z\\d]{10}$")
     val leiRegex = Regex("^[0-9A-Z]{18}[0-9]{2}$")
     val permIdRegex = Regex("^\\d+$")
+    val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -164,6 +165,35 @@ class DataRequestManager(
         return buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
     }
 
+    fun getDataRequests(
+        dataType: DataTypeEnum?,
+        userId: String?,
+        requestStatus: RequestStatus?,
+        reportingPeriod: String?,
+        dataRequestCompanyIdentifierValue: String?
+    ): List<StoredDataRequest>? {
+        var result = dataRequestRepository.findAll()
+
+        if (dataType != null) {
+            result = result.intersect(dataRequestRepository.findByDataTypeName(dataType.toString())).toMutableList()
+        }
+        if (userId != null) {
+            result = result.intersect(dataRequestRepository.findByUserId(userId)).toMutableList()
+        }
+        if (requestStatus != null) {
+            result = result.intersect(dataRequestRepository.findByRequestStatus(requestStatus)).toMutableList()
+        }
+        if (reportingPeriod != null) {
+            result = result.intersect(dataRequestRepository.findByReportingPeriod(reportingPeriod)).toMutableList()
+        }
+        if (dataRequestCompanyIdentifierValue != null) {
+            result = result.intersect(
+                dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue)
+            ).toMutableList()
+        }
+        return result.map { buildStoredDataRequestFromDataRequestEntity(it) }
+    }
+
     private fun throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId: String) {
         if (!dataRequestRepository.existsById(dataRequestId)) {
             throw ResourceNotFoundApiException(
@@ -205,16 +235,20 @@ class DataRequestManager(
         return when {
             listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
                 "All " +
-                    "provided lists are empty."
+                        "provided lists are empty."
+
             listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() ->
                 "The lists of company identifiers and " +
-                    "frameworks are empty."
+                        "frameworks are empty."
+
             listOfIdentifiers.isEmpty() && listOfReportingPeriods.isEmpty() ->
                 "The lists of company identifiers and " +
-                    "reporting periods are empty."
+                        "reporting periods are empty."
+
             listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
                 "The lists of frameworks and reporting " +
-                    "periods are empty."
+                        "periods are empty."
+
             listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
             listOfFrameworks.isEmpty() -> "The list of frameworks is empty."
             else -> "The list of reporting periods is empty."
@@ -339,6 +373,7 @@ class DataRequestManager(
         dataRequestRepository.save(dataRequestEntity)
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId, bulkDataRequestId)
     }
+
     private fun buildDataRequestEntity(
         currentUserId: String,
         framework: DataTypeEnum,
@@ -370,7 +405,8 @@ class DataRequestManager(
     }
 
     private fun determineIdentifierTypeViaRegex(identifierValue: String): DataRequestCompanyIdentifierType? {
-        val matchingRegexes = listOf(leiRegex, isinRegex, permIdRegex).filter { it.matches(identifierValue) }
+        val matchingRegexes =
+            listOf(leiRegex, isinRegex, permIdRegex, companyIdRegex).filter { it.matches(identifierValue) }
         return when (matchingRegexes.size) {
             0 -> null
             1 -> {
@@ -378,9 +414,11 @@ class DataRequestManager(
                     matchingRegexes[0] == leiRegex -> DataRequestCompanyIdentifierType.Lei
                     matchingRegexes[0] == isinRegex -> DataRequestCompanyIdentifierType.Isin
                     matchingRegexes[0] == permIdRegex -> DataRequestCompanyIdentifierType.PermId
+                    matchingRegexes[0] == companyIdRegex -> DataRequestCompanyIdentifierType.DatalandCompanyId
                     else -> null
                 }
             }
+
             else -> DataRequestCompanyIdentifierType.MultipleRegexMatches
         }
     }
@@ -393,8 +431,8 @@ class DataRequestManager(
             0 -> "$totalNumberOfRequestedCompanyIdentifiers distinct company identifiers were accepted."
             else ->
                 "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers " +
-                    "distinct company identifiers were rejected because of a format that is not matching a valid " +
-                    "LEI, ISIN or PermId."
+                        "distinct company identifiers were rejected because of a format that is not matching a valid " +
+                        "LEI, ISIN or PermId."
         }
     }
 
@@ -431,7 +469,8 @@ class DataRequestManager(
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
         val summary = "All provided company identifiers have an invalid format."
-        val message = "The company identifiers you provided do not match the patterns of a valid LEI, ISIN or PermId."
+        val message = "The company identifiers you provided do not match the patterns "+
+                "of a valid LEI, ISIN, PermId or Dataland CompanyID."
         throw InvalidInputApiException(
             summary,
             message,
@@ -442,6 +481,15 @@ class DataRequestManager(
         return DataTypeEnum.entries.find { it.value == frameworkName }
     }
 
+    private fun checkIfCompanyIsValid(companyId: String) {
+        if(companyId.matches(companyIdRegex)) {
+            val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(companyId)
+            datalandCompanyId ?: throw ResourceNotFoundApiException(
+                    "Company is invalid",
+                    "There is no company corresponding to the provided Id $companyId stored on Dataland.",
+            )
+        }
+    }
     /**
      * Processes a single data request from a user
      * @param singleDataRequest info provided by a user in order to request a single dataset on Dataland
@@ -449,13 +497,13 @@ class DataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
+        checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
         val listOfReportingPeriods = singleDataRequest.listOfReportingPeriods.distinct()
         val singleDataRequestId = UUID.randomUUID().toString()
-        val dataRequestId = UUID.randomUUID().toString()
         val userId = DatalandAuthentication.fromContext().userId
         val matchedIdentifierType = determineIdentifierTypeViaRegex(singleDataRequest.companyIdentifier)
-        dataRequestLogger.logMessageForSingleDataRequest(dataRequestId)
         val storedDataRequests = mutableListOf<StoredDataRequest>()
+        checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
         if (matchedIdentifierType != null) {
             val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(singleDataRequest.companyIdentifier)
             val identifierTypeToStore = datalandCompanyId?.let {
@@ -479,7 +527,7 @@ class DataRequestManager(
                 )
             }
         } else {
-            throw InvalidInputApiException("Invalid Company", "$singleDataRequest.companyId is invalid")
+           throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
         return storedDataRequests
     }
