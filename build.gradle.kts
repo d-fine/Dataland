@@ -100,9 +100,10 @@ sonar {
         property("sonar.scanner.metadataFilePath", "$projectDir/build/reports/report_task.txt")
         property(
             "sonar.cpd.exclusions",
+
+            // frontend components
             "dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts," +
-                "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sfdr/SfdrDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
@@ -112,21 +113,26 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
                 "EuTaxonomyForNonFinancialsDisplayDataModel.ts," +
+
+                // frontend configs
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts," +
                 "dataland-frontend/src/frameworks/esg-questionnaire/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/heimathafen/UploadConfig.ts," +
+
+                // backend
+                "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
                 "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts" +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts",
         )
         property(
             "sonar.exclusions",
-            "dataland-backend/src/main/kotlin/" +
-                "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt," +
-                "dataland-frontend/src/components/general/SlideShow.vue," +
+
+            // frontend components
+            "dataland-frontend/src/components/general/SlideShow.vue," +
                 "dataland-frontend/src/components/resources/newLandingPage/TheQuotes.vue," +
-                "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
-                "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts," +
                 "dataland-frontend/src/components/resources/aboutPage/TheAboutIntro.vue," +
                 "dataland-frontend/src/components/resources/aboutPage/TheAboutPrinciples.vue," +
                 "dataland-frontend/src/components/pages/AboutPage.vue," +
@@ -134,6 +140,19 @@ sonar {
                 "dataland-frontend/src/components/resources/aboutPage/**," +
                 "dataland-frontend/src/components/resources/newLandingPage/**," +
                 "dataland-frontend/src/components/pages/AboutPage.vue," +
+                "dataland-frontend/src/components/generics/TheNewFooter.vue," +
+
+                // frontend fixtures
+                "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts," +
+
+                // frontend configs
+                "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts," +
+                // no need to cover the heimathafen-ViewConfig because there are no custom fields
+
+                // backend
+                "dataland-backend/src/main/kotlin/," +
+                "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
+                "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt," +
                 "dataland-frontend/src/components/generics/TheNewFooter.vue" +
                 "dataland-frontend/tests/e2e/fixtures/frameworks/sfdr/SfdrDataFixtures.ts",
         )
