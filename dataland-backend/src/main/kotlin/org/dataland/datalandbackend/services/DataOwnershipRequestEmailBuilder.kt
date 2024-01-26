@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandemail.email.BaseEmailBuilder
 import org.dataland.datalandemail.email.Email
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
@@ -23,14 +22,6 @@ class DataOwnershipRequestEmailBuilder(
     semicolonSeparatedReceiverEmails = semicolonSeparatedReceiverEmails,
     semicolonSeparatedCcEmails = semicolonSeparatedCcEmails,
 ) {
-    private fun buildUserInfo(
-        userAuthentication: DatalandAuthentication,
-    ): String {
-        return (userAuthentication as DatalandJwtAuthentication).let {
-            "User ${it.username} (Keycloak ID: ${it.userId})"
-        }
-    }
-
     /**
      * Function that generates an email for a data ownership request
      */
@@ -40,21 +31,16 @@ class DataOwnershipRequestEmailBuilder(
         userAuthentication: DatalandAuthentication,
         comment: String?,
     ): Email {
-        return Email(
-            senderEmailContact,
-            receiverEmailContacts,
-            ccEmailContacts,
-            buildPropertyStyleEmailContent(
-                "Dataland Data Ownership Request",
-                "A data ownership request has been submitted",
-                "Data Ownership Request",
-                mapOf(
-                    "Environment" to proxyPrimaryUrl,
-                    "User" to buildUserInfo(userAuthentication),
-                    "Company (Dataland ID)" to companyId,
-                    "Company Name" to companyName,
-                    "Comment" to comment,
-                ),
+        return buildPropertyStyleEmail(
+            "Dataland Data Ownership Request",
+            "A data ownership request has been submitted",
+            "Data Ownership Request",
+            mapOf(
+                "Environment" to proxyPrimaryUrl,
+                "User" to buildUserInfo(userAuthentication),
+                "Company (Dataland ID)" to companyId,
+                "Company Name" to companyName,
+                "Comment" to comment,
             ),
         )
     }

@@ -1,12 +1,14 @@
 package org.dataland.datalandemail.email
 
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import kotlin.system.exitProcess
 
 /**
  * A class that manages generating emails
  */
-open class BaseEmailBuilder(
+abstract class BaseEmailBuilder(
     senderEmail: String,
     senderName: String,
     semicolonSeparatedReceiverEmails: String,
@@ -86,6 +88,19 @@ open class BaseEmailBuilder(
         )
     }
 
+    /**
+     * Builds a user information string from a DatalandAuthentication
+     * @param userAuthentication DatalandAuthentication as base for the info string
+     * @return the user info string
+     */
+    fun buildUserInfo(
+        userAuthentication: DatalandAuthentication,
+    ): String {
+        return (userAuthentication as DatalandJwtAuthentication).let {
+            "User ${it.username} (Keycloak ID: ${it.userId})"
+        }
+    }
+
     private fun buildPropertyStyleTextContent(title: String, properties: Map<String, String?>): String {
         return StringBuilder()
             .append("$title:\n")
@@ -143,5 +158,24 @@ open class BaseEmailBuilder(
         </body>
         """,
             )
+    }
+
+    protected fun buildPropertyStyleEmail(
+        subject: String,
+        textTitle: String,
+        htmlTitle: String,
+        properties: Map<String, String?>,
+    ): Email {
+        return Email(
+            senderEmailContact,
+            receiverEmailContacts,
+            ccEmailContacts,
+            buildPropertyStyleEmailContent(
+                subject,
+                textTitle,
+                htmlTitle,
+                properties
+            ),
+        )
     }
 }
