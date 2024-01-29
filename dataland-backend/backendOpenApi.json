@@ -13322,12 +13322,12 @@
           "headquarters": {
             "type": "string"
           },
+          "companyId": {
+            "type": "string"
+          },
           "sector": {
             "type": "string",
             "nullable": true
-          },
-          "companyId": {
-            "type": "string"
           },
           "countryCode": {
             "type": "string"

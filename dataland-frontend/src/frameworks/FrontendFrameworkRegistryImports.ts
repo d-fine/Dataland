@@ -3,10 +3,12 @@ import { type FrontendFrameworkDefinition } from "@/frameworks/FrameworkDefiniti
 import esgQuestionnaireFrontendFrameworkDefinition from "@/frameworks/esg-questionnaire/FrontendFrameworkDefinition";
 import heimathafenFrontendFrameworkDefinition from "@/frameworks/heimathafen/FrontendFrameworkDefinition";
 import sfdrFrontendFrameworkDefinition from "@/frameworks/sfdr/FrontendFrameworkDefinition";
+import eutaxonomyNonFinancialsFrontendFrameworkDefinition from "@/frameworks/eutaxonomy-non-financials/FrontendFrameworkDefinition";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const FrameworkDefinitions: Record<string, FrontendFrameworkDefinition<any>> = {
   esgQuestionnaire: esgQuestionnaireFrontendFrameworkDefinition,
   heimathafen: heimathafenFrontendFrameworkDefinition,
   sfdr: sfdrFrontendFrameworkDefinition,
+  eutaxonomyNonFinancials: eutaxonomyNonFinancialsFrontendFrameworkDefinition,
 };

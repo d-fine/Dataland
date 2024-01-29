@@ -1,7 +1,9 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -36,10 +38,14 @@ class YesNoNaComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(NoDocumentSupport))
+        val uploadComponentNameToUse = when (documentSupport) {
+            is NoDocumentSupport -> "YesNoNaFormField"
+            is SimpleDocumentSupport -> "YesNoNaBaseDataPointFormField"
+            else -> throw IllegalArgumentException("YesNoNaComponent does not support document support '$documentSupport")
+        }
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "YesNoNaFormField",
+            uploadComponentName = uploadComponentNameToUse,
         )
     }
 

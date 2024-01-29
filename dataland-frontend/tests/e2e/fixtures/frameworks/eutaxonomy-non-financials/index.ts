@@ -13,10 +13,10 @@ function exportFixturesEutaxonomyNonFinancials(): void {
     "../testing/data/CompanyInformationWithEutaxonomyNonFinancialsData.json",
     JSON.stringify(companyInformationWithEutaxonomyNonFinancialsData, null, "\t"),
   );
-  const preparedFixtureEutaxonomyNonFinancialsDataForFinancials = generateEutaxonomyNonFinancialsPreparedFixtures();
+  const preparedFixtureEutaxonomyNonFinancialsData = generateEutaxonomyNonFinancialsPreparedFixtures();
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json",
-    JSON.stringify(preparedFixtureEutaxonomyNonFinancialsDataForFinancials, null, "\t"),
+    JSON.stringify(preparedFixtureEutaxonomyNonFinancialsData, null, "\t"),
   );
 }
 
