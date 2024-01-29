@@ -6,7 +6,7 @@ import org.dataland.datalandemail.email.PropertyStyleEmailBuilder
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
-class PropertyStyleEmailBuilder {
+class PropertyStyleEmailBuilderTest {
     private val senderEmail = "sender@dataland.com"
     private val senderName = "Test"
     private val receiverEmails = listOf(
