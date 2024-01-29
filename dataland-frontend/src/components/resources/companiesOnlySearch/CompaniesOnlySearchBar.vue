@@ -9,7 +9,7 @@
       :min-length="3"
       option-label="companyName"
       :auto-option-focus="false"
-      placeholder="Search company by name or identifier"
+      placeholder="Search company by name or identifier (e.g. PermID, LEI, ...)"
       :input-class="inputClass"
       panel-class="d-framework-searchbar-panel search__autocomplete"
       append-to="self"

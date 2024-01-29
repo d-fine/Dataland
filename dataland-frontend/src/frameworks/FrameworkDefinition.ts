@@ -10,14 +10,17 @@ interface MLDTConfigViewConfiguration<FrameworkDataType> {
 
 export type FrameworkViewConfiguration<FrameworkDataType> = MLDTConfigViewConfiguration<FrameworkDataType>;
 
-export interface FrameworkDefinition<FrameworkDataType> {
+export interface BaseFrameworkDefinition<FrameworkDataType> {
   readonly identifier: DataTypeEnum;
   readonly label: string;
   readonly explanation: string;
 
-  getFrameworkViewConfiguration(): FrameworkViewConfiguration<FrameworkDataType>;
   getFrameworkApiClient(
     configuration?: Configuration,
     axiosInstance?: AxiosInstance,
   ): FrameworkDataApi<FrameworkDataType>;
+}
+
+export interface FrontendFrameworkDefinition<FrameworkDataType> extends BaseFrameworkDefinition<FrameworkDataType> {
+  getFrameworkViewConfiguration(): FrameworkViewConfiguration<FrameworkDataType>;
 }

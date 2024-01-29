@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.model.documents
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.validation.constraints.NotBlank
 import org.dataland.datalandbackend.interfaces.documents.ExtendedDocumentReference
 
 /**
@@ -12,5 +13,6 @@ data class ExtendedDocumentReference(
     override val tagName: String? = null,
     override val fileName: String? = null,
     @field:JsonProperty(required = true)
+    @field:NotBlank
     override val fileReference: String,
 ) : ExtendedDocumentReference

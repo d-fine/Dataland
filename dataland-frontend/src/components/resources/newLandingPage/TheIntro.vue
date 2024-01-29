@@ -20,6 +20,12 @@
       input-class="h-3rem search__field"
       icon-class="pi pi-search search__icon"
     />
+    <ButtonComponent
+      :label="aboutIntroSection?.text[2] || 'EXPLORE OUR PRINCIPLES'"
+      buttonType="button-component about__button"
+      aria-label="About Page"
+      @click="$router.push('/about')"
+    />
   </section>
 </template>
 
@@ -27,11 +33,16 @@
 import { computed } from "vue";
 import type { Section } from "@/types/ContentTypes";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
+import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
 
-const { sections } = defineProps<{ sections?: Section[] }>();
+const props = defineProps<{ sections?: Section[] }>();
 
 const introSection = computed(() => {
-  return sections?.find((section) => section.title === "Intro") ?? null;
+  return props.sections?.find((section) => section.title === "Intro") ?? null;
+});
+
+const aboutIntroSection = computed(() => {
+  return props.sections?.find((section) => section.title === "START YOUR DATALAND JOURNEY") ?? null;
 });
 </script>
 
@@ -65,6 +76,9 @@ const introSection = computed(() => {
       line-height: 56px; /* 116.667% */
       margin-top: 80px;
     }
+  }
+  .button-component.about__button {
+    display: none;
   }
 }
 @media only screen and (max-width: $large) {
@@ -120,6 +134,17 @@ const introSection = computed(() => {
       span:last-of-type {
         font-size: 24px;
         line-height: 32px;
+      }
+    }
+    .button-component.about__button {
+      display: block;
+      background-color: transparent;
+      margin: 3em auto;
+      color: var(--basic-dark);
+      border-color: var(--basic-dark);
+      &:hover {
+        border-color: var(--primary-orange);
+        color: var(--primary-orange);
       }
     }
   }

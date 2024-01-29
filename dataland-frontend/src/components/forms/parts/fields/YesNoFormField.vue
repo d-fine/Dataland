@@ -5,8 +5,8 @@
       :name="name"
       :validation="validation"
       :validation-label="validationLabel ?? label"
+      :validation-messages="validationMessages"
       :options="HumanizedYesNo"
-      @update:currentValue="emitUpdateCurrentValue"
     />
   </div>
 </template>
@@ -28,18 +28,12 @@ export default defineComponent({
   components: { CheckboxesListFormElement, UploadFormHeader },
   props: {
     ...BaseFormFieldProps,
+    validationMessages: {
+      type: Object as () => { is: string },
+    },
     classes: {
       type: String,
       default: "form-field",
-    },
-  },
-  methods: {
-    /**
-     * Emits an event when the currentValue has been changed
-     * @param currentValue current value
-     */
-    emitUpdateCurrentValue(currentValue: string) {
-      this.$emit("update:currentValue", currentValue);
     },
   },
 });

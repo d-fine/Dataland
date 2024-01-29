@@ -2,6 +2,7 @@ import { admin_name, admin_pw } from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
 import { type BulkDataRequestResponse } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
+import { DataTypeEnum } from "@clients/backend";
 
 describeIf(
   "As a user I want to be able to request data",
@@ -81,14 +82,15 @@ describeIf(
     });
 
     /**
-     * Chose framewors
+     * Chose frameworks
      */
     function choseFramewors(): void {
+      const numberOfFrameworks = Object.keys(DataTypeEnum).length;
       cy.get('[data-test="selectFrameworkSelect"] .p-multiselect')
         .should("exist")
         .click()
         .get(".p-multiselect-panel ul.p-multiselect-items li.p-multiselect-item")
-        .should("have.length", 6)
+        .should("have.length", numberOfFrameworks)
         .eq(3)
         .click()
         .get("div[data-test='addedFrameworks'] span")

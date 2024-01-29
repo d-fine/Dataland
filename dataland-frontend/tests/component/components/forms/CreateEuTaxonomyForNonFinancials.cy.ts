@@ -113,10 +113,10 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('select[name="value"]').select(2);
     cy.get('input[name="provider"]').clear().type("Assurance Provider");
     cy.get('div[label="General"] select[name="fileName"]').select(reports);
-    cy.get('div[label="General"] input[name="page"]').clear().type("-13");
+    cy.get('div[label="General"] input[name="page"]').first().clear().type("-13");
     cy.get('div[label="General"] em[title="Page"]').click();
     cy.get(`[data-message-type="validation"]`).should("contain", "at least 0").should("exist");
-    cy.get('div[label="General"] input[name="page"]').clear().type("3");
+    cy.get('div[label="General"] input[name="page"]').first().clear().type("3");
   }
 
   /**

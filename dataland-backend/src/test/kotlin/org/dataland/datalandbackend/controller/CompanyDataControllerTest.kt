@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.DataOwnersManager
 import org.dataland.datalandbackend.utils.CompanyUploader
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -43,9 +44,10 @@ internal class CompanyDataControllerTest(
     @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired val companyQueryManager: CompanyQueryManager,
     @Autowired val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
+    @Autowired val dataOwnersManager: DataOwnersManager,
 ) {
 
-    val testDataProvider = TestDataProvider(objectMapper)
+    private final val testDataProvider = TestDataProvider(objectMapper)
     val testCompanyInformation = testDataProvider.getCompanyInformationWithoutIdentifiers(1).first()
 
     @Test
@@ -67,7 +69,7 @@ internal class CompanyDataControllerTest(
             )
     }
 
-    val testLei = "testLei"
+    private final val testLei = "testLei"
     val companyWithTestLei = CompanyInformation(
         companyName = "Test Company",
         companyAlternativeNames = null,
@@ -90,6 +92,7 @@ internal class CompanyDataControllerTest(
             companyAlterationManager,
             companyQueryManager,
             companyIdentifierRepositoryInterface,
+            dataOwnersManager,
         )
         val expectedCompanyId = companyController.postCompany(
             companyWithTestLei,

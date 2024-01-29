@@ -6,8 +6,10 @@ import org.dataland.frameworktoolbox.intermediate.TreeNode
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
+import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 
 /**
@@ -20,6 +22,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigB
 open class ComponentBase(
     var identifier: String,
     override var parent: FieldNodeParent,
+    var fullyQualifiedNameOfKotlinType: String = "",
 ) : TreeNode<FieldNodeParent> {
 
     /**
@@ -43,6 +46,12 @@ open class ComponentBase(
     var viewConfigGenerator: ((sectionConfigBuilder: SectionConfigBuilder) -> Unit)? = null
 
     /**
+     * The uploadConfigGenerator allows users to overwrite the UploadConfig generation of
+     * this specific component instance
+     */
+    var uploadConfigGenerator: ((uploadCategoryBuilder: UploadCategoryBuilder) -> Unit)? = null
+
+    /**
      * The fixtureGeneratorGenerator allows users to overwrite the FixtureGeneration generation
      * of this specific component isntance
      */
@@ -52,6 +61,13 @@ open class ComponentBase(
      * True iff this component is optional / accepts null values
      */
     var isNullable: Boolean = true
+
+    /**
+     * True iff this component is required (just a pointer to !isNullable for convenience)
+     */
+    var isRequired: Boolean
+        get() = !isNullable
+        set(value) { isNullable = !value }
 
     /**
      * A logical condition that decides whether this component is available / shown to users
@@ -81,10 +97,16 @@ open class ComponentBase(
 
     /**
      * Build this component instance into the provided Kotlin DataClass using the default
-     * generator for this component
+     * generator
      */
     open fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        throw NotImplementedError("This component did not implement data model conversion.")
+        dataClassBuilder.addProperty(
+            identifier,
+            documentSupport.getJvmTypeReference(
+                TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
+                isNullable,
+            ),
+        )
     }
 
     /**
@@ -103,10 +125,26 @@ open class ComponentBase(
     }
 
     /**
+     * Build this component instance into the provided upload-section configuration
+     * using the default generator for this component
+     */
+    open fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        throw NotImplementedError("This component did not implement upload config conversion.")
+    }
+
+    /**
      * Build this component instance into the provided view-section configuration
      */
     fun generateViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         return viewConfigGenerator?.let { it(sectionConfigBuilder) } ?: generateDefaultViewConfig(sectionConfigBuilder)
+    }
+
+    /**
+     * Build this component instance into the provided upload-section configuration
+     */
+    fun generateUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        return uploadConfigGenerator?.let { it(uploadCategoryBuilder) }
+            ?: generateDefaultUploadConfig(uploadCategoryBuilder)
     }
 
     /**

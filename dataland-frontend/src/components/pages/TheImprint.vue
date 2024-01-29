@@ -10,7 +10,7 @@
     </p>
     <p>Vertretungsberechtige Geschäftsführer: Frederik Christiaan Breen, Dr. Moritz Benjamin Kiese</p>
     <p>
-      Telefon: +31 650 660 350
+      Telefon: +49 1511 77 22 399
       <br />
       E-Mail: erik.breen@dataland.com
     </p>

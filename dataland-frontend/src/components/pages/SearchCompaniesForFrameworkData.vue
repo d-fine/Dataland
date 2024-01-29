@@ -75,7 +75,7 @@
         />
       </TheContent>
     </DatasetsTabMenu>
-    <TheFooter />
+    <TheFooter :is-light-version="true" :sections="footerContent" />
   </AuthenticationWrapper>
 </template>
 
@@ -83,21 +83,20 @@
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import {
-  type FrameworkDataSearchFilterInterface,
-  type DataSearchStoredCompany,
-} from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
+import { type FrameworkDataSearchFilterInterface } from "@/utils/SearchCompaniesForFrameworkDataPageDataRequester";
 import FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import PrimeButton from "primevue/button";
 import FrameworkDataSearchResults from "@/components/resources/frameworkDataSearch/FrameworkDataSearchResults.vue";
 import { type RouteLocationNormalizedLoaded, useRoute } from "vue-router";
 import { defineComponent, inject, ref } from "vue";
-import { type DataTypeEnum } from "@clients/backend";
+import { type DataTypeEnum, type BasicCompanyInformation } from "@clients/backend";
 import FrameworkDataSearchFilters from "@/components/resources/frameworkDataSearch/FrameworkDataSearchFilters.vue";
 import { parseQueryParamArray } from "@/utils/QueryParserUtils";
 import { arraySetEquals } from "@/utils/ArrayUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import TheFooter from "@/components/generics/TheFooter.vue";
+import TheFooter from "@/components/generics/TheNewFooter.vue";
+import contentData from "@/assets/content.json";
+import type { Content, Page } from "@/types/ContentTypes";
 import type Keycloak from "keycloak-js";
 import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
@@ -138,11 +137,15 @@ export default defineComponent({
     this.scanQueryParams(this.route);
   },
   data() {
+    const content: Content = contentData;
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerContent = footerPage?.sections;
     return {
       searchBarToggled: false,
       pageScrolled: false,
       route: useRoute(),
-      resultsArray: [] as Array<DataSearchStoredCompany>,
+      footerContent,
+      resultsArray: [] as Array<BasicCompanyInformation>,
       latestScrollPosition: 0,
       currentSearchBarInput: "",
       currentFilteredFrameworks: ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
@@ -349,7 +352,7 @@ export default defineComponent({
      * @param companiesReceived the received companies
      * @returns the promise of the router push with the new query parameters
      */
-    handleCompanyQuery(companiesReceived: Array<DataSearchStoredCompany>) {
+    handleCompanyQuery(companiesReceived: Array<BasicCompanyInformation>) {
       this.resultsArray = companiesReceived;
       this.setFirstShownRow(0);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access

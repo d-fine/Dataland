@@ -1,15 +1,18 @@
 import { DataTypeEnum } from "@clients/backend";
 
 // - Available frameworks settings
-export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE: DataTypeEnum[] = Object.values(DataTypeEnum);
 
-export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM: DataTypeEnum[] = [
+export const ARRAY_OF_SUPPORTED_FRAMEWORKS = putGermanFrameworksAtTheEndOfList(Object.values(DataTypeEnum));
+export const ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE = putGermanFrameworksAtTheEndOfList(Object.values(DataTypeEnum));
+export const ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM = putGermanFrameworksAtTheEndOfList([
   DataTypeEnum.P2p,
   DataTypeEnum.EutaxonomyFinancials,
   DataTypeEnum.Sfdr,
   DataTypeEnum.Lksg,
   DataTypeEnum.EutaxonomyNonFinancials,
-];
+  DataTypeEnum.EsgQuestionnaire,
+  DataTypeEnum.Heimathafen,
+]);
 
 // - Keycloak and session management related settings
 
@@ -35,3 +38,24 @@ export const REGEX_FOR_FILE_NAMES = /^[^<>:"|?/*\\\s][^<>:"|?/*\\]{0,252}[^<>:"|
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 export const NO_DATA_PROVIDED = "No data provided";
+export const ONLY_AUXILIARY_DATA_PROVIDED = "Only auxiliary data provided";
+
+/**
+ * Changes the sorting of a list of data type enums by putting German frameworks at the very end.
+ * @param frameworksToInclude a unsorted list of data type enums
+ * @returns the list of data type enums sorted in a way, that German frameworks are the last elements
+ */
+export function putGermanFrameworksAtTheEndOfList(frameworksToInclude: DataTypeEnum[]): DataTypeEnum[] {
+  const germanFrameworks = [DataTypeEnum.EsgQuestionnaire, DataTypeEnum.Heimathafen] as string[];
+  frameworksToInclude.sort((a, b) => {
+    if (germanFrameworks.includes(a) && !germanFrameworks.includes(b)) {
+      return 1;
+    } else if (!germanFrameworks.includes(a) && germanFrameworks.includes(b)) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+
+  return frameworksToInclude;
+}

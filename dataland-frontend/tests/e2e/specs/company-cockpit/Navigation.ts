@@ -1,26 +1,29 @@
 import { reader_name, reader_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
-import { getStoredCompaniesForDataType } from "@e2e/utils/GeneralApiUtils";
+import { searchBasicCompanyInformationForDataType } from "@e2e/utils/GeneralApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { type CompanyIdAndName, DataTypeEnum } from "@clients/backend";
 
 describe("As a user, I expect the navigation around the company cockpit to work as expected", () => {
   let someCompanyIdAndName: CompanyIdAndName;
-  let otherCompanyName: string;
+  let otherCompanyIdAndName: CompanyIdAndName;
 
   const companyCockpitRegex = /\/companies\/[0-9a-fA-F-]{36}$/;
 
   before(() => {
     getKeycloakToken(reader_name, reader_pw)
       .then((token: string) => {
-        return getStoredCompaniesForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
+        return searchBasicCompanyInformationForDataType(token, DataTypeEnum.EutaxonomyNonFinancials);
       })
-      .then((storedCompanies) => {
-        expect(storedCompanies).to.be.not.empty;
+      .then((basicCompanyInfos) => {
+        expect(basicCompanyInfos).to.be.not.empty;
         someCompanyIdAndName = {
-          companyId: storedCompanies[0].companyId,
-          companyName: storedCompanies[0].companyInformation.companyName,
+          companyId: basicCompanyInfos[0].companyId,
+          companyName: basicCompanyInfos[0].companyName,
         };
-        otherCompanyName = storedCompanies[1].companyInformation.companyName;
+        otherCompanyIdAndName = {
+          companyId: basicCompanyInfos[1].companyId,
+          companyName: basicCompanyInfos[1].companyName,
+        };
       });
   });
 
@@ -33,7 +36,7 @@ describe("As a user, I expect the navigation around the company cockpit to work 
 
   it("From the company cockpit page visit the company cockpit of a different company", () => {
     visitSomeCompanyCockpit();
-    searchCompanyAndChooseFirstSuggestion(otherCompanyName);
+    searchCompanyAndInterceptRequest(otherCompanyIdAndName);
     cy.url().should("not.contain", `/companies/${someCompanyIdAndName.companyId}`);
     cy.url().should("match", companyCockpitRegex);
   });
@@ -73,5 +76,17 @@ describe("As a user, I expect the navigation around the company cockpit to work 
   function searchCompanyAndChooseFirstSuggestion(searchTerm: string): void {
     cy.get("input#company_search_bar_standard").type(searchTerm);
     cy.get(".p-autocomplete-item").first().click();
+  }
+
+  /**
+   * Searches a company visits the first suggestion's cockpit and waits for displayed data
+   * @param companyToSearch the company to navigate to via the search bar
+   */
+  function searchCompanyAndInterceptRequest(companyToSearch: CompanyIdAndName): void {
+    cy.intercept("GET", `**/api/companies/${companyToSearch.companyId}/aggregated-framework-data-summary`).as(
+      "apiRequest",
+    );
+    searchCompanyAndChooseFirstSuggestion(companyToSearch.companyName);
+    cy.wait("@apiRequest");
   }
 });

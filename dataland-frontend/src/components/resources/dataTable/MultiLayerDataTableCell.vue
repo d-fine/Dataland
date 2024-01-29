@@ -1,11 +1,15 @@
 <template>
   <div class="flex" v-if="content.displayComponentName == MLDTDisplayComponents.HighlightHiddenCellDisplay">
-    <i class="pi pi-eye-slash pr-1 text-red-500" aria-hidden="true" data-test="hidden-icon" />
-    <MultiLayerDataTableCell :content="content.displayValue.innerContents" />
+    <i class="pi pi-eye-slash pr-1 text-red-500" aria-hidden="true" data-test="hidden-icon" v-if="inReviewMode" />
+    <MultiLayerDataTableCell :content="content.displayValue.innerContents" :inReviewMode="inReviewMode" />
   </div>
   <div v-if="content.displayComponentName == MLDTDisplayComponents.DataPointWrapperDisplayComponent">
     <DataPointWrapperDisplayComponent :content="content">
-      <MultiLayerDataTableCell :content="content.displayValue.innerContents" v-if="!hasBlankInnerContents" />
+      <MultiLayerDataTableCell
+        :content="content.displayValue.innerContents"
+        v-if="!hasBlankInnerContents"
+        :inReviewMode="inReviewMode"
+      />
       <template v-else>No data provided</template>
     </DataPointWrapperDisplayComponent>
   </div>
@@ -23,6 +27,7 @@ import { defineComponent } from "vue";
 import ModalLinkDisplayComponent from "@/components/resources/dataTable/cells/ModalLinkDisplayComponent.vue";
 import DataPointDisplayComponent from "@/components/resources/dataTable/cells/DataPointDisplayComponent.vue";
 import DataPointWrapperDisplayComponent from "@/components/resources/dataTable/cells/DataPointWrapperDisplayComponent.vue";
+import FreeTextDisplayComponent from "@/components/resources/dataTable/cells/FreeTextDisplayComponent.vue";
 
 export default defineComponent({
   name: "MultiLayerDataTableCell",
@@ -47,10 +52,15 @@ export default defineComponent({
     DocumentLinkDisplayComponent,
     ModalLinkDisplayComponent,
     DataPointDisplayComponent,
+    FreeTextDisplayComponent,
   },
   props: {
     content: {
       type: Object as () => AvailableMLDTDisplayObjectTypes,
+      required: true,
+    },
+    inReviewMode: {
+      type: Boolean,
       required: true,
     },
   },

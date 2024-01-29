@@ -47,6 +47,8 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "esg-questionnaire",
+                  "heimathafen",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
@@ -465,6 +467,8 @@
             "items": {
               "type": "string",
               "enum": [
+                "esg-questionnaire",
+                "heimathafen",
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
                 "lksg",
@@ -512,6 +516,8 @@
           "dataType": {
             "type": "string",
             "enum": [
+              "esg-questionnaire",
+              "heimathafen",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
@@ -565,6 +571,8 @@
           "dataType": {
             "type": "string",
             "enum": [
+              "esg-questionnaire",
+              "heimathafen",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",

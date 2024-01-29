@@ -109,6 +109,7 @@ jobs:
           KEYCLOAK_DATALAND_ADMIN_VALUE: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_VALUE }}
           KEYCLOAK_DATALAND_ADMIN_SALT: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_SALT }}
           DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${{ secrets.DATALAND_BATCH_MANAGER_CLIENT_SECRET }}
+          DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: ${{ secrets.DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET }}
           KEYCLOAK_READER_VALUE: ${{ secrets.KEYCLOAK_READER_VALUE }}
           KEYCLOAK_READER_SALT: ${{ secrets.KEYCLOAK_READER_SALT }}
           KEYCLOAK_UPLOADER_VALUE: ${{ secrets.KEYCLOAK_UPLOADER_VALUE }}
@@ -121,6 +122,8 @@ jobs:
           KEYCLOAK_LINKEDIN_SECRET: ${{ secrets.KEYCLOAK_LINKEDIN_SECRET }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
+          NOTIFICATION_RECEIVERS_DATA_OWNERSHIP_REQUEST: ${{ secrets.NOTIFICATION_RECEIVERS_DATA_OWNERSHIP_REQUEST }}
+          NOTIFICATION_RECEIVERS_CC_DATA_OWNERSHIP_REQUEST: ${{ secrets.NOTIFICATION_RECEIVERS_CC_DATA_OWNERSHIP_REQUEST }}
           NOTIFICATION_RECEIVERS_BULK_DATA_REQUEST: ${{ secrets.NOTIFICATION_RECEIVERS_BULK_DATA_REQUEST }}
           NOTIFICATION_RECEIVERS_CC_BULK_DATA_REQUEST: ${{ secrets.NOTIFICATION_RECEIVERS_CC_BULK_DATA_REQUEST }}
           PROXY_LETSENCRYPT_PATH: ${{ vars.PROXY_LETSENCRYPT_PATH }}
@@ -191,7 +194,7 @@ jobs:
       - name: check deployment
         run: cd dataland-frontend && npm install && npm run testgithubenvironment --url="https://${{ vars.TARGETSERVER_URL }}"
         env:
-          ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=dataland.com,test.dataland.com,dev1.dataland.com,dev2.dataland.com"
+          ELECTRON_EXTRA_LAUNCH_ARGS: "--ignore-connections-limit=dataland.com,test.dataland.com,dev1.dataland.com,dev2.dataland.com,dev3.dataland.com"
           KEYCLOAK_READER_PASSWORD: ${{ secrets.KEYCLOAK_READER_PASSWORD }}
           KEYCLOAK_UPLOADER_PASSWORD: ${{ secrets.KEYCLOAK_UPLOADER_PASSWORD }}
           KEYCLOAK_REVIEWER_PASSWORD: ${{ secrets.KEYCLOAK_REVIEWER_PASSWORD }}

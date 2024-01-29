@@ -1,5 +1,6 @@
 package org.dataland.e2etests.utils
 
+import org.dataland.datalandbackend.openApiClient.api.AdminDataManipulationControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
@@ -8,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.P2pDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
@@ -34,6 +36,7 @@ import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedEuTaxonomyDa
 import org.dataland.e2etests.unauthorizedApiControllers.UnauthorizedMetaDataControllerApi
 
 class ApiAccessor {
+
     val companyDataControllerApi = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedCompanyDataControllerApi = UnauthorizedCompanyDataControllerApi()
 
@@ -52,6 +55,7 @@ class ApiAccessor {
     val unauthorizedEuTaxonomyDataNonFinancialsControllerApi = UnauthorizedEuTaxonomyDataNonFinancialsControllerApi()
     val testDataProviderForEuTaxonomyDataForNonFinancials =
         FrameworkTestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
+    val adminDataManipulationControllerApi = AdminDataManipulationControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     fun euTaxonomyNonFinancialsUploaderFunction(
         companyId: String,
         euTaxonomyNonFinancialsData: EuTaxonomyDataForNonFinancials,
@@ -242,6 +246,9 @@ class ApiAccessor {
                 testDataProvider = testDataProviderForP2pData,
                 frameworkDataUploadFunction = this::p2pUploaderFunction,
             )
+            else -> {
+                throw IllegalArgumentException("The datatype $dataType is not integrated into the ApiAccessor yet")
+            }
         }
     }
 
@@ -327,14 +334,7 @@ class ApiAccessor {
         return UploadInfo(testCompanyInformation, companyDataControllerApi.postCompany(testCompanyInformation))
     }
 
-    fun getCompaniesOnlyByName(searchString: String): List<StoredCompany> {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        return companyDataControllerApi.getCompanies(
-            searchString,
-            onlyCompanyNames = true,
-        )
-    }
-    fun getCompaniesByNameAndIdentifier(searchString: String): List<StoredCompany> {
+    fun getCompaniesByNameAndIdentifier(searchString: String): List<BasicCompanyInformation> {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         return companyDataControllerApi.getCompanies(
             searchString,

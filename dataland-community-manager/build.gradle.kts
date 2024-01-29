@@ -29,6 +29,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
     implementation(project(":dataland-backend-utils"))
+    implementation(project(":dataland-email"))
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)
     implementation(libs.okhttp)
@@ -109,7 +110,7 @@ sourceSets {
 
 ktlint {
     filter {
-        exclude("**/openApiClient/**") // TODO somehow this does not work
+        exclude("**/openApiClient/**")
     }
 }
 

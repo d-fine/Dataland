@@ -10,6 +10,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,7 +27,7 @@ class DataRequestManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyGetter: CompanyGetter,
-    @Autowired private val emailBuilder: EmailBuilder,
+    @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
     @Autowired private val emailSender: EmailSender,
 ) {
     val isinRegex = Regex("^[A-Z]{2}[A-Z\\d]{10}$")
@@ -298,11 +299,8 @@ class DataRequestManager(
             bulkDataRequest,
             acceptedCompanyIdentifiers,
         )
-        val bulkDataRequestNotificationMailLoggerFunction = {
-            dataRequestLogger
-                .logMessageForBulkDataRequestNotificationMail(emailToSend, bulkDataRequestId)
-        }
-        emailSender.sendEmail(emailToSend, bulkDataRequestNotificationMailLoggerFunction)
+        dataRequestLogger.logMessageForSendBulkDataRequestEmail(bulkDataRequestId)
+        emailSender.sendEmail(emailToSend)
     }
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {

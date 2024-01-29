@@ -4,8 +4,10 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 import org.dataland.frameworktoolbox.utils.LoggerDelegate
+import org.dataland.frameworktoolbox.utils.Naming.getNameFromLabel
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
+import org.dataland.frameworktoolbox.utils.typescript.EsLintRunner
 import java.io.FileWriter
 import java.nio.file.Path
 import kotlin.io.path.div
@@ -20,6 +22,7 @@ class FrameworkFixtureGeneratorBuilder(
     private val framework: Framework,
 ) {
     private val logger by LoggerDelegate()
+    private val generatedTsFiles = mutableListOf<Path>()
 
     val rootSectionBuilder = FixtureSectionBuilder(
         parentSection = null,
@@ -30,12 +33,14 @@ class FrameworkFixtureGeneratorBuilder(
     private fun buildIndexTs(indexTsPath: Path) {
         val freeMarkerContext = mapOf(
             "frameworkIdentifier" to framework.identifier,
+            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
         )
 
         val freemarkerTemplate = FreeMarker.configuration
             .getTemplate("/specific/fixturegenerator/index.ts.ftl")
 
         val writer = FileWriter(indexTsPath.toFile())
+        generatedTsFiles.add(indexTsPath)
         freemarkerTemplate.process(freeMarkerContext, writer)
         writer.close()
     }
@@ -43,6 +48,7 @@ class FrameworkFixtureGeneratorBuilder(
     private fun buildPreparedFixturesTs(preparedFixturesTsPath: Path) {
         val freeMarkerContext = mapOf(
             "frameworkIdentifier" to framework.identifier,
+            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
         )
 
         val freemarkerTemplate = FreeMarker.configuration
@@ -50,6 +56,23 @@ class FrameworkFixtureGeneratorBuilder(
 
         if (preparedFixturesTsPath.notExists()) {
             val writer = FileWriter(preparedFixturesTsPath.toFile())
+            generatedTsFiles.add(preparedFixturesTsPath)
+            freemarkerTemplate.process(freeMarkerContext, writer)
+            writer.close()
+        }
+    }
+
+    private fun buildFrameworkGeneratorsTs(frameworkGeneratorTsPath: Path) {
+        val freeMarkerContext = mapOf(
+            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
+        )
+
+        val freemarkerTemplate = FreeMarker.configuration
+            .getTemplate("/specific/fixturegenerator/FrameworkGenerator.ts.ftl")
+
+        if (frameworkGeneratorTsPath.notExists()) {
+            val writer = FileWriter(frameworkGeneratorTsPath.toFile())
+            generatedTsFiles.add(frameworkGeneratorTsPath)
             freemarkerTemplate.process(freeMarkerContext, writer)
             writer.close()
         }
@@ -58,6 +81,7 @@ class FrameworkFixtureGeneratorBuilder(
     private fun buildDataFixtures(dataFixturesTsPath: Path) {
         val freeMarkerContext = mapOf(
             "frameworkIdentifier" to framework.identifier,
+            "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
             "imports" to rootSectionBuilder.imports,
             "rootSection" to rootSectionBuilder,
         )
@@ -66,6 +90,7 @@ class FrameworkFixtureGeneratorBuilder(
             .getTemplate("/specific/fixturegenerator/DataFixtures.ts.ftl")
 
         val writer = FileWriter(dataFixturesTsPath.toFile())
+        generatedTsFiles.add(dataFixturesTsPath)
         freemarkerTemplate.process(freeMarkerContext, writer)
         writer.close()
     }
@@ -82,10 +107,17 @@ class FrameworkFixtureGeneratorBuilder(
         frameworkConfigDir.toFile().mkdirs()
 
         buildIndexTs(frameworkConfigDir / "index.ts")
-        buildDataFixtures(frameworkConfigDir / "${framework.identifier.capitalizeEn()}DataFixtures.ts")
+        buildDataFixtures(
+            frameworkConfigDir / "${getNameFromLabel(
+                framework.identifier,
+            ).capitalizeEn()}DataFixtures.ts",
+        )
         buildPreparedFixturesTs(
             frameworkConfigDir /
-                "${framework.identifier.capitalizeEn()}PreparedFixtures.ts",
+                "${getNameFromLabel(framework.identifier).capitalizeEn()}PreparedFixtures.ts",
+        )
+        buildFrameworkGeneratorsTs(
+            frameworkConfigDir / "${getNameFromLabel(framework.identifier).capitalizeEn()}Generator.ts",
         )
 
         into.gradleInterface.executeGradleTasks(
@@ -94,5 +126,7 @@ class FrameworkFixtureGeneratorBuilder(
                 "dataland-frontend:npm_run_fakefixtures",
             ),
         )
+
+        EsLintRunner(into, generatedTsFiles).run()
     }
 }

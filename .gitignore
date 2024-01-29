@@ -29,6 +29,7 @@ hs_err_pid*
 **/build/
 **/bin/
 **/node_modules/
+**/venv/
 
 local
 
@@ -36,3 +37,4 @@ gitinfo
 .envrc
 
 testing/data-migration/migrationConfig.sh
+/dataland-automated-qa-service/dataland-automated-qa-service.iml
