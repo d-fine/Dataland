@@ -174,7 +174,7 @@ class MetaDataControllerTest {
             "The active result is not the one with the highest upload time.",
         )
         val retrievedDataset =
-            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getCompanyAssociatedEuTaxonomyDataForNonFinancials(
+            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.getCompanyAssociatedEutaxonomyNonFinancialsData(
                 activeDatasets[0].dataId,
             )
         assertTrue(
@@ -186,7 +186,8 @@ class MetaDataControllerTest {
     private fun uploadTwoDataSetsForACompany(): Triple<String, String, BigDecimal> {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
-        val frameworkDataAlpha = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1)[0]
+        val frameworkDataAlpha = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+            .getTData(1)[0]
         val reportingPeriod = "2022"
         apiAccessor.uploadWithWait(
             companyId = companyId,

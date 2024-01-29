@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.EutaxonomyNonFinancialsDataController
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.services.DataManager
@@ -56,7 +57,7 @@ internal class DataControllerTest(
     lateinit var mockSecurityContext: SecurityContext
     lateinit var mockDataManager: DataManager
     lateinit var mockDataMetaInformationManager: DataMetaInformationManager
-    lateinit var dataController: EuTaxonomyDataForNonFinancialsController
+    lateinit var dataController: EutaxonomyNonFinancialsDataController
 
     @BeforeEach
     fun resetMocks() {
@@ -64,7 +65,7 @@ internal class DataControllerTest(
         mockDataManager = mock(DataManager::class.java)
         mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
         dataController =
-            EuTaxonomyDataForNonFinancialsController(mockDataManager, mockDataMetaInformationManager, objectMapper)
+            EutaxonomyNonFinancialsDataController(mockDataManager, mockDataMetaInformationManager, objectMapper)
     }
 
     @Test

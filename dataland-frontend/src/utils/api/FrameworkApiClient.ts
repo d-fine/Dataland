@@ -3,8 +3,7 @@ import { type FrameworkDataApi, translateFrameworkApi } from "@/utils/api/Unifie
 import {
   type Configuration,
   DataTypeEnum,
-  EuTaxonomyDataForFinancialsControllerApi,
-  EuTaxonomyDataForNonFinancialsControllerApi,
+  EuTaxonomyDataForFinancialsControllerApi, EutaxonomyNonFinancialsDataControllerApi,
   LksgDataControllerApi,
   P2pDataControllerApi,
   SfdrDataControllerApi,
@@ -54,7 +53,7 @@ export function getUnifiedFrameworkDataControllerFromConfiguration<K extends key
     case DataTypeEnum.EutaxonomyNonFinancials:
       return translateFrameworkApi<typeof DataTypeEnum.EutaxonomyNonFinancials>(
         "EuTaxonomyDataForNonFinancials",
-        new EuTaxonomyDataForNonFinancialsControllerApi(configuration, undefined, axiosInstance),
+        new EutaxonomyNonFinancialsDataControllerApi(configuration, undefined, axiosInstance),
       );
     default:
       return assertNever(framework);

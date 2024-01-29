@@ -2,8 +2,6 @@ import {
   type DataTypeEnum,
   type EuTaxonomyDataForFinancials,
   type EuTaxonomyDataForFinancialsControllerApi,
-  type EuTaxonomyDataForNonFinancials,
-  type EuTaxonomyDataForNonFinancialsControllerApi,
   type LksgData,
   type LksgDataControllerApi,
   type P2pDataControllerApi,
@@ -39,10 +37,5 @@ export type FrameworkDataTypes = {
     data: EuTaxonomyDataForFinancials;
     apiSuffix: "EuTaxonomyDataForFinancials";
     api: EuTaxonomyDataForFinancialsControllerApi;
-  };
-  [DataTypeEnum.EutaxonomyNonFinancials]: {
-    data: EuTaxonomyDataForNonFinancials;
-    apiSuffix: "EuTaxonomyDataForNonFinancials";
-    api: EuTaxonomyDataForNonFinancialsControllerApi;
   };
 };

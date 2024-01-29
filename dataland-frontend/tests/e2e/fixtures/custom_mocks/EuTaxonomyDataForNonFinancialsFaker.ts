@@ -1,7 +1,5 @@
 import {
-  type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
-  type EuTaxonomyDataForNonFinancials,
-  type EuTaxonomyDetailsPerCashFlowType,
+  type DataAndMetaInformationEutaxonomyNonFinancialsData, EutaxonomyNonFinancialsData
 } from "@clients/backend";
 import { DataMetaInformationGenerator } from "@e2e/fixtures/data_meta_information/DataMetaInformationFixtures";
 import { EuNonFinancialsGenerator } from "@e2e/fixtures/frameworks/eutaxonomy-non-financials/EuTaxonomyDataForNonFinancialsFixtures";
@@ -18,7 +16,7 @@ import { range } from "@/utils/ArrayUtils";
  * with minimum changes done for specific tests which require all rows to exist
  */
 class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
-  generateMinimumAcceptedEuTaxonomyForNonFinancialsData(): EuTaxonomyDataForNonFinancials {
+  generateMinimumAcceptedEuTaxonomyForNonFinancialsData(): EutaxonomyNonFinancialsData {
     return {
       general: generateEuTaxonomyWithBaseFields(this.reports, 0),
       revenue: this.generateMinimumAcceptedDetailsPerCashFlowType(),
@@ -27,7 +25,7 @@ class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
     };
   }
 
-  generateMinimumAcceptedDetailsPerCashFlowType(): EuTaxonomyDetailsPerCashFlowType {
+  generateMinimumAcceptedDetailsPerCashFlowType(): EuaxonomyDetailsPerCashFlowType {
     return {
       totalAmount: this.generateCurrencyExtendedDataPoint(
         this.valueOrNull(generateCurrencyValue()),
@@ -55,7 +53,7 @@ class MinimumAcceptedEuNonFinancialsGenerator extends EuNonFinancialsGenerator {
  * Generates a list of data and meta information with EU taxonomy for non financials data
  * @returns a list of data and meta information with EU taxonomy for non financials data
  */
-export function generateEuTaxonomyForNonFinancials(): DataAndMetaInformationEuTaxonomyDataForNonFinancials[] {
+export function generateEuTaxonomyForNonFinancials(): DataAndMetaInformationEutaxonomyNonFinancialsData[] {
   const dataMetaInfoGenerator = new DataMetaInformationGenerator();
   const dataGenerator = new MinimumAcceptedEuNonFinancialsGenerator(DEFAULT_PROBABILITY);
   const generatedDataAndMetaInfo = range(3).map((index): DataAndMetaInformationEuTaxonomyDataForNonFinancials => {

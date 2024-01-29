@@ -3,7 +3,7 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.AggregatedFrameworkDataSummary
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -341,13 +341,13 @@ class CompanyDataControllerTest {
         return apiAccessor.companyDataControllerApi.postCompany(companyInformation).companyId
     }
 
-    val dummyCompanyAssociatedDataWithoutCompanyId = CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+    val dummyCompanyAssociatedDataWithoutCompanyId = CompanyAssociatedDataEutaxonomyNonFinancialsData(
         companyId = "placeholder",
         reportingPeriod = "placeholder",
         data = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first(),
     )
     private fun uploadDummyDataset(companyId: String, reportingPeriod: String = "default", bypassQa: Boolean = false) {
-        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEutaxonomyNonFinancialsData(
             dummyCompanyAssociatedDataWithoutCompanyId.copy(companyId = companyId, reportingPeriod = reportingPeriod),
             bypassQa,
         )

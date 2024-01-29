@@ -9,11 +9,13 @@ import java.io.File
  */
 @Component
 class EuTaxonomyNonFinancialsFramework : InDevelopmentPavedRoadFramework(
-    identifier = "euTaxonomyNonFinancials",
+    identifier = "eutaxonomy-non-financials",
     label = "EU Taxonomy Non-Financials",
     explanation = "Das Eu Taxonomy Non-Financials Framework",
     File(
-        "./dataland-framework-toolbox/inputs/euTaxonomyNonFinancials/dataDictionary-New EU Taxo" +
+        "./dataland-framework-toolbox/inputs/euTaxonomyNonFinancials/dataDictionary_2-New EU Taxo" +
             " non-financial toolb.csv",
     ),
-)
+) {
+
+}

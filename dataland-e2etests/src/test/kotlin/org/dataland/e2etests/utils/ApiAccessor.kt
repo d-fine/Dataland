@@ -3,7 +3,7 @@ package org.dataland.e2etests.utils
 import org.dataland.datalandbackend.openApiClient.api.AdminDataManipulationControllerApi
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForFinancialsControllerApi
-import org.dataland.datalandbackend.openApiClient.api.EuTaxonomyDataForNonFinancialsControllerApi
+import org.dataland.datalandbackend.openApiClient.api.EutaxonomyNonFinancialsDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.LksgDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.P2pDataControllerApi
@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForFinancials
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataLksgData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataPathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
@@ -20,7 +20,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
@@ -51,24 +51,24 @@ class ApiAccessor {
     val generalTestDataProvider = GeneralTestDataProvider()
 
     val dataControllerApiForEuTaxonomyNonFinancials =
-        EuTaxonomyDataForNonFinancialsControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+        EutaxonomyNonFinancialsDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedEuTaxonomyDataNonFinancialsControllerApi = UnauthorizedEuTaxonomyDataNonFinancialsControllerApi()
     val testDataProviderForEuTaxonomyDataForNonFinancials =
-        FrameworkTestDataProvider(EuTaxonomyDataForNonFinancials::class.java)
+        FrameworkTestDataProvider(EutaxonomyNonFinancialsData::class.java)
     val adminDataManipulationControllerApi = AdminDataManipulationControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     fun euTaxonomyNonFinancialsUploaderFunction(
         companyId: String,
-        euTaxonomyNonFinancialsData: EuTaxonomyDataForNonFinancials,
+        euTaxonomyNonFinancialsData: EutaxonomyNonFinancialsData,
         reportingPeriod: String,
         bypassQa: Boolean = true,
     ): DataMetaInformation {
         val companyAssociatedEuTaxonomyNonFinancialsData =
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+            CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 companyId,
                 reportingPeriod,
                 euTaxonomyNonFinancialsData,
             )
-        return dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+        return dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEutaxonomyNonFinancialsData(
             companyAssociatedEuTaxonomyNonFinancialsData, bypassQa,
         )
     }
@@ -277,7 +277,7 @@ class ApiAccessor {
 
     fun uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
         companyInformation: CompanyInformation,
-        euTaxonomyDataForNonFinancials: EuTaxonomyDataForNonFinancials,
+        euTaxonomyDataForNonFinancials: EutaxonomyNonFinancialsData,
     ):
         Map<String, String> {
         val listOfUploadInfo = uploadCompanyAndFrameworkDataForOneFramework(
