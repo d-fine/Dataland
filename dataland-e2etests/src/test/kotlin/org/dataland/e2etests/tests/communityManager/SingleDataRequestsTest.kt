@@ -6,12 +6,15 @@ import org.dataland.communitymanager.openApiClient.infrastructure.ClientExceptio
 import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdentifierType
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
+import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
+import org.dataland.e2etests.UPLOADER_USER_ID
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.assertStatusForDataRequestId
 import org.dataland.e2etests.utils.check400ClientExceptionErrorMessage
+import org.dataland.e2etests.utils.generateRandomIsin
 import org.dataland.e2etests.utils.generateRandomPermId
 import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatus
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -177,6 +180,65 @@ class SingleDataRequestsTest {
 
         val clientException = assertThrows<ClientException> {
             requestControllerApi.patchDataRequest(storedDataRequestId, RequestStatus.resolved)
+        }
+        assertEquals("Client error : 403 ", clientException.message)
+    }
+
+    @Test
+    fun `query data requests with various filters and assert that the expected results are being retrieved`() {
+        val requestA = SingleDataRequest(
+            companyIdentifier = generateRandomIsin(),
+            frameworkName = SingleDataRequest.FrameworkName.lksg,
+            listOfReportingPeriods = listOf("2022"),
+        )
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        requestControllerApi.postSingleDataRequest(requestA)
+
+        val permIdSubstring = System.currentTimeMillis().toString()
+        val specificPermId = "123456789" + permIdSubstring + "987654321"
+        val requestB = SingleDataRequest(
+            companyIdentifier = specificPermId,
+            frameworkName = SingleDataRequest.FrameworkName.sfdr,
+            listOfReportingPeriods = listOf("2021"),
+        )
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        val req2 = requestControllerApi.postSingleDataRequest(requestB).first()
+        requestControllerApi.patchDataRequest(UUID.fromString(req2.dataRequestId), RequestStatus.resolved)
+
+        val allDataRequests = requestControllerApi.getDataRequests()
+        val lksgDataRequests = requestControllerApi.getDataRequests(
+            dataType = RequestControllerApi.DataTypeGetDataRequests.lksg,
+        )
+        val reportingPeriod2021DataRequests = requestControllerApi.getDataRequests(reportingPeriod = "2021")
+        val resolvedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.resolved)
+        val specificPermIdDataRequests = requestControllerApi.getDataRequests(
+            dataRequestCompanyIdentifierValue = permIdSubstring,
+        )
+        val specificUsersDataRequests = requestControllerApi.getDataRequests(userId = UPLOADER_USER_ID)
+
+        val allQueryResults = listOf(
+            allDataRequests, lksgDataRequests, reportingPeriod2021DataRequests,
+            resolvedDataRequests, specificPermIdDataRequests, specificUsersDataRequests,
+        )
+
+        allQueryResults.forEach { storedDataRequestsQueryResult ->
+            assertTrue(storedDataRequestsQueryResult.isNotEmpty())
+        }
+
+        assertTrue(allDataRequests.size > 1)
+        assertTrue(lksgDataRequests.all { it.dataType == StoredDataRequest.DataType.lksg })
+        assertTrue(reportingPeriod2021DataRequests.all { it.reportingPeriod == "2021" })
+        assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.resolved })
+        assertTrue(specificPermIdDataRequests.all { it.dataRequestCompanyIdentifierValue.contains(permIdSubstring) })
+        assertTrue(specificUsersDataRequests.all { it.userId == UPLOADER_USER_ID })
+    }
+
+    @Test
+    fun `query the data requests as an uploader and assert that it is forbidden`() {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+
+        val clientException = assertThrows<ClientException> {
+            requestControllerApi.getDataRequests()
         }
         assertEquals("Client error : 403 ", clientException.message)
     }
