@@ -34,6 +34,8 @@
 [Environment]::SetEnvironmentVariable("EXPECT_STACKTRACE", "true", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("NOTIFICATION_RECEIVERS_BULK_DATA_REQUEST", "dummy.mail@dataland.com", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("NOTIFICATION_RECEIVERS_CC_BULK_DATA_REQUEST", "dummy.mail2@dataland.com", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("NOTIFICATION_RECEIVERS_DATA_OWNERSHIP_REQUEST", "dummy.mail@dataland.com", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("NOTIFICATION_RECEIVERS_CC_DATA_OWNERSHIP_REQUEST", "dummy.mail2@dataland.com", [System.EnvironmentVariableTarget]::User)
 # If needed, set to your sonar token [Environment]::SetEnvironmentVariable("SONAR_TOKEN", "", [System.EnvironmentVariableTarget]::User)
 # Only needed in CD.yaml - no need to set locally [Environment]::SetEnvironmentVariable("SSH_PRIVATE_KEY", "", [System.EnvironmentVariableTarget]::User)
 # Only needed in CD.yaml - no need to set locally [Environment]::SetEnvironmentVariable("TARGETSERVER_HOST_KEYS", "", [System.EnvironmentVariableTarget]::User)
