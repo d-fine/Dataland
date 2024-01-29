@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.jackson.kotlin)
     implementation(libs.flyway)
     implementation(libs.flyway.core)
+    implementation(libs.freemarker)
 }
 
 openApi {

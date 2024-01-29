@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandcommunitymanager.email.FreeMarker
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandemail.email.BaseEmailBuilder
@@ -9,6 +10,7 @@ import org.dataland.datalandemail.email.EmailContent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import java.io.StringWriter
 
 /**
  * A class that manages generating emails regarding bulk data requests
@@ -73,6 +75,12 @@ class SingleDataRequestEmailBuilder(
         singleDataRequest: SingleDataRequest
     ): String {
         // TODO extract data as for text and map to template file
-        return "<html><body>${buildTextContent(requesterEmail, companyName, singleDataRequest)}</body></html>"
+        val freemarkerTemplate = FreeMarker.configuration
+            .getTemplate("/test.ftl")
+
+        val writer = StringWriter()
+        freemarkerTemplate.process(mapOf("a" to "b"), writer)
+        writer.close()
+        return writer.toString()
     }
 }
