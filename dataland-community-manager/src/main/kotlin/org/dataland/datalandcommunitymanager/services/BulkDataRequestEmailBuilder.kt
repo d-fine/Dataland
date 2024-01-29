@@ -1,8 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
-import org.dataland.datalandemail.email.BaseEmailBuilder
 import org.dataland.datalandemail.email.Email
+import org.dataland.datalandemail.email.PropertyStyleEmailBuilder
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -29,7 +29,7 @@ class BulkDataRequestEmailBuilder(
     @Value("\${dataland.notification.sender.name}") senderName: String,
     @Value("\${dataland.notification.bulk-data-request.receivers}") semicolonSeparatedReceiverEmails: String,
     @Value("\${dataland.notification.bulk-data-request.cc}") semicolonSeparatedCcEmails: String,
-) : BaseEmailBuilder(
+) : PropertyStyleEmailBuilder(
     senderEmail = senderEmail,
     senderName = senderName,
     semicolonSeparatedReceiverEmails = semicolonSeparatedReceiverEmails,

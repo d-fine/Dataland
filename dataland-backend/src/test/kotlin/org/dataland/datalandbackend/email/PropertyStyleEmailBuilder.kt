@@ -1,12 +1,12 @@
 package org.dataland.datalandbackend.email
 
 import org.dataland.datalandbackend.utils.assertEmailContactInformationEquals
-import org.dataland.datalandemail.email.BaseEmailBuilder
 import org.dataland.datalandemail.email.Email
+import org.dataland.datalandemail.email.PropertyStyleEmailBuilder
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
-class BaseEmailBuilderTest {
+class PropertyStyleEmailBuilder {
     private val senderEmail = "sender@dataland.com"
     private val senderName = "Test"
     private val receiverEmails = listOf(
@@ -21,13 +21,13 @@ class BaseEmailBuilderTest {
     private val htmlTitle = "The HTML Title"
 
     @Test
-    fun `validate that the output of the base email builder is correctly formatted`() {
+    fun `validate that the output of the property style email builder is correctly formatted`() {
         val properties = mapOf(
             "first" to "1",
             "leftOut" to null,
             "second" to "2",
         )
-        val email = object : BaseEmailBuilder(
+        val email = object : PropertyStyleEmailBuilder(
             senderEmail = senderEmail,
             senderName = senderName,
             semicolonSeparatedReceiverEmails = receiverEmails.joinToString(";"),
@@ -36,7 +36,7 @@ class BaseEmailBuilderTest {
             fun build(): Email {
                 return Email(
                     senderEmailContact,
-                    receiverEmailContacts,
+                    receiverEmailContacts!!,
                     ccEmailContacts,
                     buildPropertyStyleEmailContent(
                         subject,
