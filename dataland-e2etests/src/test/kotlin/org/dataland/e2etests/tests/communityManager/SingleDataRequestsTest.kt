@@ -199,8 +199,7 @@ class SingleDataRequestsTest {
         assertEquals("Client error : 403 ", clientException.message)
     }
 
-    @Test
-    fun `query data requests with various filters and assert that the expected results are being retrieved`() {
+    private fun postDataRequestsBeforeQueryTest(): List<SingleDataRequest> {
         val requestA = SingleDataRequest(
             companyIdentifier = generateRandomIsin(),
             frameworkName = SingleDataRequest.FrameworkName.lksg,
@@ -219,6 +218,14 @@ class SingleDataRequestsTest {
         val req2 = requestControllerApi.postSingleDataRequest(requestB).first()
         requestControllerApi.patchDataRequest(UUID.fromString(req2.dataRequestId), RequestStatus.resolved)
 
+        return listOf(requestA, requestB)
+    }
+
+    @Test
+    fun `query data requests with various filters and assert that the expected results are being retrieved`() {
+        val singleDataRequests = postDataRequestsBeforeQueryTest()
+        val permIdOfRequestB = singleDataRequests[1].companyIdentifier
+
         val allDataRequests = requestControllerApi.getDataRequests()
         val lksgDataRequests = requestControllerApi.getDataRequests(
             dataType = RequestControllerApi.DataTypeGetDataRequests.lksg,
@@ -226,7 +233,7 @@ class SingleDataRequestsTest {
         val reportingPeriod2021DataRequests = requestControllerApi.getDataRequests(reportingPeriod = "2021")
         val resolvedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.resolved)
         val specificPermIdDataRequests = requestControllerApi.getDataRequests(
-            dataRequestCompanyIdentifierValue = specificPermId,
+            dataRequestCompanyIdentifierValue = permIdOfRequestB,
         )
         val specificUsersDataRequests = requestControllerApi.getDataRequests(userId = UPLOADER_USER_ID)
 
@@ -243,7 +250,7 @@ class SingleDataRequestsTest {
         assertTrue(lksgDataRequests.all { it.dataType == StoredDataRequest.DataType.lksg })
         assertTrue(reportingPeriod2021DataRequests.all { it.reportingPeriod == "2021" })
         assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.resolved })
-        assertTrue(specificPermIdDataRequests.all { it.dataRequestCompanyIdentifierValue == specificPermId })
+        assertTrue(specificPermIdDataRequests.all { it.dataRequestCompanyIdentifierValue == permIdOfRequestB })
         assertTrue(specificUsersDataRequests.all { it.userId == UPLOADER_USER_ID })
     }
 
