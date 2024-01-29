@@ -67,7 +67,7 @@ describeIf(
       cy.get('[data-test="requestStatusText"]').should("exist").contains("Success");
     });
 
-    it.only("When identifiers are rejected", () => {
+    it("When identifiers are rejected", () => {
       cy.intercept("POST", "**/community/requests").as("postRequestData");
 
       checksBasicValidation();
