@@ -36,7 +36,7 @@ class SingleDataRequestEmailBuilder(
         val content = EmailContent(
             subject = "A message from Dataland: Your ESG data are high on demand!",
             textContent = buildTextContent(requesterEmail, companyName, singleDataRequest),
-            htmlContent = buildHtmlContent(requesterEmail, companyName, singleDataRequest),
+            htmlContent = buildHtmlContent(requesterEmail, companyId, companyName, singleDataRequest),
         )
         return Email(
             sender = senderEmailContact,
@@ -71,15 +71,23 @@ class SingleDataRequestEmailBuilder(
 
     private fun buildHtmlContent(
         requesterEmail: String,
+        companyId: String?,
         companyName: String?,
         singleDataRequest: SingleDataRequest
     ): String {
-        // TODO extract data as for text and map to template file
+        val freemarkerContext = mapOf(
+            "companyId" to companyId,
+            "companyName" to companyName,
+            "requesterEmail" to requesterEmail,
+            "message" to singleDataRequest.message,
+            "framework" to singleDataRequest.frameworkName,
+            "reportingPeriods" to singleDataRequest.listOfReportingPeriods,
+        )
         val freemarkerTemplate = FreeMarker.configuration
             .getTemplate("/test.ftl")
 
         val writer = StringWriter()
-        freemarkerTemplate.process(mapOf("a" to "b"), writer)
+        freemarkerTemplate.process(freemarkerContext, writer)
         writer.close()
         return writer.toString()
     }
