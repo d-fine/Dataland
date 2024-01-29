@@ -9,10 +9,10 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSuppo
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.DataPointMaximumValueAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.DataPointMinimumValueAnnotation
-import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * The NumberBaseComponent serves as base-class for any number component (percentage, decimal, integer...) and
@@ -56,7 +56,6 @@ open class NumberBaseComponent(
                 "There are currently no minimum/maximum value constraint annotation for non-datapoint fields."
             }
 
-            annotations.add(ValidAnnotation)
             minimumValue?.let { annotations.add(DataPointMinimumValueAnnotation(it)) }
             maximumValue?.let { annotations.add(DataPointMaximumValueAnnotation(it)) }
         }
@@ -91,8 +90,10 @@ open class NumberBaseComponent(
                     "formatNumberForDatatable(${getTypescriptFieldAccessor(true)}," +
                         " \"${StringEscapeUtils.escapeEcmaScript(constantUnitSuffix ?: "")}\")",
                     setOf(
-                        "import { formatNumberForDatatable } from " +
-                            "\"@/components/resources/dataTable/conversion/NumberValueGetterFactory\";",
+                        TypeScriptImport(
+                            "formatNumberForDatatable",
+                            "@/components/resources/dataTable/conversion/NumberValueGetterFactory",
+                        ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),

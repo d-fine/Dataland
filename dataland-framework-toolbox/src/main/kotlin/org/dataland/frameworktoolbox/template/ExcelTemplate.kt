@@ -14,6 +14,29 @@ import java.io.File
 class ExcelTemplate(val rows: MutableList<TemplateRow>) {
     companion object {
         /**
+         * Load a csv or xlsx file to an ExcelTemplate.
+         */
+        fun fromFile(file: File): ExcelTemplate {
+            return when (file.extension) {
+                "xlsx" -> fromXlsx(file)
+                "csv" -> fromCsv(file)
+                else -> throw IllegalArgumentException("Can only parse CSV and XLSX files. Got ${file.name}.")
+            }
+        }
+
+        /**
+         * Parse an Excel Template from a xlsx file.
+         */
+        fun fromXlsx(xlsxFile: File): ExcelTemplate {
+            val targetCsvFile = xlsxFile.parentFile
+                .resolve("${xlsxFile.nameWithoutExtension}.csv")
+
+            ExcelToCsvConverter(xlsxFile, "Framework Data Model", targetCsvFile).convert()
+
+            return fromCsv(targetCsvFile)
+        }
+
+        /**
          * Parse an Excel Template from a CSV file.
          */
         fun fromCsv(csvFile: File): ExcelTemplate {

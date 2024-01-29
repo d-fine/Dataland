@@ -13,10 +13,10 @@ function exportFixturesSfdr(): void {
     "../testing/data/CompanyInformationWithSfdrData.json",
     JSON.stringify(companyInformationWithSfdrData, null, "\t"),
   );
-  const preparedFixtureSfdrDataForFinancials = generateSfdrPreparedFixtures();
+  const preparedFixtureSfdrData = generateSfdrPreparedFixtures();
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithSfdrPreparedFixtures.json",
-    JSON.stringify(preparedFixtureSfdrDataForFinancials, null, "\t"),
+    JSON.stringify(preparedFixtureSfdrData, null, "\t"),
   );
 }
 

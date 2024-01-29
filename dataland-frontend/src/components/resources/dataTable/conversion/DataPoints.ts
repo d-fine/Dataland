@@ -122,19 +122,15 @@ export function wrapDisplayValueWithDatapointInformation(
           fieldLabel: fieldLabel,
         },
       };
+  } else if (inputValue.displayValue == "") {
+    return MLDTDisplayObjectForEmptyString;
   } else {
-    if (!inputValue || inputValue.displayValue == "") {
-      //TODO confirm that the first argument in the if statement
-      // can be removed
-      return MLDTDisplayObjectForEmptyString;
-    } else {
-      return {
-        displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
-        displayValue: {
-          innerContents: inputValue,
-        },
-      } as AvailableMLDTDisplayObjectTypes;
-    }
+    return {
+      displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
+      displayValue: {
+        innerContents: inputValue,
+      },
+    } as AvailableMLDTDisplayObjectTypes;
   }
 }
 

@@ -925,6 +925,68 @@
         ]
       }
     },
+    "/companies/{companyId}/data-ownership-request": {
+      "post": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Request data ownership for a company.",
+        "description": "Request data ownership for one of the existing company on Dataland.",
+        "operationId": "postDataOwnershipRequest",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "comment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully requested data ownership."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies/{companyId}/data-owners/{userId}": {
       "post": {
         "tags": [
@@ -10511,9 +10573,38 @@
             "type": "string",
             "format": "date"
           },
+          "fiscalYearDeviation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneralGeneralFiscalYearDeviationOptions"
+              }
+            ]
+          },
           "fiscalYearEnd": {
             "type": "string",
             "format": "date"
+          },
+          "referencedReports": {
+            "type": "object",
+            "nullable": true,
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "isGroupLevel": "Yes",
+                "reportDate": "2023-10-12",
+                "currency": "string"
+              }
+            }
+          },
+          "scopeOfEntities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseDataPointYesNoNa"
+              }
+            ]
           },
           "euTaxonomyActivityLevelReporting": {
             "nullable": true,
@@ -10522,6 +10613,10 @@
                 "$ref": "#/components/schemas/BaseDataPointYesNo"
               }
             ]
+          },
+          "numberOfEmployees": {
+            "type": "number",
+            "nullable": true
           },
           "nfrdMandatory": {
             "nullable": true,
@@ -10532,6 +10627,13 @@
             ]
           }
         }
+      },
+      "EutaxonomyNonFinancialsGeneralGeneralFiscalYearDeviationOptions": {
+        "type": "string",
+        "enum": [
+          "Deviation",
+          "NoDeviation"
+        ]
       },
       "EutaxonomyNonFinancialsOpex": {
         "type": "object",
@@ -13214,25 +13316,25 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
+          "permId": {
+            "type": "string",
+            "nullable": true
           },
           "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
-          "permId": {
-            "type": "string",
-            "nullable": true
+          "companyId": {
+            "type": "string"
           }
         }
       },
@@ -13255,10 +13357,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
@@ -13313,14 +13415,15 @@
       "DataTypeEnum": {
         "type": "string",
         "enum": [
-          "esg-questionnaire",
           "eutaxonomy-non-financials",
-          "heimathafen",
-          "sfdr",
           "eutaxonomy-financials",
+          "eutaxonomy-non-financials",
           "lksg",
           "p2p",
-          "sme"
+          "sfdr",
+          "sme",
+          "esg-questionnaire",
+          "heimathafen"
         ]
       },
       "ErrorDetails": {

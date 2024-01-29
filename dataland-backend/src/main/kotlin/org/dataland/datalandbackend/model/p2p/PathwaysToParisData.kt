@@ -17,7 +17,8 @@ import org.dataland.datalandbackend.model.p2p.categories.steel.P2pSteel
  * --- API model ---
  * Fields of the p2p framework.
 */
-@DataType("p2p")
+@Suppress("MagicNumber")
+@DataType("p2p", 4)
 data class PathwaysToParisData(
     @field:JsonProperty(required = true)
     val general: P2pGeneral,

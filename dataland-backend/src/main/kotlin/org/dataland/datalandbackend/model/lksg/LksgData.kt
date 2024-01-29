@@ -11,7 +11,8 @@ import org.dataland.datalandbackend.model.lksg.categories.social.LksgSocial
  * --- API model ---
  * Fields of the lksg framework.
 */
-@DataType("lksg")
+@Suppress("MagicNumber")
+@DataType("lksg", 3)
 data class LksgData(
     @field:JsonProperty(required = true)
     val general: LksgGeneral,

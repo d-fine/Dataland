@@ -12,26 +12,33 @@ import java.math.BigDecimal
  * The data-model for the Waste section
  */
 data class SfdrEnvironmentalWaste(
-    @field:Valid()
     @field:DataPointMinimumValue(minimumValue = 0)
+    @field:Valid()
     val hazardousAndRadioactiveWasteInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
+    @field:Valid()
     val manufactureOfAgrochemicalPesticidesProducts: ExtendedDataPoint<YesNo?>? = null,
 
+    @field:Valid()
     val landDegradationDesertificationSoilSealingExposure: ExtendedDataPoint<YesNo?>? = null,
 
+    @field:Valid()
     val sustainableAgriculturePolicy: BaseDataPoint<YesNo>? = null,
 
+    @field:Valid()
     val sustainableOceansAndSeasPolicy: BaseDataPoint<YesNo>? = null,
 
-    @field:Valid()
     @field:DataPointMinimumValue(minimumValue = 0)
+    @field:Valid()
     val nonRecycledWasteInTonnes: ExtendedDataPoint<BigDecimal?>? = null,
 
+    @field:Valid()
     val threatenedSpeciesExposure: ExtendedDataPoint<YesNo?>? = null,
 
+    @field:Valid()
     val biodiversityProtectionPolicy: BaseDataPoint<YesNo>? = null,
 
+    @field:Valid()
     val deforestationPolicy: BaseDataPoint<YesNo>? = null,
 
 )

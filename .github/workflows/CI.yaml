@@ -299,6 +299,8 @@ jobs:
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           NOTIFICATION_RECEIVERS_BULK_DATA_REQUEST: "dummy.mail@dataland.com"
           NOTIFICATION_RECEIVERS_CC_BULK_DATA_REQUEST: "dummy.mail2@dataland.com"
+          NOTIFICATION_RECEIVERS_DATA_OWNERSHIP_REQUEST: "dummy.mail@dataland.com"
+          NOTIFICATION_RECEIVERS_CC_DATA_OWNERSHIP_REQUEST: "dummy.mail2@dataland.com"
           RABBITMQ_USER: "admin"
           RABBITMQ_PASS: "dataland"
           RABBITMQ_PASS_HASH: "1s3+3kZqRTAgidTV6NE+adO3ja5NFNQZHa9MBwhJ0Kx7Fw6F"

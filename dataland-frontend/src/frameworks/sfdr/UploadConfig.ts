@@ -204,7 +204,7 @@ export const sfdrDataModel = [
             label: "Carbon footprint",
             description: "Tonnes GHG emissions / EUR million enterprise value",
 
-            unit: "Tonnes / €MRevenue",
+            unit: "Tonnes / €M Revenue",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
@@ -214,7 +214,7 @@ export const sfdrDataModel = [
             label: "GHG intensity",
             description: "Tonnes of GHG emissions / EUR million revenue",
 
-            unit: "Tonnes / €MRevenue",
+            unit: "Tonnes / €M Revenue",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
@@ -498,7 +498,7 @@ export const sfdrDataModel = [
             label: "Relative Water Usage",
             description: "Average amount in cubic meters of fresh water used per million EUR revenue",
 
-            unit: "Cubic Meters / €MRevenue",
+            unit: "Cubic Meters / €M Revenue",
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,

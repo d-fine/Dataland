@@ -10,7 +10,8 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.social.SfdrSocial
 /**
  * The root data-model for the Sfdr Framework
  */
-@DataType("sfdr")
+@Suppress("MagicNumber")
+@DataType("sfdr", 5)
 data class SfdrData(
     @field:Valid()
     val general: SfdrGeneral,

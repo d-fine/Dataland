@@ -11,6 +11,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * A CurrencyComponent represents a numeric value with currency
@@ -45,8 +46,10 @@ class CurrencyComponent(
                     )
                 }\")",
                 setOf(
-                    "import { formatCurrencyForDisplay } from " +
-                        "\"@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory\";",
+                    TypeScriptImport(
+                        "formatCurrencyForDisplay",
+                        "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory",
+                    ),
                 ),
             ),
         )

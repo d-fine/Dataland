@@ -105,9 +105,8 @@ sonar {
             "dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/sfdr/SfdrDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
+                "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/," +
                 "EuTaxonomyForNonFinancialsDataModel.ts," +
                 "dataland-frontend/src/components/forms/parts/elements/derived/ActivityTree.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
@@ -154,7 +153,10 @@ sonar {
                 // backend
                 "dataland-backend/src/main/kotlin/," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
-                "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt,",
+                "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt," +
+                "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt," +
+                "dataland-frontend/src/components/generics/TheNewFooter.vue," +
+                "dataland-frontend/tests/e2e/fixtures/frameworks/sfdr/SfdrDataFixtures.ts",
         )
     }
 }

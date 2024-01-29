@@ -7,6 +7,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * A StringComponent represents an arbitrary textual value.
@@ -23,8 +24,10 @@ class StringComponent(
                 FrameworkDisplayValueLambda(
                     "formatStringForDatatable(${getTypescriptFieldAccessor(true)})",
                     setOf(
-                        "import { formatStringForDatatable } from " +
-                            "\"@/components/resources/dataTable/conversion/PlainStringValueGetterFactory\";",
+                        TypeScriptImport(
+                            "formatStringForDatatable",
+                            "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
+                        ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),

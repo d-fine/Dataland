@@ -34,6 +34,7 @@ dependencies {
     implementation(libs.jakarta.servlet.api)
     implementation(libs.bcpkix.jdk15on)
     implementation(libs.bcprov.jdk15on)
+    implementation(libs.mailjet.client)
 }
 
 tasks.bootJar {

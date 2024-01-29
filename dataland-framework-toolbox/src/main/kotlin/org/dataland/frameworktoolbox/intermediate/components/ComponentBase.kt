@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.TreeNode
 import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.TopLevelComponentGroup
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
@@ -125,12 +126,10 @@ open class ComponentBase(
      * generator
      */
     open fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        dataClassBuilder.addProperty(
+        dataClassBuilder.addPropertyWithDocumentSupport(
+            documentSupport,
             identifier,
-            documentSupport.getJvmTypeReference(
-                TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
-                isNullable,
-            ),
+            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
         )
     }
 

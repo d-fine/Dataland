@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -10,6 +11,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkU
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
 
@@ -40,12 +42,10 @@ open class SingleSelectComponent(
             options = options,
             comment = "Enum class for the single-select-field $identifier",
         )
-        dataClassBuilder.addProperty(
+        dataClassBuilder.addPropertyWithDocumentSupport(
+            documentSupport,
             identifier,
-            documentSupport.getJvmTypeReference(
-                enum.getTypeReference(isNullable),
-                isNullable,
-            ),
+            enum.getTypeReference(isNullable),
         )
     }
 
@@ -59,10 +59,14 @@ open class SingleSelectComponent(
                         generateReturnStatement() +
                         "}",
                     setOf(
-                        "import { formatStringForDatatable } from " +
-                            "\"@/components/resources/dataTable/conversion/PlainStringValueGetterFactory\";",
-                        "import { getOriginalNameFromTechnicalName } from " +
-                            "\"@/components/resources/dataTable/conversion/Utils\";",
+                        TypeScriptImport(
+                            "formatStringForDatatable",
+                            "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
+                        ),
+                        TypeScriptImport(
+                            "getOriginalNameFromTechnicalName",
+                            "@/components/resources/dataTable/conversion/Utils",
+                        ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
@@ -91,8 +95,8 @@ open class SingleSelectComponent(
                 nullable = isNullable,
             ),
             imports = setOf(
-                "import { pickOneElement } from \"@e2e/fixtures/FixtureUtils\";",
-                "import { $enumName } from \"@clients/backend\";",
+                TypeScriptImport("pickOneElement", "@e2e/fixtures/FixtureUtils"),
+                TypeScriptImport(enumName, "@clients/backend"),
             ),
         )
     }

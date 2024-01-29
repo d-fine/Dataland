@@ -4,6 +4,7 @@ import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -13,6 +14,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigB
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
 
@@ -34,12 +36,10 @@ open class MultiSelectComponent(
             options = options,
             comment = "Enum class for the multi-select-field $identifier",
         )
-        dataClassBuilder.addProperty(
+        dataClassBuilder.addPropertyWithDocumentSupport(
+            documentSupport,
             identifier,
-            documentSupport.getJvmTypeReference(
-                TypeReference(fullyQualifiedNameOfKotlinType, isNullable, listOf(enum.getTypeReference(false))),
-                isNullable,
-            ),
+            TypeReference(fullyQualifiedNameOfKotlinType, isNullable, listOf(enum.getTypeReference(false))),
         )
     }
 
@@ -53,10 +53,14 @@ open class MultiSelectComponent(
                         generateReturnStatement() +
                         "}",
                     setOf(
-                        "import { formatListOfStringsForDatatable } from " +
-                            "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
-                        "import { getOriginalNameFromTechnicalName } from " +
-                            "\"@/components/resources/dataTable/conversion/Utils\";",
+                        TypeScriptImport(
+                            "formatListOfStringsForDatatable",
+                            "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
+                        ),
+                        TypeScriptImport(
+                            "getOriginalNameFromTechnicalName",
+                            "@/components/resources/dataTable/conversion/Utils",
+                        ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
@@ -86,7 +90,10 @@ open class MultiSelectComponent(
                 nullable = isNullable,
             ),
             imports = setOf(
-                "import { pickSubsetOfElements } from \"@e2e/fixtures/FixtureUtils\";",
+                TypeScriptImport(
+                    "pickSubsetOfElements",
+                    "@e2e/fixtures/FixtureUtils",
+                ),
             ),
         )
     }

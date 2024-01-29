@@ -1,7 +1,0 @@
-version: "3.8"
-
-services:
-  csv-converter:
-    build: ./excel-to-csv
-    volumes:
-      - ./:/mount

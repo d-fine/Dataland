@@ -1,9 +1,9 @@
 package org.dataland.datalandcommunitymanager
 
-import org.dataland.datalandcommunitymanager.model.email.Email
-import org.dataland.datalandcommunitymanager.model.email.EmailContact
-import org.dataland.datalandcommunitymanager.model.email.EmailContent
-import org.dataland.datalandcommunitymanager.services.EmailSender
+import org.dataland.datalandemail.email.Email
+import org.dataland.datalandemail.email.EmailContact
+import org.dataland.datalandemail.email.EmailContent
+import org.dataland.datalandemail.email.EmailSender
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
@@ -18,6 +18,6 @@ class EmailSenderTest {
         val emailContact = EmailContact("dev.null@dataland.com")
         val email = Email(emailContact, listOf(emailContact), listOf(), EmailContent("", "", ""))
         val emailSender = EmailSender("https://notmailjet.dataland.com")
-        assertFalse(emailSender.sendEmail(email) {})
+        assertFalse(emailSender.sendEmail(email))
     }
 }

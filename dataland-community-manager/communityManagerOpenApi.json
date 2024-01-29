@@ -47,13 +47,14 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "esg-questionnaire",
-                  "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
                   "p2p",
-                  "sme"
+                  "sfdr",
+                  "sme",
+                  "esg-questionnaire",
+                  "heimathafen"
                 ]
               }
             }
@@ -466,13 +467,14 @@
             "items": {
               "type": "string",
               "enum": [
-                "esg-questionnaire",
-                "sfdr",
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
                 "lksg",
                 "p2p",
-                "sme"
+                "sfdr",
+                "sme",
+                "esg-questionnaire",
+                "heimathafen"
               ]
             }
           }
@@ -514,13 +516,14 @@
           "dataType": {
             "type": "string",
             "enum": [
-              "esg-questionnaire",
-              "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
               "p2p",
-              "sme"
+              "sfdr",
+              "sme",
+              "esg-questionnaire",
+              "heimathafen"
             ]
           },
           "dataRequestCompanyIdentifierType": {
@@ -568,13 +571,14 @@
           "dataType": {
             "type": "string",
             "enum": [
-              "esg-questionnaire",
-              "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
               "p2p",
-              "sme"
+              "sfdr",
+              "sme",
+              "esg-questionnaire",
+              "heimathafen"
             ]
           },
           "dataRequestCompanyIdentifierType": {

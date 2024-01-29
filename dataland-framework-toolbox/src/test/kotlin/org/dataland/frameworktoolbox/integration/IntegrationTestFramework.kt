@@ -21,4 +21,5 @@ class IntegrationTestFramework : PavedRoadFramework(
         FrameworkGenerationFeatures.ViewPage,
         FrameworkGenerationFeatures.FakeFixtures,
     ),
+    order = 0,
 )
