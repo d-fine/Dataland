@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
@@ -41,13 +42,10 @@ open class SingleSelectComponent(
             options = options,
             comment = "Enum class for the single-select-field $identifier",
         )
-        dataClassBuilder.addProperty(
+        dataClassBuilder.addPropertyWithDocumentSupport(
+            documentSupport,
             identifier,
-            documentSupport.getJvmTypeReference(
-                enum.getTypeReference(isNullable),
-                isNullable,
-            ),
-            documentSupport.getJvmAnnotations(),
+            enum.getTypeReference(isNullable),
         )
     }
 

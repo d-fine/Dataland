@@ -4,6 +4,7 @@ import org.apache.commons.text.StringEscapeUtils.escapeEcmaScript
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.support.SelectionOption
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -35,13 +36,10 @@ open class MultiSelectComponent(
             options = options,
             comment = "Enum class for the multi-select-field $identifier",
         )
-        dataClassBuilder.addProperty(
+        dataClassBuilder.addPropertyWithDocumentSupport(
+            documentSupport,
             identifier,
-            documentSupport.getJvmTypeReference(
-                TypeReference(fullyQualifiedNameOfKotlinType, isNullable, listOf(enum.getTypeReference(false))),
-                isNullable,
-            ),
-            documentSupport.getJvmAnnotations(),
+            TypeReference(fullyQualifiedNameOfKotlinType, isNullable, listOf(enum.getTypeReference(false))),
         )
     }
 

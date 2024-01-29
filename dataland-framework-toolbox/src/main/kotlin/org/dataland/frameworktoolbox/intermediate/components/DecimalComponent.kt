@@ -4,6 +4,7 @@ import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.addPropertyWithDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -22,13 +23,11 @@ open class DecimalComponent(
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val annotations = getMinMaxDatamodelAnnotations(minimumValue, maximumValue)
 
-        dataClassBuilder.addProperty(
+        dataClassBuilder.addPropertyWithDocumentSupport(
+            documentSupport,
             identifier,
-            documentSupport.getJvmTypeReference(
-                TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
-                isNullable,
-            ),
-            annotations + documentSupport.getJvmAnnotations(),
+            TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
+            annotations,
         )
     }
 

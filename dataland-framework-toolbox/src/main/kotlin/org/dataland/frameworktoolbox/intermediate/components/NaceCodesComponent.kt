@@ -2,6 +2,7 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -20,6 +21,7 @@ class NaceCodesComponent(
 ) : ComponentBase(identifier, parent, "String") {
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
             this.identifier,
             TypeReference(
@@ -51,6 +53,7 @@ class NaceCodesComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = "NaceCodeFormField",
