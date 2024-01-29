@@ -16,6 +16,7 @@ val jacocoVersion: String by project
 plugins {
     kotlin("jvm")
     jacoco
+    id("org.springframework.boot")
 }
 
 // apply(plugin = "io.spring.dependency-management")
