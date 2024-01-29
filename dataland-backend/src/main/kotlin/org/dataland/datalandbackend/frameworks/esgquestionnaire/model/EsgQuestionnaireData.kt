@@ -11,7 +11,8 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.unternehme
 /**
  * The root data-model for the Esg-questionnaire Framework
  */
-@DataType("esg-questionnaire")
+@Suppress("MagicNumber")
+@DataType("esg-questionnaire", 6)
 data class EsgQuestionnaireData(
     val general: EsgQuestionnaireGeneral? = null,
     val allgemein: EsgQuestionnaireAllgemein? = null,

@@ -19,6 +19,7 @@ class SfdrFramework : InDevelopmentPavedRoadFramework(
     label = "SFDR",
     explanation = "Sustainability Finance Disclosure Regulation",
     File("./dataland-framework-toolbox/data-dictionary/csv/dataDictionary-SFDR (developer version).csv"),
+    order = 5,
 ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
         return SfdrComponentGenerationUtils()

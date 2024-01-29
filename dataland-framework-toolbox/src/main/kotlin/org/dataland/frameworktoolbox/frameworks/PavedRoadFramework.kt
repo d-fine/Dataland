@@ -30,12 +30,14 @@ abstract class PavedRoadFramework(
     val label: String,
     val explanation: String,
     val frameworkTemplateCsvFile: File,
+    val order: Int,
     val enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
 ) {
     val framework = Framework(
         identifier = identifier,
         label = label,
         explanation = explanation,
+        order = order,
     )
 
     val logger by LoggerDelegate()

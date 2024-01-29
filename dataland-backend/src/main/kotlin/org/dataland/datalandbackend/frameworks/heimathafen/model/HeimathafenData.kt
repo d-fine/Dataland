@@ -10,7 +10,8 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.social.Heimatha
 /**
  * The root data-model for the Heimathafen Framework
  */
-@DataType("heimathafen")
+@Suppress("MagicNumber")
+@DataType("heimathafen", 7)
 data class HeimathafenData(
     val general: HeimathafenGeneral? = null,
     val environmental: HeimathafenEnvironmental? = null,

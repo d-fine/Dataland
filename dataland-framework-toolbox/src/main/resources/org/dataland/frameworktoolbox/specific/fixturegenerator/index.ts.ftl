@@ -13,10 +13,10 @@ function exportFixtures${frameworkBaseName}(): void {
     "../testing/data/CompanyInformationWith${frameworkBaseName}Data.json",
     JSON.stringify(companyInformationWith${frameworkBaseName}Data, null, "\t"),
   );
-  const preparedFixture${frameworkBaseName}DataForFinancials = generate${frameworkBaseName}PreparedFixtures();
+  const preparedFixture${frameworkBaseName}Data = generate${frameworkBaseName}PreparedFixtures();
   fs.writeFileSync(
     "../testing/data/CompanyInformationWith${frameworkBaseName}PreparedFixtures.json",
-    JSON.stringify(preparedFixture${frameworkBaseName}DataForFinancials, null, "\t"),
+    JSON.stringify(preparedFixture${frameworkBaseName}Data, null, "\t"),
   );
 }
 

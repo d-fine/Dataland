@@ -49,11 +49,11 @@
                 "enum": [
                   "esg-questionnaire",
                   "heimathafen",
+                  "sfdr",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "lksg",
                   "p2p",
-                  "sfdr",
                   "sme"
                 ]
               }
@@ -469,11 +469,11 @@
               "enum": [
                 "esg-questionnaire",
                 "heimathafen",
+                "sfdr",
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
                 "lksg",
                 "p2p",
-                "sfdr",
                 "sme"
               ]
             }
@@ -518,11 +518,11 @@
             "enum": [
               "esg-questionnaire",
               "heimathafen",
+              "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
               "p2p",
-              "sfdr",
               "sme"
             ]
           },
@@ -573,11 +573,11 @@
             "enum": [
               "esg-questionnaire",
               "heimathafen",
+              "sfdr",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "lksg",
               "p2p",
-              "sfdr",
               "sme"
             ]
           },
