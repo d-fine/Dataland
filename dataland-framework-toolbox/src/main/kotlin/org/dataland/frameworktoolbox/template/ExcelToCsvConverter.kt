@@ -19,24 +19,21 @@ class ExcelToCsvConverter(
      */
     fun convert() {
         val imageHash = buildConversionDockerContainerAndCaptureSha()
-        val csvContents = useDockerContainerToConvertXlsx(imageHash)
-        targetCsvFile.writeText(csvContents)
+        useDockerContainerToConvertXlsx(imageHash)
     }
 
-    private fun useDockerContainerToConvertXlsx(imageHash: String): String {
+    private fun useDockerContainerToConvertXlsx(imageHash: String) {
         logger.info("Converting XLSX file using docker container")
         val dockerProcess = ProcessBuilder(
             "docker", "run", "--rm", "-v", "${inputExcelFile.absoluteFile.canonicalPath}:/mount/excel.xlsx:ro",
             imageHash, "excel-$sheetName.csv",
         )
-            .redirectOutput(ProcessBuilder.Redirect.PIPE)
+            .redirectOutput(targetCsvFile)
             .redirectError(ProcessBuilder.Redirect.INHERIT)
             .start()
 
         dockerProcess.waitFor()
         require(dockerProcess.exitValue() == 0) { "Docker process should terminate successfully." }
-        val stdout = dockerProcess.inputStream.bufferedReader().readText()
-        return stdout
     }
 
     private fun buildConversionDockerContainerAndCaptureSha(): String {
