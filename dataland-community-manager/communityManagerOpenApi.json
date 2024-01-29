@@ -889,7 +889,7 @@
           "message": {
             "type": "string"
           },
-          "updateTimestamp": {
+          "lastModifiedDate": {
             "type": "integer",
             "format": "int64"
           }
