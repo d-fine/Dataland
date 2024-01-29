@@ -251,7 +251,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEURRevenue?.value,
-                  "Tonnes / \u20ACMRevenue",
+                  "Tonnes / \u20ACM Revenue",
                 ),
                 "Carbon footprint",
                 dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEURRevenue,
@@ -266,7 +266,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue?.value,
-                  "Tonnes / \u20ACMRevenue",
+                  "Tonnes / \u20ACM Revenue",
                 ),
                 "GHG intensity",
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue,
@@ -647,7 +647,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue?.value,
-                  "Cubic Meters / \u20ACMRevenue",
+                  "Cubic Meters / \u20ACM Revenue",
                 ),
                 "Relative Water Usage",
                 dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue,

@@ -19,8 +19,13 @@ set -euxo pipefail
 # false - Remove spaces --> No
 # -1 - Export all sheets
 
-echo "Starting csv-conversion"
+temporary_directory="$(mktemp -d)"
+
+echo "Starting CSV conversion to $temporary_directory" >&2
 libreoffice --headless \
   --convert-to csv:"Text - txt - csv (StarCalc)":44,34,UTF8,1,,1033,false,true,false,false,false,-1 \
-  --outdir "$2" \
-  "$1"
+  --outdir "$temporary_directory" \
+  "$1" >&2
+
+echo "Retrieving converted CSV" >&2
+cat "$temporary_directory/$2"

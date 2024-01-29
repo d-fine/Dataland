@@ -89,7 +89,7 @@ abstract class InDevelopmentPavedRoadFramework(
         val diagnostics = context.getBean<DiagnosticManager>()
 
         configureDiagnostics(diagnostics)
-        val excelTemplate = ExcelTemplate.fromCsv(frameworkTemplateCsvFile)
+        val excelTemplate = ExcelTemplate.fromFile(frameworkTemplateCsvFile)
         customizeExcelTemplate(excelTemplate)
 
         val frameworkIntermediateRepresentation = convertExcelTemplateToToHighLevelComponentRepresentation(
