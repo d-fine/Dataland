@@ -4006,7 +4006,7 @@
           }
         }
       },
-      "ExtendedDataPointLong": {
+      "ExtendedDataPointBigInteger": {
         "required": [
           "quality"
         ],
@@ -4014,7 +4014,6 @@
         "properties": {
           "value": {
             "type": "integer",
-            "format": "int64",
             "nullable": true
           },
           "quality": {
@@ -4088,13 +4087,6 @@
             "type": "string"
           }
         }
-      },
-      "FiscalYearDeviation": {
-        "type": "string",
-        "enum": [
-          "Deviation",
-          "NoDeviation"
-        ]
       },
       "QualityOptions": {
         "type": "string",
@@ -4873,7 +4865,7 @@
             "format": "date"
           },
           "fiscalYearDeviation": {
-            "$ref": "#/components/schemas/FiscalYearDeviation"
+            "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
           },
           "fiscalYearEnd": {
             "type": "string",
@@ -4901,6 +4893,13 @@
             ]
           }
         }
+      },
+      "SfdrGeneralGeneralFiscalYearDeviationOptions": {
+        "type": "string",
+        "enum": [
+          "Deviation",
+          "NoDeviation"
+        ]
       },
       "SfdrHighImpactClimateSectorEnergyConsumption": {
         "type": "object",
@@ -5185,7 +5184,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointLong"
+                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
               }
             ]
           },
@@ -5193,7 +5192,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointLong"
+                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
               }
             ]
           },
@@ -5267,7 +5266,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointLong"
+                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
               }
             ]
           }
@@ -5440,7 +5439,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointLong"
+                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
               }
             ]
           },
@@ -5448,7 +5447,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointLong"
+                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
               }
             ]
           },
@@ -5520,7 +5519,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointLong"
+                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
               }
             ]
           },
@@ -5528,7 +5527,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointLong"
+                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
               }
             ]
           },
@@ -10971,6 +10970,13 @@
           }
         }
       },
+      "FiscalYearDeviation": {
+        "type": "string",
+        "enum": [
+          "Deviation",
+          "NoDeviation"
+        ]
+      },
       "RelativeAndAbsoluteFinancialShare": {
         "type": "object",
         "properties": {
@@ -13344,15 +13350,15 @@
           "companyName": {
             "type": "string"
           },
+          "headquarters": {
+            "type": "string"
+          },
           "companyId": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
-          },
-          "headquarters": {
-            "type": "string"
           },
           "countryCode": {
             "type": "string"
@@ -13440,14 +13446,14 @@
       "DataTypeEnum": {
         "type": "string",
         "enum": [
-          "esg-questionnaire",
-          "heimathafen",
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "lksg",
           "p2p",
           "sfdr",
-          "sme"
+          "sme",
+          "esg-questionnaire",
+          "heimathafen"
         ]
       },
       "ErrorDetails": {
