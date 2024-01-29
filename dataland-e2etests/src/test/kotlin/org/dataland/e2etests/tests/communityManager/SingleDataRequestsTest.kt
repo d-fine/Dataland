@@ -58,7 +58,7 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `post single data request for invalid companyId and assert exception`() {
+    fun `post single data request for companyId with invalid format and assert exception`() {
         val invalidCompanyIdentifier = "a"
         val invalidSingleDataRequest = SingleDataRequest(
             companyIdentifier = invalidCompanyIdentifier,
@@ -77,6 +77,23 @@ class SingleDataRequestsTest {
                     "Dataland CompanyID.",
             ),
         )
+    }
+
+    @Test
+    fun `post single data request for a companyId which is unknown to Dataland and assert exception`() {
+        val unknownCompanyId = UUID.randomUUID().toString()
+        val singleDataRequest = SingleDataRequest(
+            companyIdentifier = unknownCompanyId,
+            frameworkName = SingleDataRequest.FrameworkName.lksg,
+            listOfReportingPeriods = listOf("2022"),
+        )
+        val clientException = assertThrows<ClientException> {
+            requestControllerApi.postSingleDataRequest(singleDataRequest)
+        }
+        assertEquals("Client error : 404 ", clientException.message)
+
+        val responseBody = (clientException.response as ClientError<*>).body as String
+        assertTrue(responseBody.contains("resource-not-found"))
     }
 
     @Test
@@ -124,8 +141,6 @@ class SingleDataRequestsTest {
         assertEquals(companyIdOfNewCompany, retrievedDataRequest.dataRequestCompanyIdentifierValue)
         assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
     }
-
-    // TODO test mit passendem Format der companyId, aber es gibt sie nicht => resource-not-found 404
 
     @Test
     fun `post a single data request and check if patching it changes its status accordingly`() {
@@ -222,6 +237,7 @@ class SingleDataRequestsTest {
         )
 
         allQueryResults.forEach { storedDataRequestsQueryResult ->
+            println(storedDataRequestsQueryResult.size) // TODO debugging
             assertTrue(storedDataRequestsQueryResult.isNotEmpty())
         }
 
