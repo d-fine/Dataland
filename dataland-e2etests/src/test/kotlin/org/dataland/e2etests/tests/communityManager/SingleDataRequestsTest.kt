@@ -209,8 +209,7 @@ class SingleDataRequestsTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         requestControllerApi.postSingleDataRequest(requestA)
 
-        val permIdSubstring = System.currentTimeMillis().toString()
-        val specificPermId = "123456789" + permIdSubstring + "987654321"
+        val specificPermId = System.currentTimeMillis().toString()
         val requestB = SingleDataRequest(
             companyIdentifier = specificPermId,
             frameworkName = SingleDataRequest.FrameworkName.sfdr,
@@ -227,7 +226,7 @@ class SingleDataRequestsTest {
         val reportingPeriod2021DataRequests = requestControllerApi.getDataRequests(reportingPeriod = "2021")
         val resolvedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.resolved)
         val specificPermIdDataRequests = requestControllerApi.getDataRequests(
-            dataRequestCompanyIdentifierValue = permIdSubstring,
+            dataRequestCompanyIdentifierValue = specificPermId,
         )
         val specificUsersDataRequests = requestControllerApi.getDataRequests(userId = UPLOADER_USER_ID)
 
@@ -237,7 +236,6 @@ class SingleDataRequestsTest {
         )
 
         allQueryResults.forEach { storedDataRequestsQueryResult ->
-            println(storedDataRequestsQueryResult.size) // TODO debugging
             assertTrue(storedDataRequestsQueryResult.isNotEmpty())
         }
 
@@ -245,7 +243,7 @@ class SingleDataRequestsTest {
         assertTrue(lksgDataRequests.all { it.dataType == StoredDataRequest.DataType.lksg })
         assertTrue(reportingPeriod2021DataRequests.all { it.reportingPeriod == "2021" })
         assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.resolved })
-        assertTrue(specificPermIdDataRequests.all { it.dataRequestCompanyIdentifierValue.contains(permIdSubstring) })
+        assertTrue(specificPermIdDataRequests.all { it.dataRequestCompanyIdentifierValue == specificPermId })
         assertTrue(specificUsersDataRequests.all { it.userId == UPLOADER_USER_ID })
     }
 
