@@ -7,6 +7,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * A YesNoComponent is either Yes or No or N/A.
@@ -23,8 +24,7 @@ class YesNoNaComponent(
                 FrameworkDisplayValueLambda(
                     "formatYesNoValueForDatatable(${getTypescriptFieldAccessor(true)})",
                     setOf(
-                        "import { formatYesNoValueForDatatable } from " +
-                            "\"@/components/resources/dataTable/conversion/YesNoValueGetterFactory\";",
+                        TypeScriptImport("formatYesNoValueForDatatable", "@/components/resources/dataTable/conversion/YesNoValueGetterFactory"),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),

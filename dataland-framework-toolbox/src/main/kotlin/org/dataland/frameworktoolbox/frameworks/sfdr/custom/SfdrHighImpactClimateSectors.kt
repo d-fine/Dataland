@@ -14,6 +14,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * Represents the SFDR-Specific "High Impact Climate Sectors" component
@@ -60,8 +61,7 @@ class SfdrHighImpactClimateSectors(
             FrameworkDisplayValueLambda(
                 "formatHighImpactClimateSectorForDisplay(${getTypescriptFieldAccessor(true)})",
                 setOf(
-                    "import { formatHighImpactClimateSectorForDisplay } from " +
-                        "\"@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory\";",
+                    TypeScriptImport("formatHighImpactClimateSectorForDisplay", "@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory"),
                 ),
             ),
         )

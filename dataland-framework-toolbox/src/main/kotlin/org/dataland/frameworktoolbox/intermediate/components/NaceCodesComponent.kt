@@ -9,6 +9,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * A NaceCodesComponent represents a list of strings that are expected to be NACE codes.
@@ -38,8 +39,7 @@ class NaceCodesComponent(
                         "'${StringEscapeUtils.escapeEcmaScript(label)}',\n" +
                         ")",
                     setOf(
-                        "import {formatNaceCodesForDatatable} from " +
-                            "\"@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory\";",
+                        TypeScriptImport("formatNaceCodesForDatatable", "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory"),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),

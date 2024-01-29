@@ -27,6 +27,6 @@
 import { type ${frameworkDataType} } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-<#list imports as import>${import}
+<#list imports as import>import {<#list import.members as member>${member}<#sep>, </#sep></#list>} from "${import.file}";
 </#list>
 export const ${viewConfigConstName}ViewConfiguration: MLDTConfig<${frameworkDataType}> = [<@mldtconfig viewConfig/>];

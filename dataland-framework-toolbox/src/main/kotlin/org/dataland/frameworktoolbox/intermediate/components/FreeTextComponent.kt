@@ -7,6 +7,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * A FreeTextComponent represents an arbitrary textual value that may contain multiple lines or even
@@ -24,8 +25,7 @@ class FreeTextComponent(
                 FrameworkDisplayValueLambda(
                     "formatFreeTextForDatatable(${getTypescriptFieldAccessor(true)})",
                     setOf(
-                        "import { formatFreeTextForDatatable } from " +
-                            "\"@/components/resources/dataTable/conversion/FreeTextValueGetterFactory\";",
+                        TypeScriptImport("formatFreeTextForDatatable", "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory"),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),

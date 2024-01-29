@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * Elements marked with SimpleDocumentSupport are converted to BaseDataPoints
@@ -28,9 +29,10 @@ data object SimpleDocumentSupport : DocumentSupport {
             "wrapDisplayValueWithDatapointInformation(${innerLambda.lambdaBody}," +
                 " \"${StringEscapeUtils.escapeEcmaScript(fieldLabel)}\"," +
                 " $dataPointAccessor)",
-            imports = innerLambda.imports +
-                "import { wrapDisplayValueWithDatapointInformation } " +
-                "from \"@/components/resources/dataTable/conversion/DataPoints\";",
+            imports = innerLambda.imports + TypeScriptImport(
+                "wrapDisplayValueWithDatapointInformation",
+                "@/components/resources/dataTable/conversion/DataPoints",
+            ),
         )
     }
 

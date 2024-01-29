@@ -22,6 +22,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptF
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.dataland.frameworktoolbox.utils.diagnostic.DiagnosticManager
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -197,11 +198,8 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
                         "'${escapeEcmaScript(component.label)}'" +
                         ")",
                     setOf(
-                        "import { activityApiNameToHumanizedName } from " +
-                            "\"@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames\";",
-                        "import { formatListOfStringsForDatatable } from " +
-                            "\"@/components/resources/dataTable/conversion/" +
-                            "MultiSelectValueGetterFactory\";",
+                        TypeScriptImport("activityApiNameToHumanizedName", "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames"),
+                        TypeScriptImport("formatListOfStringsForDatatable", "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory"),
                     ),
                 ),
             )

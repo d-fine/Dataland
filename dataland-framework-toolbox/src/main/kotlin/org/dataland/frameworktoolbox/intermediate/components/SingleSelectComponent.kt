@@ -10,6 +10,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkU
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
 
@@ -60,10 +61,8 @@ open class SingleSelectComponent(
                         generateReturnStatement() +
                         "}",
                     setOf(
-                        "import { formatStringForDatatable } from " +
-                            "\"@/components/resources/dataTable/conversion/PlainStringValueGetterFactory\";",
-                        "import { getOriginalNameFromTechnicalName } from " +
-                            "\"@/components/resources/dataTable/conversion/Utils\";",
+                        TypeScriptImport("formatStringForDatatable", "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory"),
+                        TypeScriptImport("getOriginalNameFromTechnicalName", "@/components/resources/dataTable/conversion/Utils"),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),

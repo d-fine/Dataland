@@ -13,6 +13,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigB
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForSelectOptionsMappingObject
 
@@ -54,10 +55,8 @@ open class MultiSelectComponent(
                         generateReturnStatement() +
                         "}",
                     setOf(
-                        "import { formatListOfStringsForDatatable } from " +
-                            "\"@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory\";",
-                        "import { getOriginalNameFromTechnicalName } from " +
-                            "\"@/components/resources/dataTable/conversion/Utils\";",
+                        TypeScriptImport("formatListOfStringsForDatatable", "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory"),
+                        TypeScriptImport("getOriginalNameFromTechnicalName", "@/components/resources/dataTable/conversion/Utils"),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),

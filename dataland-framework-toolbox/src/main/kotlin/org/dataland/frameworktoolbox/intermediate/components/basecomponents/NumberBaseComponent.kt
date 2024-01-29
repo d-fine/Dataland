@@ -12,6 +12,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.annotations.DataPointMin
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * The NumberBaseComponent serves as base-class for any number component (percentage, decimal, integer...) and
@@ -89,8 +90,7 @@ open class NumberBaseComponent(
                     "formatNumberForDatatable(${getTypescriptFieldAccessor(true)}," +
                         " \"${StringEscapeUtils.escapeEcmaScript(constantUnitSuffix ?: "")}\")",
                     setOf(
-                        "import { formatNumberForDatatable } from " +
-                            "\"@/components/resources/dataTable/conversion/NumberValueGetterFactory\";",
+                        TypeScriptImport("formatNumberForDatatable", "@/components/resources/dataTable/conversion/NumberValueGetterFactory"),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),

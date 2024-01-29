@@ -10,6 +10,7 @@ import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCatego
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * In-memory representation of a field that contains a list of base-data-points.
@@ -52,8 +53,10 @@ class ListOfStringBaseDataPointComponent(
                     ")\n" +
                     "}",
                 setOf(
-                    "import { formatListOfBaseDataPoint } from \"@/components/resources/dataTable/conversion/" +
-                        "esg-questionnaire/EsgQuestionnaireListOfBaseDataPointGetterFactory\";",
+                    TypeScriptImport(
+                        "formatListOfBaseDataPoint",
+                        "@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireListOfBaseDataPointGetterFactory",
+                    ),
                 ),
             ),
         )
