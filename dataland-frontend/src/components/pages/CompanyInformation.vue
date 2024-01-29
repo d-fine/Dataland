@@ -6,13 +6,17 @@
     </div>
     <div v-else-if="companyInformation && !waitingForData" class="company-details">
       <div class="company-details__headline">
-        <h1 class="left-element" data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
-
-        <span class="left-element" v-if="isUserDataOwner"> User is Verified and Data Owner - Todo TODO</span>
-        <span class="left-element" v-else> User Is NOT DATA OWNER</span>
-        <span class="right right-element">
+        <div class="left-elements">
+          <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}
+          </h1>
+          <div class="p-badge badge-light-green outline" v-if="isUserDataOwner">
+            <span class="material-icons-outlined">verified</span>
+            Verified Data Owner
+          </div>
+        </div>
+        <div>
           <ContextMenuButton :menu-items="contextMenuItems"/>
-        </span>
+        </div>
       </div>
       <div class="company-details__separator"/>
 
@@ -191,7 +195,8 @@ export default defineComponent({
   &__headline {
     display: flex;
     justify-content: space-between;
-    flex-direction: row
+    flex-direction: row;
+    align-items: center;
   }
 
   &__separator {
@@ -218,11 +223,9 @@ export default defineComponent({
   }
 }
 
-.left-element {
-  text-align: left;
+.left-elements {
+  display: flex;
+  align-items: center;
 }
 
-.right-element {
-  text-align: right;
-}
 </style>
