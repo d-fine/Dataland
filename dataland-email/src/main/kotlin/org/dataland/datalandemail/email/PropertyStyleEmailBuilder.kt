@@ -50,11 +50,11 @@ abstract class PropertyStyleEmailBuilder(
 
     private fun getEmailContactsFromStringList(propWithSemicolonSeperatedEmailAddresses: String?):
         List<EmailContact>? {
-            return propWithSemicolonSeperatedEmailAddresses?.split(";")?.map {
-                    emailAddressString ->
-                EmailContact(assertEmailAddressFormatAndReturnIt(emailAddressString))
-            }
+        return propWithSemicolonSeperatedEmailAddresses?.split(";")?.map {
+                emailAddressString ->
+            EmailContact(assertEmailAddressFormatAndReturnIt(emailAddressString))
         }
+    }
 
     protected fun buildPropertyStyleEmailContent(
         subject: String,

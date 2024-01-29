@@ -9,6 +9,7 @@ if curl -L https://local-dev.dataland.com/api/actuator/health/ping 2>/dev/null |
 fi
 
 echo "Clearing Docker..."
+docker compose --profile development down
 docker compose down --remove-orphans
 docker volume prune --force --all
 

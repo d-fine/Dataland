@@ -34,7 +34,8 @@ class DataRequestManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyGetter: CompanyGetter,
-    @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
+    @Autowired private val bulkDataRequestEmailBuilder: BulkDataRequestEmailBuilder,
+    @Autowired private val singleDataRequestEmailBuilder: SingleDataRequestEmailBuilder,
     @Autowired private val emailSender: EmailSender,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
@@ -204,7 +205,8 @@ class DataRequestManager(
                 dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue),
             ).toMutableList()
             updateResult(
-                dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue))
+                dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue),
+            )
         }
         return result.map { buildStoredDataRequestFromDataRequestEntity(it) }
     }
@@ -471,7 +473,7 @@ class DataRequestManager(
         acceptedCompanyIdentifiers: List<String>,
         bulkDataRequestId: String,
     ) {
-        val emailToSend = emailBuilder.buildBulkDataRequestEmail(
+        val emailToSend = bulkDataRequestEmailBuilder.buildBulkDataRequestEmail(
             bulkDataRequest,
             acceptedCompanyIdentifiers,
         )
@@ -511,6 +513,7 @@ class DataRequestManager(
 
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
+        throwExceptionIfNotJwtAuth()
         checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
         val listOfReportingPeriods = singleDataRequest.listOfReportingPeriods.distinct()
         val singleDataRequestId = UUID.randomUUID().toString()
@@ -540,6 +543,13 @@ class DataRequestManager(
                     ),
                 )
             }
+            emailSender.sendEmail(
+                singleDataRequestEmailBuilder.buildSingleDataRequestEmail(
+                    requesterEmail = (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).username,
+                    companyId = datalandCompanyId,
+                    singleDataRequest = singleDataRequest,
+                ),
+            )
         } else {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
