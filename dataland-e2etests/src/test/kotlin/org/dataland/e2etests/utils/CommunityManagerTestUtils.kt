@@ -10,7 +10,7 @@ import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdent
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
-import org.dataland.e2etests.tests.CommunityManagerTest
+import org.dataland.e2etests.tests.communityManager.BulkDataRequestsTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertThrows
@@ -27,17 +27,17 @@ fun retrieveTimeAndWaitOneMillisecond(): Long {
 fun findStoredDataRequestDataTypeForFramework(
     framework: BulkDataRequest.ListOfFrameworkNames,
 ): StoredDataRequest.DataType {
-    return StoredDataRequest.DataType.values().find { dataType -> dataType.value == framework.value }!!
+    return StoredDataRequest.DataType.entries.find { dataType -> dataType.value == framework.value }!!
 }
 fun findAggregatedDataRequestDataTypeForFramework(
     framework: BulkDataRequest.ListOfFrameworkNames,
 ): AggregatedDataRequest.DataType {
-    return AggregatedDataRequest.DataType.values().find { dataType -> dataType.value == framework.value }!!
+    return AggregatedDataRequest.DataType.entries.find { dataType -> dataType.value == framework.value }!!
 }
 fun findRequestControllerApiDataTypeForFramework(
     framework: BulkDataRequest.ListOfFrameworkNames,
 ): RequestControllerApi.DataTypesGetAggregatedDataRequests {
-    return RequestControllerApi.DataTypesGetAggregatedDataRequests.values().find { dataType ->
+    return RequestControllerApi.DataTypesGetAggregatedDataRequests.entries.find { dataType ->
         dataType.value == framework.value
     }!!
 }
@@ -162,7 +162,11 @@ fun checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
     )
 }
 
-private fun causeAndAssertClientException(
+private fun check400ClientExceptionErrorMessage(clientException: ClientException) {
+    assertEquals("Client error : 400 ", clientException.message)
+}
+
+fun causeClientExceptionByBulkDataRequest(
     listOfIdentifiers: List<String>,
     listOfFrameworks: List<BulkDataRequest.ListOfFrameworkNames>,
     listOfReportingPeriods: List<String>,
@@ -174,7 +178,6 @@ private fun causeAndAssertClientException(
             ),
         )
     }
-    assertEquals("Client error : 400 ", clientException.message)
     return clientException
 }
 
@@ -207,14 +210,17 @@ fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
     listOfFrameworks: List<BulkDataRequest.ListOfFrameworkNames>,
     listOfReportingPeriods: List<String>,
 ) {
-    val logger = LoggerFactory.getLogger(CommunityManagerTest::class.java)
+    val logger = LoggerFactory.getLogger(BulkDataRequestsTest::class.java)
     if (listOfIdentifiers.isNotEmpty() && listOfFrameworks.isNotEmpty() && listOfReportingPeriods.isNotEmpty()) {
         logger.info(
             "None of the input lists is empty although a function to assert the error message due to their" +
                 "emptiness is called.",
         )
     } else {
-        val clientException = causeAndAssertClientException(listOfIdentifiers, listOfFrameworks, listOfReportingPeriods)
+        val clientException = causeClientExceptionByBulkDataRequest(
+            listOfIdentifiers, listOfFrameworks, listOfReportingPeriods,
+        )
+        check400ClientExceptionErrorMessage(clientException)
         val responseBody = (clientException.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("No empty lists are allowed as input for bulk data request."))
         assertTrue(
@@ -225,12 +231,8 @@ fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
     }
 }
 
-fun sendBulkRequestWithInvalidIdentifiersOnlyAndCheckErrorMessage(
-    listOfIdentifiers: List<String>,
-    listOfFrameworks: List<BulkDataRequest.ListOfFrameworkNames>,
-    listOfReportingPeriods: List<String>,
-) {
-    val clientException = causeAndAssertClientException(listOfIdentifiers, listOfFrameworks, listOfReportingPeriods)
+fun checkErrorMessageForInvalidIdentifiers(clientException: ClientException) {
+    check400ClientExceptionErrorMessage(clientException)
     val responseBody = (clientException.response as ClientError<*>).body as String
     assertTrue(responseBody.contains("All provided company identifiers have an invalid format."))
     assertTrue(

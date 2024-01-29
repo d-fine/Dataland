@@ -1,18 +1,15 @@
-package org.dataland.e2etests.tests
+package org.dataland.e2etests.tests.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
-import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdentifierType
-import org.dataland.communitymanager.openApiClient.model.RequestStatus
-import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.assertStatusForDataRequestId
+import org.dataland.e2etests.utils.causeClientExceptionByBulkDataRequest
+import org.dataland.e2etests.utils.checkErrorMessageForInvalidIdentifiers
 import org.dataland.e2etests.utils.checkThatAllIdentifiersWereAccepted
 import org.dataland.e2etests.utils.checkThatMessageIsAsExpected
 import org.dataland.e2etests.utils.checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce
@@ -26,21 +23,15 @@ import org.dataland.e2etests.utils.generateRandomIsin
 import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
 import org.dataland.e2etests.utils.iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount
-import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatus
 import org.dataland.e2etests.utils.retrieveTimeAndWaitOneMillisecond
 import org.dataland.e2etests.utils.sendBulkRequestWithEmptyInputAndCheckErrorMessage
-import org.dataland.e2etests.utils.sendBulkRequestWithInvalidIdentifiersOnlyAndCheckErrorMessage
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.assertThrows
-import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CommunityManagerTest {
+class BulkDataRequestsTest {
 
     private val apiAccessor = ApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
@@ -61,9 +52,7 @@ class CommunityManagerTest {
     }
 
     @BeforeAll
-    fun authenticateAsReader() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-    }
+    fun authenticateAsReader() { jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader) }
 
     @Test
     fun `post bulk data request for all frameworks and different valid identifiers and check stored requests`() {
@@ -246,7 +235,8 @@ class CommunityManagerTest {
         val invalidIdentifiers = listOf(
             generateRandomLei() + "F", generateRandomIsin() + "F", generateRandomPermId() + "F",
         )
-        sendBulkRequestWithInvalidIdentifiersOnlyAndCheckErrorMessage(invalidIdentifiers, frameworks, reportingPeriods)
+        val clientException = causeClientExceptionByBulkDataRequest(invalidIdentifiers, frameworks, reportingPeriods)
+        checkErrorMessageForInvalidIdentifiers(clientException)
     }
 
     private fun authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
@@ -274,7 +264,7 @@ class CommunityManagerTest {
             ).toMutableMap()
         val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
         val reportingPeriods = listOf("2022", "2023")
-        TechnicalUser.values().forEach {
+        TechnicalUser.entries.forEach {
             authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
                 it, identifierMap.values.toList(), frameworks, reportingPeriods,
             )
@@ -282,7 +272,7 @@ class CommunityManagerTest {
         identifierMap[DataRequestCompanyIdentifierType.datalandCompanyId] = companyId
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests()
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
-            aggregatedDataRequests, frameworks, reportingPeriods, identifierMap, TechnicalUser.values().size.toLong(),
+            aggregatedDataRequests, frameworks, reportingPeriods, identifierMap, TechnicalUser.entries.size.toLong(),
         )
     }
 
@@ -402,107 +392,4 @@ class CommunityManagerTest {
             aggregatedDataRequestsForEmptyString, frameworks, reportingPeriods, identifierMap, 1,
         )
     }
-
-    @Test
-    fun `post single data request and check if retrieval of stored requests via their IDs works as expected`() {
-        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            frameworkName = SingleDataRequest.FrameworkName.lksg,
-            listOfReportingPeriods = listOf("2022", "2023"),
-            contactList = listOf("someContact@webserver.de", "simpleString"),
-            message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
-        )
-        val allStoredDataRequests = requestControllerApi.postSingleDataRequest(singleDataRequest)
-        assertEquals(singleDataRequest.listOfReportingPeriods.size, allStoredDataRequests.size)
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        for (storedDataRequest in allStoredDataRequests) {
-            val retrievedDataRequest = requestControllerApi.getDataRequestById(
-                UUID.fromString(storedDataRequest.dataRequestId),
-            )
-            assertEquals(storedDataRequest, retrievedDataRequest)
-        }
-    }
-
-    @Test
-    fun `post single data request for invalid companyId and assert exception`() {
-        val invalidCompanyIdentifier = "a"
-        val invalidSingleDataRequest = SingleDataRequest(
-            companyIdentifier = invalidCompanyIdentifier,
-            frameworkName = SingleDataRequest.FrameworkName.lksg,
-            listOfReportingPeriods = listOf("2022"),
-        )
-        val clientException = assertThrows<ClientException> {
-            requestControllerApi.postSingleDataRequest(invalidSingleDataRequest)
-        }
-
-        val responseBody = (clientException.response as ClientError<*>).body as String
-        println(responseBody)
-
-        assertEquals("Client error : 400 ", clientException.message)
-        assertTrue(
-            responseBody.contains(
-                "The company identifiers you provided do not match the patterns of a valid " +
-                    "LEI, ISIN, PermId or Dataland CompanyID",
-            ),
-        )
-    }
-
-    @Test
-    fun `post a single data request and check if patching it changes its status accordingly`() {
-        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            frameworkName = SingleDataRequest.FrameworkName.lksg,
-            listOfReportingPeriods = listOf("2022"),
-        )
-        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
-        assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-
-        assertStatusForDataRequestId(storedDataRequestId, RequestStatus.open)
-
-        patchDataRequestAndAssertNewStatus(storedDataRequestId, RequestStatus.resolved)
-
-        patchDataRequestAndAssertNewStatus(storedDataRequestId, RequestStatus.open)
-    }
-
-    @Test
-    fun `patch a non existing dataRequestId and assert exception`() {
-        val nonExistinDataRequestId = UUID.randomUUID()
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequest(nonExistinDataRequestId, RequestStatus.resolved)
-        }
-        val responseBody = (clientException.response as ClientError<*>).body as String
-
-        assertEquals("Client error : 404 ", clientException.message)
-        assertTrue(responseBody.contains("Dataland does not know the Data request ID $nonExistinDataRequestId"))
-    }
-
-    @Test
-    fun `patch data request as an uploader and assert that it is forbidden`() {
-        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            frameworkName = SingleDataRequest.FrameworkName.lksg,
-            listOfReportingPeriods = listOf("2022"),
-        )
-        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
-        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
-        assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-
-        val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequest(storedDataRequestId, RequestStatus.resolved)
-        }
-        assertEquals("Client error : 403 ", clientException.message)
-    }
-
-    // TODO test last get endpoint
 }

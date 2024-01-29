@@ -387,9 +387,9 @@ class DataRequestManager(
         return datalandCompanyId
     }
 
-    private fun storeDataRequestEntity(dataRequestEntity: DataRequestEntity, bulkDataRequestId: String? = null) {
+    private fun storeDataRequestEntity(dataRequestEntity: DataRequestEntity, dataRequestId: String? = null) {
         dataRequestRepository.save(dataRequestEntity)
-        dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId, bulkDataRequestId)
+        dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId, dataRequestId)
     }
 
     private fun buildDataRequestEntity(
