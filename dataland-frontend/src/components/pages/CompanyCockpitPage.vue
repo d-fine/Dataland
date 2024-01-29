@@ -9,6 +9,7 @@
 
         <ClaimOwnershipPanel v-if="!isUserDataOwner" :company-name="companyName" @toggle-dialog="toggleDialog"/>
         <ClaimOwnershipDialog v-if="!isUserDataOwner" :dialog-is-open="dialogIsOpen" :company-name="companyName"
+                              :company-id="companyId"
                               @toggle-dialog="toggleDialog"/>
         <FrameworkSummaryPanel
             v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"

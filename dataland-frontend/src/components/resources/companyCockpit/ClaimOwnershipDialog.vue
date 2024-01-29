@@ -8,7 +8,6 @@
       class="col-6"
       v-model:visible="dialogIsVisible"
   >
-
     <template #header>
       <h2 v-if="!claimIsSubmitted" class="m-0">Claim dataset ownership for your company.</h2>
       <h2 v-else class="m-0">Thank you for claiming data ownership for {{ companyName }}.</h2>
@@ -23,7 +22,6 @@
                name="claimOwnershipMessage"
                placeholder="Write your message."
                class="w-full p-inputtext "
-
       />
     </div>
     <div v-else>
@@ -44,12 +42,21 @@
   </PrimeDialog>
 </template>
 
-<script>
+<script lang="ts">
 import PrimeDialog from "primevue/dialog";
 import PrimeButton from "primevue/button";
+import {ApiClientProvider} from "@/services/ApiClients";
+import {assertDefined} from "@/utils/TypeScriptUtils";
+import {inject} from "vue";
+import type Keycloak from "keycloak-js";
 
 export default {
   name: "ClaimOwnershipDialog",
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   components: {
     PrimeDialog,
     PrimeButton
@@ -71,13 +78,27 @@ export default {
     companyName: {
       type: String,
       required: true
+    },
+    companyId: {
+      type: String,
+      required: true
     }
   },
   emits: ["toggleDialog"],
   methods: {
-    submitInput() {
-      // here has to happen interaction with the api
-      this.claimIsSubmitted = true;
+    async submitInput() {
+      console.log("starting submit");
+      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
+          .backendClients.companyDataController;
+      console.log(this.claimOwnershipMessage ? this.claimOwnershipMessage : undefined);
+      try {
+        const axiosResponse = (await companyDataControllerApi.postDataOwnershipRequest(this.companyId, this.claimOwnershipMessage ? this.claimOwnershipMessage : undefined));
+        if (axiosResponse.status == 200) {
+          this.claimIsSubmitted = true;
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
   watch: {
