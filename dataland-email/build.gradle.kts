@@ -15,7 +15,6 @@ val jacocoVersion: String by project
 
 plugins {
     kotlin("jvm")
-    kotlin("plugin.spring")
     jacoco
     id("com.gorylenko.gradle-git-properties")
     id("org.springframework.boot")
