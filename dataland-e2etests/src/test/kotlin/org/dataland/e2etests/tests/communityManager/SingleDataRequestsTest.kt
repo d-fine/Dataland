@@ -97,7 +97,7 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `post a single data request with a valid dataland-company-ID and assure that it is stored as expected`() {
+    fun `post a single data request with a valid Dataland companyId and assure that it is stored as expected`() {
         val companyIdOfNewCompany =
             apiAccessor.uploadOneCompanyWithIdentifiers(permId = generateRandomPermId())!!.actualStoredCompany.companyId
         val singleDataRequest = SingleDataRequest(
@@ -120,7 +120,7 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `post a single data request with a PermId that matches a Dataland-company and assert the correct matching`() {
+    fun `post a single data request with a PermId that matches a Dataland company and assert the correct matching`() {
         val validPermId = System.currentTimeMillis().toString()
         val companyIdOfNewCompany =
             apiAccessor.uploadOneCompanyWithIdentifiers(permId = validPermId)!!.actualStoredCompany.companyId
