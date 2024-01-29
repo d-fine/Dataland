@@ -64,7 +64,7 @@
                   </div>
 
                   <div
-                    v-if="acceptedCompanyIdentifiers.length"
+                    v-if="submittingSucceded && acceptedCompanyIdentifiers.length"
                     class="summary-section py-5"
                     data-test="acceptedIdentifiers"
                   >
@@ -80,7 +80,7 @@
                   </div>
 
                   <div
-                    v-if="rejectedCompanyIdentifiers.length"
+                    v-if="submittingSucceded && rejectedCompanyIdentifiers.length"
                     class="summary-section py-5"
                     data-test="rejectedIdentifiers"
                   >
@@ -90,6 +90,19 @@
                     </h6>
                     <p class="summary-section-data m-0 mt-3" data-test="identifiersList">
                       <template v-for="identifier in rejectedCompanyIdentifiers" :key="identifier">
+                        <div class="identifier mb-2">{{ identifier }}</div>
+                      </template>
+                    </p>
+                  </div>
+
+                  <div
+                    v-if="!submittingSucceded"
+                    class="summary-section py-5"
+                    data-test="selectedIdentifiersUnsuccessfulSubmit"
+                  >
+                    <h6 class="summary-section-heading m-0" data-test="identifiersHeading">SELECTED IDENTIFIERS</h6>
+                    <p class="summary-section-data m-0 mt-3" data-test="identifiersList">
+                      <template v-for="identifier in identifiers" :key="identifier">
                         <div class="identifier mb-2">{{ identifier }}</div>
                       </template>
                     </p>

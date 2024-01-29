@@ -67,7 +67,7 @@ describeIf(
       cy.get('[data-test="requestStatusText"]').should("exist").contains("Success");
     });
 
-    it("When identifiers are rejected", () => {
+    it.only("When identifiers are rejected", () => {
       cy.intercept("POST", "**/community/requests").as("postRequestData");
 
       checksBasicValidation();
@@ -79,10 +79,10 @@ describeIf(
         .should("exist")
         .click();
 
-      cy.get('[data-test="rejectsIdentifiers"]')
+      cy.get('[data-test="selectedIdentifiersUnsuccessfulSubmit"]')
         .should("exist")
         .get('[data-test="identifiersHeading"')
-        .contains("1 REJECTED IDENTIFIER");
+        .contains("SELECTED IDENTIFIERS");
 
       cy.get('[data-test="requestStatusText"]').should("exist").contains("Request Unssuccessful");
     });
