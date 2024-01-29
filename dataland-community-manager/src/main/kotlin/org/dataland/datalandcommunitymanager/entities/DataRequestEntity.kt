@@ -32,7 +32,7 @@ data class DataRequestEntity(
 
     val dataRequestCompanyIdentifierValue: String,
 
-    @Column(columnDefinition = "varchar(4000)")
+    @Column(columnDefinition = "text")
     var messageHistory: String?,
 
     val lastModifiedDate: Long,
