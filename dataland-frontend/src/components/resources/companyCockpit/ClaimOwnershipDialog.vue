@@ -87,10 +87,8 @@ export default {
   emits: ["toggleDialog"],
   methods: {
     async submitInput() {
-      console.log("starting submit");
       const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
           .backendClients.companyDataController;
-      console.log(this.claimOwnershipMessage ? this.claimOwnershipMessage : undefined);
       try {
         const axiosResponse = (await companyDataControllerApi.postDataOwnershipRequest(this.companyId, this.claimOwnershipMessage ? this.claimOwnershipMessage : undefined));
         if (axiosResponse.status == 200) {
@@ -102,7 +100,7 @@ export default {
     },
   },
   watch: {
-    dialogIsOpen(newValue) {
+    dialogIsOpen(newValue: boolean) {
       this.dialogIsVisible = newValue;
     }
   }

@@ -10,7 +10,7 @@
           <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}
           </h1>
           <div class="p-badge badge-light-green outline" v-if="isUserDataOwner">
-            <span class="material-icons-outlined">verified</span>
+            <span class="material-icons-outlined fs-sm">verified</span>
             Verified Data Owner
           </div>
         </div>
@@ -159,10 +159,9 @@ export default defineComponent({
      * Get the Information about Data-ownership
      */
     async getDataOwnerInformation() {
-
-      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-          .backendClients.companyDataController;
       try {
+        const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
+            .backendClients.companyDataController;
         const axiosResponse = (await companyDataControllerApi.isUserDataOwnerForCompany(
                 this.companyId, assertDefined(await this.userId))
         );
@@ -226,6 +225,11 @@ export default defineComponent({
 .left-elements {
   display: flex;
   align-items: center;
+}
+
+.fs-sm {
+  font-size: $fs-sm;
+  margin-right: 0.25rem;
 }
 
 </style>
