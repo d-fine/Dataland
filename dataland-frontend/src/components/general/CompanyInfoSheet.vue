@@ -77,9 +77,6 @@ function onFetchedDataOwnerInformation(isUserDataOwner: boolean): void {
   emit("fetchedDataOwnerInformation", isUserDataOwner);
 }
 
-function onClaimDataOwnership(): void {
-  emit("claimDataOwnership");
-}
 
 const sheetRect = ref<DOMRect>();
 const attachedSheetHeight = ref<number>();

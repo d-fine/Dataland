@@ -45,6 +45,7 @@ import type Keycloak from "keycloak-js";
 import {assertDefined} from "@/utils/TypeScriptUtils";
 import {getUserId} from "@/utils/KeycloakUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
+import {AxiosError} from "axios";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -112,11 +113,8 @@ export default defineComponent({
   watch: {
     companyId() {
       void this.getCompanyInformation();
-      this.$emit('fetchedDataOwnerInformation', this.isUserDataOwner);
     },
-    isUserDataOwner(newValue) {
-      this.$emit('fetchedDataOwnerInformation', newValue);
-    }
+
 
   },
   methods: {
@@ -133,7 +131,7 @@ export default defineComponent({
           this.companyInformation = (await companyDataControllerApi.getCompanyInfo(this.companyId)).data;
           this.waitingForData = false;
           this.$emit("fetchedCompanyInformation", this.companyInformation);
-          this.$emit('fetchedDataOwnerInformation', this.isUserDataOwner);
+
         }
       } catch (error) {
         console.error(error);
@@ -157,13 +155,24 @@ export default defineComponent({
      * Get the Information about Data-ownership
      */
     async getDataOwnerInformation() {
+
       const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
           .backendClients.companyDataController;
-      const axiosResponse = (await companyDataControllerApi.isUserDataOwnerForCompany(
-              this.companyId, assertDefined(await this.userId))
-      );
-      axiosResponse ? this.isUserDataOwner = true : this.isUserDataOwner = false;
-
+      try {
+        const axiosResponse = (await companyDataControllerApi.isUserDataOwnerForCompany(
+                this.companyId, assertDefined(await this.userId))
+        );
+        if (axiosResponse.status == 200) {
+          this.isUserDataOwner = true;
+        }
+      } catch (error: AxiosError) {
+        if (assertDefined((error as AxiosError).response).status == 404) {
+          this.isUserDataOwner = false;
+        } else {
+          console.error(error);
+        }
+      }
+      this.$emit('fetchedDataOwnerInformation', this.isUserDataOwner);
     }
   },
 });
