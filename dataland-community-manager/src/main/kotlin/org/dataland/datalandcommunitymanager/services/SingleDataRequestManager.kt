@@ -40,8 +40,7 @@ class SingleDataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
-        val listOfReportingPeriods = singleDataRequest.listOfReportingPeriods.distinct()
-        val singleDataRequestId = UUID.randomUUID().toString()
+        val dataRequestId = UUID.randomUUID().toString()
         val userId = DatalandAuthentication.fromContext().userId
         lateinit var identifierTypeToStore: DataRequestCompanyIdentifierType
         lateinit var identifierValueToStore: String
@@ -65,22 +64,9 @@ class SingleDataRequestManager(
                 throwInvalidInputApiExceptionBecauseIdentifierWasRejected()
             }
         }
-        for (reportingPeriod in listOfReportingPeriods) {
-            storedDataRequests.add(
-                utils.buildStoredDataRequestFromDataRequestEntity(
-                    utils.storeDataRequestEntityIfNotExisting(
-                        identifierValueToStore,
-                        identifierTypeToStore,
-                        singleDataRequest.frameworkName,
-                        reportingPeriod,
-                        userId,
-                        singleDataRequestId,
-                        singleDataRequest.contactList,
-                        singleDataRequest.message,
-                    ),
-                ),
-            )
-        }
+        storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
+            storedDataRequests, singleDataRequest, identifierValueToStore, identifierTypeToStore, userId, dataRequestId,
+        )
         return storedDataRequests
     }
 
@@ -105,6 +91,32 @@ class SingleDataRequestManager(
             summary,
             message,
         )
+    }
+
+    private fun storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
+        storedDataRequests: MutableList<StoredDataRequest>,
+        singleDataRequest: SingleDataRequest,
+        identifierValueToStore: String,
+        identifierTypeToStore: DataRequestCompanyIdentifierType,
+        userId: String,
+        dataRequestId: String,
+    ) {
+        for (reportingPeriod in singleDataRequest.listOfReportingPeriods.distinct()) {
+            storedDataRequests.add(
+                utils.buildStoredDataRequestFromDataRequestEntity(
+                    utils.storeDataRequestEntityIfNotExisting(
+                        identifierValueToStore,
+                        identifierTypeToStore,
+                        singleDataRequest.frameworkName,
+                        reportingPeriod,
+                        userId,
+                        dataRequestId,
+                        singleDataRequest.contactList,
+                        singleDataRequest.message,
+                    ),
+                ),
+            )
+        }
     }
 
     /**
