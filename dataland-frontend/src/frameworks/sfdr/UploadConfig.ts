@@ -1,5 +1,4 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
-import { SfdrData } from "@clients/backend";
 
 export const sfdrDataModel = [
   {
