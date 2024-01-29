@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
 import java.util.UUID
 
 /**
@@ -130,5 +131,27 @@ interface DataOwnerApi {
     fun isUserDataOwnerForCompany(
         @PathVariable("companyId") companyId: UUID,
         @PathVariable("userId") userId: UUID,
+    )
+
+    /**
+     * A method to request data ownership on a specified company for the current user
+     * @param companyId the ID of the company for which data ownership is requested
+     */
+    @Operation(
+        summary = "Request data ownership for a company.",
+        description = "Request data ownership for one of the existing company on Dataland.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully requested data ownership."),
+        ],
+    )
+    @PostMapping(
+        value = ["/{companyId}/data-ownership-request"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun postDataOwnershipRequest(
+        @PathVariable("companyId") companyId: UUID,
+        @RequestParam comment: String? = null,
     )
 }

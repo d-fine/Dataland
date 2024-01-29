@@ -1,4 +1,4 @@
-// dataland-backend-utils
+// dataland-email
 
 val sonarSources by extra(sourceSets.asMap.values.flatMap { sourceSet -> sourceSet.allSource })
 val jacocoSources by extra(sonarSources)
@@ -14,26 +14,18 @@ val jacocoClasses by extra(
 val jacocoVersion: String by project
 
 plugins {
-    id("java-library")
     kotlin("jvm")
-    kotlin("plugin.spring")
     jacoco
-    id("com.gorylenko.gradle-git-properties")
     id("org.springframework.boot")
-    id("org.jetbrains.kotlin.plugin.jpa")
 }
 
 // apply(plugin = "io.spring.dependency-management")
 
 dependencies {
-    implementation(libs.springdoc.openapi.ui)
-    implementation(libs.okhttp)
     implementation(libs.slf4j.api)
-    implementation(libs.spring.security.crypto)
     implementation(libs.spring.security.web)
-    implementation(libs.jakarta.servlet.api)
-    implementation(libs.bcpkix.jdk15on)
-    implementation(libs.bcprov.jdk15on)
+    implementation(project(":dataland-backend-utils"))
+    implementation(project(":dataland-keycloak-adapter"))
     implementation(libs.mailjet.client)
 }
 
@@ -43,8 +35,4 @@ tasks.bootJar {
 
 jacoco {
     toolVersion = jacocoVersion
-}
-
-gitProperties {
-    keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }

@@ -925,6 +925,68 @@
         ]
       }
     },
+    "/companies/{companyId}/data-ownership-request": {
+      "post": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Request data ownership for a company.",
+        "description": "Request data ownership for one of the existing company on Dataland.",
+        "operationId": "postDataOwnershipRequest",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "comment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully requested data ownership."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies/{companyId}/data-owners/{userId}": {
       "post": {
         "tags": [
@@ -3944,7 +4006,7 @@
           }
         }
       },
-      "ExtendedDataPointBigInteger": {
+      "ExtendedDataPointLong": {
         "required": [
           "quality"
         ],
@@ -3952,6 +4014,7 @@
         "properties": {
           "value": {
             "type": "integer",
+            "format": "int64",
             "nullable": true
           },
           "quality": {
@@ -4025,6 +4088,13 @@
             "type": "string"
           }
         }
+      },
+      "FiscalYearDeviation": {
+        "type": "string",
+        "enum": [
+          "Deviation",
+          "NoDeviation"
+        ]
       },
       "QualityOptions": {
         "type": "string",
@@ -4803,7 +4873,7 @@
             "format": "date"
           },
           "fiscalYearDeviation": {
-            "$ref": "#/components/schemas/SfdrGeneralGeneralFiscalYearDeviationOptions"
+            "$ref": "#/components/schemas/FiscalYearDeviation"
           },
           "fiscalYearEnd": {
             "type": "string",
@@ -4831,13 +4901,6 @@
             ]
           }
         }
-      },
-      "SfdrGeneralGeneralFiscalYearDeviationOptions": {
-        "type": "string",
-        "enum": [
-          "Deviation",
-          "NoDeviation"
-        ]
       },
       "SfdrHighImpactClimateSectorEnergyConsumption": {
         "type": "object",
@@ -5122,7 +5185,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
+                "$ref": "#/components/schemas/ExtendedDataPointLong"
               }
             ]
           },
@@ -5130,7 +5193,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
+                "$ref": "#/components/schemas/ExtendedDataPointLong"
               }
             ]
           },
@@ -5204,7 +5267,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
+                "$ref": "#/components/schemas/ExtendedDataPointLong"
               }
             ]
           }
@@ -5377,7 +5440,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
+                "$ref": "#/components/schemas/ExtendedDataPointLong"
               }
             ]
           },
@@ -5385,7 +5448,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
+                "$ref": "#/components/schemas/ExtendedDataPointLong"
               }
             ]
           },
@@ -5457,7 +5520,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
+                "$ref": "#/components/schemas/ExtendedDataPointLong"
               }
             ]
           },
@@ -5465,7 +5528,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigInteger"
+                "$ref": "#/components/schemas/ExtendedDataPointLong"
               }
             ]
           },
@@ -10908,13 +10971,6 @@
           }
         }
       },
-      "FiscalYearDeviation": {
-        "type": "string",
-        "enum": [
-          "Deviation",
-          "NoDeviation"
-        ]
-      },
       "RelativeAndAbsoluteFinancialShare": {
         "type": "object",
         "properties": {
@@ -13291,12 +13347,12 @@
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
+          },
+          "headquarters": {
+            "type": "string"
           },
           "countryCode": {
             "type": "string"
@@ -13384,14 +13440,14 @@
       "DataTypeEnum": {
         "type": "string",
         "enum": [
+          "esg-questionnaire",
+          "heimathafen",
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
           "lksg",
           "p2p",
           "sfdr",
-          "sme",
-          "esg-questionnaire",
-          "heimathafen"
+          "sme"
         ]
       },
       "ErrorDetails": {
