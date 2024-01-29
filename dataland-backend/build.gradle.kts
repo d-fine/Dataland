@@ -28,6 +28,7 @@ plugins {
 
 dependencies {
     implementation(project(":dataland-backend-utils"))
+    implementation(project(":dataland-email"))
     implementation(libs.jackson.module.kotlin)
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)
