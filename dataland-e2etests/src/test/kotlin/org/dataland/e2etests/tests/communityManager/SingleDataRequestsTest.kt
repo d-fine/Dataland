@@ -58,7 +58,7 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `post single data request for invalid companyId and assert exception`() {
+    fun `post single data request for companyId with invalid format and assert exception`() {
         val invalidCompanyIdentifier = "a"
         val invalidSingleDataRequest = SingleDataRequest(
             companyIdentifier = invalidCompanyIdentifier,
@@ -80,7 +80,24 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `post a single data request with a valid dataland-company-ID and assure that it is stored as expected`() {
+    fun `post single data request for a companyId which is unknown to Dataland and assert exception`() {
+        val unknownCompanyId = UUID.randomUUID().toString()
+        val singleDataRequest = SingleDataRequest(
+            companyIdentifier = unknownCompanyId,
+            frameworkName = SingleDataRequest.FrameworkName.lksg,
+            listOfReportingPeriods = listOf("2022"),
+        )
+        val clientException = assertThrows<ClientException> {
+            requestControllerApi.postSingleDataRequest(singleDataRequest)
+        }
+        assertEquals("Client error : 404 ", clientException.message)
+
+        val responseBody = (clientException.response as ClientError<*>).body as String
+        assertTrue(responseBody.contains("resource-not-found"))
+    }
+
+    @Test
+    fun `post a single data request with a valid Dataland companyId and assure that it is stored as expected`() {
         val companyIdOfNewCompany =
             apiAccessor.uploadOneCompanyWithIdentifiers(permId = generateRandomPermId())!!.actualStoredCompany.companyId
         val singleDataRequest = SingleDataRequest(
@@ -103,7 +120,7 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `post a single data request with a PermId that matches a Dataland-company and assert the correct matching`() {
+    fun `post a single data request with a PermId that matches a Dataland company and assert the correct matching`() {
         val validPermId = System.currentTimeMillis().toString()
         val companyIdOfNewCompany =
             apiAccessor.uploadOneCompanyWithIdentifiers(permId = validPermId)!!.actualStoredCompany.companyId
@@ -124,8 +141,6 @@ class SingleDataRequestsTest {
         assertEquals(companyIdOfNewCompany, retrievedDataRequest.dataRequestCompanyIdentifierValue)
         assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
     }
-
-    // TODO test mit passendem Format der companyId, aber es gibt sie nicht => resource-not-found 404
 
     @Test
     fun `post a single data request and check if patching it changes its status accordingly`() {
@@ -184,8 +199,7 @@ class SingleDataRequestsTest {
         assertEquals("Client error : 403 ", clientException.message)
     }
 
-    @Test
-    fun `query data requests with various filters and assert that the expected results are being retrieved`() {
+    private fun postDataRequestsBeforeQueryTest(): List<SingleDataRequest> {
         val requestA = SingleDataRequest(
             companyIdentifier = generateRandomIsin(),
             frameworkName = SingleDataRequest.FrameworkName.lksg,
@@ -194,8 +208,7 @@ class SingleDataRequestsTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         requestControllerApi.postSingleDataRequest(requestA)
 
-        val permIdSubstring = System.currentTimeMillis().toString()
-        val specificPermId = "123456789" + permIdSubstring + "987654321"
+        val specificPermId = System.currentTimeMillis().toString()
         val requestB = SingleDataRequest(
             companyIdentifier = specificPermId,
             frameworkName = SingleDataRequest.FrameworkName.sfdr,
@@ -205,6 +218,14 @@ class SingleDataRequestsTest {
         val req2 = requestControllerApi.postSingleDataRequest(requestB).first()
         requestControllerApi.patchDataRequest(UUID.fromString(req2.dataRequestId), RequestStatus.resolved)
 
+        return listOf(requestA, requestB)
+    }
+
+    @Test
+    fun `query data requests with various filters and assert that the expected results are being retrieved`() {
+        val singleDataRequests = postDataRequestsBeforeQueryTest()
+        val permIdOfRequestB = singleDataRequests[1].companyIdentifier
+
         val allDataRequests = requestControllerApi.getDataRequests()
         val lksgDataRequests = requestControllerApi.getDataRequests(
             dataType = RequestControllerApi.DataTypeGetDataRequests.lksg,
@@ -212,7 +233,7 @@ class SingleDataRequestsTest {
         val reportingPeriod2021DataRequests = requestControllerApi.getDataRequests(reportingPeriod = "2021")
         val resolvedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.resolved)
         val specificPermIdDataRequests = requestControllerApi.getDataRequests(
-            dataRequestCompanyIdentifierValue = permIdSubstring,
+            dataRequestCompanyIdentifierValue = permIdOfRequestB,
         )
         val specificUsersDataRequests = requestControllerApi.getDataRequests(userId = UPLOADER_USER_ID)
 
@@ -229,7 +250,7 @@ class SingleDataRequestsTest {
         assertTrue(lksgDataRequests.all { it.dataType == StoredDataRequest.DataType.lksg })
         assertTrue(reportingPeriod2021DataRequests.all { it.reportingPeriod == "2021" })
         assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.resolved })
-        assertTrue(specificPermIdDataRequests.all { it.dataRequestCompanyIdentifierValue.contains(permIdSubstring) })
+        assertTrue(specificPermIdDataRequests.all { it.dataRequestCompanyIdentifierValue == permIdOfRequestB })
         assertTrue(specificUsersDataRequests.all { it.userId == UPLOADER_USER_ID })
     }
 
