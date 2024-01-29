@@ -14,7 +14,6 @@ val jacocoClasses by extra(
 val jacocoVersion: String by project
 
 plugins {
-    id("java-library")
     kotlin("jvm")
     kotlin("plugin.spring")
     jacoco
