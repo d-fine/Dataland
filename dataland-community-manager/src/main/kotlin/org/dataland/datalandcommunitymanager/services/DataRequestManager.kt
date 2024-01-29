@@ -323,6 +323,7 @@ class DataRequestManager(
         return isAlreadyExisting
     }
 
+    @Suppress("LongParameterList")
     private fun storeDataRequestEntityIfNotExisting(
         identifierValue: String,
         identifierType: DataRequestCompanyIdentifierType,
@@ -393,6 +394,7 @@ class DataRequestManager(
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId, dataRequestId)
     }
 
+    @Suppress("LongParameterList")
     private fun buildDataRequestEntity(
         currentUserId: String,
         framework: DataTypeEnum,
