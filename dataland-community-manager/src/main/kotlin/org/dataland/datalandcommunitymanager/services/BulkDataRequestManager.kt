@@ -45,7 +45,6 @@ class BulkDataRequestManager(
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
         val cleanedBulkDataRequest = runValidationsAndRemoveDuplicates(bulkDataRequest)
         val bulkDataRequestId = UUID.randomUUID().toString()
-        val userId = DatalandAuthentication.fromContext().userId
         dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId)
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
@@ -61,8 +60,6 @@ class BulkDataRequestManager(
                 matchedIdentifierType,
                 cleanedBulkDataRequest.listOfFrameworkNames,
                 cleanedBulkDataRequest.listOfReportingPeriods,
-                userId,
-                bulkDataRequestId,
             )
         }
         if (acceptedIdentifiers.isNotEmpty()) {
@@ -200,8 +197,6 @@ class BulkDataRequestManager(
         matchedIdentifierType: DataRequestCompanyIdentifierType,
         requestedFrameworks: List<DataTypeEnum>,
         requestedReportingPeriods: List<String>,
-        userId: String,
-        bulkDataRequestId: String,
     ) {
         val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
         val identifierTypeToStore = datalandCompanyId?.let {
@@ -215,8 +210,6 @@ class BulkDataRequestManager(
                     identifierTypeToStore,
                     framework,
                     reportingPeriod,
-                    userId,
-                    bulkDataRequestId,
                 )
             }
         }

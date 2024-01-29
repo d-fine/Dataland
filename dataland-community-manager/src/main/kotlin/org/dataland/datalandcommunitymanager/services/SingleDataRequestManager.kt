@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 /**
  * Implementation of a request manager service for all operations concerning the processing of single data requests
@@ -40,8 +39,6 @@ class SingleDataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
-        val dataRequestId = UUID.randomUUID().toString()
-        val userId = DatalandAuthentication.fromContext().userId
         lateinit var identifierTypeToStore: DataRequestCompanyIdentifierType
         lateinit var identifierValueToStore: String
         val storedDataRequests = mutableListOf<StoredDataRequest>()
@@ -65,7 +62,7 @@ class SingleDataRequestManager(
             }
         }
         storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
-            storedDataRequests, singleDataRequest, identifierValueToStore, identifierTypeToStore, userId, dataRequestId,
+            storedDataRequests, singleDataRequest, identifierValueToStore, identifierTypeToStore,
         )
         return storedDataRequests
     }
@@ -98,8 +95,6 @@ class SingleDataRequestManager(
         singleDataRequest: SingleDataRequest,
         identifierValueToStore: String,
         identifierTypeToStore: DataRequestCompanyIdentifierType,
-        userId: String,
-        dataRequestId: String,
     ) {
         for (reportingPeriod in singleDataRequest.listOfReportingPeriods.distinct()) {
             storedDataRequests.add(
@@ -109,8 +104,6 @@ class SingleDataRequestManager(
                         identifierTypeToStore,
                         singleDataRequest.frameworkName,
                         reportingPeriod,
-                        userId,
-                        dataRequestId,
                         singleDataRequest.contactList,
                         singleDataRequest.message,
                     ),

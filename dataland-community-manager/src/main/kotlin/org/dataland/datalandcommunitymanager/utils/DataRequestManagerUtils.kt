@@ -107,24 +107,18 @@ class DataRequestManagerUtils(
      * @param identifierType the type of the company identifier
      * @param dataType the enum entry corresponding to the framework
      * @param reportingPeriod the reporting period
-     * @param userId the ID of the user
-     * @param dataRequestId the ID of the potentially stored data request
      * @param contactList a list of email addresses to inform about the potentially stored data request
      * @param message a message to equip the notification with
      */
-    @Suppress("LongParameterList")
     fun storeDataRequestEntityIfNotExisting(
         identifierValue: String,
         identifierType: DataRequestCompanyIdentifierType,
         dataType: DataTypeEnum,
         reportingPeriod: String,
-        userId: String,
-        dataRequestId: String,
         contactList: List<String>? = null,
         message: String? = null,
     ): DataRequestEntity {
         val dataRequestEntity = buildDataRequestEntity(
-            userId,
             dataType,
             reportingPeriod,
             identifierType,
@@ -132,15 +126,13 @@ class DataRequestManagerUtils(
             contactList,
             message,
         )
-        if (!isDataRequestAlreadyExisting(userId, identifierValue, dataType, reportingPeriod)) {
-            storeDataRequestEntity(dataRequestEntity, dataRequestId)
+        if (!isDataRequestAlreadyExisting(identifierValue, dataType, reportingPeriod)) {
+            storeDataRequestEntity(dataRequestEntity)
         }
         return dataRequestEntity
     }
 
-    @Suppress("LongParameterList")
     private fun buildDataRequestEntity(
-        currentUserId: String,
         framework: DataTypeEnum,
         reportingPeriod: String,
         identifierType: DataRequestCompanyIdentifierType,
@@ -148,8 +140,9 @@ class DataRequestManagerUtils(
         contactList: List<String>?,
         message: String?,
     ): DataRequestEntity {
-        val currentTimestamp = Instant.now().toEpochMilli()
         val dataRequestId = UUID.randomUUID().toString()
+        val currentUserId = DatalandAuthentication.fromContext().userId
+        val currentTimestamp = Instant.now().toEpochMilli()
         val messageHistory = if (contactList != null || message != null) {
             mutableListOf(StoredDataRequestMessageObject(contactList, message, currentTimestamp))
         } else {
@@ -170,11 +163,11 @@ class DataRequestManagerUtils(
     }
 
     private fun isDataRequestAlreadyExisting(
-        requestingUserId: String,
         identifierValue: String,
         framework: DataTypeEnum,
         reportingPeriod: String,
     ): Boolean {
+        val requestingUserId = DatalandAuthentication.fromContext().userId
         val isAlreadyExisting = dataRequestRepository
             .existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
                 requestingUserId, identifierValue, framework.name, reportingPeriod,
@@ -186,8 +179,8 @@ class DataRequestManagerUtils(
         return isAlreadyExisting
     }
 
-    private fun storeDataRequestEntity(dataRequestEntity: DataRequestEntity, dataRequestId: String? = null) {
+    private fun storeDataRequestEntity(dataRequestEntity: DataRequestEntity) {
         dataRequestRepository.save(dataRequestEntity)
-        dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId, dataRequestId)
+        dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId)
     }
 }

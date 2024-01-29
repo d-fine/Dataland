@@ -90,12 +90,8 @@ class DataRequestLogger {
     /**
      * Logs an appropriate message when a data request has been stored in the database.
      */
-    fun logMessageForStoringDataRequest(dataRequestId: String, bulkDataRequestId: String? = null) {
-        var logMessage = "Stored data request with dataRequestId $dataRequestId "
-        if (bulkDataRequestId != null) {
-            logMessage += "while processing a bulk data request with bulkDataRequestId: $bulkDataRequestId"
-        }
-        bulkDataRequestLogger.info(logMessage)
+    fun logMessageForStoringDataRequest(dataRequestId: String) {
+        bulkDataRequestLogger.info("Stored data request with dataRequestId $dataRequestId")
     }
 
     /**
