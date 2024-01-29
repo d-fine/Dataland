@@ -20,7 +20,6 @@ plugins {
     jacoco
     id("com.gorylenko.gradle-git-properties")
     id("org.springframework.boot")
-    id("org.jetbrains.kotlin.plugin.jpa")
 }
 
 // apply(plugin = "io.spring.dependency-management")
