@@ -1,10 +1,9 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackendutils.email.BaseEmailBuilder
-import org.dataland.datalandbackendutils.email.Email
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
+import org.dataland.datalandemail.email.BaseEmailBuilder
+import org.dataland.datalandemail.email.Email
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
@@ -36,11 +35,6 @@ class BulkDataRequestEmailBuilder(
     semicolonSeparatedReceiverEmails = semicolonSeparatedReceiverEmails,
     semicolonSeparatedCcEmails = semicolonSeparatedCcEmails,
 ) {
-    private fun buildUserInfo(): String {
-        val user = DatalandAuthentication.fromContext() as DatalandJwtAuthentication
-        return "User ${user.username} (Keycloak id: ${user.userId})"
-    }
-
     /**
      * Function that generates the email to be sent
      */
@@ -48,20 +42,15 @@ class BulkDataRequestEmailBuilder(
         bulkDataRequest: BulkDataRequest,
         acceptedCompanyIdentifiers: List<String>,
     ): Email {
-        return Email(
-            senderEmailContact,
-            receiverEmailContacts,
-            ccEmailContacts,
-            buildPropertyStyleEmailContent(
-                "Dataland Bulk Data Request",
-                "A bulk data request has been submitted",
-                "Bulk Data Request",
-                mapOf(
-                    "Environment" to proxyPrimaryUrl,
-                    "User" to buildUserInfo(),
-                    "Requested Frameworks" to bulkDataRequest.listOfFrameworkNames.joinToString(", "),
-                    "Accepted Company Identifiers" to acceptedCompanyIdentifiers.joinToString(", "),
-                ),
+        return buildPropertyStyleEmail(
+            "Dataland Bulk Data Request",
+            "A bulk data request has been submitted",
+            "Bulk Data Request",
+            mapOf(
+                "Environment" to proxyPrimaryUrl,
+                "User" to buildUserInfo(DatalandAuthentication.fromContext()),
+                "Requested Frameworks" to bulkDataRequest.listOfFrameworkNames.joinToString(", "),
+                "Accepted Company Identifiers" to acceptedCompanyIdentifiers.joinToString(", "),
             ),
         )
     }

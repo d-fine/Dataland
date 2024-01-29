@@ -14,7 +14,7 @@
         />
       </AuthorizationWrapper>
     </TheContent>
-    <TheFooter />
+    <TheFooter :is-light-version="true" :sections="footerContent" />
   </AuthenticationWrapper>
 </template>
 
@@ -31,7 +31,9 @@ import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEuTaxonom
 import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
 
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
-import TheFooter from "@/components/generics/TheFooter.vue";
+import TheFooter from "@/components/generics/TheNewFooter.vue";
+import contentData from "@/assets/content.json";
+import type { Content, Page } from "@/types/ContentTypes";
 import BackButton from "@/components/general/BackButton.vue";
 import AuthorizationWrapper from "@/components/wrapper/AuthorizationWrapper.vue";
 import { redirectToMyDatasets } from "@/components/resources/uploadDataset/DatasetCreationRedirect";
@@ -39,6 +41,7 @@ import { KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import { defineComponent } from "vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import MarginWrapper from "@/components/wrapper/MarginWrapper.vue";
+import CreateHeimathafenDataset from "@/components/forms/CreateHeimathafenDataset.vue";
 
 export default defineComponent({
   name: "UploadFormWrapper",
@@ -53,8 +56,12 @@ export default defineComponent({
     BackButton,
   },
   data() {
+    const content: Content = contentData;
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerContent = footerPage?.sections;
     return {
       KEYCLOAK_ROLE_UPLOADER,
+      footerContent,
     };
   },
   props: {
@@ -75,6 +82,8 @@ export default defineComponent({
           return CreateP2pDataset;
         case `${DataTypeEnum.Sfdr}`:
           return CreateSfdrDataset;
+        case `${DataTypeEnum.Heimathafen}`:
+          return CreateHeimathafenDataset;
         case `${DataTypeEnum.EsgQuestionnaire}`:
           return CreateEsgQuestionnaireDataset;
         default:

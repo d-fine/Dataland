@@ -1,6 +1,11 @@
 <template>
   <template v-if="isLandingPage">
-    <div class="header__authsection">
+    <div v-if="isUserLoggedIn == true" data-test="backToPlatformLink">
+      <a class="fw-semi-bold vertical-middle cursor-pointer" @click="backToPlatform"
+        >BACK TO PLATFORM <i class="material-icons pl-1" aria-hidden="true" alt="arrow_forward">arrow_forward</i></a
+      >
+    </div>
+    <div v-if="isUserLoggedIn == false" class="header__authsection">
       <a aria-label="Login to account" class="header__authsection-login" @click="login"> Login </a>
       <ButtonComponent label="Sign Up" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" />
     </div>
@@ -26,13 +31,16 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
+import { inject, onMounted, ref } from "vue";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { loginAndRedirectToSearchPage, registerAndRedirectToSearchPage } from "@/utils/KeycloakUtils";
 import type Keycloak from "keycloak-js";
 import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
+const isUserLoggedIn = ref<undefined | boolean>(undefined);
 const { isLandingPage } = defineProps<{
   isLandingPage: boolean;
 }>();
@@ -48,6 +56,21 @@ const login = (): void => {
     })
     .catch((error) => console.log(error));
 };
+
+/**
+ * Sends the user to back to the platform
+ */
+const backToPlatform = (): void => {
+  void router.push({ path: "/companies" });
+};
+
+onMounted(() => {
+  assertDefined(getKeycloakPromise)()
+    .then((keycloak) => {
+      isUserLoggedIn.value = keycloak.authenticated;
+    })
+    .catch((error) => console.log(error));
+});
 
 /**
  * Sends the user to the keycloak register page (if not authenticated already)

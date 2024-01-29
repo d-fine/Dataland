@@ -23,17 +23,19 @@
       </div>
     </div>
   </TheContent>
-  <TheFooter/>
+  <TheFooter :is-light-version="true" :sections="footerContent"/>
 </template>
 
 <script lang="ts">
 import {defineComponent, inject} from "vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import TheFooter from "@/components/generics/TheFooter.vue";
 import {type AggregatedFrameworkDataSummary, CompanyInformation, type DataTypeEnum} from "@clients/backend";
 import {ApiClientProvider} from "@/services/ApiClients";
 import {assertDefined} from "@/utils/TypeScriptUtils";
+import TheFooter from "@/components/generics/TheNewFooter.vue";
+import contentData from "@/assets/content.json";
+import type {Content, Page} from "@/types/ContentTypes";
 import type Keycloak from "keycloak-js";
 import FrameworkSummaryPanel from "@/components/resources/companyCockpit/FrameworkSummaryPanel.vue";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
@@ -86,6 +88,9 @@ export default defineComponent({
     },
   },
   data() {
+    const content: Content = contentData;
+    const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
+    const footerContent = footerPage?.sections;
     return {
       aggregatedFrameworkDataSummary: undefined as
           | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
@@ -94,6 +99,7 @@ export default defineComponent({
       companyName: "wait",
       dialogIsOpen: false,
       isUserDataOwner: false,
+      footerContent,
     };
   },
   mounted() {

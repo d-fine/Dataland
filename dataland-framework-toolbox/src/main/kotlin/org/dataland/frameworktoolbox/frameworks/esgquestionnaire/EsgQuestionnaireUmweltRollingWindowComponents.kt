@@ -11,7 +11,8 @@ import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 
 /**
- * This object contains implementations for the rolling window components in the umwelt category of the GDV framework
+ * This object contains implementations for the rolling window components in the umwelt category of the ESG
+ * Questionnaire framework
  */
 object EsgQuestionnaireUmweltRollingWindowComponents {
 

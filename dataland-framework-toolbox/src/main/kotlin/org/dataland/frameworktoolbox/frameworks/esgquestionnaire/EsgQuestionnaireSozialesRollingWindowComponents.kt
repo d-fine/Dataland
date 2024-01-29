@@ -1,7 +1,7 @@
 package org.dataland.frameworktoolbox.frameworks.esgquestionnaire
 
 import org.dataland.frameworktoolbox.frameworks.esgquestionnaire.custom
-    .EsgQuestionnaireYearlyDecimalTimeseriesDataComponent
+.EsgQuestionnaireYearlyDecimalTimeseriesDataComponent
 import org.dataland.frameworktoolbox.intermediate.components.YesNoComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.create
@@ -11,7 +11,8 @@ import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 
 /**
- * This object contains implementations for the rolling window components in the soziales category of the GDV framework
+ * This object contains implementations for the rolling window components in the soziales category of the ESG
+ * Questionnaire framework
  */
 object EsgQuestionnaireSozialesRollingWindowComponents {
     /**
@@ -29,7 +30,7 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
             ) {
                 label = "Auswirkungen auf Anteil befrister Verträge und Fluktuation"
                 explanation = "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die" +
-                    " letzten drei Jahre an."
+                        " letzten drei Jahre an."
                 decimalRows = mutableListOf(
                     EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "anzahlDerBefristetenVertraege",
@@ -59,7 +60,7 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
             ) {
                 label = "Budget für Schulung/Ausbildung"
                 explanation = "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für " +
-                    "Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde."
+                        "Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde."
                 decimalRows = mutableListOf(
                     EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "budgetProMitarbeiter",
@@ -83,7 +84,7 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
             ) {
                 label = "Unfallrate"
                 explanation = "Wie hoch war die Häufigkeitsrate von Arbeitsunfällen mit Zeitverlust für die letzten " +
-                    "drei Jahre?"
+                        "drei Jahre?"
                 decimalRows = mutableListOf(
                     EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust",
@@ -110,8 +111,8 @@ object EsgQuestionnaireSozialesRollingWindowComponents {
             ) {
                 label = "Überwachung der Einkommensungleichheit"
                 explanation = "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das " +
-                    "Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für" +
-                    " die letzten drei Jahre an."
+                        "Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für" +
+                        " die letzten drei Jahre an."
                 decimalRows = mutableListOf(
                     EsgQuestionnaireYearlyDecimalTimeseriesDataComponent.TimeseriesRow(
                         "unbereinigtesGeschlechtsspezifischesLohngefaelle",

@@ -1,9 +1,8 @@
 package org.dataland.datalandbackend.services
 
-import org.dataland.datalandbackendutils.email.BaseEmailBuilder
-import org.dataland.datalandbackendutils.email.Email
+import org.dataland.datalandemail.email.BaseEmailBuilder
+import org.dataland.datalandemail.email.Email
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
@@ -23,36 +22,25 @@ class DataOwnershipRequestEmailBuilder(
     semicolonSeparatedReceiverEmails = semicolonSeparatedReceiverEmails,
     semicolonSeparatedCcEmails = semicolonSeparatedCcEmails,
 ) {
-    private fun buildUserInfo(
-        userAuthentication: DatalandAuthentication,
-    ): String {
-        return if (userAuthentication is DatalandJwtAuthentication) {
-            "User ${userAuthentication.username} (Keycloak id: ${userAuthentication.userId})"
-        } else {
-            "User (Keycloak id: ${userAuthentication.userId})"
-        }
-    }
-
     /**
      * Function that generates an email for a data ownership request
      */
     fun buildDataOwnershipRequest(
         companyId: String,
+        companyName: String,
         userAuthentication: DatalandAuthentication,
+        comment: String?,
     ): Email {
-        return Email(
-            senderEmailContact,
-            receiverEmailContacts,
-            ccEmailContacts,
-            buildPropertyStyleEmailContent(
-                "Dataland Data Ownership Request",
-                "A data ownership request has been submitted",
-                "Data Ownership Request",
-                mapOf(
-                    "Environment" to proxyPrimaryUrl,
-                    "User" to buildUserInfo(userAuthentication),
-                    "Company (Dataland ID)" to companyId,
-                ),
+        return buildPropertyStyleEmail(
+            "Dataland Data Ownership Request",
+            "A data ownership request has been submitted",
+            "Data Ownership Request",
+            mapOf(
+                "Environment" to proxyPrimaryUrl,
+                "User" to buildUserInfo(userAuthentication),
+                "Company (Dataland ID)" to companyId,
+                "Company Name" to companyName,
+                "Comment" to comment,
             ),
         )
     }
