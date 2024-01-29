@@ -1,7 +1,5 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
-import org.dataland.datalandbackend.annotations.DataType
-
 /**
  * --- API model ---
  * Fields of the questionnaire for the EuTaxonomyForNonFinancials framework

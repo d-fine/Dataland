@@ -14,7 +14,5 @@ class EuTaxonomyNonFinancialsFramework : InDevelopmentPavedRoadFramework(
     explanation = "Das Eu Taxonomy Non-Financials Framework",
     File("./dataland-framework-toolbox/inputs/euTaxonomyNonFinancials/EutaxonomyNonFinancials.xlsx",
     ),
-    order=1,
-) {
-
-}
+    order = 2,
+)
