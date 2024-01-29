@@ -9,9 +9,10 @@ import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.assertStatusForDataRequestId
-import org.dataland.e2etests.utils.checkErrorMessageForInvalidIdentifiers
+import org.dataland.e2etests.utils.check400ClientExceptionErrorMessage
 import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatus
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
@@ -22,6 +23,9 @@ class SingleDataRequestsTest {
 
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
+
+    @BeforeAll
+    fun authenticateAsReader() { jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader) }
 
     @Test
     fun `post single data request and check if retrieval of stored requests via their IDs works as expected`() {
@@ -56,7 +60,15 @@ class SingleDataRequestsTest {
         val clientException = assertThrows<ClientException> {
             requestControllerApi.postSingleDataRequest(invalidSingleDataRequest)
         }
-        checkErrorMessageForInvalidIdentifiers(clientException)
+        check400ClientExceptionErrorMessage(clientException)
+        val responseBody = (clientException.response as ClientError<*>).body as String
+        Assertions.assertTrue(responseBody.contains("The provided company identifier has an invalid format."))
+        Assertions.assertTrue(
+            responseBody.contains(
+                "The company identifier you provided does not match the patterns of a valid LEI, ISIN, PermId or " +
+                        "Dataland CompanyID.",
+            ),
+        )
     }
 
     @Test

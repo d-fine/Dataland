@@ -493,7 +493,7 @@ class DataRequestManager(
 
     private fun throwInvalidInputApiExceptionBecauseIdentifierRejected() {
         val summary = "The provided company identifier has an invalid format."
-        val message = "The company identifier you provided do not match the patterns " +
+        val message = "The company identifier you provided does not match the patterns " +
             "of a valid LEI, ISIN, PermId or Dataland CompanyID."
         throw InvalidInputApiException(
             summary,

@@ -162,7 +162,7 @@ fun checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
     )
 }
 
-private fun check400ClientExceptionErrorMessage(clientException: ClientException) {
+fun check400ClientExceptionErrorMessage(clientException: ClientException) {
     assertEquals("Client error : 400 ", clientException.message)
 }
 
@@ -231,7 +231,7 @@ fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
     }
 }
 
-fun checkErrorMessageForInvalidIdentifiers(clientException: ClientException) {
+fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientException) {
     check400ClientExceptionErrorMessage(clientException)
     val responseBody = (clientException.response as ClientError<*>).body as String
     assertTrue(responseBody.contains("All provided company identifiers have an invalid format."))

@@ -9,7 +9,7 @@ import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.causeClientExceptionByBulkDataRequest
-import org.dataland.e2etests.utils.checkErrorMessageForInvalidIdentifiers
+import org.dataland.e2etests.utils.checkErrorMessageForInvalidIdentifiersInBulkRequest
 import org.dataland.e2etests.utils.checkThatAllIdentifiersWereAccepted
 import org.dataland.e2etests.utils.checkThatMessageIsAsExpected
 import org.dataland.e2etests.utils.checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce
@@ -236,7 +236,7 @@ class BulkDataRequestsTest {
             generateRandomLei() + "F", generateRandomIsin() + "F", generateRandomPermId() + "F",
         )
         val clientException = causeClientExceptionByBulkDataRequest(invalidIdentifiers, frameworks, reportingPeriods)
-        checkErrorMessageForInvalidIdentifiers(clientException)
+        checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException)
     }
 
     private fun authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
