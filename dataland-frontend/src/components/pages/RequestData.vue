@@ -220,10 +220,8 @@ import MultiSelectFormFieldBindData from "@/components/forms/parts/fields/MultiS
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { type BulkDataRequestResponse, type BulkDataRequest } from "@clients/communitymanager";
 import { AxiosError } from "axios";
 import BasicFormSection from "@/components/general/BasicFormSection.vue";
-import BulkDataResponseDialog from "@/components/general/BulkDataResponseDialog.vue";
 import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue";
 
 export default defineComponent({
@@ -269,7 +267,6 @@ export default defineComponent({
         { name: "2021", value: false },
         { name: "2020", value: false },
       ],
-      bulkDataResponseDialog: BulkDataResponseDialog,
     };
   },
 
@@ -356,11 +353,6 @@ export default defineComponent({
           .requestController;
         const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
 
-        // blocking for when check identifiers endpoint is ready
-        if (false || response.data.rejectedCompanyIdentifiers.length) {
-          this.openRequestModal(response.data);
-        }
-
         this.message = response.data.message;
         this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
         this.acceptedCompanyIdentifiers = response.data.acceptedCompanyIdentifiers;
@@ -397,59 +389,6 @@ export default defineComponent({
      */
     goToCompanies() {
       void this.$router.push("/companies");
-    },
-
-    /**
-     * Opens popup showing rejected identifiers and enabling user to remove them and send the request again
-     * or closing the dialog and return to the request form
-     * @param responseData returned data from the request to pass to dialog
-     */
-    openRequestModal(responseData: BulkDataRequestResponse): void {
-      const rejectedIdentifiersCount = responseData.rejectedCompanyIdentifiers.length;
-
-      this.$dialog.open(this.bulkDataResponseDialog, {
-        props: {
-          modal: true,
-          closable: true,
-          closeOnEscape: true,
-          showHeader: true,
-          header: `${rejectedIdentifiersCount} identifier${rejectedIdentifiersCount > 1 ? "s" : ""} can't be found.`,
-          style: {
-            width: "50vw",
-          },
-          breakpoints: {
-            "1199px": "75vw",
-            "575px": "90vw",
-          },
-        },
-        data: {
-          /**
-           * Callback to handle removal or addition of identifiers via the dialog
-           * @param eventName whether an identifier has been removed or re-added
-           * @param identifier value of the identifier to be removed or added
-           * @returns void
-           */
-          onItemChangeHandler: (eventName: "removed" | "undo", identifier: string) =>
-            this.handleIdentifierChange(eventName, identifier),
-          responseData,
-        },
-      });
-    },
-
-    /**
-     * @param eventName whether "removed" or "undo"
-     * @param identifier the identifier to be processed
-     */
-    handleIdentifierChange(eventName: string, identifier: string) {
-      if (eventName === "removed") {
-        this.identifiersInString = this.identifiers
-          .filter((currentIdentifier) => currentIdentifier !== identifier)
-          .join(", ");
-      } else if (eventName === "undo") {
-        this.identifiersInString += ", " + identifier;
-      }
-
-      this.processInput();
     },
   },
   mounted() {
