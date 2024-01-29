@@ -534,19 +534,21 @@ class DataRequestManager(
         lateinit var identifierTypeToStore: DataRequestCompanyIdentifierType
         lateinit var identifierValueToStore: String
         val storedDataRequests = mutableListOf<StoredDataRequest>()
+        var datalandCompanyIdIfExists: String? = null
         if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
             checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
             identifierTypeToStore = DataRequestCompanyIdentifierType.DatalandCompanyId
             identifierValueToStore = singleDataRequest.companyIdentifier
+            datalandCompanyIdIfExists = singleDataRequest.companyIdentifier
         } else {
             val matchedIdentifierType = determineIdentifierTypeViaRegex(singleDataRequest.companyIdentifier)
             dataRequestLogger.logMessageForSingleDataRequest(singleDataRequest.companyIdentifier)
             if (matchedIdentifierType != null) {
-                val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(singleDataRequest.companyIdentifier)
-                identifierTypeToStore = datalandCompanyId?.let {
+                datalandCompanyIdIfExists = getDatalandCompanyIdForIdentifierValue(singleDataRequest.companyIdentifier)
+                identifierTypeToStore = datalandCompanyIdIfExists?.let {
                     DataRequestCompanyIdentifierType.DatalandCompanyId
                 } ?: matchedIdentifierType
-                identifierValueToStore = datalandCompanyId ?: singleDataRequest.companyIdentifier
+                identifierValueToStore = datalandCompanyIdIfExists ?: singleDataRequest.companyIdentifier
             } else {
                 throwInvalidInputApiExceptionBecauseIdentifierRejected()
             }
@@ -570,7 +572,7 @@ class DataRequestManager(
         emailSender.sendEmail(
             singleDataRequestEmailBuilder.buildSingleDataRequestEmail(
                 requesterEmail = (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).username,
-                companyId = datalandCompanyId,
+                companyId = datalandCompanyIdIfExists,
                 singleDataRequest = singleDataRequest,
             ),
         )
