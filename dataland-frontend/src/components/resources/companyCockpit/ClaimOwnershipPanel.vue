@@ -3,7 +3,7 @@
       class="claim-panel">
     <div class="next-to-each-other vertical-middle">
       <h2 class="claim-panel__ownership-question">Responsible for {{ companyName }}?</h2>
-      <a class="link" @click="$emit('toggleDialog')">Claim dataset ownership.</a>
+      <a class="link" @click="$emit('toggleDialog')">Claim company dataset ownership.</a>
     </div>
 
 

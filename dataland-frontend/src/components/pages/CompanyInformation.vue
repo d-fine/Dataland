@@ -94,7 +94,7 @@ export default defineComponent({
       if (!this.isUserDataOwner) {
         listOfItems.push(
             {
-              label: 'Claim Data Ownership',
+              label: 'Claim Company Dataset Ownership',
               command: () => {
                 this.$emit('claimDataOwnership');
               }
