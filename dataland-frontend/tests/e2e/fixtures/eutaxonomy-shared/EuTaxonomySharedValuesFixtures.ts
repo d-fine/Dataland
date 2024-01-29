@@ -1,4 +1,4 @@
-import { type EuTaxonomyDataForFinancials, type EuTaxonomyGeneral } from "@clients/backend";
+import { type EuTaxonomyDataForFinancials } from "@clients/backend";
 import { generateYesNoNa, generateYesNo } from "@e2e/fixtures/common/YesNoFixtures";
 import { generateAssuranceDatapoint } from "./AssuranceDataFixture";
 import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
@@ -16,7 +16,7 @@ import { type ReferencedDocuments } from "@e2e/fixtures/FixtureUtils";
 export function generateEuTaxonomyWithBaseFields(
   referencedReports: ReferencedDocuments,
   nullProbability = DEFAULT_PROBABILITY,
-): EuTaxonomyDataForFinancials | EuTaxonomyGeneral {
+): EuTaxonomyDataForFinancials {
   return {
     fiscalYearDeviation: valueOrNull(generateFiscalYearDeviation(), nullProbability),
     fiscalYearEnd: valueOrNull(generatePastDate(), nullProbability),

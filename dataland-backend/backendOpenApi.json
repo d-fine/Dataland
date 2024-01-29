@@ -10427,6 +10427,34 @@
           }
         }
       },
+      "AssuranceDataPoint": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": [
+              "None",
+              "LimitedAssurance",
+              "ReasonableAssurance"
+            ]
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          },
+          "provider": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "CompanyAssociatedDataEutaxonomyNonFinancialsData": {
         "required": [
           "companyId",
@@ -10625,6 +10653,14 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
+          },
+          "assurance": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AssuranceDataPoint"
+              }
+            ]
           }
         }
       },
@@ -10771,34 +10807,6 @@
           },
           "transitionalRevenue": {
             "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "AssuranceDataPoint": {
-        "required": [
-          "value"
-        ],
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "enum": [
-              "None",
-              "LimitedAssurance",
-              "ReasonableAssurance"
-            ]
-          },
-          "dataSource": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDocumentReference"
-              }
-            ]
-          },
-          "provider": {
-            "type": "string",
             "nullable": true
           }
         }
@@ -13319,10 +13327,10 @@
           "companyName": {
             "type": "string"
           },
-          "headquarters": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           },
           "sector": {

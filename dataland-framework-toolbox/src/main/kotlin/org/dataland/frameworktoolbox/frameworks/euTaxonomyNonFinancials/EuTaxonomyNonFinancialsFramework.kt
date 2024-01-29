@@ -12,7 +12,8 @@ class EuTaxonomyNonFinancialsFramework : InDevelopmentPavedRoadFramework(
     identifier = "eutaxonomy-non-financials",
     label = "EU Taxonomy Non-Financials",
     explanation = "Das Eu Taxonomy Non-Financials Framework",
-    File("./dataland-framework-toolbox/inputs/euTaxonomyNonFinancials/EutaxonomyNonFinancials.xlsx",
+    File(
+        "./dataland-framework-toolbox/inputs/euTaxonomyNonFinancials/EutaxonomyNonFinancials.xlsx",
     ),
     order = 2,
-)
+) // org.dataland.datalandbackend.model.eutaxonomy.AssuranceDataPoint

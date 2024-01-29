@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
+import org.dataland.datalandbackend.model.eutaxonomy.AssuranceDataPoint
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -36,5 +37,7 @@ data class EutaxonomyNonFinancialsGeneralGeneral(
     val numberOfEmployees: BigDecimal? = null,
 
     val nfrdMandatory: YesNo? = null,
+
+    val assurance: AssuranceDataPoint? = null,
 
 )

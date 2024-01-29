@@ -1,8 +1,9 @@
 import {
-  type DataAndMetaInformationEutaxonomyNonFinancialsData, EutaxonomyNonFinancialsData
+  type DataAndMetaInformationEutaxonomyNonFinancialsData,
+  type EutaxonomyNonFinancialsData,
 } from "@clients/backend";
 import { DataMetaInformationGenerator } from "@e2e/fixtures/data_meta_information/DataMetaInformationFixtures";
-import { EuNonFinancialsGenerator } from "@e2e/fixtures/frameworks/eutaxonomy-non-financials/EuTaxonomyDataForNonFinancialsFixtures";
+import { EuNonFinancialsGenerator } from "@e2e/fixtures/frameworks/eutaxonomy-non-financials/EuTaxonomyDataForNonFinancialsFixtures.ts.old";
 import { generateCurrencyValue, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { generateNaceCodes } from "@e2e/fixtures/common/NaceCodeFixtures";

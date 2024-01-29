@@ -21,11 +21,6 @@
             <h2 class="mb-0" data-test="frameworkDataTableTitle">{{ humanizeString(dataType) }}</h2>
           </div>
           <div class="col-12">
-            <EuTaxonomyForNonFinancialsPanel
-              v-if="dataType === DataTypeEnum.EutaxonomyNonFinancials"
-              :companyId="companyId"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
-            />
             <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.EutaxonomyFinancials"
               :frameworkIdentifier="DataTypeEnum.EutaxonomyFinancials"
@@ -103,7 +98,6 @@ import { type AxiosError } from "axios";
 import type Keycloak from "keycloak-js";
 import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataSearch/DatasetDisplayStatusIndicator.vue";
 import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vue";
-import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsPanel.vue";
 import MultiLayerDataTableFrameworkPanel from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue";
 import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
@@ -133,7 +127,6 @@ export default defineComponent({
   },
   components: {
     MultiLayerDataTableFrameworkPanel,
-    EuTaxonomyForNonFinancialsPanel,
     DatasetDisplayStatusIndicator,
     ViewFrameworkBase,
     SmePanel,

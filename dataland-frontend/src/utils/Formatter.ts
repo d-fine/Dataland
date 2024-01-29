@@ -1,5 +1,11 @@
-import { type AmountWithCurrency } from "@clients/backend";
+// import { type AmountWithCurrency } from "@clients/backend";
 import { roundNumber } from "@/utils/NumberConversionUtils";
+
+// TODO: REMOVE
+type AmountWithCurrency = {
+  amount?: number | null;
+  currency?: string | null;
+};
 
 /**
  * Formats a percentage number by rounding it and afterward making it a string with a
