@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -21,6 +22,7 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
@@ -386,9 +388,9 @@ class DataRequestManager(
         return datalandCompanyId
     }
 
-    private fun storeDataRequestEntity(dataRequestEntity: DataRequestEntity, bulkDataRequestId: String? = null) {
+    private fun storeDataRequestEntity(dataRequestEntity: DataRequestEntity, dataRequestId: String? = null) {
         dataRequestRepository.save(dataRequestEntity)
-        dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId, bulkDataRequestId)
+        dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId, dataRequestId)
     }
 
     private fun buildDataRequestEntity(
@@ -423,7 +425,7 @@ class DataRequestManager(
 
     private fun determineIdentifierTypeViaRegex(identifierValue: String): DataRequestCompanyIdentifierType? {
         val matchingRegexes =
-            listOf(leiRegex, isinRegex, permIdRegex, companyIdRegex).filter { it.matches(identifierValue) }
+            listOf(leiRegex, isinRegex, permIdRegex).filter { it.matches(identifierValue) }
         return when (matchingRegexes.size) {
             0 -> null
             1 -> {
@@ -431,7 +433,6 @@ class DataRequestManager(
                     matchingRegexes[0] == leiRegex -> DataRequestCompanyIdentifierType.Lei
                     matchingRegexes[0] == isinRegex -> DataRequestCompanyIdentifierType.Isin
                     matchingRegexes[0] == permIdRegex -> DataRequestCompanyIdentifierType.PermId
-                    matchingRegexes[0] == companyIdRegex -> DataRequestCompanyIdentifierType.DatalandCompanyId
                     else -> null
                 }
             }
@@ -484,6 +485,16 @@ class DataRequestManager(
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
         val summary = "All provided company identifiers have an invalid format."
         val message = "The company identifiers you provided do not match the patterns " +
+            "of a valid LEI, ISIN or PermId."
+        throw InvalidInputApiException(
+            summary,
+            message,
+        )
+    }
+
+    private fun throwInvalidInputApiExceptionBecauseIdentifierRejected() {
+        val summary = "The provided company identifier has an invalid format."
+        val message = "The company identifier you provided does not match the patterns " +
             "of a valid LEI, ISIN, PermId or Dataland CompanyID."
         throw InvalidInputApiException(
             summary,
@@ -496,12 +507,15 @@ class DataRequestManager(
     }
 
     private fun checkIfCompanyIsValid(companyId: String) {
-        if (companyId.matches(companyIdRegex)) {
-            val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(companyId)
-            datalandCompanyId ?: throw ResourceNotFoundApiException(
-                "Company is invalid",
-                "There is no company corresponding to the provided Id $companyId stored on Dataland.",
+        val bearerTokenOfRequestingUser = DatalandAuthentication.fromContext().credentials as String
+        try {
+            companyGetter.getCompanyById(companyId, bearerTokenOfRequestingUser)
+        } catch (e: ClientException) { if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+            throw ResourceNotFoundApiException(
+                "Company not found",
+                "Dataland-backend does not know the company ID $companyId",
             )
+        }
         }
     }
 
@@ -514,45 +528,52 @@ class DataRequestManager(
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
         throwExceptionIfNotJwtAuth()
-        checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
         val listOfReportingPeriods = singleDataRequest.listOfReportingPeriods.distinct()
         val singleDataRequestId = UUID.randomUUID().toString()
         val userId = DatalandAuthentication.fromContext().userId
-        val matchedIdentifierType = determineIdentifierTypeViaRegex(singleDataRequest.companyIdentifier)
+        lateinit var identifierTypeToStore: DataRequestCompanyIdentifierType
+        lateinit var identifierValueToStore: String
         val storedDataRequests = mutableListOf<StoredDataRequest>()
-        dataRequestLogger.logMessageForSingleDataRequest(singleDataRequest.companyIdentifier)
-        if (matchedIdentifierType != null) {
-            val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(singleDataRequest.companyIdentifier)
-            val identifierTypeToStore = datalandCompanyId?.let {
-                DataRequestCompanyIdentifierType.DatalandCompanyId
-            } ?: matchedIdentifierType
-            val identifierValueToStore = datalandCompanyId ?: singleDataRequest.companyIdentifier
-            for (reportingPeriod in listOfReportingPeriods) {
-                storedDataRequests.add(
-                    buildStoredDataRequestFromDataRequestEntity(
-                        storeDataRequestEntityIfNotExisting(
-                            identifierValueToStore,
-                            identifierTypeToStore,
-                            singleDataRequest.frameworkName,
-                            reportingPeriod,
-                            userId,
-                            singleDataRequestId,
-                            singleDataRequest.contactList,
-                            singleDataRequest.message,
-                        ),
-                    ),
-                )
+        if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
+            checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
+            identifierTypeToStore = DataRequestCompanyIdentifierType.DatalandCompanyId
+            identifierValueToStore = singleDataRequest.companyIdentifier
+        } else {
+            val matchedIdentifierType = determineIdentifierTypeViaRegex(singleDataRequest.companyIdentifier)
+            dataRequestLogger.logMessageForSingleDataRequest(singleDataRequest.companyIdentifier)
+            if (matchedIdentifierType != null) {
+                val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(singleDataRequest.companyIdentifier)
+                identifierTypeToStore = datalandCompanyId?.let {
+                    DataRequestCompanyIdentifierType.DatalandCompanyId
+                } ?: matchedIdentifierType
+                identifierValueToStore = datalandCompanyId ?: singleDataRequest.companyIdentifier
+            } else {
+                throwInvalidInputApiExceptionBecauseIdentifierRejected()
             }
-            emailSender.sendEmail(
-                singleDataRequestEmailBuilder.buildSingleDataRequestEmail(
-                    requesterEmail = (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).username,
-                    companyId = datalandCompanyId,
-                    singleDataRequest = singleDataRequest,
+        }
+        for (reportingPeriod in listOfReportingPeriods) {
+            storedDataRequests.add(
+                buildStoredDataRequestFromDataRequestEntity(
+                    storeDataRequestEntityIfNotExisting(
+                        identifierValueToStore,
+                        identifierTypeToStore,
+                        singleDataRequest.frameworkName,
+                        reportingPeriod,
+                        userId,
+                        singleDataRequestId,
+                        singleDataRequest.contactList,
+                        singleDataRequest.message,
+                    ),
                 ),
             )
-        } else {
-            throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
+        emailSender.sendEmail(
+            singleDataRequestEmailBuilder.buildSingleDataRequestEmail(
+                requesterEmail = (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).username,
+                companyId = datalandCompanyId,
+                singleDataRequest = singleDataRequest,
+            ),
+        )
         return storedDataRequests
     }
 }
