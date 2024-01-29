@@ -55,7 +55,8 @@ class ListOfStringBaseDataPointComponent(
                 setOf(
                     TypeScriptImport(
                         "formatListOfBaseDataPoint",
-                        "@/components/resources/dataTable/conversion/esg-questionnaire/EsgQuestionnaireListOfBaseDataPointGetterFactory",
+                        "@/components/resources/dataTable/conversion/" +
+                            "esg-questionnaire/EsgQuestionnaireListOfBaseDataPointGetterFactory",
                     ),
                 ),
             ),
@@ -76,7 +77,9 @@ class ListOfStringBaseDataPointComponent(
                 "generateArray(" +
                 "() => dataGenerator.guaranteedBaseDataPoint(dataGenerator.guaranteedShortString()), 1, 5, 0" +
                 "))",
-            setOf("import { generateArray } from \"@e2e/fixtures/FixtureUtils\";"),
+            setOf(
+                TypeScriptImport("generateArray", "@e2e/fixtures/FixtureUtils"),
+            ),
 
         )
     }

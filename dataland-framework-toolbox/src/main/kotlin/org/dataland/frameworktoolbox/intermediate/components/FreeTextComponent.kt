@@ -25,7 +25,10 @@ class FreeTextComponent(
                 FrameworkDisplayValueLambda(
                     "formatFreeTextForDatatable(${getTypescriptFieldAccessor(true)})",
                     setOf(
-                        TypeScriptImport("formatFreeTextForDatatable", "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory"),
+                        TypeScriptImport(
+                            "formatFreeTextForDatatable",
+                            "@/components/resources/dataTable/conversion/FreeTextValueGetterFactory",
+                        ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),

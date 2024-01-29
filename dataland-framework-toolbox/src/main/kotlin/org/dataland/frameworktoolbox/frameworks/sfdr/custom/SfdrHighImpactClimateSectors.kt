@@ -61,7 +61,10 @@ class SfdrHighImpactClimateSectors(
             FrameworkDisplayValueLambda(
                 "formatHighImpactClimateSectorForDisplay(${getTypescriptFieldAccessor(true)})",
                 setOf(
-                    TypeScriptImport("formatHighImpactClimateSectorForDisplay", "@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory"),
+                    TypeScriptImport(
+                        "formatHighImpactClimateSectorForDisplay",
+                        "@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory",
+                    ),
                 ),
             ),
         )

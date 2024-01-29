@@ -8,6 +8,9 @@ data class TypeScriptImport(
     val file: String,
 ) {
     companion object {
+        /**
+         * Merges a number of TypeScript imports such that every file is only imported once
+         */
         fun mergeImports(imports: Set<TypeScriptImport>): Set<TypeScriptImport> {
             val perFileImports = mutableMapOf<String, MutableSet<String>>()
             imports.forEach {

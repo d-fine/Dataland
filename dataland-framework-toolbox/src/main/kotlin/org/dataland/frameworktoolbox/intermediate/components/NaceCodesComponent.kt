@@ -39,7 +39,10 @@ class NaceCodesComponent(
                         "'${StringEscapeUtils.escapeEcmaScript(label)}',\n" +
                         ")",
                     setOf(
-                        TypeScriptImport("formatNaceCodesForDatatable", "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory"),
+                        TypeScriptImport(
+                            "formatNaceCodesForDatatable",
+                            "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory",
+                        ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
@@ -63,7 +66,7 @@ class NaceCodesComponent(
                 nullable = isNullable,
             ),
             setOf(
-                "import {generateNaceCodes} from \"@e2e/fixtures/common/NaceCodeFixtures\";\n",
+                TypeScriptImport("generateNaceCodes", "@e2e/fixtures/common/NaceCodeFixtures"),
             ),
         )
     }

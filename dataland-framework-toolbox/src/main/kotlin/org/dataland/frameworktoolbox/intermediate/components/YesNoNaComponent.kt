@@ -24,7 +24,10 @@ class YesNoNaComponent(
                 FrameworkDisplayValueLambda(
                     "formatYesNoValueForDatatable(${getTypescriptFieldAccessor(true)})",
                     setOf(
-                        TypeScriptImport("formatYesNoValueForDatatable", "@/components/resources/dataTable/conversion/YesNoValueGetterFactory"),
+                        TypeScriptImport(
+                            "formatYesNoValueForDatatable",
+                            "@/components/resources/dataTable/conversion/YesNoValueGetterFactory",
+                        ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),

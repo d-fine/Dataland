@@ -1,5 +1,7 @@
 package org.dataland.frameworktoolbox.specific.fixturegenerator.elements
 
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
+
 /**
  * A FixtureSectionBuilder is an in-memory Representation of fixture generator for a
  * JS Object
@@ -13,7 +15,7 @@ class FixtureSectionBuilder(
     val elements: MutableList<FixtureGeneratorElement>,
 ) : FixtureGeneratorElement {
 
-    override val imports: Set<String>
+    override val imports: Set<TypeScriptImport>
         get() = elements.foldRight(emptySet()) {
                 element, imports ->
             imports + element.imports
@@ -40,7 +42,7 @@ class FixtureSectionBuilder(
     fun addAtomicExpression(
         identifier: String,
         typescriptExpression: String,
-        imports: Set<String> = emptySet(),
+        imports: Set<TypeScriptImport> = emptySet(),
     ): FixtureAtomicExpression {
         return addElement(
             FixtureAtomicExpression(

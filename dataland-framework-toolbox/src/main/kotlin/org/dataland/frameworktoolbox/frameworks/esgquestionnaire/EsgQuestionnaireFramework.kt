@@ -181,7 +181,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
                     nullable = component.isNullable,
                 ),
                 imports = setOf(
-                    "import { Activity } from \"@clients/backend\";",
+                    TypeScriptImport("activity", "@clients/backend"),
                 ),
             )
         }
@@ -198,8 +198,14 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
                         "'${escapeEcmaScript(component.label)}'" +
                         ")",
                     setOf(
-                        TypeScriptImport("activityApiNameToHumanizedName", "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames"),
-                        TypeScriptImport("formatListOfStringsForDatatable", "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory"),
+                        TypeScriptImport(
+                            "activityApiNameToHumanizedName",
+                            "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames",
+                        ),
+                        TypeScriptImport(
+                            "formatListOfStringsForDatatable",
+                            "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
+                        ),
                     ),
                 ),
             )

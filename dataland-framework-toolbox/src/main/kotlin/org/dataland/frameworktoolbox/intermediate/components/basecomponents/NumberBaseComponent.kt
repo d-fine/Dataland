@@ -90,7 +90,10 @@ open class NumberBaseComponent(
                     "formatNumberForDatatable(${getTypescriptFieldAccessor(true)}," +
                         " \"${StringEscapeUtils.escapeEcmaScript(constantUnitSuffix ?: "")}\")",
                     setOf(
-                        TypeScriptImport("formatNumberForDatatable", "@/components/resources/dataTable/conversion/NumberValueGetterFactory"),
+                        TypeScriptImport(
+                            "formatNumberForDatatable",
+                            "@/components/resources/dataTable/conversion/NumberValueGetterFactory",
+                        ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),

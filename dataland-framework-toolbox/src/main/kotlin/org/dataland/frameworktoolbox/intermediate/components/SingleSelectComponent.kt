@@ -61,8 +61,14 @@ open class SingleSelectComponent(
                         generateReturnStatement() +
                         "}",
                     setOf(
-                        TypeScriptImport("formatStringForDatatable", "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory"),
-                        TypeScriptImport("getOriginalNameFromTechnicalName", "@/components/resources/dataTable/conversion/Utils"),
+                        TypeScriptImport(
+                            "formatStringForDatatable",
+                            "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
+                        ),
+                        TypeScriptImport(
+                            "getOriginalNameFromTechnicalName",
+                            "@/components/resources/dataTable/conversion/Utils",
+                        ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
@@ -91,8 +97,8 @@ open class SingleSelectComponent(
                 nullable = isNullable,
             ),
             imports = setOf(
-                "import { pickOneElement } from \"@e2e/fixtures/FixtureUtils\";",
-                "import { $enumName } from \"@clients/backend\";",
+                TypeScriptImport("pickOneElement", "@e2e/fixtures/FixtureUtils"),
+                TypeScriptImport(enumName, "@clients/backend"),
             ),
         )
     }

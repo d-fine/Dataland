@@ -46,7 +46,10 @@ class CurrencyComponent(
                     )
                 }\")",
                 setOf(
-                    TypeScriptImport("formatCurrencyForDisplay", "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory"),
+                    TypeScriptImport(
+                        "formatCurrencyForDisplay",
+                        "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory",
+                    ),
                 ),
             ),
         )

@@ -24,7 +24,10 @@ class DateComponent(
                 FrameworkDisplayValueLambda(
                     "formatStringForDatatable(${getTypescriptFieldAccessor(true)})",
                     setOf(
-                        TypeScriptImport("formatStringForDatatable", "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory"),
+                        TypeScriptImport(
+                            "formatStringForDatatable",
+                            "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
+                        ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),

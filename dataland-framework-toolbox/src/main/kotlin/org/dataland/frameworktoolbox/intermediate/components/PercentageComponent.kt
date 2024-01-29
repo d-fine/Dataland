@@ -25,7 +25,10 @@ class PercentageComponent(
                 FrameworkDisplayValueLambda(
                     "formatPercentageForDatatable(${getTypescriptFieldAccessor(true)})",
                     setOf(
-                        TypeScriptImport("formatPercentageForDatatable", "@/components/resources/dataTable/conversion/PercentageValueGetterFactory"),
+                        TypeScriptImport(
+                            "formatPercentageForDatatable",
+                            "@/components/resources/dataTable/conversion/PercentageValueGetterFactory",
+                        ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),

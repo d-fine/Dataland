@@ -55,8 +55,14 @@ open class MultiSelectComponent(
                         generateReturnStatement() +
                         "}",
                     setOf(
-                        TypeScriptImport("formatListOfStringsForDatatable", "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory"),
-                        TypeScriptImport("getOriginalNameFromTechnicalName", "@/components/resources/dataTable/conversion/Utils"),
+                        TypeScriptImport(
+                            "formatListOfStringsForDatatable",
+                            "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
+                        ),
+                        TypeScriptImport(
+                            "getOriginalNameFromTechnicalName",
+                            "@/components/resources/dataTable/conversion/Utils",
+                        ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
@@ -86,7 +92,10 @@ open class MultiSelectComponent(
                 nullable = isNullable,
             ),
             imports = setOf(
-                "import { pickSubsetOfElements } from \"@e2e/fixtures/FixtureUtils\";",
+                TypeScriptImport(
+                    "pickSubsetOfElements",
+                    "@e2e/fixtures/FixtureUtils",
+                ),
             ),
         )
     }
