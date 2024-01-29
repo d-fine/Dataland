@@ -3,15 +3,19 @@ package org.dataland.e2etests.tests.communityManager
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
+import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdentifierType
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
+import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.assertStatusForDataRequestId
 import org.dataland.e2etests.utils.check400ClientExceptionErrorMessage
+import org.dataland.e2etests.utils.generateRandomPermId
 import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatus
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -21,6 +25,7 @@ import java.util.*
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SingleDataRequestsTest {
 
+    val apiAccessor = ApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
@@ -38,14 +43,14 @@ class SingleDataRequestsTest {
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
         val allStoredDataRequests = requestControllerApi.postSingleDataRequest(singleDataRequest)
-        Assertions.assertEquals(singleDataRequest.listOfReportingPeriods.size, allStoredDataRequests.size)
+        assertEquals(singleDataRequest.listOfReportingPeriods.size, allStoredDataRequests.size)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         for (storedDataRequest in allStoredDataRequests) {
             val retrievedDataRequest = requestControllerApi.getDataRequestById(
                 UUID.fromString(storedDataRequest.dataRequestId),
             )
-            Assertions.assertEquals(storedDataRequest, retrievedDataRequest)
+            assertEquals(storedDataRequest, retrievedDataRequest)
         }
     }
 
@@ -62,14 +67,62 @@ class SingleDataRequestsTest {
         }
         check400ClientExceptionErrorMessage(clientException)
         val responseBody = (clientException.response as ClientError<*>).body as String
-        Assertions.assertTrue(responseBody.contains("The provided company identifier has an invalid format."))
-        Assertions.assertTrue(
+        assertTrue(responseBody.contains("The provided company identifier has an invalid format."))
+        assertTrue(
             responseBody.contains(
                 "The company identifier you provided does not match the patterns of a valid LEI, ISIN, PermId or " +
-                        "Dataland CompanyID.",
+                    "Dataland CompanyID.",
             ),
         )
     }
+
+    @Test
+    fun `post a single data request with a valid dataland-company-ID and assure that it is stored as expected`() {
+        val companyIdOfNewCompany =
+            apiAccessor.uploadOneCompanyWithIdentifiers(permId = generateRandomPermId())!!.actualStoredCompany.companyId
+        val singleDataRequest = SingleDataRequest(
+            companyIdentifier = companyIdOfNewCompany,
+            frameworkName = SingleDataRequest.FrameworkName.lksg,
+            listOfReportingPeriods = listOf("2022"),
+        )
+
+        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
+        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+
+        val retrievedDataRequest = requestControllerApi.getDataRequestById(storedDataRequestId)
+
+        assertEquals(
+            DataRequestCompanyIdentifierType.datalandCompanyId,
+            retrievedDataRequest.dataRequestCompanyIdentifierType,
+        )
+        assertEquals(companyIdOfNewCompany, retrievedDataRequest.dataRequestCompanyIdentifierValue)
+        assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
+    }
+
+    @Test
+    fun `post a single data request with a PermId that matches a Dataland-company and assert the correct matching`() {
+        val validPermId = System.currentTimeMillis().toString()
+        val companyIdOfNewCompany =
+            apiAccessor.uploadOneCompanyWithIdentifiers(permId = validPermId)!!.actualStoredCompany.companyId
+        val singleDataRequest = SingleDataRequest(
+            companyIdentifier = validPermId,
+            frameworkName = SingleDataRequest.FrameworkName.sfdr,
+            listOfReportingPeriods = listOf("2022"),
+        )
+        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
+        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+
+        val retrievedDataRequest = requestControllerApi.getDataRequestById(storedDataRequestId)
+
+        assertEquals(
+            DataRequestCompanyIdentifierType.datalandCompanyId,
+            retrievedDataRequest.dataRequestCompanyIdentifierType,
+        )
+        assertEquals(companyIdOfNewCompany, retrievedDataRequest.dataRequestCompanyIdentifierValue)
+        assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
+    }
+
+    // TODO test mit passendem Format der companyId, aber es gibt sie nicht => resource-not-found 404
 
     @Test
     fun `post a single data request and check if patching it changes its status accordingly`() {
@@ -81,7 +134,7 @@ class SingleDataRequestsTest {
         )
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
-        Assertions.assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
+        assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
@@ -102,8 +155,8 @@ class SingleDataRequestsTest {
         }
         val responseBody = (clientException.response as ClientError<*>).body as String
 
-        Assertions.assertEquals("Client error : 404 ", clientException.message)
-        Assertions.assertTrue(
+        assertEquals("Client error : 404 ", clientException.message)
+        assertTrue(
             responseBody.contains("Dataland does not know the Data request ID $nonExistingDataRequestId"),
         )
     }
@@ -118,15 +171,13 @@ class SingleDataRequestsTest {
         )
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
-        Assertions.assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
+        assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
 
         val clientException = assertThrows<ClientException> {
             requestControllerApi.patchDataRequest(storedDataRequestId, RequestStatus.resolved)
         }
-        Assertions.assertEquals("Client error : 403 ", clientException.message)
+        assertEquals("Client error : 403 ", clientException.message)
     }
-
-    // TODO test last get endpoint
 }
