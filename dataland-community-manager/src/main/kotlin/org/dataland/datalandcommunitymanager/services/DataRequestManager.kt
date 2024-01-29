@@ -205,7 +205,8 @@ class DataRequestManager(
                 dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue),
             ).toMutableList()
             updateResult(
-                dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue))
+                dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue),
+            )
         }
         return result.map { buildStoredDataRequestFromDataRequestEntity(it) }
     }
@@ -495,7 +496,7 @@ class DataRequestManager(
     private fun throwInvalidInputApiExceptionBecauseIdentifierRejected() {
         val summary = "The provided company identifier has an invalid format."
         val message = "The company identifier you provided do not match the patterns " +
-                "of a valid LEI, ISIN, PermId or Dataland CompanyID."
+            "of a valid LEI, ISIN, PermId or Dataland CompanyID."
         throw InvalidInputApiException(
             summary,
             message,
@@ -510,11 +511,12 @@ class DataRequestManager(
         val bearerTokenOfRequestingUser = DatalandAuthentication.fromContext().credentials as String
         try {
             companyGetter.getCompanyById(companyId, bearerTokenOfRequestingUser)
-        } catch (e: ClientException){
-          if(e.statusCode == HttpStatus.NOT_FOUND.value()){
-              throw ResourceNotFoundApiException("Company not found",
-                  "Dataland-backend does not know the company ID $companyId")
-          }
+        } catch (e: ClientException) { if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+            throw ResourceNotFoundApiException(
+                "Company not found",
+                "Dataland-backend does not know the company ID $companyId",
+            )
+        }
         }
     }
 
@@ -529,10 +531,10 @@ class DataRequestManager(
         val listOfReportingPeriods = singleDataRequest.listOfReportingPeriods.distinct()
         val singleDataRequestId = UUID.randomUUID().toString()
         val userId = DatalandAuthentication.fromContext().userId
-        lateinit var identifierTypeToStore : DataRequestCompanyIdentifierType
-        lateinit var identifierValueToStore : String
+        lateinit var identifierTypeToStore: DataRequestCompanyIdentifierType
+        lateinit var identifierValueToStore: String
         val storedDataRequests = mutableListOf<StoredDataRequest>()
-        if (companyIdRegex.matches(singleDataRequest.companyIdentifier)){
+        if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
             checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
             identifierTypeToStore = DataRequestCompanyIdentifierType.DatalandCompanyId
             identifierValueToStore = singleDataRequest.companyIdentifier
