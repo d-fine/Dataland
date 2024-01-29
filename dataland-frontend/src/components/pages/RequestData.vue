@@ -28,12 +28,12 @@
                   <template v-else>
                     <template v-if="submittingSucceded">
                       <em class="material-icons info-icon green-text">check_circle</em>
-                      <h1 class="status-text">Success</h1>
+                      <h1 class="status-text" data-test="requestStatusText">Success</h1>
                     </template>
 
                     <template v-if="!submittingSucceded">
                       <em class="material-icons info-icon red-text">error</em>
-                      <h1 class="status-text">Request Unssuccessful</h1>
+                      <h1 class="status-text" data-test="requestStatusText">Request Unssuccessful</h1>
                     </template>
 
                     <p v-if="message" class="py-3">{{ message }}</p>
@@ -53,7 +53,7 @@
                 <template v-if="submittingInProgress">
                   <i class="pi pi-spinner pi-spin text-xl text-primary" aria-hidden="true" />
                 </template>
-                <templae v-else>
+                <template v-else>
                   <div class="summary-section border-bottom py-5">
                     <h6 class="summary-section-heading m-0">{{ summarySectionReportingPeriodsHeading }}</h6>
                     <p class="summary-section-data m-0 mt-3">{{ humanizedReportingPeriods }}</p>
@@ -63,30 +63,38 @@
                     <p class="summary-section-data m-0 mt-3">{{ humanizedSelectedFrameworks.join(", ") }}</p>
                   </div>
 
-                  <div v-if="acceptedCompanyIdentifiers.length" class="summary-section py-5">
-                    <h6 class="summary-section-heading m-0">
+                  <div
+                    v-if="acceptedCompanyIdentifiers.length"
+                    class="summary-section py-5"
+                    data-test="acceptedIdentifiers"
+                  >
+                    <h6 class="summary-section-heading m-0" data-test="identifiersHeading">
                       <em class="material-icons info-icon green-text">check_circle</em>
                       {{ summarySectionIdentifiersHeading(acceptedCompanyIdentifiers, "REQUESTED") }}
                     </h6>
-                    <p class="summary-section-data m-0 mt-3">
+                    <p class="summary-section-data m-0 mt-3" data-test="identifiersList">
                       <template v-for="identifier in acceptedCompanyIdentifiers" :key="identifier">
                         <div class="identifier mb-2">{{ identifier }}</div>
                       </template>
                     </p>
                   </div>
 
-                  <div v-if="rejectedCompanyIdentifiers.length" class="summary-section py-5">
-                    <h6 class="summary-section-heading m-0">
+                  <div
+                    v-if="rejectedCompanyIdentifiers.length"
+                    class="summary-section py-5"
+                    data-test="rejectedIdentifiers"
+                  >
+                    <h6 class="summary-section-heading m-0" data-test="identifiersHeading">
                       <em class="material-icons info-icon red-text">error</em>
                       {{ summarySectionIdentifiersHeading(rejectedCompanyIdentifiers, "REJECTED") }}
                     </h6>
-                    <p class="summary-section-data m-0 mt-3">
+                    <p class="summary-section-data m-0 mt-3" data-test="identifiersList">
                       <template v-for="identifier in rejectedCompanyIdentifiers" :key="identifier">
                         <div class="identifier mb-2">{{ identifier }}</div>
                       </template>
                     </p>
                   </div>
-                </templae>
+                </template>
               </div>
             </template>
 
@@ -94,7 +102,7 @@
               <div class="col-12 md:col-8 xl:col-6">
                 <div class="grid">
                   <div class="col-12">
-                    <BasicFormSection header="Select at least one reporting period">
+                    <BasicFormSection :data-test="'reportingPeriodsDiv'" header="Select at least one reporting period">
                       <div class="flex flex-wrap mt-4 py-2">
                         <ToggleChipFormInputs
                           :name="'listOfReportingPeriods'"
@@ -102,12 +110,16 @@
                           @changed="selectedReportingPeriodsError = false"
                         />
                       </div>
-                      <p v-if="selectedReportingPeriodsError" class="text-danger text-xs">
+                      <p
+                        v-if="selectedReportingPeriodsError"
+                        class="text-danger text-xs mt-2"
+                        data-test="reportingPeriodErrorMessage"
+                      >
                         Select at least one reporting period.
                       </p>
                     </BasicFormSection>
 
-                    <BasicFormSection header="Select at least one framework">
+                    <BasicFormSection :data-test="'selectFrameworkDiv'" header="Select at least one framework">
                       <MultiSelectFormFieldBindData
                         data-test="selectFrameworkSelect"
                         placeholder="Select framework"
@@ -139,7 +151,7 @@
                       </div>
                     </BasicFormSection>
 
-                    <BasicFormSection header="Provide Company Identifiers">
+                    <BasicFormSection :data-test="'selectIdentifiersDiv'" header="Provide Company Identifiers">
                       <FormKit
                         v-model="identifiersInString"
                         type="textarea"
@@ -272,7 +284,7 @@ export default defineComponent({
 
   methods: {
     /**
-     * Test
+     * Check whether reporting periods have been selected
      */
     checkReportingPeriods(): void {
       if (!this.selectedReportingPeriods.length) {
@@ -375,9 +387,8 @@ export default defineComponent({
     },
 
     /**
-     * Opens a pop-up to warn the user that the session will expire soon and offers a button to refresh it.
-     * If the refresh button is clicked soon enough, the session is refreshed.
-     * Else the text changes and tells the user that the session was closed.
+     * Opens popup showing rejected identifiers and enabling user to remove them and send the request again
+     * or closing the dialog and return to the request form
      * @param responseData returned data from the request to pass to dialog
      */
     openRequestModal(responseData: BulkDataRequestResponse): void {
@@ -399,6 +410,12 @@ export default defineComponent({
           },
         },
         data: {
+          /**
+           * Callback to handle removal or addition of identifiers via the dialog
+           * @param eventName whether an identifier has been removed or re-added
+           * @param identifier value of the identifier to be removed or added
+           * @returns void
+           */
           onItemChangeHandler: (eventName: "removed" | "undo", identifier: string) =>
             this.handleIdentifierChange(eventName, identifier),
           responseData,
@@ -436,7 +453,7 @@ export default defineComponent({
     .status-text {
       font-weight: 700;
       font-size: 48px;
-      line-height: 24px;
+      line-height: 48px;
       letter-spacing: 0.25px;
     }
     .info-icon {
