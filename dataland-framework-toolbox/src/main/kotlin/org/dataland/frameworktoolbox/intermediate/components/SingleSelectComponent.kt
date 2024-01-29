@@ -46,6 +46,7 @@ open class SingleSelectComponent(
                 enum.getTypeReference(isNullable),
                 isNullable,
             ),
+            documentSupport.getJvmAnnotations(),
         )
     }
 

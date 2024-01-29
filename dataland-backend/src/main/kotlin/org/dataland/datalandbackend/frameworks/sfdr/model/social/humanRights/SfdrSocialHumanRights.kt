@@ -12,18 +12,23 @@ import java.math.BigInteger
  * The data-model for the HumanRights section
  */
 data class SfdrSocialHumanRights(
+    @field:Valid()
     val humanRightsPolicy: BaseDataPoint<YesNo>? = null,
 
+    @field:Valid()
     val humanRightsDueDiligence: ExtendedDataPoint<YesNo?>? = null,
 
+    @field:Valid()
     val traffickingInHumanBeingsPolicy: BaseDataPoint<YesNo>? = null,
 
+    @field:Valid()
     val reportedChildLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
 
+    @field:Valid()
     val reportedForcedOrCompulsoryLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
 
-    @field:Valid()
     @field:DataPointMinimumValue(minimumValue = 0)
+    @field:Valid()
     val numberOfReportedIncidentsOfHumanRightsViolations: ExtendedDataPoint<BigInteger?>? = null,
 
 )

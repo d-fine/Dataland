@@ -28,7 +28,7 @@ open class DecimalComponent(
                 TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
                 isNullable,
             ),
-            annotations,
+            annotations + documentSupport.getJvmAnnotations(),
         )
     }
 

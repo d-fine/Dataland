@@ -28,7 +28,7 @@ open class IntegerComponent(
                 TypeReference("java.math.BigInteger", isNullable),
                 isNullable,
             ),
-            annotations,
+            annotations + documentSupport.getJvmAnnotations(),
         )
     }
 

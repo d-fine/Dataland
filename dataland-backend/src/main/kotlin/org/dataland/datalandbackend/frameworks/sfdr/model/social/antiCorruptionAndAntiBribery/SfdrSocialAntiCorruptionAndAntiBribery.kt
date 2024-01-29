@@ -11,15 +11,14 @@ import java.math.BigInteger
  * The data-model for the AntiCorruptionAndAntiBribery section
  */
 data class SfdrSocialAntiCorruptionAndAntiBribery(
-    @field:Valid()
     @field:DataPointMinimumValue(minimumValue = 0)
+    @field:Valid()
     val casesOfInsufficientActionAgainstBriberyAndCorruption: ExtendedDataPoint<BigInteger?>? = null,
 
-    @field:Valid()
     @field:DataPointMinimumValue(minimumValue = 0)
+    @field:Valid()
     val reportedConvictionsOfBriberyAndCorruption: ExtendedDataPoint<BigInteger?>? = null,
 
-    @field:Valid()
     @field:DataPointMinimumValue(minimumValue = 0)
     val totalAmountOfReportedFinesOfBriberyAndCorruption: CurrencyDataPoint? = null,
 

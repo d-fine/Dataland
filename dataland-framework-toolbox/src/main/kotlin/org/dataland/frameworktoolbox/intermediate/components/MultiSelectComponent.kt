@@ -40,6 +40,7 @@ open class MultiSelectComponent(
                 TypeReference(fullyQualifiedNameOfKotlinType, isNullable, listOf(enum.getTypeReference(false))),
                 isNullable,
             ),
+            documentSupport.getJvmAnnotations(),
         )
     }
 

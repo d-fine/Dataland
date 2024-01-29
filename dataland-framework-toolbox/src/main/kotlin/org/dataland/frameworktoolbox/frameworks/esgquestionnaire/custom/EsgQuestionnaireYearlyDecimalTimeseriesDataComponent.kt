@@ -76,6 +76,7 @@ class EsgQuestionnaireYearlyDecimalTimeseriesDataComponent(
                 ),
                 isNullable,
             ),
+            documentSupport.getJvmAnnotations(),
         )
     }
 

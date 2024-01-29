@@ -9,7 +9,6 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSuppo
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.DataPointMaximumValueAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.DataPointMinimumValueAnnotation
-import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
@@ -56,7 +55,6 @@ open class NumberBaseComponent(
                 "There are currently no minimum/maximum value constraint annotation for non-datapoint fields."
             }
 
-            annotations.add(ValidAnnotation)
             minimumValue?.let { annotations.add(DataPointMinimumValueAnnotation(it)) }
             maximumValue?.let { annotations.add(DataPointMaximumValueAnnotation(it)) }
         }

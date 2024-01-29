@@ -241,6 +241,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
                     ),
                     true,
                 ),
+                component.documentSupport.getJvmAnnotations(),
             )
         }
     }

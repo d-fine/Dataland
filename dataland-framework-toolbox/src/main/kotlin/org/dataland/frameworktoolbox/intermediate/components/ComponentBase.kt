@@ -131,6 +131,7 @@ open class ComponentBase(
                 TypeReference(fullyQualifiedNameOfKotlinType, isNullable),
                 isNullable,
             ),
+            documentSupport.getJvmAnnotations(),
         )
     }
 

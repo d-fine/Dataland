@@ -35,6 +35,7 @@ class ListOfStringBaseDataPointComponent(
                     ),
                 ),
             ),
+            SimpleDocumentSupport.getJvmAnnotations(),
         )
     }
 
