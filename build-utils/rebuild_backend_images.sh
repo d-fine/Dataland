@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_backend_base ./dataland-backend/DockerfileBase \
-         ./dataland-backend/ ./dataland-backend-utils/ ./dataland-keycloak-adapter/ \
+         ./dataland-backend/ ./dataland-backend-utils/ ./dataland-keycloak-adapter/ ./dataland-email/ \
          ./dataland-message-queue-utils/ \
          ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-internal-storage/internalStorageOpenApi.json \
          ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./environments/.env.uncritical ./versions.properties
@@ -12,13 +12,13 @@ source ./*github_env.log
 set +o allexport
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_backend_production ./dataland-backend/Dockerfile ./dataland-backend/ \
-         ./dataland-backend-utils/ ./dataland-keycloak-adapter/ ./dataland-api-key-manager/apiKeyManagerOpenApi.json \
+         ./dataland-backend-utils/ ./dataland-keycloak-adapter/ ./dataland-email/ ./dataland-api-key-manager/apiKeyManagerOpenApi.json \
          ./dataland-message-queue-utils/ \
          ./dataland-internal-storage/internalStorageOpenApi.json \
          ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./environments/.env.uncritical ./versions.properties
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_backend_test ./dataland-backend/DockerfileTest ./dataland-backend/ \
-         ./dataland-backend-utils/ ./dataland-keycloak-adapter/ \
+         ./dataland-backend-utils/ ./dataland-keycloak-adapter/ ./dataland-email/ \
          ./dataland-message-queue-utils/ \
          ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-internal-storage/internalStorageOpenApi.json \
          ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./environments/.env.uncritical ./versions.properties

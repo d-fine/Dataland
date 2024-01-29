@@ -3,16 +3,20 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.CompanyDataOwnersEntity
 import org.dataland.datalandbackend.repositories.DataOwnerRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
+import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import kotlin.jvm.optionals.getOrElse
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Implementation of a (company) data ownership manager for Dataland
@@ -22,6 +26,8 @@ import kotlin.jvm.optionals.getOrElse
 class DataOwnersManager(
     @Autowired private val dataOwnerRepository: DataOwnerRepository,
     @Autowired private val companyRepository: StoredCompanyRepository,
+    @Autowired private val emailSender: EmailSender,
+    @Autowired private val dataOwnershipRequestEmailBuilder: DataOwnershipRequestEmailBuilder,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -158,6 +164,48 @@ class DataOwnersManager(
             throw exceptionToThrow(invalidInputApiException)
         } catch (resourceNotFoundApiException: ResourceNotFoundApiException) {
             throw exceptionToThrow(resourceNotFoundApiException)
+        }
+    }
+
+    /**
+     * Method to send an data ownership request if an ownership does not already exist
+     * @param companyId the ID of the company for which data ownership is being requested
+     * @param userAuthentication the DatalandAuthentication of the user who should become a data owner
+     */
+    @Transactional(readOnly = true)
+    fun sendDataOwnershipRequestIfNecessary(
+        companyId: String,
+        userAuthentication: DatalandAuthentication,
+        comment: String?,
+    ) {
+        assertAuthenticationViaJwtToken(userAuthentication)
+        val companyName = companyRepository.findById(companyId).getOrElse {
+            throw ResourceNotFoundApiException(
+                "Company is invalid",
+                "There is no company corresponding to the provided Id $companyId stored on Dataland.",
+            )
+        }.companyName
+        if (
+            dataOwnerRepository.findById(companyId).getOrNull()?.dataOwners?.contains(userAuthentication.userId) == true
+        ) {
+            throw InvalidInputApiException(
+                "User is already a data owner for company.",
+                "User with id: ${userAuthentication.userId} is already a data owner of company with id: $companyId.",
+            )
+        }
+        emailSender.sendEmail(
+            dataOwnershipRequestEmailBuilder.buildDataOwnershipRequest(
+                companyId,
+                companyName,
+                userAuthentication,
+                comment,
+            ),
+        )
+    }
+
+    private fun assertAuthenticationViaJwtToken(userAuthentication: DatalandAuthentication) {
+        if (userAuthentication !is DatalandJwtAuthentication) {
+            throw AuthenticationMethodNotSupportedException()
         }
     }
 }

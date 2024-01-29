@@ -24,9 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.ComponentScan
 
-@ComponentScan(basePackages = ["org.dataland"])
 @Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @SpringBootTest(classes = [DatalandQaService::class])
