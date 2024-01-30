@@ -310,7 +310,7 @@ export default defineComponent({
      */
     summarySectionIdentifiersHeading(items: string[], statusText = ""): string {
       const numberOfItems = items.length;
-      const messageSegments = [items.length, statusText, `INDENTIFIER${numberOfItems > 1 ? "S" : ""}`];
+      const messageSegments = [items.length, statusText, `IDENTIFIER${numberOfItems > 1 ? "S" : ""}`];
       return messageSegments.filter((segment) => !!segment).join(" ");
     },
     /**
