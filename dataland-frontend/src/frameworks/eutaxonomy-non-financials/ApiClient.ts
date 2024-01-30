@@ -23,10 +23,18 @@ export class EutaxonomyNonFinancialsApiClient implements FrameworkDataApi<Eutaxo
     reportingPeriod?: string,
     options?: AxiosRequestConfig,
   ): AxiosPromise<DataAndMetaInformation<EutaxonomyNonFinancialsData>[]> {
-    return this.openApiDataController.getAllCompanyEutaxonomyNonFinancialsData(companyId, showOnlyActive, reportingPeriod, options);
+    return this.openApiDataController.getAllCompanyEutaxonomyNonFinancialsData(
+      companyId,
+      showOnlyActive,
+      reportingPeriod,
+      options,
+    );
   }
 
-  getFrameworkData(dataId: string, options?: AxiosRequestConfig): AxiosPromise<CompanyAssociatedData<EutaxonomyNonFinancialsData>> {
+  getFrameworkData(
+    dataId: string,
+    options?: AxiosRequestConfig,
+  ): AxiosPromise<CompanyAssociatedData<EutaxonomyNonFinancialsData>> {
     return this.openApiDataController.getCompanyAssociatedEutaxonomyNonFinancialsData(dataId, options);
   }
 

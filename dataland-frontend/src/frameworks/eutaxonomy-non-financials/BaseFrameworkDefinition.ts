@@ -5,11 +5,16 @@ import { type AxiosInstance } from "axios";
 import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
 import { EutaxonomyNonFinancialsApiClient } from "@/frameworks/eutaxonomy-non-financials/ApiClient";
 
-export class BaseEutaxonomyNonFinancialsFrameworkDefinition implements BaseFrameworkDefinition<EutaxonomyNonFinancialsData> {
+export class BaseEutaxonomyNonFinancialsFrameworkDefinition
+  implements BaseFrameworkDefinition<EutaxonomyNonFinancialsData>
+{
   readonly identifier = "eutaxonomy-non-financials";
   readonly explanation = "Das Eu Taxonomy Non-Financials Framework";
   readonly label = "EU Taxonomy Non-Financials";
-  getFrameworkApiClient(configuration?: Configuration, axiosInstance?: AxiosInstance): FrameworkDataApi<EutaxonomyNonFinancialsData> {
+  getFrameworkApiClient(
+    configuration?: Configuration,
+    axiosInstance?: AxiosInstance,
+  ): FrameworkDataApi<EutaxonomyNonFinancialsData> {
     return new EutaxonomyNonFinancialsApiClient(configuration, axiosInstance);
   }
 }

@@ -11,7 +11,9 @@ export function generateEutaxonomyNonFinancialsPreparedFixtures(): Array<Fixture
   const preparedFixtures = [];
   // Note: Put the code for prepared fixture generation below. This file will not be overwritten automatically
 
-  const manipulatorFunctions: Array<(input: FixtureData<EutaxonomyNonFinancialsData>) => FixtureData<EutaxonomyNonFinancialsData>> = [];
+  const manipulatorFunctions: Array<
+    (input: FixtureData<EutaxonomyNonFinancialsData>) => FixtureData<EutaxonomyNonFinancialsData>
+  > = [];
   const preparedFixturesBeforeManipulation = generateEutaxonomyNonFinancialsFixtures(manipulatorFunctions.length);
 
   for (let i = 0; i < manipulatorFunctions.length; i++) {

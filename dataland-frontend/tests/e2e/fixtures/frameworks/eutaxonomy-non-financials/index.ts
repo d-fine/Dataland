@@ -8,7 +8,8 @@ import { FAKE_FIXTURES_PER_FRAMEWORK } from "@e2e/fixtures/GenerateFakeFixtures"
  * Generates and exports fake fixtures for the eutaxonomy-non-financials framework
  */
 function exportFixturesEutaxonomyNonFinancials(): void {
-  const companyInformationWithEutaxonomyNonFinancialsData = generateEutaxonomyNonFinancialsFixtures(FAKE_FIXTURES_PER_FRAMEWORK);
+  const companyInformationWithEutaxonomyNonFinancialsData =
+    generateEutaxonomyNonFinancialsFixtures(FAKE_FIXTURES_PER_FRAMEWORK);
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEutaxonomyNonFinancialsData.json",
     JSON.stringify(companyInformationWithEutaxonomyNonFinancialsData, null, "\t"),

@@ -13277,10 +13277,10 @@
           "companyName": {
             "type": "string"
           },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           },
-          "headquarters": {
+          "companyId": {
             "type": "string"
           },
           "sector": {

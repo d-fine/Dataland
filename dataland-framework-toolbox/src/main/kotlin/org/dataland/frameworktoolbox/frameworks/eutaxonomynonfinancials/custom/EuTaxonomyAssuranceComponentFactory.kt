@@ -1,4 +1,4 @@
-package org.dataland.frameworktoolbox.frameworks.euTaxonomyNonFinancials.custom
+package org.dataland.frameworktoolbox.frameworks.eutaxonomynonfinancials.custom
 
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
