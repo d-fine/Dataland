@@ -89,6 +89,7 @@ interface RequestApi {
         ],
     )
     @GetMapping(
+        value = ["/aggregated"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -180,7 +181,6 @@ interface RequestApi {
         ],
     )
     @GetMapping(
-        value = ["/all"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
