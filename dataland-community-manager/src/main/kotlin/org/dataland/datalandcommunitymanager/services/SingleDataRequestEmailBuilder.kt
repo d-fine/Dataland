@@ -1,7 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.email.FreeMarker
-import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandemail.email.BaseEmailBuilder
 import org.dataland.datalandemail.email.Email
@@ -29,18 +29,21 @@ class SingleDataRequestEmailBuilder(
      */
     fun buildSingleDataRequestEmail(
         requesterEmail: String,
-        companyId: String?,
-        singleDataRequest: SingleDataRequest,
+        receiverEmail: String,
+        companyId: String,
+        dataType: DataTypeEnum,
+        reportingPeriod: String,
+        message: String?,
     ): Email {
-        val companyName = if (companyId != null) companyGetter.getCompanyInfo(companyId).companyName else null
+        val companyName = companyGetter.getCompanyInfo(companyId).companyName
         val content = EmailContent(
             subject = "A message from Dataland: Your ESG data are high on demand!",
-            textContent = buildTextContent(requesterEmail, companyName, singleDataRequest),
-            htmlContent = buildHtmlContent(requesterEmail, companyId, companyName, singleDataRequest),
+            textContent = buildTextContent(requesterEmail, companyId, companyName, dataType, reportingPeriod, message),
+            htmlContent = buildHtmlContent(requesterEmail, companyId, companyName, dataType, reportingPeriod, message),
         )
         return Email(
             sender = senderEmailContact,
-            receivers = singleDataRequest.contactList!!.map { EmailContact(it) },
+            receivers = listOf(EmailContact(receiverEmail)),
             cc = null,
             content = content,
         )
@@ -48,40 +51,41 @@ class SingleDataRequestEmailBuilder(
 
     private fun buildTextContent(
         requesterEmail: String,
-        companyName: String?,
-        singleDataRequest: SingleDataRequest
+        companyId: String,
+        companyName: String,
+        dataType: DataTypeEnum,
+        reportingPeriod: String,
+        message: String?,
     ): String {
         return StringBuilder()
-            .append("You have been invited to provide data on Dataland.\n")
-            .append("People are interested in ${readableFrameworkNameMapping[singleDataRequest.frameworkName]} data")
+            .append("Greetings!\nYou have been invited to provide data on Dataland.\n")
+            .append("People are interested in ${readableFrameworkNameMapping[dataType]} data")
+            .append(" for $companyName  for the year $reportingPeriod.\n")
             .also {
-                if (companyName != null) {
-                    it.append(" for $companyName")
-                }
-            }
-            .append(" for the year ${singleDataRequest.listOfReportingPeriods.max()}.\n")
-            .also {
-                if (!singleDataRequest.message.isNullOrBlank()) {
+                if (!message.isNullOrBlank()) {
                     it.append("User $requesterEmail sent the following message:\n")
-                    it.append(singleDataRequest.message)
+                    it.append(message)
                 }
             }
+            .append("\n\nRegister as a data owner under https://dataland.com/companies/$companyId")
             .toString()
     }
 
     private fun buildHtmlContent(
         requesterEmail: String,
-        companyId: String?,
-        companyName: String?,
-        singleDataRequest: SingleDataRequest
+        companyId: String,
+        companyName: String,
+        dataType: DataTypeEnum,
+        reportingPeriod: String,
+        message: String?,
     ): String {
         val freemarkerContext = mapOf(
             "companyId" to companyId,
             "companyName" to companyName,
             "requesterEmail" to requesterEmail,
-            "message" to singleDataRequest.message,
-            "framework" to singleDataRequest.frameworkName,
-            "reportingPeriods" to singleDataRequest.listOfReportingPeriods,
+            "message" to message,
+            "dataType" to dataType,
+            "reportingPeriods" to reportingPeriod,
         )
         val freemarkerTemplate = FreeMarker.configuration
             .getTemplate("/test.ftl")
