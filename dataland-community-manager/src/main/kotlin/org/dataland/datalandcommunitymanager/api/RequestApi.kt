@@ -130,8 +130,8 @@ interface RequestApi {
      * @return the data requests corresponding to the provided ID
      */
     @Operation(
-        summary = "Get all stored data requests of the user making the request.",
-        description = "Gets all the stored data request created by the user who is making the request.",
+        summary = "Gets a stored data request for a given ID.",
+        description = "Gets the stored data request corresponding to the provided data request ID.",
     )
     @ApiResponses(
         value = [
