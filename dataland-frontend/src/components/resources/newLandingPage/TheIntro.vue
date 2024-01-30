@@ -1,25 +1,38 @@
 <template>
-  <section v-if="introSection" class="intro" role="region" aria-label="Introduction">
+  <section
+    v-if="introSection"
+    class="intro"
+    role="region"
+    aria-label="Introduction"
+    :style="isMobile && inputFocused ? { marginTop: '0' } : {}"
+  >
     <img
       v-for="(img, index) in introSection.image"
       :key="index"
       :src="img"
       :alt="introSection.text.join(' ')"
       class="intro__img"
+      v-show="!inputFocused || !isMobile"
     />
 
-    <h1 class="intro__text">
+    <h1 class="intro__text" v-show="!inputFocused || !isMobile">
       <template v-for="(part, index) in introSection.text" :key="index">
         <span v-if="index === 0 || index === 2">{{ part }}</span>
         <template v-else>{{ part }}</template>
       </template>
     </h1>
+    <div class="intro__blurred-overlay" v-if="inputFocused && isMobile"></div>
+    <div v-if="inputFocused && isMobile" class="back-button" @click="handleInputBlur">Back</div>
+
     <CompaniesOnlySearchBar
       @select-company="$router.push(`/companies/${$event.companyId}`)"
       wrapper-class="p-input-icon-left p-input-icon-right p-input-icon-align search"
       input-class="h-3rem search__field"
       icon-class="pi pi-search search__icon"
+      @focus="handleInputFocus"
+      @blur="handleInputBlur"
     />
+
     <ButtonComponent
       :label="aboutIntroSection?.text[2] || 'EXPLORE OUR PRINCIPLES'"
       buttonType="button-component about__button"
@@ -30,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref, watch, onUnmounted } from "vue";
 import type { Section } from "@/types/ContentTypes";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
 import ButtonComponent from "@/components/resources/newLandingPage/ButtonComponent.vue";
@@ -44,6 +57,44 @@ const introSection = computed(() => {
 const aboutIntroSection = computed(() => {
   return props.sections?.find((section) => section.title === "START YOUR DATALAND JOURNEY") ?? null;
 });
+
+const isMobile = ref(window.innerWidth < 768);
+
+watch(
+  () => window.innerWidth,
+  (newWidth) => {
+    isMobile.value = newWidth < 768;
+  },
+);
+
+const updateIsMobile = (): void => {
+  isMobile.value = window.innerWidth < 768;
+};
+
+window.addEventListener("resize", updateIsMobile);
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateIsMobile);
+});
+
+const inputFocused = ref(false);
+
+const handleInputFocus = (): void => {
+  inputFocused.value = true;
+  if (isMobile.value) {
+    document.body.style.overflow = "hidden";
+    const header = document.querySelector(".header") as HTMLElement;
+    if (header) header.style.display = "none";
+  }
+};
+
+const handleInputBlur = (): void => {
+  inputFocused.value = false;
+  if (isMobile.value) {
+    const header = document.querySelector(".header") as HTMLElement;
+    if (header) header.style.display = "";
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -73,7 +124,7 @@ const aboutIntroSection = computed(() => {
     span:last-of-type {
       display: block;
       font-size: 48px;
-      line-height: 56px; /* 116.667% */
+      line-height: 56px;
       margin-top: 80px;
     }
   }
@@ -94,7 +145,7 @@ const aboutIntroSection = computed(() => {
       span:last-of-type {
         font-size: 40px;
         font-weight: 600;
-        line-height: 48px; /* 120% */
+        line-height: 48px;
         letter-spacing: 0.25px;
         margin-top: 32px;
       }
@@ -113,7 +164,7 @@ const aboutIntroSection = computed(() => {
       font-weight: 600;
       span:last-of-type {
         font-size: 32px;
-        line-height: 40px; /* 125% */
+        line-height: 40px;
       }
     }
   }
@@ -136,6 +187,33 @@ const aboutIntroSection = computed(() => {
         line-height: 32px;
       }
     }
+    .back-button {
+      position: absolute;
+      top: -44px;
+      left: 32px;
+      cursor: pointer;
+      width: 100%;
+      z-index: 10;
+      text-align: left;
+      padding: 0 16px;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 24px;
+      letter-spacing: 0.25px;
+      &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        left: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        background-image: url(/static/icons/Arrow--right.svg);
+        transform: rotateY(180deg) translateY(-50%);
+      }
+    }
     .button-component.about__button {
       display: block;
       background-color: transparent;
@@ -146,6 +224,18 @@ const aboutIntroSection = computed(() => {
         border-color: var(--primary-orange);
         color: var(--primary-orange);
       }
+    }
+    & .search {
+      z-index: 20;
+    }
+    &__blurred-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--default-neutral-white);
+      z-index: 10;
     }
   }
 }
@@ -181,7 +271,7 @@ const aboutIntroSection = computed(() => {
       font-size: 16px;
       font-style: normal;
 
-      line-height: 24px; /* 150% */
+      line-height: 24px;
       letter-spacing: 0.25px;
       color: var(--grey-tones-600);
     }
@@ -246,13 +336,33 @@ const aboutIntroSection = computed(() => {
 
   &__icon {
     font-size: 18px;
-    pointer-events: none; // Let click events pass through to the input
+    pointer-events: none;
   }
 }
 @media only screen and (max-width: $large) {
   .search {
     margin-top: 31px;
     max-width: 701px;
+  }
+}
+@media only screen and (max-width: $small) {
+  .search__autocomplete {
+    padding: 0px;
+    top: 47px !important;
+    left: -26px !important;
+    width: auto !important;
+    overflow: hidden;
+    border-radius: 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+    backdrop-filter: unset;
+    ul.p-autocomplete-items {
+      border-radius: 0;
+      background: none;
+      border: 0;
+      max-height: unset;
+    }
   }
 }
 </style>
