@@ -60,7 +60,8 @@ class SingleDataRequestEmailBuilder(
         return StringBuilder()
             .append("Greetings!\nYou have been invited to provide data on Dataland.\n")
             .append("People are interested in ${readableFrameworkNameMapping[dataType]} data")
-            .append(" for $companyName  for the year $reportingPeriod.\n")
+            .append(" for $companyName  for the year${if (reportingPeriod.length > 1) "s" else ""}")
+            .append(" $reportingPeriod.\n")
             .also {
                 if (!message.isNullOrBlank()) {
                     it.append("User $requesterEmail sent the following message:\n")
@@ -76,7 +77,7 @@ class SingleDataRequestEmailBuilder(
         companyId: String,
         companyName: String,
         dataType: DataTypeEnum,
-        reportingPeriod: String,
+        reportingPeriods: String,
         message: String?,
     ): String {
         val freemarkerContext = mapOf(
@@ -85,10 +86,11 @@ class SingleDataRequestEmailBuilder(
             "requesterEmail" to requesterEmail,
             "message" to message,
             "dataType" to dataType,
-            "reportingPeriods" to reportingPeriod,
+            "reportingPeriods" to reportingPeriods,
+            "base_url" to "https://local-dev.dataland.com"
         )
         val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/test.ftl")
+            .getTemplate("/claim_ownership.html.ftl")
 
         val writer = StringWriter()
         freemarkerTemplate.process(freemarkerContext, writer)
