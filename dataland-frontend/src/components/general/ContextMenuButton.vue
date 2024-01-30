@@ -14,14 +14,18 @@
 
 <script lang="ts">
 import PrimeButton from "primevue/button";
-import PrimeMenu from "primevue/menu" ;
+import PrimeMenu from "primevue/menu";
 import {defineComponent} from "vue";
 
 export default defineComponent({
   name: "ContextMenuButton",
   methods: {
+    /**
+     * toggles the menu when event (clicking the button) happens
+     * @param event clicking the button
+     */
     toggle(event: Event) {
-      (this.$refs.menu as InstanceType<typeof PrimeMenu>).toggle(event)
+      (this.$refs.menu as InstanceType<typeof PrimeMenu>).toggle(event);
     },
   },
   components: {

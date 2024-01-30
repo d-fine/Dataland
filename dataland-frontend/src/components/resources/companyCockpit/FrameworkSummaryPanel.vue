@@ -7,8 +7,8 @@
       <div class="summary-panel__subtitle" v-if="subtitle">
         {{ subtitle }}
       </div>
-      <div class="summary-panel__subtitle-placeholder" v-else />
-      <div class="summary-panel__separator" />
+      <div class="summary-panel__subtitle-placeholder" v-else/>
+      <div class="summary-panel__separator"/>
       <div>
         <span class="summary-panel__data" v-if="props.numberOfProvidedReportingPeriods != undefined">
           <span class="summary-panel__value" :data-test="`${framework}-panel-value`">
@@ -20,12 +20,12 @@
       </div>
     </div>
     <a
-      v-if="showProvideDataButton && !useMobileView"
-      class="summary-panel__provide-button"
-      @click="$router.push(`/companies/${props.companyId}/frameworks/${props.framework}/upload`)"
-      @pointerenter="onCursorEnterProvideButton"
-      @pointerleave="onCursorLeaveProvideButton"
-      :data-test="`${framework}-provide-data-button`"
+        v-if="showProvideDataButton && !useMobileView"
+        class="summary-panel__provide-button"
+        @click="$router.push(`/companies/${props.companyId}/frameworks/${props.framework}/upload`)"
+        @pointerenter="onCursorEnterProvideButton"
+        @pointerleave="onCursorLeaveProvideButton"
+        :data-test="`${framework}-provide-data-button`"
     >
       PROVIDE DATA
     </a>
@@ -33,13 +33,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onBeforeMount, ref } from "vue";
-import { DataTypeEnum } from "@clients/backend";
-import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
-import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import {computed, inject, onBeforeMount, ref} from "vue";
+import {DataTypeEnum} from "@clients/backend";
+import {humanizeStringOrNumber} from "@/utils/StringFormatter";
+import {checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER} from "@/utils/KeycloakUtils";
+import {ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE} from "@/utils/Constants";
 import type Keycloak from "keycloak-js";
-import { useRouter } from "vue-router";
+import {useRouter} from "vue-router";
 
 const router = useRouter();
 
@@ -77,10 +77,10 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise")
 const isUserUploader = ref<boolean>();
 onBeforeMount(() => {
   checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
-    .then((result) => {
-      isUserUploader.value = result;
-    })
-    .catch((error) => console.log(error));
+      .then((result) => {
+        isUserUploader.value = result;
+      })
+      .catch((error) => console.log(error));
 });
 const showProvideDataButton = computed(() => {
   return isUserUploader.value && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
@@ -89,9 +89,9 @@ const showProvideDataButton = computed(() => {
 const authenticated = inject<{ value: boolean }>("authenticated");
 const hasAccessibleViewPage = computed(() => {
   return (
-    authenticated?.value &&
-    ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(props.framework) &&
-    props.numberOfProvidedReportingPeriods
+      authenticated?.value &&
+      ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.includes(props.framework) &&
+      props.numberOfProvidedReportingPeriods
   );
 });
 
@@ -136,16 +136,26 @@ function onCursorLeaveProvideButton(): void {
   justify-content: space-between;
   min-height: 282px;
 
-  @media only screen and (max-width: $small) {
-  }
-
-  &--interactive {
-    &:hover {
-      box-shadow: 0 0 32px 8px #1e1e1e14;
+  @media only screen and (min-width: $small) {
+    &--interactive {
+      width: 339px;
+      height: 282px;
+      background-color: var(--surface-card);
+      padding: 24px;
+      border-radius: 8px;
+      text-align: left;
+      box-shadow: 0 0 12px #9494943d;
+      display: flex;
+      flex-direction: column;
       cursor: pointer;
+      justify-content: space-between;
 
-      .summary-panel__separator {
-        border-bottom-color: var(--primary-color);
+      &:hover {
+        box-shadow: 0 0 32px 8px #1e1e1e14;
+
+        .summary-panel__separator {
+          border-bottom-color: var(--primary-color);
+        }
       }
     }
   }
