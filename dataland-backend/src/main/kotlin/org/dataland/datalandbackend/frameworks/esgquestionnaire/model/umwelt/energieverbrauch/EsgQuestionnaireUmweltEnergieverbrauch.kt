@@ -8,5 +8,7 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTim
  */
 data class EsgQuestionnaireUmweltEnergieverbrauch(
     val berichterstattungEnergieverbrauch: YearlyTimeseriesData<BerichterstattungEnergieverbrauchValues?>? = null,
+
     val unternehmensGruppenStrategieBzglEnergieverbrauch: String? = null,
+
 )

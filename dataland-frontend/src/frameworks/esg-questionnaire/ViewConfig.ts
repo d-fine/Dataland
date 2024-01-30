@@ -73,7 +73,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Beschreibung der ESG-Ziele",
-            explanation: "Bitte geben Sie eine genaue Beschreibung der ESG-Ziele.",
+            explanation: "Beschreibung der ESG-Ziele",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.esgZiele?.existenzVonEsgZielen == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -82,8 +82,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Investitionen in Zielerreichung",
-            explanation:
-              "Bitte geben Sie an wieviele Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele zugewiesen wurden.",
+            explanation: "Budgets/Vollzeitäquivalente für das Erreichen der ESG-Ziele",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.esgZiele?.existenzVonEsgZielen == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -110,8 +109,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Auflistung der Sektoren",
-            explanation:
-              "Bitte geben Sie an, zu welchen Sektoren (mit hohen Klimaauswirkungen) das Unternehmen zugeordnet werden kann.",
+            explanation: "Sektoren (mit hohen Klimaauswirkungen), denen das Unternehmen zugeordnet werden kann.",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.sektoren?.sektorenMitHohenKlimaauswirkungen == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
@@ -179,7 +177,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Aktuelle Berichte",
-            explanation: "Bitte teilen Sie die letzten Berichte mit uns (vorzugsweise die letzten drei).",
+            explanation: "Letzten ESG Berichte",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.esgBerichte?.nachhaltigkeitsberichte == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
@@ -202,8 +200,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "ISO 14001",
-            explanation:
-              "Haben Sie eine ISO 14001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+            explanation: "Hat das Unternehmen eine ISO 14001-Akkreditierung?",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -216,8 +213,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "ISO 45001",
-            explanation:
-              "Haben Sie eine ISO 45001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+            explanation: "Hat das Unternehmen eine ISO 45001-Akkreditierung?",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -230,8 +226,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "ISO 27001",
-            explanation:
-              "Haben Sie eine ISO 27001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+            explanation: "Hat das Unternehmen eine ISO 27001-Akkreditierung?",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -244,8 +239,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "ISO 50001",
-            explanation:
-              "Haben Sie eine ISO 50001 Akkreditierung? Bitte teilen Sie das entsprechende Zertifikat mit uns.",
+            explanation: "Hat das Unternehmen eine ISO 50001-Akkreditierung?",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -258,8 +252,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Weitere Akkreditierungen",
-            explanation:
-              "Bitte führen Sie weitere Akkreditierungen auf, sofern diese nicht bereits gelistet sind, und teilen Sie entsprechende Zertifikate mit uns.",
+            explanation: "Weitere Akkreditierungen",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
@@ -295,7 +288,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Richtlinien zur Einhaltung der UNGCP",
             explanation:
-              "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht.",
+              "Richtlinien die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der UN Global Compact Prinzipien überwacht.",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
@@ -310,7 +303,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Erklärung der Einhaltung der UNGCP",
-            explanation: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
+            explanation: "Erklärung, dass keine Verstöße gegen diese Grundsätze vorliegen",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.unGlobalConceptPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -340,7 +333,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Richtlinien zur Einhaltung der OECD-Leitsätze",
             explanation:
-              "Bitte teilen Sie die Richtlinien mit uns die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht.",
+              "Richtlinien die beschreiben oder Informationen darüber liefern, wie das Unternehmen die Einhaltung der OECD-Leitsätze überwacht",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
@@ -355,7 +348,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Erklärung der Einhaltung der OECD-Leitsätze",
-            explanation: "Bitte geben Sie eine Erklärung ab, dass keine Verstöße gegen diese Grundsätze vorliegen.",
+            explanation: "Erklärung, dass keine Verstöße gegen diese Grundsätze vorliegen",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.oecdLeitsaetze?.mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -392,7 +385,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Ausschlusslisten",
-            explanation: "Bitte nennen Sie die Ausschlusslisten auf Basis von ESG Kriterien.",
+            explanation: "Ausschlusslisten auf Basis von ESG Kriterien",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.sonstige?.ausschlusslistenAufBasisVonEsgKriterien == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -422,7 +415,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Anreizmechanismen für das Management (Umwelt)",
             explanation:
-              "Wie spiegeln sich die Anreizmechanismen für den Bereich Umwelt in der jährlichen Zielsetzung für das Management wieder? Bitte geben Sie die aktuellen Verpflichtungen an.",
+              "Wie spiegeln sich die Anreizmechanismen für den Bereich Umwelt in der jährlichen Zielsetzung für das Management wieder?",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
@@ -446,7 +439,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Anreizmechanismen für das Management (Soziales)",
             explanation:
-              "Wie spiegeln sich die Anreizmechanismen für den Bereich Soziales in der jährlichen Zielsetzung für das Management wieder? Bitte geben Sie die aktuellen Verpflichtungen an.",
+              "Wie spiegeln sich die Anreizmechanismen für den Bereich Soziales in der jährlichen Zielsetzung für das Management wieder?",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.fuehrungsstandards?.oekologischeSozialeFuehrungsstandardsOderPrinzipien == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes => {
@@ -514,7 +507,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Einzelheiten zu den Rechtsstreitigkeiten zu E",
-            explanation: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
+            explanation: "Einzelheiten zu den Rechtsstreitigkeiten.",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuE == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -552,7 +545,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Einzelheiten zu den Rechtsstreitigkeiten zu S",
-            explanation: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
+            explanation: "Einzelheiten zu den Rechtsstreitigkeiten.",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuS == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -590,7 +583,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Einzelheiten zu den Rechtsstreitigkeiten zu G",
-            explanation: "Bitte erläutern Sie Einzelheiten zu den Rechtsstreitigkeiten.",
+            explanation: "Einzelheiten zu den Rechtsstreitigkeiten.",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.rechtsstreitigkeiten?.rechtsstreitigkeitenMitBezugZuG == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -671,8 +664,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Ausstehende grüne, soziale und/oder nachhaltige Emissionen",
-            explanation:
-              "Bitte geben Sie Details zu den ausstehenden Emissionen für das letzte Jahr der Berichterstattung an (in Mio €).",
+            explanation: "Details zu den ausstehenden Emissionen für das letzte Jahr der Berichterstattung (in Mio €)",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.anleihen?.grueneSozialeUndOderNachhaltigeEmissionen == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -693,8 +685,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Ausstehende Sustainibility Linked Debt",
-            explanation:
-              "Bitte geben Sie Details zu den ausstehenden Emissionen für das letzte Jahr der Berichterstattung an (in Mio €).",
+            explanation: "Details zu den ausstehenden Emissionen für das letzte Jahr der Berichterstattung (in Mio €).",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.allgemein?.anleihen?.sustainibilityLinkedDebt == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -711,8 +702,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Wichtigste E-, S- und G-Risiken und Bewertung",
-            explanation:
-              "Welche sind die wichtigsten von der Gruppe identifizierten E-, S- und G-Risiken? Bitte geben Sie die Details / Bewertung der identifizierten Risiken an.",
+            explanation: "Welche sind die wichtigsten von der Gruppe identifizierten E-, S- und G-Risiken?",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -748,7 +738,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Treibhausgas-Berichterstattung und Prognosen",
             explanation:
-              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
+              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Scope 1, Scope 2 und Scope 3 Emissionen für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre (in tCO2-Äquiv.)",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -779,7 +769,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Strategie und Ziele zur Reduzierung von Treibhausgas-Emissionen",
             explanation:
-              "Welchen Entwicklungspfad bzgl. der (Reduktion von) Treibhausgasemissionen verfolgt das Unternehmen. Gibt es einen Zeitplan bzw. konkrete Ziele? Und wie plant das Unternehmen, diesen Kurs zu erreichen? Bitte erläutern Sie, in welchem Bezug dieser Entwicklungspfad zu dem auf dem Pariser Abkommen basierenden Kurs steht.",
+              "Welchen Entwicklungspfad bzgl. der (Reduktion von) Treibhausgasemissionen verfolgt das Unternehmen. Gibt es einen Zeitplan bzw. konkrete Ziele? Wie plant das Unternehmen, diesen Kurs zu erreichen?",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -808,7 +798,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Verringerungen der Umweltbelastung",
-            explanation: "Bitte beschreiben Sie möglichst genau, wie die Produkte die Umweltbelastung reduzieren.",
+            explanation: "Die Art und Weise, wie die Produkte die Umweltbelastung reduzieren",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.produktion?.produkteZurVerringerungDerUmweltbelastung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -838,7 +828,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Berichterstattung Energieverbrauch",
             explanation:
-              "Bitte geben Sie den Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
+              "Energieverbrauch (in GWh), sowie den Verbrauch erneuerbaren Energien (%) und, falls zutreffend, die Erzeugung erneuerbaren Energien (%) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -862,7 +852,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Unternehmens/Gruppen Strategie bzgl Energieverbrauch",
             explanation:
-              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+              "Der von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -880,9 +870,9 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
         children: [
           {
             type: "cell",
-            label: "Berichterstattung Energieverbrauch von Immobilienvermoegen",
+            label: "Berichterstattung Energieverbrauch von Immobilienvermögen",
             explanation:
-              "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
+              "Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -895,14 +885,14 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
                     unitSuffix: "",
                   },
                 },
-                "Berichterstattung Energieverbrauch von Immobilienvermoegen",
+                "Berichterstattung Energieverbrauch von Immobilienverm\u00F6gen",
               ),
           },
           {
             type: "cell",
             label: "Unternehmens/Gruppen Strategie bzgl energieeffizienten Immobilienanlagen",
             explanation:
-              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+              "Der von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -923,7 +913,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Berichterstattung Wasserverbrauch",
             explanation:
-              "Bitte geben Sie den Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
+              "Wasserverbrauch (in l), sowie die Emissionen in Wasser (in Tonnen) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -940,7 +930,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Unternehmens/Gruppen Strategie bzgl Wasserverbrauch",
             explanation:
-              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+              "Der von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -960,7 +950,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Berichterstattung Abfallproduktion",
             explanation:
-              "Bitte geben Sie die gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
+              "Gesamte Abfallmenge (in Tonnen), sowie den Anteil (%) der gesamten Abfallmenge, der recyclet wird, sowie den Anteil (%) gefährlicher Abfall der gesamten Abfallmenge für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -978,7 +968,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Unternehmens/Gruppen Strategie bzgl Abfallproduktion",
             explanation:
-              "Bitte erläutern Sie den von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+              "Der von der Gruppe/Unternehmen definierte Entwicklungspfad (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -990,7 +980,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Recycling im Produktionsprozess",
             explanation:
-              "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereitsrecyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre.",
+              "Anteil an Recyclaten (bereits recyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1039,7 +1029,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Negative Maßnahmen für die biologische Vielfalt",
             explanation:
-              "Bitte erläutern Sie Aktivitäten, die sich negativ auf die Biodiversität auswirken. Teilen Sie bitte auch den von der Gruppe/Unternehmen definierte Entwicklungspfad für den Umgang mit diesen Maßnahmen (Zeitplan und Ziel - falls vorhanden) mit uns und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+              "Aktivitäten, die sich negativ auf die Biodiversität auswirken, und der von der Gruppe/Unternehmen definierte Entwicklungspfad für den Umgang mit diesen Maßnahmen (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.biodiversitaet?.negativeAktivitaetenFuerDieBiologischeVielfalt == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1061,7 +1051,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Positive Maßnahmen für die biologische Vielfalt",
             explanation:
-              "Bitte erläutern Sie Aktivitäten, die sich positiv auf die Biodiversität auswirken. Teilen Sie bitte auch den von der Gruppe/Unternehmen definierte Entwicklungspfad für die Weiterentwicklung dieser Maßnahmen (Zeitplan und Ziel - falls vorhanden) mit uns und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
+              "Aktivitäten, die sich positiv auf die Biodiversität auswirken, und der von der Gruppe/Unternehmen definierte Entwicklungspfad für die Weiterentwicklung dieser Maßnahmen (Zeitplan und Ziel - falls vorhanden) und wie das Unternehmen den geplanten Entwicklungspfad erreichen möchte.",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.biodiversitaet?.positiveAktivitaetenFuerDieBiologischeVielfalt == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1089,7 +1079,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Berichterstattung Einnahmen aus fossilen Brennstoffen",
             explanation:
-              "Bitte geben Sie den Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
+              "Anteil (%) der Einnahmen aus fossilen Brennstoffen aus den gesamten Einnahmen für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.umwelt?.fossileBrennstoffe?.einnahmenAusFossilenBrennstoffen == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1148,7 +1138,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Umsatz/Investitionsaufwand für nachhaltige Aktivitäten",
             explanation:
-              "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie? Bitte machen Sie Angaben zu den betrachteten Sektoren und gegebenenfalls zu den Annahmen bzgl. Taxonomie-konformen (aligned) Aktivitäten für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
+              "Wie hoch ist der Umsatz/Investitionsaufwand des Unternehmens aus nachhaltigen Aktivitäten (Mio. €) gemäß einer Definition der EU-Taxonomie?",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1207,7 +1197,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Anzahl unbefristeter Verträge in Deutschland",
-            explanation: "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in Deutschland gibt.",
+            explanation: "Gesamtzahl der unbefristeten Verträge in Deutschland",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
@@ -1221,7 +1211,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Anzahl der von einem Verkauf betroffenen unbefristeten Verträge in Deutschland ",
             explanation:
-              "Bitte teilen Sie mit uns wieviele unbefristete Verträge in Deutschland von einem etwaigen Verkauf betroffen waren.",
+              "Anzahl der unbefristeten Verträge in Deutschland, die von einem etwaigen Verkauf betroffen waren",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
@@ -1236,7 +1226,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Anzahl der von einer Akquisition betroffenen unbefristeten Verträge in Deutschland ",
             explanation:
-              "Bitte teilen Sie mit uns wieviele unbefristete Verträge in Deutschland von einer etwaigen Akquisition betroffen waren.",
+              "Anzahl der unbefristeten Verträge in Deutschland, die von einer etwaigen Akquisition betroffen waren",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
@@ -1250,8 +1240,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Anzahl unbefristeter Verträge in der Gesamtgruppe",
-            explanation:
-              "Bitte teilen Sie mit uns wieviele unbefristete Verträge es insgesamt in der Gesamtgruppe gibt.",
+            explanation: "Gesamtzahl der unbefristeten Verträge in der Gesamtgruppe",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
@@ -1265,7 +1254,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Anzahl der von einem Verkauf betroffenen unbefristeten Verträge in der Gesamtgruppe",
             explanation:
-              "Bitte teilen Sie mit uns wieviele unbefristete Verträge in der Gesamtgruppe von einem etwaigen Verkauf betroffen waren.",
+              "Anzahl der unbefristeten Verträge in der Gesamtgruppe, die von einem etwaigen Verkauf betroffen waren",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
@@ -1280,7 +1269,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Anzahl der von einer Akquisition betroffenen unbefristeten Verträge in der Gesamtgruppe",
             explanation:
-              "Bitte teilen Sie mit uns wieviele unbefristete Verträge in der Gesamtgruppe von einer etwaigen Akquisition betroffen waren.",
+              "Anzahl der unbefristeten Verträge in der Gesamtgruppe, die von einer etwaigen Akquisition betroffen waren",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
@@ -1294,8 +1283,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Auswirkungen auf Anteil befrister Verträge und Fluktuation",
-            explanation:
-              "Bitte geben Sie die Anzahl der befristeten Verträge sowie die Fluktuation (%) für die letzten drei Jahre an.",
+            explanation: "Anzahl der befristeten Verträge und Fluktuation (%) in den letzten drei Jahren",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.soziales?.unternehmensstrukturaenderungen
                 ?.vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur == "Yes",
@@ -1353,7 +1341,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Budget für Schulung/Ausbildung",
             explanation:
-              "Bitte geben Sie an wie hoch das Budget ist, das pro Mitarbeiter und Jahr für Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde.",
+              "Budget, das pro Mitarbeiter und Jahr für Schulungen/Fortbildungen in den letzten drei Jahren ausgegeben wurde",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1375,7 +1363,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Überwachung der Einkommensungleichheit",
             explanation:
-              "Bitte geben Sie das unbereinigte geschlechtsspezifische Lohngefälle, das Einkommensungleichheitsverhältnis, sowie das CEO-Einkommensungleichheitsverhältnis für die letzten drei Jahre an.",
+              "Unbereinigte geschlechtsspezifische Lohngefälle, Einkommensungleichheitsverhältnis, und CEO-Einkommensungleichheitsverhältnis für die letzten drei Jahre",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1418,7 +1406,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Mitarbeiter auf Top-Management Ebene",
-            explanation: "Geben Sie bitte an wieviele Personen eine Top-Management Position innehaben.",
+            explanation: "Anzahl der Personen, die eine Top-Management-Position innehaben.",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1427,7 +1415,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Frauen auf Top-Management-Ebene",
-            explanation: "Geben Sie bitte an wieviele Frauen eine Top-Management Position innehaben.",
+            explanation: "Anzahl der Frauen in einer Top-Management Position",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1436,7 +1424,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Mitglieder Geschäftsführung",
-            explanation: "Geben Sie bitte an wieviele Mitglieder die Geschäftsführung hat.",
+            explanation: "Anzahl der Mitglieder der Geschäftsführung",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1445,7 +1433,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Frauen in der Geschäftsführung",
-            explanation: "Geben Sie bitte an wieviele Frauen in der Geschäftsführung sind.",
+            explanation: "Anzahl der Frauen in der Geschäftsführung",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1454,7 +1442,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Definition Top-Management",
-            explanation: 'Bitte geben Sie Ihre Definition von "Top-Management".',
+            explanation: 'Definition von "Top-Management"',
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1510,7 +1498,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Audit Ergebnisse",
-            explanation: "Bitte geben Sie Informationen über das letzte Audit an.",
+            explanation: "Informationen über das letzte Audit",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.soziales?.audit?.auditsZurEinhaltungVonArbeitsstandards == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1814,8 +1802,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Prozess der Einbeziehung von Stakeholdern",
-            explanation:
-              "Bitte geben Sie Einzelheiten zu einem solchen Prozess an, z.B. eine Umfrage zur Bewertung der Mitarbeiter- oder Kundenzufriedenheit. Falls zutreffend, teilen Sie uns bitte die wichtigsten Schlussfolgerungen mit.",
+            explanation: "Einzelheiten zu einem solchen Prozess, und wichtigsten Schlussfolgerungen (falls zutreffend)",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1827,7 +1814,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Mechanismen zur Ausrichtung auf Stakeholder",
             explanation:
-              "Welche Mechanismen gibt es derzeit, um sicherzustellen, dass die Stakeholder im besten Interesse des Unternehmens handeln? Bitte erläutern Sie (falls zutreffend) die Beteiligungsmechanismen, verschiedene Anreizsysteme usw.",
+              "Welche Mechanismen gibt es derzeit, um sicherzustellen, dass die Stakeholder im besten Interesse des Unternehmens handeln?",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.unternehmensfuehrungGovernance?.stakeholder?.einbeziehungVonStakeholdern == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1875,7 +1862,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
           {
             type: "cell",
             label: "Weitere veröffentliche Unternehmensrichtlinien",
-            explanation: "Bitte nennen Sie weitere wichtige Richtlinien, falls diese nicht angegeben sind.",
+            explanation: "Weitere Richtlinien",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.general?.masterData?.berichtspflichtUndEinwilligungZurVeroeffentlichung == "Yes",
             valueGetter: (dataset: EsgQuestionnaireData): AvailableMLDTDisplayObjectTypes =>
@@ -1908,7 +1895,7 @@ export const esgQuestionnaireViewConfiguration: MLDTConfig<EsgQuestionnaireData>
             type: "cell",
             label: "Auswahlkriterien",
             explanation:
-              "Bitte nennen Sie die Auswahlkriterien und erläutern Sie, wie diese Kriterien im Laufe der Zeit überwacht/geprüft werden. Bezieht das Unternehmen beispielsweise Rohstoffe aus Gebieten, in denen umstrittene Abholzungsaktivitäten stattfinden (z.B. Soja, Palmöl, Tropenholz, Holz oder industrielle Viehzucht)?",
+              "Auswahlkriterien und wie diese Kriterien im Laufe der Zeit überwacht/geprüft werden. Bezieht das Unternehmen beispielsweise Rohstoffe aus Gebieten, in denen umstrittene Abholzungsaktivitäten stattfinden (z.B. Soja, Palmöl, Tropenholz, Holz oder industrielle Viehzucht)?",
             shouldDisplay: (dataset: EsgQuestionnaireData): boolean =>
               dataset.unternehmensfuehrungGovernance?.lieferantenauswahl?.esgKriterienUndUeberwachungDerLieferanten ==
               "Yes",

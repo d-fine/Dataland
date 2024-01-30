@@ -11343,32 +11343,6 @@
           }
         }
       },
-      "AnreizmechanismenFuerDasManagementSozialesOptions": {
-        "type": "string",
-        "enum": [
-          "Nein",
-          "JaAufsichtsrat",
-          "JaGeschaeftsleitung",
-          "JaAufsichtsratUndGeschaeftsleitung"
-        ]
-      },
-      "AnreizmechanismenFuerDasManagementUmweltOptions": {
-        "type": "string",
-        "enum": [
-          "Nein",
-          "JaAufsichtsrat",
-          "JaGeschaeftsleitung",
-          "JaAufsichtsratUndGeschaeftsleitung"
-        ]
-      },
-      "ArtDesAuditsOptions": {
-        "type": "string",
-        "enum": [
-          "InterneAnhoerung",
-          "PruefungDurchDritte",
-          "SowohlInternAlsAuchVonDrittanbietern"
-        ]
-      },
       "AuflistungDerSektorenOptions": {
         "type": "string",
         "enum": [
@@ -11679,7 +11653,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/FrequenzDerBerichterstattungOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinEsgberichteFrequenzDerBerichterstattungOptions"
               }
             ]
           },
@@ -11713,6 +11687,15 @@
           }
         }
       },
+      "EsgQuestionnaireAllgemeinEsgberichteFrequenzDerBerichterstattungOptions": {
+        "type": "string",
+        "enum": [
+          "Jaehrlich",
+          "Halbjaehrlich",
+          "Vierteljaehrlich",
+          "Monatlich"
+        ]
+      },
       "EsgQuestionnaireAllgemeinFuehrungsstandards": {
         "type": "object",
         "properties": {
@@ -11728,7 +11711,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementUmweltOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementUmweltOptions"
               }
             ]
           },
@@ -11736,11 +11719,29 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementSozialesOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementSozialesOptions"
               }
             ]
           }
         }
+      },
+      "EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementSozialesOptions": {
+        "type": "string",
+        "enum": [
+          "Nein",
+          "JaAufsichtsrat",
+          "JaGeschaeftsleitung",
+          "JaAufsichtsratUndGeschaeftsleitung"
+        ]
+      },
+      "EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementUmweltOptions": {
+        "type": "string",
+        "enum": [
+          "Nein",
+          "JaAufsichtsrat",
+          "JaGeschaeftsleitung",
+          "JaAufsichtsratUndGeschaeftsleitung"
+        ]
       },
       "EsgQuestionnaireAllgemeinOecdLeitsaetze": {
         "type": "object",
@@ -11822,7 +11823,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusZuEOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuEOptions"
               }
             ]
           },
@@ -11842,7 +11843,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusZuSOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuSOptions"
               }
             ]
           },
@@ -11862,7 +11863,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusZuGOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuGOptions"
               }
             ]
           },
@@ -11871,6 +11872,27 @@
             "nullable": true
           }
         }
+      },
+      "EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuEOptions": {
+        "type": "string",
+        "enum": [
+          "Offen",
+          "Geklaert"
+        ]
+      },
+      "EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuGOptions": {
+        "type": "string",
+        "enum": [
+          "Offen",
+          "Geklaert"
+        ]
+      },
+      "EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuSOptions": {
+        "type": "string",
+        "enum": [
+          "Offen",
+          "Geklaert"
+        ]
       },
       "EsgQuestionnaireAllgemeinRisiken": {
         "type": "object",
@@ -11951,15 +11973,13 @@
         }
       },
       "EsgQuestionnaireData": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
           "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireGeneral"
-              }
-            ]
+            "$ref": "#/components/schemas/EsgQuestionnaireGeneral"
           },
           "allgemein": {
             "nullable": true,
@@ -11996,15 +12016,13 @@
         }
       },
       "EsgQuestionnaireGeneral": {
+        "required": [
+          "masterData"
+        ],
         "type": "object",
         "properties": {
           "masterData": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireGeneralMasterData"
-              }
-            ]
+            "$ref": "#/components/schemas/EsgQuestionnaireGeneralMasterData"
           }
         }
       },
@@ -12084,7 +12102,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ArtDesAuditsOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesAuditArtDesAuditsOptions"
               }
             ]
           },
@@ -12093,6 +12111,14 @@
             "nullable": true
           }
         }
+      },
+      "EsgQuestionnaireSozialesAuditArtDesAuditsOptions": {
+        "type": "string",
+        "enum": [
+          "InterneAnhoerung",
+          "PruefungDurchDritte",
+          "SowohlInternAlsAuchVonDrittanbietern"
+        ]
       },
       "EsgQuestionnaireSozialesEinkommensgleichheit": {
         "type": "object",
@@ -12432,7 +12458,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/TaxonomieBerichterstattungOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltTaxonomieTaxonomieBerichterstattungOptions"
               }
             ]
           },
@@ -12452,6 +12478,13 @@
             ]
           }
         }
+      },
+      "EsgQuestionnaireUmweltTaxonomieTaxonomieBerichterstattungOptions": {
+        "type": "string",
+        "enum": [
+          "Nfrd",
+          "Csrd"
+        ]
       },
       "EsgQuestionnaireUmweltTreibhausgasemissionen": {
         "type": "object",
@@ -12728,15 +12761,6 @@
           }
         }
       },
-      "FrequenzDerBerichterstattungOptions": {
-        "type": "string",
-        "enum": [
-          "Jaehrlich",
-          "Halbjaehrlich",
-          "Vierteljaehrlich",
-          "Monatlich"
-        ]
-      },
       "RecyclingImProduktionsprozessValues": {
         "type": "object",
         "properties": {
@@ -12745,34 +12769,6 @@
             "nullable": true
           }
         }
-      },
-      "StatusZuEOptions": {
-        "type": "string",
-        "enum": [
-          "Offen",
-          "Geklaert"
-        ]
-      },
-      "StatusZuGOptions": {
-        "type": "string",
-        "enum": [
-          "Offen",
-          "Geklaert"
-        ]
-      },
-      "StatusZuSOptions": {
-        "type": "string",
-        "enum": [
-          "Offen",
-          "Geklaert"
-        ]
-      },
-      "TaxonomieBerichterstattungOptions": {
-        "type": "string",
-        "enum": [
-          "Nfrd",
-          "Csrd"
-        ]
       },
       "TreibhausgasBerichterstattungUndPrognosenValues": {
         "type": "object",
@@ -13350,10 +13346,10 @@
           "companyName": {
             "type": "string"
           },
-          "headquarters": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           },
           "sector": {
