@@ -1,6 +1,10 @@
-package org.dataland.datalandcommunitymanager.services
+package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
+import org.dataland.datalandcommunitymanager.services.CauseOfMail
+import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -10,13 +14,14 @@ import org.springframework.stereotype.Service
 @Service("DataRequestLogger")
 class DataRequestLogger {
 
-    private val logger = LoggerFactory.getLogger(DataRequestManager::class.java)
+    private val bulkDataRequestLogger = LoggerFactory.getLogger(BulkDataRequestManager::class.java)
+    private val singleDataRequestLogger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
     /**
      * Logs an appropriate message when a bulk data request has happened.
      */
     fun logMessageForBulkDataRequest(bulkDataRequestId: String) {
-        logger.info(
+        bulkDataRequestLogger.info(
             "Received a bulk data request by a user. " +
                 "-> Processing it with bulkDataRequestId $bulkDataRequestId",
 
@@ -27,7 +32,7 @@ class DataRequestLogger {
      * Logs an appropriate message when a single data request has happened.
      */
     fun logMessageForSingleDataRequest(companyIdentifier: String) {
-        logger.info(
+        bulkDataRequestLogger.info(
             "Received a single data request with companyIdentifier $companyIdentifier by a user. " +
                 "-> Processing it",
         )
@@ -37,7 +42,7 @@ class DataRequestLogger {
      * Logs an appropriate message when a bulk data request email is sent.
      */
     fun logMessageForSendBulkDataRequestEmail(bulkDataRequestId: String) {
-        logger.info(
+        bulkDataRequestLogger.info(
             "Sending email after ${CauseOfMail.BulkDataRequest}" +
                 " with bulkDataRequestId $bulkDataRequestId has been processed",
 
@@ -48,7 +53,7 @@ class DataRequestLogger {
      * Logs an appropriate message when a user has retrieved all their data requests.
      */
     fun logMessageForRetrievingDataRequestsForUser() {
-        logger.info("A user has retrieved all their data requests.")
+        bulkDataRequestLogger.info("A user has retrieved all their data requests.")
     }
 
     /**
@@ -59,7 +64,7 @@ class DataRequestLogger {
         identifierValue: String,
         framework: DataTypeEnum,
     ) {
-        logger.info(
+        bulkDataRequestLogger.info(
             "The following data request already exists for the requesting user and therefore " +
                 "is not being recreated: (identifierValue: $identifierValue, framework: $framework)",
         )
@@ -79,17 +84,20 @@ class DataRequestLogger {
         } else {
             "can be associated with the companyId $companyId on Dataland."
         }
-        logger.info(logMessage)
+        bulkDataRequestLogger.info(logMessage)
     }
 
     /**
      * Logs an appropriate message when a data request has been stored in the database.
      */
-    fun logMessageForStoringDataRequest(dataRequestId: String, bulkDataRequestId: String? = null) {
-        var logMessage = "Stored data request with dataRequestId $dataRequestId "
-        if (bulkDataRequestId != null) {
-            logMessage += "while processing a bulk data request with bulkDataRequestId: $bulkDataRequestId"
-        }
-        logger.info(logMessage)
+    fun logMessageForStoringDataRequest(dataRequestId: String) {
+        bulkDataRequestLogger.info("Stored data request with dataRequestId $dataRequestId")
+    }
+
+    /**
+     * Logs an appropriate message when the status of a data request is updated
+     */
+    fun logMessageForPatchingRequestStatus(dataRequestId: String, requestStatus: RequestStatus) {
+        singleDataRequestLogger.info("Patching Company $dataRequestId with status $requestStatus")
     }
 }

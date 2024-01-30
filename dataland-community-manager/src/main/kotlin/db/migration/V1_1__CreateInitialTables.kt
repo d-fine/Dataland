@@ -4,7 +4,7 @@ import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 
 /**
- * This migration script handles the creation of the initial databases
+ * This migration script handles the creation of the initial database table
  */
 class V1_1__CreateInitialTables : BaseJavaMigration() {
     override fun migrate(context: Context?) {
