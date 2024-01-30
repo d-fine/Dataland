@@ -217,12 +217,30 @@
         "tags": [
           "request-controller"
         ],
-        "summary": "Get aggregated data requests.",
-        "description": "Gets all data requests that match the given filters, while aggregating userIDs.",
-        "operationId": "getAggregatedDataRequests",
+        "summary": "Get all stored data requests based on filters.",
+        "description": "Gets all the stored data request based on filters.",
+        "operationId": "getDataRequests",
         "parameters": [
           {
-            "name": "identifierValue",
+            "name": "dataType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "esg-questionnaire",
+                "heimathafen",
+                "eutaxonomy-financials",
+                "eutaxonomy-non-financials",
+                "lksg",
+                "p2p",
+                "sfdr",
+                "sme"
+              ]
+            }
+          },
+          {
+            "name": "userId",
             "in": "query",
             "required": false,
             "schema": {
@@ -230,25 +248,11 @@
             }
           },
           {
-            "name": "dataTypes",
+            "name": "requestStatus",
             "in": "query",
             "required": false,
             "schema": {
-              "uniqueItems": true,
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "esg-questionnaire",
-                  "heimathafen",
-                  "eutaxonomy-financials",
-                  "eutaxonomy-non-financials",
-                  "lksg",
-                  "p2p",
-                  "sfdr",
-                  "sme"
-                ]
-              }
+              "$ref": "#/components/schemas/RequestStatus"
             }
           },
           {
@@ -258,17 +262,25 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "dataRequestCompanyIdentifierValue",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved aggregated data requests.",
+            "description": "Successfully retrieved data requests",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AggregatedDataRequest"
+                    "$ref": "#/components/schemas/StoredDataRequest"
                   }
                 }
               }
@@ -310,8 +322,8 @@
         "tags": [
           "request-controller"
         ],
-        "summary": "Get all stored data requests of the user making the request.",
-        "description": "Gets all the stored data request created by the user who is making the request.",
+        "summary": "Gets a stored data request for a given ID.",
+        "description": "Gets the stored data request corresponding to the provided data request ID.",
         "operationId": "getDataRequestById",
         "parameters": [
           {
@@ -419,35 +431,17 @@
         ]
       }
     },
-    "/requests/all": {
+    "/requests/aggregated": {
       "get": {
         "tags": [
           "request-controller"
         ],
-        "summary": "Get all stored data requests based on filters.",
-        "description": "Gets all the stored data request based on filters.",
-        "operationId": "getDataRequests",
+        "summary": "Get aggregated data requests.",
+        "description": "Gets all data requests that match the given filters, while aggregating userIDs.",
+        "operationId": "getAggregatedDataRequests",
         "parameters": [
           {
-            "name": "dataType",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "esg-questionnaire",
-                "heimathafen",
-                "eutaxonomy-financials",
-                "eutaxonomy-non-financials",
-                "lksg",
-                "p2p",
-                "sfdr",
-                "sme"
-              ]
-            }
-          },
-          {
-            "name": "userId",
+            "name": "identifierValue",
             "in": "query",
             "required": false,
             "schema": {
@@ -455,11 +449,25 @@
             }
           },
           {
-            "name": "requestStatus",
+            "name": "dataTypes",
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/RequestStatus"
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "esg-questionnaire",
+                  "heimathafen",
+                  "eutaxonomy-financials",
+                  "eutaxonomy-non-financials",
+                  "lksg",
+                  "p2p",
+                  "sfdr",
+                  "sme"
+                ]
+              }
             }
           },
           {
@@ -469,25 +477,17 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "dataRequestCompanyIdentifierValue",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data requests",
+            "description": "Successfully retrieved aggregated data requests.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StoredDataRequest"
+                    "$ref": "#/components/schemas/AggregatedDataRequest"
                   }
                 }
               }
