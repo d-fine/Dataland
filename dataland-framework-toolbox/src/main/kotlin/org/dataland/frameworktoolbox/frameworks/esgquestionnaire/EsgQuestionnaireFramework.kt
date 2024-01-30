@@ -34,7 +34,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
     label = "ESG Questionnaire für Corporate Schuldscheindarlehen",
     explanation = "Der ESG Questionnaire für Corporate Schuldscheindarlehen ist ein ESG-Fragebogen des " +
         "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
-    File("./dataland-framework-toolbox/inputs/esg-questionnaire/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
+    File("./dataland-framework-toolbox/inputs/esg-questionnaire/dataDictionary-ESG-Questionnaire.csv"),
 ) {
 
     override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
