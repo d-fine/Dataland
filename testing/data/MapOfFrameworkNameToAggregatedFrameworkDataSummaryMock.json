@@ -1,23 +1,26 @@
 {
-	"esg-questionnaire": {
-		"numberOfProvidedReportingPeriods": 20
-	},
 	"eutaxonomy-financials": {
-		"numberOfProvidedReportingPeriods": 25
-	},
-	"eutaxonomy-non-financials": {
-		"numberOfProvidedReportingPeriods": 18
-	},
-	"lksg": {
-		"numberOfProvidedReportingPeriods": 0
-	},
-	"p2p": {
-		"numberOfProvidedReportingPeriods": 3
-	},
-	"sfdr": {
 		"numberOfProvidedReportingPeriods": 28
 	},
-	"sme": {
+	"eutaxonomy-non-financials": {
 		"numberOfProvidedReportingPeriods": 6
+	},
+	"lksg": {
+		"numberOfProvidedReportingPeriods": 29
+	},
+	"p2p": {
+		"numberOfProvidedReportingPeriods": 9
+	},
+	"sfdr": {
+		"numberOfProvidedReportingPeriods": 29
+	},
+	"sme": {
+		"numberOfProvidedReportingPeriods": 13
+	},
+	"esg-questionnaire": {
+		"numberOfProvidedReportingPeriods": 27
+	},
+	"heimathafen": {
+		"numberOfProvidedReportingPeriods": 24
 	}
 }

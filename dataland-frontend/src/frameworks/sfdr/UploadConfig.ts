@@ -882,7 +882,6 @@ export const sfdrDataModel = [
             component: "BigDecimalExtendedDataPointFormField",
             required: false,
             showIf: (): boolean => true,
-            validation: "between:-100,100",
           },
           {
             name: "femaleBoardMembers",
