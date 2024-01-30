@@ -162,7 +162,7 @@ export default defineComponent({
           this.isUserDataOwner = true;
         }
       } catch (error: AxiosError) {
-        if (assertDefined((error as AxiosError).response).status == 404) {
+        if (error.status == 404) {
           this.isUserDataOwner = false;
         } else {
           console.error(error);
