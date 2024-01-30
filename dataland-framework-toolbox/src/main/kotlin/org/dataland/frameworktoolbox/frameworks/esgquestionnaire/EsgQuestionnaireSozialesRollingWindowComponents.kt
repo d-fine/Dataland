@@ -1,9 +1,9 @@
 package org.dataland.frameworktoolbox.frameworks.esgquestionnaire
 
-import org.dataland.frameworktoolbox.frameworks.esgquestionnaire.custom.EsgQuestionnaireYearlyDecimalTimeseriesDataComponent
+import org.dataland.frameworktoolbox.frameworks.esgquestionnaire.custom
+    .EsgQuestionnaireYearlyDecimalTimeseriesDataComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.edit
-import org.dataland.frameworktoolbox.intermediate.group.get
 
 /**
  * This object contains implementations for the rolling window components in the soziales category of the ESG
