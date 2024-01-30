@@ -15,7 +15,7 @@
           </div>
         </div>
         <div>
-          <ContextMenuButton :menu-items="contextMenuItems"/>
+          <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems"/>
         </div>
       </div>
       <div class="company-details__separator"/>
@@ -83,14 +83,7 @@ export default defineComponent({
       return getUserId(assertDefined(this.getKeycloakPromise));
     },
     contextMenuItems() {
-      const listOfItems = [
-        {
-          label: 'Manage Company Details',
-          command: () => {
-            console.log("I dont know where to route this ? #TODO TODO")
-          }
-
-        }];
+      const listOfItems = [];
       if (!this.isUserDataOwner) {
         listOfItems.push(
             {
