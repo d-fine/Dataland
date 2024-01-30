@@ -16,4 +16,4 @@ class EuTaxonomyNonFinancialsFramework : InDevelopmentPavedRoadFramework(
         "./dataland-framework-toolbox/inputs/euTaxonomyNonFinancials/EutaxonomyNonFinancials.xlsx",
     ),
     order = 2,
-) // org.dataland.datalandbackend.model.eutaxonomy.AssuranceDataPoint
+)

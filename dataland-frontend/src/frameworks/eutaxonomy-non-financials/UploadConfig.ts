@@ -7,120 +7,66 @@ export const eutaxonomyNonFinancialsDataModel = [    {
         color: "",
         showIf: ():boolean => true,
         subcategories: [    {
-            name: "general",
-            label: "General",
+            name: "reportingPeriod",
+            label: "Reporting period",
             fields: [
-                 {
-                name: "reportingPeriod",
-                label: "Reporting period",
-                description: "The reporting period the dataset belongs to (e.g. fiscal year).",
     
+            ],
+            },
+        {
+            name: "fiscalYearDeviation",
+            label: "Fiscal Year Deviation",
+            fields: [
     
-                component: "DateFormField",
-                required: true,
-                showIf: ():boolean => true,
-                validation: "required",
+            ],
+            },
+        {
+            name: "fiscalYearEnd",
+            label: "Fiscal Year End",
+            fields: [
     
-                },
-            {
-                name: "fiscalYearDeviation",
-                label: "Fiscal Year Deviation",
-                description: "Does the fiscal year deviate from the calendar year?",
-                options:  [
-            { 
-            label: "Deviation" ,
-            value: "Deviation" ,
-            }, 
-            { 
-            label: "No Deviation" ,
-            value: "NoDeviation" ,
-            }, 
-             ],
+            ],
+            },
+        {
+            name: "referencedReports",
+            label: "Referenced Reports",
+            fields: [
     
-                component: "RadioButtonsFormField",
-                required: false,
-                showIf: ():boolean => true,
+            ],
+            },
+        {
+            name: "scopeOfEntities",
+            label: "Scope Of Entities",
+            fields: [
     
-                },
-            {
-                name: "fiscalYearEnd",
-                label: "Fiscal Year End",
-                description: "The date at which the fiscal year ends.",
+            ],
+            },
+        {
+            name: "euTaxonomyActivityLevelReporting",
+            label: "EU Taxonomy Activity Level Reporting",
+            fields: [
     
+            ],
+            },
+        {
+            name: "numberOfEmployees",
+            label: "Number Of Employees",
+            fields: [
     
-                component: "DateFormField",
-                required: true,
-                showIf: ():boolean => true,
-                validation: "required",
+            ],
+            },
+        {
+            name: "nfrdMandatory",
+            label: "NFRD Mandatory",
+            fields: [
     
-                },
-            {
-                name: "referencedReports",
-                label: "Referenced Reports",
-                description: "Please upload all relevant reports for this dataset in the PDF format.",
+            ],
+            },
+        {
+            name: "assurance",
+            label: "Assurance",
+            fields: [
     
-    
-                component: "UploadReports",
-                required: false,
-                showIf: ():boolean => true,
-    
-                },
-            {
-                name: "scopeOfEntities",
-                label: "Scope Of Entities",
-                description: "Are all Group legal entities covered in the reports?",
-    
-    
-                component: "YesNoNaBaseDataPointFormField",
-                required: false,
-                showIf: ():boolean => true,
-    
-                },
-            {
-                name: "euTaxonomyActivityLevelReporting",
-                label: "EU Taxonomy Activity Level Reporting",
-                description: "Activity level disclosure",
-    
-    
-                component: "YesNoBaseDataPointFormField",
-                required: false,
-                showIf: ():boolean => true,
-    
-                },
-            {
-                name: "numberOfEmployees",
-                label: "Number Of Employees",
-                description: "Total number of employees (including temporary workers with assignment duration >6 months)",
-    
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "nfrdMandatory",
-                label: "NFRD Mandatory",
-                description: "Is the NFRD mandatory for your company?",
-    
-    
-                component: "YesNoFormField",
-                required: false,
-                showIf: ():boolean => true,
-    
-                },
-            {
-                name: "assurance",
-                label: "Assurance",
-                description: "Level of assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",
-    
-    
-                component: "AssuranceFormField",
-                required: false,
-                showIf: ():boolean => true,
-    
-                },
-     
             ],
             },
         ],
@@ -131,153 +77,94 @@ export const eutaxonomyNonFinancialsDataModel = [    {
         color: "",
         showIf: ():boolean => true,
         subcategories: [    {
-            name: "revenue",
-            label: "Revenue",
+            name: "totalRevenue",
+            label: "Total Revenue",
             fields: [
-                 {
-                name: "totalRevenue",
-                label: "Total Revenue",
-                description: "Total revenue per annum",
     
+            ],
+            },
+        {
+            name: "eligibleRevenue",
+            label: "Eligible Revenue",
+            fields: [
     
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
+            ],
+            },
+        {
+            name: "alignedRevenue",
+            label: "Aligned Revenue",
+            fields: [
     
-                },
-            {
-                name: "eligibleRevenue",
-                label: "Eligible Revenue",
-                description: "Absolute value and share of the total eligible revenue in same currency than total revenue. Is part of the total revenue where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria).",
+            ],
+            },
+        {
+            name: "substantialContributionToClimateChangeMitigation",
+            label: "Substantial Contribution to Climate Change Mitigation",
+            fields: [
     
+            ],
+            },
+        {
+            name: "substantialContributionToClimateChangeAdaptation",
+            label: "Substantial Contribution to Climate Change Adaptation",
+            fields: [
     
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
+            ],
+            },
+        {
+            name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+            label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+            fields: [
     
-                },
-            {
-                name: "alignedRevenue",
-                label: "Aligned Revenue",
-                description: "Absolute value and share of the total eligible revenue that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards. In same currency than total revenue.",
+            ],
+            },
+        {
+            name: "substantialContributionToTransitionToACircularEconomy",
+            label: "Substantial Contribution to Transition to a Circular Economy",
+            fields: [
     
+            ],
+            },
+        {
+            name: "substantialContributionToPollutionPreventionAndControl",
+            label: "Substantial Contribution to Pollution Prevention and Control",
+            fields: [
     
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
+            ],
+            },
+        {
+            name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+            label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
+            fields: [
     
-                },
-            {
-                name: "substantialContributionToClimateChangeMitigation",
-                label: "Substantial Contribution to Climate Change Mitigation",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "nonAlignedRevenue",
+            label: "Non-Aligned Revenue",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToClimateChangeAdaptation",
-                label: "Substantial Contribution to Climate Change Adaptation",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "nonEligibleRevenue",
+            label: "Non-Eligible Revenue",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
-                label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "enablingRevenue",
+            label: "Enabling Revenue",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToTransitionToACircularEconomy",
-                label: "Substantial Contribution to Transition to a Circular Economy",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "transitionalRevenue",
+            label: "Transitional Revenue",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToPollutionPreventionAndControl",
-                label: "Substantial Contribution to Pollution Prevention and Control",
-                description: "Grade of the substantial contribution criterion fulfillment",
-    
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
-                label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
-                description: "Grade of the substantial contribution criterion fulfillment",
-    
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "nonAlignedRevenue",
-                label: "Non-Aligned Revenue",
-                description: "Absolute value and share of the revenue that is associated with non taxonomy-aligned but eligible activities",
-    
-    
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-    
-                },
-            {
-                name: "nonEligibleRevenue",
-                label: "Non-Eligible Revenue",
-                description: "Absolute value and share of the revenue that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
-    
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "enablingRevenue",
-                label: "Enabling Revenue",
-                description: "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities that enable reduction of GHG in other sectors",
-    
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "transitionalRevenue",
-                label: "Transitional Revenue",
-                description: "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities with significantly lower GHG emissions than the sector or industry average",
-    
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-     
             ],
             },
         ],
@@ -288,153 +175,94 @@ export const eutaxonomyNonFinancialsDataModel = [    {
         color: "",
         showIf: ():boolean => true,
         subcategories: [    {
-            name: "capex",
-            label: "CapEx",
+            name: "totalCapex",
+            label: "Total CapEx",
             fields: [
-                 {
-                name: "totalCapex",
-                label: "Total CapEx",
-                description: "Total CapEx for the reported year. Capital expenditures are non-consumable investments, e.g. for acquiring, upgrading, and maintaining physical assets such as property, plants, buildings, technology ",
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "eligibleCapex",
-                label: "Eligible CapEx",
-                description: "Absolute value and share of the total CapEx where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria)",
+            ],
+            },
+        {
+            name: "eligibleCapex",
+            label: "Eligible CapEx",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "alignedCapex",
-                label: "Aligned CapEx",
-                description: "Absolute value and share of CapEx that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards.",
+            ],
+            },
+        {
+            name: "alignedCapex",
+            label: "Aligned CapEx",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToClimateChangeMitigation",
-                label: "Substantial Contribution to Climate Change Mitigation",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "substantialContributionToClimateChangeMitigation",
+            label: "Substantial Contribution to Climate Change Mitigation",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToClimateChangeAdaptation",
-                label: "Substantial Contribution to Climate Change Adaptation",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "substantialContributionToClimateChangeAdaptation",
+            label: "Substantial Contribution to Climate Change Adaptation",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
-                label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+            label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToTransitionToACircularEconomy",
-                label: "Substantial Contribution to Transition to a Circular Economy",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "substantialContributionToTransitionToACircularEconomy",
+            label: "Substantial Contribution to Transition to a Circular Economy",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToPollutionPreventionAndControl",
-                label: "Substantial Contribution to Pollution Prevention and Control",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "substantialContributionToPollutionPreventionAndControl",
+            label: "Substantial Contribution to Pollution Prevention and Control",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
-                label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+            label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "nonAlignedCapex",
-                label: "Non-Aligned CapEx",
-                description: "Absolute value and share of the CapEx that is associated with non taxonomy-aligned but eligible activities",
+            ],
+            },
+        {
+            name: "nonAlignedCapex",
+            label: "Non-Aligned CapEx",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "nonEligibleCapex",
-                label: "Non-Eligible CapEx",
-                description: "Absolute value and share of the CapEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
+            ],
+            },
+        {
+            name: "nonEligibleCapex",
+            label: "Non-Eligible CapEx",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "enablingCapex",
-                label: "Enabling CapEx",
-                description: "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities that enable reduction of GHG in other sectors",
+            ],
+            },
+        {
+            name: "enablingCapex",
+            label: "Enabling CapEx",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "transitionalCapex",
-                label: "Transitional CapEx",
-                description: "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
+            ],
+            },
+        {
+            name: "transitionalCapex",
+            label: "Transitional CapEx",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-     
             ],
             },
         ],
@@ -445,153 +273,94 @@ export const eutaxonomyNonFinancialsDataModel = [    {
         color: "",
         showIf: ():boolean => true,
         subcategories: [    {
-            name: "opex",
-            label: "OpEx",
+            name: "totalOpex",
+            label: "Total OpEx",
             fields: [
-                 {
-                name: "totalOpex",
-                label: "Total OpEx",
-                description: "Total OpEx for the financial year. Operating expenses (OpEx) are shorter term expenses required to meet the ongoing operational costs of running a business.",
     
+            ],
+            },
+        {
+            name: "eligibleOpex",
+            label: "Eligible OpEx",
+            fields: [
     
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
+            ],
+            },
+        {
+            name: "alignedOpex",
+            label: "Aligned OpEx",
+            fields: [
     
-                },
-            {
-                name: "eligibleOpex",
-                label: "Eligible OpEx",
-                description: "Absolute value and share of the OpEx that is part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
+            ],
+            },
+        {
+            name: "substantialContributionToClimateChangeMitigation",
+            label: "Substantial Contribution to Climate Change Mitigation",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "alignedOpex",
-                label: "Aligned OpEx",
-                description: "Absolute value and share of the OpEx that is associated with taxonomy-aligned activities. i.e., for an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards",
+            ],
+            },
+        {
+            name: "substantialContributionToClimateChangeAdaptation",
+            label: "Substantial Contribution to Climate Change Adaptation",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToClimateChangeMitigation",
-                label: "Substantial Contribution to Climate Change Mitigation",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
+            label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToClimateChangeAdaptation",
-                label: "Substantial Contribution to Climate Change Adaptation",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "substantialContributionToTransitionToACircularEconomy",
+            label: "Substantial Contribution to Transition to a Circular Economy",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
-                label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "substantialContributionToPollutionPreventionAndControl",
+            label: "Substantial Contribution to Pollution Prevention and Control",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToTransitionToACircularEconomy",
-                label: "Substantial Contribution to Transition to a Circular Economy",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
+            label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToPollutionPreventionAndControl",
-                label: "Substantial Contribution to Pollution Prevention and Control",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "nonAlignedOpex",
+            label: "Non-Aligned OpEx",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
-                label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
-                description: "Grade of the substantial contribution criterion fulfillment",
+            ],
+            },
+        {
+            name: "nonEligibleOpex",
+            label: "Non-Eligible OpEx",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "nonAlignedOpex",
-                label: "Non-Aligned OpEx",
-                description: "Absolute value and share of the OpEx that is associated with non taxonomy-aligned but eligible activities",
+            ],
+            },
+        {
+            name: "enablingOpex",
+            label: "Enabling OpEx",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "nonEligibleOpex",
-                label: "Non-Eligible OpEx",
-                description: "Absolute value and share of the OpEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
+            ],
+            },
+        {
+            name: "transitionalOpex",
+            label: "Transitional OpEx",
+            fields: [
     
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "enablingOpex",
-                label: "Enabling OpEx",
-                description: "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities that enable reduction of GHG in other sectors",
-    
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-            {
-                name: "transitionalOpex",
-                label: "Transitional OpEx",
-                description: "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
-    
-                unit: "%",
-                component: "NumberFormField",
-                required: false,
-                showIf: ():boolean => true,
-                validation: "between:0,100",
-                },
-     
             ],
             },
         ],

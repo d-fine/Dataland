@@ -16,102 +16,93 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       shouldDisplay: (): boolean => true
     ,
       children: [    {
-          type: "section",
-          label: "General",
-          expandOnPageLoad: false,
+          type: "cell",
+          label: "Reporting period",
+          explanation: "The reporting period the dataset belongs to (e.g. fiscal year).",
           shouldDisplay: (): boolean => true
         ,
-          children: [    {
-              type: "cell",
-              label: "Reporting period",
-              explanation: "The reporting period the dataset belongs to (e.g. fiscal year).",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.general?.general?.reportingPeriod)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Fiscal Year Deviation",
-              explanation: "Does the fiscal year deviate from the calendar year?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => {
-            const mappings = {
-                Deviation: "Deviation",
-                NoDeviation: "No Deviation",
-            }
-            return formatStringForDatatable(
-            dataset.general?.general?.fiscalYearDeviation ? getOriginalNameFromTechnicalName(dataset.general?.general?.fiscalYearDeviation, mappings) : ""
-            )
-            }
-            ,
-            },
-            {
-              type: "cell",
-              label: "Fiscal Year End",
-              explanation: "The date at which the fiscal year ends.",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.general?.general?.fiscalYearEnd)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Scope Of Entities",
-              explanation: "Are all Group legal entities covered in the reports?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.general?.general?.scopeOfEntities?.value), "Scope Of Entities", dataset.general?.general?.scopeOfEntities)
-            ,
-            },
-            {
-              type: "cell",
-              label: "EU Taxonomy Activity Level Reporting",
-              explanation: "Activity level disclosure",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.general?.general?.euTaxonomyActivityLevelReporting?.value), "EU Taxonomy Activity Level Reporting", dataset.general?.general?.euTaxonomyActivityLevelReporting)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Number Of Employees",
-              explanation: "Total number of employees (including temporary workers with assignment duration >6 months)",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.general?.general?.numberOfEmployees)
-            ,
-            },
-            {
-              type: "cell",
-              label: "NFRD Mandatory",
-              explanation: "Is the NFRD mandatory for your company?",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.general?.general?.nfrdMandatory)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Assurance",
-              explanation: "Level of assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatAssuranceForDataTable(dataset.general?.general?.assurance, "Assurance")
-            ,
-            },
-            {
-              type: "cell",
-              label: "Assurance Provider",
-              explanation: "Provider of the Assurance",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatAssuranceProviderForDataTable(dataset.general?.general?.assurance, "Assurance")
-            ,
-            },
-            ],
-    
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.general?.reportingPeriod)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Fiscal Year Deviation",
+          explanation: "Does the fiscal year deviate from the calendar year?",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => {
+        const mappings = {
+            Deviation: "Deviation",
+            NoDeviation: "No Deviation",
+        }
+        return formatStringForDatatable(
+        dataset.general?.fiscalYearDeviation ? getOriginalNameFromTechnicalName(dataset.general?.fiscalYearDeviation, mappings) : ""
+        )
+        }
+        ,
+        },
+        {
+          type: "cell",
+          label: "Fiscal Year End",
+          explanation: "The date at which the fiscal year ends.",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.general?.fiscalYearEnd)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Scope Of Entities",
+          explanation: "Are all Group legal entities covered in the reports?",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.general?.scopeOfEntities?.value), "Scope Of Entities", dataset.general?.scopeOfEntities)
+        ,
+        },
+        {
+          type: "cell",
+          label: "EU Taxonomy Activity Level Reporting",
+          explanation: "Activity level disclosure",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => wrapDisplayValueWithDatapointInformation(formatYesNoValueForDatatable(dataset.general?.euTaxonomyActivityLevelReporting?.value), "EU Taxonomy Activity Level Reporting", dataset.general?.euTaxonomyActivityLevelReporting)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Number Of Employees",
+          explanation: "Total number of employees (including temporary workers with assignment duration >6 months)",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.general?.numberOfEmployees)
+        ,
+        },
+        {
+          type: "cell",
+          label: "NFRD Mandatory",
+          explanation: "Is the NFRD mandatory for your company?",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.general?.nfrdMandatory)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Assurance",
+          explanation: "Level of assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatAssuranceForDataTable(dataset.general?.assurance, "Assurance")
+        ,
+        },
+        {
+          type: "cell",
+          label: "Assurance Provider",
+          explanation: "Provider of the Assurance",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatAssuranceProviderForDataTable(dataset.general?.assurance, "Assurance")
+        ,
         },
         ],
     
@@ -123,130 +114,121 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       shouldDisplay: (): boolean => true
     ,
       children: [    {
-          type: "section",
-          label: "Revenue",
-          expandOnPageLoad: false,
+          type: "cell",
+          label: "Total Revenue",
+          explanation: "Total revenue per annum",
           shouldDisplay: (): boolean => true
         ,
-          children: [    {
-              type: "cell",
-              label: "Total Revenue",
-              explanation: "Total revenue per annum",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.revenue?.revenue?.totalRevenue, "")
-            ,
-            },
-            {
-              type: "cell",
-              label: "Eligible Revenue",
-              explanation: "Absolute value and share of the total eligible revenue in same currency than total revenue. Is part of the total revenue where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria).",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.revenue?.revenue?.eligibleRevenue, "")
-            ,
-            },
-            {
-              type: "cell",
-              label: "Aligned Revenue",
-              explanation: "Absolute value and share of the total eligible revenue that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards. In same currency than total revenue.",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.revenue?.revenue?.alignedRevenue, "")
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Climate Change Mitigation",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.revenue?.substantialContributionToClimateChangeMitigation)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Climate Change Adaptation",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.revenue?.substantialContributionToClimateChangeAdaptation)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.revenue?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Transition to a Circular Economy",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.revenue?.substantialContributionToTransitionToACircularEconomy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Pollution Prevention and Control",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.revenue?.substantialContributionToPollutionPreventionAndControl)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.revenue?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Non-Aligned Revenue",
-              explanation: "Absolute value and share of the revenue that is associated with non taxonomy-aligned but eligible activities",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.revenue?.revenue?.nonAlignedRevenue, "")
-            ,
-            },
-            {
-              type: "cell",
-              label: "Non-Eligible Revenue",
-              explanation: "Absolute value and share of the revenue that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.revenue?.nonEligibleRevenue)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Enabling Revenue",
-              explanation: "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities that enable reduction of GHG in other sectors",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.revenue?.enablingRevenue)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Transitional Revenue",
-              explanation: "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities with significantly lower GHG emissions than the sector or industry average",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.revenue?.transitionalRevenue)
-            ,
-            },
-            ],
-    
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.revenue?.totalRevenue, "")
+        ,
+        },
+        {
+          type: "cell",
+          label: "Eligible Revenue",
+          explanation: "Absolute value and share of the total eligible revenue in same currency than total revenue. Is part of the total revenue where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria).",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.revenue?.eligibleRevenue, "")
+        ,
+        },
+        {
+          type: "cell",
+          label: "Aligned Revenue",
+          explanation: "Absolute value and share of the total eligible revenue that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards. In same currency than total revenue.",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.revenue?.alignedRevenue, "")
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Climate Change Mitigation",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.substantialContributionToClimateChangeMitigation)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Climate Change Adaptation",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.substantialContributionToClimateChangeAdaptation)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Transition to a Circular Economy",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.substantialContributionToTransitionToACircularEconomy)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Pollution Prevention and Control",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.substantialContributionToPollutionPreventionAndControl)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Non-Aligned Revenue",
+          explanation: "Absolute value and share of the revenue that is associated with non taxonomy-aligned but eligible activities",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.revenue?.nonAlignedRevenue, "")
+        ,
+        },
+        {
+          type: "cell",
+          label: "Non-Eligible Revenue",
+          explanation: "Absolute value and share of the revenue that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.nonEligibleRevenue)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Enabling Revenue",
+          explanation: "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities that enable reduction of GHG in other sectors",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.enablingRevenue)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Transitional Revenue",
+          explanation: "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities with significantly lower GHG emissions than the sector or industry average",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.transitionalRevenue)
+        ,
         },
         ],
     
@@ -258,130 +240,121 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       shouldDisplay: (): boolean => true
     ,
       children: [    {
-          type: "section",
-          label: "CapEx",
-          expandOnPageLoad: false,
+          type: "cell",
+          label: "Total CapEx",
+          explanation: "Total CapEx for the reported year. Capital expenditures are non-consumable investments, e.g. for acquiring, upgrading, and maintaining physical assets such as property, plants, buildings, technology ",
           shouldDisplay: (): boolean => true
         ,
-          children: [    {
-              type: "cell",
-              label: "Total CapEx",
-              explanation: "Total CapEx for the reported year. Capital expenditures are non-consumable investments, e.g. for acquiring, upgrading, and maintaining physical assets such as property, plants, buildings, technology ",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.capex?.totalCapex)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Eligible CapEx",
-              explanation: "Absolute value and share of the total CapEx where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria)",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.capex?.eligibleCapex)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Aligned CapEx",
-              explanation: "Absolute value and share of CapEx that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards.",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.capex?.alignedCapex)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Climate Change Mitigation",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.capex?.substantialContributionToClimateChangeMitigation)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Climate Change Adaptation",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.capex?.substantialContributionToClimateChangeAdaptation)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Transition to a Circular Economy",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.capex?.substantialContributionToTransitionToACircularEconomy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Pollution Prevention and Control",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.capex?.substantialContributionToPollutionPreventionAndControl)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Non-Aligned CapEx",
-              explanation: "Absolute value and share of the CapEx that is associated with non taxonomy-aligned but eligible activities",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.capex?.nonAlignedCapex)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Non-Eligible CapEx",
-              explanation: "Absolute value and share of the CapEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.capex?.nonEligibleCapex)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Enabling CapEx",
-              explanation: "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities that enable reduction of GHG in other sectors",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.capex?.enablingCapex)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Transitional CapEx",
-              explanation: "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.capex?.transitionalCapex)
-            ,
-            },
-            ],
-    
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.totalCapex)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Eligible CapEx",
+          explanation: "Absolute value and share of the total CapEx where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria)",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.eligibleCapex)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Aligned CapEx",
+          explanation: "Absolute value and share of CapEx that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards.",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.alignedCapex)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Climate Change Mitigation",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.substantialContributionToClimateChangeMitigation)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Climate Change Adaptation",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.substantialContributionToClimateChangeAdaptation)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Transition to a Circular Economy",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.substantialContributionToTransitionToACircularEconomy)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Pollution Prevention and Control",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.substantialContributionToPollutionPreventionAndControl)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Non-Aligned CapEx",
+          explanation: "Absolute value and share of the CapEx that is associated with non taxonomy-aligned but eligible activities",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.nonAlignedCapex)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Non-Eligible CapEx",
+          explanation: "Absolute value and share of the CapEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.nonEligibleCapex)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Enabling CapEx",
+          explanation: "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities that enable reduction of GHG in other sectors",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.enablingCapex)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Transitional CapEx",
+          explanation: "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.transitionalCapex)
+        ,
         },
         ],
     
@@ -393,130 +366,121 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       shouldDisplay: (): boolean => true
     ,
       children: [    {
-          type: "section",
-          label: "OpEx",
-          expandOnPageLoad: false,
+          type: "cell",
+          label: "Total OpEx",
+          explanation: "Total OpEx for the financial year. Operating expenses (OpEx) are shorter term expenses required to meet the ongoing operational costs of running a business.",
           shouldDisplay: (): boolean => true
         ,
-          children: [    {
-              type: "cell",
-              label: "Total OpEx",
-              explanation: "Total OpEx for the financial year. Operating expenses (OpEx) are shorter term expenses required to meet the ongoing operational costs of running a business.",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.opex?.opex?.totalOpex, "")
-            ,
-            },
-            {
-              type: "cell",
-              label: "Eligible OpEx",
-              explanation: "Absolute value and share of the OpEx that is part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.opex?.eligibleOpex)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Aligned OpEx",
-              explanation: "Absolute value and share of the OpEx that is associated with taxonomy-aligned activities. i.e., for an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.opex?.alignedOpex)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Climate Change Mitigation",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.opex?.substantialContributionToClimateChangeMitigation)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Climate Change Adaptation",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.opex?.substantialContributionToClimateChangeAdaptation)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.opex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Transition to a Circular Economy",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.opex?.substantialContributionToTransitionToACircularEconomy)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Pollution Prevention and Control",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.opex?.substantialContributionToPollutionPreventionAndControl)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
-              explanation: "Grade of the substantial contribution criterion fulfillment",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Non-Aligned OpEx",
-              explanation: "Absolute value and share of the OpEx that is associated with non taxonomy-aligned but eligible activities",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.opex?.nonAlignedOpex)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Non-Eligible OpEx",
-              explanation: "Absolute value and share of the OpEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.opex?.nonEligibleOpex)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Enabling OpEx",
-              explanation: "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities that enable reduction of GHG in other sectors",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.opex?.enablingOpex)
-            ,
-            },
-            {
-              type: "cell",
-              label: "Transitional OpEx",
-              explanation: "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
-              shouldDisplay: (): boolean => true
-            ,
-              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.opex?.transitionalOpex)
-            ,
-            },
-            ],
-    
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.opex?.totalOpex, "")
+        ,
+        },
+        {
+          type: "cell",
+          label: "Eligible OpEx",
+          explanation: "Absolute value and share of the OpEx that is part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.eligibleOpex)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Aligned OpEx",
+          explanation: "Absolute value and share of the OpEx that is associated with taxonomy-aligned activities. i.e., for an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.alignedOpex)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Climate Change Mitigation",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.substantialContributionToClimateChangeMitigation)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Climate Change Adaptation",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.substantialContributionToClimateChangeAdaptation)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Transition to a Circular Economy",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.substantialContributionToTransitionToACircularEconomy)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Pollution Prevention and Control",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.substantialContributionToPollutionPreventionAndControl)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Non-Aligned OpEx",
+          explanation: "Absolute value and share of the OpEx that is associated with non taxonomy-aligned but eligible activities",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.nonAlignedOpex)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Non-Eligible OpEx",
+          explanation: "Absolute value and share of the OpEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.nonEligibleOpex)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Enabling OpEx",
+          explanation: "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities that enable reduction of GHG in other sectors",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.enablingOpex)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Transitional OpEx",
+          explanation: "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.transitionalOpex)
+        ,
         },
         ],
     

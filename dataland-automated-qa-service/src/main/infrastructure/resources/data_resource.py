@@ -16,7 +16,7 @@ from dataland_backend_api_documentation_client.api.meta_data_controller.get_data
 from dataland_backend_api_documentation_client.models.company_associated_data_eu_taxonomy_data_for_financials import (
     CompanyAssociatedDataEuTaxonomyDataForFinancials,
 )
-from dataland_backend_api_documentation_client.models.company_associated_data_eu_taxonomy_data_for_non_financials \
+from dataland_backend_api_documentation_client.models.company_associated_data_eu_taxonomy_for_non_financials_data \
     import (
         CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
     )

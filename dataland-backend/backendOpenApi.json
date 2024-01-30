@@ -10477,19 +10477,6 @@
       "EutaxonomyNonFinancialsCapex": {
         "type": "object",
         "properties": {
-          "capex": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexCapex"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsCapexCapex": {
-        "type": "object",
-        "properties": {
           "totalCapex": {
             "type": "number",
             "nullable": true
@@ -10581,17 +10568,6 @@
       },
       "EutaxonomyNonFinancialsGeneral": {
         "required": [
-          "general"
-        ],
-        "type": "object",
-        "properties": {
-          "general": {
-            "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneralGeneral"
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsGeneralGeneral": {
-        "required": [
           "fiscalYearEnd",
           "reportingPeriod"
         ],
@@ -10605,7 +10581,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneralGeneralFiscalYearDeviationOptions"
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions"
               }
             ]
           },
@@ -10664,7 +10640,7 @@
           }
         }
       },
-      "EutaxonomyNonFinancialsGeneralGeneralFiscalYearDeviationOptions": {
+      "EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions": {
         "type": "string",
         "enum": [
           "Deviation",
@@ -10672,19 +10648,6 @@
         ]
       },
       "EutaxonomyNonFinancialsOpex": {
-        "type": "object",
-        "properties": {
-          "opex": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexOpex"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsOpexOpex": {
         "type": "object",
         "properties": {
           "totalOpex": {
@@ -10742,19 +10705,6 @@
         }
       },
       "EutaxonomyNonFinancialsRevenue": {
-        "type": "object",
-        "properties": {
-          "revenue": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueRevenue"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsRevenueRevenue": {
         "type": "object",
         "properties": {
           "totalRevenue": {

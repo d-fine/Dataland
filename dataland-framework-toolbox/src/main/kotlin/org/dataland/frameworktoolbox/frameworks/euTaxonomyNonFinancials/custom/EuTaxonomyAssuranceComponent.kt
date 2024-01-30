@@ -45,11 +45,7 @@ class EuTaxonomyAssuranceComponent(
             explanation = "Provider of the Assurance",
             shouldDisplay = availableIf.toFrameworkBooleanLambda(),
             valueGetter = FrameworkDisplayValueLambda(
-                "formatAssuranceProviderForDataTable(${getTypescriptFieldAccessor(true)}, \"${
-                    StringEscapeUtils.escapeEcmaScript(
-                        label,
-                    )
-                }\")",
+                "formatAssuranceProviderForDataTable(${getTypescriptFieldAccessor(true)})",
                 setOf(
                     TypeScriptImport(
                         "formatAssuranceProviderForDataTable",
