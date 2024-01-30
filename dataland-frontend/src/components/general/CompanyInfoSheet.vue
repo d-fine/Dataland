@@ -1,28 +1,28 @@
 <template>
   <div ref="sheet" :class="`sheet ${isCollapsed ? 'visuals-hidden' : ''}`" data-test="sheet">
     <template v-if="!useMobileView">
-      <BackButton />
-      <CompaniesOnlySearchBar @select-company="$router.push(`/companies/${$event.companyId}`)" class="w-8 mt-2" />
+      <BackButton/>
+      <CompaniesOnlySearchBar @select-company="$router.push(`/companies/${$event.companyId}`)" class="w-8 mt-2"/>
     </template>
     <template v-else>
       <div class="mobile-header">
-        <BackButton label="" data-test-marker="back-button-mobile" />
+        <BackButton label="" data-test-marker="back-button-mobile"/>
         <div class="mobile-header__title" data-test="mobile-header-title">
           {{ mobileTitle }}
         </div>
       </div>
     </template>
     <CompanyInformationBanner
-      :companyId="companyId"
-      @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
-      @fetched-data-owner-information="onFetchedDataOwnerInformation($event)"
-      @claim-data-ownership="$emit('claimDataOwnerShip')"
-      class="w-12"
+        :companyId="companyId"
+        @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
+        :is-user-data-owner="isUserDataOwner"
+        @claim-data-ownership="$emit('claimDataOwnerShip')"
+        class="w-12"
     />
   </div>
   <div ref="attachedSheet" :class="`sheet--attached ${isCollapsed ? '' : 'visuals-hidden'}`" data-test="sheet-attached">
     <div class="mobile-header">
-      <BackButton label="" data-test-marker="back-button-mobile-attached-sheet" />
+      <BackButton label="" data-test-marker="back-button-mobile-attached-sheet"/>
       <div class="mobile-header__title">
         {{ mobileTitle }}
       </div>
@@ -34,8 +34,8 @@
 import BackButton from "@/components/general/BackButton.vue";
 import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
-import { type CompanyInformation } from "@clients/backend";
-import { computed, inject, onMounted, onUnmounted, ref } from "vue";
+import {type CompanyInformation} from "@clients/backend";
+import {computed, inject, onMounted, onUnmounted, ref} from "vue";
 
 const injectedMobileView = inject<{ value: boolean }>("useMobileView");
 const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.value);
@@ -43,8 +43,9 @@ const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.va
 const sheet = ref<HTMLDivElement>();
 const attachedSheet = ref<HTMLDivElement>();
 
-const { companyId } = defineProps<{
+const {companyId} = defineProps<{
   companyId: string;
+  isUserDataOwner: boolean | undefined;
 }>();
 
 const emit = defineEmits(["fetchedCompanyInformation", "fetchedDataOwnerInformation", "claimDataOwnerShip"]);
@@ -67,14 +68,6 @@ const mobileTitle = computed<string>(() => {
     return genericTitle;
   }
 });
-
-/**
- *  Emits the fetched data owner information to parent component(s)
- * @param isUserDataOwner boolean if the user is data owner
- */
-function onFetchedDataOwnerInformation(isUserDataOwner: boolean): void {
-  emit("fetchedDataOwnerInformation", isUserDataOwner);
-}
 
 const sheetRect = ref<DOMRect>();
 const attachedSheetHeight = ref<number>();

@@ -2,7 +2,7 @@
   <div>
     <div v-if="waitingForData" class="inline-loading text-center">
       <p class="font-medium text-xl">Loading company information...</p>
-      <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
+      <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f"/>
     </div>
     <div v-else-if="companyInformation && !waitingForData" class="company-details">
       <div class="company-details__headline">
@@ -14,10 +14,10 @@
           </div>
         </div>
         <div>
-          <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
+          <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems"/>
         </div>
       </div>
-      <div class="company-details__separator" />
+      <div class="company-details__separator"/>
 
       <div class="company-details__info-holder">
         <div class="company-details__info">
@@ -41,17 +41,16 @@
 </template>
 
 <script lang="ts">
-import { ApiClientProvider } from "@/services/ApiClients";
-import { defineComponent, inject } from "vue";
-import { type CompanyInformation, IdentifierType } from "@clients/backend";
+import {ApiClientProvider} from "@/services/ApiClients";
+import {defineComponent, inject} from "vue";
+import {type CompanyInformation, IdentifierType} from "@clients/backend";
 import type Keycloak from "keycloak-js";
-import { assertDefined } from "@/utils/TypeScriptUtils";
-import { getUserId } from "@/utils/KeycloakUtils";
+import {assertDefined} from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 
 export default defineComponent({
   name: "CompanyInformation",
-  components: { ContextMenuButton },
+  components: {ContextMenuButton},
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -63,7 +62,6 @@ export default defineComponent({
       companyInformation: null as CompanyInformation | null,
       waitingForData: true,
       companyIdDoesNotExist: false,
-      isUserDataOwner: false,
     };
   },
   computed: {
@@ -76,9 +74,6 @@ export default defineComponent({
     },
     displayIsin() {
       return this.companyInformation?.identifiers?.[IdentifierType.Isin]?.[0] ?? "—";
-    },
-    userId() {
-      return getUserId(assertDefined(this.getKeycloakPromise));
     },
     contextMenuItems() {
       const listOfItems = [];
@@ -98,10 +93,13 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    isUserDataOwner: {
+      type: Boolean,
+      required: true,
+    }
   },
   mounted() {
     void this.getCompanyInformation();
-    void this.getDataOwnerInformation();
   },
   watch: {
     companyId() {
@@ -118,7 +116,7 @@ export default defineComponent({
         this.waitingForData = true;
         if (this.companyId !== undefined) {
           const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-            .backendClients.companyDataController;
+              .backendClients.companyDataController;
           this.companyInformation = (await companyDataControllerApi.getCompanyInfo(this.companyId)).data;
           this.waitingForData = false;
           this.$emit("fetchedCompanyInformation", this.companyInformation);
@@ -140,28 +138,6 @@ export default defineComponent({
     getErrorMessage(error: unknown) {
       const noStringMessage = error instanceof Error ? error.message : "";
       return typeof error === "string" ? error : noStringMessage;
-    },
-    /**
-     * Get the Information about Data-ownership
-     */
-    async getDataOwnerInformation() {
-      try {
-        const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
-          .companyDataController;
-        const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
-          this.companyId,
-          assertDefined(await this.userId),
-        );
-        if (axiosResponse.status == 200) {
-          this.isUserDataOwner = true;
-        }
-      } catch (error) {
-        console.error(error);
-        if (this.getErrorMessage(error).includes("404")) {
-          this.isUserDataOwner = false;
-        }
-      }
-      this.$emit("fetchedDataOwnerInformation", this.isUserDataOwner);
     },
   },
 });

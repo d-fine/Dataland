@@ -1,54 +1,58 @@
 <template>
-  <TheHeader v-if="!useMobileView" />
+  <TheHeader v-if="!useMobileView"/>
   <TheContent class="paper-section flex">
     <CompanyInfoSheet
-      :company-id="companyId"
-      @fetched-company-information="getCompanyName"
-      @fetched-data-owner-information="getDataOwnerInformation"
-      @claim-data-owner-ship="openDialog"
+        :company-id="companyId"
+        :is-user-data-owner="isUserDataOwner"
+        @fetched-company-information="getCompanyName"
+        @claim-data-owner-ship="openDialog"
     />
     <div class="card-wrapper">
       <div class="card-grid">
-        <ClaimOwnershipPanel v-if="!isUserDataOwner" :company-name="companyName" @toggle-dialog="toggleDialog" />
+        <ClaimOwnershipPanel v-if="!isUserDataOwner" :company-name="companyName" @toggle-dialog="toggleDialog"/>
         <ClaimOwnershipDialog
-          v-if="!isUserDataOwner"
-          :dialog-is-open="dialogIsOpen"
-          :company-name="companyName"
-          :company-id="companyId"
-          @toggle-dialog="toggleDialog"
+            v-if="!isUserDataOwner"
+            :dialog-is-open="dialogIsOpen"
+            :company-name="companyName"
+            :company-id="companyId"
+            :claim-is-submitted="claimIsSubmitted"
+            @toggle-dialog="toggleDialog"
+            @claim-submitted="onClaimSubmitted"
         />
         <FrameworkSummaryPanel
-          v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
-          :key="framework"
-          :company-id="companyId"
-          :framework="framework"
-          :number-of-provided-reporting-periods="
+            v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
+            :key="framework"
+            :company-id="companyId"
+            :framework="framework"
+            :number-of-provided-reporting-periods="
             aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
           "
-          :data-test="`${framework}-summary-panel`"
+            :data-test="`${framework}-summary-panel`"
         />
       </div>
     </div>
   </TheContent>
-  <TheFooter :is-light-version="true" :sections="footerContent" />
+  <TheFooter :is-light-version="true" :sections="footerContent"/>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from "vue";
+import {defineComponent, inject} from "vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import { type AggregatedFrameworkDataSummary, type CompanyInformation, type DataTypeEnum } from "@clients/backend";
-import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
+import {type AggregatedFrameworkDataSummary, type CompanyInformation, type DataTypeEnum} from "@clients/backend";
+import {ApiClientProvider} from "@/services/ApiClients";
+import {assertDefined} from "@/utils/TypeScriptUtils";
 import TheFooter from "@/components/generics/TheNewFooter.vue";
 import contentData from "@/assets/content.json";
-import type { Content, Page } from "@/types/ContentTypes";
+import type {Content, Page} from "@/types/ContentTypes";
 import type Keycloak from "keycloak-js";
 import FrameworkSummaryPanel from "@/components/resources/companyCockpit/FrameworkSummaryPanel.vue";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import {ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE} from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
+import {getUserId} from "@/utils/KeycloakUtils";
+import {AxiosError} from "axios";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -62,15 +66,22 @@ export default defineComponent({
     useMobileView() {
       return this.injectedUseMobileView;
     },
+    userId() {
+      return getUserId(assertDefined(this.getKeycloakPromise));
+    },
   },
   watch: {
     async companyId(newCompanyId, oldCompanyId) {
       if (newCompanyId !== oldCompanyId) {
         try {
           await this.getAggregatedFrameworkDataSummary();
+          await this.getDataOwnerInformation();
+
         } catch (error) {
           console.error("Error fetching data for new company:", error);
         }
+        this.dialogIsOpen = false;
+        this.claimIsSubmitted = false;
       }
     },
   },
@@ -100,27 +111,30 @@ export default defineComponent({
     const footerContent = footerPage?.sections;
     return {
       aggregatedFrameworkDataSummary: undefined as
-        | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
-        | undefined,
+          | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
+          | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
-      companyName: "wait",
+      companyName: undefined as string | undefined,
       dialogIsOpen: false,
-      isUserDataOwner: false,
+      claimIsSubmitted: false,
+      isUserDataOwner: undefined as boolean | undefined,
       footerContent,
     };
   },
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
+    void this.getDataOwnerInformation();
   },
   methods: {
+
     /**
      * Retrieves the aggregated framework data summary
      */
     async getAggregatedFrameworkDataSummary(): Promise<void> {
       const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
-        .companyDataController;
+          .companyDataController;
       this.aggregatedFrameworkDataSummary = (
-        await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
+          await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
       ).data as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary } | undefined;
     },
     /**
@@ -129,13 +143,6 @@ export default defineComponent({
      */
     getCompanyName(companyInfo: CompanyInformation) {
       this.companyName = companyInfo.companyName;
-    },
-    /**
-     * Updates the data owner information of the user
-     * @param isUserDataOwner boolean if the user is data owner
-     */
-    getDataOwnerInformation(isUserDataOwner: boolean) {
-      this.isUserDataOwner = isUserDataOwner;
     },
     /**
      * toggles the dialog window
@@ -148,6 +155,34 @@ export default defineComponent({
      */
     openDialog() {
       this.dialogIsOpen = true;
+    },
+    /**
+     * catcher of the emitted submit event
+     */
+    onClaimSubmitted() {
+      this.claimIsSubmitted = true;
+    },
+
+    /**
+     * Get the Information about Data-ownership
+     */
+    async getDataOwnerInformation() {
+      try {
+        const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
+            .companyDataController;
+        const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
+            this.companyId,
+            assertDefined(await this.userId),
+        );
+        if (axiosResponse.status == 200) {
+          this.isUserDataOwner = true;
+        }
+      } catch (error: AxiosError) {
+        console.error(error);
+        if (error.response.status == 404) {
+          this.isUserDataOwner = false;
+        }
+      }
     },
   },
 });
