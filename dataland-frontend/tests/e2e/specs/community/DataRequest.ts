@@ -16,7 +16,7 @@ describeIf(
     });
 
     it("When identifiers are accepted and rejected", () => {
-      cy.intercept("POST", "**/community/requests").as("postRequestData");
+      cy.intercept("POST", "**/community/requests/bulk").as("postRequestData");
 
       checksBasicValidation();
       chooseReportingPeriod();
@@ -32,21 +32,15 @@ describeIf(
         checkIfIdentifiersProperlyDisplayed(interception);
       });
 
-      cy.get('[data-test="acceptedIdentifiers"]')
-        .should("exist")
-        .get('[data-test="identifiersHeading"')
-        .contains("1 REQUESTED IDENTIFIER");
-
-      cy.get('[data-test="rejectsIdentifiers"]')
-        .should("exist")
-        .get('[data-test="identifiersHeading"')
-        .contains("1 REJECTED IDENTIFIER");
+      cy.get('[data-test="acceptedIdentifiers"] [data-test="identifiersHeading"]').contains("1 REQUESTED IDENTIFIER");
+      cy.get('[data-test="rejectedIdentifiers"] [data-test="identifiersHeading"]').contains("1 REJECTED IDENTIFIER");
     });
 
     it("When identifiers are accepted", () => {
-      cy.intercept("POST", "**/community/requests").as("postRequestData");
+      cy.intercept("POST", "**/community/requests/bulk").as("postRequestData");
 
       checksBasicValidation();
+      chooseReportingPeriod();
       chooseFrameworks();
 
       cy.get("textarea[name='listOfCompanyIdentifiers']")
@@ -68,8 +62,6 @@ describeIf(
     });
 
     it("When identifiers are rejected", () => {
-      cy.intercept("POST", "**/community/requests").as("postRequestData");
-
       checksBasicValidation();
       chooseFrameworks();
 
@@ -126,14 +118,17 @@ describeIf(
       if (interception.response !== undefined) {
         const rejectedIdentifiers = (interception.response.body as BulkDataRequestResponse).rejectedCompanyIdentifiers;
         const acceptedIdentifiers = (interception.response.body as BulkDataRequestResponse).acceptedCompanyIdentifiers;
-        cy.get('[data-test="rejectedCompanyIdentifiers"] span[data-test="identifier"]').should(
-          "have.length",
-          rejectedIdentifiers.length,
-        );
-        cy.get('[data-test="acceptedCompanyIdentifiers"] span[data-test="identifier"]').should(
-          "have.length",
-          acceptedIdentifiers.length,
-        );
+        if (rejectedIdentifiers.length > 0) {
+          cy.get('[data-test="rejectedIdentifiers"] [data-test="identifiersList"]')
+            .children()
+            .should("have.length", rejectedIdentifiers.length);
+        }
+        if (acceptedIdentifiers.length > 0) {
+          cy.get('[data-test="acceptedIdentifiers"] [data-test="identifiersList"]').should(
+            "have.length",
+            acceptedIdentifiers.length,
+          );
+        }
       }
     }
 
