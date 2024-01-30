@@ -80,7 +80,7 @@ describeIf(
     });
 
     /**
-     * Chose reporting periods
+     * Choose reporting periods
      */
     function chooseReportingPeriod(): void {
       cy.get('[data-test="reportingPeriodsDiv"] div[data-test="toggleChipsFormInput"]')
