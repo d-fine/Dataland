@@ -1,24 +1,17 @@
 <template>
-  <div
-      class="claim-panel">
+  <div class="claim-panel">
     <div class="next-to-each-other vertical-middle">
       <h2 class="claim-panel__ownership-question">Responsible for {{ companyName }}?</h2>
       <a class="link" @click="$emit('toggleDialog')">Claim company dataset ownership.</a>
     </div>
-
-
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
-import InputTextFormField from "@/components/forms/parts/fields/InputTextFormField.vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
-  components: {
-    InputTextFormField,
-  },
   inject: {
     injectedUseMobileView: {
       from: "useMobileView",
@@ -30,12 +23,8 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    dialogIsOpen: {
-      type: Boolean,
-      default: false,
-    }
   },
-  emits: ["toggleDialog"]
+  emits: ["toggleDialog"],
 });
 </script>
 
@@ -49,11 +38,9 @@ export default defineComponent({
   text-align: left;
   box-shadow: 0 0 12px var(--gray-300);
 
-
   &__ownership-question {
     font-size: 21px;
     font-weight: 700;
   }
-
 }
 </style>
