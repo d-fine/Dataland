@@ -32,14 +32,14 @@ class SingleDataRequestEmailBuilder(
         receiverEmail: String,
         companyId: String,
         dataType: DataTypeEnum,
-        reportingPeriod: String,
+        reportingPeriods: List<String>,
         message: String?,
     ): Email {
         val companyName = companyGetter.getCompanyInfo(companyId).companyName
         val content = EmailContent(
             subject = "A message from Dataland: Your ESG data are high on demand!",
-            textContent = buildTextContent(requesterEmail, companyId, companyName, dataType, reportingPeriod, message),
-            htmlContent = buildHtmlContent(requesterEmail, companyId, companyName, dataType, reportingPeriod, message),
+            textContent = buildTextContent(requesterEmail, companyId, companyName, dataType, reportingPeriods, message),
+            htmlContent = buildHtmlContent(requesterEmail, companyId, companyName, dataType, reportingPeriods, message),
         )
         return Email(
             sender = senderEmailContact,
@@ -54,14 +54,14 @@ class SingleDataRequestEmailBuilder(
         companyId: String,
         companyName: String,
         dataType: DataTypeEnum,
-        reportingPeriod: String,
+        reportingPeriods: List<String>,
         message: String?,
     ): String {
         return StringBuilder()
-            .append("Greetings!\nYou have been invited to provide data on Dataland.\n")
+            .append("Greetings!\n\nYou have been invited to provide data on Dataland.\n")
             .append("People are interested in ${readableFrameworkNameMapping[dataType]} data")
-            .append(" for $companyName  for the year${if (reportingPeriod.length > 1) "s" else ""}")
-            .append(" $reportingPeriod.\n")
+            .append(" for $companyName  for the year${if (reportingPeriods.size > 1) "s" else ""}")
+            .append(" ${reportingPeriods.joinToString(", ")}.\n")
             .also {
                 if (!message.isNullOrBlank()) {
                     it.append("User $requesterEmail sent the following message:\n")
@@ -77,7 +77,7 @@ class SingleDataRequestEmailBuilder(
         companyId: String,
         companyName: String,
         dataType: DataTypeEnum,
-        reportingPeriods: String,
+        reportingPeriods: List<String>,
         message: String?,
     ): String {
         val freemarkerContext = mapOf(

@@ -81,19 +81,20 @@ class SingleDataRequestManager(
     }
 
     private fun sendSingleDataRequestEmails(singleDataRequest: SingleDataRequest, datalandCompanyId: String) {
+        if(singleDataRequest.listOfReportingPeriods.isEmpty()) {
+           return
+        }
         singleDataRequest.contactList?.forEach { contactEmail ->
-            singleDataRequest.listOfReportingPeriods.forEach { reportingPeriod ->
-                emailSender.sendEmail(
-                    singleDataRequestEmailBuilder.buildSingleDataRequestEmail(
-                        requesterEmail = (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).username,
-                        receiverEmail = contactEmail,
-                        companyId = datalandCompanyId,
-                        dataType = singleDataRequest.frameworkName,
-                        reportingPeriod = reportingPeriod,
-                        message = singleDataRequest.message,
-                    )
+            emailSender.sendEmail(
+                singleDataRequestEmailBuilder.buildSingleDataRequestEmail(
+                    requesterEmail = (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).username,
+                    receiverEmail = contactEmail,
+                    companyId = datalandCompanyId,
+                    dataType = singleDataRequest.frameworkName,
+                    reportingPeriods = singleDataRequest.listOfReportingPeriods,
+                    message = singleDataRequest.message,
                 )
-            }
+            )
         }
     }
 
