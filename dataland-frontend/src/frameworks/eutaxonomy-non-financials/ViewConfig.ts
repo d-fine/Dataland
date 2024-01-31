@@ -4,6 +4,7 @@ import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatPercentageForDatatable } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
+import { formatCurrencyForDisplay } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
 import {
   formatAssuranceProviderForDataTable,
   formatAssuranceForDataTable,
@@ -123,7 +124,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         explanation: "Total revenue per annum",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatNumberForDatatable(dataset.revenue?.totalRevenue, ""),
+          formatCurrencyForDisplay(dataset.revenue?.totalRevenue, "Total Revenue"),
       },
       {
         type: "cell",

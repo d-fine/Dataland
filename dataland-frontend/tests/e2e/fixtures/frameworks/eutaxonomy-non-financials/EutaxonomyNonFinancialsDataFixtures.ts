@@ -46,7 +46,7 @@ export function generateEutaxonomyNonFinancialsData(
       assurance: dataGenerator.generateAssuranceDatapoint(),
     },
     revenue: {
-      totalRevenue: dataGenerator.randomFloat(),
+      totalRevenue: dataGenerator.randomCurrencyDataPoint(),
       eligibleRevenue: dataGenerator.randomFloat(),
       alignedRevenue: dataGenerator.randomFloat(),
       substantialContributionToClimateChangeMitigation: dataGenerator.randomPercentageValue(),
