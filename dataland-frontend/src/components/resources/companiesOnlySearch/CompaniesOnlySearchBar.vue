@@ -109,7 +109,7 @@ export default defineComponent({
       setTimeout(() => {
         this.inputFocused = false;
         this.$emit("blur");
-      }, 30000);
+      }, 300);
     },
 
     /**

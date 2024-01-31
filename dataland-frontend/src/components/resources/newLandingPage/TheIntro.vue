@@ -82,7 +82,6 @@ const inputFocused = ref(false);
 const handleInputFocus = (): void => {
   inputFocused.value = true;
   if (isMobile.value) {
-    document.body.style.overflow = "hidden";
     const header = document.querySelector(".header") as HTMLElement;
     if (header) header.style.display = "none";
   }
@@ -192,7 +191,6 @@ const handleInputBlur = (): void => {
       top: -44px;
       left: 32px;
       cursor: pointer;
-      width: 100%;
       z-index: 10;
       text-align: left;
       padding: 0 16px;
@@ -350,18 +348,24 @@ const handleInputBlur = (): void => {
     padding: 0px;
     top: 47px !important;
     left: -26px !important;
-    width: auto !important;
     overflow: hidden;
     border-radius: 0;
     border: none;
     background: none;
     box-shadow: none;
     backdrop-filter: unset;
+    max-height: 100vw !important;
     ul.p-autocomplete-items {
       border-radius: 0;
       background: none;
       border: 0;
-      max-height: unset;
+      li.p-autocomplete-item i.pi.pi-search.pl-3 {
+        padding-left: 1.7em !important;
+      }
+      li.p-autocomplete-item:after {
+        width: calc(100% - 3em);
+        left: 1.5em;
+      }
     }
   }
 }
