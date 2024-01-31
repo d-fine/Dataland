@@ -1,5 +1,6 @@
 <template>
-  <div :class="`summary-panel${hasAccessibleViewPage && !useMobileView ? '--interactive' : ''}`" @click="onClickPanel">
+  <div :class="` summary-panel ${hasAccessibleViewPage && !useMobileView ? 'summary-panel--interactive' : ''}`"
+       @click="onClickPanel">
     <div>
       <div class="summary-panel__title">
         {{ title }}
