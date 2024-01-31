@@ -878,6 +878,9 @@
         }
       },
       "StoredDataRequestMessageObject": {
+        "required": [
+          "contactList"
+        ],
         "type": "object",
         "properties": {
           "contactList": {

@@ -61,6 +61,7 @@ class SingleDataRequestManager(
                 throwInvalidInputApiExceptionBecauseIdentifierWasRejected()
             }
         }
+        throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest)
         storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
             storedDataRequests, singleDataRequest, identifierValueToStore, identifierTypeToStore,
         )
@@ -88,6 +89,15 @@ class SingleDataRequestManager(
             summary,
             message,
         )
+    }
+
+    private fun throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest: SingleDataRequest) {
+        if (utils.isContactListTrivial(singleDataRequest.contactList) && !singleDataRequest.message.isNullOrBlank()) {
+            throw InvalidInputApiException(
+                "Insufficient information to create message object.",
+                "Without at least one proper email address being provided no message can be forwarded.",
+            )
+        }
     }
 
     private fun storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(

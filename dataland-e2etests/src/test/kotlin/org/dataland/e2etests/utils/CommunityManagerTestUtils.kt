@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.util.*
 
+private val apiAccessor = ApiAccessor()
+
 fun retrieveTimeAndWaitOneMillisecond(): Long {
     val timestamp = Instant.now().toEpochMilli()
     Thread.sleep(1)
@@ -75,6 +77,14 @@ fun generateMapWithOneRandomValueForEachIdentifierType(): Map<DataRequestCompany
         DataRequestCompanyIdentifierType.isin to generateRandomIsin(),
         DataRequestCompanyIdentifierType.permId to generateRandomPermId(),
     )
+}
+
+fun getIdForUploadedCompanyWithIdentifiers(
+    lei: String? = null,
+    isins: List<String>? = null,
+    permId: String? = null,
+): String {
+    return apiAccessor.uploadOneCompanyWithIdentifiers(lei, isins, permId)!!.actualStoredCompany.companyId
 }
 
 fun checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(

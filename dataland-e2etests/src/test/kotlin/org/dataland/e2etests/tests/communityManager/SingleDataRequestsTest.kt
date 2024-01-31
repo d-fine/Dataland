@@ -15,7 +15,9 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.assertStatusForDataRequestId
 import org.dataland.e2etests.utils.check400ClientExceptionErrorMessage
 import org.dataland.e2etests.utils.generateRandomIsin
+import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
+import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatus
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -122,14 +124,8 @@ class SingleDataRequestsTest {
     @Test
     fun `post a single data request with a PermId that matches a Dataland company and assert the correct matching`() {
         val validPermId = System.currentTimeMillis().toString()
-        val companyIdOfNewCompany =
-            apiAccessor.uploadOneCompanyWithIdentifiers(permId = validPermId)!!.actualStoredCompany.companyId
-        val singleDataRequest = SingleDataRequest(
-            companyIdentifier = validPermId,
-            frameworkName = SingleDataRequest.FrameworkName.sfdr,
-            listOfReportingPeriods = listOf("2022"),
-        )
-        val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
+        val companyIdOfNewCompany = getIdForUploadedCompanyWithIdentifiers(permId = validPermId)
+        val storedDataRequest = postStandardSingleDataRequest(validPermId)
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
 
         val retrievedDataRequest = requestControllerApi.getDataRequestById(storedDataRequestId)
@@ -140,6 +136,51 @@ class SingleDataRequestsTest {
         )
         assertEquals(companyIdOfNewCompany, retrievedDataRequest.dataRequestCompanyIdentifierValue)
         assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
+    }
+
+    private fun postStandardSingleDataRequest(
+        companyIdentifier: String,
+        contactList: List<String>? = null,
+        message: String? = null,
+    ): StoredDataRequest {
+        return requestControllerApi.postSingleDataRequest(
+            SingleDataRequest(
+                companyIdentifier = companyIdentifier,
+                frameworkName = SingleDataRequest.FrameworkName.sfdr,
+                listOfReportingPeriods = listOf("2022"),
+                contactList = contactList,
+                message = message,
+            ),
+        ).first()
+    }
+
+    @Test
+    fun `post a single data request inducing a trivial message object and check expected behaviour`() {
+        val validLei = generateRandomLei()
+        apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
+
+        val trivialContactListInputs = listOf(null, listOf(), listOf(""), listOf(" "))
+        trivialContactListInputs.forEach {
+            val clientException = assertThrows<ClientException> {
+                postStandardSingleDataRequest(validLei, it, "Dummy test message.")
+            }
+            check400ClientExceptionErrorMessage(clientException)
+            val responseBody = (clientException.response as ClientError<*>).body as String
+            assertTrue(responseBody.contains("Insufficient information to create message object."))
+            assertTrue(
+                responseBody.contains(
+                    "Without at least one proper email address being provided no message can be forwarded.",
+                ),
+            )
+        }
+
+        val trivialMessageInputs = listOf(null, "", " ")
+        trivialContactListInputs.forEach { contactList ->
+            trivialMessageInputs.forEach { message ->
+                val storedDataRequest = postStandardSingleDataRequest(validLei, contactList, message)
+                assertTrue(storedDataRequest.messageHistory.isEmpty())
+            }
+        }
     }
 
     @Test
