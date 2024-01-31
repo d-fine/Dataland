@@ -2,11 +2,11 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import {
-  type CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+  type CompanyAssociatedDataEuTaxonomyNonFinancialsData,
   Configuration,
   type DataMetaInformation,
   DataTypeEnum,
-  type EuTaxonomyDataForNonFinancials,
+  type EuTaxonomyNonFinancialsData,
   EuTaxonomyDataForNonFinancialsControllerApi,
   type StoredCompany,
 } from "@clients/backend";
@@ -18,7 +18,7 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 import { roundNumber } from "@/utils/NumberConversionUtils";
 
-let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForNonFinancials>;
+let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EuTaxonomyNonFinancialsData>;
 before(function () {
   cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
     const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;

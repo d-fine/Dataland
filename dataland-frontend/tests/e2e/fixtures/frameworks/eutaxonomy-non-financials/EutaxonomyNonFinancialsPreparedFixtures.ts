@@ -19,6 +19,6 @@ export function generateEutaxonomyNonFinancialsPreparedFixtures(): Array<Fixture
   for (let i = 0; i < manipulatorFunctions.length; i++) {
     preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
   }
-
+  preparedFixtures.push(generateEutaxonomyNonFinancialsFixtures(1, 0)[0]);
   return preparedFixtures;
 }

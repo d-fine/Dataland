@@ -1,1 +1,129 @@
-[]
+[
+	{
+		"companyInformation": {
+			"companyName": "Greenfelder, Grant and Rau",
+			"headquarters": "Harberstad",
+			"headquartersPostalCode": null,
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"JRgATja6P38Q",
+					"MNwdJlkQYnox"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"3y9kl8PiR"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GW",
+			"companyAlternativeNames": [
+				"Bergstrom, Pfannerstill and Marquardt",
+				"Daugherty, Champlin and Franecki",
+				"Hartmann Group",
+				"Torp - Pouros"
+			],
+			"companyLegalForm": "AG",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"reportingPeriod": "2024-09-04",
+				"fiscalYearDeviation": "NoDeviation",
+				"fiscalYearEnd": "2024-12-14",
+				"referencedReports": {
+					"ESEFReport": {
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"fileName": "ESEFReport",
+						"isGroupLevel": "No",
+						"reportDate": "2023-06-28",
+						"currency": "MMK"
+					},
+					"SustainabilityReport": {
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"fileName": "SustainabilityReport",
+						"isGroupLevel": "No",
+						"reportDate": "2023-12-26",
+						"currency": "OMR"
+					}
+				},
+				"scopeOfEntities": {
+					"value": "No",
+					"dataSource": {
+						"fileName": "Policy",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+					}
+				},
+				"euTaxonomyActivityLevelReporting": {
+					"value": "No",
+					"dataSource": {
+						"fileName": "Policy",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+					}
+				},
+				"numberOfEmployees": 15.63,
+				"nfrdMandatory": "No",
+				"assurance": {
+					"value": "ReasonableAssurance",
+					"provider": "Harber - Yost",
+					"dataSource": {
+						"page": 862,
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "synergies"
+					}
+				}
+			},
+			"revenue": {
+				"totalRevenue": 23921.68,
+				"eligibleRevenue": 72153.15,
+				"alignedRevenue": 144.66,
+				"substantialContributionToClimateChangeMitigation": 22.88,
+				"substantialContributionToClimateChangeAdaptation": 57.69,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 51.55,
+				"substantialContributionToTransitionToACircularEconomy": 12.07,
+				"substantialContributionToPollutionPreventionAndControl": 10.85,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 98.31,
+				"nonAlignedRevenue": 16118.81,
+				"nonEligibleRevenue": 2.11,
+				"enablingRevenue": 8.64,
+				"transitionalRevenue": 18.45
+			},
+			"capex": {
+				"totalCapex": 43.06,
+				"eligibleCapex": 59.2,
+				"alignedCapex": 88.36,
+				"substantialContributionToClimateChangeMitigation": 62.82,
+				"substantialContributionToClimateChangeAdaptation": 3.4,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 8.89,
+				"substantialContributionToTransitionToACircularEconomy": 6.59,
+				"substantialContributionToPollutionPreventionAndControl": 1.21,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 45.04,
+				"nonAlignedCapex": 32.62,
+				"nonEligibleCapex": 28.88,
+				"enablingCapex": 50.58,
+				"transitionalCapex": 87.07
+			},
+			"opex": {
+				"totalOpex": 1818.67,
+				"eligibleOpex": 9.74,
+				"alignedOpex": 0.28,
+				"substantialContributionToClimateChangeMitigation": 72.23,
+				"substantialContributionToClimateChangeAdaptation": 83.1,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 52.14,
+				"substantialContributionToTransitionToACircularEconomy": 70.68,
+				"substantialContributionToPollutionPreventionAndControl": 35.16,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 17.2,
+				"nonAlignedOpex": 35.59,
+				"nonEligibleOpex": 24.5,
+				"enablingOpex": 88.17,
+				"transitionalOpex": 43.59
+			}
+		},
+		"reportingPeriod": "2021"
+	}
+]
