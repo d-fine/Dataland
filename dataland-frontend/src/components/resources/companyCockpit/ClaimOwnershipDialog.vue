@@ -14,7 +14,7 @@
     </template>
 
     <div v-if="!claimIsSubmitted">
-      <p>
+      <p data-test="claimOwnershipDialogMessage">
         Are you responsible for the datasets of {{ companyName }}? Claim dataset ownership in order to ensure high
         quality and transparency over your company's data.
       </p>
@@ -28,7 +28,7 @@
       />
     </div>
     <div v-else>
-      <p>We will reach out to you soon via email.</p>
+      <p data-test="claimOwnershipDialogSubmittedMessage">We will reach out to you soon via email.</p>
     </div>
     <template #footer v-if="!claimIsSubmitted">
       <PrimeButton label="SUBMIT" @click="submitInput" />
