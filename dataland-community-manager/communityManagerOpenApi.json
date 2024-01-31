@@ -221,6 +221,7 @@
         "tags": [
           "Actuator"
         ],
+        "summary": "Actuator root web endpoint",
         "operationId": "links",
         "responses": {
           "200": {
