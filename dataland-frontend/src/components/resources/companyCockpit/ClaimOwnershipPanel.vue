@@ -61,7 +61,7 @@ export default defineComponent({
     },
   },
   mounted() {
-    await this.getCompanyName();
+    void this.getCompanyName();
   },
   methods: {
     /**
