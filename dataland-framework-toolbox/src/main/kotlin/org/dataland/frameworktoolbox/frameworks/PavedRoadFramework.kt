@@ -24,13 +24,14 @@ import java.io.File
  * A PavedRoadFramework is the simplest way to integrate a new framework into Dataland or
  * update an existing one! It provides a template for implementing frameworks.
  */
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 abstract class PavedRoadFramework(
     val identifier: String,
     val label: String,
     val explanation: String,
     val frameworkTemplateCsvFile: File,
     val order: Int,
+    val customUploadConfig: Boolean,
     val enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
 ) {
     val framework = Framework(
@@ -38,6 +39,7 @@ abstract class PavedRoadFramework(
         label = label,
         explanation = explanation,
         order = order,
+        customUploadConfig = false,
     )
 
     val logger by LoggerDelegate()

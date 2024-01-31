@@ -10,11 +10,13 @@ import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuil
  * A High-Level intermediate representation of a Dataland Framework
  * @param identifier the short identifier of the framework (e.g., lksg)
  */
+@Suppress("UnusedPrivateProperty")
 class Framework(
     val identifier: String,
     val label: String,
     val explanation: String,
     val order: Int,
+    customUploadConfig: Boolean,
 ) {
     val root: TopLevelComponentGroup = TopLevelComponentGroup(this)
 

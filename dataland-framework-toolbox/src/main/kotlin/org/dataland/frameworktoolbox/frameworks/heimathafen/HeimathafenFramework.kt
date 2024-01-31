@@ -19,6 +19,7 @@ class HeimathafenFramework : PavedRoadFramework(
     explanation = "Das Heimathafen Framework",
     File("./dataland-framework-toolbox/inputs/heimathafen/dataDictionary-Heimathafen.csv"),
     order = 7,
+    customUploadConfig = false,
 ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
         return ComponentGenerationUtilsForGermanFrameworks()

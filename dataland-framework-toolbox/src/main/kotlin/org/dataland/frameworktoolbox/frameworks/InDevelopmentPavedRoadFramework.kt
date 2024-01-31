@@ -14,15 +14,17 @@ import java.io.File
  * for any frameworks that are currently in development. It turns a large amount of errors into warnings
  * that make the development experience more pleasant
  */
+@Suppress("LongParameterList")
 abstract class InDevelopmentPavedRoadFramework(
     identifier: String,
     label: String,
     explanation: String,
     frameworkTemplateCsvFile: File,
     order: Int,
+    customUploadConfig: Boolean,
     enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
 ) :
-    PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile, order) {
+    PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile, order, customUploadConfig) {
 
     private fun compileDataModel(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.DataModel)) {
@@ -74,6 +76,7 @@ abstract class InDevelopmentPavedRoadFramework(
             return
         }
         val uploadConfig = generateUploadModel(framework)
+
         customizeUploadModel(uploadConfig)
 
         @Suppress("TooGenericExceptionCaught")
@@ -101,7 +104,9 @@ abstract class InDevelopmentPavedRoadFramework(
 
         compileDataModel(datalandProject)
         compileViewModel(datalandProject)
-        compileUploadModel(datalandProject)
+        if (customUploadConfig) {
+            compileUploadModel(datalandProject)
+        }
         compileFixtureGenerator(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)

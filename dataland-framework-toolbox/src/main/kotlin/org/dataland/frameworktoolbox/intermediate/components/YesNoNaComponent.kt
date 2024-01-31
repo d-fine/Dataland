@@ -16,7 +16,10 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 class YesNoNaComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(identifier, parent, "org.dataland.datalandbackend.model.enums.commons.YesNoNa") {
+) : ComponentBase(
+    identifier, parent,
+    "org.dataland.datalandbackend.model.enums.commons.YesNoNa",
+) {
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
@@ -40,7 +43,8 @@ class YesNoNaComponent(
         val uploadComponentNameToUse = when (documentSupport) {
             is NoDocumentSupport -> "YesNoNaFormField"
             is SimpleDocumentSupport -> "YesNoNaBaseDataPointFormField"
-            else -> throw IllegalArgumentException("YesNoNaComponent does not support document support '$documentSupport")
+            else ->
+                throw IllegalArgumentException("YesNoNaComponent does not support document support '$documentSupport")
         }
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,

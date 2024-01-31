@@ -1,129 +1,141 @@
 [
 	{
 		"companyInformation": {
-			"companyName": "Greenfelder, Grant and Rau",
-			"headquarters": "Harberstad",
-			"headquartersPostalCode": null,
-			"sector": "initiatives",
+			"companyName": "O'Keefe, Ritchie and Bernhard",
+			"headquarters": "Maple Grove",
+			"headquartersPostalCode": "36964-0479",
+			"sector": "lifetime value",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"JRgATja6P38Q",
-					"MNwdJlkQYnox"
+					"572JKCduhjWn"
 				],
 				"PermId": [],
-				"Ticker": [],
-				"Duns": [
-					"3y9kl8PiR"
+				"Ticker": [
+					"Gu1CibU"
 				],
-				"VatNumber": [],
+				"Duns": [],
+				"VatNumber": [
+					"34tWVTwyi"
+				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "GW",
+			"countryCode": "CH",
 			"companyAlternativeNames": [
-				"Bergstrom, Pfannerstill and Marquardt",
-				"Daugherty, Champlin and Franecki",
-				"Hartmann Group",
-				"Torp - Pouros"
+				"Bechtelar - Beatty"
 			],
 			"companyLegalForm": "AG",
-			"website": null,
+			"website": "https://worn-improvement.name",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
-				"reportingPeriod": "2024-09-04",
-				"fiscalYearDeviation": "NoDeviation",
-				"fiscalYearEnd": "2024-12-14",
+				"reportingPeriod": "2024-12-07",
+				"fiscalYearDeviation": "Deviation",
+				"fiscalYearEnd": "2024-08-02",
 				"referencedReports": {
 					"ESEFReport": {
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"fileName": "ESEFReport",
-						"isGroupLevel": "No",
-						"reportDate": "2023-06-28",
+						"isGroupLevel": "Yes",
+						"reportDate": "2023-04-07",
+						"currency": "STN"
+					},
+					"IntegratedReport": {
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"fileName": "IntegratedReport",
+						"isGroupLevel": "Yes",
+						"reportDate": "2023-06-12",
 						"currency": "MMK"
 					},
 					"SustainabilityReport": {
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"fileName": "SustainabilityReport",
-						"isGroupLevel": "No",
-						"reportDate": "2023-12-26",
-						"currency": "OMR"
+						"isGroupLevel": "Yes",
+						"reportDate": "2023-11-15",
+						"currency": "AOA"
+					},
+					"AnnualReport": {
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"fileName": "AnnualReport",
+						"isGroupLevel": "Yes",
+						"reportDate": "2023-05-10",
+						"currency": "PKR"
 					}
 				},
 				"scopeOfEntities": {
-					"value": "No",
+					"value": "Yes",
 					"dataSource": {
-						"fileName": "Policy",
+						"fileName": "Certification",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 					}
 				},
 				"euTaxonomyActivityLevelReporting": {
-					"value": "No",
+					"value": "Yes",
 					"dataSource": {
-						"fileName": "Policy",
+						"fileName": "Certification",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 					}
 				},
-				"numberOfEmployees": 15.63,
+				"numberOfEmployees": 19.43,
 				"nfrdMandatory": "No",
 				"assurance": {
 					"value": "ReasonableAssurance",
-					"provider": "Harber - Yost",
+					"provider": "Kuhic, Orn and Turcotte",
 					"dataSource": {
-						"page": 862,
-						"fileName": "SustainabilityReport",
+						"page": 697,
+						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "synergies"
+						"tagName": "ROI"
 					}
 				}
 			},
 			"revenue": {
-				"totalRevenue": 23921.68,
-				"eligibleRevenue": 72153.15,
-				"alignedRevenue": 144.66,
-				"substantialContributionToClimateChangeMitigation": 22.88,
-				"substantialContributionToClimateChangeAdaptation": 57.69,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 51.55,
-				"substantialContributionToTransitionToACircularEconomy": 12.07,
-				"substantialContributionToPollutionPreventionAndControl": 10.85,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 98.31,
-				"nonAlignedRevenue": 16118.81,
-				"nonEligibleRevenue": 2.11,
-				"enablingRevenue": 8.64,
-				"transitionalRevenue": 18.45
+				"totalRevenue": 61383.16,
+				"eligibleRevenue": 82579.17,
+				"alignedRevenue": 24045.88,
+				"substantialContributionToClimateChangeMitigation": 67.34,
+				"substantialContributionToClimateChangeAdaptation": 72.28,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 20.83,
+				"substantialContributionToTransitionToACircularEconomy": 16.87,
+				"substantialContributionToPollutionPreventionAndControl": 19.98,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 79.73,
+				"nonAlignedRevenue": 25020.51,
+				"nonEligibleRevenue": 4.7,
+				"enablingRevenue": 85.51,
+				"transitionalRevenue": 94.2
 			},
 			"capex": {
-				"totalCapex": 43.06,
-				"eligibleCapex": 59.2,
-				"alignedCapex": 88.36,
-				"substantialContributionToClimateChangeMitigation": 62.82,
-				"substantialContributionToClimateChangeAdaptation": 3.4,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 8.89,
-				"substantialContributionToTransitionToACircularEconomy": 6.59,
-				"substantialContributionToPollutionPreventionAndControl": 1.21,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 45.04,
-				"nonAlignedCapex": 32.62,
-				"nonEligibleCapex": 28.88,
-				"enablingCapex": 50.58,
-				"transitionalCapex": 87.07
+				"totalCapex": 40.59,
+				"eligibleCapex": 58.38,
+				"alignedCapex": 57.76,
+				"substantialContributionToClimateChangeMitigation": 12.85,
+				"substantialContributionToClimateChangeAdaptation": 31.52,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 83.39,
+				"substantialContributionToTransitionToACircularEconomy": 95.39,
+				"substantialContributionToPollutionPreventionAndControl": 55.44,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 85.8,
+				"nonAlignedCapex": 73.06,
+				"nonEligibleCapex": 64.54,
+				"enablingCapex": 70.42,
+				"transitionalCapex": 75.5
 			},
 			"opex": {
-				"totalOpex": 1818.67,
-				"eligibleOpex": 9.74,
-				"alignedOpex": 0.28,
-				"substantialContributionToClimateChangeMitigation": 72.23,
-				"substantialContributionToClimateChangeAdaptation": 83.1,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 52.14,
-				"substantialContributionToTransitionToACircularEconomy": 70.68,
-				"substantialContributionToPollutionPreventionAndControl": 35.16,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 17.2,
-				"nonAlignedOpex": 35.59,
-				"nonEligibleOpex": 24.5,
-				"enablingOpex": 88.17,
-				"transitionalOpex": 43.59
+				"totalOpex": 50997.49,
+				"eligibleOpex": 97.46,
+				"alignedOpex": 32.67,
+				"substantialContributionToClimateChangeMitigation": 45.63,
+				"substantialContributionToClimateChangeAdaptation": 17.43,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 81.05,
+				"substantialContributionToTransitionToACircularEconomy": 2.8,
+				"substantialContributionToPollutionPreventionAndControl": 17.59,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 61.43,
+				"nonAlignedOpex": 74.9,
+				"nonEligibleOpex": 27.01,
+				"enablingOpex": 33.94,
+				"transitionalOpex": 40.87
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2023"
 	}
 ]
