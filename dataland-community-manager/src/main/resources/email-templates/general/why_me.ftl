@@ -1,15 +1,15 @@
-<table style="background-color: #ffffff; width: 600px; border: 0px solid #e3e3e3; font-family: Arial, Helvetica, sans-serif; font-size: 18px; text-align: left; border-collapse: collapse; padding: 0; margin: 0">
+<table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 18px; text-align: left; border-collapse: collapse; padding: 0; margin: 0">
     <tbody>
     <tr>
         <td rowspan="11" style="width: 40px;">&nbsp;</td>
-        <td colspan="2" height="40" style="width: 520px;">&nbsp;</td>
+        <td colspan="2" style="width: 520px; height: 20px">&nbsp;</td>
         <td rowspan="11" style="width: 40px;">&nbsp;</td>
     </tr>
     <tr>
         <td colspan="2" style="font-size: 28px; font-weight: bold">Why me?</td>
     </tr>
     <tr>
-        <td colspan="2" height="20">&nbsp;</td>
+        <td colspan="2" style="height: 20px">&nbsp;</td>
     </tr>
     <tr>
         <td style="vertical-align: top"><b>&bull;&nbsp;</b></td>
@@ -18,14 +18,14 @@
 
     </tr>
     <tr>
-        <td height="10">&nbsp;</td>
+        <td style="height: 10px">&nbsp;</td>
     </tr>
     <tr>
         <td style="vertical-align: top"><b>&bull;&nbsp;</b></td>
         <td>Looks like your data are high on demand! Someone needs your data to make valuable decisions.</td>
     </tr>
     <tr>
-        <td height="10">&nbsp;</td>
+        <td style="height: 10px">&nbsp;</td>
     </tr>
     <tr>
         <td style="vertical-align: top"><b>&bull;&nbsp;</b></td>
@@ -33,7 +33,7 @@
             <span style="color: #FF6813FF;"><a href="${baseUrl}/companies/${companyId}" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #FF6813FF; text-decoration: none;">DISCOVER OUR PRINCIPLES </a>&#10132;</span></td>
     </tr>
     <tr>
-        <td height="40">&nbsp;</td>
+        <td style="height: 40px">&nbsp;</td>
     </tr>
     </tbody>
 </table>
