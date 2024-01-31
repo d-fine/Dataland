@@ -107,6 +107,10 @@ export default defineComponent({
     userId() {
       return getUserId(assertDefined(this.getKeycloakPromise));
     },
+    isCompanyIdValid() {
+      const uuidRegexExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      return uuidRegexExp.test(this.companyId);
+    },
   },
   props: {
     companyId: {
@@ -165,21 +169,25 @@ export default defineComponent({
      * Get the Information about Data-ownership
      */
     async getDataOwnerInformation() {
-      try {
-        const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
-          .companyDataController;
-        const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
-          this.companyId,
-          assertDefined(await this.userId),
-        );
-        if (axiosResponse.status == 200) {
-          this.isUserDataOwner = true;
+      if ((await this.userId) && this.isCompanyIdValid) {
+        try {
+          const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
+            .backendClients.companyDataController;
+          const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
+            this.companyId,
+            assertDefined(await this.userId),
+          );
+          if (axiosResponse.status == 200) {
+            this.isUserDataOwner = true;
+          }
+        } catch (error) {
+          console.log(error);
+          if (getErrorMessage(error).includes("404")) {
+            this.isUserDataOwner = false;
+          }
         }
-      } catch (error) {
-        console.error(error);
-        if (getErrorMessage(error).includes("404")) {
-          this.isUserDataOwner = false;
-        }
+      } else {
+        this.isUserDataOwner = false;
       }
     },
     /**
