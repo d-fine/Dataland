@@ -10708,8 +10708,12 @@
         "type": "object",
         "properties": {
           "totalRevenue": {
-            "type": "number",
-            "nullable": true
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
           },
           "eligibleRevenue": {
             "type": "number",
@@ -13274,20 +13278,20 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
+          "companyName": {
             "type": "string"
           },
-          "countryCode": {
+          "companyId": {
+            "type": "string"
+          },
+          "headquarters": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
+          "countryCode": {
             "type": "string"
           },
           "permId": {
