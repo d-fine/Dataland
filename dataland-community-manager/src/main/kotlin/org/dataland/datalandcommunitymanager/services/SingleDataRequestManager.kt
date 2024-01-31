@@ -14,7 +14,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
-import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,8 +30,7 @@ class SingleDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyGetter: CompanyGetter,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val emailSender: EmailSender,
-    @Autowired private val singleDataRequestEmailBuilder: SingleDataRequestEmailBuilder,
+    @Autowired private val singleDataRequestEmailSender: SingleDataRequestEmailSender,
 ) {
     private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyGetter, objectMapper)
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
@@ -50,23 +48,21 @@ class SingleDataRequestManager(
         lateinit var identifierTypeToStore: DataRequestCompanyIdentifierType
         lateinit var identifierValueToStore: String
         val storedDataRequests = mutableListOf<StoredDataRequest>()
-        var datalandCompanyIdIfExists: String? = null
         if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
             checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
             identifierTypeToStore = DataRequestCompanyIdentifierType.DatalandCompanyId
             identifierValueToStore = singleDataRequest.companyIdentifier
-            datalandCompanyIdIfExists = singleDataRequest.companyIdentifier
         } else {
             val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(singleDataRequest.companyIdentifier)
             dataRequestLogger.logMessageForSingleDataRequest(singleDataRequest.companyIdentifier)
             if (matchedIdentifierType != null) {
-                datalandCompanyIdIfExists = utils.getDatalandCompanyIdForIdentifierValue(
+                val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
                     singleDataRequest.companyIdentifier,
                 )
-                identifierTypeToStore = datalandCompanyIdIfExists?.let {
+                identifierTypeToStore = datalandCompanyId?.let {
                     DataRequestCompanyIdentifierType.DatalandCompanyId
                 } ?: matchedIdentifierType
-                identifierValueToStore = datalandCompanyIdIfExists ?: singleDataRequest.companyIdentifier
+                identifierValueToStore = datalandCompanyId ?: singleDataRequest.companyIdentifier
             } else {
                 throwInvalidInputApiExceptionBecauseIdentifierWasRejected()
             }
@@ -74,28 +70,13 @@ class SingleDataRequestManager(
         storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
             storedDataRequests, singleDataRequest, identifierValueToStore, identifierTypeToStore,
         )
-        if (datalandCompanyIdIfExists != null) {
-            sendSingleDataRequestEmails(singleDataRequest, datalandCompanyIdIfExists)
-        }
+        singleDataRequestEmailSender.sendSingleDataRequestEmails(
+            userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
+            singleDataRequest = singleDataRequest,
+            companyIdentifierType = identifierTypeToStore,
+            companyIdentifierValue = identifierValueToStore,
+        )
         return storedDataRequests
-    }
-
-    private fun sendSingleDataRequestEmails(singleDataRequest: SingleDataRequest, datalandCompanyId: String) {
-        if (singleDataRequest.listOfReportingPeriods.isEmpty()) {
-            return
-        }
-        singleDataRequest.contactList?.forEach { contactEmail ->
-            emailSender.sendEmail(
-                singleDataRequestEmailBuilder.buildSingleDataRequestEmail(
-                    requesterEmail = (DatalandAuthentication.fromContext() as DatalandJwtAuthentication).username,
-                    receiverEmail = contactEmail,
-                    companyId = datalandCompanyId,
-                    dataType = singleDataRequest.frameworkName,
-                    reportingPeriods = singleDataRequest.listOfReportingPeriods,
-                    message = singleDataRequest.message,
-                ),
-            )
-        }
     }
 
     private fun checkIfCompanyIsValid(companyId: String) {

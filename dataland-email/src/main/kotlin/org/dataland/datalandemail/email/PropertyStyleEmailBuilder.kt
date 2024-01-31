@@ -1,6 +1,5 @@
 package org.dataland.datalandemail.email
 
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 
 /**
@@ -75,11 +74,9 @@ abstract class PropertyStyleEmailBuilder(
      * @return the user info string
      */
     fun buildUserInfo(
-        userAuthentication: DatalandAuthentication,
+        userAuthentication: DatalandJwtAuthentication,
     ): String {
-        return (userAuthentication as DatalandJwtAuthentication).let {
-            "User ${it.username} (Keycloak ID: ${it.userId})"
-        }
+        return "User ${userAuthentication.username} (Keycloak ID: ${userAuthentication.userId})"
     }
 
     private fun buildPropertyStyleTextContent(title: String, properties: Map<String, String?>): String {
