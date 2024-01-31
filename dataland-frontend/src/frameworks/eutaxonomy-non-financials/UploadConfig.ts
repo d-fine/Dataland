@@ -1,4 +1,5 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
+import { EutaxonomyNonFinancialsData } from "@clients/backend";
 
 export const eutaxonomyNonFinancialsDataModel = [
   {
@@ -85,19 +86,76 @@ export const eutaxonomyNonFinancialsDataModel = [
         ],
       },
       {
-        name: "eligibleRevenue",
-        label: "Eligible Revenue",
-        fields: [],
+        name: "eligibleShare",
+        label: "Eligible Share",
+        fields: [
+          {
+            name: "relativeShareInPercent",
+            label: "Relative Share in Percent",
+
+            unit: "%",
+            component: "NumberFormField",
+            required: false,
+            showIf: (): boolean => true,
+            validation: "between:0,100",
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute Share",
+
+            component: "CurrencyDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
       },
       {
-        name: "alignedRevenue",
-        label: "Aligned Revenue",
-        fields: [],
+        name: "nonAlignedShare",
+        label: "Non-Aligned Share",
+        fields: [
+          {
+            name: "relativeShareInPercent",
+            label: "Relative Share in Percent",
+
+            unit: "%",
+            component: "NumberFormField",
+            required: false,
+            showIf: (): boolean => true,
+            validation: "between:0,100",
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute Share",
+
+            component: "CurrencyDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
       },
       {
-        name: "substantialContributionToClimateChangeMitigation",
-        label: "Substantial Contribution to Climate Change Mitigation",
-        fields: [],
+        name: "alignedShare",
+        label: "Aligned Share",
+        fields: [
+          {
+            name: "relativeShareInPercent",
+            label: "Relative Share in Percent",
+
+            unit: "%",
+            component: "NumberFormField",
+            required: false,
+            showIf: (): boolean => true,
+            validation: "between:0,100",
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute Share",
+
+            component: "CurrencyDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
       },
       {
         name: "substantialContributionToClimateChangeAdaptation",
