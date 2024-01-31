@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.repositories
 
+import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -82,4 +83,28 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         @Param("dataTypes") dataTypeNames: List<String>?,
         @Param("reportingPeriod") reportingPeriod: String?,
     ): List<AggregatedDataRequestEntity>
+
+    /**
+     * A function for searching for data request information by dataType, userID, requestID, requestStatus,
+     * reportingPeriod or dataRequestCompanyIdentifierValue
+     * @param searchFilter takes the input params to check ofr
+     * @returns the data request
+     */
+    @Query(
+        "SELECT d FROM DataRequestEntity d  " +
+            "WHERE " +
+            "(:#{#searchFilter.dataTypeNameFilterLength} = 0 " +
+            "OR d.dataTypeName = :#{#searchFilter.dataTypeNameFilter}) AND " +
+            "(:#{#searchFilter.userIdFilterLength} = 0 " +
+            "OR d.userId = :#{#searchFilter.userIdFilter}) AND " +
+            "(:#{#searchFilter.requestStatus} IS NULL " +
+            "OR d.requestStatus = :#{#searchFilter.requestStatus}) AND " +
+            "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
+            "OR d.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
+            "(:#{#searchFilter.dataRequestCompanyIdentifierValueFilterLength} =0 " +
+            "OR d.dataRequestCompanyIdentifierValue = :#{#searchFilter.dataRequestCompanyIdentifierValueFilter})",
+    )
+    fun searchDataRequestEntity(
+        @Param("searchFilter") searchFilter: GetDataRequestsSearchFilter,
+    ): List<DataRequestEntity>
 }
