@@ -10656,15 +10656,11 @@
       },
       "EutaxonomyNonFinancialsGeneral": {
         "required": [
-          "fiscalYearEnd",
-          "reportingPeriod"
+          "assurance",
+          "fiscalYearEnd"
         ],
         "type": "object",
         "properties": {
-          "reportingPeriod": {
-            "type": "string",
-            "format": "date"
-          },
           "fiscalYearDeviation": {
             "nullable": true,
             "allOf": [
@@ -10681,21 +10677,9 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/BaseDataPointYesNoNa"
+                "$ref": "#/components/schemas/YesNoNa"
               }
             ]
-          },
-          "euTaxonomyActivityLevelReporting": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseDataPointYesNo"
-              }
-            ]
-          },
-          "numberOfEmployees": {
-            "type": "number",
-            "nullable": true
           },
           "nfrdMandatory": {
             "nullable": true,
@@ -10705,13 +10689,33 @@
               }
             ]
           },
-          "assurance": {
+          "euTaxonomyActivityLevelReporting": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AssuranceDataPoint"
+                "$ref": "#/components/schemas/YesNo"
               }
             ]
+          },
+          "assurance": {
+            "$ref": "#/components/schemas/AssuranceDataPoint"
+          },
+          "numberOfEmployees": {
+            "type": "number",
+            "nullable": true
+          },
+          "referencedReports": {
+            "type": "object",
+            "nullable": true,
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "isGroupLevel": "Yes",
+                "reportDate": "2023-10-12",
+                "currency": "string"
+              }
+            }
           }
         }
       },
@@ -13525,9 +13529,14 @@
         ],
         "type": "object",
         "properties": {
-          "permId": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
           },
           "countryCode": {
             "type": "string"
@@ -13536,14 +13545,9 @@
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
+          "permId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

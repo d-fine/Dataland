@@ -9,11 +9,6 @@ export const eutaxonomyNonFinancialsDataModel = [
     showIf: (): boolean => true,
     subcategories: [
       {
-        name: "reportingPeriod",
-        label: "Reporting period",
-        fields: [],
-      },
-      {
         name: "fiscalYearDeviation",
         label: "Fiscal Year Deviation",
         fields: [],
@@ -29,8 +24,18 @@ export const eutaxonomyNonFinancialsDataModel = [
         fields: [],
       },
       {
+        name: "nfrdMandatory",
+        label: "NFRD Mandatory",
+        fields: [],
+      },
+      {
         name: "euTaxonomyActivityLevelReporting",
         label: "EU Taxonomy Activity Level Reporting",
+        fields: [],
+      },
+      {
+        name: "assurance",
+        label: "Assurance",
         fields: [],
       },
       {
@@ -39,13 +44,8 @@ export const eutaxonomyNonFinancialsDataModel = [
         fields: [],
       },
       {
-        name: "nfrdMandatory",
-        label: "NFRD Mandatory",
-        fields: [],
-      },
-      {
-        name: "assurance",
-        label: "Assurance",
+        name: "referencedReports",
+        label: "Referenced Reports",
         fields: [],
       },
     ],

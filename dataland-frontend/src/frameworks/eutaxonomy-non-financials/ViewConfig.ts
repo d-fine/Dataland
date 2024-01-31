@@ -4,12 +4,12 @@ import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatPercentageForDatatable } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
 import { formatCurrencyForDisplay } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
+import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import {
   formatAssuranceProviderForDataTable,
   formatAssuranceForDataTable,
 } from "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import { wrapDisplayValueWithDatapointInformation } from "@/components/resources/dataTable/conversion/DataPoints";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonFinancialsData> = [
@@ -19,14 +19,6 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
     expandOnPageLoad: true,
     shouldDisplay: (): boolean => true,
     children: [
-      {
-        type: "cell",
-        label: "Reporting period",
-        explanation: "The reporting period the dataset belongs to (e.g. fiscal year).",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.general?.reportingPeriod),
-      },
       {
         type: "cell",
         label: "Fiscal Year Deviation",
@@ -58,31 +50,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         explanation: "Are all Group legal entities covered in the reports?",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatYesNoValueForDatatable(dataset.general?.scopeOfEntities?.value),
-            "Scope Of Entities",
-            dataset.general?.scopeOfEntities,
-          ),
-      },
-      {
-        type: "cell",
-        label: "EU Taxonomy Activity Level Reporting",
-        explanation: "Activity level disclosure",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          wrapDisplayValueWithDatapointInformation(
-            formatYesNoValueForDatatable(dataset.general?.euTaxonomyActivityLevelReporting?.value),
-            "EU Taxonomy Activity Level Reporting",
-            dataset.general?.euTaxonomyActivityLevelReporting,
-          ),
-      },
-      {
-        type: "cell",
-        label: "Number Of Employees",
-        explanation: "Total number of employees (including temporary workers with assignment duration >6 months)",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.general?.numberOfEmployees),
+          formatYesNoValueForDatatable(dataset.general?.scopeOfEntities),
       },
       {
         type: "cell",
@@ -91,6 +59,14 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatYesNoValueForDatatable(dataset.general?.nfrdMandatory),
+      },
+      {
+        type: "cell",
+        label: "EU Taxonomy Activity Level Reporting",
+        explanation: "Activity level disclosure",
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatYesNoValueForDatatable(dataset.general?.euTaxonomyActivityLevelReporting),
       },
       {
         type: "cell",
@@ -107,6 +83,14 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatAssuranceProviderForDataTable(dataset.general?.assurance),
+      },
+      {
+        type: "cell",
+        label: "Number Of Employees",
+        explanation: "Total number of employees (including temporary workers with assignment duration >6 months)",
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatNumberForDatatable(dataset.general?.numberOfEmployees, ""),
       },
     ],
     labelBadgeColor: "orange",

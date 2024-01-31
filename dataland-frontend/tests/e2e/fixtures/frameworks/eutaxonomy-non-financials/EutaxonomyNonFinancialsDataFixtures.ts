@@ -33,16 +33,16 @@ export function generateEutaxonomyNonFinancialsData(
   const dataGenerator = new EutaxonomyNonFinancialsGenerator(nullProbability);
   return {
     general: {
-      reportingPeriod: dataGenerator.guaranteedFutureDate(),
       fiscalYearDeviation: dataGenerator.valueOrNull(
         pickOneElement(Object.values(EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions)),
       ),
       fiscalYearEnd: dataGenerator.guaranteedFutureDate(),
-      scopeOfEntities: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNoNa()),
-      euTaxonomyActivityLevelReporting: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
-      numberOfEmployees: dataGenerator.randomPercentageValue(),
+      scopeOfEntities: dataGenerator.randomYesNoNa(),
       nfrdMandatory: dataGenerator.randomYesNo(),
+      euTaxonomyActivityLevelReporting: dataGenerator.randomYesNo(),
       assurance: dataGenerator.generateAssuranceDatapoint(),
+      numberOfEmployees: dataGenerator.randomFloat(),
+      referencedReports: dataGenerator.reports,
     },
     revenue: {
       totalAmount: dataGenerator.randomCurrencyDataPoint(),

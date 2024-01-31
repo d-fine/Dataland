@@ -1,66 +1,66 @@
-Field Identifier,Category,Sub-Category,Field Name,Tooltip,Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory Field,Expected value,Guidance/Comment,Cross-check indicators,checks when uploading data,Optional/Required,API Name,Uploading screens,Display screens
-0,General,,Reporting period,The reporting period the dataset belongs to (e.g. fiscal year).,Date, ,,,,,Yes,YYYY,,,,Required,,+,+
-1,General,,Fiscal Year Deviation,Does the fiscal year deviate from the calendar year?,Single-Select Radio Button,Deviation| No Deviation,,,,,,Text: Deviation or No Deviation,,,,Optional,,+,+
-2,General,,Fiscal Year End,The date at which the fiscal year ends.,Date, ,,,,,Yes,YYYY-MM-DD,,,,Required,,+,
-3,General,,Scope Of Entities,Are all Group legal entities covered in the reports?,Yes/No/NA, ,,Simple,,,,"Text: Yes, No, N/A","We expect that in the most cases Value should be ""Yes"". ",,,Optional,,+,
-4,General,,EU Taxonomy Activity Level Reporting,Activity level disclosure,Yes/No, ,,Simple,,,,Text: Yes or No,,,,Optional,,+,
-5,General,,Number Of Employees,Total number of employees (including temporary workers with assignment duration >6 months),Percentage,,,,,,,Integer,,,"integer, positive",Optional,,+,+
-6,General,,NFRD Mandatory,Is the NFRD mandatory for your company?,Yes/No, ,,,,,,Text: Yes or No,,Number of employees >=500,,Optional,,+,+
-7,General,,Assurance,"Level of assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",Custom – EuTaxonomyAssuranceComponent, ,,,,,,Text: Reasonable Assurance or Limited Assurance or None,,,,Optional,,+,+
-8,Revenue,,Total Amount,,Currency,,,Extended,,,,Number,The primary way of aggregating from an economic activity to a company level. Some companies may need to aggregate from asset to economic activity level.,"a) check with the value of Revenue line from Profit and Loss Consolidated Financial Statement b) check with the value from other source/database (Capital IQ) c) find the same value in the other report of a company (Annual report, Integrated report, Sustainablity report) d) avarage revenue growth for the last 3-5 years in comparison with the reporting period growth (historical revenue for calculation are taken from third-party source/database (Capital IQ)","float, allow negative",Optional,totalAmount,+,+
-9.1,Revenue,Non-Eligible Share,Relative Share in Percent,,Percentage,,,,,,,,,,,,,,
-9.2,Revenue,Non-Eligible Share,Absolute Share,,Currency,,,,,,,,,,,,,,
-10.1,Revenue,Eligible Share,Relative Share in Percent,,Percentage,,,,,,,Number,Percentage: Numerator - Revenues derived from products and/or services associated with EU taxonomy eligible activities. Denominator- Revenues accounted for in the Consolidated Income Statement under IFRS.,">= Aligned Revenue, <= Total Revenue, for NACE codes listed below eligible revenue (%) >=90%:  C25,C28,C27, C29.1, C30.1, C30.2, C30.9, C33.15, C33.17, D35.11, F42.22, D35.30, E38.11, F42.11, F42.12, F42.13, F43.21, F711, F71.20, F42, F43, M71, C16, C17, C22, C23, C25, M71 ","percentage is float, between 0 and 100",Optional,eligibleShare,+,+
-10.2,Revenue,Eligible Share,Absolute Share,,Currency,,,,,,,,,,,,,,
-11.1,Revenue,Non-Aligned Share,Relative Share in Percent,,Percentage,,,,,,,,,,,,,,
-11.2,Revenue,Non-Aligned Share,Absolute Share,,Currency,,,,,,,Number,,"<= Eligible Revenue, <= Total Revenue, <= Use of Proceeds (Green Bond Principles)","percentage is float, between 0 and 100",Optional,alignedShare,+,+
-12,Revenue,,Non-Aligned Activities,,Custom - List of EuTaxonomyActivity,,,,,,,,,,,,,,
-13.1,Revenue,Aligned Share,Relative Share in Percent,,Percentage,,,,,,,,,,,,,,
-13.2,Revenue,Aligned Share,Absolute Share,,Currency,,,,,,,,,,,,,,
-14,Revenue,,Substantial Contribution to Climate Change Mitigation In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-15,Revenue,,Substantial Contribution to Climate Change Adaptation In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-16,Revenue,,Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-17,Revenue,,Substantial Contribution to Transition to a Circular Economy In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-18,Revenue,,Substantial Contribution to Pollution Prevention and Control In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-19,Revenue,,Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-20,Revenue,,Aligned Activities,,Custom - AlignedActivitiesFormField,,,,,,,,,,"percentage is float, between 0 and 100",Optional,alignedActivities,+,+
-21,Revenue,,Enabling Share In Percent,,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,enablingShareInPercent,+,+
-22,Revenue,,Transitional Share In Percent,,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,transitionalShareInPercent,+,+
-23,CapEx,,Total Amount,,Currency,,,,,,,Number,,,"float, allow negative",Optional,totalAmount,+,+
-24.1,CapEx,Non-Eligible Share,Relative Share in Percent,,Percentage,,,,,,,,,,,,,,
-24.2,CapEx,Non-Eligible Share,Absolute Share,,Currency,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,eligibleShare,+,+
-25.1,CapEx,Eligible Share,Relative Share in Percent,,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,alignedShare,+,+
-25.2,CapEx,Eligible Share,Absolute Share,,Currency,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-26.1,CapEx,Non-Aligned Share,Relative Share in Percent,,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-26.2,CapEx,Non-Aligned Share,Absolute Share,,Currency,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-27,CapEx,,Non-Aligned Activities,,Custom - List of EuTaxonomyActivity,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-28.1,CapEx,Aligned Share,Relative Share in Percent,,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-28.2,CapEx,Aligned Share,Absolute Share,,Currency,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-29,CapEx,,Substantial Contribution to Climate Change Mitigation In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,,,,"percentage is float, between 0 and 100",Optional,alignedActivities,+,+
-30,CapEx,,Substantial Contribution to Climate Change Adaptation In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,nonAlignedShare,+,+
-31,CapEx,,Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,,,,"percentage is float, between 0 and 100",Optional,nonAlignedActivities,+,+
-32,CapEx,,Substantial Contribution to Transition to a Circular Economy In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,nonEligibleShare,+,+
-33,CapEx,,Substantial Contribution to Pollution Prevention and Control In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,enablingShareInPercent,+,+
-34,CapEx,,Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,transitionalShareInPercent,+,+
-35,CapEx,,Aligned Activities,,Custom - AlignedActivitiesFormField,,,,,,,Number,,,"float, allow negative",Optional,totalAmount,+,+
-36,CapEx,,Enabling Share In Percent,,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,eligibleShare,+,+
-37,CapEx,,Transitional Share In Percent,,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,alignedShare,+,+
-38,OpEx,,Total Amount,,Currency,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-39.1,OpEx,Non-Eligible Share,Relative Share in Percent,,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-39.2,OpEx,Non-Eligible Share,Absolute Share,,Currency,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-40.1,OpEx,Eligible Share,Relative Share in Percent,,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-40.2,OpEx,Eligible Share,Absolute Share,,Currency,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-41.1,OpEx,Non-Aligned Share,Relative Share in Percent,,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,,+,+
-41.2,OpEx,Non-Aligned Share,Absolute Share,,Currency,,,,,,,,,,"percentage is float, between 0 and 100",Optional,alignedActivities,+,+
-42,OpEx,,Non-Aligned Activities,,Custom - List of EuTaxonomyActivity,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,nonAlignedShare,+,+
-43.1,OpEx,Aligned Share,Relative Share in Percent,,Percentage,,,,,,,,,,"percentage is float, between 0 and 100",Optional,nonAlignedActivities,+,+
-43.2,OpEx,Aligned Share,Absolute Share,,Currency,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,nonEligibleShare,+,+
-44,OpEx,,Substantial Contribution to Climate Change Mitigation In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,Number,,,"percentage is float, between 0 and 100",Optional,enablingShareInPercent,+,+
-45,OpEx,,Substantial Contribution to Climate Change Adaptation In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,,,,,,,,
-46,OpEx,,Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,,,,,,,,
-47,OpEx,,Substantial Contribution to Transition to a Circular Economy In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,,,,,,,,
-48,OpEx,,Substantial Contribution to Pollution Prevention and Control In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,,,,,,,,
-49,OpEx,,Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,,,,,,,,,
-50,OpEx,,Aligned Activities,,Custom - AlignedActivitiesFormField,,,,,,,,,,,,,,
-51,OpEx,,Enabling Share In Percent,,Percentage,,,,,,,,,,,,,,
-52,OpEx,,Transitional Share In Percent,,Percentage,,,,,,,,,,"percentage is float, between 0 and 100",Optional,transitionalShareInPercent,+,+
+Field Identifier,Category,Sub-Category,Field Name,Tooltip,Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory Field
+0,General,,Fiscal Year Deviation,Does the fiscal year deviate from the calendar year?,Single-Select Radio Button,Deviation | No Deviation,,,,,
+,General,,Fiscal Year End,The date at which the fiscal year ends.,Date,,,,,,Yes
+1,General,,Scope Of Entities,Are all Group legal entities covered in the reports?,Yes/No/NA, ,,,,,
+2,General,,NFRD Mandatory,Is the NFRD mandatory for your company?,Yes/No, ,,,,,
+3,General,,EU Taxonomy Activity Level Reporting,Activity level disclosure,Yes/No, ,,,,,
+4,General,,Assurance,"Level of assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",Custom – EuTaxonomyAssuranceComponent, ,,,,,Yes
+5,General,,Number Of Employees,Total number of employees (including temporary workers with assignment duration >6 months),Number,,,,,,
+6,General,,Referenced Reports,,Report Preupload, ,,,,,
+8,Revenue,,Total Amount,,Currency,,,Extended,,,
+9.1,Revenue,Non-Eligible Share,Relative Share in Percent,,Percentage,,,,,,
+9.2,Revenue,Non-Eligible Share,Absolute Share,,Currency,,,,,,
+10.1,Revenue,Eligible Share,Relative Share in Percent,,Percentage,,,,,,
+10.2,Revenue,Eligible Share,Absolute Share,,Currency,,,,,,
+11.1,Revenue,Non-Aligned Share,Relative Share in Percent,,Percentage,,,,,,
+11.2,Revenue,Non-Aligned Share,Absolute Share,,Currency,,,,,,
+12,Revenue,,Non-Aligned Activities,,Custom - List of EuTaxonomyActivity,,,,,,
+13.1,Revenue,Aligned Share,Relative Share in Percent,,Percentage,,,,,,
+13.2,Revenue,Aligned Share,Absolute Share,,Currency,,,,,,
+14,Revenue,,Substantial Contribution to Climate Change Mitigation In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+15,Revenue,,Substantial Contribution to Climate Change Adaptation In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+16,Revenue,,Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+17,Revenue,,Substantial Contribution to Transition to a Circular Economy In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+18,Revenue,,Substantial Contribution to Pollution Prevention and Control In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+19,Revenue,,Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+20,Revenue,,Aligned Activities,,Custom - AlignedActivitiesFormField,,,,,,
+21,Revenue,,Enabling Share In Percent,,Percentage,,,,,,
+22,Revenue,,Transitional Share In Percent,,Percentage,,,,,,
+23,CapEx,,Total Amount,,Currency,,,,,,
+24.1,CapEx,Non-Eligible Share,Relative Share in Percent,,Percentage,,,,,,
+24.2,CapEx,Non-Eligible Share,Absolute Share,,Currency,,,,,,
+25.1,CapEx,Eligible Share,Relative Share in Percent,,Percentage,,,,,,
+25.2,CapEx,Eligible Share,Absolute Share,,Currency,,,,,,
+26.1,CapEx,Non-Aligned Share,Relative Share in Percent,,Percentage,,,,,,
+26.2,CapEx,Non-Aligned Share,Absolute Share,,Currency,,,,,,
+27,CapEx,,Non-Aligned Activities,,Custom - List of EuTaxonomyActivity,,,,,,
+28.1,CapEx,Aligned Share,Relative Share in Percent,,Percentage,,,,,,
+28.2,CapEx,Aligned Share,Absolute Share,,Currency,,,,,,
+29,CapEx,,Substantial Contribution to Climate Change Mitigation In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+30,CapEx,,Substantial Contribution to Climate Change Adaptation In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+31,CapEx,,Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+32,CapEx,,Substantial Contribution to Transition to a Circular Economy In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+33,CapEx,,Substantial Contribution to Pollution Prevention and Control In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+34,CapEx,,Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+35,CapEx,,Aligned Activities,,Custom - AlignedActivitiesFormField,,,,,,
+36,CapEx,,Enabling Share In Percent,,Percentage,,,,,,
+37,CapEx,,Transitional Share In Percent,,Percentage,,,,,,
+38,OpEx,,Total Amount,,Currency,,,,,,
+39.1,OpEx,Non-Eligible Share,Relative Share in Percent,,Percentage,,,,,,
+39.2,OpEx,Non-Eligible Share,Absolute Share,,Currency,,,,,,
+40.1,OpEx,Eligible Share,Relative Share in Percent,,Percentage,,,,,,
+40.2,OpEx,Eligible Share,Absolute Share,,Currency,,,,,,
+41.1,OpEx,Non-Aligned Share,Relative Share in Percent,,Percentage,,,,,,
+41.2,OpEx,Non-Aligned Share,Absolute Share,,Currency,,,,,,
+42,OpEx,,Non-Aligned Activities,,Custom - List of EuTaxonomyActivity,,,,,,
+43.1,OpEx,Aligned Share,Relative Share in Percent,,Percentage,,,,,,
+43.2,OpEx,Aligned Share,Absolute Share,,Currency,,,,,,
+44,OpEx,,Substantial Contribution to Climate Change Mitigation In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+45,OpEx,,Substantial Contribution to Climate Change Adaptation In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+46,OpEx,,Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+47,OpEx,,Substantial Contribution to Transition to a Circular Economy In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+48,OpEx,,Substantial Contribution to Pollution Prevention and Control In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+49,OpEx,,Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent,Grade of the substantial contribution criterion fulfillment,Percentage,,,,,,
+50,OpEx,,Aligned Activities,,Custom - AlignedActivitiesFormField,,,,,,
+51,OpEx,,Enabling Share In Percent,,Percentage,,,,,,
+52,OpEx,,Transitional Share In Percent,,Percentage,,,,,,
