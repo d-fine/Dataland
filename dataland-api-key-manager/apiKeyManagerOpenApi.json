@@ -307,7 +307,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle",
+        "summary": "Actuator web endpoint \u0027info\u0027",
+        "operationId": "info",
         "responses": {
           "200": {
             "description": "OK",
@@ -357,7 +358,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1",
+        "summary": "Actuator web endpoint \u0027health\u0027",
+        "operationId": "health",
         "responses": {
           "200": {
             "description": "OK",
@@ -407,7 +409,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_2",
+        "summary": "Actuator web endpoint \u0027health-path\u0027",
+        "operationId": "health-path",
         "responses": {
           "200": {
             "description": "OK",
