@@ -15,9 +15,6 @@
         <td rowspan="17" style="width: 40px">&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="3" style="height: 20px">&nbsp;</td>
-    </tr>
-    <tr>
         <td colspan="3">Hello Anna,</td>
     </tr>
     <tr>
@@ -34,52 +31,60 @@
             <table style="background-color: #f6f6f6; border-collapse: collapse; padding: 0; margin: 0; width: 520px">
                 <tbody>
                 <tr>
-                    <td rowspan="17" style="width: 20px">&nbsp;</td>
-                    <td colspan="3" style="width: 480px; height: 20px">&nbsp;</td>
-                    <td rowspan="17" style="width: 20px">&nbsp;</td>
+                    <td rowspan="18" style="width: 20px">&nbsp;</td>
+                    <td style="width: 480px; height: 20px">&nbsp;</td>
+                    <td rowspan="18" style="width: 20px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="text-align: left; width: 220px; padding:0; margin:0; border: 0;"><img src="${baseUrl}/images/email/leaf_icon.png" width="35" height="39" alt="framework" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;"></td>
-                    <td rowspan="3" style="width: 20px">&nbsp;</td>
-                    <td style="text-align: left; width: 220px; padding:0; margin:0; border: 0;"><img src="${baseUrl}/images/email/year_icon.png" width="35" height="39" alt="year" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;"></td>
+                    <td>Framework</td>
                 </tr>
                 <tr>
-                    <td style="font-size: 28px; font-weight: bold;">LkSG</td>
-                    <td style="font-size: 28px; font-weight: bold;">2023</td>
+                    <td style="font-size: 5px; height: 5px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="font-size: 18px;">Framework</td>
-                    <td style="font-size: 18px;">Reporting year</td>
+                    <td style="font-weight: bold; font-size:19px">SFDR</td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="border-bottom:1px solid #e3e3e3; height: 20px">&nbsp;</td>
+                    <td style="height: 20px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="height: 20px">&nbsp;</td>
+                    <td>Reporting year(s)</td>
                 </tr>
                 <tr>
-                    <td colspan="3">From:</td>
+                    <td style="font-size: 5px; height: 5px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="font-size: 5px; height: 5px">&nbsp;</td>
+                    <td style="font-weight: bold; font-size:19px">2023, 2022, 2021</td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="font-weight: bold;">ben.delver@nike.com</td>
+                    <td style="border-bottom:1px solid #e3e3e3; height: 20px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="height: 20px">&nbsp;</td>
+                    <td style="height: 20px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td colspan="3">Message:</td>
+                    <td style="color:#8c8c8c">From:</td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="font-size: 5px; height: 5px">&nbsp;</td>
+                    <td style="font-size: 5px; height: 5px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="font-weight: bold;">Hello Anna! I would really appreciate if you could provide the data asap.</td>
+                    <td style="font-weight: bold;">ben.delver@nike.com</td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="height: 20px">&nbsp;</td>
+                    <td style="height: 20px">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="color:#8c8c8c">Message:</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 5px; height: 5px">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">Hello Anna! I would really appreciate if you could provide the data asap.</td>
+                </tr>
+                <tr>
+                    <td style="height: 20px">&nbsp;</td>
                 </tr>
                 </tbody>
             </table>
@@ -134,7 +139,6 @@
     </tr>
     </tbody>
 </table>
-
 
 <#include "./general/why_dataland.ftl">
 <#include "./general/why_me.ftl">
