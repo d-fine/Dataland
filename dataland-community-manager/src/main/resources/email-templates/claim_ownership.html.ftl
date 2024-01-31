@@ -5,7 +5,7 @@
     <title>DATALAND</title>
 </head>
 <body style="background-color:#e3e3e3; height: 100%; margin: 0; padding: 0; width: 100%;">
-<#include "./general/why_dataland.ftl">
+<#include "./general/header.ftl">
 
 <table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0; margin: 0">
     <tbody>
