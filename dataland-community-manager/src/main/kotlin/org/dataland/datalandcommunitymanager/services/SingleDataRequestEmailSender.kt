@@ -24,7 +24,7 @@ class SingleDataRequestEmailSender(
     ) {
         if (singleDataRequest.listOfReportingPeriods.isEmpty()) return
         if(companyIdentifierType != DataRequestCompanyIdentifierType.DatalandCompanyId) {
-            sendEmailToErik(
+            sendInternalEmail(
                 userAuthentication = userAuthentication,
                 singleDataRequest = singleDataRequest,
                 companyIdentifierType = companyIdentifierType,
@@ -45,7 +45,7 @@ class SingleDataRequestEmailSender(
             )
         }
         if((singleDataRequest.contactList?.count() ?: 0) == 0) {
-            sendEmailToErik(
+            sendInternalEmail(
                 userAuthentication = userAuthentication,
                 singleDataRequest = singleDataRequest,
                 companyIdentifierType = companyIdentifierType,
@@ -55,7 +55,7 @@ class SingleDataRequestEmailSender(
         }
     }
 
-    private fun sendEmailToErik(
+    private fun sendInternalEmail(
         userAuthentication: DatalandJwtAuthentication,
         singleDataRequest: SingleDataRequest,
         companyIdentifierType: DataRequestCompanyIdentifierType,
@@ -65,7 +65,7 @@ class SingleDataRequestEmailSender(
             userAuthentication = userAuthentication,
             requesterEmail = userAuthentication.username,
             companyIdentifierType = companyIdentifierType,
-            companyIdentifierValue = companyidentifierValue,
+            companyIdentifierValue = companyIdentifierValue,
             dataType = singleDataRequest.frameworkName,
             reportingPeriods = singleDataRequest.listOfReportingPeriods,
         )
