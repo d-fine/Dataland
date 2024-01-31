@@ -1,70 +1,46 @@
 [
 	{
 		"companyInformation": {
-			"companyName": "VonRueden - Rosenbaum",
-			"headquarters": "St. Charles",
-			"headquartersPostalCode": "79788-2776",
-			"sector": "experiences",
+			"companyName": "Kertzmann - Senger",
+			"headquarters": "Wilberville",
+			"headquartersPostalCode": "50488-5639",
+			"sector": "channels",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"qoYeSYNrIL1ZlUx4YRct"
+				],
 				"Isin": [
-					"sbhPpb2W5aZG",
-					"XW9N16NMHRjC"
+					"0OAEC4P28vNG",
+					"BQjPMF9ABkZc"
 				],
 				"PermId": [],
-				"Ticker": [
-					"Vuu4c4K"
+				"Ticker": [],
+				"Duns": [
+					"N4bbwL6uG"
 				],
-				"Duns": [],
 				"VatNumber": [
-					"M8wKucZzD"
+					"teTS3t4Gd"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"z9hxv9C6ooOkP7Y"
+				]
 			},
-			"countryCode": "TZ",
+			"countryCode": "LU",
 			"companyAlternativeNames": [
-				"Auer - Wilkinson",
-				"Bartoletti, Morissette and Bogan"
+				"Berge - Kulas",
+				"Metz - Hilpert",
+				"Pfannerstill - Hegmann",
+				"Schmeler and Sons"
 			],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://idle-necklace.com/",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://potable-traffic.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
-				"reportingPeriod": "2024-05-14",
+				"reportingPeriod": "2024-07-18",
 				"fiscalYearDeviation": "NoDeviation",
-				"fiscalYearEnd": "2024-12-20",
-				"referencedReports": {
-					"IntegratedReport": {
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"fileName": "IntegratedReport",
-						"isGroupLevel": "No",
-						"reportDate": "2023-08-29",
-						"currency": "TND"
-					},
-					"AnnualReport": {
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"fileName": "AnnualReport",
-						"isGroupLevel": "No",
-						"reportDate": "2023-09-03",
-						"currency": "XAF"
-					},
-					"SustainabilityReport": {
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"fileName": "SustainabilityReport",
-						"isGroupLevel": "No",
-						"reportDate": "2023-06-01",
-						"currency": "VES"
-					},
-					"ESEFReport": {
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"fileName": "ESEFReport",
-						"isGroupLevel": "Yes",
-						"reportDate": "2023-11-25",
-						"currency": "OMR"
-					}
-				},
+				"fiscalYearEnd": "2024-12-17",
 				"scopeOfEntities": {
 					"value": "No",
 					"dataSource": {
@@ -75,78 +51,134 @@
 				"euTaxonomyActivityLevelReporting": {
 					"value": "No",
 					"dataSource": {
-						"fileName": "Policy",
+						"fileName": "Certification",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
 					}
 				},
-				"numberOfEmployees": 90.39,
+				"numberOfEmployees": 28.69,
 				"nfrdMandatory": "No",
 				"assurance": {
 					"value": "LimitedAssurance",
-					"provider": "Hartmann LLC",
+					"provider": "Hand Group",
 					"dataSource": {
-						"page": 433,
+						"page": 1190,
 						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "eyeballs"
+						"tagName": "networks"
 					}
 				}
 			},
 			"revenue": {
-				"totalRevenue": {
-					"value": 3377426934.89,
+				"totalAmount": {
+					"value": 9904350549.92,
 					"dataSource": {
-						"page": 784,
-						"fileName": "SustainabilityReport",
+						"page": 907,
+						"fileName": "AnnualReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "action-items"
+						"tagName": "convergence"
 					},
-					"comment": "calculate cross-platform pixel",
-					"quality": "Reported",
-					"currency": "NOK"
+					"comment": "calculate bluetooth system",
+					"quality": "Incomplete",
+					"currency": "ZMW"
 				},
-				"eligibleRevenue": 18743.7,
-				"alignedRevenue": 82921.83,
-				"substantialContributionToClimateChangeMitigation": 62.11,
-				"substantialContributionToClimateChangeAdaptation": 48.5,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 33.42,
-				"substantialContributionToTransitionToACircularEconomy": 38.57,
-				"substantialContributionToPollutionPreventionAndControl": 34.98,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 74.69,
-				"nonAlignedRevenue": 74699.69,
-				"nonEligibleRevenue": 92.24,
-				"enablingRevenue": 33.43,
-				"transitionalRevenue": 51.43
+				"nonEligibleShare": {
+					"relativeShareInPercent": 4.94,
+					"absoluteShare": {
+						"value": 4840958362.91,
+						"dataSource": {
+							"page": 459,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "synthesize primary panel",
+						"quality": "Reported",
+						"currency": "LSL"
+					}
+				},
+				"eligibleShare": {
+					"relativeShareInPercent": 3.88,
+					"absoluteShare": {
+						"value": 2274939939.38,
+						"dataSource": {
+							"page": 713,
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-markets"
+						},
+						"comment": "hack neural capacitor",
+						"quality": "Estimated",
+						"currency": "PKR"
+					}
+				},
+				"nonAlignedShare": {
+					"relativeShareInPercent": 77,
+					"absoluteShare": {
+						"value": 3649712100.16,
+						"dataSource": {
+							"page": 1106,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						},
+						"comment": "calculate primary bus",
+						"quality": "Reported",
+						"currency": "TOP"
+					}
+				},
+				"alignedShare": {
+					"relativeShareInPercent": 82.77,
+					"absoluteShare": {
+						"value": 6674744170.16,
+						"dataSource": {
+							"page": 915,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"comment": "generate haptic capacitor",
+						"quality": "Incomplete",
+						"currency": "SRD"
+					}
+				},
+				"substantialContributionToClimateChangeMitigationInPercent": 94.65,
+				"substantialContributionToClimateChangeAdaptationInPercent": 93.47,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 83.71,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 18.59,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 68.56,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 60.12,
+				"enablingShareInPercent": 1.44,
+				"transitionalShareInPercent": 24.47
 			},
 			"capex": {
-				"totalCapex": 41.28,
-				"eligibleCapex": 34.7,
-				"alignedCapex": 16.87,
-				"substantialContributionToClimateChangeMitigation": 18.82,
-				"substantialContributionToClimateChangeAdaptation": 65.26,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 76.7,
-				"substantialContributionToTransitionToACircularEconomy": 82.76,
-				"substantialContributionToPollutionPreventionAndControl": 22.4,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 76.67,
-				"nonAlignedCapex": 39.04,
-				"nonEligibleCapex": 24.61,
-				"enablingCapex": 15.19,
-				"transitionalCapex": 69.33
+				"totalAmount": 58.86,
+				"eligibleCapex": 23.44,
+				"alignedCapex": 94.77,
+				"substantialContributionToClimateChangeMitigation": 94.07,
+				"substantialContributionToClimateChangeAdaptation": 49.67,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 18.48,
+				"substantialContributionToTransitionToACircularEconomy": 7.71,
+				"substantialContributionToPollutionPreventionAndControl": 6.84,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 62.24,
+				"nonAlignedCapex": 21.78,
+				"nonEligibleCapex": 45.36,
+				"enablingCapex": 2.53,
+				"transitionalCapex": 85.99
 			},
 			"opex": {
-				"totalOpex": 17669.57,
-				"eligibleOpex": 68.65,
-				"alignedOpex": 96.1,
-				"substantialContributionToClimateChangeMitigation": 71.79,
+				"totalAmount": 86454.24,
+				"eligibleOpex": 98.97,
+				"alignedOpex": 41.3,
+				"substantialContributionToClimateChangeMitigation": 77.8,
 				"substantialContributionToClimateChangeAdaptation": 55.81,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 77.26,
-				"substantialContributionToTransitionToACircularEconomy": 5.36,
-				"substantialContributionToPollutionPreventionAndControl": 64.56,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 31.29,
-				"nonAlignedOpex": 68.55,
-				"nonEligibleOpex": 92.64,
-				"enablingOpex": 89.41,
-				"transitionalOpex": 8.27
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": 17.39,
+				"substantialContributionToTransitionToACircularEconomy": 63.35,
+				"substantialContributionToPollutionPreventionAndControl": 42.89,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": 72.58,
+				"nonAlignedOpex": 45.29,
+				"nonEligibleOpex": 97.76,
+				"enablingOpex": 81.01,
+				"transitionalOpex": 78.59
 			}
 		},
 		"reportingPeriod": "2022"
