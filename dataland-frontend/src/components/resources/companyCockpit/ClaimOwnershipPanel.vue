@@ -2,7 +2,7 @@
   <div class="claim-panel">
     <div class="next-to-each-other vertical-middle">
       <h2 class="claim-panel__ownership-question">Responsible for {{ companyName }}?</h2>
-      <a class="link" @click="toggleDialog">Claim company dataset ownership.</a>
+      <a class="link" @click="openDialog">Claim company dataset ownership.</a>
     </div>
   </div>
   <ClaimOwnershipDialog
@@ -91,7 +91,10 @@ export default defineComponent({
         console.error(error);
       }
     },
-    toggleDialog() {
+    /**
+     * opens the dialog
+     */
+    openDialog() {
       this.dialogIsOpen = true;
     },
   },
