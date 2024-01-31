@@ -10477,7 +10477,7 @@
       "EutaxonomyNonFinancialsCapex": {
         "type": "object",
         "properties": {
-          "totalCapex": {
+          "totalAmount": {
             "type": "number",
             "nullable": true
           },
@@ -10589,19 +10589,6 @@
             "type": "string",
             "format": "date"
           },
-          "referencedReports": {
-            "type": "object",
-            "nullable": true,
-            "example": {
-              "string": {
-                "fileReference": "string",
-                "fileName": "string",
-                "isGroupLevel": "Yes",
-                "reportDate": "2023-10-12",
-                "currency": "string"
-              }
-            }
-          },
           "scopeOfEntities": {
             "nullable": true,
             "allOf": [
@@ -10650,7 +10637,7 @@
       "EutaxonomyNonFinancialsOpex": {
         "type": "object",
         "properties": {
-          "totalOpex": {
+          "totalAmount": {
             "type": "number",
             "nullable": true
           },
@@ -10707,11 +10694,19 @@
       "EutaxonomyNonFinancialsRevenue": {
         "type": "object",
         "properties": {
-          "totalRevenue": {
+          "totalAmount": {
             "nullable": true,
             "allOf": [
               {
                 "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "nonEligibleShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueNonEligibleShare"
               }
             ]
           },
@@ -10762,6 +10757,23 @@
           "transitionalRevenue": {
             "type": "number",
             "nullable": true
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsRevenueNonEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
           }
         }
       },
@@ -13284,14 +13296,14 @@
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
           "permId": {

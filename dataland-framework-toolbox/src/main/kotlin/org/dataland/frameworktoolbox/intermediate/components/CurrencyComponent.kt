@@ -3,7 +3,6 @@ package org.dataland.frameworktoolbox.intermediate.components
 import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
-import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
@@ -25,7 +24,6 @@ class CurrencyComponent(
     var maximumValue: Long? = null
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         val annotations = getMinMaxDatamodelAnnotations(minimumValue, maximumValue)
 
         dataClassBuilder.addProperty(
@@ -36,7 +34,6 @@ class CurrencyComponent(
     }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
@@ -56,7 +53,6 @@ class CurrencyComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = "CurrencyDataPointFormField",
@@ -64,7 +60,6 @@ class CurrencyComponent(
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         val rangeParameterSpecification = getFakeFixtureMinMaxRangeParameterSpec(minimumValue, maximumValue)
         val expression = if (isRequired) {
             "dataGenerator.guaranteedCurrencyDataPoint($rangeParameterSpecification)"

@@ -38,7 +38,6 @@ export function generateEutaxonomyNonFinancialsData(
         pickOneElement(Object.values(EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions)),
       ),
       fiscalYearEnd: dataGenerator.guaranteedFutureDate(),
-      referencedReports: dataGenerator.reports,
       scopeOfEntities: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNoNa()),
       euTaxonomyActivityLevelReporting: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
       numberOfEmployees: dataGenerator.randomPercentageValue(),
@@ -46,7 +45,11 @@ export function generateEutaxonomyNonFinancialsData(
       assurance: dataGenerator.generateAssuranceDatapoint(),
     },
     revenue: {
-      totalRevenue: dataGenerator.randomCurrencyDataPoint(),
+      totalAmount: dataGenerator.randomCurrencyDataPoint(),
+      nonEligibleShare: {
+        relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+      },
       eligibleRevenue: dataGenerator.randomFloat(),
       alignedRevenue: dataGenerator.randomFloat(),
       substantialContributionToClimateChangeMitigation: dataGenerator.randomPercentageValue(),
@@ -63,7 +66,7 @@ export function generateEutaxonomyNonFinancialsData(
       transitionalRevenue: dataGenerator.randomPercentageValue(),
     },
     capex: {
-      totalCapex: dataGenerator.randomPercentageValue(),
+      totalAmount: dataGenerator.randomPercentageValue(),
       eligibleCapex: dataGenerator.randomPercentageValue(),
       alignedCapex: dataGenerator.randomPercentageValue(),
       substantialContributionToClimateChangeMitigation: dataGenerator.randomPercentageValue(),
@@ -80,7 +83,7 @@ export function generateEutaxonomyNonFinancialsData(
       transitionalCapex: dataGenerator.randomPercentageValue(),
     },
     opex: {
-      totalOpex: dataGenerator.randomFloat(),
+      totalAmount: dataGenerator.randomFloat(),
       eligibleOpex: dataGenerator.randomPercentageValue(),
       alignedOpex: dataGenerator.randomPercentageValue(),
       substantialContributionToClimateChangeMitigation: dataGenerator.randomPercentageValue(),

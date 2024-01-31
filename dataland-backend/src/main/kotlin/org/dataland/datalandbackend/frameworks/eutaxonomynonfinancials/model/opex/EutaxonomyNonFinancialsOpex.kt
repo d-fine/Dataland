@@ -7,7 +7,7 @@ import java.math.BigDecimal
  * The data-model for the Opex section
  */
 data class EutaxonomyNonFinancialsOpex(
-    val totalOpex: BigDecimal? = null,
+    val totalAmount: BigDecimal? = null,
 
     val eligibleOpex: BigDecimal? = null,
 

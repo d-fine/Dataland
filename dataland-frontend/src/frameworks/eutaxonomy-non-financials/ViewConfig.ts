@@ -120,11 +120,35 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
     children: [
       {
         type: "cell",
-        label: "Total Revenue",
+        label: "Total Amount",
         explanation: "Total revenue per annum",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatCurrencyForDisplay(dataset.revenue?.totalRevenue, "Total Revenue"),
+          formatCurrencyForDisplay(dataset.revenue?.totalAmount, "Total Amount"),
+      },
+      {
+        type: "section",
+        label: "Non-Eligible Share",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Relative Share in Percent",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(dataset.revenue?.nonEligibleShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.revenue?.nonEligibleShare?.absoluteShare, "Absolute Share"),
+          },
+        ],
       },
       {
         type: "cell",
@@ -243,12 +267,12 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
     children: [
       {
         type: "cell",
-        label: "Total CapEx",
+        label: "Total Amount",
         explanation:
           "Total CapEx for the reported year. Capital expenditures are non-consumable investments, e.g. for acquiring, upgrading, and maintaining physical assets such as property, plants, buildings, technology ",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.totalCapex),
+          formatPercentageForDatatable(dataset.capex?.totalAmount),
       },
       {
         type: "cell",
@@ -367,12 +391,12 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
     children: [
       {
         type: "cell",
-        label: "Total OpEx",
+        label: "Total Amount",
         explanation:
           "Total OpEx for the financial year. Operating expenses (OpEx) are shorter term expenses required to meet the ongoing operational costs of running a business.",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatNumberForDatatable(dataset.opex?.totalOpex, ""),
+          formatNumberForDatatable(dataset.opex?.totalAmount, ""),
       },
       {
         type: "cell",

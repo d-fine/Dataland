@@ -7,7 +7,7 @@ import java.math.BigDecimal
  * The data-model for the Capex section
  */
 data class EutaxonomyNonFinancialsCapex(
-    val totalCapex: BigDecimal? = null,
+    val totalAmount: BigDecimal? = null,
 
     val eligibleCapex: BigDecimal? = null,
 
