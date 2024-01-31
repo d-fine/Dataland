@@ -2,29 +2,62 @@
   <div class="claim-panel">
     <div class="next-to-each-other vertical-middle">
       <h2 class="claim-panel__ownership-question">Responsible for {{ companyName }}?</h2>
-      <a class="link" @click="$emit('toggleDialog')">Claim company dataset ownership.</a>
+      <a class="link" @click="toggleDialog">Claim company dataset ownership.</a>
     </div>
   </div>
+  <ClaimOwnershipDialog
+      :dialog-is-open="dialogIsOpen"
+      :company-name="companyName"
+      :company-id="companyId"
+      :claim-is-submitted="claimIsSubmitted"
+      @claim-submitted="onClaimSubmitted"
+  />
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
+import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
+  components: {
+    ClaimOwnershipDialog
+  },
   inject: {
     injectedUseMobileView: {
       from: "useMobileView",
       default: false,
     },
   },
+  data() {
+    return {
+      dialogIsOpen: false,
+      claimIsSubmitted: false,
+    }
+  },
+  watch: {
+    companyId(newCompanyId, oldCompanyId) {
+      if (newCompanyId !== oldCompanyId) {
+        this.dialogIsOpen = false;
+        this.claimIsSubmitted = false;
+      }
+    }
+  },
   props: {
     companyName: {
       type: String,
       required: true,
     },
+    companyId: {
+      type: String,
+      required: true,
+    }
   },
-  emits: ["toggleDialog"],
+  methods: {
+    onClaimSubmitted() {
+      this.claimIsSubmitted = true;
+    }
+  }
 });
 </script>
 

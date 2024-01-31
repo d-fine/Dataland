@@ -5,20 +5,11 @@
         :company-id="companyId"
         :is-user-data-owner="isUserDataOwner"
         @fetched-company-information="getCompanyName"
-        @claim-data-owner-ship="openDialog"
     />
     <div class="card-wrapper">
       <div class="card-grid">
-        <ClaimOwnershipPanel v-if="!isUserDataOwner" :company-name="companyName" @toggle-dialog="toggleDialog"/>
-        <ClaimOwnershipDialog
-            v-if="!isUserDataOwner"
-            :dialog-is-open="dialogIsOpen"
-            :company-name="companyName"
-            :company-id="companyId"
-            :claim-is-submitted="claimIsSubmitted"
-            @toggle-dialog="toggleDialog"
-            @claim-submitted="onClaimSubmitted"
-        />
+        <ClaimOwnershipPanel v-if="!isUserDataOwner" :company-name="companyName" :company-id="companyId"/>
+
         <FrameworkSummaryPanel
             v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
             :key="framework"
@@ -50,7 +41,6 @@ import FrameworkSummaryPanel from "@/components/resources/companyCockpit/Framewo
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import {ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE} from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
-import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
 import {getUserId} from "@/utils/KeycloakUtils";
 import {AxiosError} from "axios";
 
@@ -80,8 +70,6 @@ export default defineComponent({
         } catch (error) {
           console.error("Error fetching data for new company:", error);
         }
-        this.dialogIsOpen = false;
-        this.claimIsSubmitted = false;
       }
     },
   },
@@ -90,7 +78,6 @@ export default defineComponent({
     CompanyInfoSheet,
     FrameworkSummaryPanel,
     TheContent,
-    ClaimOwnershipDialog,
     TheHeader,
     TheFooter,
   },
@@ -115,8 +102,7 @@ export default defineComponent({
           | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
       companyName: undefined as string | undefined,
-      dialogIsOpen: false,
-      claimIsSubmitted: false,
+
       isUserDataOwner: undefined as boolean | undefined,
       footerContent,
     };
@@ -144,24 +130,7 @@ export default defineComponent({
     getCompanyName(companyInfo: CompanyInformation) {
       this.companyName = companyInfo.companyName;
     },
-    /**
-     * toggles the dialog window
-     */
-    toggleDialog() {
-      this.dialogIsOpen = !this.dialogIsOpen;
-    },
-    /**
-     * explicitly opens the dialog window
-     */
-    openDialog() {
-      this.dialogIsOpen = true;
-    },
-    /**
-     * catcher of the emitted submit event
-     */
-    onClaimSubmitted() {
-      this.claimIsSubmitted = true;
-    },
+
 
     /**
      * Get the Information about Data-ownership

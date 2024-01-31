@@ -34,7 +34,7 @@
       <PrimeButton label="SUBMIT" @click="submitInput"/>
     </template>
     <template #footer v-else>
-      <PrimeButton label="CLOSE" @click="$emit('toggleDialog')"/>
+      <PrimeButton label="CLOSE" @click="toggleDialog"/>
     </template>
   </PrimeDialog>
 </template>
@@ -84,8 +84,15 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ["toggleDialog", "claimSubmitted"],
+  emits: ["claimSubmitted"],
   methods: {
+
+    /**
+     * toggles the dialog window
+     */
+    toggleDialog() {
+      this.dialogIsVisible = !this.dialogIsVisible
+    },
     /**
      * Makes the API request in order to post the request for data ownership
      */

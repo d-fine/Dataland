@@ -17,6 +17,13 @@
           <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems"/>
         </div>
       </div>
+
+      <ClaimOwnershipDialog :company-id="companyId"
+                            :company-name="companyInformation.companyName"
+                            :dialog-is-open="dialogIsOpen"
+                            :claim-is-submitted="claimIsSubmitted"
+                            @claim-submitted="onClaimSubmitted"/>
+
       <div class="company-details__separator"/>
 
       <div class="company-details__info-holder">
@@ -47,10 +54,13 @@ import {type CompanyInformation, IdentifierType} from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import {assertDefined} from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
+import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
+import {AxiosError} from "axios";
+import {getUserId} from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
-  components: {ContextMenuButton},
+  components: {ClaimOwnershipDialog, ContextMenuButton},
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -62,6 +72,9 @@ export default defineComponent({
       companyInformation: null as CompanyInformation | null,
       waitingForData: true,
       companyIdDoesNotExist: false,
+      isUserDataOwner: false,
+      dialogIsOpen: false,
+      claimIsSubmitted: false,
     };
   },
   computed: {
@@ -81,29 +94,30 @@ export default defineComponent({
         listOfItems.push({
           label: "Claim Company Dataset Ownership",
           command: () => {
-            this.$emit("claimDataOwnership");
+            this.dialogIsOpen = true;
           },
         });
       }
       return listOfItems;
+    },
+    userId() {
+      return getUserId(assertDefined(this.getKeycloakPromise));
     },
   },
   props: {
     companyId: {
       type: String,
       required: true,
-    },
-    isUserDataOwner: {
-      type: Boolean,
-      required: true,
     }
   },
   mounted() {
     void this.getCompanyInformation();
+    void this.getDataOwnerInformation();
   },
   watch: {
     companyId() {
       void this.getCompanyInformation();
+      this.claimIsSubmitted = false;
     },
   },
   methods: {
@@ -138,6 +152,30 @@ export default defineComponent({
     getErrorMessage(error: unknown) {
       const noStringMessage = error instanceof Error ? error.message : "";
       return typeof error === "string" ? error : noStringMessage;
+    },
+    /**
+     * Get the Information about Data-ownership
+     */
+    async getDataOwnerInformation() {
+      try {
+        const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
+            .companyDataController;
+        const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
+            this.companyId,
+            assertDefined(await this.userId),
+        );
+        if (axiosResponse.status == 200) {
+          this.isUserDataOwner = true;
+        }
+      } catch (error: AxiosError) {
+        console.error(error);
+        if (error.response.status == 404) {
+          this.isUserDataOwner = false;
+        }
+      }
+    },
+    onClaimSubmitted() {
+      this.claimIsSubmitted = true;
     },
   },
 });
