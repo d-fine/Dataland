@@ -2,8 +2,6 @@ import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwne
 
 describe("Component test for ClaimOwnershipPanel", () => {
   it("ClaimOwnershipPanel component works correctly", () => {
-    cy.mountWithPlugins(ClaimOwnershipPanel, {});
-
     cy.mountWithPlugins(ClaimOwnershipPanel, {
       data() {
         return {
