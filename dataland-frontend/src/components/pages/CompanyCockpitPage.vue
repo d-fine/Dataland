@@ -1,13 +1,10 @@
 <template>
   <TheHeader v-if="!useMobileView"/>
   <TheContent class="paper-section flex">
-    <CompanyInfoSheet
-        :company-id="companyId"
-        @fetched-company-information="getCompanyName"
-    />
+    <CompanyInfoSheet :company-id="companyId" @fetched-company-information="getCompanyName"/>
     <div class="card-wrapper">
       <div class="card-grid">
-        <ClaimOwnershipPanel v-if="!isUserDataOwner" :company-id="companyId"/>
+        <ClaimOwnershipPanel v-if="!isUserDataOwner && isUserUploader" :company-id="companyId"/>
 
         <FrameworkSummaryPanel
             v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
@@ -40,7 +37,7 @@ import FrameworkSummaryPanel from "@/components/resources/companyCockpit/Framewo
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import {ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE} from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
-import {getUserId} from "@/utils/KeycloakUtils";
+import {checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_UPLOADER} from "@/utils/KeycloakUtils";
 import {AxiosError} from "axios";
 
 export default defineComponent({
@@ -65,8 +62,6 @@ export default defineComponent({
         try {
           await this.getAggregatedFrameworkDataSummary();
           await this.getDataOwnerInformation();
-
-
         } catch (error) {
           console.error("Error fetching data for new company:", error);
         }
@@ -102,7 +97,7 @@ export default defineComponent({
           | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
       companyName: undefined as string | undefined,
-
+      isUserUploader: false,
       isUserDataOwner: undefined as boolean | undefined,
       footerContent,
     };
@@ -110,9 +105,13 @@ export default defineComponent({
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
     void this.getDataOwnerInformation();
+    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
+        .then((result) => {
+          this.isUserUploader = result;
+        })
+        .catch((error) => console.log(error));
   },
   methods: {
-
     /**
      * Retrieves the aggregated framework data summary
      */
@@ -130,7 +129,6 @@ export default defineComponent({
     getCompanyName(companyInfo: CompanyInformation) {
       this.companyName = companyInfo.companyName;
     },
-
 
     /**
      * Get the Information about Data-ownership

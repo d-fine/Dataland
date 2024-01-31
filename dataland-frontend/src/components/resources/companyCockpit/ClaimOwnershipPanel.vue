@@ -20,12 +20,12 @@ import {defineComponent, inject} from "vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
 import {ApiClientProvider} from "@/services/ApiClients";
 import {assertDefined} from "@/utils/TypeScriptUtils";
-import Keycloak from "keycloak-js";
+import type Keycloak from "keycloak-js";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
   components: {
-    ClaimOwnershipDialog
+    ClaimOwnershipDialog,
   },
   inject: {
     injectedUseMobileView: {
@@ -43,30 +43,36 @@ export default defineComponent({
       dialogIsOpen: false,
       claimIsSubmitted: false,
       companyName: "",
-    }
+    };
   },
   watch: {
     companyId(newCompanyId, oldCompanyId) {
       if (newCompanyId !== oldCompanyId) {
         this.dialogIsOpen = false;
         this.claimIsSubmitted = false;
-        this.getCompanyName();
+        void this.getCompanyName();
       }
-    }
+    },
   },
   props: {
     companyId: {
       type: String,
       required: true,
-    }
+    },
   },
   mounted() {
-    this.getCompanyName();
+    await this.getCompanyName();
   },
   methods: {
+    /**
+     * handles the emitted claim event
+     */
     onClaimSubmitted() {
       this.claimIsSubmitted = true;
     },
+    /**
+     * handles the close button click event of the dialog
+     */
     onCloseDialog() {
       this.dialogIsOpen = false;
     },
@@ -88,7 +94,7 @@ export default defineComponent({
     toggleDialog() {
       this.dialogIsOpen = true;
     },
-  }
+  },
 });
 </script>
 

@@ -18,12 +18,14 @@
         </div>
       </div>
 
-      <ClaimOwnershipDialog :company-id="companyId"
-                            :company-name="companyInformation.companyName"
-                            :dialog-is-open="dialogIsOpen"
-                            :claim-is-submitted="claimIsSubmitted"
-                            @claim-submitted="onClaimSubmitted"
-                            @close-dialog="onCloseDialog"/>
+      <ClaimOwnershipDialog
+          :company-id="companyId"
+          :company-name="companyInformation.companyName"
+          :dialog-is-open="dialogIsOpen"
+          :claim-is-submitted="claimIsSubmitted"
+          @claim-submitted="onClaimSubmitted"
+          @close-dialog="onCloseDialog"
+      />
 
       <div class="company-details__separator"/>
 
@@ -57,7 +59,7 @@ import {assertDefined} from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
 import {AxiosError} from "axios";
-import {getUserId} from "@/utils/KeycloakUtils";
+import {checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_UPLOADER} from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -74,6 +76,7 @@ export default defineComponent({
       waitingForData: true,
       companyIdDoesNotExist: false,
       isUserDataOwner: false,
+      isUserUploader: false,
       dialogIsOpen: false,
       claimIsSubmitted: false,
     };
@@ -91,7 +94,7 @@ export default defineComponent({
     },
     contextMenuItems() {
       const listOfItems = [];
-      if (!this.isUserDataOwner) {
+      if (!this.isUserDataOwner && this.isUserUploader) {
         listOfItems.push({
           label: "Claim Company Dataset Ownership",
           command: () => {
@@ -109,11 +112,16 @@ export default defineComponent({
     companyId: {
       type: String,
       required: true,
-    }
+    },
   },
   mounted() {
     void this.getCompanyInformation();
     void this.getDataOwnerInformation();
+    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
+        .then((result) => {
+          this.isUserUploader = result;
+        })
+        .catch((error) => console.log(error));
   },
   watch: {
     companyId() {
@@ -123,6 +131,9 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * handles the close button click event of the dialog
+     */
     onCloseDialog() {
       this.dialogIsOpen = false;
     },
@@ -179,6 +190,9 @@ export default defineComponent({
         }
       }
     },
+    /**
+     * handles the emitted claim event
+     */
     onClaimSubmitted() {
       this.claimIsSubmitted = true;
     },
