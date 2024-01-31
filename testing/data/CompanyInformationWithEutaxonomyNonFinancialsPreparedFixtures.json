@@ -1,0 +1,318 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "Reinger - Nolan",
+			"headquarters": "Bartonhaven",
+			"headquartersPostalCode": "99757-9836",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"H6aOLJ4dIBXN3qKebAJq"
+				],
+				"Isin": [
+					"FXrjPqEaQCku"
+				],
+				"PermId": [
+					"jUNLjjT4iJ"
+				],
+				"Ticker": [],
+				"Duns": [
+					"jpFr6ii8A"
+				],
+				"VatNumber": [
+					"NOChF1D6r"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BV",
+			"companyAlternativeNames": [
+				"Gutmann and Sons",
+				"Runolfsson LLC",
+				"Rutherford - Bednar"
+			],
+			"companyLegalForm": "GmbH",
+			"website": null,
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"reportingPeriod": "2024-07-04",
+				"fiscalYearDeviation": "Deviation",
+				"fiscalYearEnd": "2024-12-05",
+				"scopeOfEntities": {
+					"value": "NA",
+					"dataSource": {
+						"fileName": "Certification",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+					}
+				},
+				"euTaxonomyActivityLevelReporting": {
+					"value": "Yes",
+					"dataSource": {
+						"fileName": "Certification",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+					}
+				},
+				"numberOfEmployees": 45.8,
+				"nfrdMandatory": "Yes",
+				"assurance": {
+					"value": "LimitedAssurance",
+					"provider": "Rempel LLC",
+					"dataSource": {
+						"page": 560,
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "initiatives"
+					}
+				}
+			},
+			"revenue": {
+				"totalAmount": {
+					"value": 6158915709.24,
+					"dataSource": {
+						"page": 196,
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "interfaces"
+					},
+					"comment": "copy open-source alarm",
+					"quality": "Estimated",
+					"currency": "PGK"
+				},
+				"nonEligibleShare": {
+					"relativeShareInPercent": 41.88,
+					"absoluteShare": {
+						"value": 2973874895.83,
+						"dataSource": {
+							"page": 785,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "lifetime value"
+						},
+						"comment": "hack multi-byte hard drive",
+						"quality": "Audited",
+						"currency": "MVR"
+					}
+				},
+				"eligibleShare": {
+					"relativeShareInPercent": 94.26,
+					"absoluteShare": {
+						"value": 8354328947.61,
+						"dataSource": {
+							"page": 82,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "program bluetooth sensor",
+						"quality": "Incomplete",
+						"currency": "UAH"
+					}
+				},
+				"nonAlignedShare": {
+					"relativeShareInPercent": 1.65,
+					"absoluteShare": {
+						"value": 5041105053.39,
+						"dataSource": {
+							"page": 397,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "quantify wireless array",
+						"quality": "Audited",
+						"currency": "BDT"
+					}
+				},
+				"alignedShare": {
+					"relativeShareInPercent": 63.42,
+					"absoluteShare": {
+						"value": 8434083405.89,
+						"dataSource": {
+							"page": 672,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": "input digital circuit",
+						"quality": "Reported",
+						"currency": "ZAR"
+					}
+				},
+				"substantialContributionToClimateChangeMitigationInPercent": 13.8,
+				"substantialContributionToClimateChangeAdaptationInPercent": 2.76,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 61.49,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 16.04,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 96.26,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 42.37,
+				"enablingShareInPercent": 94.66,
+				"transitionalShareInPercent": 57.29
+			},
+			"capex": {
+				"totalAmount": {
+					"value": 82092825.32,
+					"dataSource": {
+						"page": 981,
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "communities"
+					},
+					"comment": "connect neural array",
+					"quality": "Estimated",
+					"currency": "SZL"
+				},
+				"nonEligibleShare": {
+					"relativeShareInPercent": 11.88,
+					"absoluteShare": {
+						"value": 1753145621.62,
+						"dataSource": {
+							"page": 616,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "initiatives"
+						},
+						"comment": "calculate haptic driver",
+						"quality": "Incomplete",
+						"currency": "RON"
+					}
+				},
+				"eligibleShare": {
+					"relativeShareInPercent": 6.22,
+					"absoluteShare": {
+						"value": 9825317736.25,
+						"dataSource": {
+							"page": 345,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "action-items"
+						},
+						"comment": "back up auxiliary feed",
+						"quality": "Audited",
+						"currency": "THB"
+					}
+				},
+				"nonAlignedShare": {
+					"relativeShareInPercent": 37.61,
+					"absoluteShare": {
+						"value": 5636609399.23,
+						"dataSource": {
+							"page": 407,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "back up solid state port",
+						"quality": "Incomplete",
+						"currency": "MDL"
+					}
+				},
+				"alignedShare": {
+					"relativeShareInPercent": 13.99,
+					"absoluteShare": {
+						"value": 6421942799.35,
+						"dataSource": {
+							"page": 560,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": "transmit redundant alarm",
+						"quality": "Audited",
+						"currency": "MKD"
+					}
+				},
+				"substantialContributionToClimateChangeMitigationInPercent": 27.34,
+				"substantialContributionToClimateChangeAdaptationInPercent": 68.88,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 29.12,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 80.88,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 41.72,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 51.59,
+				"enablingShareInPercent": 1.58,
+				"transitionalShareInPercent": 0.4
+			},
+			"opex": {
+				"totalAmount": {
+					"value": 4541549254.21,
+					"dataSource": {
+						"page": 13,
+						"fileName": "SustainabilityReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "methodologies"
+					},
+					"comment": "reboot online transmitter",
+					"quality": "Audited",
+					"currency": "XPF"
+				},
+				"nonEligibleShare": {
+					"relativeShareInPercent": 26.76,
+					"absoluteShare": {
+						"value": 1784281539.73,
+						"dataSource": {
+							"page": 1113,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": "index primary microchip",
+						"quality": "Audited",
+						"currency": "GYD"
+					}
+				},
+				"eligibleShare": {
+					"relativeShareInPercent": 75.62,
+					"absoluteShare": {
+						"value": 5630089181.94,
+						"dataSource": {
+							"page": 811,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "methodologies"
+						},
+						"comment": "quantify back-end microchip",
+						"quality": "Reported",
+						"currency": "GBP"
+					}
+				},
+				"nonAlignedShare": {
+					"relativeShareInPercent": 19.66,
+					"absoluteShare": {
+						"value": 7608028913.39,
+						"dataSource": {
+							"page": 481,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": "override solid state circuit",
+						"quality": "Audited",
+						"currency": "JPY"
+					}
+				},
+				"alignedShare": {
+					"relativeShareInPercent": 65.73,
+					"absoluteShare": {
+						"value": 7764735850.51,
+						"dataSource": {
+							"page": 425,
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "channels"
+						},
+						"comment": "back up multi-byte port",
+						"quality": "Incomplete",
+						"currency": "SGD"
+					}
+				},
+				"substantialContributionToClimateChangeMitigationInPercent": 86.74,
+				"substantialContributionToClimateChangeAdaptationInPercent": 31.44,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 0.73,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 85.35,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 64.62,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 92.29,
+				"enablingShareInPercent": 57.39,
+				"transitionalShareInPercent": 0.06
+			}
+		},
+		"reportingPeriod": "2022"
+	}
+]
