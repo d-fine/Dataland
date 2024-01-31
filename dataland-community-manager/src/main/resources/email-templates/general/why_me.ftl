@@ -30,7 +30,7 @@
     <tr>
         <td style="vertical-align: top"><b>&bull;&nbsp;</b></td>
         <td>We need you in order to achieve our principles and mission.<br />
-            <span style="color: #FF6813FF;"><a href="https://dataland.com" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #FF6813FF; text-decoration: none;">DISCOVER OUR PRINCIPLES </a>&#10132;</span></td>
+            <span style="color: #FF6813FF;"><a href="${baseUrl}/companies/${companyId}" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #FF6813FF; text-decoration: none;">DISCOVER OUR PRINCIPLES </a>&#10132;</span></td>
     </tr>
     <tr>
         <td height="40">&nbsp;</td>

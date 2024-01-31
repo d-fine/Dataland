@@ -13,7 +13,7 @@
     </tr>
     <tr style="background-color: #f6f6f6;">
         <td colspan="3" align="center" style="background-color: #f6f6f6; color: #FF6813FF; font-size: 18px; font-weight: bold; text-align: center; padding:0; margin:0; border: 0;">
-            <a href="https://dataland.com" target="_blank" style="border: 0 none; text-decoration: none;"><img src="${base_url}/images/email/logo.png" width="169" height="37" alt="DATALAND" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;"></a>
+            <a href="https://dataland.com" target="_blank" style="border: 0 none; text-decoration: none;"><img src="${baseUrl}/images/email/logo.png" width="169" height="37" alt="DATALAND" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;"></a>
         </td>
     </tr>
     <tr style="background-color: #f6f6f6;">
@@ -37,7 +37,7 @@
     <tr><td height="20">&nbsp;</td></tr>
     <tr>
         <td>
-            As part of ourLkSG-campaign, you have a data request:
+            As part of our LkSG-campaign, you have a data request:
         </td>
     </tr>
     <tr><td height="5" style="font-size: 5px;">&nbsp;</td></tr>
@@ -51,9 +51,9 @@
                     <td rowspan="17" width="20">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td width="220" align="left" style="text-align: left; padding:0; margin:0; border: 0;"><img src="${base_url}/images/email/leaf_icon.png" width="35" height="39" alt="framework" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;"></td>
+                    <td width="220" align="left" style="text-align: left; padding:0; margin:0; border: 0;"><img src="${baseUrl}/images/email/leaf_icon.png" width="35" height="39" alt="framework" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;"></td>
                     <td width="40" rowspan="4">&nbsp;</td>
-                    <td width="220" align="left" style="text-align: left; padding:0; margin:0; border: 0;"><img src="${base_url}/images/email/year_icon.png" width="35" height="39" alt="year" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;"></td>
+                    <td width="220" align="left" style="text-align: left; padding:0; margin:0; border: 0;"><img src="${baseUrl}/images/email/year_icon.png" width="35" height="39" alt="year" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;"></td>
                 </tr>
                 <tr>
                     <td style="font-size: 28px; font-weight: bold;">LkSG</td>
@@ -124,8 +124,8 @@
         <td height="20">&nbsp;</td>
     </tr>
     <td style="background-color: #ffffff; text-align: center; padding:0; margin:0; border: 0;">
-        <a href="https://dataland.com" target="_blank" style="border: 0 none; color: #FF6813FF; font-size: 18px; text-decoration: none;">
-            <img src="${base_url}/images/email/action_button.png" width="499" height="54" alt="CLAIM OWNERSHIP"
+        <a href="${baseUrl}/companies/${companyId}" target="_blank" style="border: 0 none; color: #FF6813FF; font-size: 18px; text-decoration: none;">
+            <img src="${baseUrl}/images/email/action_button.png" width="499" height="54" alt="CLAIM OWNERSHIP"
                  style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
         </a>
     </td>

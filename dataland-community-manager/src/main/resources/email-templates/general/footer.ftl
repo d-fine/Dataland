@@ -56,7 +56,7 @@
         <td></td>
     </tr>
     <tr>
-        <td colspan="5" style="width: 600px; padding:0; margin:0; border: 0;"><img src="${base_url}/images/email/footer_bottom.png" width="600" alt=""
+        <td colspan="5" style="width: 600px; padding:0; margin:0; border: 0;"><img src="${baseUrl}/images/email/footer_bottom.png" width="600" alt=""
                                                                                    style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none; display: block"></td>
     </tr>
     </tbody>

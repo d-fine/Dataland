@@ -87,7 +87,7 @@ class SingleDataRequestEmailBuilder(
             "message" to message,
             "dataType" to dataType,
             "reportingPeriods" to reportingPeriods,
-            "base_url" to "https://local-dev.dataland.com"
+            "baseUrl" to "https://local-dev.dataland.com"
         )
         val freemarkerTemplate = FreeMarker.configuration
             .getTemplate("/claim_ownership.html.ftl")
