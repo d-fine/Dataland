@@ -2,7 +2,7 @@
   <div>
     <div v-if="waitingForData" class="inline-loading text-center">
       <p class="font-medium text-xl">Loading company information...</p>
-      <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f"/>
+      <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
     </div>
     <div v-else-if="companyInformation && !waitingForData" class="company-details">
       <div class="company-details__headline">
@@ -14,20 +14,20 @@
           </div>
         </div>
         <div>
-          <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems"/>
+          <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
         </div>
       </div>
 
       <ClaimOwnershipDialog
-          :company-id="companyId"
-          :company-name="companyInformation.companyName"
-          :dialog-is-open="dialogIsOpen"
-          :claim-is-submitted="claimIsSubmitted"
-          @claim-submitted="onClaimSubmitted"
-          @close-dialog="onCloseDialog"
+        :company-id="companyId"
+        :company-name="companyInformation.companyName"
+        :dialog-is-open="dialogIsOpen"
+        :claim-is-submitted="claimIsSubmitted"
+        @claim-submitted="onClaimSubmitted"
+        @close-dialog="onCloseDialog"
       />
 
-      <div class="company-details__separator"/>
+      <div class="company-details__separator" />
 
       <div class="company-details__info-holder">
         <div class="company-details__info">
@@ -51,19 +51,19 @@
 </template>
 
 <script lang="ts">
-import {ApiClientProvider} from "@/services/ApiClients";
-import {defineComponent, inject} from "vue";
-import {type CompanyInformation, IdentifierType} from "@clients/backend";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { defineComponent, inject } from "vue";
+import { type CompanyInformation, IdentifierType } from "@clients/backend";
 import type Keycloak from "keycloak-js";
-import {assertDefined} from "@/utils/TypeScriptUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
-import {AxiosError} from "axios";
-import {checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_UPLOADER} from "@/utils/KeycloakUtils";
+import { checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
-  components: {ClaimOwnershipDialog, ContextMenuButton},
+  components: { ClaimOwnershipDialog, ContextMenuButton },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -118,10 +118,10 @@ export default defineComponent({
     void this.getCompanyInformation();
     void this.getDataOwnerInformation();
     checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
-        .then((result) => {
-          this.isUserUploader = result;
-        })
-        .catch((error) => console.log(error));
+      .then((result) => {
+        this.isUserUploader = result;
+      })
+      .catch((error) => console.log(error));
   },
   watch: {
     companyId() {
@@ -146,46 +146,38 @@ export default defineComponent({
         this.waitingForData = true;
         if (this.companyId !== undefined) {
           const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-              .backendClients.companyDataController;
+            .backendClients.companyDataController;
           this.companyInformation = (await companyDataControllerApi.getCompanyInfo(this.companyId)).data;
           this.waitingForData = false;
           this.$emit("fetchedCompanyInformation", this.companyInformation);
         }
       } catch (error) {
         console.error(error);
-        if (this.getErrorMessage(error).includes("404")) {
+        if (getErrorMessage(error).includes("404")) {
           this.companyIdDoesNotExist = true;
         }
         this.waitingForData = false;
         this.companyInformation = null;
       }
     },
-    /**
-     * Tries to find a message in an error
-     * @param error the error to extract a message from
-     * @returns the extracted message
-     */
-    getErrorMessage(error: unknown) {
-      const noStringMessage = error instanceof Error ? error.message : "";
-      return typeof error === "string" ? error : noStringMessage;
-    },
+
     /**
      * Get the Information about Data-ownership
      */
     async getDataOwnerInformation() {
       try {
         const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
-            .companyDataController;
+          .companyDataController;
         const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
-            this.companyId,
-            assertDefined(await this.userId),
+          this.companyId,
+          assertDefined(await this.userId),
         );
         if (axiosResponse.status == 200) {
           this.isUserDataOwner = true;
         }
-      } catch (error: AxiosError) {
+      } catch (error) {
         console.error(error);
-        if (error.response.status == 404) {
+        if (getErrorMessage(error).includes("404")) {
           this.isUserDataOwner = false;
         }
       }

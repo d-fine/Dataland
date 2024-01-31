@@ -6,20 +6,20 @@
     </div>
   </div>
   <ClaimOwnershipDialog
-      :dialog-is-open="dialogIsOpen"
-      :company-name="companyName"
-      :company-id="companyId"
-      :claim-is-submitted="claimIsSubmitted"
-      @claim-submitted="onClaimSubmitted"
-      @close-dialog="onCloseDialog"
+    :dialog-is-open="dialogIsOpen"
+    :company-name="companyName"
+    :company-id="companyId"
+    :claim-is-submitted="claimIsSubmitted"
+    @claim-submitted="onClaimSubmitted"
+    @close-dialog="onCloseDialog"
   />
 </template>
 
 <script lang="ts">
-import {defineComponent, inject} from "vue";
+import { defineComponent, inject } from "vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
-import {ApiClientProvider} from "@/services/ApiClients";
-import {assertDefined} from "@/utils/TypeScriptUtils";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
 
 export default defineComponent({
@@ -84,7 +84,7 @@ export default defineComponent({
       try {
         if (this.companyId !== undefined) {
           const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-              .backendClients.companyDataController;
+            .backendClients.companyDataController;
           this.companyName = (await companyDataControllerApi.getCompanyInfo(this.companyId)).data.companyName;
         }
       } catch (error) {

@@ -1,44 +1,44 @@
 <template>
-  <TheHeader v-if="!useMobileView"/>
+  <TheHeader v-if="!useMobileView" />
   <TheContent class="paper-section flex">
-    <CompanyInfoSheet :company-id="companyId" @fetched-company-information="getCompanyName"/>
+    <CompanyInfoSheet :company-id="companyId" @fetched-company-information="getCompanyName" />
     <div class="card-wrapper">
       <div class="card-grid">
-        <ClaimOwnershipPanel v-if="!isUserDataOwner && isUserUploader" :company-id="companyId"/>
+        <ClaimOwnershipPanel v-if="!isUserDataOwner && isUserUploader" :company-id="companyId" />
 
         <FrameworkSummaryPanel
-            v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
-            :key="framework"
-            :company-id="companyId"
-            :framework="framework"
-            :number-of-provided-reporting-periods="
+          v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
+          :key="framework"
+          :company-id="companyId"
+          :framework="framework"
+          :number-of-provided-reporting-periods="
             aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
           "
-            :data-test="`${framework}-summary-panel`"
+          :data-test="`${framework}-summary-panel`"
         />
       </div>
     </div>
   </TheContent>
-  <TheFooter :is-light-version="true" :sections="footerContent"/>
+  <TheFooter :is-light-version="true" :sections="footerContent" />
 </template>
 
 <script lang="ts">
-import {defineComponent, inject} from "vue";
+import { defineComponent, inject } from "vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import {type AggregatedFrameworkDataSummary, type CompanyInformation, type DataTypeEnum} from "@clients/backend";
-import {ApiClientProvider} from "@/services/ApiClients";
-import {assertDefined} from "@/utils/TypeScriptUtils";
+import { type AggregatedFrameworkDataSummary, type CompanyInformation, type DataTypeEnum } from "@clients/backend";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 import TheFooter from "@/components/generics/TheNewFooter.vue";
 import contentData from "@/assets/content.json";
-import type {Content, Page} from "@/types/ContentTypes";
+import type { Content, Page } from "@/types/ContentTypes";
 import type Keycloak from "keycloak-js";
 import FrameworkSummaryPanel from "@/components/resources/companyCockpit/FrameworkSummaryPanel.vue";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import {ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE} from "@/utils/Constants";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
-import {checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_UPLOADER} from "@/utils/KeycloakUtils";
-import {AxiosError} from "axios";
+import { checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -93,8 +93,8 @@ export default defineComponent({
     const footerContent = footerPage?.sections;
     return {
       aggregatedFrameworkDataSummary: undefined as
-          | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
-          | undefined,
+        | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
+        | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
       companyName: undefined as string | undefined,
       isUserUploader: false,
@@ -106,10 +106,10 @@ export default defineComponent({
     void this.getAggregatedFrameworkDataSummary();
     void this.getDataOwnerInformation();
     checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
-        .then((result) => {
-          this.isUserUploader = result;
-        })
-        .catch((error) => console.log(error));
+      .then((result) => {
+        this.isUserUploader = result;
+      })
+      .catch((error) => console.log(error));
   },
   methods: {
     /**
@@ -117,9 +117,9 @@ export default defineComponent({
      */
     async getAggregatedFrameworkDataSummary(): Promise<void> {
       const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
-          .companyDataController;
+        .companyDataController;
       this.aggregatedFrameworkDataSummary = (
-          await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
+        await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
       ).data as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary } | undefined;
     },
     /**
@@ -136,17 +136,17 @@ export default defineComponent({
     async getDataOwnerInformation() {
       try {
         const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
-            .companyDataController;
+          .companyDataController;
         const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
-            this.companyId,
-            assertDefined(await this.userId),
+          this.companyId,
+          assertDefined(await this.userId),
         );
         if (axiosResponse.status == 200) {
           this.isUserDataOwner = true;
         }
-      } catch (error: AxiosError) {
+      } catch (error) {
         console.error(error);
-        if (error.response.status == 404) {
+        if (getErrorMessage(error).includes("404")) {
           this.isUserDataOwner = false;
         }
       }
