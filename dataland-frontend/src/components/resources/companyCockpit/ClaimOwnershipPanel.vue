@@ -1,8 +1,10 @@
 <template>
   <div class="claim-panel">
     <div class="next-to-each-other vertical-middle">
-      <h2 class="claim-panel__ownership-question">Responsible for {{ companyName }}?</h2>
-      <a class="link" @click="openDialog">Claim company dataset ownership.</a>
+      <h2 class="claim-panel__ownership-question" data-test="claimOwnershipPanelHeading">
+        Responsible for {{ companyName }}?
+      </h2>
+      <a class="link" @click="openDialog" data-test="claimOwnershipPanelLink">Claim company dataset ownership.</a>
     </div>
   </div>
   <ClaimOwnershipDialog
