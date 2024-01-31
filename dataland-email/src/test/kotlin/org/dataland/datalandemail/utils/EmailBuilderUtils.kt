@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.utils
+package org.dataland.datalandemail.utils
 
 import org.dataland.datalandemail.email.Email
 import org.dataland.datalandemail.email.EmailContact

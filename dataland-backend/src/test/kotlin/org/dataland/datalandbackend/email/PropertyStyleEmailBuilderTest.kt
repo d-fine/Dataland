@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.email
 
-import org.dataland.datalandbackend.utils.assertEmailContactInformationEquals
 import org.dataland.datalandemail.email.Email
 import org.dataland.datalandemail.email.PropertyStyleEmailBuilder
+import org.dataland.datalandemail.utils.assertEmailContactInformationEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 

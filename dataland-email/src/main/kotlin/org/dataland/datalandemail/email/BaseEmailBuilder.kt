@@ -15,7 +15,8 @@ abstract class BaseEmailBuilder(
     protected val senderEmailContact =
         EmailContact(assertEmailAddressFormatAndReturnIt(senderEmail), senderName)
 
-    protected fun assertEmailAddressFormatAndReturnIt(emailAddress: String): String { // TODO make this part of email class
+    // TODO make this part of email class
+    protected fun assertEmailAddressFormatAndReturnIt(emailAddress: String): String {
         val regexForValidEmail = Regex("^[a-zA-Z0-9_.!-]+@[a-zA-Z0-9-]+.[a-z]{2,3}\$")
         if (!regexForValidEmail.matches(emailAddress)) {
             logger.error(

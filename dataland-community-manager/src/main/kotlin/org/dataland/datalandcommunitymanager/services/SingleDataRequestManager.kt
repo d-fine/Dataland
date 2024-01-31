@@ -74,15 +74,15 @@ class SingleDataRequestManager(
         storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
             storedDataRequests, singleDataRequest, identifierValueToStore, identifierTypeToStore,
         )
-        if(datalandCompanyIdIfExists != null) {
+        if (datalandCompanyIdIfExists != null) {
             sendSingleDataRequestEmails(singleDataRequest, datalandCompanyIdIfExists)
         }
         return storedDataRequests
     }
 
     private fun sendSingleDataRequestEmails(singleDataRequest: SingleDataRequest, datalandCompanyId: String) {
-        if(singleDataRequest.listOfReportingPeriods.isEmpty()) {
-           return
+        if (singleDataRequest.listOfReportingPeriods.isEmpty()) {
+            return
         }
         singleDataRequest.contactList?.forEach { contactEmail ->
             emailSender.sendEmail(
@@ -93,7 +93,7 @@ class SingleDataRequestManager(
                     dataType = singleDataRequest.frameworkName,
                     reportingPeriods = singleDataRequest.listOfReportingPeriods,
                     message = singleDataRequest.message,
-                )
+                ),
             )
         }
     }
