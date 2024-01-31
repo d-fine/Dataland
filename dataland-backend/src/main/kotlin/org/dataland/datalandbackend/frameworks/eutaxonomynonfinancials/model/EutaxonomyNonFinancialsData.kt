@@ -15,7 +15,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.rev
 @DataType("eutaxonomy-non-financials", 2)
 data class EutaxonomyNonFinancialsData(
     @field:Valid()
-    val general: EutaxonomyNonFinancialsGeneral,
+    val general: EutaxonomyNonFinancialsGeneral? = null,
 
     @field:Valid()
     val revenue: EutaxonomyNonFinancialsRevenue? = null,

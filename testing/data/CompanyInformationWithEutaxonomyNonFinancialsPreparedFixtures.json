@@ -1,317 +1,312 @@
 [
 	{
 		"companyInformation": {
-			"companyName": "Hudson LLC",
-			"headquarters": "Fort Columbusstad",
-			"headquartersPostalCode": "47290",
-			"sector": "bandwidth",
+			"companyName": "Runolfsdottir, Franey and Brown",
+			"headquarters": "Port Carsonshire",
+			"headquartersPostalCode": null,
+			"sector": "infrastructures",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"O2fyPchBndJP"
+					"8GMoLkOe6XvO",
+					"eD3NIATv0iJo"
 				],
-				"PermId": [
-					"ScUsoFyp8A"
-				],
-				"Ticker": [
-					"BxkM6PH"
-				],
-				"Duns": [
-					"ZacUlecea"
-				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PF",
+			"countryCode": "MP",
 			"companyAlternativeNames": [
-				"Braun, Anderson and Kozey"
+				"Mann LLC"
 			],
-			"companyLegalForm": "GmbH",
-			"website": null,
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://haunting-limitation.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
-				"fiscalYearDeviation": "Deviation",
-				"fiscalYearEnd": "2024-05-05",
-				"scopeOfEntities": "No",
+				"fiscalYearDeviation": "NoDeviation",
+				"fiscalYearEnd": "2024-03-09",
+				"scopeOfEntities": "Yes",
 				"nfrdMandatory": "Yes",
-				"euTaxonomyActivityLevelReporting": "No",
+				"euTaxonomyActivityLevelReporting": "Yes",
 				"assurance": {
-					"value": "ReasonableAssurance",
-					"provider": "Reichel Inc",
+					"value": "LimitedAssurance",
+					"provider": "Mitchell Inc",
 					"dataSource": {
-						"page": 25,
+						"page": 521,
 						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "solutions"
+						"tagName": "web services"
 					}
 				},
-				"numberOfEmployees": 52557.91,
+				"numberOfEmployees": 89935.68,
 				"referencedReports": {
 					"ESEFReport": {
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"fileName": "ESEFReport",
-						"isGroupLevel": "Yes",
-						"reportDate": "2023-04-30",
-						"currency": "CNY"
+						"isGroupLevel": "No",
+						"reportDate": "2023-10-18",
+						"currency": "BAM"
 					},
-					"SustainabilityReport": {
+					"IntegratedReport": {
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"fileName": "SustainabilityReport",
+						"fileName": "IntegratedReport",
 						"isGroupLevel": "Yes",
-						"reportDate": "2023-07-31",
-						"currency": "MUR"
+						"reportDate": "2023-06-29",
+						"currency": "CZK"
 					}
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 2709293183.87,
+					"value": 9624025737.87,
 					"dataSource": {
-						"page": 1086,
-						"fileName": "SustainabilityReport",
+						"page": 1108,
+						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "eyeballs"
+						"tagName": "interfaces"
 					},
-					"comment": "generate bluetooth hard drive",
+					"comment": "quantify bluetooth array",
 					"quality": "Reported",
-					"currency": "MRU"
+					"currency": "MKD"
 				},
 				"nonEligibleShare": {
-					"relativeShareInPercent": 52.19,
+					"relativeShareInPercent": 67.52,
 					"absoluteShare": {
-						"value": 131367247.08,
+						"value": 2708053439.85,
 						"dataSource": {
-							"page": 167,
-							"fileName": "ESEFReport",
+							"page": 249,
+							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
+							"tagName": "e-business"
 						},
-						"comment": "copy mobile port",
-						"quality": "Reported",
-						"currency": "BMD"
+						"comment": "index virtual application",
+						"quality": "Incomplete",
+						"currency": "BSD"
 					}
 				},
 				"eligibleShare": {
-					"relativeShareInPercent": 19.42,
+					"relativeShareInPercent": 6.58,
 					"absoluteShare": {
-						"value": 5901514650.32,
+						"value": 1847381810.65,
 						"dataSource": {
-							"page": 76,
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
-						},
-						"comment": "generate neural firewall",
-						"quality": "Estimated",
-						"currency": "IQD"
-					}
-				},
-				"nonAlignedShare": {
-					"relativeShareInPercent": 44.63,
-					"absoluteShare": {
-						"value": 4746381314.47,
-						"dataSource": {
-							"page": 941,
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
-						},
-						"comment": "override online monitor",
-						"quality": "Estimated",
-						"currency": "LYD"
-					}
-				},
-				"alignedShare": {
-					"relativeShareInPercent": 30.67,
-					"absoluteShare": {
-						"value": 7599769094.96,
-						"dataSource": {
-							"page": 743,
-							"fileName": "ESEFReport",
+							"page": 136,
+							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "portals"
 						},
-						"comment": "navigate haptic system",
-						"quality": "Estimated",
-						"currency": "ANG"
+						"comment": "reboot back-end protocol",
+						"quality": "Audited",
+						"currency": "SCR"
 					}
 				},
-				"substantialContributionToClimateChangeMitigationInPercent": 18.06,
-				"substantialContributionToClimateChangeAdaptationInPercent": 32.2,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 6.66,
-				"substantialContributionToTransitionToACircularEconomyInPercent": 35.61,
-				"substantialContributionToPollutionPreventionAndControlInPercent": 9.22,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 2.27,
-				"enablingShareInPercent": 61.5,
-				"transitionalShareInPercent": 69.29
+				"nonAlignedShare": {
+					"relativeShareInPercent": 7.94,
+					"absoluteShare": {
+						"value": 9928475017.66,
+						"dataSource": {
+							"page": 225,
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "generate virtual driver",
+						"quality": "Estimated",
+						"currency": "AED"
+					}
+				},
+				"alignedShare": {
+					"relativeShareInPercent": 66.75,
+					"absoluteShare": {
+						"value": 6123053298.8,
+						"dataSource": {
+							"page": 404,
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "input optical interface",
+						"quality": "Reported",
+						"currency": "KWD"
+					}
+				},
+				"substantialContributionToClimateChangeMitigationInPercent": 9.64,
+				"substantialContributionToClimateChangeAdaptationInPercent": 49.64,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 13.56,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 45.77,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 77.39,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 79.57,
+				"enablingShareInPercent": 24.54,
+				"transitionalShareInPercent": 35.36
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 1492695957.42,
+					"value": 1452638756.01,
 					"dataSource": {
-						"page": 51,
-						"fileName": "SustainabilityReport",
+						"page": 552,
+						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "portals"
+						"tagName": "deliverables"
 					},
-					"comment": "reboot mobile transmitter",
+					"comment": "index bluetooth program",
 					"quality": "Reported",
-					"currency": "BRL"
+					"currency": "HUF"
 				},
 				"nonEligibleShare": {
-					"relativeShareInPercent": 19.74,
+					"relativeShareInPercent": 56.3,
 					"absoluteShare": {
-						"value": 1311673580.2,
+						"value": 8591226125.14,
 						"dataSource": {
-							"page": 20,
-							"fileName": "SustainabilityReport",
+							"page": 1155,
+							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"tagName": "blockchains"
 						},
-						"comment": "bypass back-end matrix",
-						"quality": "Estimated",
-						"currency": "INR"
+						"comment": "copy neural circuit",
+						"quality": "Audited",
+						"currency": "GEL"
 					}
 				},
 				"eligibleShare": {
-					"relativeShareInPercent": 97.06,
+					"relativeShareInPercent": 8.66,
 					"absoluteShare": {
-						"value": 8680574113.97,
+						"value": 5502291771.12,
 						"dataSource": {
-							"page": 1043,
-							"fileName": "SustainabilityReport",
+							"page": 663,
+							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
+							"tagName": "niches"
 						},
-						"comment": "calculate virtual matrix",
+						"comment": "generate multi-byte circuit",
 						"quality": "Reported",
-						"currency": "FJD"
+						"currency": "SAR"
 					}
 				},
 				"nonAlignedShare": {
-					"relativeShareInPercent": 96.33,
+					"relativeShareInPercent": 18.92,
 					"absoluteShare": {
-						"value": 2662451183.42,
+						"value": 2070696153.68,
 						"dataSource": {
-							"page": 526,
-							"fileName": "SustainabilityReport",
+							"page": 230,
+							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "supply-chains"
+							"tagName": "eyeballs"
 						},
-						"comment": "synthesize online program",
+						"comment": "index back-end protocol",
 						"quality": "Audited",
-						"currency": "BND"
+						"currency": "UAH"
 					}
 				},
 				"alignedShare": {
-					"relativeShareInPercent": 71.12,
+					"relativeShareInPercent": 0.8,
 					"absoluteShare": {
-						"value": 2888282767.96,
+						"value": 4202204241.88,
 						"dataSource": {
-							"page": 491,
-							"fileName": "ESEFReport",
+							"page": 755,
+							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
+							"tagName": "functionalities"
 						},
-						"comment": "copy virtual driver",
-						"quality": "Audited",
-						"currency": "CDF"
+						"comment": "quantify multi-byte monitor",
+						"quality": "Incomplete",
+						"currency": "VND"
 					}
 				},
-				"substantialContributionToClimateChangeMitigationInPercent": 78.15,
-				"substantialContributionToClimateChangeAdaptationInPercent": 19.38,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 55.78,
-				"substantialContributionToTransitionToACircularEconomyInPercent": 18.18,
-				"substantialContributionToPollutionPreventionAndControlInPercent": 76.8,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 49.13,
-				"enablingShareInPercent": 90.57,
-				"transitionalShareInPercent": 97.39
+				"substantialContributionToClimateChangeMitigationInPercent": 79.74,
+				"substantialContributionToClimateChangeAdaptationInPercent": 68.68,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 76.4,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 91.72,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 24.38,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 31.12,
+				"enablingShareInPercent": 0,
+				"transitionalShareInPercent": 97.2
 			},
 			"opex": {
 				"totalAmount": {
-					"value": 2393604356.33,
+					"value": 8550170052.33,
 					"dataSource": {
-						"page": 30,
-						"fileName": "SustainabilityReport",
+						"page": 187,
+						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "supply-chains"
+						"tagName": "ROI"
 					},
-					"comment": "reboot online feed",
+					"comment": "override auxiliary system",
 					"quality": "Reported",
-					"currency": "XPF"
+					"currency": "ILS"
 				},
 				"nonEligibleShare": {
-					"relativeShareInPercent": 59.1,
+					"relativeShareInPercent": 30.96,
 					"absoluteShare": {
-						"value": 9807397557.89,
+						"value": 3541641286.57,
 						"dataSource": {
-							"page": 584,
-							"fileName": "SustainabilityReport",
+							"page": 443,
+							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
+							"tagName": "communities"
 						},
-						"comment": "compress back-end bandwidth",
-						"quality": "Estimated",
-						"currency": "MRU"
+						"comment": "bypass haptic array",
+						"quality": "Incomplete",
+						"currency": "BGN"
 					}
 				},
 				"eligibleShare": {
-					"relativeShareInPercent": 50.26,
+					"relativeShareInPercent": 11.51,
 					"absoluteShare": {
-						"value": 6314075340.05,
+						"value": 311711574.9,
 						"dataSource": {
-							"page": 967,
-							"fileName": "ESEFReport",
+							"page": 527,
+							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "bandwidth"
 						},
-						"comment": "index virtual panel",
-						"quality": "Audited",
-						"currency": "BBD"
+						"comment": "connect primary feed",
+						"quality": "Reported",
+						"currency": "VUV"
 					}
 				},
 				"nonAlignedShare": {
-					"relativeShareInPercent": 5.28,
+					"relativeShareInPercent": 63.76,
 					"absoluteShare": {
-						"value": 1195783573.2,
+						"value": 602475493.21,
 						"dataSource": {
-							"page": 242,
-							"fileName": "ESEFReport",
+							"page": 387,
+							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
+							"tagName": "niches"
 						},
-						"comment": "hack multi-byte system",
-						"quality": "Reported",
-						"currency": "CNY"
+						"comment": "synthesize wireless matrix",
+						"quality": "Estimated",
+						"currency": "SGD"
 					}
 				},
 				"alignedShare": {
-					"relativeShareInPercent": 51.42,
+					"relativeShareInPercent": 20.89,
 					"absoluteShare": {
-						"value": 7733876009.01,
+						"value": 3345847295.13,
 						"dataSource": {
-							"page": 685,
-							"fileName": "ESEFReport",
+							"page": 872,
+							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
+							"tagName": "schemas"
 						},
-						"comment": "override wireless firewall",
-						"quality": "Incomplete",
-						"currency": "RUB"
+						"comment": "program 1080p program",
+						"quality": "Reported",
+						"currency": "KYD"
 					}
 				},
-				"substantialContributionToClimateChangeMitigationInPercent": 93.98,
-				"substantialContributionToClimateChangeAdaptationInPercent": 36.58,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 67.93,
-				"substantialContributionToTransitionToACircularEconomyInPercent": 44.18,
-				"substantialContributionToPollutionPreventionAndControlInPercent": 36.82,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 98.05,
-				"enablingShareInPercent": 55.43,
-				"transitionalShareInPercent": 87.16
+				"substantialContributionToClimateChangeMitigationInPercent": 16.74,
+				"substantialContributionToClimateChangeAdaptationInPercent": 57.81,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 78.09,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 75.34,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 78.91,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 22.72,
+				"enablingShareInPercent": 55.66,
+				"transitionalShareInPercent": 34.97
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2019"
 	}
 ]

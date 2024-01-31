@@ -16,7 +16,7 @@ import java.time.LocalDate
 data class EutaxonomyNonFinancialsGeneral(
     val fiscalYearDeviation: EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions? = null,
 
-    val fiscalYearEnd: LocalDate,
+    val fiscalYearEnd: LocalDate? = null,
 
     val scopeOfEntities: YesNoNa? = null,
 
@@ -24,7 +24,7 @@ data class EutaxonomyNonFinancialsGeneral(
 
     val euTaxonomyActivityLevelReporting: YesNo? = null,
 
-    val assurance: AssuranceDataPoint,
+    val assurance: AssuranceDataPoint? = null,
 
     val numberOfEmployees: BigDecimal? = null,
 

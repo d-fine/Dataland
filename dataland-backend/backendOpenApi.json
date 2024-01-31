@@ -10620,13 +10620,15 @@
         }
       },
       "EutaxonomyNonFinancialsData": {
-        "required": [
-          "general"
-        ],
         "type": "object",
         "properties": {
           "general": {
-            "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneral"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneral"
+              }
+            ]
           },
           "revenue": {
             "nullable": true,
@@ -10655,10 +10657,6 @@
         }
       },
       "EutaxonomyNonFinancialsGeneral": {
-        "required": [
-          "assurance",
-          "fiscalYearEnd"
-        ],
         "type": "object",
         "properties": {
           "fiscalYearDeviation": {
@@ -10671,7 +10669,8 @@
           },
           "fiscalYearEnd": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "scopeOfEntities": {
             "nullable": true,
@@ -10698,7 +10697,12 @@
             ]
           },
           "assurance": {
-            "$ref": "#/components/schemas/AssuranceDataPoint"
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AssuranceDataPoint"
+              }
+            ]
           },
           "numberOfEmployees": {
             "type": "number",
@@ -13529,12 +13533,6 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
           "headquarters": {
             "type": "string"
           },
@@ -13544,6 +13542,12 @@
           "sector": {
             "type": "string",
             "nullable": true
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
           },
           "permId": {
             "type": "string",
