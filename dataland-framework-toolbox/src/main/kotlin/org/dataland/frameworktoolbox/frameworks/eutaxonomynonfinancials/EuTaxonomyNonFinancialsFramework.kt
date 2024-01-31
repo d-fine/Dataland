@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.eutaxonomynonfinancials
 
+import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
@@ -21,7 +22,10 @@ class EuTaxonomyNonFinancialsFramework : InDevelopmentPavedRoadFramework(
         "./dataland-framework-toolbox/inputs/euTaxonomyNonFinancials/EutaxonomyNonFinancials.xlsx",
     ),
     order = 2,
-    customUploadConfig = true,
+    enabledFeatures = setOf(
+        FrameworkGenerationFeatures.ViewPage, FrameworkGenerationFeatures.FakeFixtures,
+        FrameworkGenerationFeatures.DataModel,
+    ),
 ) {
 
     private fun configureComponentGroupColorsAndExpansion(root: ComponentGroupApi) {

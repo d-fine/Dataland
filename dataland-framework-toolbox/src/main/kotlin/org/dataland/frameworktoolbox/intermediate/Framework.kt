@@ -16,7 +16,6 @@ class Framework(
     val label: String,
     val explanation: String,
     val order: Int,
-    customUploadConfig: Boolean,
 ) {
     val root: TopLevelComponentGroup = TopLevelComponentGroup(this)
 
