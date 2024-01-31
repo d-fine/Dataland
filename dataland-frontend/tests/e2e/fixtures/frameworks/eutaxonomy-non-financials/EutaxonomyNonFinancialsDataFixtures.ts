@@ -74,38 +74,62 @@ export function generateEutaxonomyNonFinancialsData(
       transitionalShareInPercent: dataGenerator.randomPercentageValue(),
     },
     capex: {
-      totalAmount: dataGenerator.randomPercentageValue(),
-      eligibleCapex: dataGenerator.randomPercentageValue(),
-      alignedCapex: dataGenerator.randomPercentageValue(),
-      substantialContributionToClimateChangeMitigation: dataGenerator.randomPercentageValue(),
-      substantialContributionToClimateChangeAdaptation: dataGenerator.randomPercentageValue(),
-      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources:
+      totalAmount: dataGenerator.randomCurrencyDataPoint(),
+      nonEligibleShare: {
+        relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+      },
+      eligibleShare: {
+        relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+      },
+      nonAlignedShare: {
+        relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+      },
+      alignedShare: {
+        relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+      },
+      substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
+      substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
         dataGenerator.randomPercentageValue(),
-      substantialContributionToTransitionToACircularEconomy: dataGenerator.randomPercentageValue(),
-      substantialContributionToPollutionPreventionAndControl: dataGenerator.randomPercentageValue(),
-      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems:
+      substantialContributionToTransitionToACircularEconomyInPercent: dataGenerator.randomPercentageValue(),
+      substantialContributionToPollutionPreventionAndControlInPercent: dataGenerator.randomPercentageValue(),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
         dataGenerator.randomPercentageValue(),
-      nonAlignedCapex: dataGenerator.randomPercentageValue(),
-      nonEligibleCapex: dataGenerator.randomPercentageValue(),
-      enablingCapex: dataGenerator.randomPercentageValue(),
-      transitionalCapex: dataGenerator.randomPercentageValue(),
+      enablingShareInPercent: dataGenerator.randomPercentageValue(),
+      transitionalShareInPercent: dataGenerator.randomPercentageValue(),
     },
     opex: {
-      totalAmount: dataGenerator.randomFloat(),
-      eligibleOpex: dataGenerator.randomPercentageValue(),
-      alignedOpex: dataGenerator.randomPercentageValue(),
-      substantialContributionToClimateChangeMitigation: dataGenerator.randomPercentageValue(),
-      substantialContributionToClimateChangeAdaptation: dataGenerator.randomPercentageValue(),
-      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources:
+      totalAmount: dataGenerator.randomCurrencyDataPoint(),
+      nonEligibleShare: {
+        relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+      },
+      eligibleShare: {
+        relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+      },
+      nonAlignedShare: {
+        relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+      },
+      alignedShare: {
+        relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+      },
+      substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
+      substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
         dataGenerator.randomPercentageValue(),
-      substantialContributionToTransitionToACircularEconomy: dataGenerator.randomPercentageValue(),
-      substantialContributionToPollutionPreventionAndControl: dataGenerator.randomPercentageValue(),
-      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems:
+      substantialContributionToTransitionToACircularEconomyInPercent: dataGenerator.randomPercentageValue(),
+      substantialContributionToPollutionPreventionAndControlInPercent: dataGenerator.randomPercentageValue(),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
         dataGenerator.randomPercentageValue(),
-      nonAlignedOpex: dataGenerator.randomPercentageValue(),
-      nonEligibleOpex: dataGenerator.randomPercentageValue(),
-      enablingOpex: dataGenerator.randomPercentageValue(),
-      transitionalOpex: dataGenerator.randomPercentageValue(),
+      enablingShareInPercent: dataGenerator.randomPercentageValue(),
+      transitionalShareInPercent: dataGenerator.randomPercentageValue(),
     },
   };
 }

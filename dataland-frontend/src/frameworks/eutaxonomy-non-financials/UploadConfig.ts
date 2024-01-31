@@ -211,63 +211,139 @@ export const eutaxonomyNonFinancialsDataModel = [
         fields: [],
       },
       {
-        name: "eligibleCapex",
-        label: "Eligible CapEx",
+        name: "nonEligibleShare",
+        label: "Non-Eligible Share",
+        fields: [
+          {
+            name: "relativeShareInPercent",
+            label: "Relative Share in Percent",
+
+            unit: "%",
+            component: "NumberFormField",
+            required: false,
+            showIf: (): boolean => true,
+            validation: "between:0,100",
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute Share",
+
+            component: "CurrencyDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "eligibleShare",
+        label: "Eligible Share",
+        fields: [
+          {
+            name: "relativeShareInPercent",
+            label: "Relative Share in Percent",
+
+            unit: "%",
+            component: "NumberFormField",
+            required: false,
+            showIf: (): boolean => true,
+            validation: "between:0,100",
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute Share",
+
+            component: "CurrencyDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "nonAlignedShare",
+        label: "Non-Aligned Share",
+        fields: [
+          {
+            name: "relativeShareInPercent",
+            label: "Relative Share in Percent",
+
+            unit: "%",
+            component: "NumberFormField",
+            required: false,
+            showIf: (): boolean => true,
+            validation: "between:0,100",
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute Share",
+
+            component: "CurrencyDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "alignedShare",
+        label: "Aligned Share",
+        fields: [
+          {
+            name: "relativeShareInPercent",
+            label: "Relative Share in Percent",
+
+            unit: "%",
+            component: "NumberFormField",
+            required: false,
+            showIf: (): boolean => true,
+            validation: "between:0,100",
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute Share",
+
+            component: "CurrencyDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToClimateChangeMitigationInPercent",
+        label: "Substantial Contribution to Climate Change Mitigation In Percent",
         fields: [],
       },
       {
-        name: "alignedCapex",
-        label: "Aligned CapEx",
+        name: "substantialContributionToClimateChangeAdaptationInPercent",
+        label: "Substantial Contribution to Climate Change Adaptation In Percent",
         fields: [],
       },
       {
-        name: "substantialContributionToClimateChangeMitigation",
-        label: "Substantial Contribution to Climate Change Mitigation",
+        name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
+        label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent",
         fields: [],
       },
       {
-        name: "substantialContributionToClimateChangeAdaptation",
-        label: "Substantial Contribution to Climate Change Adaptation",
+        name: "substantialContributionToTransitionToACircularEconomyInPercent",
+        label: "Substantial Contribution to Transition to a Circular Economy In Percent",
         fields: [],
       },
       {
-        name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
-        label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+        name: "substantialContributionToPollutionPreventionAndControlInPercent",
+        label: "Substantial Contribution to Pollution Prevention and Control In Percent",
         fields: [],
       },
       {
-        name: "substantialContributionToTransitionToACircularEconomy",
-        label: "Substantial Contribution to Transition to a Circular Economy",
+        name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
+        label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent",
         fields: [],
       },
       {
-        name: "substantialContributionToPollutionPreventionAndControl",
-        label: "Substantial Contribution to Pollution Prevention and Control",
+        name: "enablingShareInPercent",
+        label: "Enabling Share In Percent",
         fields: [],
       },
       {
-        name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
-        label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
-        fields: [],
-      },
-      {
-        name: "nonAlignedCapex",
-        label: "Non-Aligned CapEx",
-        fields: [],
-      },
-      {
-        name: "nonEligibleCapex",
-        label: "Non-Eligible CapEx",
-        fields: [],
-      },
-      {
-        name: "enablingCapex",
-        label: "Enabling CapEx",
-        fields: [],
-      },
-      {
-        name: "transitionalCapex",
-        label: "Transitional CapEx",
+        name: "transitionalShareInPercent",
+        label: "Transitional Share In Percent",
         fields: [],
       },
     ],
@@ -284,63 +360,139 @@ export const eutaxonomyNonFinancialsDataModel = [
         fields: [],
       },
       {
-        name: "eligibleOpex",
-        label: "Eligible OpEx",
+        name: "nonEligibleShare",
+        label: "Non-Eligible Share",
+        fields: [
+          {
+            name: "relativeShareInPercent",
+            label: "Relative Share in Percent",
+
+            unit: "%",
+            component: "NumberFormField",
+            required: false,
+            showIf: (): boolean => true,
+            validation: "between:0,100",
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute Share",
+
+            component: "CurrencyDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "eligibleShare",
+        label: "Eligible Share",
+        fields: [
+          {
+            name: "relativeShareInPercent",
+            label: "Relative Share in Percent",
+
+            unit: "%",
+            component: "NumberFormField",
+            required: false,
+            showIf: (): boolean => true,
+            validation: "between:0,100",
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute Share",
+
+            component: "CurrencyDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "nonAlignedShare",
+        label: "Non-Aligned Share",
+        fields: [
+          {
+            name: "relativeShareInPercent",
+            label: "Relative Share in Percent",
+
+            unit: "%",
+            component: "NumberFormField",
+            required: false,
+            showIf: (): boolean => true,
+            validation: "between:0,100",
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute Share",
+
+            component: "CurrencyDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "alignedShare",
+        label: "Aligned Share",
+        fields: [
+          {
+            name: "relativeShareInPercent",
+            label: "Relative Share in Percent",
+
+            unit: "%",
+            component: "NumberFormField",
+            required: false,
+            showIf: (): boolean => true,
+            validation: "between:0,100",
+          },
+          {
+            name: "absoluteShare",
+            label: "Absolute Share",
+
+            component: "CurrencyDataPointFormField",
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
+      },
+      {
+        name: "substantialContributionToClimateChangeMitigationInPercent",
+        label: "Substantial Contribution to Climate Change Mitigation In Percent",
         fields: [],
       },
       {
-        name: "alignedOpex",
-        label: "Aligned OpEx",
+        name: "substantialContributionToClimateChangeAdaptationInPercent",
+        label: "Substantial Contribution to Climate Change Adaptation In Percent",
         fields: [],
       },
       {
-        name: "substantialContributionToClimateChangeMitigation",
-        label: "Substantial Contribution to Climate Change Mitigation",
+        name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
+        label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent",
         fields: [],
       },
       {
-        name: "substantialContributionToClimateChangeAdaptation",
-        label: "Substantial Contribution to Climate Change Adaptation",
+        name: "substantialContributionToTransitionToACircularEconomyInPercent",
+        label: "Substantial Contribution to Transition to a Circular Economy In Percent",
         fields: [],
       },
       {
-        name: "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources",
-        label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+        name: "substantialContributionToPollutionPreventionAndControlInPercent",
+        label: "Substantial Contribution to Pollution Prevention and Control In Percent",
         fields: [],
       },
       {
-        name: "substantialContributionToTransitionToACircularEconomy",
-        label: "Substantial Contribution to Transition to a Circular Economy",
+        name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
+        label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent",
         fields: [],
       },
       {
-        name: "substantialContributionToPollutionPreventionAndControl",
-        label: "Substantial Contribution to Pollution Prevention and Control",
+        name: "enablingShareInPercent",
+        label: "Enabling Share In Percent",
         fields: [],
       },
       {
-        name: "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems",
-        label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
-        fields: [],
-      },
-      {
-        name: "nonAlignedOpex",
-        label: "Non-Aligned OpEx",
-        fields: [],
-      },
-      {
-        name: "nonEligibleOpex",
-        label: "Non-Eligible OpEx",
-        fields: [],
-      },
-      {
-        name: "enablingOpex",
-        label: "Enabling OpEx",
-        fields: [],
-      },
-      {
-        name: "transitionalOpex",
-        label: "Transitional OpEx",
+        name: "transitionalShareInPercent",
+        label: "Transitional Share In Percent",
         fields: [],
       },
     ],

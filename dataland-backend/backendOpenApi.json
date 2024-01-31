@@ -10478,56 +10478,144 @@
         "type": "object",
         "properties": {
           "totalAmount": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "nonEligibleShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexNonEligibleShare"
+              }
+            ]
+          },
+          "eligibleShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexEligibleShare"
+              }
+            ]
+          },
+          "nonAlignedShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexNonAlignedShare"
+              }
+            ]
+          },
+          "alignedShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexAlignedShare"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": {
             "type": "number",
             "nullable": true
           },
-          "eligibleCapex": {
+          "substantialContributionToClimateChangeAdaptationInPercent": {
             "type": "number",
             "nullable": true
           },
-          "alignedCapex": {
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToClimateChangeMitigation": {
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToClimateChangeAdaptation": {
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": {
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToTransitionToACircularEconomy": {
+          "enablingShareInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToPollutionPreventionAndControl": {
+          "transitionalShareInPercent": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsCapexAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": {
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsCapexEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
             "type": "number",
             "nullable": true
           },
-          "nonAlignedCapex": {
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsCapexNonAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
             "type": "number",
             "nullable": true
           },
-          "nonEligibleCapex": {
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsCapexNonEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
             "type": "number",
             "nullable": true
           },
-          "enablingCapex": {
-            "type": "number",
-            "nullable": true
-          },
-          "transitionalCapex": {
-            "type": "number",
-            "nullable": true
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
           }
         }
       },
@@ -10638,56 +10726,144 @@
         "type": "object",
         "properties": {
           "totalAmount": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "nonEligibleShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexNonEligibleShare"
+              }
+            ]
+          },
+          "eligibleShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexEligibleShare"
+              }
+            ]
+          },
+          "nonAlignedShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexNonAlignedShare"
+              }
+            ]
+          },
+          "alignedShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexAlignedShare"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": {
             "type": "number",
             "nullable": true
           },
-          "eligibleOpex": {
+          "substantialContributionToClimateChangeAdaptationInPercent": {
             "type": "number",
             "nullable": true
           },
-          "alignedOpex": {
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToClimateChangeMitigation": {
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToClimateChangeAdaptation": {
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": {
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToTransitionToACircularEconomy": {
+          "enablingShareInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToPollutionPreventionAndControl": {
+          "transitionalShareInPercent": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsOpexAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": {
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsOpexEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
             "type": "number",
             "nullable": true
           },
-          "nonAlignedOpex": {
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsOpexNonAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
             "type": "number",
             "nullable": true
           },
-          "nonEligibleOpex": {
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsOpexNonEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
             "type": "number",
             "nullable": true
           },
-          "enablingOpex": {
-            "type": "number",
-            "nullable": true
-          },
-          "transitionalOpex": {
-            "type": "number",
-            "nullable": true
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
           }
         }
       },
@@ -13353,7 +13529,7 @@
             "type": "string",
             "nullable": true
           },
-          "companyId": {
+          "countryCode": {
             "type": "string"
           },
           "sector": {
@@ -13363,10 +13539,10 @@
           "headquarters": {
             "type": "string"
           },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
@@ -13390,10 +13566,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

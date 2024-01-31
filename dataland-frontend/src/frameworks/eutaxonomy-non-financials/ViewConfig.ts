@@ -3,7 +3,6 @@ import { type EutaxonomyNonFinancialsData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatPercentageForDatatable } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
-import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import { formatCurrencyForDisplay } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
 import {
   formatAssuranceProviderForDataTable,
@@ -121,7 +120,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       {
         type: "cell",
         label: "Total Amount",
-        explanation: "Total revenue per annum",
+
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatCurrencyForDisplay(dataset.revenue?.totalAmount, "Total Amount"),
@@ -279,8 +278,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       {
         type: "cell",
         label: "Enabling Share In Percent",
-        explanation:
-          "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities that enable reduction of GHG in other sectors",
+
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatPercentageForDatatable(dataset.revenue?.enablingShareInPercent),
@@ -288,8 +286,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       {
         type: "cell",
         label: "Transitional Share In Percent",
-        explanation:
-          "Share of the taxonomy-aligned revenue from total aligned revenue that is linked to activities with significantly lower GHG emissions than the sector or industry average",
+
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatPercentageForDatatable(dataset.revenue?.transitionalShareInPercent),
@@ -306,117 +303,174 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       {
         type: "cell",
         label: "Total Amount",
-        explanation:
-          "Total CapEx for the reported year. Capital expenditures are non-consumable investments, e.g. for acquiring, upgrading, and maintaining physical assets such as property, plants, buildings, technology ",
+
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.totalAmount),
+          formatCurrencyForDisplay(dataset.capex?.totalAmount, "Total Amount"),
+      },
+      {
+        type: "section",
+        label: "Non-Eligible Share",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Relative Share in Percent",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(dataset.capex?.nonEligibleShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.capex?.nonEligibleShare?.absoluteShare, "Absolute Share"),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Eligible Share",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Relative Share in Percent",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(dataset.capex?.eligibleShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.capex?.eligibleShare?.absoluteShare, "Absolute Share"),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Non-Aligned Share",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Relative Share in Percent",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(dataset.capex?.nonAlignedShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.capex?.nonAlignedShare?.absoluteShare, "Absolute Share"),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Aligned Share",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Relative Share in Percent",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(dataset.capex?.alignedShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.capex?.alignedShare?.absoluteShare, "Absolute Share"),
+          },
+        ],
       },
       {
         type: "cell",
-        label: "Eligible CapEx",
-        explanation:
-          "Absolute value and share of the total CapEx where the economic activity meets taxonomy criteria for substantial contribution to climate change mitigation and does no serious harm to the other environmental objectives (DNSH criteria)",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.eligibleCapex),
-      },
-      {
-        type: "cell",
-        label: "Aligned CapEx",
-        explanation:
-          "Absolute value and share of CapEx that is taxonomy-aligned, i.e., generated by an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards.",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.alignedCapex),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Climate Change Mitigation",
+        label: "Substantial Contribution to Climate Change Mitigation In Percent",
         explanation: "Grade of the substantial contribution criterion fulfillment",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.substantialContributionToClimateChangeMitigation),
+          formatPercentageForDatatable(dataset.capex?.substantialContributionToClimateChangeMitigationInPercent),
       },
       {
         type: "cell",
-        label: "Substantial Contribution to Climate Change Adaptation",
+        label: "Substantial Contribution to Climate Change Adaptation In Percent",
         explanation: "Grade of the substantial contribution criterion fulfillment",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.substantialContributionToClimateChangeAdaptation),
+          formatPercentageForDatatable(dataset.capex?.substantialContributionToClimateChangeAdaptationInPercent),
       },
       {
         type: "cell",
-        label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+        label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent",
         explanation: "Grade of the substantial contribution criterion fulfillment",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatPercentageForDatatable(
-            dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
+            dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
           ),
       },
       {
         type: "cell",
-        label: "Substantial Contribution to Transition to a Circular Economy",
+        label: "Substantial Contribution to Transition to a Circular Economy In Percent",
         explanation: "Grade of the substantial contribution criterion fulfillment",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.substantialContributionToTransitionToACircularEconomy),
+          formatPercentageForDatatable(dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercent),
       },
       {
         type: "cell",
-        label: "Substantial Contribution to Pollution Prevention and Control",
+        label: "Substantial Contribution to Pollution Prevention and Control In Percent",
         explanation: "Grade of the substantial contribution criterion fulfillment",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.substantialContributionToPollutionPreventionAndControl),
+          formatPercentageForDatatable(dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercent),
       },
       {
         type: "cell",
-        label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
+        label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent",
         explanation: "Grade of the substantial contribution criterion fulfillment",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatPercentageForDatatable(
-            dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
+            dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
           ),
       },
       {
         type: "cell",
-        label: "Non-Aligned CapEx",
-        explanation:
-          "Absolute value and share of the CapEx that is associated with non taxonomy-aligned but eligible activities",
+        label: "Enabling Share In Percent",
+
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.nonAlignedCapex),
+          formatPercentageForDatatable(dataset.capex?.enablingShareInPercent),
       },
       {
         type: "cell",
-        label: "Non-Eligible CapEx",
-        explanation:
-          "Absolute value and share of the CapEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
+        label: "Transitional Share In Percent",
+
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.nonEligibleCapex),
-      },
-      {
-        type: "cell",
-        label: "Enabling CapEx",
-        explanation:
-          "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities that enable reduction of GHG in other sectors",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.enablingCapex),
-      },
-      {
-        type: "cell",
-        label: "Transitional CapEx",
-        explanation:
-          "Share of the taxonomy-aligned CapEx from total aligned CapEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.transitionalCapex),
+          formatPercentageForDatatable(dataset.capex?.transitionalShareInPercent),
       },
     ],
     labelBadgeColor: "yellow",
@@ -430,117 +484,174 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
       {
         type: "cell",
         label: "Total Amount",
-        explanation:
-          "Total OpEx for the financial year. Operating expenses (OpEx) are shorter term expenses required to meet the ongoing operational costs of running a business.",
+
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatNumberForDatatable(dataset.opex?.totalAmount, ""),
+          formatCurrencyForDisplay(dataset.opex?.totalAmount, "Total Amount"),
+      },
+      {
+        type: "section",
+        label: "Non-Eligible Share",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Relative Share in Percent",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(dataset.opex?.nonEligibleShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.opex?.nonEligibleShare?.absoluteShare, "Absolute Share"),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Eligible Share",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Relative Share in Percent",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(dataset.opex?.eligibleShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.opex?.eligibleShare?.absoluteShare, "Absolute Share"),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Non-Aligned Share",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Relative Share in Percent",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(dataset.opex?.nonAlignedShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.opex?.nonAlignedShare?.absoluteShare, "Absolute Share"),
+          },
+        ],
+      },
+      {
+        type: "section",
+        label: "Aligned Share",
+        expandOnPageLoad: false,
+        shouldDisplay: (): boolean => true,
+        children: [
+          {
+            type: "cell",
+            label: "Relative Share in Percent",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatPercentageForDatatable(dataset.opex?.alignedShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatCurrencyForDisplay(dataset.opex?.alignedShare?.absoluteShare, "Absolute Share"),
+          },
+        ],
       },
       {
         type: "cell",
-        label: "Eligible OpEx",
-        explanation:
-          "Absolute value and share of the OpEx that is part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.eligibleOpex),
-      },
-      {
-        type: "cell",
-        label: "Aligned OpEx",
-        explanation:
-          "Absolute value and share of the OpEx that is associated with taxonomy-aligned activities. i.e., for an eligible economic activity that is making a substantial contribution to at least one of the climate and environmental objectives, while also doing no significant harm to the remaining objectives and meeting minimum standards on human rights and labour standards",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.alignedOpex),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Climate Change Mitigation",
+        label: "Substantial Contribution to Climate Change Mitigation In Percent",
         explanation: "Grade of the substantial contribution criterion fulfillment",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.substantialContributionToClimateChangeMitigation),
+          formatPercentageForDatatable(dataset.opex?.substantialContributionToClimateChangeMitigationInPercent),
       },
       {
         type: "cell",
-        label: "Substantial Contribution to Climate Change Adaptation",
+        label: "Substantial Contribution to Climate Change Adaptation In Percent",
         explanation: "Grade of the substantial contribution criterion fulfillment",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.substantialContributionToClimateChangeAdaptation),
+          formatPercentageForDatatable(dataset.opex?.substantialContributionToClimateChangeAdaptationInPercent),
       },
       {
         type: "cell",
-        label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources",
+        label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent",
         explanation: "Grade of the substantial contribution criterion fulfillment",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatPercentageForDatatable(
-            dataset.opex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources,
+            dataset.opex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
           ),
       },
       {
         type: "cell",
-        label: "Substantial Contribution to Transition to a Circular Economy",
+        label: "Substantial Contribution to Transition to a Circular Economy In Percent",
         explanation: "Grade of the substantial contribution criterion fulfillment",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.substantialContributionToTransitionToACircularEconomy),
+          formatPercentageForDatatable(dataset.opex?.substantialContributionToTransitionToACircularEconomyInPercent),
       },
       {
         type: "cell",
-        label: "Substantial Contribution to Pollution Prevention and Control",
+        label: "Substantial Contribution to Pollution Prevention and Control In Percent",
         explanation: "Grade of the substantial contribution criterion fulfillment",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.substantialContributionToPollutionPreventionAndControl),
+          formatPercentageForDatatable(dataset.opex?.substantialContributionToPollutionPreventionAndControlInPercent),
       },
       {
         type: "cell",
-        label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems",
+        label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent",
         explanation: "Grade of the substantial contribution criterion fulfillment",
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
           formatPercentageForDatatable(
-            dataset.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems,
+            dataset.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
           ),
       },
       {
         type: "cell",
-        label: "Non-Aligned OpEx",
-        explanation:
-          "Absolute value and share of the OpEx that is associated with non taxonomy-aligned but eligible activities",
+        label: "Enabling Share In Percent",
+
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.nonAlignedOpex),
+          formatPercentageForDatatable(dataset.opex?.enablingShareInPercent),
       },
       {
         type: "cell",
-        label: "Non-Eligible OpEx",
-        explanation:
-          "Absolute value and share of the OpEx that is not part of a plan to meet the DNSH criteria and make substantial contribution to any environmental objective",
+        label: "Transitional Share In Percent",
+
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.nonEligibleOpex),
-      },
-      {
-        type: "cell",
-        label: "Enabling OpEx",
-        explanation:
-          "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities that enable reduction of GHG in other sectors",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.enablingOpex),
-      },
-      {
-        type: "cell",
-        label: "Transitional OpEx",
-        explanation:
-          "Share of the taxonomy-aligned OpEx from total aligned OpEx that is linked to activities with significantly lower GHG emissions than the sector or industry average",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.transitionalOpex),
+          formatPercentageForDatatable(dataset.opex?.transitionalShareInPercent),
       },
     ],
     labelBadgeColor: "blue",
