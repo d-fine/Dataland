@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 /**
  * Implementation of a request manager service for all operations concerning the processing of single data requests
  */
-@Service("SingleDataRequestManager")
+@Service
 class SingleDataRequestEmailSender(
     @Autowired private val emailSender: EmailSender,
     @Autowired private val singleDataRequestEmailBuilder: SingleDataRequestEmailBuilder,
@@ -61,13 +61,15 @@ class SingleDataRequestEmailSender(
         companyIdentifierType: DataRequestCompanyIdentifierType,
         companyIdentifierValue: String,
     ) {
-        singleDataRequestInternalEmailBuilder.buildSingleDataRequestInternalEmail(
-            userAuthentication = userAuthentication,
-            requesterEmail = userAuthentication.username,
-            companyIdentifierType = companyIdentifierType,
-            companyIdentifierValue = companyIdentifierValue,
-            dataType = singleDataRequest.frameworkName,
-            reportingPeriods = singleDataRequest.listOfReportingPeriods,
+        emailSender.sendEmail(
+            singleDataRequestInternalEmailBuilder.buildSingleDataRequestInternalEmail(
+                userAuthentication = userAuthentication,
+                requesterEmail = userAuthentication.username,
+                companyIdentifierType = companyIdentifierType,
+                companyIdentifierValue = companyIdentifierValue,
+                dataType = singleDataRequest.frameworkName,
+                reportingPeriods = singleDataRequest.listOfReportingPeriods,
+            )
         )
     }
 }

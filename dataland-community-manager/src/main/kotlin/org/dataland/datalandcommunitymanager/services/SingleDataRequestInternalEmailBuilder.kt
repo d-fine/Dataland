@@ -18,8 +18,8 @@ class SingleDataRequestInternalEmailBuilder(
     @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
-    @Value("\${dataland.notification.bulk-data-request.receivers}") semicolonSeparatedReceiverEmails: String,
-    @Value("\${dataland.notification.bulk-data-request.cc}") semicolonSeparatedCcEmails: String,
+    @Value("\${dataland.notification.data-request.internal.receivers}") semicolonSeparatedReceiverEmails: String,
+    @Value("\${dataland.notification.data-request.internal.cc}") semicolonSeparatedCcEmails: String,
     @Autowired val companyGetter: CompanyGetter,
 ) : PropertyStyleEmailBuilder(
     senderEmail = senderEmail,

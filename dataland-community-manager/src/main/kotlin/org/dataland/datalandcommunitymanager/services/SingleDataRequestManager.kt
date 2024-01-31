@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional
 /**
  * Implementation of a request manager service for all operations concerning the processing of single data requests
  */
-@Service("SingleDataRequestManager")
+@Service
 class SingleDataRequestManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,

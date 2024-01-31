@@ -4,6 +4,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandemail.email.Email
 import org.dataland.datalandemail.email.PropertyStyleEmailBuilder
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
@@ -27,8 +28,8 @@ class BulkDataRequestEmailBuilder(
     @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
-    @Value("\${dataland.notification.bulk-data-request.receivers}") semicolonSeparatedReceiverEmails: String,
-    @Value("\${dataland.notification.bulk-data-request.cc}") semicolonSeparatedCcEmails: String,
+    @Value("\${dataland.notification.data-request.internal.receivers}") semicolonSeparatedReceiverEmails: String,
+    @Value("\${dataland.notification.data-request.internal.cc}") semicolonSeparatedCcEmails: String,
 ) : PropertyStyleEmailBuilder(
     senderEmail = senderEmail,
     senderName = senderName,
@@ -48,7 +49,7 @@ class BulkDataRequestEmailBuilder(
             "Bulk Data Request",
             mapOf(
                 "Environment" to proxyPrimaryUrl,
-                "User" to buildUserInfo(DatalandAuthentication.fromContext()),
+                "User" to buildUserInfo(DatalandAuthentication.fromContext() as DatalandJwtAuthentication),
                 "Requested Frameworks" to bulkDataRequest.listOfFrameworkNames.joinToString(", "),
                 "Accepted Company Identifiers" to acceptedCompanyIdentifiers.joinToString(", "),
             ),
