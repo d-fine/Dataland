@@ -3,12 +3,11 @@
   <TheContent class="paper-section flex">
     <CompanyInfoSheet
         :company-id="companyId"
-        :is-user-data-owner="isUserDataOwner"
         @fetched-company-information="getCompanyName"
     />
     <div class="card-wrapper">
       <div class="card-grid">
-        <ClaimOwnershipPanel v-if="!isUserDataOwner" :company-name="companyName" :company-id="companyId"/>
+        <ClaimOwnershipPanel v-if="!isUserDataOwner" :company-id="companyId"/>
 
         <FrameworkSummaryPanel
             v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
@@ -66,6 +65,7 @@ export default defineComponent({
         try {
           await this.getAggregatedFrameworkDataSummary();
           await this.getDataOwnerInformation();
+
 
         } catch (error) {
           console.error("Error fetching data for new company:", error);

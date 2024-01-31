@@ -15,8 +15,6 @@
     <CompanyInformationBanner
         :companyId="companyId"
         @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
-        :is-user-data-owner="isUserDataOwner"
-        @claim-data-ownership="$emit('claimDataOwnerShip')"
         class="w-12"
     />
   </div>
@@ -45,10 +43,9 @@ const attachedSheet = ref<HTMLDivElement>();
 
 const {companyId} = defineProps<{
   companyId: string;
-  isUserDataOwner: boolean | undefined;
 }>();
 
-const emit = defineEmits(["fetchedCompanyInformation", "fetchedDataOwnerInformation", "claimDataOwnerShip"]);
+const emit = defineEmits(["fetchedCompanyInformation"]);
 
 /**
  * On fetched company information defines the companyName and emits an event of type "fetchedCompanyInformation"

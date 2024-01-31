@@ -22,7 +22,8 @@
                             :company-name="companyInformation.companyName"
                             :dialog-is-open="dialogIsOpen"
                             :claim-is-submitted="claimIsSubmitted"
-                            @claim-submitted="onClaimSubmitted"/>
+                            @claim-submitted="onClaimSubmitted"
+                            @close-dialog="onCloseDialog"/>
 
       <div class="company-details__separator"/>
 
@@ -66,7 +67,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  emits: ["fetchedCompanyInformation", "fetchedDataOwnerInformation", "claimDataOwnership"],
+  emits: ["fetchedCompanyInformation"],
   data() {
     return {
       companyInformation: null as CompanyInformation | null,
@@ -117,10 +118,14 @@ export default defineComponent({
   watch: {
     companyId() {
       void this.getCompanyInformation();
+      void this.getDataOwnerInformation();
       this.claimIsSubmitted = false;
     },
   },
   methods: {
+    onCloseDialog() {
+      this.dialogIsOpen = false;
+    },
     /**
      * Uses the dataland API to retrieve information about the company identified by the local
      * companyId object.

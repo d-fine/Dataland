@@ -11,12 +11,16 @@
       :company-id="companyId"
       :claim-is-submitted="claimIsSubmitted"
       @claim-submitted="onClaimSubmitted"
+      @close-dialog="onCloseDialog"
   />
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, inject} from "vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
+import {ApiClientProvider} from "@/services/ApiClients";
+import {assertDefined} from "@/utils/TypeScriptUtils";
+import Keycloak from "keycloak-js";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -29,10 +33,16 @@ export default defineComponent({
       default: false,
     },
   },
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   data() {
     return {
       dialogIsOpen: false,
       claimIsSubmitted: false,
+      companyName: "",
     }
   },
   watch: {
@@ -40,23 +50,44 @@ export default defineComponent({
       if (newCompanyId !== oldCompanyId) {
         this.dialogIsOpen = false;
         this.claimIsSubmitted = false;
+        this.getCompanyName();
       }
     }
   },
   props: {
-    companyName: {
-      type: String,
-      required: true,
-    },
     companyId: {
       type: String,
       required: true,
     }
   },
+  mounted() {
+    this.getCompanyName();
+  },
   methods: {
     onClaimSubmitted() {
       this.claimIsSubmitted = true;
-    }
+    },
+    onCloseDialog() {
+      this.dialogIsOpen = false;
+    },
+    /**
+     * Uses the dataland API to retrieve information about the company identified by the local
+     * companyId object.
+     */
+    async getCompanyName() {
+      try {
+        if (this.companyId !== undefined) {
+          const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
+              .backendClients.companyDataController;
+          this.companyName = (await companyDataControllerApi.getCompanyInfo(this.companyId)).data.companyName;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    toggleDialog() {
+      this.dialogIsOpen = true;
+    },
   }
 });
 </script>
