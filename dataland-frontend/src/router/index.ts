@@ -13,6 +13,7 @@ const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/Da
 const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");
 const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/ApiKeysPage.vue");
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
+const SingleDataRequest = (): Promise<RouteComponent> => import("@/components/pages/SingleDataRequest.vue");
 const ViewFrameworkData = (): Promise<RouteComponent> => import("@/components/pages/ViewFrameworkData.vue");
 const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
 const UploadFormWrapper = (): Promise<RouteComponent> => import("@/components/pages/UploadFormWrapper.vue");
@@ -99,6 +100,11 @@ const routes = [
     path: "/requests",
     name: "Request Data",
     component: RequestData,
+  },
+  {
+    path: "/singledatarequest",
+    name: "Single Data Request",
+    component: SingleDataRequest,
   },
   {
     path: "/api-key",
