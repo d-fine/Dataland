@@ -123,8 +123,7 @@ function onCursorLeaveProvideButton(): void {
 </script>
 
 <style scoped lang="scss">
-.summary-panel,
-.summary-panel--interactive {
+.summary-panel {
   width: 100%;
   background-color: var(--surface-card);
   padding: $spacing-md;
@@ -135,6 +134,18 @@ function onCursorLeaveProvideButton(): void {
   flex-direction: column;
   justify-content: space-between;
   min-height: 282px;
+
+  &--interactive {
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 0 32px 8px #1e1e1e14;
+
+      .summary-panel__separator {
+        border-bottom-color: var(--primary-color);
+      }
+    }
+  }
 
   @media only screen and (max-width: $small) {
     &--interactive {
