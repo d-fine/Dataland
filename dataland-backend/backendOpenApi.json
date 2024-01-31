@@ -10710,53 +10710,112 @@
               }
             ]
           },
-          "eligibleRevenue": {
+          "eligibleShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueEligibleShare"
+              }
+            ]
+          },
+          "nonAlignedShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueNonAlignedShare"
+              }
+            ]
+          },
+          "alignedShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueAlignedShare"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": {
             "type": "number",
             "nullable": true
           },
-          "alignedRevenue": {
+          "substantialContributionToClimateChangeAdaptationInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToClimateChangeMitigation": {
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToClimateChangeAdaptation": {
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources": {
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToTransitionToACircularEconomy": {
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToPollutionPreventionAndControl": {
+          "enablingShareInPercent": {
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems": {
+          "transitionalShareInPercent": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsRevenueAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
             "type": "number",
             "nullable": true
           },
-          "nonAlignedRevenue": {
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsRevenueEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
             "type": "number",
             "nullable": true
           },
-          "nonEligibleRevenue": {
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsRevenueNonAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
             "type": "number",
             "nullable": true
           },
-          "enablingRevenue": {
-            "type": "number",
-            "nullable": true
-          },
-          "transitionalRevenue": {
-            "type": "number",
-            "nullable": true
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
           }
         }
       },
@@ -13290,13 +13349,11 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
+          "permId": {
+            "type": "string",
+            "nullable": true
           },
           "companyId": {
-            "type": "string"
-          },
-          "countryCode": {
             "type": "string"
           },
           "sector": {
@@ -13306,9 +13363,11 @@
           "headquarters": {
             "type": "string"
           },
-          "permId": {
-            "type": "string",
-            "nullable": true
+          "countryCode": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
           }
         }
       },
@@ -13331,10 +13390,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

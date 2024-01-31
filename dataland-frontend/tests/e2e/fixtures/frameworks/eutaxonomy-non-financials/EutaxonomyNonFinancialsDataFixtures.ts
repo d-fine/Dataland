@@ -50,20 +50,28 @@ export function generateEutaxonomyNonFinancialsData(
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
         absoluteShare: dataGenerator.randomCurrencyDataPoint(),
       },
-      eligibleRevenue: dataGenerator.randomFloat(),
-      alignedRevenue: dataGenerator.randomFloat(),
-      substantialContributionToClimateChangeMitigation: dataGenerator.randomPercentageValue(),
-      substantialContributionToClimateChangeAdaptation: dataGenerator.randomPercentageValue(),
-      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources:
+      eligibleShare: {
+        relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+      },
+      nonAlignedShare: {
+        relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+      },
+      alignedShare: {
+        relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.randomCurrencyDataPoint(),
+      },
+      substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
+      substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
         dataGenerator.randomPercentageValue(),
-      substantialContributionToTransitionToACircularEconomy: dataGenerator.randomPercentageValue(),
-      substantialContributionToPollutionPreventionAndControl: dataGenerator.randomPercentageValue(),
-      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems:
+      substantialContributionToTransitionToACircularEconomyInPercent: dataGenerator.randomPercentageValue(),
+      substantialContributionToPollutionPreventionAndControlInPercent: dataGenerator.randomPercentageValue(),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
         dataGenerator.randomPercentageValue(),
-      nonAlignedRevenue: dataGenerator.randomFloat(),
-      nonEligibleRevenue: dataGenerator.randomPercentageValue(),
-      enablingRevenue: dataGenerator.randomPercentageValue(),
-      transitionalRevenue: dataGenerator.randomPercentageValue(),
+      enablingShareInPercent: dataGenerator.randomPercentageValue(),
+      transitionalShareInPercent: dataGenerator.randomPercentageValue(),
     },
     capex: {
       totalAmount: dataGenerator.randomPercentageValue(),

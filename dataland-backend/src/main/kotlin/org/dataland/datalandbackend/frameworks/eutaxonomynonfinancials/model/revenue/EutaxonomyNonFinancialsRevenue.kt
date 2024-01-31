@@ -2,6 +2,9 @@
 package org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.revenue
 
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.revenue.alignedShare.EutaxonomyNonFinancialsRevenueAlignedShare
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.revenue.eligibleShare.EutaxonomyNonFinancialsRevenueEligibleShare
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.revenue.nonAlignedShare.EutaxonomyNonFinancialsRevenueNonAlignedShare
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.revenue.nonEligibleShare.EutaxonomyNonFinancialsRevenueNonEligibleShare
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import java.math.BigDecimal
@@ -15,28 +18,29 @@ data class EutaxonomyNonFinancialsRevenue(
     @field:Valid()
     val nonEligibleShare: EutaxonomyNonFinancialsRevenueNonEligibleShare? = null,
 
-    val eligibleRevenue: BigDecimal? = null,
+    @field:Valid()
+    val eligibleShare: EutaxonomyNonFinancialsRevenueEligibleShare? = null,
 
-    val alignedRevenue: BigDecimal? = null,
+    @field:Valid()
+    val nonAlignedShare: EutaxonomyNonFinancialsRevenueNonAlignedShare? = null,
 
-    val substantialContributionToClimateChangeMitigation: BigDecimal? = null,
+    @field:Valid()
+    val alignedShare: EutaxonomyNonFinancialsRevenueAlignedShare? = null,
 
-    val substantialContributionToClimateChangeAdaptation: BigDecimal? = null,
+    val substantialContributionToClimateChangeMitigationInPercent: BigDecimal? = null,
 
-    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResources: BigDecimal? = null,
+    val substantialContributionToClimateChangeAdaptationInPercent: BigDecimal? = null,
 
-    val substantialContributionToTransitionToACircularEconomy: BigDecimal? = null,
+    val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: BigDecimal? = null,
 
-    val substantialContributionToPollutionPreventionAndControl: BigDecimal? = null,
+    val substantialContributionToTransitionToACircularEconomyInPercent: BigDecimal? = null,
 
-    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystems: BigDecimal? = null,
+    val substantialContributionToPollutionPreventionAndControlInPercent: BigDecimal? = null,
 
-    val nonAlignedRevenue: BigDecimal? = null,
+    val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: BigDecimal? = null,
 
-    val nonEligibleRevenue: BigDecimal? = null,
+    val enablingShareInPercent: BigDecimal? = null,
 
-    val enablingRevenue: BigDecimal? = null,
-
-    val transitionalRevenue: BigDecimal? = null,
+    val transitionalShareInPercent: BigDecimal? = null,
 
 )
