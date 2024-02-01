@@ -106,7 +106,7 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/," +
+                "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
                 "EuTaxonomyForNonFinancialsDataModel.ts," +
                 "dataland-frontend/src/components/forms/parts/elements/derived/ActivityTree.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
@@ -140,8 +140,6 @@ sonar {
                 "dataland-frontend/src/components/resources/newLandingPage/**," +
                 "dataland-frontend/src/components/pages/AboutPage.vue," +
                 "dataland-frontend/src/components/generics/TheNewFooter.vue," +
-                "dataland-frontend/tests/e2e/fixtures/frameworks/sfdr/SfdrDataFixtures.ts," +
-                "dataland-frontend/src/components/generics/TheNewFooter.vue," +
 
                 // frontend fixtures
                 "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts," +
@@ -154,8 +152,7 @@ sonar {
                 "dataland-backend/src/main/kotlin/," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
                 "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt," +
-                "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt," +
-                "dataland-frontend/src/components/generics/TheNewFooter.vue," +
+                "dataland-frontend/src/components/generics/TheNewFooter.vue" +
                 "dataland-frontend/tests/e2e/fixtures/frameworks/sfdr/SfdrDataFixtures.ts",
         )
     }

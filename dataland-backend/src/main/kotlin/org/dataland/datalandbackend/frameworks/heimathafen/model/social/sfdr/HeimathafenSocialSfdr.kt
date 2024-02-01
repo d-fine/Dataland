@@ -6,4 +6,5 @@ package org.dataland.datalandbackend.frameworks.heimathafen.model.social.sfdr
  */
 data class HeimathafenSocialSfdr(
     val methodikZurMessungDesSignifikantenBeitragsZuEinemGesellschaftlichenZiel: String? = null,
+
 )

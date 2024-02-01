@@ -14,7 +14,6 @@ import java.io.File
  * for any frameworks that are currently in development. It turns a large amount of errors into warnings
  * that make the development experience more pleasant
  */
-@Suppress("LongParameterList")
 abstract class InDevelopmentPavedRoadFramework(
     identifier: String,
     label: String,
@@ -77,7 +76,6 @@ abstract class InDevelopmentPavedRoadFramework(
             return
         }
         val uploadConfig = generateUploadModel(framework)
-
         customizeUploadModel(uploadConfig)
 
         @Suppress("TooGenericExceptionCaught")

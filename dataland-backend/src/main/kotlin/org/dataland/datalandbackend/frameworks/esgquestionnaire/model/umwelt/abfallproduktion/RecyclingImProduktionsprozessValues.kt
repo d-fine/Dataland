@@ -8,4 +8,5 @@ import java.math.BigDecimal
  */
 data class RecyclingImProduktionsprozessValues(
     val prozentRecycelteWerkstoffeImProduktionsprozess: BigDecimal? = null,
+
 )

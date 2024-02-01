@@ -564,9 +564,9 @@
     "/data/eutaxonomy-non-financials": {
       "post": {
         "tags": [
-          "eutaxonomy-non-financials-data-controller"
+          "eu-taxonomy-data-for-non-financials-controller"
         ],
-        "operationId": "postCompanyAssociatedEutaxonomyNonFinancialsData",
+        "operationId": "postCompanyAssociatedEuTaxonomyDataForNonFinancials",
         "parameters": [
           {
             "name": "bypassQa",
@@ -582,7 +582,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
+                "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyDataForNonFinancials"
               }
             }
           },
@@ -2318,9 +2318,9 @@
     "/data/eutaxonomy-non-financials/{dataId}": {
       "get": {
         "tags": [
-          "eutaxonomy-non-financials-data-controller"
+          "eu-taxonomy-data-for-non-financials-controller"
         ],
-        "operationId": "getCompanyAssociatedEutaxonomyNonFinancialsData",
+        "operationId": "getCompanyAssociatedEuTaxonomyDataForNonFinancials",
         "parameters": [
           {
             "name": "dataId",
@@ -2337,7 +2337,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyDataForNonFinancials"
                 }
               }
             }
@@ -2376,9 +2376,9 @@
     "/data/eutaxonomy-non-financials/companies/{companyId}": {
       "get": {
         "tags": [
-          "eutaxonomy-non-financials-data-controller"
+          "eu-taxonomy-data-for-non-financials-controller"
         ],
-        "operationId": "getAllCompanyEutaxonomyNonFinancialsData",
+        "operationId": "getAllCompanyEuTaxonomyDataForNonFinancials",
         "parameters": [
           {
             "name": "companyId",
@@ -2414,7 +2414,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DataAndMetaInformationEutaxonomyNonFinancialsData"
+                    "$ref": "#/components/schemas/DataAndMetaInformationEuTaxonomyDataForNonFinancials"
                   }
                 }
               }
@@ -10427,6 +10427,118 @@
           }
         }
       },
+      "Activity": {
+        "type": "string",
+        "enum": [
+          "Afforestation",
+          "RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent",
+          "ForestManagement",
+          "ConservationForestry",
+          "RestorationOfWetlands",
+          "ManufactureOfRenewableEnergyTechnologies",
+          "ManufactureOfEquipmentForTheProductionAndUseOfHydrogen",
+          "ManufactureOfLowCarbonTechnologiesForTransport",
+          "ManufactureOfBatteries",
+          "ManufactureOfEnergyEfficiencyEquipmentForBuildings",
+          "ManufactureOfOtherLowCarbonTechnologies",
+          "ManufactureOfCement",
+          "ManufactureOfAluminium",
+          "ManufactureOfIronAndSteel",
+          "ManufactureOfHydrogen",
+          "ManufactureOfCarbonBlack",
+          "ManufactureOfSodaAsh",
+          "ManufactureOfChlorine",
+          "ManufactureOfOrganicBasicChemicals",
+          "ManufactureOfAnhydrousAmmonia",
+          "ManufactureOfNitricAcid",
+          "ManufactureOfPlasticsInPrimaryForm",
+          "ElectricityGenerationUsingSolarPhotovoltaicTechnology",
+          "ElectricityGenerationUsingConcentratedSolarPowerCspTechnology",
+          "ElectricityGenerationFromWindPower",
+          "ElectricityGenerationFromOceanEnergyTechnologies",
+          "ElectricityGenerationFromHydropower",
+          "ElectricityGenerationFromGeothermalEnergy",
+          "ElectricityGenerationFromRenewableNonFossilGaseousAndLiquidFuels",
+          "ElectricityGenerationFromBioenergy",
+          "TransmissionAndDistributionOfElectricity",
+          "StorageOfElectricity",
+          "StorageOfThermalEnergy",
+          "StorageOfHydrogen",
+          "ManufactureOfBiogasAndBiofuelsForUseInTransportAndOfBioliquids",
+          "TransmissionAndDistributionNetworksForRenewableAndLowCarbonGases",
+          "DistrictHeatingCoolingDistribution",
+          "InstallationAndOperationOfElectricHeatPumps",
+          "CogenerationOfHeatCoolAndPowerFromSolarEnergy",
+          "CogenerationOfHeatCoolAndPowerFromGeothermalEnergy",
+          "CogenerationOfHeatCoolAndPowerFromRenewableNonFossilGaseousAndLiquidFuels",
+          "CogenerationOfHeatCoolAndPowerFromBioenergy",
+          "ProductionOfHeatCoolFromSolarThermalHeating",
+          "ProductionOfHeatCoolFromGeothermalEnergy",
+          "ProductionOfHeatCoolFromRenewableNonFossilGaseousAndLiquidFuels",
+          "ProductionOfHeatCoolFromBioenergy",
+          "ProductionOfHeatCoolUsingWasteHeat",
+          "PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
+          "ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies",
+          "ElectricityGenerationFromNuclearEnergyInExistingInstallations",
+          "ElectricityGenerationFromFossilGaseousFuels",
+          "HighEfficiencyCoGenerationOfHeatCoolAndPowerFromFossilGaseousFuels",
+          "ProductionOfHeatCoolFromFossilGaseousFuelsInAnEfficientDistrictHeatingAndCoolingSystem",
+          "ConstructionExtensionAndOperationOfWaterCollectionTreatmentAndSupplySystems",
+          "RenewalOfWaterCollectionTreatmentAndSupplySystems",
+          "ConstructionExtensionAndOperationOfWasteWaterCollectionAndTreatment",
+          "RenewalOfWasteWaterCollectionAndTreatment",
+          "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+          "AnaerobicDigestionOfSewageSludge",
+          "AnaerobicDigestionOfBioWaste",
+          "CompostingOfBioWaste",
+          "MaterialRecoveryFromNonHazardousWaste",
+          "LandfillGasCaptureAndUtilisation",
+          "TransportOfCo2",
+          "UndergroundPermanentGeologicalStorageOfCo2",
+          "PassengerInterurbanRailTransport",
+          "FreightRailTransport",
+          "UrbanAndSuburbanTransportRoadPassengerTransport",
+          "OperationOfPersonalMobilityDevicesCycleLogistics",
+          "TransportByMotorbikesPassengerCarsAndLightCommercialVehicles",
+          "FreightTransportServicesByRoad",
+          "InlandPassengerWaterTransport",
+          "InlandFreightWaterTransport",
+          "RetrofittingOfInlandWaterPassengerAndFreightTransport",
+          "SeaAndCoastalFreightWaterTransportVesselsForPortOperationsAndAuxiliaryActivities",
+          "SeaAndCoastalPassengerWaterTransport",
+          "RetrofittingOfSeaAndCoastalFreightAndPassengerWaterTransport",
+          "InfrastructureForPersonalMobilityCycleLogistics",
+          "InfrastructureForRailTransport",
+          "InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
+          "InfrastructureEnablingLowCarbonWaterTransport",
+          "LowCarbonAirportInfrastructure",
+          "ConstructionOfNewBuildings",
+          "RenovationOfExistingBuildings",
+          "InstallationMaintenanceAndRepairOfEnergyEfficiencyEquipment",
+          "InstallationMaintenanceAndRepairOfChargingStationsForElectricVehiclesInBuildingsAndParkingSpacesAttachedToBuildings",
+          "InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
+          "InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
+          "AcquisitionAndOwnershipOfBuildings",
+          "DataProcessingHostingAndRelatedActivities",
+          "DataDrivenSolutionsForGhgEmissionsReductions",
+          "CloseToMarketResearchDevelopmentAndInnovation",
+          "ResearchDevelopmentAndInnovationForDirectAirCaptureOfCo2",
+          "ProfessionalServicesRelatedToEnergyPerformanceOfBuildings",
+          "InfrastructureEnablingRoadTransportAndPublicTransport",
+          "InfrastructureForWaterTransport",
+          "AirportInfrastructure",
+          "ComputerProgrammingConsultancyAndRelatedActivities",
+          "ProgrammingAndBroadcastingActivities",
+          "EngineeringActivitiesAndRelatedTechnicalConsultancyDedicatedToAdaptationToClimateChange",
+          "NonLifeInsuranceUnderwritingOfClimateRelatedPerils",
+          "Reinsurance",
+          "Education",
+          "ResidentialCareActivities",
+          "CreativeArtsAndEntertainmentActivities",
+          "LibrariesArchivesMuseumsAndCulturalActivities",
+          "MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities"
+        ]
+      },
       "AmountWithCurrency": {
         "type": "object",
         "properties": {
@@ -10468,7 +10580,7 @@
           }
         }
       },
-      "CompanyAssociatedDataEutaxonomyNonFinancialsData": {
+      "CompanyAssociatedDataEuTaxonomyDataForNonFinancials": {
         "required": [
           "companyId",
           "data",
@@ -10483,50 +10595,98 @@
             "type": "string"
           },
           "data": {
-            "$ref": "#/components/schemas/EutaxonomyNonFinancialsData"
+            "$ref": "#/components/schemas/EuTaxonomyDataForNonFinancials"
           }
         }
       },
-      "EutaxonomyNonFinancialsCapex": {
+      "CompanyReport": {
+        "required": [
+          "fileReference"
+        ],
         "type": "object",
         "properties": {
-          "totalAmount": {
+          "fileReference": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "isGroupLevel": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
+                "$ref": "#/components/schemas/YesNoNa"
               }
             ]
           },
-          "nonEligibleShare": {
+          "reportDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "example": {
+          "string": {
+            "fileReference": "string",
+            "fileName": "string",
+            "isGroupLevel": "Yes",
+            "reportDate": "2023-10-12",
+            "currency": "string"
+          }
+        }
+      },
+      "EuTaxonomyActivity": {
+        "required": [
+          "activityName"
+        ],
+        "type": "object",
+        "properties": {
+          "activityName": {
+            "$ref": "#/components/schemas/Activity"
+          },
+          "naceCodes": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "share": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexNonEligibleShare"
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
               }
             ]
+          }
+        }
+      },
+      "EuTaxonomyAlignedActivity": {
+        "required": [
+          "activityName"
+        ],
+        "type": "object",
+        "properties": {
+          "activityName": {
+            "$ref": "#/components/schemas/Activity"
           },
-          "eligibleShare": {
+          "naceCodes": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "share": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexEligibleShare"
-              }
-            ]
-          },
-          "nonAlignedShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexNonAlignedShare"
-              }
-            ]
-          },
-          "alignedShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexAlignedShare"
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
               }
             ]
           },
@@ -10534,7 +10694,7 @@
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
+          "substantialContributionToClimateChangeAdaptionInPercent": {
             "type": "number",
             "nullable": true
           },
@@ -10554,6 +10714,182 @@
             "type": "number",
             "nullable": true
           },
+          "dnshToClimateChangeMitigation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dnshToClimateChangeAdaption": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dnshToTransitionToACircularEconomy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dnshToPollutionPreventionAndControl": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "minimumSafeguards": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          }
+        }
+      },
+      "EuTaxonomyDataForNonFinancials": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EuTaxonomyGeneral"
+              }
+            ]
+          },
+          "revenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+              }
+            ]
+          },
+          "capex": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+              }
+            ]
+          },
+          "opex": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
+              }
+            ]
+          }
+        }
+      },
+      "EuTaxonomyDetailsPerCashFlowType": {
+        "type": "object",
+        "properties": {
+          "totalAmount": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "nonEligibleShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+              }
+            ]
+          },
+          "eligibleShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+              }
+            ]
+          },
+          "nonAlignedShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+              }
+            ]
+          },
+          "nonAlignedActivities": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyActivity"
+            }
+          },
+          "alignedShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptionInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "alignedActivities": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
+            }
+          },
           "enablingShareInPercent": {
             "type": "number",
             "nullable": true
@@ -10564,119 +10900,14 @@
           }
         }
       },
-      "EutaxonomyNonFinancialsCapexAlignedShare": {
-        "type": "object",
-        "properties": {
-          "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AmountWithCurrency"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsCapexEligibleShare": {
-        "type": "object",
-        "properties": {
-          "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AmountWithCurrency"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsCapexNonAlignedShare": {
-        "type": "object",
-        "properties": {
-          "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AmountWithCurrency"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsCapexNonEligibleShare": {
-        "type": "object",
-        "properties": {
-          "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AmountWithCurrency"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsData": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneral"
-              }
-            ]
-          },
-          "revenue": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenue"
-              }
-            ]
-          },
-          "capex": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapex"
-              }
-            ]
-          },
-          "opex": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpex"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsGeneral": {
+      "EuTaxonomyGeneral": {
         "type": "object",
         "properties": {
           "fiscalYearDeviation": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions"
+                "$ref": "#/components/schemas/FiscalYearDeviation"
               }
             ]
           },
@@ -10723,6 +10954,9 @@
           },
           "referencedReports": {
             "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            },
             "nullable": true,
             "example": {
               "string": {
@@ -10736,287 +10970,14 @@
           }
         }
       },
-      "EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions": {
+      "FiscalYearDeviation": {
         "type": "string",
         "enum": [
           "Deviation",
           "NoDeviation"
         ]
       },
-      "EutaxonomyNonFinancialsOpex": {
-        "type": "object",
-        "properties": {
-          "totalAmount": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
-          },
-          "nonEligibleShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexNonEligibleShare"
-              }
-            ]
-          },
-          "eligibleShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexEligibleShare"
-              }
-            ]
-          },
-          "nonAlignedShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexNonAlignedShare"
-              }
-            ]
-          },
-          "alignedShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexAlignedShare"
-              }
-            ]
-          },
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "enablingShareInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "transitionalShareInPercent": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsOpexAlignedShare": {
-        "type": "object",
-        "properties": {
-          "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AmountWithCurrency"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsOpexEligibleShare": {
-        "type": "object",
-        "properties": {
-          "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AmountWithCurrency"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsOpexNonAlignedShare": {
-        "type": "object",
-        "properties": {
-          "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AmountWithCurrency"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsOpexNonEligibleShare": {
-        "type": "object",
-        "properties": {
-          "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AmountWithCurrency"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsRevenue": {
-        "type": "object",
-        "properties": {
-          "totalAmount": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
-          },
-          "nonEligibleShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueNonEligibleShare"
-              }
-            ]
-          },
-          "eligibleShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueEligibleShare"
-              }
-            ]
-          },
-          "nonAlignedShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueNonAlignedShare"
-              }
-            ]
-          },
-          "alignedShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueAlignedShare"
-              }
-            ]
-          },
-          "substantialContributionToClimateChangeMitigationInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "substantialContributionToClimateChangeAdaptationInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "substantialContributionToTransitionToACircularEconomyInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "substantialContributionToPollutionPreventionAndControlInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "enablingShareInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "transitionalShareInPercent": {
-            "type": "number",
-            "nullable": true
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsRevenueAlignedShare": {
-        "type": "object",
-        "properties": {
-          "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AmountWithCurrency"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsRevenueEligibleShare": {
-        "type": "object",
-        "properties": {
-          "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AmountWithCurrency"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsRevenueNonAlignedShare": {
-        "type": "object",
-        "properties": {
-          "relativeShareInPercent": {
-            "type": "number",
-            "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AmountWithCurrency"
-              }
-            ]
-          }
-        }
-      },
-      "EutaxonomyNonFinancialsRevenueNonEligibleShare": {
+      "RelativeAndAbsoluteFinancialShare": {
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
@@ -11049,47 +11010,6 @@
           },
           "data": {
             "$ref": "#/components/schemas/EuTaxonomyDataForFinancials"
-          }
-        }
-      },
-      "CompanyReport": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "fileReference": {
-            "type": "string"
-          },
-          "fileName": {
-            "type": "string",
-            "nullable": true
-          },
-          "isGroupLevel": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNoNa"
-              }
-            ]
-          },
-          "reportDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "currency": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "example": {
-          "string": {
-            "fileReference": "string",
-            "fileName": "string",
-            "isGroupLevel": "Yes",
-            "reportDate": "2023-10-12",
-            "currency": "string"
           }
         }
       },
@@ -11397,13 +11317,6 @@
           }
         }
       },
-      "FiscalYearDeviation": {
-        "type": "string",
-        "enum": [
-          "Deviation",
-          "NoDeviation"
-        ]
-      },
       "InsuranceKpis": {
         "type": "object",
         "properties": {
@@ -11429,144 +11342,6 @@
             ]
           }
         }
-      },
-      "Activity": {
-        "type": "string",
-        "enum": [
-          "Afforestation",
-          "RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent",
-          "ForestManagement",
-          "ConservationForestry",
-          "RestorationOfWetlands",
-          "ManufactureOfRenewableEnergyTechnologies",
-          "ManufactureOfEquipmentForTheProductionAndUseOfHydrogen",
-          "ManufactureOfLowCarbonTechnologiesForTransport",
-          "ManufactureOfBatteries",
-          "ManufactureOfEnergyEfficiencyEquipmentForBuildings",
-          "ManufactureOfOtherLowCarbonTechnologies",
-          "ManufactureOfCement",
-          "ManufactureOfAluminium",
-          "ManufactureOfIronAndSteel",
-          "ManufactureOfHydrogen",
-          "ManufactureOfCarbonBlack",
-          "ManufactureOfSodaAsh",
-          "ManufactureOfChlorine",
-          "ManufactureOfOrganicBasicChemicals",
-          "ManufactureOfAnhydrousAmmonia",
-          "ManufactureOfNitricAcid",
-          "ManufactureOfPlasticsInPrimaryForm",
-          "ElectricityGenerationUsingSolarPhotovoltaicTechnology",
-          "ElectricityGenerationUsingConcentratedSolarPowerCspTechnology",
-          "ElectricityGenerationFromWindPower",
-          "ElectricityGenerationFromOceanEnergyTechnologies",
-          "ElectricityGenerationFromHydropower",
-          "ElectricityGenerationFromGeothermalEnergy",
-          "ElectricityGenerationFromRenewableNonFossilGaseousAndLiquidFuels",
-          "ElectricityGenerationFromBioenergy",
-          "TransmissionAndDistributionOfElectricity",
-          "StorageOfElectricity",
-          "StorageOfThermalEnergy",
-          "StorageOfHydrogen",
-          "ManufactureOfBiogasAndBiofuelsForUseInTransportAndOfBioliquids",
-          "TransmissionAndDistributionNetworksForRenewableAndLowCarbonGases",
-          "DistrictHeatingCoolingDistribution",
-          "InstallationAndOperationOfElectricHeatPumps",
-          "CogenerationOfHeatCoolAndPowerFromSolarEnergy",
-          "CogenerationOfHeatCoolAndPowerFromGeothermalEnergy",
-          "CogenerationOfHeatCoolAndPowerFromRenewableNonFossilGaseousAndLiquidFuels",
-          "CogenerationOfHeatCoolAndPowerFromBioenergy",
-          "ProductionOfHeatCoolFromSolarThermalHeating",
-          "ProductionOfHeatCoolFromGeothermalEnergy",
-          "ProductionOfHeatCoolFromRenewableNonFossilGaseousAndLiquidFuels",
-          "ProductionOfHeatCoolFromBioenergy",
-          "ProductionOfHeatCoolUsingWasteHeat",
-          "PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
-          "ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies",
-          "ElectricityGenerationFromNuclearEnergyInExistingInstallations",
-          "ElectricityGenerationFromFossilGaseousFuels",
-          "HighEfficiencyCoGenerationOfHeatCoolAndPowerFromFossilGaseousFuels",
-          "ProductionOfHeatCoolFromFossilGaseousFuelsInAnEfficientDistrictHeatingAndCoolingSystem",
-          "ConstructionExtensionAndOperationOfWaterCollectionTreatmentAndSupplySystems",
-          "RenewalOfWaterCollectionTreatmentAndSupplySystems",
-          "ConstructionExtensionAndOperationOfWasteWaterCollectionAndTreatment",
-          "RenewalOfWasteWaterCollectionAndTreatment",
-          "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
-          "AnaerobicDigestionOfSewageSludge",
-          "AnaerobicDigestionOfBioWaste",
-          "CompostingOfBioWaste",
-          "MaterialRecoveryFromNonHazardousWaste",
-          "LandfillGasCaptureAndUtilisation",
-          "TransportOfCo2",
-          "UndergroundPermanentGeologicalStorageOfCo2",
-          "PassengerInterurbanRailTransport",
-          "FreightRailTransport",
-          "UrbanAndSuburbanTransportRoadPassengerTransport",
-          "OperationOfPersonalMobilityDevicesCycleLogistics",
-          "TransportByMotorbikesPassengerCarsAndLightCommercialVehicles",
-          "FreightTransportServicesByRoad",
-          "InlandPassengerWaterTransport",
-          "InlandFreightWaterTransport",
-          "RetrofittingOfInlandWaterPassengerAndFreightTransport",
-          "SeaAndCoastalFreightWaterTransportVesselsForPortOperationsAndAuxiliaryActivities",
-          "SeaAndCoastalPassengerWaterTransport",
-          "RetrofittingOfSeaAndCoastalFreightAndPassengerWaterTransport",
-          "InfrastructureForPersonalMobilityCycleLogistics",
-          "InfrastructureForRailTransport",
-          "InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
-          "InfrastructureEnablingLowCarbonWaterTransport",
-          "LowCarbonAirportInfrastructure",
-          "ConstructionOfNewBuildings",
-          "RenovationOfExistingBuildings",
-          "InstallationMaintenanceAndRepairOfEnergyEfficiencyEquipment",
-          "InstallationMaintenanceAndRepairOfChargingStationsForElectricVehiclesInBuildingsAndParkingSpacesAttachedToBuildings",
-          "InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
-          "InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
-          "AcquisitionAndOwnershipOfBuildings",
-          "DataProcessingHostingAndRelatedActivities",
-          "DataDrivenSolutionsForGhgEmissionsReductions",
-          "CloseToMarketResearchDevelopmentAndInnovation",
-          "ResearchDevelopmentAndInnovationForDirectAirCaptureOfCo2",
-          "ProfessionalServicesRelatedToEnergyPerformanceOfBuildings",
-          "InfrastructureEnablingRoadTransportAndPublicTransport",
-          "InfrastructureForWaterTransport",
-          "AirportInfrastructure",
-          "ComputerProgrammingConsultancyAndRelatedActivities",
-          "ProgrammingAndBroadcastingActivities",
-          "EngineeringActivitiesAndRelatedTechnicalConsultancyDedicatedToAdaptationToClimateChange",
-          "NonLifeInsuranceUnderwritingOfClimateRelatedPerils",
-          "Reinsurance",
-          "Education",
-          "ResidentialCareActivities",
-          "CreativeArtsAndEntertainmentActivities",
-          "LibrariesArchivesMuseumsAndCulturalActivities",
-          "MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities"
-        ]
-      },
-      "AnreizmechanismenFuerDasManagementSozialesOptions": {
-        "type": "string",
-        "enum": [
-          "Nein",
-          "JaAufsichtsrat",
-          "JaGeschaeftsleitung",
-          "JaAufsichtsratUndGeschaeftsleitung"
-        ]
-      },
-      "AnreizmechanismenFuerDasManagementUmweltOptions": {
-        "type": "string",
-        "enum": [
-          "Nein",
-          "JaAufsichtsrat",
-          "JaGeschaeftsleitung",
-          "JaAufsichtsratUndGeschaeftsleitung"
-        ]
-      },
-      "ArtDesAuditsOptions": {
-        "type": "string",
-        "enum": [
-          "InterneAnhoerung",
-          "PruefungDurchDritte",
-          "SowohlInternAlsAuchVonDrittanbietern"
-        ]
       },
       "AuflistungDerSektorenOptions": {
         "type": "string",
@@ -11878,7 +11653,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/FrequenzDerBerichterstattungOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinEsgberichteFrequenzDerBerichterstattungOptions"
               }
             ]
           },
@@ -11912,6 +11687,15 @@
           }
         }
       },
+      "EsgQuestionnaireAllgemeinEsgberichteFrequenzDerBerichterstattungOptions": {
+        "type": "string",
+        "enum": [
+          "Jaehrlich",
+          "Halbjaehrlich",
+          "Vierteljaehrlich",
+          "Monatlich"
+        ]
+      },
       "EsgQuestionnaireAllgemeinFuehrungsstandards": {
         "type": "object",
         "properties": {
@@ -11927,7 +11711,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementUmweltOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementUmweltOptions"
               }
             ]
           },
@@ -11935,11 +11719,29 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementSozialesOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementSozialesOptions"
               }
             ]
           }
         }
+      },
+      "EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementSozialesOptions": {
+        "type": "string",
+        "enum": [
+          "Nein",
+          "JaAufsichtsrat",
+          "JaGeschaeftsleitung",
+          "JaAufsichtsratUndGeschaeftsleitung"
+        ]
+      },
+      "EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementUmweltOptions": {
+        "type": "string",
+        "enum": [
+          "Nein",
+          "JaAufsichtsrat",
+          "JaGeschaeftsleitung",
+          "JaAufsichtsratUndGeschaeftsleitung"
+        ]
       },
       "EsgQuestionnaireAllgemeinOecdLeitsaetze": {
         "type": "object",
@@ -12021,7 +11823,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusZuEOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuEOptions"
               }
             ]
           },
@@ -12041,7 +11843,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusZuSOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuSOptions"
               }
             ]
           },
@@ -12061,7 +11863,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusZuGOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuGOptions"
               }
             ]
           },
@@ -12070,6 +11872,27 @@
             "nullable": true
           }
         }
+      },
+      "EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuEOptions": {
+        "type": "string",
+        "enum": [
+          "Offen",
+          "Geklaert"
+        ]
+      },
+      "EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuGOptions": {
+        "type": "string",
+        "enum": [
+          "Offen",
+          "Geklaert"
+        ]
+      },
+      "EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuSOptions": {
+        "type": "string",
+        "enum": [
+          "Offen",
+          "Geklaert"
+        ]
       },
       "EsgQuestionnaireAllgemeinRisiken": {
         "type": "object",
@@ -12150,15 +11973,13 @@
         }
       },
       "EsgQuestionnaireData": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
           "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireGeneral"
-              }
-            ]
+            "$ref": "#/components/schemas/EsgQuestionnaireGeneral"
           },
           "allgemein": {
             "nullable": true,
@@ -12195,15 +12016,13 @@
         }
       },
       "EsgQuestionnaireGeneral": {
+        "required": [
+          "masterData"
+        ],
         "type": "object",
         "properties": {
           "masterData": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireGeneralMasterData"
-              }
-            ]
+            "$ref": "#/components/schemas/EsgQuestionnaireGeneralMasterData"
           }
         }
       },
@@ -12283,7 +12102,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ArtDesAuditsOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesAuditArtDesAuditsOptions"
               }
             ]
           },
@@ -12292,6 +12111,14 @@
             "nullable": true
           }
         }
+      },
+      "EsgQuestionnaireSozialesAuditArtDesAuditsOptions": {
+        "type": "string",
+        "enum": [
+          "InterneAnhoerung",
+          "PruefungDurchDritte",
+          "SowohlInternAlsAuchVonDrittanbietern"
+        ]
       },
       "EsgQuestionnaireSozialesEinkommensgleichheit": {
         "type": "object",
@@ -12631,7 +12458,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/TaxonomieBerichterstattungOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltTaxonomieTaxonomieBerichterstattungOptions"
               }
             ]
           },
@@ -12651,6 +12478,13 @@
             ]
           }
         }
+      },
+      "EsgQuestionnaireUmweltTaxonomieTaxonomieBerichterstattungOptions": {
+        "type": "string",
+        "enum": [
+          "Nfrd",
+          "Csrd"
+        ]
       },
       "EsgQuestionnaireUmweltTreibhausgasemissionen": {
         "type": "object",
@@ -12927,15 +12761,6 @@
           }
         }
       },
-      "FrequenzDerBerichterstattungOptions": {
-        "type": "string",
-        "enum": [
-          "Jaehrlich",
-          "Halbjaehrlich",
-          "Vierteljaehrlich",
-          "Monatlich"
-        ]
-      },
       "RecyclingImProduktionsprozessValues": {
         "type": "object",
         "properties": {
@@ -12944,34 +12769,6 @@
             "nullable": true
           }
         }
-      },
-      "StatusZuEOptions": {
-        "type": "string",
-        "enum": [
-          "Offen",
-          "Geklaert"
-        ]
-      },
-      "StatusZuGOptions": {
-        "type": "string",
-        "enum": [
-          "Offen",
-          "Geklaert"
-        ]
-      },
-      "StatusZuSOptions": {
-        "type": "string",
-        "enum": [
-          "Offen",
-          "Geklaert"
-        ]
-      },
-      "TaxonomieBerichterstattungOptions": {
-        "type": "string",
-        "enum": [
-          "Nfrd",
-          "Csrd"
-        ]
       },
       "TreibhausgasBerichterstattungUndPrognosenValues": {
         "type": "object",
@@ -13492,7 +13289,7 @@
           }
         }
       },
-      "DataAndMetaInformationEutaxonomyNonFinancialsData": {
+      "DataAndMetaInformationEuTaxonomyDataForNonFinancials": {
         "required": [
           "data",
           "metaInfo"
@@ -13503,7 +13300,7 @@
             "$ref": "#/components/schemas/DataMetaInformation"
           },
           "data": {
-            "$ref": "#/components/schemas/EutaxonomyNonFinancialsData"
+            "$ref": "#/components/schemas/EuTaxonomyDataForNonFinancials"
           }
         }
       },
@@ -13546,13 +13343,7 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "sector": {
+          "permId": {
             "type": "string",
             "nullable": true
           },
@@ -13562,9 +13353,15 @@
           "headquarters": {
             "type": "string"
           },
-          "permId": {
+          "sector": {
             "type": "string",
             "nullable": true
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
           }
         }
       },

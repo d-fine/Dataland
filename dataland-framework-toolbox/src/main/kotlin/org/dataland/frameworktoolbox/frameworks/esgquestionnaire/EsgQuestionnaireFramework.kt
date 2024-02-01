@@ -14,7 +14,6 @@ import org.dataland.frameworktoolbox.intermediate.group.create
 import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.dataland.frameworktoolbox.intermediate.group.get
 import org.dataland.frameworktoolbox.intermediate.logic.DependsOnComponentValue
-import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
@@ -35,24 +34,12 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
     label = "ESG Questionnaire für Corporate Schuldscheindarlehen",
     explanation = "Der ESG Questionnaire für Corporate Schuldscheindarlehen ist ein ESG-Fragebogen des " +
         "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
-    File("./dataland-framework-toolbox/inputs/esg-questionnaire/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
+    File("./dataland-framework-toolbox/inputs/esg-questionnaire/esg-questionnaire.xlsx"),
     order = 6,
 ) {
 
     override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
-        diagnosticManager.suppress("IgnoredRow-19-4a93a683")
-        diagnosticManager.suppress("IgnoredRow-24-0ed74c4b")
-        diagnosticManager.suppress("IgnoredRow-26-b760adfc")
-        diagnosticManager.suppress("IgnoredRow-28-939ecd18")
-        diagnosticManager.suppress("IgnoredRow-30-299f8248")
-        diagnosticManager.suppress("IgnoredRow-32-1056ee6e")
-        diagnosticManager.suppress("IgnoredRow-36.1-311efcd3")
-        diagnosticManager.suppress("IgnoredRow-38-0c3c46b4")
-        diagnosticManager.suppress("IgnoredRow-39-982fa447")
-        diagnosticManager.suppress("IgnoredRow-40.3-c921451e")
-        diagnosticManager.suppress("IgnoredRow-42-059b81e2")
-        diagnosticManager.suppress("IgnoredRow-43-b7b83dcb")
-        diagnosticManager.suppress("IgnoredRow-44-107a06aa")
+        diagnosticManager.suppress("IgnoredRow-38-3118f246")
     }
 
     private fun setGroupsThatAreExpandedOnPageLoad(framework: Framework) {
@@ -84,34 +71,32 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
 
     private fun createRollingWindowComponentsInCategoryUmwelt(
         framework: Framework,
-        showIfBerichtsPflicht: FrameworkConditional,
     ) {
         framework.root.edit<ComponentGroup>("umwelt") {
             val umweltGroup = this
             with(EsgQuestionnaireUmweltRollingWindowComponents) {
-                treibhausgasBerichterstattungUndPrognosen(umweltGroup, showIfBerichtsPflicht)
-                berichterstattungEnergieverbrauch(umweltGroup, showIfBerichtsPflicht)
-                energieeffizienzImmobilienanlagen(umweltGroup, showIfBerichtsPflicht)
-                berichterstattungWasserverbrauch(umweltGroup, showIfBerichtsPflicht)
-                unternehmensGruppenStrategieBzglAbfallproduktion(umweltGroup, showIfBerichtsPflicht)
-                recyclingImProduktionsprozess(umweltGroup, showIfBerichtsPflicht)
+                treibhausgasBerichterstattungUndPrognosen(umweltGroup)
+                berichterstattungEnergieverbrauch(umweltGroup)
+                energieeffizienzImmobilienanlagen(umweltGroup)
+                berichterstattungWasserverbrauch(umweltGroup)
+                unternehmensGruppenStrategieBzglAbfallproduktion(umweltGroup)
+                recyclingImProduktionsprozess(umweltGroup)
                 berichterstattungEinnahmenAusFossilenBrennstoffen(umweltGroup)
-                umsatzInvestitionsaufwandFuerNachhaltige(umweltGroup, showIfBerichtsPflicht)
+                umsatzInvestitionsaufwandFuerNachhaltige(umweltGroup)
             }
         }
     }
 
     private fun createRollingWindowComponentsInCategorySoziales(
         framework: Framework,
-        showIfBerichtsPflicht: FrameworkConditional,
     ) {
         framework.root.edit<ComponentGroup>("soziales") {
             val sozialesGroup = this
             with(EsgQuestionnaireSozialesRollingWindowComponents) {
                 auswirkungenAufAnteilBefristerVertraegeUndFluktuation(sozialesGroup)
-                budgetFuerSchulungAusbildung(sozialesGroup, showIfBerichtsPflicht)
-                unfallrate(sozialesGroup, showIfBerichtsPflicht)
-                massnahmenZurVerbesserungDerEinkommensungleichheit(sozialesGroup, showIfBerichtsPflicht)
+                budgetFuerSchulungAusbildung(sozialesGroup)
+                unfallrate(sozialesGroup)
+                massnahmenZurVerbesserungDerEinkommensungleichheit(sozialesGroup)
             }
         }
     }
@@ -136,9 +121,8 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
             .get<ComponentGroup>("masterData")
             .get<YesNoComponent>("berichtspflichtUndEinwilligungZurVeroeffentlichung")
 
-        val showIfBerichtsPflicht = DependsOnComponentValue(berichtsPflicht, "Yes")
-        createRollingWindowComponentsInCategoryUmwelt(framework, showIfBerichtsPflicht)
-        createRollingWindowComponentsInCategorySoziales(framework, showIfBerichtsPflicht)
+        createRollingWindowComponentsInCategoryUmwelt(framework)
+        createRollingWindowComponentsInCategorySoziales(framework)
         editListOfStringBaseDatapointComponents(framework)
         framework.root.edit<ComponentGroup>("general") {
             edit<ComponentGroup>("masterData") {
@@ -181,7 +165,7 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
                     nullable = component.isNullable,
                 ),
                 imports = setOf(
-                    TypeScriptImport("activity", "@clients/backend"),
+                    TypeScriptImport("Activity", "@clients/backend"),
                 ),
             )
         }

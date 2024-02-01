@@ -145,7 +145,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         ),
         averageGrossHourlyEarningsMaleEmployees: dataGenerator.randomCurrencyDataPoint(0),
         averageGrossHourlyEarningsFemaleEmployees: dataGenerator.randomCurrencyDataPoint(0),
-        unadjustedGenderPayGapInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(-100, 100)),
+        unadjustedGenderPayGapInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         femaleBoardMembers: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt(0)),
         maleBoardMembers: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt(0)),
         boardGenderDiversityInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0, 100)),
