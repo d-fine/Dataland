@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.rev
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.revenue.nonAlignedShare.EutaxonomyNonFinancialsRevenueNonAlignedShare
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.revenue.nonEligibleShare.EutaxonomyNonFinancialsRevenueNonEligibleShare
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
+import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
 import java.math.BigDecimal
 
 /**
@@ -23,6 +24,8 @@ data class EutaxonomyNonFinancialsRevenue(
 
     @field:Valid()
     val nonAlignedShare: EutaxonomyNonFinancialsRevenueNonAlignedShare? = null,
+
+    val nonAlignedActivities: List<Activity>? = null,
 
     @field:Valid()
     val alignedShare: EutaxonomyNonFinancialsRevenueAlignedShare? = null,

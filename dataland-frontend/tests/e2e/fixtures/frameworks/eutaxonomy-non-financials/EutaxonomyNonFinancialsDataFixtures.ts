@@ -3,8 +3,8 @@ import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type EutaxonomyNonFinancialsData } from "@clients/backend";
 import { EutaxonomyNonFinancialsGenerator } from "@e2e/fixtures/frameworks/eutaxonomy-non-financials/EutaxonomyNonFinancialsGenerator";
-import { pickOneElement, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions } from "@clients/backend";
+import { Activity, EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions } from "@clients/backend";
+import { pickSubsetOfElements, pickOneElement, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 
 /**
  * Generates a set number of eutaxonomy-non-financials fixtures
@@ -58,6 +58,7 @@ export function generateEutaxonomyNonFinancialsData(
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
         absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
+      nonAlignedActivities: dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity))),
       alignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
         absoluteShare: dataGenerator.generateAmountWithCurrency(),
@@ -87,6 +88,7 @@ export function generateEutaxonomyNonFinancialsData(
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
         absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
+      nonAlignedActivities: dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity))),
       alignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
         absoluteShare: dataGenerator.generateAmountWithCurrency(),
@@ -116,6 +118,7 @@ export function generateEutaxonomyNonFinancialsData(
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
         absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
+      nonAlignedActivities: dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity))),
       alignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
         absoluteShare: dataGenerator.generateAmountWithCurrency(),

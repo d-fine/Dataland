@@ -4,6 +4,8 @@ import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatPercentageForDatatable } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
+import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames";
+import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { formatCurrencyForDisplay } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import {
@@ -180,6 +182,19 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               formatStringForDatatable(dataset.revenue?.nonAlignedShare?.absoluteShare?.currency),
           },
         ],
+      },
+      {
+        type: "cell",
+        label: "Non-Aligned Activities",
+
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatListOfStringsForDatatable(
+            dataset.revenue?.nonAlignedActivities?.map((it) => {
+              return activityApiNameToHumanizedName(it);
+            }),
+            "Non-Aligned Activities",
+          ),
       },
       {
         type: "section",
@@ -365,6 +380,19 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
         ],
       },
       {
+        type: "cell",
+        label: "Non-Aligned Activities",
+
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatListOfStringsForDatatable(
+            dataset.capex?.nonAlignedActivities?.map((it) => {
+              return activityApiNameToHumanizedName(it);
+            }),
+            "Non-Aligned Activities",
+          ),
+      },
+      {
         type: "section",
         label: "Aligned Share",
         expandOnPageLoad: false,
@@ -544,6 +572,19 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
               formatStringForDatatable(dataset.opex?.nonAlignedShare?.absoluteShare?.currency),
           },
         ],
+      },
+      {
+        type: "cell",
+        label: "Non-Aligned Activities",
+
+        shouldDisplay: (): boolean => true,
+        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+          formatListOfStringsForDatatable(
+            dataset.opex?.nonAlignedActivities?.map((it) => {
+              return activityApiNameToHumanizedName(it);
+            }),
+            "Non-Aligned Activities",
+          ),
       },
       {
         type: "section",
