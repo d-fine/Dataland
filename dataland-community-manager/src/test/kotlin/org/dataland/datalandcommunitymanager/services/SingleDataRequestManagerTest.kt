@@ -66,10 +66,10 @@ class SingleDataRequestManagerTest(
             frameworkName = DataTypeEnum.lksg,
             listOfReportingPeriods = listOf("1969"),
             contactList = listOf("contact@othercompany.com"),
-            message = "You forgot to upload data about the moon landing."
+            message = "You forgot to upload data about the moon landing.",
         )
         singleDataRequestManager.processSingleDataRequest(
-            request
+            request,
         )
         verify(mockSingleDataRequestEmailSender, times(1)).sendSingleDataRequestEmails(
             mockAuthentication,
@@ -87,10 +87,10 @@ class SingleDataRequestManagerTest(
             frameworkName = DataTypeEnum.lksg,
             listOfReportingPeriods = listOf("1969"),
             contactList = listOf("contact@othercompany.com"),
-            message = "You forgot to upload data about the moon landing."
+            message = "You forgot to upload data about the moon landing.",
         )
         singleDataRequestManager.processSingleDataRequest(
-            request
+            request,
         )
         verify(mockSingleDataRequestEmailSender, times(1)).sendSingleDataRequestEmails(
             mockAuthentication,
@@ -101,11 +101,13 @@ class SingleDataRequestManagerTest(
     }
 
     private fun prepareMockedDependenciesForEmailSentTest() {
-        `when`(mockDataRequestRepository.existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
-            anyString(),
-            anyString(),
-            anyString(),
-            anyString(),
-        )).thenReturn(true)
+        `when`(
+            mockDataRequestRepository.existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+            ),
+        ).thenReturn(true)
     }
 }

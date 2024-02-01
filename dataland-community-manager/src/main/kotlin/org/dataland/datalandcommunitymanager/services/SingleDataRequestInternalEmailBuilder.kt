@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandemail.email.Email
 import org.dataland.datalandemail.email.PropertyStyleEmailBuilder
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -44,7 +43,7 @@ class SingleDataRequestInternalEmailBuilder(
             "Reporting Periods" to reportingPeriods.joinToString(", "),
             "Company Identifier (${companyIdentifierType.name})" to companyIdentifierValue,
         )
-        if(companyIdentifierType == DataRequestCompanyIdentifierType.DatalandCompanyId) {
+        if (companyIdentifierType == DataRequestCompanyIdentifierType.DatalandCompanyId) {
             properties["Company Name"] = companyGetter.getCompanyInfo(companyIdentifierValue).companyName
         }
         return buildPropertyStyleEmail(

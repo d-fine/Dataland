@@ -23,7 +23,7 @@ class SingleDataRequestEmailSender(
         companyIdentifierValue: String,
     ) {
         if (singleDataRequest.listOfReportingPeriods.isEmpty()) return
-        if(companyIdentifierType != DataRequestCompanyIdentifierType.DatalandCompanyId) {
+        if (companyIdentifierType != DataRequestCompanyIdentifierType.DatalandCompanyId) {
             sendInternalEmail(
                 userAuthentication = userAuthentication,
                 singleDataRequest = singleDataRequest,
@@ -44,7 +44,7 @@ class SingleDataRequestEmailSender(
                 ),
             )
         }
-        if((singleDataRequest.contactList?.count() ?: 0) == 0) {
+        if ((singleDataRequest.contactList?.count() ?: 0) == 0) {
             sendInternalEmail(
                 userAuthentication = userAuthentication,
                 singleDataRequest = singleDataRequest,
@@ -69,7 +69,7 @@ class SingleDataRequestEmailSender(
                 companyIdentifierValue = companyIdentifierValue,
                 dataType = singleDataRequest.frameworkName,
                 reportingPeriods = singleDataRequest.listOfReportingPeriods,
-            )
+            ),
         )
     }
 }

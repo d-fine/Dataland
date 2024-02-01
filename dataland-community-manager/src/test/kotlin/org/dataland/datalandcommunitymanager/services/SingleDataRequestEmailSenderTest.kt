@@ -39,7 +39,7 @@ class SingleDataRequestEmailSenderTest(
     private val mockRequesterAuthentication = AuthenticationMock.mockJwtAuthentication(
         "requester@test.com",
         "user-id",
-        emptySet()
+        emptySet(),
     )
 
     private val dataType = DataTypeEnum.lksg
@@ -54,8 +54,10 @@ class SingleDataRequestEmailSenderTest(
 
     @MockBean
     lateinit var mockCompanyGetter: CompanyGetter
+
     @Autowired
     lateinit var singleDataRequestInternalEmailBuilder: SingleDataRequestInternalEmailBuilder
+
     @Autowired
     lateinit var singleDataRequestEmailBuilder: SingleDataRequestEmailBuilder
 
@@ -81,10 +83,10 @@ class SingleDataRequestEmailSenderTest(
                 dataType,
                 listOfReportingPeriods = listOf(),
                 contactList = listOf("receiver@abc.de", "otherreceiver@something.else"),
-                message = "not of interest"
+                message = "not of interest",
             ),
             DataRequestCompanyIdentifierType.Isin,
-            "DEsomething"
+            companyIdentifier,
         )
         assertNumEmailsSentEquals(0)
     }
@@ -101,7 +103,7 @@ class SingleDataRequestEmailSenderTest(
                 dataType,
                 listOfReportingPeriods = reportingPeriods,
                 contactList = listOf("receiver@abc.de", "otherreceiver@something.else"),
-                message = "not of interest"
+                message = "not of interest",
             ),
             DataRequestCompanyIdentifierType.Isin,
             companyIdentifier,
@@ -122,7 +124,7 @@ class SingleDataRequestEmailSenderTest(
                 dataType,
                 listOfReportingPeriods = reportingPeriods,
                 contactList = listOf(),
-                message = "not of interest"
+                message = "not of interest",
             ),
             DataRequestCompanyIdentifierType.DatalandCompanyId,
             companyIdentifier,
@@ -144,7 +146,7 @@ class SingleDataRequestEmailSenderTest(
                 listOfReportingPeriods = reportingPeriods,
                 contactList = listOf(contactEmail),
 //                contactList = listOf("contact@provider.com", "othercontact@provider.com"), TODO test multiple contacts
-                message = "not of interest"
+                message = "not of interest",
             ),
             DataRequestCompanyIdentifierType.DatalandCompanyId,
             companyIdentifier,
@@ -196,7 +198,7 @@ class SingleDataRequestEmailSenderTest(
             "Reporting Periods" to reportingPeriods.joinToString(", "),
             "Company Identifier (${companyIdentifierType.name})" to companyIdentifier,
         )
-        val unexpectedValues = if(companyNameExpected) {
+        val unexpectedValues = if (companyNameExpected) {
             properties["Company Name"] = companyName
             emptyList()
         } else {
@@ -222,7 +224,7 @@ class SingleDataRequestEmailSenderTest(
             "$proxyPrimaryUrl/companies/$companyIdentifier",
             "LkSG",
             reportingPeriods.joinToString(", "),
-            mockRequesterAuthentication.username
+            mockRequesterAuthentication.username,
         )
         expectSentEmailsToMatch(
             expectedSender = EmailContact("info@dataland.com", "Dataland"),
