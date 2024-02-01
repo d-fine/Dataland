@@ -7,7 +7,7 @@
     </tr>
     <tr>
         <td colspan="3" style="text-align: left; background-color: #1b1b1b;">
-            <a href="${baseUrl}" target="_blank" style="border: 0 none; text-decoration: none; color: #FF6813FF;">
+            <a href="${baseUrl}" target="_blank" style="border: 0 none; text-decoration: none; color: #FF6813;">
                 <img src="${baseUrl}/images/email/dark_logo.png" width="195" height="33" alt="DATALAND" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
             </a></td>
     </tr>
@@ -23,21 +23,21 @@
         <td colspan="3" style="height: 10px; font-size:10px">&nbsp;</td>
     </tr>
     <tr>
-        <td><span style="color: #ffffff;"><a href="${baseUrl}/api/swagger-ui/index.html" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #ffffff; text-decoration: none;">DATASETS</a>&nbsp;&nbsp;&nearr;</span></td>
-        <td><span style="color: #ffffff;"><a href="https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #ffffff; text-decoration: none;">OVERVIEW</a>&nbsp;&nbsp;&nearr;</span></td>
+        <td><span style="color: #ffffff;"><a href="${baseUrl}/api/swagger-ui/index.html" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #ffffff; text-decoration: none;">DATASETS</a>&nbsp;&nbsp;&#129125;</span></td>
+        <td><span style="color: #ffffff;"><a href="https://github.com/d-fine/Dataland/wiki/Data-Framework-Documentation" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #ffffff; text-decoration: none;">OVERVIEW</a>&nbsp;&nbsp;&#129125;</span></td>
     </tr>
     <tr>
         <td colspan="3" style="height: 10px; font-size:10px">&nbsp;</td>
     </tr>
     <tr>
-        <td><span style="color: #ffffff;"><a href="${baseUrl}/documents/swagger-ui/index.html" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #ffffff; text-decoration: none;">DOCUMENTS</a>&nbsp;&nbsp;&nearr;</span></td>
+        <td><span style="color: #ffffff;"><a href="${baseUrl}/documents/swagger-ui/index.html" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #ffffff; text-decoration: none;">DOCUMENTS</a>&nbsp;&nbsp;&#129125;</span></td>
         <td></td>
     </tr>
     <tr>
         <td colspan="3" style="height: 10px; font-size:10px">&nbsp;</td>
     </tr>
     <tr>
-        <td><span style="color: #ffffff;"><a href="${baseUrl}/community/swagger-ui/index.html" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #ffffff; text-decoration: none;">REQUESTS</a>&nbsp;&nbsp;&nearr;</span></td>
+        <td><span style="color: #ffffff;"><a href="${baseUrl}/community/swagger-ui/index.html" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #ffffff; text-decoration: none;">REQUESTS</a>&nbsp;&nbsp;&#129125;</span></td>
         <td style="color: #c0c0c0">Follow Dataland</td>
     </tr>
     <tr>

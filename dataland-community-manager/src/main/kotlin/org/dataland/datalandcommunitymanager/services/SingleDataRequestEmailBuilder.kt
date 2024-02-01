@@ -85,8 +85,8 @@ class SingleDataRequestEmailBuilder(
             "companyName" to companyName,
             "requesterEmail" to requesterEmail,
             "message" to message,
-            "dataType" to dataType,
-            "reportingPeriods" to reportingPeriods,
+            "dataType" to readableFrameworkNameMapping[dataType],
+            "reportingPeriods" to reportingPeriods.joinToString(", "),
             "baseUrl" to "https://local-dev.dataland.com",
         )
         val freemarkerTemplate = FreeMarker.configuration

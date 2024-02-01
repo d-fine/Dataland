@@ -12,8 +12,8 @@
     </tr>
     <tr style="background-color: #ffffff;">
         <td></td>
-        <td style="color: #FF6813FF; font-size: 18px; font-weight: bold; text-align: left; padding:0; margin:0; border: 0;">
-            <a href="https://dataland.com" target="_blank" style="border: 0 none; text-decoration: none; color: #FF6813FF;">
+        <td style="color: #FF6813; font-size: 18px; font-weight: bold; text-align: left; padding:0; margin:0; border: 0;">
+            <a href="${baseUrl}" target="_blank" style="border: 0 none; text-decoration: none; color: #FF6813;">
                 <img src="${baseUrl}/images/email/logo.png" width="145" height="21" alt="DATALAND" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
             </a>
         </td>

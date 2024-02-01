@@ -30,7 +30,9 @@
         <td style="height: 20px">&nbsp;</td>
     </tr>
     <tr>
-        <td style="color: #FF6813FF;"><a href="https://dataland.com" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #FF6813FF; text-decoration: none;">FIND OUT MORE </a>&#10132;</td>
+        <td>
+            <a href="${baseUrl}" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #FF6813; text-decoration: none;">FIND OUT MORE &#10132;</a>
+        </td>
     </tr>
     <tr>
         <td style="height: 20px">&nbsp;</td>

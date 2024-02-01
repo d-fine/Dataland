@@ -10,21 +10,15 @@
 <table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0; margin: 0">
     <tbody>
     <tr>
-        <td rowspan="17" style="width: 40px">&nbsp;</td>
+        <td rowspan="15" style="width: 40px">&nbsp;</td>
         <td colspan="3" style="width: 520px">&nbsp;</td>
-        <td rowspan="17" style="width: 40px">&nbsp;</td>
+        <td rowspan="15" style="width: 40px">&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="3">Hello Anna,</td>
+        <td colspan="3">Exciting news! 📣<br>Your data are in high demand on Dataland! A user is requesting data from ${companyName}.</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
-    </tr>
-    <tr>
-        <td colspan="3">As part of ourLkSG-campaign, you have a data request:</td>
-    </tr>
-    <tr>
-        <td colspan="3" style="font-size: 5px; height: 5px">&nbsp;</td>
     </tr>
     <tr>
         <td colspan="3">
@@ -42,7 +36,7 @@
                     <td style="font-size: 5px; height: 5px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="font-weight: bold; font-size:19px">SFDR</td>
+                    <td style="font-weight: bold; font-size:19px">${dataType}</td>
                 </tr>
                 <tr>
                     <td style="height: 20px">&nbsp;</td>
@@ -54,7 +48,7 @@
                     <td style="font-size: 5px; height: 5px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="font-weight: bold; font-size:19px">2023, 2022, 2021</td>
+                    <td style="font-weight: bold; font-size:19px">${reportingPeriods}</td>
                 </tr>
                 <tr>
                     <td style="border-bottom:1px solid #e3e3e3; height: 20px">&nbsp;</td>
@@ -69,7 +63,11 @@
                     <td style="font-size: 5px; height: 5px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="font-weight: bold;">ben.delver@nike.com</td>
+                    <td style="font-weight: bold; color: #FF6813; text-decoration: none; border: 0 none;">
+                        <a href="mailto:${requesterEmail}" style="font-weight: bold; color: black; text-decoration: none; border: 0 none;">
+                            ${requesterEmail}
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <td style="height: 20px">&nbsp;</td>
@@ -116,7 +114,7 @@
             <img src="${baseUrl}/images/email/action_button_left_img.png" width="26" height="54" alt=""
                  style="border: 0 none; height: auto; line-height: 100%; display:block; outline: none; text-decoration: none;">
         </td>
-        <td style="background-color: #ff5c00; text-align: center; padding:0; margin:0; border: 0; height: 54px">
+        <td style="background-color: #ff5c00; text-align: center; padding:0; margin:0; border: 0; height: 54px; width: 468px;">
             <a href="${baseUrl}/companies/${companyId}" target="_blank" style="border: 0 none; line-height: 30px; color: #ffffff; font-size: 18px; width: 100%; display: block; text-decoration: none;">
                 CALL TO ACTION
             </a>
