@@ -44,7 +44,7 @@ const isActiveAbout = computed(() => route.path === "/about");
   width: calc(100% - 32px);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
-  z-index: 1;
+  z-index: 2;
   background: rgba(255, 255, 255, 0.72);
   border-radius: 16px;
   box-sizing: border-box;
