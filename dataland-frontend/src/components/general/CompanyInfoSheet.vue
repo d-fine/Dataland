@@ -2,7 +2,11 @@
   <div ref="sheet" :class="`sheet ${isCollapsed ? 'visuals-hidden' : ''}`" data-test="sheet">
     <template v-if="!useMobileView">
       <BackButton />
-      <CompaniesOnlySearchBar @select-company="$router.push(`/companies/${$event.companyId}`)" class="w-8 mt-2" />
+      <CompaniesOnlySearchBar
+        v-if="showSearchBar"
+        @select-company="$router.push(`/companies/${$event.companyId}`)"
+        class="w-8 mt-2"
+      />
     </template>
     <template v-else>
       <div class="mobile-header">
@@ -41,9 +45,13 @@ const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.va
 const sheet = ref<HTMLDivElement>();
 const attachedSheet = ref<HTMLDivElement>();
 
-const { companyId } = defineProps<{
-  companyId: string;
-}>();
+const { companyId, showSearchBar } = defineProps({
+  companyId: String,
+  showSearchBar: {
+    type: Boolean,
+    default: true,
+  },
+});
 
 const emit = defineEmits<{
   fetchedCompanyInformation: [companyInformation: CompanyInformation];

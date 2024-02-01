@@ -2,6 +2,11 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="paper-section no-ui-message">
+      <CompanyInfoSheet
+        :company-id="companyID"
+        @fetched-company-information="handleFetchedCompanyInformation"
+        :show-search-bar="false"
+      />
       <div class="col-6 mx-auto">
         <div data-test="selectReportingPeriod" class="bg-white radius-1 p-3" style="text-align: left">
           <h4 class="p-0">Select at least one reporting period</h4>
@@ -52,10 +57,13 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
 import { type Content, type Page } from "@/types/ContentTypes";
 import contentData from "@/assets/content.json";
+import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
+import { type CompanyInformation } from "@clients/backend";
 
 export default defineComponent({
   name: "SingleDataRequest",
   components: {
+    CompanyInfoSheet,
     AuthenticationWrapper,
     TheHeader,
     TheContent,
@@ -71,7 +79,16 @@ export default defineComponent({
       years,
       selectedYears: [] as number[],
       footerContent,
+      fetchedCompanyInformation: {} as CompanyInformation,
     };
+  },
+  //TODO: default to be removed
+  props: {
+    companyID: {
+      type: String,
+      required: true,
+      default: "945a4a7d-4152-4901-a655-374ed3f4b0be",
+    },
   },
   methods: {
     /**
@@ -86,6 +103,13 @@ export default defineComponent({
       } else {
         this.selectedYears.splice(index, 1);
       }
+    },
+    /**
+     * Saves the company information emitted by the CompanyInformation vue components event.
+     * @param fetchedCompanyInformation the company information for the current company Id
+     */
+    handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
+      this.fetchedCompanyInformation = fetchedCompanyInformation;
     },
   },
 });
