@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.cap
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
 import java.math.BigDecimal
+import kotlin.collections.MutableList
 
 /**
  * The data-model for the Capex section
@@ -25,7 +26,7 @@ data class EutaxonomyNonFinancialsCapex(
     @field:Valid()
     val nonAlignedShare: EutaxonomyNonFinancialsCapexNonAlignedShare? = null,
 
-    val nonAlignedActivities: List<Activity>? = null,
+    val nonAlignedActivities: MutableList<Activity>? = null,
 
     @field:Valid()
     val alignedShare: EutaxonomyNonFinancialsCapexAlignedShare? = null,
