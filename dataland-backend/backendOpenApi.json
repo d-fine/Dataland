@@ -13552,14 +13552,14 @@
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
           },
           "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
             "type": "string"
           },
           "permId": {

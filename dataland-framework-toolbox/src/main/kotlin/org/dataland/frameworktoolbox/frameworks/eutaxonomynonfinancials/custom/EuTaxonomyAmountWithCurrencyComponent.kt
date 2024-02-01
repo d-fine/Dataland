@@ -26,19 +26,27 @@ class EuTaxonomyAmountWithCurrencyComponent(
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
-                "formatStringForDatatable(${getTypescriptFieldAccessor(false)}?.currency)", // TODO introduce displayer for this
+                "formatStringForDatatable(\n" +
+                        "formatAmountWithCurrency(${getTypescriptFieldAccessor()})\n" +
+                        ")"
+                ,
                 setOf(
                     TypeScriptImport(
                         "formatStringForDatatable",
                         "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory",
                     ),
+                    TypeScriptImport(
+                        "formatAmountWithCurrency",
+                        "@/utils/Formatter"
+                    )
                 ),
-            ),
+            )
         )
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        return // TODO do nothing because we don't want it do build an upload config
+        // do nothing because UploadConfig-generation is deactivated anyway for eu-taxo-non-financials
+        return
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
