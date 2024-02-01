@@ -12,6 +12,7 @@ import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifier
  */
 data class AggregatedDataRequestEntity(
     val dataTypeName: String,
+    val reportingPeriod: String,
     val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
     val dataRequestCompanyIdentifierValue: String,
     val count: Long,

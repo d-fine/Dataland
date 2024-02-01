@@ -34,7 +34,14 @@ class FrameworkDataModelBuilder(
         "${getNameFromLabel(framework.identifier).capitalizeEn()}Data",
         "The root data-model for the ${framework.identifier.capitalizeEn()} Framework",
         mutableListOf(
-            Annotation("org.dataland.datalandbackend.annotations.DataType", "\"${framework.identifier}\""),
+            Annotation(
+                "Suppress",
+                "\"MagicNumber\"",
+            ),
+            Annotation(
+                "org.dataland.datalandbackend.annotations.DataType",
+                "\"${framework.identifier}\", ${framework.order}",
+            ),
         ),
     )
 

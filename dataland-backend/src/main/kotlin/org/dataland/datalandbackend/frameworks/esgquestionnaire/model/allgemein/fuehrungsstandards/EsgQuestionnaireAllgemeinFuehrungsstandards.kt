@@ -8,6 +8,11 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireAllgemeinFuehrungsstandards(
     val oekologischeSozialeFuehrungsstandardsOderPrinzipien: YesNo? = null,
-    val anreizmechanismenFuerDasManagementUmwelt: AnreizmechanismenFuerDasManagementUmweltOptions? = null,
-    val anreizmechanismenFuerDasManagementSoziales: AnreizmechanismenFuerDasManagementSozialesOptions? = null,
+
+    val anreizmechanismenFuerDasManagementUmwelt:
+    EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementUmweltOptions? = null,
+
+    val anreizmechanismenFuerDasManagementSoziales:
+    EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementSozialesOptions? = null,
+
 )

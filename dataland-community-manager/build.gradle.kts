@@ -53,6 +53,8 @@ dependencies {
     implementation(project(":dataland-keycloak-adapter"))
     implementation(libs.mailjet.client)
     implementation(libs.jackson.kotlin)
+    implementation(libs.flyway)
+    implementation(libs.flyway.core)
 }
 
 openApi {

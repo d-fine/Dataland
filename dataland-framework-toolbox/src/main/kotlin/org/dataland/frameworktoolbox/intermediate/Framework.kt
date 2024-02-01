@@ -14,6 +14,7 @@ class Framework(
     val identifier: String,
     val label: String,
     val explanation: String,
+    val order: Int,
 ) {
     val root: TopLevelComponentGroup = TopLevelComponentGroup(this)
 

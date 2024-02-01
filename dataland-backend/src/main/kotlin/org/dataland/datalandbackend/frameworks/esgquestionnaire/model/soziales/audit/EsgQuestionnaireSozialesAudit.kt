@@ -8,6 +8,9 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireSozialesAudit(
     val auditsZurEinhaltungVonArbeitsstandards: YesNo? = null,
-    val artDesAudits: ArtDesAuditsOptions? = null,
+
+    val artDesAudits: EsgQuestionnaireSozialesAuditArtDesAuditsOptions? = null,
+
     val auditErgebnisse: String? = null,
+
 )
