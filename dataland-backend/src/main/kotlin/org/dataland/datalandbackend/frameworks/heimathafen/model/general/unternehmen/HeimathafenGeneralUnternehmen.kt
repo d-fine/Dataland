@@ -8,6 +8,9 @@ import java.math.BigInteger
  */
 data class HeimathafenGeneralUnternehmen(
     val unternehmenseigentumUndEigentuemerstruktur: String? = null,
+
     val kernkompetenzenUndGeschaeftsbereiche: List<String>? = null,
+
     val anzahlDerFuerEsgZustaendigenMitarbeiter: BigInteger? = null,
+
 )

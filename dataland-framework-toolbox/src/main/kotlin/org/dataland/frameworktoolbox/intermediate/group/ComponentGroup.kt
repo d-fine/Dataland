@@ -2,13 +2,13 @@ package org.dataland.frameworktoolbox.intermediate.group
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkBooleanLambda
-import org.dataland.frameworktoolbox.utils.Naming.getNameFromLabel
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
 /**
@@ -26,20 +26,6 @@ class ComponentGroup(
 
     override val children: Sequence<ComponentBase> by componentGroupApi::children
 
-    val camelCaseComponentIdentifier: String
-        get() {
-            return parents()
-                .toList()
-                .reversed()
-                .mapNotNull {
-                    when (it) {
-                        is ComponentGroup -> getNameFromLabel(it.identifier).capitalizeEn()
-                        is TopLevelComponentGroup -> getNameFromLabel(it.parent.identifier).capitalizeEn()
-                        else -> null
-                    }
-                }.joinToString("") + identifier.capitalizeEn()
-        }
-
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val groupPackage = dataClassBuilder.parentPackage.addPackage(identifier)
         val groupClass = groupPackage.addClass(
@@ -51,9 +37,12 @@ class ComponentGroup(
             it.generateDataModel(groupClass)
         }
 
+        val isRequired = isRequired || nestedChildren.any { it.isRequired }
+
         dataClassBuilder.addProperty(
             identifier,
-            groupClass.getTypeReference(nullable = isNullable),
+            groupClass.getTypeReference(nullable = !isRequired),
+            listOf(ValidAnnotation),
         )
     }
 

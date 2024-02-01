@@ -241,12 +241,132 @@
           Der Zweck der Datenverarbeitung besteht darin, interessante Inhalte bereitzustellen und mit den Besucherinnen
           und Besuchern auf LinkedIn zu interagieren. Bei den verarbeiteten Daten handelt es sich um Inhaltsdaten (z.B.
           Beiträge, Kommentare) und Nutzungsdaten (z.B. Klickverhalten, Verweildauer). Informationen und Daten, die auf
-          LinkedIn angezeigt oder geteilt werden, können für LinkedIn, dessen Nutzerinnen und Nutzer oder beauftragte
-          Dienstleister zugänglich sein.
+          LinkedIn angezeigt oder geteilt werden, können für LinkedIn, dessen Nutzer oder beauftragte Dienstleister
+          zugänglich sein.
         </p>
         <p>
           Die Rechtsgrundlage für die Verarbeitung der Daten ist unser berechtigtes Interesse an der Analyse von
           Nutzungsdaten zur Verbesserung des LinkedIn Profils (Art. 6 Abs. 1 lit. f) DS-GVO).
+        </p>
+      </div>
+      <div>
+        <h3>h) Teilnehmer an Veranstaltungen</h3>
+        <p>
+          <em class="bold">Anmeldung</em>
+        </p>
+        <p>
+          Die Teilnahme an unseren Veranstaltungen setzt eine Registrierung voraus. Für die Anmeldung zu unseren
+          Veranstaltungen nutzen wir entweder ein Formular auf unserer Webseite oder den Dienst Microsoft Forms.
+        </p>
+        <p>
+          Wir verarbeiten zum Zweck der Organisation, Vorbereitung und Durchführung unserer Veranstal-tung sowie zur
+          damit im Zusammenhang stehenden Kommunikation (z.B. Anmeldebestätigung, Zu- oder Absage, Änderungen der
+          Veranstaltungsdaten, Erinnerungsmails zu der Veranstaltung, Zusendung von Veranstaltungsinhalten, Abgleich der
+          angemeldeten Personen mit den tatsächli-chen Teilnehmern, Danksagung im Nachgang der Veranstaltung sowie
+          Einladungen zu vergleich-baren Veranstaltungen) folgende personenbezogene Daten:
+        </p>
+        <ul>
+          <li>Anrede</li>
+          <li>Vor- und Nachname</li>
+          <li>Firma</li>
+          <li>Kontaktdaten (Anschrift, Telefon- bzw. Mobilfunknummer, E-Mail-Adresse)</li>
+          <li>Position und Titel</li>
+          <li>Gebuchte Teile der Veranstaltung</li>
+        </ul>
+        <p>
+          Rechtsgrundlagen für die Verarbeitung von Daten der Veranstaltungsteilnehmer ist Art. 6 Abs. 1 lit. b) DS-GVO
+          (Begründung und Durchführung eines Vertragsverhältnisses über die Teilnahme an der Veranstaltung) Die
+          Verarbeitung Ihrer Daten unter Einsatz von Cookies bei der Anmeldung mittels Microsoft Forms basiert auf
+          unserem berechtigten Interesse an der Nutzung technisch sicher gestalteter Anmeldetechnologie, die unser
+          Teilnehmermanagement optimiert, Art. 6 Abs. 1 lit. f) DS-GVO.
+        </p>
+        <p>
+          Die angegebenen Daten werden für die Dauer der Durchführung der Veranstaltung bei Microsoft Forms gespeichert
+          und unverzüglich nach Beendigung dort gelöscht.
+        </p>
+        <p>
+          Die Angabe von Daten ist für die Teilnahme an Veranstaltungen vertraglich verpflichtend. Ohne Angabe von Daten
+          ist eine Teilnahme an Veranstaltungen nicht möglich. Freiwillige Angaben sind im Anmeldungsformular
+          entsprechend gekennzeichnet.
+        </p>
+        <p>
+          Wir speichern die Daten solange dies zur Durchführung des Vertrags erforderlich ist. Dies sind im Regelfall
+          maximal 6 Monate. Soweit gesetzliche Aufbewahrungsplichten bestehen, werden die Daten für die Dauer der
+          gesetzlich vorgeschriebenen Aufbewahrungsfrist gespeichert (z.B. steuer-liche Zwecke). Sie haben das Recht der
+          Verarbeitung Ihrer Daten im Nachgang zur Veranstaltung zu widersprechen, sofern die Verarbeitung im
+          berechtigten Interesse erfolgt.
+        </p>
+        <p>
+          <em class="bold">Bild- und Tonaufzeichnungen bei Präsenzveranstaltungen</em>
+        </p>
+        <p>
+          Wir behalten es uns vor, von Veranstaltungen Bild- und/ oder Tonaufzeichnungen zum Zwecke der Durchführung der
+          Veranstaltung sowie der Dokumentation unserer Veranstaltung und Nutzung für unsere Presse- und
+          Öffentlichkeitsarbeit zu machen. In diesem Fall informieren wir Sie über die Aufzeichnung der Veranstaltung im
+          Vorfeld bzw. bei der Anmeldung zur Teilnahme .
+        </p>
+        <p>Folgende Daten können in diesem Fall von Ihnen erhoben werden:</p>
+        <ul>
+          <li>Anmeldedaten (Vor- und Nachname)</li>
+          <li>Position</li>
+          <li>Firma</li>
+          <li>Bild- oder Videoaufnahmen</li>
+          <li>Redebeiträge, die Sie im Rahmen unserer Veranstaltung erbracht haben.</li>
+        </ul>
+        <p>
+          Rechtsgrundlage für die Verarbeitung dieser Daten ist unser berechtigtes Interesse an der Doku-mentation der
+          von uns durchgeführten Veranstaltungen und Darstellung unserer Firma durch Presse- und Öffentlichkeitsarbeit
+          nach Art. 6 Abs. 1 lit. f) DS-GVO.
+        </p>
+        <p>
+          Die gefertigten Bild- und Tonaufnahmen können zum Zweck der Presse- und Öffentlichkeitsarbeit an Journalisten,
+          Medienunternehmen, Presse- und Fotoagenturen sowie Social Media Plattformen auch in das Ausland übermittelt
+          und durch uns in gedruckter oder digitaler Form veröffentlicht werden. Die Aufnahmen können insbesondere in
+          den folgenden Medien zu den genannten Zwe-cken genutzt werden:
+        </p>
+        <ul>
+          <li>dem Intranet von Dataland,</li>
+          <li>den Internetseiten von Dataland inklusive den angeschlossenen Netzwerk-, Tochterunter-nehmen,</li>
+          <li>in sozialen Netzwerken wie z. B. LinkedIn von Dataland</li>
+          <li>in einer passwortgeschützten Online-Bildergalerie für Teilnehmer der Veranstaltung,</li>
+          <li>in einem Online-Videoportal (z. B. YouTube),</li>
+          <li>in Printmedien und/oder</li>
+          <li>
+            in für interne und externe Zwecke erstellten Verlautbarungen (z. B. Broschüren, Publikati-onen,
+            Marketingvideos oder Imagefilme).
+          </li>
+        </ul>
+        <p>
+          Sie haben das Recht gegen die beschriebene Verarbeitung Ihrer Daten zu widersprechen. Sie können uns Ihren
+          Widerspruch auch schon bei Beginn der Veranstaltung mitteilen. Bitte beachten Sie, dass im Falle der bereits
+          erfolgten Veröffentlichung der Aufzeichnungen in bspw. Printmedien oder im Internet es nicht immer möglich
+          sein wird, Ihre Daten vollständig zu entfernen.
+        </p>
+        <p>
+          Die Anfertigung von Bild- und Tonaufnahmen ist für die Teilnahme an der Veranstaltung nicht verpflichtend.
+          Wenn Sie keine Bild- und Tonaufnahmen wünschen, teilen Sie dies bitte unseren Mitarbeitern am
+          Veranstaltungsort mit.
+        </p>
+        <p>Die Daten werden nach Zweckerreichung gelöscht.</p>
+        <p>
+          <em class="bold">Pflege im CRM System</em>
+        </p>
+        <p>
+          Wir werden Ihre personenbezogenen Daten, die Sie für die online-Registrierung zur Veran-staltung angegeben
+          haben, darüber hinaus zum Zweck der Pflege von Geschäftskontakten in unser CRM-System
+          (Customer-Relationship-Management-System) übernehmen und speichern.
+        </p>
+        <p>
+          Diese Verarbeitung basiert aufgrund des bestehenden berechtigten Interesses auf der Rechtsgrundlage des Art. 6
+          Abs. 1 S. 1 lit. f) DSGVO. Es besteht ein berechtigtes wirt-schaftliches Interesse, im Rahmen des
+          Geschäftsverkehrs entstandene Kontakte auch über den Erstkontakt hinaus zu pflegen und zum Aufbau einer
+          Geschäftsbeziehung zu nutzen und hierfür mit den Betroffenen in Kontakt zu bleiben.
+        </p>
+        <p>
+          Wir speichern diese personenbezogenen Daten solange dies zur Wahrung unserer be-rechtigten Interessen
+          erforderlich ist. Die Daten werden spätestens nach 6 Monaten ge-löscht. Soweit gesetzliche
+          Aufbewahrungspflichten bestehen, werden die Daten für die Dauer der gesetzlich vorgeschriebenen
+          Aufbewahrungspflicht gespeichert.
         </p>
       </div>
     </div>

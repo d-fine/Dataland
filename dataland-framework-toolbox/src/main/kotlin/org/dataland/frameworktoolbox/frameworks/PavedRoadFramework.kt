@@ -30,12 +30,14 @@ abstract class PavedRoadFramework(
     val label: String,
     val explanation: String,
     val frameworkTemplateCsvFile: File,
+    val order: Int,
     val enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
 ) {
     val framework = Framework(
         identifier = identifier,
         label = label,
         explanation = explanation,
+        order = order,
     )
 
     val logger by LoggerDelegate()
@@ -205,7 +207,7 @@ abstract class PavedRoadFramework(
         val diagnostics = context.getBean<DiagnosticManager>()
 
         configureDiagnostics(diagnostics)
-        val excelTemplate = ExcelTemplate.fromCsv(frameworkTemplateCsvFile)
+        val excelTemplate = ExcelTemplate.fromFile(frameworkTemplateCsvFile)
         customizeExcelTemplate(excelTemplate)
 
         val frameworkIntermediateRepresentation = convertExcelTemplateToToHighLevelComponentRepresentation(

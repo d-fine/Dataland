@@ -3,23 +3,22 @@ import {
   MLDTDisplayComponentName,
   MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { getFieldValueFromDataModel } from "@/components/resources/dataTable/conversion/Utils";
-import { type Field } from "@/utils/GenericFrameworkTypes";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import { type ExtendedDataPointBigDecimal } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/extended-data-point-big-decimal";
 import { HighImpactClimateSectorsKeys } from "@/types/HighImpactClimateSectors";
 import { type ExtendedDataPoint } from "@/utils/DataPoint";
+import { type SfdrHighImpactClimateSectorEnergyConsumption } from "@clients/backend";
 
 interface HighImpactClimateDisplayFormat {
   sector: string;
-  energyConsumption: ExtendedDataPoint<string>;
-  relativeEnergyConsumption: ExtendedDataPoint<string>;
+  energyConsumption: Partial<ExtendedDataPoint<string>>;
+  relativeEnergyConsumption: Partial<ExtendedDataPoint<string>>;
 }
 
 export type HighImpactClimateValueObject = {
   [key: string]: {
-    highImpactClimateSectorEnergyConsumptionInGWh: ExtendedDataPointBigDecimal;
-    highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue: ExtendedDataPointBigDecimal;
+    highImpactClimateSectorEnergyConsumptionInGWh?: ExtendedDataPointBigDecimal | null;
+    highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue?: ExtendedDataPointBigDecimal | null;
   };
 };
 
@@ -37,7 +36,7 @@ function convertHighImpactClimateToListForModal(
     const value = climateSectorValues.highImpactClimateSectorEnergyConsumptionInGWh;
     const revenueValue = climateSectorValues.highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue;
 
-    if (!value) {
+    if (!value && !revenueValue) {
       continue;
     }
     listForModal.push({
@@ -60,65 +59,60 @@ function convertHighImpactClimateToListForModal(
 }
 
 /**
- * Returns a value factory that returns the value of the field as a string using the display mapping in the options field
- * If the value is non-truthy, an empty string is returned
- * @param path the path to the field
- * @param field the single select field
- * @returns the created getter
+ * Formats the field value for the "High Impact Climate Sectors" field of the SFDR framework into a
+ * format required for the display page
+ * @param fieldValue the value to display
+ * @returns the converted cell for the table
  */
-export function highImpactClimateGetterFactory(
-  path: string,
-  field: Field,
-): (dataset: unknown) => AvailableMLDTDisplayObjectTypes {
-  return (dataset) => {
-    const highImpactClimateSectors = ["A", "B", "C", "D", "E", "F", "G", "H", "L"];
-    let accumulatedData: HighImpactClimateValueObject = {};
-    let doesAccumulatedDataContainData = false;
-    highImpactClimateSectors.forEach((sector: string) => {
-      accumulatedData = {
-        ...accumulatedData,
-        [`NaceCode${sector}`]: {
-          highImpactClimateSectorEnergyConsumptionInGWh: getFieldValueFromDataModel(
-            `${path}.NaceCode${sector}.highImpactClimateSectorEnergyConsumptionInGWh`,
-            dataset,
-          ) as ExtendedDataPointBigDecimal,
-          highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue: getFieldValueFromDataModel(
-            `${path}.NaceCode${sector}.highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue`,
-            dataset,
-          ) as ExtendedDataPointBigDecimal,
+export function formatHighImpactClimateSectorForDisplay(
+  fieldValue: { [key: string]: SfdrHighImpactClimateSectorEnergyConsumption } | null | undefined,
+): AvailableMLDTDisplayObjectTypes {
+  if (!fieldValue) return MLDTDisplayObjectForEmptyString;
+
+  const highImpactClimateSectors = ["A", "B", "C", "D", "E", "F", "G", "H", "L"];
+  const accumulatedData: HighImpactClimateValueObject = {};
+  let doesAccumulatedDataContainData = false;
+
+  for (const sector of highImpactClimateSectors) {
+    const sectorFieldValue = fieldValue[`NaceCode${sector}`];
+    if (!sectorFieldValue) continue;
+    accumulatedData[`NaceCode${sector}`] = {
+      highImpactClimateSectorEnergyConsumptionInGWh: sectorFieldValue.highImpactClimateSectorEnergyConsumptionInGWh,
+      highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue:
+        sectorFieldValue.highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue,
+    };
+  }
+
+  doesAccumulatedDataContainData = Object.values(accumulatedData).some((obj) =>
+    Object.values(obj).some((value) => value !== undefined),
+  );
+
+  if (!doesAccumulatedDataContainData) {
+    return MLDTDisplayObjectForEmptyString;
+  }
+  return {
+    displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+    displayValue: {
+      label: "Applicable High Impact Climate Sectors",
+      modalComponent: DetailsCompanyDataTable,
+      modalOptions: {
+        props: {
+          header: "Applicable High Impact Climate Sectors",
+          modal: true,
+          dismissableMask: true,
         },
-      };
-      doesAccumulatedDataContainData = Object.values(accumulatedData).some((obj) =>
-        Object.values(obj).some((value) => value !== undefined),
-      );
-    });
-    if (!doesAccumulatedDataContainData) {
-      return MLDTDisplayObjectForEmptyString;
-    }
-    return {
-      displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
-      displayValue: {
-        label: field.label,
-        modalComponent: DetailsCompanyDataTable,
-        modalOptions: {
-          props: {
-            header: field.label,
-            modal: true,
-            dismissableMask: true,
-          },
-          data: {
-            listOfRowContents: convertHighImpactClimateToListForModal(accumulatedData),
-            kpiKeyOfTable: "highImpactSectorEnergyConsumptions",
-            columnHeaders: {
-              highImpactSectorEnergyConsumptions: {
-                sector: "Sector",
-                energyConsumption: "Energy Consumption",
-                relativeEnergyConsumption: "Relative Energy Consumption",
-              },
+        data: {
+          listOfRowContents: convertHighImpactClimateToListForModal(accumulatedData),
+          kpiKeyOfTable: "highImpactSectorEnergyConsumptions",
+          columnHeaders: {
+            highImpactSectorEnergyConsumptions: {
+              sector: "Sector",
+              energyConsumption: "Energy Consumption",
+              relativeEnergyConsumption: "Relative Energy Consumption",
             },
           },
         },
       },
-    };
+    },
   };
 }

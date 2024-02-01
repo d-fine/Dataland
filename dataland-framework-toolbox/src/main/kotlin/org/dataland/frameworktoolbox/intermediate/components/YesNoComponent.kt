@@ -1,12 +1,15 @@
 package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
+import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
+import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.SimpleDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * A YesNoComponent is either Yes or No.
@@ -23,8 +26,10 @@ class YesNoComponent(
                 FrameworkDisplayValueLambda(
                     "formatYesNoValueForDatatable(${getTypescriptFieldAccessor(true)})",
                     setOf(
-                        "import { formatYesNoValueForDatatable } from " +
-                            "\"@/components/resources/dataTable/conversion/YesNoValueGetterFactory\";",
+                        TypeScriptImport(
+                            "formatYesNoValueForDatatable",
+                            "@/components/resources/dataTable/conversion/YesNoValueGetterFactory",
+                        ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
@@ -33,10 +38,11 @@ class YesNoComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        val uploadComponentNameToUse = if (documentSupport is SimpleDocumentSupport) {
-            "YesNoBaseDataPointFormField"
-        } else {
-            "YesNoFormField"
+        val uploadComponentNameToUse = when (documentSupport) {
+            is NoDocumentSupport -> "YesNoFormField"
+            is SimpleDocumentSupport -> "YesNoBaseDataPointFormField"
+            is ExtendedDocumentSupport -> "YesNoExtendedDataPointFormField"
+            else -> throw IllegalArgumentException("YesNoComponent does not support document support '$documentSupport")
         }
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,

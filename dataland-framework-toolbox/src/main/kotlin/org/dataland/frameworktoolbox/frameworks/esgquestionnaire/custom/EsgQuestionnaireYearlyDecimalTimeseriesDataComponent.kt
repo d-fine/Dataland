@@ -17,6 +17,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigB
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.capitalizeEn
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import org.dataland.frameworktoolbox.utils.typescript.generateTsCodeForOptionsOfSelectionFormFields
 
 /**
@@ -76,6 +77,7 @@ class EsgQuestionnaireYearlyDecimalTimeseriesDataComponent(
                 ),
                 isNullable,
             ),
+            documentSupport.getJvmAnnotations(),
         )
     }
 
@@ -125,9 +127,11 @@ class EsgQuestionnaireYearlyDecimalTimeseriesDataComponent(
                     "$configurationObjectString, " +
                     "'${StringEscapeUtils.escapeEcmaScript(label)}')",
                 setOf(
-                    "import { formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable } from " +
-                        "\"@/components/resources/dataTable/conversion/esg-questionnaire" +
-                        "/EsgQuestionnaireYearlyDecimalTimeseriesDataGetterFactory\";",
+                    TypeScriptImport(
+                        "formatEsgQuestionnaireYearlyDecimalTimeseriesDataForTable",
+                        "@/components/resources/dataTable/conversion/esg-questionnaire" +
+                            "/EsgQuestionnaireYearlyDecimalTimeseriesDataGetterFactory",
+                    ),
                 ),
             ),
         )

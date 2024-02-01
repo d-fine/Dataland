@@ -2,11 +2,13 @@ package org.dataland.frameworktoolbox.intermediate.components
 
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.basecomponents.NumberBaseComponent
+import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
  * A PercentageComponent represents a decimal percentage between 0 % and 100 %.
@@ -23,8 +25,10 @@ class PercentageComponent(
                 FrameworkDisplayValueLambda(
                     "formatPercentageForDatatable(${getTypescriptFieldAccessor(true)})",
                     setOf(
-                        "import { formatPercentageForDatatable } from" +
-                            " \"@/components/resources/dataTable/conversion/PercentageValueGetterFactory\";",
+                        TypeScriptImport(
+                            "formatPercentageForDatatable",
+                            "@/components/resources/dataTable/conversion/PercentageValueGetterFactory",
+                        ),
                     ),
                 ),
                 label, getTypescriptFieldAccessor(),
@@ -33,6 +37,7 @@ class PercentageComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+        requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = "NumberFormField",

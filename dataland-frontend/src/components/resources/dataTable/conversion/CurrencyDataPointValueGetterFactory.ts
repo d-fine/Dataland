@@ -1,8 +1,37 @@
 import { type Field } from "@/utils/GenericFrameworkTypes";
-import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
+import {
+  type AvailableMLDTDisplayObjectTypes,
+  MLDTDisplayComponentName,
+} from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type CurrencyDataPoint } from "@clients/backend";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
-import { getDataPointGetterFactory } from "@/components/resources/dataTable/conversion/DataPoints";
+import {
+  getDataPointGetterFactory,
+  wrapDisplayValueWithDatapointInformation,
+} from "@/components/resources/dataTable/conversion/DataPoints";
+
+/**
+ * Formats a currency value for display in the data-table
+ * @param dataPoint the datapoint to format
+ * @param fieldLabel the label of the datapoint
+ * @returns the cell to display
+ */
+export function formatCurrencyForDisplay(
+  dataPoint: CurrencyDataPoint | null | undefined,
+  fieldLabel: string,
+): AvailableMLDTDisplayObjectTypes {
+  const datapointValue = formatAmountWithCurrency({ amount: dataPoint?.value });
+  const valueForDisplay = datapointValue ? `${datapointValue} ${dataPoint?.currency ?? ""}`.trim() : "";
+
+  return wrapDisplayValueWithDatapointInformation(
+    {
+      displayValue: valueForDisplay,
+      displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
+    },
+    fieldLabel,
+    dataPoint,
+  );
+}
 
 /**
  * Returns a value factory that returns the value of the currency data point form field

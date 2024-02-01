@@ -45,9 +45,9 @@ export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData 
         fiscalYearStart: generateFutureDate(),
       },
       companyFinancials: {
-        revenueInEUR: dataGenerator.randomInt(100000000),
-        operatingCostInEUR: dataGenerator.randomInt(80000000),
-        capitalAssetsInEUR: dataGenerator.randomInt(70000000),
+        revenueInEUR: dataGenerator.randomInt(0, 100000000),
+        operatingCostInEUR: dataGenerator.randomInt(0, 80000000),
+        capitalAssetsInEUR: dataGenerator.randomInt(0, 70000000),
       },
     },
     production: {
@@ -64,9 +64,9 @@ export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData 
           dataGenerator.randomPercentageRangeInvestmentEnergyEfficiency(),
       },
       consumption: {
-        powerConsumptionInMWh: dataGenerator.randomInt(2000),
+        powerConsumptionInMWh: dataGenerator.randomInt(0, 2000),
         powerFromRenewableSources: dataGenerator.randomYesNo(),
-        energyConsumptionHeatingAndHotWaterInMWh: dataGenerator.randomInt(1000),
+        energyConsumptionHeatingAndHotWaterInMWh: dataGenerator.randomInt(0, 1000),
         primaryEnergySourceForHeatingAndHotWater: dataGenerator.randomHeatSource(),
         percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration:
           dataGenerator.randomPercentageRangeEnergyConsumption(),
@@ -75,7 +75,7 @@ export function generateSmeData(nullProbability = DEFAULT_PROBABILITY): SmeData 
     insurances: {
       naturalHazards: {
         insuranceAgainstNaturalHazards: dataGenerator.randomYesNo(),
-        amountCoveredByInsuranceAgainstNaturalHazards: dataGenerator.randomInt(50000000),
+        amountCoveredByInsuranceAgainstNaturalHazards: dataGenerator.randomInt(0, 50000000),
         naturalHazardsCovered: dataGenerator.randomSelectionOfNaturalHazards(),
       },
     },
