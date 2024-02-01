@@ -1,4 +1,4 @@
-<table id="header" style="background-color: #ffffff; width: 600px; border: 0 solid #e3e3e3; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0; margin: 0"><tbody>
+<table id="header" style="background-color: #ffffff; width: 600px; border: 0 none; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0; margin: 0"><tbody>
     <tr style="background-color: #ffffff;">
         <td style="text-align: left; width: 40px; padding: 0">
             <img src="${baseUrl}/images/email/wr1.png" width="15" height="14" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
@@ -23,9 +23,6 @@
         <td></td>
         <td style="border-bottom: 1px solid #dadada; height: 20px">&nbsp;</td>
         <td></td>
-    </tr>
-    <tr>
-        <td colspan="3" style="height: 20px">&nbsp;</td>
     </tr>
     </tbody>
 </table>

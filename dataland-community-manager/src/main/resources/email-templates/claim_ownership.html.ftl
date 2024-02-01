@@ -1,3 +1,5 @@
+<#macro if if then else><#if if>${then}<#else>${else}</#if></#macro>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +17,7 @@
         <td rowspan="15" style="width: 40px">&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="3">Exciting news! 📣<br>Your data are in high demand on Dataland! A user is requesting data from ${companyName}.</td>
+        <td colspan="3">Exciting news! 📣<br>Your data are in high demand on Dataland! A user is requesting data<br>from ${companyName}.</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
@@ -25,9 +27,20 @@
             <table style="background-color: #f6f6f6; border-collapse: collapse; padding: 0; margin: 0; width: 520px">
                 <tbody>
                 <tr>
-                    <td rowspan="18" style="width: 20px">&nbsp;</td>
-                    <td style="width: 480px; height: 20px">&nbsp;</td>
-                    <td rowspan="18" style="width: 20px">&nbsp;</td>
+                    <td style="text-align: left; width: 20px; padding: 0">
+                        <img src="${baseUrl}/images/email/gr1.png" width="13" height="13" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
+                    </td>
+                    <td style="text-align: right; width: 480px; padding: 0">
+                        &nbsp;
+                    </td>
+                    <td style="text-align: right; width: 20px; padding: 0">
+                        <img src="${baseUrl}/images/email/gr2.png" width="13" height="13" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="<@if message?? 18 14 />">&nbsp;</td>
+                    <td style="height: 7px">&nbsp;</td>
+                    <td rowspan="<@if message?? 18 14 />">&nbsp;</td>
                 </tr>
                 <tr>
                     <td>Framework</td>
@@ -69,6 +82,7 @@
                         </a>
                     </td>
                 </tr>
+                <#if message??>
                 <tr>
                     <td style="height: 20px">&nbsp;</td>
                 </tr>
@@ -79,10 +93,23 @@
                     <td style="font-size: 5px; height: 5px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="font-weight: bold;">Hello Anna! I would really appreciate if you could provide the data asap.</td>
+                    <td style="font-weight: bold;">${message}</td>
                 </tr>
+                </#if>
                 <tr>
                     <td style="height: 20px">&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td style="text-align: left; width: 20px; padding: 0">
+                        <img src="${baseUrl}/images/email/gr3.png" width="13" height="13" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
+                    </td>
+                    <td style="text-align: right; width: 480px; padding: 0">
+                        &nbsp;
+                    </td>
+                    <td style="text-align: right; width: 20px; padding: 0">
+                        <img src="${baseUrl}/images/email/gr4.png" width="13" height="13" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -101,8 +128,8 @@
     <tr>
         <td colspan="3">
             <ol style="line-height: 25px;">
-                <li>Unlock all your account features by <b>claiming ownership of your company.</b></li>
-                <li><b>Provide your data.</b></li>
+                <li>Unlock all your account features by claiming ownership of your company.</li>
+                <li>Provide your data.</li>
             </ol>
         </td>
     </tr>
