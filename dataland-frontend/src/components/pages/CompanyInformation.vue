@@ -8,7 +8,7 @@
       <div class="company-details__headline">
         <div class="left-elements">
           <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
-          <div class="p-badge badge-light-green outline" v-if="isUserDataOwner">
+          <div class="p-badge badge-light-green outline" data-test="verifiedDataOwnerBadge" v-if="isUserDataOwner">
             <span class="material-icons-outlined fs-sm">verified</span>
             Verified Data Owner
           </div>
