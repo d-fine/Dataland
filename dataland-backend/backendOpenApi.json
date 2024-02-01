@@ -10427,6 +10427,19 @@
           }
         }
       },
+      "AmountWithCurrency": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "nullable": true
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "AssuranceDataPoint": {
         "required": [
           "value"
@@ -10557,6 +10570,14 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
           }
         }
       },
@@ -10566,6 +10587,14 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
           }
         }
       },
@@ -10575,6 +10604,14 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
           }
         }
       },
@@ -10584,6 +10621,14 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
           }
         }
       },
@@ -10781,6 +10826,14 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
           }
         }
       },
@@ -10790,6 +10843,14 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
           }
         }
       },
@@ -10799,6 +10860,14 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
           }
         }
       },
@@ -10808,6 +10877,14 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
           }
         }
       },
@@ -10894,6 +10971,14 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
           }
         }
       },
@@ -10903,6 +10988,14 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
           }
         }
       },
@@ -10912,6 +11005,14 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
           }
         }
       },
@@ -10921,6 +11022,14 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
           }
         }
       },
@@ -13443,14 +13552,14 @@
           "companyId": {
             "type": "string"
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
           "permId": {

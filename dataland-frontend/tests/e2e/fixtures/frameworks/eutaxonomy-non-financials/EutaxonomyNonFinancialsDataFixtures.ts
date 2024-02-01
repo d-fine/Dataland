@@ -48,15 +48,19 @@ export function generateEutaxonomyNonFinancialsData(
       totalAmount: dataGenerator.randomCurrencyDataPoint(),
       nonEligibleShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
       eligibleShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
       nonAlignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
       alignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
       substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
       substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),
@@ -73,15 +77,19 @@ export function generateEutaxonomyNonFinancialsData(
       totalAmount: dataGenerator.randomCurrencyDataPoint(),
       nonEligibleShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
       eligibleShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
       nonAlignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
       alignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
       substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
       substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),
@@ -98,15 +106,19 @@ export function generateEutaxonomyNonFinancialsData(
       totalAmount: dataGenerator.randomCurrencyDataPoint(),
       nonEligibleShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
       eligibleShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
       nonAlignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
       alignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
+        absoluteShare: dataGenerator.generateAmountWithCurrency(),
       },
       substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
       substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),

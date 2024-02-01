@@ -3,6 +3,7 @@ import { type EutaxonomyNonFinancialsData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatPercentageForDatatable } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
+import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatCurrencyForDisplay } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import {
@@ -10,7 +11,6 @@ import {
   formatAssuranceForDataTable,
 } from "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory";
 import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
 export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonFinancialsData> = [
   {
@@ -123,6 +123,14 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.revenue?.nonEligibleShare?.relativeShareInPercent),
           },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.revenue?.nonEligibleShare?.absoluteShare?.currency),
+          },
         ],
       },
       {
@@ -138,6 +146,14 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.revenue?.eligibleShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.revenue?.eligibleShare?.absoluteShare?.currency),
           },
         ],
       },
@@ -155,6 +171,14 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.revenue?.nonAlignedShare?.relativeShareInPercent),
           },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.revenue?.nonAlignedShare?.absoluteShare?.currency),
+          },
         ],
       },
       {
@@ -170,6 +194,14 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.revenue?.alignedShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.revenue?.alignedShare?.absoluteShare?.currency),
           },
         ],
       },
@@ -274,6 +306,14 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.capex?.nonEligibleShare?.relativeShareInPercent),
           },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.capex?.nonEligibleShare?.absoluteShare?.currency),
+          },
         ],
       },
       {
@@ -289,6 +329,14 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.capex?.eligibleShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.capex?.eligibleShare?.absoluteShare?.currency),
           },
         ],
       },
@@ -306,6 +354,14 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.capex?.nonAlignedShare?.relativeShareInPercent),
           },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.capex?.nonAlignedShare?.absoluteShare?.currency),
+          },
         ],
       },
       {
@@ -321,6 +377,14 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.capex?.alignedShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.capex?.alignedShare?.absoluteShare?.currency),
           },
         ],
       },
@@ -423,6 +487,14 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.opex?.nonEligibleShare?.relativeShareInPercent),
           },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.opex?.nonEligibleShare?.absoluteShare?.currency),
+          },
         ],
       },
       {
@@ -438,6 +510,14 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.opex?.eligibleShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.opex?.eligibleShare?.absoluteShare?.currency),
           },
         ],
       },
@@ -455,6 +535,14 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.opex?.nonAlignedShare?.relativeShareInPercent),
           },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.opex?.nonAlignedShare?.absoluteShare?.currency),
+          },
         ],
       },
       {
@@ -470,6 +558,14 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.opex?.alignedShare?.relativeShareInPercent),
+          },
+          {
+            type: "cell",
+            label: "Absolute Share",
+
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
+              formatStringForDatatable(dataset.opex?.alignedShare?.absoluteShare?.currency),
           },
         ],
       },
