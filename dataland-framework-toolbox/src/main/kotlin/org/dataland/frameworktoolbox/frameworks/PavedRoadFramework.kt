@@ -31,7 +31,6 @@ abstract class PavedRoadFramework(
     val explanation: String,
     val frameworkTemplateCsvFile: File,
     val order: Int,
-    val customUploadConfig: Boolean,
     val enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
 ) {
     val framework = Framework(
@@ -39,7 +38,6 @@ abstract class PavedRoadFramework(
         label = label,
         explanation = explanation,
         order = order,
-        customUploadConfig = false,
     )
 
     val logger by LoggerDelegate()

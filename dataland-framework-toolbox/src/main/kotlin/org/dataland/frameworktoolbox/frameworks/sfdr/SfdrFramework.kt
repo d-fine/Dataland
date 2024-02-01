@@ -20,7 +20,6 @@ class SfdrFramework : InDevelopmentPavedRoadFramework(
     explanation = "Sustainability Finance Disclosure Regulation",
     File("./dataland-framework-toolbox/inputs/sfdr/sfdr.xlsx"),
     order = 5,
-    customUploadConfig = false,
 ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils {
         return SfdrComponentGenerationUtils()

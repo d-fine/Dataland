@@ -37,7 +37,6 @@ class EsgQuestionnaireFramework : PavedRoadFramework(
         "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
     File("./dataland-framework-toolbox/inputs/esg-questionnaire/dataDictionary-GDV-VOEB-GDV-VÖB ESG questionnaire.csv"),
     order = 6,
-    customUploadConfig = false,
 ) {
 
     override fun configureDiagnostics(diagnosticManager: DiagnosticManager) {
