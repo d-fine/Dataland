@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.email
 
 import com.mailjet.client.MailjetClient
+import com.mailjet.client.MailjetRequest
 import org.dataland.datalandemail.email.Email
 import org.dataland.datalandemail.email.EmailContact
 import org.dataland.datalandemail.email.EmailContent
@@ -19,7 +20,8 @@ class EmailSenderTest {
         val senderContact = EmailContact("sender@dataland.com")
         val email = Email(senderContact, listOf(senderContact), listOf(), EmailContent("", "", ""))
         val mockMailjetClient = mock(MailjetClient::class.java)
-        `when`(mockMailjetClient.post(any())).thenThrow(EmailSendException())
+        val mockMailjetRequest = mock(MailjetRequest::class.java)
+        `when`(mockMailjetClient.post(any() ?: mockMailjetRequest)).thenThrow(EmailSendException())
         val emailSender = EmailSender(mockMailjetClient)
         assertThrows<EmailSendException> {
             emailSender.sendEmail(email)
