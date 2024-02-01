@@ -2,7 +2,7 @@
   <AuthenticationWrapper>
     <TheHeader />
     <TheContent class="paper-section">
-      <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER">
+      <AuthorizationWrapper :required-role="KEYCLOAK_ROLE_UPLOADER" :company-id="companyID">
         <MarginWrapper class="mb-2 bg-white">
           <BackButton id="backButton" class="mt-2" />
           <CompanyInformation :companyId="companyID" />
