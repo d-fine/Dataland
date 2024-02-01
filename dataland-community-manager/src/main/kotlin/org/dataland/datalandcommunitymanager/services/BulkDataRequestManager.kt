@@ -1,38 +1,40 @@
 package org.dataland.datalandcommunitymanager.services
 
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
+import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
 import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Instant
 import java.util.*
 
 /**
- * Implementation of a request manager service for all operations concerning the processing of data requests
+ * Implementation of a request manager service for all operations concerning the processing of bulk data requests
  */
-@Service("DataRequestManager")
-class DataRequestManager(
+@Service("BulkDataRequestManager")
+class BulkDataRequestManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyGetter: CompanyGetter,
     @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
     @Autowired private val emailSender: EmailSender,
+    @Autowired private val objectMapper: ObjectMapper,
 ) {
-    val isinRegex = Regex("^[A-Z]{2}[A-Z\\d]{10}$")
-    val leiRegex = Regex("^[0-9A-Z]{18}[0-9]{2}$")
-    val permIdRegex = Regex("^\\d+$")
+    private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyGetter, objectMapper)
 
     /**
      * Processes a bulk data request from a user
@@ -43,12 +45,11 @@ class DataRequestManager(
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
         val cleanedBulkDataRequest = runValidationsAndRemoveDuplicates(bulkDataRequest)
         val bulkDataRequestId = UUID.randomUUID().toString()
-        val userId = DatalandAuthentication.fromContext().userId
         dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId)
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
         for (userProvidedIdentifierValue in cleanedBulkDataRequest.listOfCompanyIdentifiers) {
-            val matchedIdentifierType = determineIdentifierTypeViaRegex(userProvidedIdentifierValue)
+            val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(userProvidedIdentifierValue)
             if (matchedIdentifierType == null) {
                 rejectedIdentifiers.add(userProvidedIdentifierValue)
                 continue
@@ -57,9 +58,8 @@ class DataRequestManager(
             processAcceptedIdentifier(
                 userProvidedIdentifierValue,
                 matchedIdentifierType,
-                bulkDataRequest.listOfFrameworkNames,
-                userId,
-                bulkDataRequestId,
+                cleanedBulkDataRequest.listOfFrameworkNames,
+                cleanedBulkDataRequest.listOfReportingPeriods,
             )
         }
         if (acceptedIdentifiers.isNotEmpty()) {
@@ -81,9 +81,16 @@ class DataRequestManager(
                 dataRequestEntity.dataRequestId,
                 dataRequestEntity.userId,
                 dataRequestEntity.creationTimestamp,
-                getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
+                utils.getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
+                dataRequestEntity.reportingPeriod,
                 dataRequestEntity.dataRequestCompanyIdentifierType,
                 dataRequestEntity.dataRequestCompanyIdentifierValue,
+                objectMapper.readValue(
+                    dataRequestEntity.messageHistory,
+                    object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
+                ),
+                dataRequestEntity.lastModifiedDate,
+                dataRequestEntity.requestStatus,
             )
         }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
@@ -98,6 +105,7 @@ class DataRequestManager(
     fun getAggregatedDataRequests(
         identifierValue: String?,
         dataTypes: Set<DataTypeEnum>?,
+        reportingPeriod: String?,
     ): List<AggregatedDataRequest> {
         val dataTypesFilterForQuery = if (dataTypes != null && dataTypes.isEmpty()) {
             null
@@ -105,10 +113,11 @@ class DataRequestManager(
             dataTypes?.map { it.value }
         }
         val aggregatedDataRequestEntities =
-            dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery)
+            dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery, reportingPeriod)
         val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
             AggregatedDataRequest(
-                getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataTypeName),
+                utils.getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataTypeName),
+                aggregatedDataRequestEntity.reportingPeriod,
                 aggregatedDataRequestEntity.dataRequestCompanyIdentifierType,
                 aggregatedDataRequestEntity.dataRequestCompanyIdentifierValue,
                 aggregatedDataRequestEntity.count,
@@ -123,15 +132,42 @@ class DataRequestManager(
         }
     }
 
+    private fun errorMessageForEmptyInputConfigurations(
+        listOfIdentifiers: List<String>,
+        listOfFrameworks: List<DataTypeEnum>,
+        listOfReportingPeriods: List<String>,
+    ): String {
+        return when {
+            listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
+                "All " +
+                    "provided lists are empty."
+
+            listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() ->
+                "The lists of company identifiers and " +
+                    "frameworks are empty."
+
+            listOfIdentifiers.isEmpty() && listOfReportingPeriods.isEmpty() ->
+                "The lists of company identifiers and " +
+                    "reporting periods are empty."
+
+            listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
+                "The lists of frameworks and reporting " +
+                    "periods are empty."
+
+            listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
+            listOfFrameworks.isEmpty() -> "The list of frameworks is empty."
+            else -> "The list of reporting periods is empty."
+        }
+    }
+
     private fun assureValidityOfRequestLists(bulkDataRequest: BulkDataRequest) {
         val listOfIdentifiers = bulkDataRequest.listOfCompanyIdentifiers
         val listOfFrameworks = bulkDataRequest.listOfFrameworkNames
-        if (listOfIdentifiers.isEmpty() || listOfFrameworks.isEmpty()) {
-            val errorMessage = when {
-                listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() -> "All provided lists are empty."
-                listOfIdentifiers.isEmpty() -> "The list of company identifiers is empty."
-                else -> "The list of frameworks is empty."
-            }
+        val listOfReportingPeriods = bulkDataRequest.listOfReportingPeriods
+        if (listOfIdentifiers.isEmpty() || listOfFrameworks.isEmpty() || listOfReportingPeriods.isEmpty()) {
+            val errorMessage = errorMessageForEmptyInputConfigurations(
+                listOfIdentifiers, listOfFrameworks, listOfReportingPeriods,
+            )
             throw InvalidInputApiException(
                 "No empty lists are allowed as input for bulk data request.",
                 errorMessage,
@@ -142,9 +178,11 @@ class DataRequestManager(
     private fun removeDuplicatesInRequestLists(bulkDataRequest: BulkDataRequest): BulkDataRequest {
         val distinctCompanyIdentifiers = bulkDataRequest.listOfCompanyIdentifiers.distinct()
         val distinctFrameworkNames = bulkDataRequest.listOfFrameworkNames.distinct()
+        val distinctReportingPeriods = bulkDataRequest.listOfReportingPeriods.distinct()
         return bulkDataRequest.copy(
             listOfCompanyIdentifiers = distinctCompanyIdentifiers,
             listOfFrameworkNames = distinctFrameworkNames,
+            listOfReportingPeriods = distinctReportingPeriods,
         )
     }
 
@@ -154,111 +192,26 @@ class DataRequestManager(
         return removeDuplicatesInRequestLists(bulkDataRequest)
     }
 
-    private fun isDataRequestAlreadyExisting(
-        requestingUserId: String,
-        identifierValue: String,
-        framework: DataTypeEnum,
-    ): Boolean {
-        val isAlreadyExisting = dataRequestRepository.existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeName(
-            requestingUserId, identifierValue, framework.name,
-        )
-        if (isAlreadyExisting) {
-            dataRequestLogger
-                .logMessageForCheckingIfDataRequestAlreadyExists(identifierValue, framework)
-        }
-        return isAlreadyExisting
-    }
-
-    private fun storeDataRequestIfNotExisting(
-        identifierValue: String,
-        identifierType: DataRequestCompanyIdentifierType,
-        dataType: DataTypeEnum,
-        userId: String,
-        bulkDataRequestId: String,
-    ) {
-        if (!isDataRequestAlreadyExisting(userId, identifierValue, dataType)) {
-            storeDataRequestEntity(
-                buildDataRequestEntity(
-                    userId,
-                    dataType,
-                    identifierType,
-                    identifierValue,
-                ),
-                bulkDataRequestId,
-            )
-        }
-    }
-
     private fun processAcceptedIdentifier(
         userProvidedIdentifierValue: String,
         matchedIdentifierType: DataRequestCompanyIdentifierType,
         requestedFrameworks: List<DataTypeEnum>,
-        userId: String,
-        bulkDataRequestId: String,
+        requestedReportingPeriods: List<String>,
     ) {
-        val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
+        val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
         val identifierTypeToStore = datalandCompanyId?.let {
             DataRequestCompanyIdentifierType.DatalandCompanyId
         } ?: matchedIdentifierType
         val identifierValueToStore = datalandCompanyId ?: userProvidedIdentifierValue
         for (framework in requestedFrameworks) {
-            storeDataRequestIfNotExisting(
-                identifierValueToStore,
-                identifierTypeToStore,
-                framework,
-                userId,
-                bulkDataRequestId,
-            )
-        }
-    }
-
-    private fun getDatalandCompanyIdForIdentifierValue(identifierValue: String): String? {
-        var datalandCompanyId: String? = null
-        val bearerTokenOfRequestingUser = DatalandAuthentication.fromContext().credentials as String
-        val matchingCompanyIdsAndNamesOnDataland =
-            companyGetter.getCompanyIdsAndNamesForSearchString(identifierValue, bearerTokenOfRequestingUser)
-        if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
-            datalandCompanyId = matchingCompanyIdsAndNamesOnDataland.first().companyId
-        }
-        dataRequestLogger
-            .logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(identifierValue, datalandCompanyId)
-        return datalandCompanyId
-    }
-
-    private fun storeDataRequestEntity(dataRequestEntity: DataRequestEntity, bulkDataRequestId: String? = null) {
-        dataRequestRepository.save(dataRequestEntity)
-        dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId, bulkDataRequestId)
-    }
-
-    private fun buildDataRequestEntity(
-        currentUserId: String,
-        framework: DataTypeEnum,
-        identifierType: DataRequestCompanyIdentifierType,
-        identifierValue: String,
-    ): DataRequestEntity {
-        return DataRequestEntity(
-            dataRequestId = UUID.randomUUID().toString(),
-            userId = currentUserId,
-            creationTimestamp = Instant.now().toEpochMilli(),
-            dataTypeName = framework.value,
-            dataRequestCompanyIdentifierType = identifierType,
-            dataRequestCompanyIdentifierValue = identifierValue,
-        )
-    }
-
-    private fun determineIdentifierTypeViaRegex(identifierValue: String): DataRequestCompanyIdentifierType? {
-        val matchingRegexes = listOf(leiRegex, isinRegex, permIdRegex).filter { it.matches(identifierValue) }
-        return when (matchingRegexes.size) {
-            0 -> null
-            1 -> {
-                when {
-                    matchingRegexes[0] == leiRegex -> DataRequestCompanyIdentifierType.Lei
-                    matchingRegexes[0] == isinRegex -> DataRequestCompanyIdentifierType.Isin
-                    matchingRegexes[0] == permIdRegex -> DataRequestCompanyIdentifierType.PermId
-                    else -> null
-                }
+            for (reportingPeriod in requestedReportingPeriods) {
+                utils.storeDataRequestEntityIfNotExisting(
+                    identifierValueToStore,
+                    identifierTypeToStore,
+                    framework,
+                    reportingPeriod,
+                )
             }
-            else -> DataRequestCompanyIdentifierType.MultipleRegexMatches
         }
     }
 
@@ -305,14 +258,11 @@ class DataRequestManager(
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
         val summary = "All provided company identifiers have an invalid format."
-        val message = "The company identifiers you provided do not match the patterns of a valid LEI, ISIN or PermId."
+        val message = "The company identifiers you provided do not match the patterns " +
+            "of a valid LEI, ISIN or PermId."
         throw InvalidInputApiException(
             summary,
             message,
         )
-    }
-
-    private fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? {
-        return DataTypeEnum.values().find { it.value == frameworkName }
     }
 }

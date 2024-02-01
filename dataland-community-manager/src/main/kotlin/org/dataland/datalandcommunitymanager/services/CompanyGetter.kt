@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ApiClient
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
+import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
@@ -24,5 +25,15 @@ class CompanyGetter(
     fun getCompanyIdsAndNamesForSearchString(searchString: String, bearerToken: String): List<CompanyIdAndName> {
         ApiClient.accessToken = bearerToken
         return companyDataControllerApi.getCompaniesBySearchString(searchString)
+    }
+
+    /** This method gets the company information behind the given company ID
+     * @param companyId the company ID string to use for this
+     * @param bearerToken a bearer token required to perform the api call
+     * @returns the StoredCompany object for the give company ID
+     */
+    fun getCompanyById(companyId: String, bearerToken: String): StoredCompany {
+        ApiClient.accessToken = bearerToken
+        return companyDataControllerApi.getCompanyById(companyId)
     }
 }
