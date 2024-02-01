@@ -143,8 +143,8 @@ class DataRequestManagerUtils(
         val dataRequestId = UUID.randomUUID().toString()
         val currentUserId = DatalandAuthentication.fromContext().userId
         val currentTimestamp = Instant.now().toEpochMilli()
-        val messageHistory = if (contactList != null || message != null) {
-            mutableListOf(StoredDataRequestMessageObject(contactList, message, currentTimestamp))
+        val messageHistory = if (!isContactListTrivial(contactList)) {
+            mutableListOf(StoredDataRequestMessageObject(contactList!!, message, currentTimestamp))
         } else {
             mutableListOf()
         }
@@ -160,6 +160,15 @@ class DataRequestManagerUtils(
             lastModifiedDate = currentTimestamp,
             requestStatus = RequestStatus.Open,
         )
+    }
+
+    /**
+     * Checks whether a provided contact list is trivial, i.e. is null, empty or consists only of empty or blank strings
+     * @param contactList the contact list to verify
+     * @return true if the contact list is trivial, false otherwise
+     */
+    fun isContactListTrivial(contactList: List<String>?): Boolean {
+        return contactList.isNullOrEmpty() || !contactList.any { it.isNotBlank() }
     }
 
     private fun isDataRequestAlreadyExisting(

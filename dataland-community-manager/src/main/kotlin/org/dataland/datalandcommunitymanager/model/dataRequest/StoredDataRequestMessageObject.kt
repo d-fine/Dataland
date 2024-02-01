@@ -7,7 +7,7 @@ package org.dataland.datalandcommunitymanager.model.dataRequest
  * @param lastModifiedDate the date when the data request has been modified the last time
  */
 data class StoredDataRequestMessageObject(
-    var contactList: List<String>? = null,
+    var contactList: List<String>,
 
     val message: String? = null,
 

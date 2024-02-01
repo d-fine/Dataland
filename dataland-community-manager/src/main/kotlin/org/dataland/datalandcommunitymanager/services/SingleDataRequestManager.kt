@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
@@ -67,6 +67,7 @@ class SingleDataRequestManager(
                 throwInvalidInputApiExceptionBecauseIdentifierWasRejected()
             }
         }
+        throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest)
         storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
             storedDataRequests, singleDataRequest, identifierValueToStore, identifierTypeToStore,
         )
@@ -100,6 +101,15 @@ class SingleDataRequestManager(
             summary,
             message,
         )
+    }
+
+    private fun throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest: SingleDataRequest) {
+        if (utils.isContactListTrivial(singleDataRequest.contactList) && !singleDataRequest.message.isNullOrBlank()) {
+            throw InvalidInputApiException(
+                "Insufficient information to create message object.",
+                "Without at least one proper email address being provided no message can be forwarded.",
+            )
+        }
     }
 
     private fun storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
@@ -154,6 +164,7 @@ class SingleDataRequestManager(
      * @param dataRequestCompanyIdentifierValue the company identifier value to apply to the data request
      * @return all filtered data requests
      */
+
     fun getDataRequests(
         dataType: DataTypeEnum?,
         userId: String?,
@@ -161,31 +172,15 @@ class SingleDataRequestManager(
         reportingPeriod: String?,
         dataRequestCompanyIdentifierValue: String?,
     ): List<StoredDataRequest>? {
-        var result = dataRequestRepository.findAll()
-        fun updateResult(otherList: List<DataRequestEntity>) {
-            result = result.intersect(otherList.toSet()).toMutableList()
-        }
+        val filter = GetDataRequestsSearchFilter(
+            dataTypeNameFilter = dataType?.name ?: "",
+            userIdFilter = userId ?: "",
+            requestStatus = requestStatus,
+            reportingPeriodFilter = reportingPeriod ?: "",
+            dataRequestCompanyIdentifierValueFilter = dataRequestCompanyIdentifierValue ?: "",
+        )
+        val result = dataRequestRepository.searchDataRequestEntity(filter)
 
-        if (dataType != null) {
-            updateResult(dataRequestRepository.findByDataTypeName(dataType.toString()))
-        }
-        if (userId != null) {
-            updateResult(dataRequestRepository.findByUserId(userId))
-        }
-        if (requestStatus != null) {
-            updateResult(dataRequestRepository.findByRequestStatus(requestStatus))
-        }
-        if (reportingPeriod != null) {
-            updateResult(dataRequestRepository.findByReportingPeriod(reportingPeriod))
-        }
-        if (dataRequestCompanyIdentifierValue != null) {
-            result = result.intersect(
-                dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue),
-            ).toMutableList()
-            updateResult(
-                dataRequestRepository.findByDataRequestCompanyIdentifierValue(dataRequestCompanyIdentifierValue),
-            )
-        }
         return result.map { utils.buildStoredDataRequestFromDataRequestEntity(it) }
     }
 
