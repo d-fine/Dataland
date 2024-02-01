@@ -88,11 +88,13 @@ const handleInputFocus = (): void => {
 };
 
 const handleInputBlur = (): void => {
-  inputFocused.value = false;
-  if (isMobile.value) {
-    const header = document.querySelector(".header") as HTMLElement;
-    if (header) header.style.display = "";
-  }
+  setTimeout(() => {
+    inputFocused.value = false;
+    if (isMobile.value) {
+      const header = document.querySelector(".header") as HTMLElement;
+      if (header) header.style.display = "";
+    }
+  }, 300);
 };
 </script>
 

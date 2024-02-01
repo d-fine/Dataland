@@ -15,8 +15,8 @@
       append-to="self"
       @complete="searchCompanyName($event)"
       @item-select="$emit('selectCompany', $event.value)"
-      @focus="handleInputFocus"
-      @blur="handleInputBlur"
+      @focus="$emit('focus')"
+      @blur="$emit('blur')"
     >
       <template #option="slotProps">
         <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
@@ -65,7 +65,6 @@ export default defineComponent({
       latestValidSearchString: "",
       autocompleteArray: [] as Array<CompanyIdAndName>,
       resultLimit: 100,
-      inputFocused: false,
     };
   },
   props: {
@@ -90,28 +89,6 @@ export default defineComponent({
   },
   emits: ["focus", "blur", "selectCompany"],
   methods: {
-    /**
-     * Handles the focus event on the autocomplete input field. This method
-     * sets the inputFocused data property to true and emits a 'focus' event.
-     * It is designed to be triggered when the autocomplete input gains focus.
-     */
-    handleInputFocus() {
-      this.inputFocused = true;
-      this.$emit("focus");
-    },
-
-    /**
-     * Handles the blur event on the autocomplete input field. This method
-     * resets the inputFocused data property to false and emits a 'blur' event.
-     * It is designed to be triggered when the autocomplete input loses focus.
-     */
-    handleInputBlur() {
-      setTimeout(() => {
-        this.inputFocused = false;
-        this.$emit("blur");
-      }, 300);
-    },
-
     /**
      * The input string is stored in the variable latestValidSearchString if it is a string and not empty
      * @param currentSearchString input to be checked (can be of type string or object)
