@@ -26,15 +26,6 @@ describe("As a user, I expect the navigation around the company cockpit to work 
         };
       });
   });
-  it("From the company cockpit page claim data ownership via the panel and context menu", () => {
-    cy.ensureLoggedIn(uploader_name, uploader_pw);
-    visitSomeCompanyCockpit();
-    cy.get("[data-test='claimOwnershipPanelLink']").click();
-    claimOwnershipDialog("This is a test message for claiming ownership via panel.");
-    cy.get("[data-test='contextMenuButton']").click();
-    cy.get("[data-test='contextMenuItem']").should("contain.text", "Claim").click();
-    claimOwnershipDialog("This is a test message for claiming ownership via context menu in company info");
-  });
 
   it("From the landing page visit the company cockpit via the searchbar", () => {
     cy.visitAndCheckAppMount("/");
@@ -68,6 +59,15 @@ describe("As a user, I expect the navigation around the company cockpit to work 
       "contain",
       `/companies/${someCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
     );
+  });
+  it("From the company cockpit page claim data ownership via the panel and context menu", () => {
+    cy.ensureLoggedIn(uploader_name, uploader_pw);
+    visitSomeCompanyCockpit();
+    cy.get("[data-test='claimOwnershipPanelLink']").click();
+    claimOwnershipDialog("This is a test message for claiming ownership via panel.");
+    cy.get("[data-test='contextMenuButton']").click();
+    cy.get("[data-test='contextMenuItem']").should("contain.text", "Claim").click();
+    claimOwnershipDialog("This is a test message for claiming ownership via context menu in company info");
   });
 
   /**
