@@ -47,6 +47,10 @@ appear.
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 - [ ] Execute `refreshVersions` in Gradle tasks or `gradlew refreshVersions` to generate version suggestions in `versions.properties`
 - [ ] Update versions in `versions.properties`
+  - [] as of 31.01.2024 plugin.org.springframework.boot=3.2.2 will break the CI, 3.2.1 works fine
+  - [] here is the error message for future reference
+    - tests/e2e/specs/infrastructure/VerifyDeployment.ts(10,38): error TS2339: Property 'health' does not exist on type 'ActuatorApi'. 
+    - tests/e2e/specs/infrastructure/VerifyDeployment.ts(11,20): error TS18046: 'healthResponse' is of type 'unknown'.
 - [ ] Update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 
 ### Dataland frontend
@@ -76,9 +80,17 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-api-key-manager/Dockerfile`
 - [ ] `./dataland-api-key-manager/DockerfileBase`
 - [ ] `./dataland-api-key-manager/DockerfileTest`
+- [ ] `./dataland-automated-qa-service/Dockerfile`
+- [ ] `./dataland-automated-qa-service/DockerfileBase`
+- [ ] `./dataland-automated-qa-service/DockerfileTest`
 - [ ] `./dataland-backend/Dockerfile`
 - [ ] `./dataland-backend/DockerfileBase`
 - [ ] `./dataland-backend/DockerfileTest`
+- [ ] `./dataland-batch-manager/Dockerfile`
+- [ ] `./dataland-batch-manager/DockerfileBase`
+- [ ] `./dataland-community-manager/Dockerfile`
+- [ ] `./dataland-community-manager/DockerfileBase`
+- [ ] `./dataland-community-manager/DockerfileTest`
 - [ ] `./dataland-document-manager/Dockerfile`
 - [ ] `./dataland-document-manager/DockerfileBase`
 - [ ] `./dataland-document-manager/DockerfileTest`
@@ -86,18 +98,19 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-e2etests/DockerfileBase`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
+- [ ] `./dataland-inbound-admin-proxy/Dockerfile`
+- [ ] `./dataland-inbound-proxy/Dockerfile`
 - [ ] `./dataland-internal-storage/Dockerfile`
 - [ ] `./dataland-internal-storage/DockerfileBase`
 - [ ] `./dataland-internal-storage/DockerfileTest`
+- [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
+- [ ] `./dataland-pgadmin/Dockerfile`
 - [ ] `./dataland-qa-service/Dockerfile`
 - [ ] `./dataland-qa-service/DockerfileBase`
 - [ ] `./dataland-qa-service/DockerfileTest`
-- [ ] `./dataland-automated-qa-service/DockerfileBase`
 - [ ] `./dataland-rabbitmq/Dockerfile`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
 - [ ] `./dataland-inbound-proxy/Dockerfile`
-- [ ] `./dataland-pgadmin/Dockerfile`
-- [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./base-dockerfiles/DockerfileGradle`
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
   document-manager-db, qa-service-db, community-manager-db and frontend-dev in `./docker-compose.yml`
