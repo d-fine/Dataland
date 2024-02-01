@@ -42,7 +42,7 @@
     "@cypress/code-coverage": "^3.12.19",
     "@faker-js/faker": "^8.4.0",
     "@rushstack/eslint-patch": "^1.7.2",
-    "@types/node": "20.11.14",
+    "@types/node": "20.11.15",
     "@vitejs/plugin-vue": "^5.0.3",
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^12.0.0",
