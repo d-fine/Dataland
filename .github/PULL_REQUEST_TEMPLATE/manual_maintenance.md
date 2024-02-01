@@ -33,7 +33,7 @@ appear.
   - keycloak:
     - [ ] @zxcvbn-ts/language-common > 2.0.1 (issues in rebuilding keycloak Docker images)
     - [ ] @zxcvbn-ts/language-en > 2.1.0(issues in rebuilding keycloak Docker images)
-    - [ ] vite > 4.5.1
+    - [ ] @types/node > 20.10.8 causes issues with vite > 4.5.1 which causes build to fail
 - [ ] Update e2etests/Dockerfile update breaks the build
 - [ ] Update Ktlint to >= 49.0 breaks the ktlint tasks (issue described here: 
   https://github.com/JLLeitschuh/ktlint-gradle/issues/665 and possible fix here: 
