@@ -17,9 +17,10 @@ import java.io.StringWriter
  */
 @Component
 class SingleDataRequestEmailBuilder(
+    @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
-    @Autowired val companyGetter: CompanyGetter,
+    @Autowired private val companyGetter: CompanyGetter,
 ) : BaseEmailBuilder(
     senderEmail = senderEmail,
     senderName = senderName,
@@ -60,7 +61,7 @@ class SingleDataRequestEmailBuilder(
         return StringBuilder()
             .append("Greetings!\n\nYou have been invited to provide data on Dataland.\n")
             .append("People are interested in ${readableFrameworkNameMapping[dataType]} data")
-            .append(" for $companyName  for the year${if (reportingPeriods.size > 1) "s" else ""}")
+            .append(" from $companyName  for the year${if (reportingPeriods.size > 1) "s" else ""}")
             .append(" ${reportingPeriods.joinToString(", ")}.\n")
             .also {
                 if (!message.isNullOrBlank()) {
@@ -68,7 +69,7 @@ class SingleDataRequestEmailBuilder(
                     it.append(message)
                 }
             }
-            .append("\n\nRegister as a data owner under https://dataland.com/companies/$companyId")
+            .append("\n\nRegister as a data owner under $proxyPrimaryUrl/companies/$companyId")
             .toString()
     }
 
@@ -87,7 +88,7 @@ class SingleDataRequestEmailBuilder(
             "message" to message,
             "dataType" to readableFrameworkNameMapping[dataType],
             "reportingPeriods" to reportingPeriods.joinToString(", "),
-            "baseUrl" to "https://local-dev.dataland.com",
+            "baseUrl" to proxyPrimaryUrl,
         )
         val freemarkerTemplate = FreeMarker.configuration
             .getTemplate("/claim_ownership.html.ftl")

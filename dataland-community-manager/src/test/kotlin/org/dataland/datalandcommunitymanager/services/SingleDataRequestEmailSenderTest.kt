@@ -29,10 +29,10 @@ import org.springframework.boot.test.mock.mockito.MockBean
 @SpringBootTest(classes = [DatalandCommunityManager::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class SingleDataRequestEmailSenderTest(
+    @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
     @Value("\${dataland.notification.data-request.internal.receivers}") semicolonSeparatedInternalReceiverEmails: String,
     @Value("\${dataland.notification.data-request.internal.cc}") semicolonSeparatedInternalCcEmails: String,
-
-    ) {
+) {
     private lateinit var singleDataRequestEmailSender: SingleDataRequestEmailSender
     private lateinit var mockEmailSender: EmailSender
 
@@ -46,6 +46,8 @@ class SingleDataRequestEmailSenderTest(
 
     private val companyIdentifier = "DEsomething"
     private val companyName = "Real Company"
+
+    private val reportingPeriods = listOf("2023", "2022")
 
     private val internalReceivers = semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedInternalReceiverEmails)
     private val internalCc = semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedInternalCcEmails)
@@ -89,11 +91,8 @@ class SingleDataRequestEmailSenderTest(
 
     @Test
     fun `validate that an internal email is sent if there is no Dataland company ID provided`() {
-        val reportingPeriods = listOf("2023")
         expectSentEmailsToMatchInternalEmail(
             DataRequestCompanyIdentifierType.Isin,
-            companyIdentifier,
-            reportingPeriods,
         )
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
             mockRequesterAuthentication,
@@ -112,11 +111,8 @@ class SingleDataRequestEmailSenderTest(
 
     @Test
     fun `validate that an internal email is sent if there are no contact provided`() {
-        val reportingPeriods = listOf("2023")
         expectSentEmailsToMatchInternalEmail(
             DataRequestCompanyIdentifierType.DatalandCompanyId,
-            companyIdentifier,
-            reportingPeriods,
             true,
         )
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
@@ -134,30 +130,27 @@ class SingleDataRequestEmailSenderTest(
         assertNumEmailsSentEquals(1)
     }
 
-//    @Test
-//    fun `validate that an external email is sent to the provided contact for a Dataland company ID`() {
-//        val reportingPeriods = listOf("2023")
-//        expectSentEmailsToMatchContactEmail(
-//            DataRequestCompanyIdentifierType.DatalandCompanyId,
-//            companyIdentifier,
-//            reportingPeriods,
-//            companyName,
-//        )
-//        singleDataRequestEmailSender.sendSingleDataRequestEmails(
-//            mockRequesterAuthentication,
-//            SingleDataRequest(
-//                "unused",
-//                dataType,
-//                listOfReportingPeriods = reportingPeriods,
-//                contactList = listOf("contact@provider.com"),
-////                contactList = listOf("contact@provider.com", "othercontact@provider.com"), TODO test multiple contacts
-//                message = "not of interest"
-//            ),
-//            DataRequestCompanyIdentifierType.DatalandCompanyId,
-//            companyIdentifier,
-//        )
-//        assertNumEmailsSentEquals(1)
-//    }
+    @Test
+    fun `validate that an external email is sent to the provided contact for a Dataland company ID`() {
+        val contactEmail = "contact@provider.com"
+        expectSentEmailsToMatchContactEmail(
+            contactEmail,
+        )
+        singleDataRequestEmailSender.sendSingleDataRequestEmails(
+            mockRequesterAuthentication,
+            SingleDataRequest(
+                "unused",
+                dataType,
+                listOfReportingPeriods = reportingPeriods,
+                contactList = listOf(contactEmail),
+//                contactList = listOf("contact@provider.com", "othercontact@provider.com"), TODO test multiple contacts
+                message = "not of interest"
+            ),
+            DataRequestCompanyIdentifierType.DatalandCompanyId,
+            companyIdentifier,
+        )
+        assertNumEmailsSentEquals(1)
+    }
 
     private fun expectSentEmailsToMatch(
         expectedSender: EmailContact,
@@ -174,12 +167,14 @@ class SingleDataRequestEmailSenderTest(
             val emailToSend = invocation.arguments[0] as Email
             assertEquals(expectedSender, emailToSend.sender)
             assertEquals(expectedReceivers, emailToSend.receivers)
-            assertEquals(expectedCc, emailToSend.cc)
+            assertEquals(expectedCc, emailToSend.cc ?: emptyList<EmailContact>())
             assertEquals(expectedSubject, emailToSend.content.subject)
             expectedToBeContainedInTextContent.forEach {
                 assertTrue(emailToSend.content.textContent.contains(it))
             }
             expectedToBeContainedInHtmlContent.forEach {
+                println(emailToSend.content.htmlContent)
+                println(it)
                 assertTrue(emailToSend.content.htmlContent.contains(it))
             }
             expectedNotToBeContainedInTextContent.forEach {
@@ -193,15 +188,13 @@ class SingleDataRequestEmailSenderTest(
 
     private fun expectSentEmailsToMatchInternalEmail(
         companyIdentifierType: DataRequestCompanyIdentifierType,
-        companyIdentifierValue: String,
-        reportingPeriods: List<String>,
         companyNameExpected: Boolean = false,
     ) {
         val properties = mutableMapOf(
             "User" to "User ${mockRequesterAuthentication.username} (Keycloak ID: ${mockRequesterAuthentication.userId})",
             "Data Type" to dataType.name,
             "Reporting Periods" to reportingPeriods.joinToString(", "),
-            "Company Identifier (${companyIdentifierType.name})" to companyIdentifierValue,
+            "Company Identifier (${companyIdentifierType.name})" to companyIdentifier,
         )
         val unexpectedValues = if(companyNameExpected) {
             properties["Company Name"] = companyName
@@ -218,6 +211,26 @@ class SingleDataRequestEmailSenderTest(
             expectedToBeContainedInHtmlContent = properties.map { "${it.key}: </span> ${it.value}" },
             expectedNotToBeContainedInTextContent = unexpectedValues,
             expectedNotToBeContainedInHtmlContent = unexpectedValues,
+        )
+    }
+
+    fun expectSentEmailsToMatchContactEmail(
+        contactEmail: String,
+    ) {
+        val sharedContent = listOf(
+            "from $companyName",
+            "$proxyPrimaryUrl/companies/$companyIdentifier",
+            "LkSG",
+            reportingPeriods.joinToString(", "),
+            mockRequesterAuthentication.username
+        )
+        expectSentEmailsToMatch(
+            expectedSender = EmailContact("info@dataland.com", "Dataland"),
+            expectedReceivers = listOf(EmailContact(contactEmail)),
+            expectedCc = listOf(),
+            expectedSubject = "A message from Dataland: Your ESG data are high on demand!",
+            expectedToBeContainedInTextContent = sharedContent,
+            expectedToBeContainedInHtmlContent = sharedContent,
         )
     }
 

@@ -12,6 +12,7 @@ import org.mockito.Mockito.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
@@ -19,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest(classes = [DatalandCommunityManager::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class SingleDataRequestEmailBuilderTest(
+    @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
     @Autowired val companyGetter: CompanyGetter,
 ) {
 
@@ -38,6 +40,7 @@ class SingleDataRequestEmailBuilderTest(
             mock(CompanyInformation::class.java).also { `when`(it.companyName).thenReturn(companyName) },
         )
         val email = SingleDataRequestEmailBuilder(
+            proxyPrimaryUrl = proxyPrimaryUrl,
             senderEmail = senderEmail,
             senderName = senderName,
             companyGetter = companyGetter,
