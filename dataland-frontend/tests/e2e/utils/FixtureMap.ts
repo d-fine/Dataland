@@ -5,6 +5,5 @@ export const frameworkFixtureMap = {
   [DataTypeEnum.EutaxonomyNonFinancials]: "CompanyInformationWithEuTaxonomyDataForNonFinancials",
   [DataTypeEnum.Lksg]: "CompanyInformationWithLksgData",
   [DataTypeEnum.P2p]: "CompanyInformationWithP2pData",
-  [DataTypeEnum.Sfdr]: "CompanyInformationWithSfdrData",
   [DataTypeEnum.Sme]: "CompanyInformationWithSmeData",
 };

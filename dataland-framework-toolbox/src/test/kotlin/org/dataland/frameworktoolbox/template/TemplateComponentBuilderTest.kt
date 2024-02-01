@@ -22,7 +22,7 @@ class TemplateComponentBuilderTest {
         category = "The Category",
         subCategory = "The Sub-Category",
         fieldName = "The name of the field",
-        tooltip = "A super-duper helpfull tooltip",
+        combinedTooltip = "A super-duper helpfull tooltip",
         component = "Date",
         options = "I need more options!",
         unit = "A Unit",

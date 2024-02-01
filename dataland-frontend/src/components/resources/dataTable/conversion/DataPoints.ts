@@ -7,8 +7,8 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { getFieldValueFromFrameworkDataset } from "@/components/resources/dataTable/conversion/Utils";
 import { type BaseDocumentReference, type ExtendedDocumentReference, QualityOptions } from "@clients/backend";
-import { NO_DATA_PROVIDED } from "@/utils/Constants";
-
+import { NO_DATA_PROVIDED, ONLY_AUXILIARY_DATA_PROVIDED } from "@/utils/Constants";
+import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 /**
  * Checks if a given data point has a valid reference set
  * @param dataPoint the datapoint whose reference to check
@@ -99,14 +99,51 @@ export function wrapDisplayValueWithDatapointInformation(
   fieldLabel: string,
   datapointProperties: DatapointProperties | undefined | null,
 ): AvailableMLDTDisplayObjectTypes {
-  return {
-    displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
-    displayValue: {
-      innerContents: inputValue,
-      quality: datapointProperties?.quality,
-      comment: datapointProperties?.comment ?? undefined,
-      dataSource: datapointProperties?.dataSource,
-      fieldLabel: fieldLabel,
-    },
-  };
+  if (doesAnyDataPointPropertyExist(datapointProperties)) {
+    if (inputValue.displayValue == "") {
+      return {
+        displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
+        displayValue: {
+          innerContents: formatStringForDatatable(ONLY_AUXILIARY_DATA_PROVIDED),
+          quality: datapointProperties?.quality,
+          comment: datapointProperties?.comment ?? undefined,
+          dataSource: datapointProperties?.dataSource ?? undefined,
+          fieldLabel: fieldLabel,
+        },
+      };
+    } else
+      return {
+        displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
+        displayValue: {
+          innerContents: inputValue,
+          quality: datapointProperties?.quality,
+          comment: datapointProperties?.comment ?? undefined,
+          dataSource: datapointProperties?.dataSource ?? undefined,
+          fieldLabel: fieldLabel,
+        },
+      };
+  } else if (inputValue.displayValue == "") {
+    return MLDTDisplayObjectForEmptyString;
+  } else {
+    return {
+      displayComponentName: MLDTDisplayComponentName.DataPointWrapperDisplayComponent,
+      displayValue: {
+        innerContents: inputValue,
+      },
+    } as AvailableMLDTDisplayObjectTypes;
+  }
+}
+
+/**
+ * Checks if any property of the data point is not null.
+ * Has to check for Quality != NA, since this is the default setting for no provided data.
+ * @param dataPointProperties gives dataPoint properties
+ * @returns boolean value
+ */
+function doesAnyDataPointPropertyExist(dataPointProperties: DatapointProperties | null | undefined): boolean {
+  return <boolean>(
+    ((dataPointProperties?.quality != QualityOptions.Na && dataPointProperties?.quality != null) ||
+      dataPointProperties?.comment?.length ||
+      (dataPointProperties?.dataSource && dataPointProperties?.dataSource.fileReference.trim().length > 0))
+  );
 }

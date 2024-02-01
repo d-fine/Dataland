@@ -90,8 +90,8 @@ describeIf(
                         frontendSubmittedEsgQuestionnaireDataset.unternehmensfuehrungGovernance?.unternehmensrichtlinien?.veroeffentlichteUnternehmensrichtlinien?.sort();
 
                         compareObjectKeysAndValuesDeep(
-                          esgQuestionnaireFixtureForTest.t as Record<string, object>,
-                          frontendSubmittedEsgQuestionnaireDataset as Record<string, object>,
+                          esgQuestionnaireFixtureForTest.t as unknown as Record<string, object>,
+                          frontendSubmittedEsgQuestionnaireDataset as unknown as Record<string, object>,
                         );
                       });
                   },

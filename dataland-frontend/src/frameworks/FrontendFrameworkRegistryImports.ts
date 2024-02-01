@@ -2,8 +2,11 @@
 import { type FrontendFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 import esgQuestionnaireFrontendFrameworkDefinition from "@/frameworks/esg-questionnaire/FrontendFrameworkDefinition";
 import heimathafenFrontendFrameworkDefinition from "@/frameworks/heimathafen/FrontendFrameworkDefinition";
+import sfdrFrontendFrameworkDefinition from "@/frameworks/sfdr/FrontendFrameworkDefinition";
 
-export const FrameworkDefinitions: Record<string, FrontendFrameworkDefinition<object>> = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const FrameworkDefinitions: Record<string, FrontendFrameworkDefinition<any>> = {
   esgQuestionnaire: esgQuestionnaireFrontendFrameworkDefinition,
   heimathafen: heimathafenFrontendFrameworkDefinition,
+  sfdr: sfdrFrontendFrameworkDefinition,
 };
