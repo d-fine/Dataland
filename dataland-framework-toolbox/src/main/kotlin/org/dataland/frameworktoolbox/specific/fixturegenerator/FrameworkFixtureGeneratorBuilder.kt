@@ -8,6 +8,7 @@ import org.dataland.frameworktoolbox.utils.Naming.getNameFromLabel
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 import org.dataland.frameworktoolbox.utils.freemarker.FreeMarker
 import org.dataland.frameworktoolbox.utils.typescript.EsLintRunner
+import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 import java.io.FileWriter
 import java.nio.file.Path
 import kotlin.io.path.div
@@ -79,10 +80,13 @@ class FrameworkFixtureGeneratorBuilder(
     }
 
     private fun buildDataFixtures(dataFixturesTsPath: Path) {
+        val imports = rootSectionBuilder.imports +
+            TypeScriptImport("generateFixtureDataset", "@e2e/fixtures/FixtureUtils")
+
         val freeMarkerContext = mapOf(
             "frameworkIdentifier" to framework.identifier,
             "frameworkBaseName" to getNameFromLabel(framework.identifier).capitalizeEn(),
-            "imports" to rootSectionBuilder.imports,
+            "imports" to TypeScriptImport.mergeImports(imports),
             "rootSection" to rootSectionBuilder,
         )
 

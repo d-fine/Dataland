@@ -43,14 +43,6 @@
               :inReviewMode="slotProps.inReviewMode"
             />
             <MultiLayerDataTableFrameworkPanel
-              v-if="dataType === DataTypeEnum.Sfdr"
-              :frameworkIdentifier="DataTypeEnum.Sfdr"
-              :companyId="companyId"
-              :display-configuration="convertDataModelToMLDTConfig(sfdrDataModel)"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
-              :inReviewMode="slotProps.inReviewMode"
-            />
-            <MultiLayerDataTableFrameworkPanel
               v-if="dataType === DataTypeEnum.P2p"
               :frameworkIdentifier="DataTypeEnum.P2p"
               :companyId="companyId"
@@ -114,7 +106,6 @@ import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vu
 import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsPanel.vue";
 import MultiLayerDataTableFrameworkPanel from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue";
 import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
-import { sfdrDataModel } from "@/components/resources/frameworkDataSearch/sfdr/SfdrDataModel";
 import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
@@ -126,9 +117,6 @@ export default defineComponent({
   computed: {
     lksgDataModel() {
       return lksgDataModel;
-    },
-    sfdrDataModel() {
-      return sfdrDataModel;
     },
     p2pDataModel() {
       return p2pDataModel;

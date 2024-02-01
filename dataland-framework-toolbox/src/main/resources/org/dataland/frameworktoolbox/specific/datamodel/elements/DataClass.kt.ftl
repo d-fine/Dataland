@@ -15,11 +15,14 @@ import ${import}
 </#list>
 data class ${className}(
 <#list properties as property>
+<#list property.annotations as annotation>@<#if annotation.applicationTargetPrefix??>${annotation.applicationTargetPrefix}:</#if>${annotation.shortenedQualifier}(${annotation.rawParameterSpec})
+</#list>
 <#if property.name?length + property.type.shortenedQualifier?length + 18 < 120>
     val ${property.name}: ${property.type.shortenedQualifier}<#if property.type.nullable> = null</#if>,
 <#else>
     val ${property.name}:
     ${property.type.shortenedQualifier}<#if property.type.nullable> = null</#if>,
 </#if>
+
 </#list>
 )

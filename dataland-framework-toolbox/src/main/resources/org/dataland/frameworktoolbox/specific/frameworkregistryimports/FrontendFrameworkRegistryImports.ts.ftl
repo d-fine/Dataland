@@ -4,7 +4,8 @@ import { type FrontendFrameworkDefinition } from "@/frameworks/FrameworkDefiniti
 import ${framework.baseNameInCamelCase}FrontendFrameworkDefinition from "@/frameworks/${framework.identifier}/FrontendFrameworkDefinition";
 </#list>
 
-export const FrameworkDefinitions: Record<string, FrontendFrameworkDefinition<object>> = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const FrameworkDefinitions: Record<string, FrontendFrameworkDefinition<any>> = {
   <#list frameworks as framework>
     ${framework.baseNameInCamelCase?js_string}: ${framework.baseNameInCamelCase}FrontendFrameworkDefinition,
   </#list>

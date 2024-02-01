@@ -16,10 +16,11 @@ describeIf(
     });
 
     it("When identifiers are accepted and rejected", () => {
-      cy.intercept("POST", "**/community/requests").as("postRequestData");
+      cy.intercept("POST", "**/community/requests/bulk").as("postRequestData");
 
       checksBasicValidation();
-      choseFramewors();
+      chooseReportingPeriod();
+      chooseFrameworks();
 
       cy.get("textarea[name='listOfCompanyIdentifiers']")
         .type("549300VJTTKH8P0QWG18, 12345incorrectNumber")
@@ -31,22 +32,16 @@ describeIf(
         checkIfIdentifiersProperlyDisplayed(interception);
       });
 
-      cy.get('[data-test="submittingSuccededMessage"] [data-test="someIdentifiersPassed"]')
-        .should("exist")
-        .get("p.red-text")
-        .contains("However, some identifiers couldn’t be recognised.");
-
-      cy.get('[data-test="resetFormButton"]')
-        .click()
-        .get('[data-test="addedFrameworks"]')
-        .contains("No Frameworks added yet");
+      cy.get('[data-test="acceptedIdentifiers"] [data-test="identifiersHeading"]').contains("1 REQUESTED IDENTIFIER");
+      cy.get('[data-test="rejectedIdentifiers"] [data-test="identifiersHeading"]').contains("1 REJECTED IDENTIFIER");
     });
 
     it("When identifiers are accepted", () => {
-      cy.intercept("POST", "**/community/requests").as("postRequestData");
+      cy.intercept("POST", "**/community/requests/bulk").as("postRequestData");
 
       checksBasicValidation();
-      choseFramewors();
+      chooseReportingPeriod();
+      chooseFrameworks();
 
       cy.get("textarea[name='listOfCompanyIdentifiers']")
         .type("549300VJTTKH8P0QWG18")
@@ -58,17 +53,17 @@ describeIf(
         checkIfIdentifiersProperlyDisplayed(interception);
       });
 
-      cy.get('[data-test="submittingSuccededMessage"] [data-test="someIdentifiersPassed"]')
+      cy.get('[data-test="acceptedIdentifiers"]')
         .should("exist")
-        .get("p")
-        .contains("All identifiers have been submitted successfully.");
+        .get('[data-test="identifiersHeading"')
+        .contains("1 REQUESTED IDENTIFIER");
+
+      cy.get('[data-test="requestStatusText"]').should("exist").contains("Success");
     });
 
     it("When identifiers are rejected", () => {
-      cy.intercept("POST", "**/community/requests").as("postRequestData");
-
       checksBasicValidation();
-      choseFramewors();
+      chooseFrameworks();
 
       cy.get("textarea[name='listOfCompanyIdentifiers']")
         .type("12345incorrectNumber")
@@ -76,15 +71,33 @@ describeIf(
         .should("exist")
         .click();
 
-      cy.get('[data-test="failMessage"]')
+      cy.get('[data-test="selectedIdentifiersUnsuccessfulSubmit"]')
         .should("exist")
-        .contains("All provided company identifiers have an invalid format.");
+        .get('[data-test="identifiersHeading"')
+        .contains("SELECTED IDENTIFIERS");
+
+      cy.get('[data-test="requestStatusText"]').should("exist").contains("Request Unssuccessful");
     });
+
+    /**
+     * Choose reporting periods
+     */
+    function chooseReportingPeriod(): void {
+      cy.get('[data-test="reportingPeriodsDiv"] div[data-test="toggleChipsFormInput"]')
+        .should("exist")
+        .get('[data-test="toggle-chip"')
+        .should("have.length", 4)
+        .first()
+        .click()
+        .should("have.class", "toggled");
+
+      cy.get("div[data-test='reportingPeriodsDiv'] p[data-test='reportingPeriodErrorMessage'").should("not.exist");
+    }
 
     /**
      * Chose frameworks
      */
-    function choseFramewors(): void {
+    function chooseFrameworks(): void {
       const numberOfFrameworks = Object.keys(DataTypeEnum).length;
       cy.get('[data-test="selectFrameworkSelect"] .p-multiselect')
         .should("exist")
@@ -105,14 +118,17 @@ describeIf(
       if (interception.response !== undefined) {
         const rejectedIdentifiers = (interception.response.body as BulkDataRequestResponse).rejectedCompanyIdentifiers;
         const acceptedIdentifiers = (interception.response.body as BulkDataRequestResponse).acceptedCompanyIdentifiers;
-        cy.get('[data-test="rejectedCompanyIdentifiers"] span[data-test="identifier"]').should(
-          "have.length",
-          rejectedIdentifiers.length,
-        );
-        cy.get('[data-test="acceptedCompanyIdentifiers"] span[data-test="identifier"]').should(
-          "have.length",
-          acceptedIdentifiers.length,
-        );
+        if (rejectedIdentifiers.length > 0) {
+          cy.get('[data-test="rejectedIdentifiers"] [data-test="identifiersList"]')
+            .children()
+            .should("have.length", rejectedIdentifiers.length);
+        }
+        if (acceptedIdentifiers.length > 0) {
+          cy.get('[data-test="acceptedIdentifiers"] [data-test="identifiersList"]').should(
+            "have.length",
+            acceptedIdentifiers.length,
+          );
+        }
       }
     }
 
@@ -120,13 +136,17 @@ describeIf(
      * Checks basic validation
      */
     function checksBasicValidation(): void {
-      cy.get("button[type='submit']")
-        .should("exist")
-        .click()
-        .get("div[data-test='selectFrameworkDiv'] li[data-message-type='validation']")
+      cy.get("button[type='submit']").should("exist").click();
+
+      cy.get("div[data-test='reportingPeriodsDiv'] p[data-test='reportingPeriodErrorMessage'")
         .should("be.visible")
-        .should("contain.text", "Select at least one framework")
-        .get("div[data-test='provideIdentifiers'] li[data-message-type='validation']")
+        .should("contain.text", "Select at least one reporting period.");
+
+      cy.get("div[data-test='selectFrameworkDiv'] li[data-message-type='validation']")
+        .should("be.visible")
+        .should("contain.text", "Select at least one framework");
+
+      cy.get("div[data-test='selectIdentifiersDiv'] li[data-message-type='validation']")
         .should("be.visible")
         .should("contain.text", "Provide at least one identifier");
     }

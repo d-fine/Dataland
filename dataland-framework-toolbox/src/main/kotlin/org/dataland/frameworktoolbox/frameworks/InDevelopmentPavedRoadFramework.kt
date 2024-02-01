@@ -19,9 +19,10 @@ abstract class InDevelopmentPavedRoadFramework(
     label: String,
     explanation: String,
     frameworkTemplateCsvFile: File,
+    order: Int,
     enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
 ) :
-    PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile) {
+    PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile, order) {
 
     private fun compileDataModel(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.DataModel)) {
@@ -88,7 +89,7 @@ abstract class InDevelopmentPavedRoadFramework(
         val diagnostics = context.getBean<DiagnosticManager>()
 
         configureDiagnostics(diagnostics)
-        val excelTemplate = ExcelTemplate.fromCsv(frameworkTemplateCsvFile)
+        val excelTemplate = ExcelTemplate.fromFile(frameworkTemplateCsvFile)
         customizeExcelTemplate(excelTemplate)
 
         val frameworkIntermediateRepresentation = convertExcelTemplateToToHighLevelComponentRepresentation(

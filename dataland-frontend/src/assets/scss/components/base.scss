@@ -220,6 +220,10 @@ body {
   color: $main-color !important
 }
 
+.text-danger {
+  color: var(--fk-color-error);
+}
+
 .bg-primary {
   color: $bg-text-primary !important;
   background-color: $main-color !important
