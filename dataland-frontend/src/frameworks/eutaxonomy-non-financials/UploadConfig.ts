@@ -75,14 +75,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             showIf: (): boolean => true,
             validation: "between:0,100",
           },
-          {
-            name: "absoluteShare",
-            label: "Absolute Share",
-
-            component: "CurrencyDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
         ],
       },
       {
@@ -98,14 +90,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             required: false,
             showIf: (): boolean => true,
             validation: "between:0,100",
-          },
-          {
-            name: "absoluteShare",
-            label: "Absolute Share",
-
-            component: "CurrencyDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
           },
         ],
       },
@@ -123,14 +107,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             showIf: (): boolean => true,
             validation: "between:0,100",
           },
-          {
-            name: "absoluteShare",
-            label: "Absolute Share",
-
-            component: "CurrencyDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
         ],
       },
       {
@@ -146,14 +122,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             required: false,
             showIf: (): boolean => true,
             validation: "between:0,100",
-          },
-          {
-            name: "absoluteShare",
-            label: "Absolute Share",
-
-            component: "CurrencyDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
           },
         ],
       },
@@ -224,14 +192,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             showIf: (): boolean => true,
             validation: "between:0,100",
           },
-          {
-            name: "absoluteShare",
-            label: "Absolute Share",
-
-            component: "CurrencyDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
         ],
       },
       {
@@ -247,14 +207,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             required: false,
             showIf: (): boolean => true,
             validation: "between:0,100",
-          },
-          {
-            name: "absoluteShare",
-            label: "Absolute Share",
-
-            component: "CurrencyDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
           },
         ],
       },
@@ -272,14 +224,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             showIf: (): boolean => true,
             validation: "between:0,100",
           },
-          {
-            name: "absoluteShare",
-            label: "Absolute Share",
-
-            component: "CurrencyDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
         ],
       },
       {
@@ -295,14 +239,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             required: false,
             showIf: (): boolean => true,
             validation: "between:0,100",
-          },
-          {
-            name: "absoluteShare",
-            label: "Absolute Share",
-
-            component: "CurrencyDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
           },
         ],
       },
@@ -373,14 +309,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             showIf: (): boolean => true,
             validation: "between:0,100",
           },
-          {
-            name: "absoluteShare",
-            label: "Absolute Share",
-
-            component: "CurrencyDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
         ],
       },
       {
@@ -396,14 +324,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             required: false,
             showIf: (): boolean => true,
             validation: "between:0,100",
-          },
-          {
-            name: "absoluteShare",
-            label: "Absolute Share",
-
-            component: "CurrencyDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
           },
         ],
       },
@@ -421,14 +341,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             showIf: (): boolean => true,
             validation: "between:0,100",
           },
-          {
-            name: "absoluteShare",
-            label: "Absolute Share",
-
-            component: "CurrencyDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
-          },
         ],
       },
       {
@@ -444,14 +356,6 @@ export const eutaxonomyNonFinancialsDataModel = [
             required: false,
             showIf: (): boolean => true,
             validation: "between:0,100",
-          },
-          {
-            name: "absoluteShare",
-            label: "Absolute Share",
-
-            component: "CurrencyDataPointFormField",
-            required: false,
-            showIf: (): boolean => true,
           },
         ],
       },

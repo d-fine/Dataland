@@ -10557,14 +10557,6 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
           }
         }
       },
@@ -10574,14 +10566,6 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
           }
         }
       },
@@ -10591,14 +10575,6 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
           }
         }
       },
@@ -10608,14 +10584,6 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
           }
         }
       },
@@ -10813,14 +10781,6 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
           }
         }
       },
@@ -10830,14 +10790,6 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
           }
         }
       },
@@ -10847,14 +10799,6 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
           }
         }
       },
@@ -10864,14 +10808,6 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
           }
         }
       },
@@ -10958,14 +10894,6 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
           }
         }
       },
@@ -10975,14 +10903,6 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
           }
         }
       },
@@ -10992,14 +10912,6 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
           }
         }
       },
@@ -11009,14 +10921,6 @@
           "relativeShareInPercent": {
             "type": "number",
             "nullable": true
-          },
-          "absoluteShare": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CurrencyDataPoint"
-              }
-            ]
           }
         }
       },
@@ -13533,7 +13437,10 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
             "type": "string"
           },
           "countryCode": {
@@ -13543,10 +13450,7 @@
             "type": "string",
             "nullable": true
           },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           },
           "permId": {
