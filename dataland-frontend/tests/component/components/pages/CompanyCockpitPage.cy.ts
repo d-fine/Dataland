@@ -45,8 +45,6 @@ describe("Component test for the company cockpit", () => {
         cy.intercept("**/api/companies/*/data-owners/mock-data-owner-id", {
             status: 200,
         }).as("fetchUserIsDataOwnerTrue");
-
-
     }
 
     /**
@@ -69,7 +67,7 @@ describe("Component test for the company cockpit", () => {
         isLoggedIn: boolean,
         isMobile: boolean,
         roles?: string[],
-        userId?: string
+        userId?: string,
     ): Cypress.Chainable {
         return cy.mountWithPlugins(CompanyCockpitPage, {
             keycloak: minimalKeycloakMock({
@@ -110,7 +108,7 @@ describe("Component test for the company cockpit", () => {
 
     /**
      * Validates the existence of the banner that shows info about the company
-     * @param isUserDataOwner
+     * @param isUserDataOwner is the mocked user data owner?
      */
     function validateCompanyInformationBanner(isUserDataOwner?: boolean): void {
         cy.contains("h1", companyInformationForTest.companyName);
@@ -119,7 +117,7 @@ describe("Component test for the company cockpit", () => {
 
     /**
      * Validates the existence of the panel that shows the offer to claim data ownership
-     * @param isThisExpected
+     * @param isThisExpected is this panel expected
      */
     function validateClaimOwnershipPanel(isThisExpected: boolean): void {
         cy.get("[data-test='claimOwnershipPanelLink']").should(isThisExpected ? "exist" : "not.exist");
