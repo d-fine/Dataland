@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <title>DATALAND</title>
 </head>
-<body style="background-color:#e3e3e3; height: 100%; margin: 0; padding: 0; width: 100%;">
+<body style="background-color:#DADADA; height: 100%; margin: 0; padding: 0; width: 100%;">
 <#include "./general/header.ftl">
 
 <table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0; margin: 0">
@@ -30,8 +30,7 @@
                     <td style="text-align: left; width: 20px; padding: 0">
                         <img src="${baseUrl}/images/email/gr1.png" width="13" height="13" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
                     </td>
-                    <td style="text-align: right; width: 480px; padding: 0">
-                        &nbsp;
+                    <td style="text-align: right; width: 480px; padding: 0;">
                     </td>
                     <td style="text-align: right; width: 20px; padding: 0">
                         <img src="${baseUrl}/images/email/gr2.png" width="13" height="13" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
@@ -39,7 +38,7 @@
                 </tr>
                 <tr>
                     <td rowspan="<@if message?? 18 14 />">&nbsp;</td>
-                    <td style="height: 7px">&nbsp;</td>
+                    <td style="height: 7px"></td>
                     <td rowspan="<@if message?? 18 14 />">&nbsp;</td>
                 </tr>
                 <tr>
@@ -97,18 +96,17 @@
                 </tr>
                 </#if>
                 <tr>
-                    <td style="height: 20px">&nbsp;</td>
+                    <td style="height: 7px"></td>
                 </tr>
 
                 <tr>
                     <td style="text-align: left; width: 20px; padding: 0">
-                        <img src="${baseUrl}/images/email/gr3.png" width="13" height="13" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
+                        <img src="${baseUrl}/images/email/gr4.png" width="13" height="13" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
                     </td>
                     <td style="text-align: right; width: 480px; padding: 0">
-                        &nbsp;
                     </td>
                     <td style="text-align: right; width: 20px; padding: 0">
-                        <img src="${baseUrl}/images/email/gr4.png" width="13" height="13" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
+                        <img src="${baseUrl}/images/email/gr3.png" width="13" height="13" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
                     </td>
                 </tr>
                 </tbody>
@@ -120,7 +118,7 @@
     </tr>
 
     <tr>
-        <td colspan="3" style="font-weight: bold;">What to do now?</td>
+        <td colspan="3" style="font-weight: bold;">How to proceed?</td>
     </tr>
     <tr>
         <td colspan="3" style="font-size: 5px; height: 5px">&nbsp;</td>
