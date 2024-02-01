@@ -1,380 +1,240 @@
 [
 	{
 		"companyInformation": {
-			"companyName": "Reichel, Anderson and Kuhic",
-			"headquarters": "New Mike",
+			"companyName": "Parker - Hane",
+			"headquarters": "West Harmony",
 			"headquartersPostalCode": null,
-			"sector": "methodologies",
+			"sector": "solutions",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"uHmKvfO0H8P4"
+					"jYujirI77nF1"
 				],
 				"PermId": [
-					"dAZQLnBGVx"
+					"WUlBGPPDXQ"
 				],
-				"Ticker": [
-					"DtzEbKB"
+				"Ticker": [],
+				"Duns": [
+					"VYnj5USM0"
 				],
-				"Duns": [],
 				"VatNumber": [
-					"tOXrMeC5a"
+					"WUUO0T9AC"
 				],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"YB2yVmCbQln9JK1"
+				]
 			},
-			"countryCode": "KG",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": "https://offensive-thesis.name/",
+			"countryCode": "MD",
+			"companyAlternativeNames": [
+				"Franecki, Dooley and Green",
+				"Lind and Sons",
+				"Littel, Parker and Breitenberg",
+				"Steuber - Kuhlman"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://double-online.org",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"fiscalYearDeviation": "Deviation",
-				"fiscalYearEnd": "2024-08-19",
-				"scopeOfEntities": "NA",
+				"fiscalYearEnd": "2024-08-20",
+				"scopeOfEntities": "No",
 				"nfrdMandatory": "No",
-				"euTaxonomyActivityLevelReporting": "Yes",
+				"euTaxonomyActivityLevelReporting": "No",
 				"assurance": {
-					"value": "LimitedAssurance",
-					"provider": "Herzog - Hilll",
+					"value": "ReasonableAssurance",
+					"provider": "Rolfson - Connelly",
 					"dataSource": {
-						"page": 1170,
-						"fileName": "AnnualReport",
+						"page": 800,
+						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "interfaces"
+						"tagName": "eyeballs"
 					}
 				},
-				"numberOfEmployees": 39462.13,
+				"numberOfEmployees": 5801.6,
 				"referencedReports": {
 					"SustainabilityReport": {
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"fileName": "SustainabilityReport",
-						"isGroupLevel": "Yes",
-						"reportDate": "2023-05-10",
-						"currency": "ZMW"
+						"isGroupLevel": "No",
+						"reportDate": "2023-12-03",
+						"currency": "NIO"
 					},
 					"AnnualReport": {
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"fileName": "AnnualReport",
 						"isGroupLevel": "No",
-						"reportDate": "2023-04-13",
-						"currency": "MAD"
+						"reportDate": "2023-07-10",
+						"currency": "PAB"
+					},
+					"ESEFReport": {
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"fileName": "ESEFReport",
+						"isGroupLevel": "Yes",
+						"reportDate": "2023-10-16",
+						"currency": "GNF"
 					},
 					"IntegratedReport": {
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 						"fileName": "IntegratedReport",
-						"isGroupLevel": "No",
-						"reportDate": "2023-04-10",
-						"currency": "SCR"
+						"isGroupLevel": "Yes",
+						"reportDate": "2023-05-24",
+						"currency": "NOK"
 					}
 				}
 			},
 			"revenue": {
 				"totalAmount": {
-					"value": 5306570923.42,
+					"value": 705966933.16,
 					"dataSource": {
-						"page": 805,
-						"fileName": "IntegratedReport",
+						"page": 758,
+						"fileName": "SustainabilityReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "synergies"
+						"tagName": "users"
 					},
-					"comment": "bypass redundant port",
-					"quality": "Reported",
-					"currency": "GMD"
+					"comment": "quantify neural application",
+					"quality": "Audited",
+					"currency": "SSP"
 				},
 				"nonEligibleShare": {
-					"relativeShareInPercent": 19.65,
+					"relativeShareInPercent": 77.4,
 					"absoluteShare": {
-						"amount": 6329730793.37,
-						"currency": "UGX"
+						"amount": 3158959732.39,
+						"currency": "CDF"
 					}
 				},
 				"eligibleShare": {
-					"relativeShareInPercent": 83.09,
+					"relativeShareInPercent": 94.48,
 					"absoluteShare": {
-						"amount": 4786133938.47,
-						"currency": "BRL"
+						"amount": 2682527806.61,
+						"currency": "JOD"
 					}
 				},
 				"nonAlignedShare": {
-					"relativeShareInPercent": 12.47,
+					"relativeShareInPercent": 42.61,
 					"absoluteShare": {
-						"amount": 1004864233.54,
-						"currency": "BOB"
+						"amount": 7998595512.48,
+						"currency": "XCD"
 					}
 				},
-				"nonAlignedActivities": [
-					"ManufactureOfNitricAcid",
-					"Afforestation",
-					"SeaAndCoastalPassengerWaterTransport",
-					"ManufactureOfEquipmentForTheProductionAndUseOfHydrogen",
-					"InlandPassengerWaterTransport",
-					"ManufactureOfSodaAsh",
-					"ManufactureOfCement",
-					"Reinsurance",
-					"MaterialRecoveryFromNonHazardousWaste",
-					"ManufactureOfChlorine",
-					"ElectricityGenerationFromGeothermalEnergy",
-					"RestorationOfWetlands",
-					"ProductionOfHeatCoolFromFossilGaseousFuelsInAnEfficientDistrictHeatingAndCoolingSystem",
-					"ElectricityGenerationFromHydropower",
-					"DistrictHeatingCoolingDistribution",
-					"ManufactureOfAluminium",
-					"InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
-					"ManufactureOfRenewableEnergyTechnologies",
-					"ManufactureOfEnergyEfficiencyEquipmentForBuildings",
-					"DataProcessingHostingAndRelatedActivities",
-					"FreightRailTransport",
-					"InlandFreightWaterTransport",
-					"ManufactureOfOtherLowCarbonTechnologies",
-					"InstallationAndOperationOfElectricHeatPumps",
-					"InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
-					"ManufactureOfIronAndSteel",
-					"ProductionOfHeatCoolFromSolarThermalHeating",
-					"OperationOfPersonalMobilityDevicesCycleLogistics",
-					"FreightTransportServicesByRoad",
-					"ComputerProgrammingConsultancyAndRelatedActivities",
-					"InfrastructureEnablingRoadTransportAndPublicTransport",
-					"InfrastructureForRailTransport",
-					"AnaerobicDigestionOfSewageSludge",
-					"ElectricityGenerationFromNuclearEnergyInExistingInstallations",
-					"SeaAndCoastalFreightWaterTransportVesselsForPortOperationsAndAuxiliaryActivities",
-					"LibrariesArchivesMuseumsAndCulturalActivities",
-					"MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities",
-					"UndergroundPermanentGeologicalStorageOfCo2",
-					"ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies",
-					"RetrofittingOfInlandWaterPassengerAndFreightTransport",
-					"UrbanAndSuburbanTransportRoadPassengerTransport"
-				],
 				"alignedShare": {
-					"relativeShareInPercent": 72.96,
+					"relativeShareInPercent": 32.8,
 					"absoluteShare": {
-						"amount": 7956323204.57,
-						"currency": "BRL"
+						"amount": 1179783917.03,
+						"currency": "IDR"
 					}
 				},
-				"substantialContributionToClimateChangeMitigationInPercent": 81.38,
-				"substantialContributionToClimateChangeAdaptationInPercent": 55.58,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 62.41,
-				"substantialContributionToTransitionToACircularEconomyInPercent": 74.82,
-				"substantialContributionToPollutionPreventionAndControlInPercent": 23.71,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 63.15,
-				"enablingShareInPercent": 35.99,
-				"transitionalShareInPercent": 76.33
+				"substantialContributionToClimateChangeMitigationInPercent": 27.79,
+				"substantialContributionToClimateChangeAdaptationInPercent": 15.03,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 8.38,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 3.87,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 65.92,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 53.37,
+				"enablingShareInPercent": 19.37,
+				"transitionalShareInPercent": 35.83
 			},
 			"capex": {
 				"totalAmount": {
-					"value": 9659139155.41,
+					"value": 9836733646.23,
 					"dataSource": {
-						"page": 150,
-						"fileName": "SustainabilityReport",
+						"page": 738,
+						"fileName": "ESEFReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "mindshare"
+						"tagName": "models"
 					},
-					"comment": "hack primary system",
-					"quality": "Estimated",
-					"currency": "UZS"
+					"comment": "transmit open-source pixel",
+					"quality": "Reported",
+					"currency": "SLE"
 				},
 				"nonEligibleShare": {
-					"relativeShareInPercent": 96.2,
+					"relativeShareInPercent": 96.22,
 					"absoluteShare": {
-						"amount": 8599583003.67,
-						"currency": "ERN"
+						"amount": 2952185319.73,
+						"currency": "GIP"
 					}
 				},
 				"eligibleShare": {
-					"relativeShareInPercent": 63.35,
+					"relativeShareInPercent": 12.62,
 					"absoluteShare": {
-						"amount": 4124589217.83,
-						"currency": "TZS"
+						"amount": 372215199.75,
+						"currency": "TRY"
 					}
 				},
 				"nonAlignedShare": {
-					"relativeShareInPercent": 33.92,
+					"relativeShareInPercent": 75.13,
 					"absoluteShare": {
-						"amount": 3192384925.2,
-						"currency": "UAH"
+						"amount": 3816440687.51,
+						"currency": "MXN"
 					}
 				},
-				"nonAlignedActivities": [
-					"ResearchDevelopmentAndInnovationForDirectAirCaptureOfCo2",
-					"ManufactureOfNitricAcid",
-					"ConstructionOfNewBuildings",
-					"ProductionOfHeatCoolFromRenewableNonFossilGaseousAndLiquidFuels",
-					"ProductionOfHeatCoolFromFossilGaseousFuelsInAnEfficientDistrictHeatingAndCoolingSystem",
-					"ElectricityGenerationFromNuclearEnergyInExistingInstallations",
-					"SeaAndCoastalPassengerWaterTransport",
-					"ProductionOfHeatCoolUsingWasteHeat",
-					"ProductionOfHeatCoolFromSolarThermalHeating",
-					"PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
-					"SeaAndCoastalFreightWaterTransportVesselsForPortOperationsAndAuxiliaryActivities",
-					"LibrariesArchivesMuseumsAndCulturalActivities",
-					"ResidentialCareActivities",
-					"RestorationOfWetlands",
-					"ElectricityGenerationFromBioenergy",
-					"StorageOfHydrogen",
-					"AcquisitionAndOwnershipOfBuildings",
-					"TransportByMotorbikesPassengerCarsAndLightCommercialVehicles",
-					"ManufactureOfBiogasAndBiofuelsForUseInTransportAndOfBioliquids",
-					"ElectricityGenerationFromWindPower",
-					"CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
-					"ManufactureOfHydrogen",
-					"ManufactureOfAnhydrousAmmonia",
-					"ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies",
-					"ManufactureOfChlorine",
-					"HighEfficiencyCoGenerationOfHeatCoolAndPowerFromFossilGaseousFuels",
-					"PassengerInterurbanRailTransport",
-					"ProductionOfHeatCoolFromBioenergy",
-					"RenovationOfExistingBuildings",
-					"Education",
-					"TransmissionAndDistributionNetworksForRenewableAndLowCarbonGases",
-					"TransmissionAndDistributionOfElectricity",
-					"InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
-					"Reinsurance",
-					"UrbanAndSuburbanTransportRoadPassengerTransport",
-					"ManufactureOfCarbonBlack",
-					"InlandPassengerWaterTransport",
-					"InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
-					"ElectricityGenerationFromHydropower",
-					"InstallationAndOperationOfElectricHeatPumps",
-					"LandfillGasCaptureAndUtilisation",
-					"NonLifeInsuranceUnderwritingOfClimateRelatedPerils",
-					"ManufactureOfPlasticsInPrimaryForm",
-					"ProductionOfHeatCoolFromGeothermalEnergy",
-					"ManufactureOfLowCarbonTechnologiesForTransport",
-					"InfrastructureEnablingLowCarbonWaterTransport",
-					"CogenerationOfHeatCoolAndPowerFromBioenergy",
-					"CompostingOfBioWaste",
-					"ManufactureOfIronAndSteel",
-					"ForestManagement",
-					"ManufactureOfSodaAsh",
-					"ElectricityGenerationFromGeothermalEnergy",
-					"ElectricityGenerationFromRenewableNonFossilGaseousAndLiquidFuels",
-					"ProgrammingAndBroadcastingActivities",
-					"CogenerationOfHeatCoolAndPowerFromSolarEnergy",
-					"ManufactureOfEquipmentForTheProductionAndUseOfHydrogen",
-					"ManufactureOfOtherLowCarbonTechnologies",
-					"ElectricityGenerationFromOceanEnergyTechnologies",
-					"InfrastructureForWaterTransport",
-					"FreightTransportServicesByRoad",
-					"TransportOfCo2",
-					"AnaerobicDigestionOfBioWaste",
-					"RetrofittingOfInlandWaterPassengerAndFreightTransport",
-					"MaterialRecoveryFromNonHazardousWaste",
-					"Afforestation",
-					"CogenerationOfHeatCoolAndPowerFromRenewableNonFossilGaseousAndLiquidFuels",
-					"InfrastructureForPersonalMobilityCycleLogistics",
-					"RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent",
-					"ManufactureOfBatteries",
-					"RenewalOfWaterCollectionTreatmentAndSupplySystems",
-					"OperationOfPersonalMobilityDevicesCycleLogistics",
-					"ManufactureOfRenewableEnergyTechnologies",
-					"FreightRailTransport",
-					"CloseToMarketResearchDevelopmentAndInnovation",
-					"AirportInfrastructure",
-					"LowCarbonAirportInfrastructure",
-					"UndergroundPermanentGeologicalStorageOfCo2",
-					"AnaerobicDigestionOfSewageSludge",
-					"DataDrivenSolutionsForGhgEmissionsReductions",
-					"ManufactureOfOrganicBasicChemicals",
-					"StorageOfElectricity",
-					"InlandFreightWaterTransport",
-					"CreativeArtsAndEntertainmentActivities",
-					"ConservationForestry",
-					"ManufactureOfCement",
-					"ComputerProgrammingConsultancyAndRelatedActivities",
-					"DistrictHeatingCoolingDistribution",
-					"StorageOfThermalEnergy",
-					"ElectricityGenerationFromFossilGaseousFuels",
-					"InfrastructureEnablingRoadTransportAndPublicTransport",
-					"InstallationMaintenanceAndRepairOfEnergyEfficiencyEquipment",
-					"RenewalOfWasteWaterCollectionAndTreatment",
-					"RetrofittingOfSeaAndCoastalFreightAndPassengerWaterTransport",
-					"DataProcessingHostingAndRelatedActivities"
-				],
 				"alignedShare": {
-					"relativeShareInPercent": 98.52,
+					"relativeShareInPercent": 29.51,
 					"absoluteShare": {
-						"amount": 2374384943.39,
-						"currency": "KES"
+						"amount": 8087204687.77,
+						"currency": "MGA"
 					}
 				},
-				"substantialContributionToClimateChangeMitigationInPercent": 32.09,
-				"substantialContributionToClimateChangeAdaptationInPercent": 4.09,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 2.01,
-				"substantialContributionToTransitionToACircularEconomyInPercent": 83.92,
-				"substantialContributionToPollutionPreventionAndControlInPercent": 48,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 98.83,
-				"enablingShareInPercent": 16.29,
-				"transitionalShareInPercent": 8.16
+				"substantialContributionToClimateChangeMitigationInPercent": 3.62,
+				"substantialContributionToClimateChangeAdaptationInPercent": 43.34,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 12.16,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 9.98,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 94.37,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 50.01,
+				"enablingShareInPercent": 10.48,
+				"transitionalShareInPercent": 82.75
 			},
 			"opex": {
 				"totalAmount": {
-					"value": 956305698.49,
+					"value": 8035592820.96,
 					"dataSource": {
-						"page": 834,
+						"page": 591,
 						"fileName": "IntegratedReport",
 						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "communities"
+						"tagName": "architectures"
 					},
-					"comment": "transmit haptic alarm",
-					"quality": "Audited",
-					"currency": "USD"
+					"comment": "program redundant array",
+					"quality": "Estimated",
+					"currency": "KWD"
 				},
 				"nonEligibleShare": {
-					"relativeShareInPercent": 83.25,
+					"relativeShareInPercent": 6.8,
 					"absoluteShare": {
-						"amount": 4108304609.54,
-						"currency": "PAB"
+						"amount": 2889304298.44,
+						"currency": "YER"
 					}
 				},
 				"eligibleShare": {
-					"relativeShareInPercent": 75.87,
+					"relativeShareInPercent": 21.08,
 					"absoluteShare": {
-						"amount": 248355083.16,
-						"currency": "MKD"
+						"amount": 7474762070.93,
+						"currency": "KMF"
 					}
 				},
 				"nonAlignedShare": {
-					"relativeShareInPercent": 72.2,
+					"relativeShareInPercent": 20.79,
 					"absoluteShare": {
-						"amount": 405726998.57,
-						"currency": "KPW"
+						"amount": 2026375418.06,
+						"currency": "MYR"
 					}
 				},
-				"nonAlignedActivities": [
-					"ProgrammingAndBroadcastingActivities",
-					"AcquisitionAndOwnershipOfBuildings",
-					"ManufactureOfOtherLowCarbonTechnologies",
-					"LibrariesArchivesMuseumsAndCulturalActivities",
-					"ElectricityGenerationUsingSolarPhotovoltaicTechnology",
-					"ManufactureOfEnergyEfficiencyEquipmentForBuildings",
-					"PassengerInterurbanRailTransport",
-					"LowCarbonAirportInfrastructure",
-					"ManufactureOfSodaAsh",
-					"StorageOfElectricity",
-					"DataDrivenSolutionsForGhgEmissionsReductions",
-					"ManufactureOfHydrogen",
-					"Reinsurance"
-				],
 				"alignedShare": {
-					"relativeShareInPercent": 71.52,
+					"relativeShareInPercent": 89.19,
 					"absoluteShare": {
-						"amount": 3182629644.87,
-						"currency": "PKR"
+						"amount": 9213362683.08,
+						"currency": "VUV"
 					}
 				},
-				"substantialContributionToClimateChangeMitigationInPercent": 86.45,
-				"substantialContributionToClimateChangeAdaptationInPercent": 27.79,
-				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 90.49,
-				"substantialContributionToTransitionToACircularEconomyInPercent": 73.21,
-				"substantialContributionToPollutionPreventionAndControlInPercent": 75.81,
-				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 49.1,
-				"enablingShareInPercent": 92.23,
-				"transitionalShareInPercent": 32.02
+				"substantialContributionToClimateChangeMitigationInPercent": 59.07,
+				"substantialContributionToClimateChangeAdaptationInPercent": 0.78,
+				"substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 94.74,
+				"substantialContributionToTransitionToACircularEconomyInPercent": 54.68,
+				"substantialContributionToPollutionPreventionAndControlInPercent": 1.51,
+				"substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": 92.53,
+				"enablingShareInPercent": 86.43,
+				"transitionalShareInPercent": 47.18
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2021"
 	}
 ]

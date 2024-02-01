@@ -10427,118 +10427,6 @@
           }
         }
       },
-      "Activity": {
-        "type": "string",
-        "enum": [
-          "Afforestation",
-          "RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent",
-          "ForestManagement",
-          "ConservationForestry",
-          "RestorationOfWetlands",
-          "ManufactureOfRenewableEnergyTechnologies",
-          "ManufactureOfEquipmentForTheProductionAndUseOfHydrogen",
-          "ManufactureOfLowCarbonTechnologiesForTransport",
-          "ManufactureOfBatteries",
-          "ManufactureOfEnergyEfficiencyEquipmentForBuildings",
-          "ManufactureOfOtherLowCarbonTechnologies",
-          "ManufactureOfCement",
-          "ManufactureOfAluminium",
-          "ManufactureOfIronAndSteel",
-          "ManufactureOfHydrogen",
-          "ManufactureOfCarbonBlack",
-          "ManufactureOfSodaAsh",
-          "ManufactureOfChlorine",
-          "ManufactureOfOrganicBasicChemicals",
-          "ManufactureOfAnhydrousAmmonia",
-          "ManufactureOfNitricAcid",
-          "ManufactureOfPlasticsInPrimaryForm",
-          "ElectricityGenerationUsingSolarPhotovoltaicTechnology",
-          "ElectricityGenerationUsingConcentratedSolarPowerCspTechnology",
-          "ElectricityGenerationFromWindPower",
-          "ElectricityGenerationFromOceanEnergyTechnologies",
-          "ElectricityGenerationFromHydropower",
-          "ElectricityGenerationFromGeothermalEnergy",
-          "ElectricityGenerationFromRenewableNonFossilGaseousAndLiquidFuels",
-          "ElectricityGenerationFromBioenergy",
-          "TransmissionAndDistributionOfElectricity",
-          "StorageOfElectricity",
-          "StorageOfThermalEnergy",
-          "StorageOfHydrogen",
-          "ManufactureOfBiogasAndBiofuelsForUseInTransportAndOfBioliquids",
-          "TransmissionAndDistributionNetworksForRenewableAndLowCarbonGases",
-          "DistrictHeatingCoolingDistribution",
-          "InstallationAndOperationOfElectricHeatPumps",
-          "CogenerationOfHeatCoolAndPowerFromSolarEnergy",
-          "CogenerationOfHeatCoolAndPowerFromGeothermalEnergy",
-          "CogenerationOfHeatCoolAndPowerFromRenewableNonFossilGaseousAndLiquidFuels",
-          "CogenerationOfHeatCoolAndPowerFromBioenergy",
-          "ProductionOfHeatCoolFromSolarThermalHeating",
-          "ProductionOfHeatCoolFromGeothermalEnergy",
-          "ProductionOfHeatCoolFromRenewableNonFossilGaseousAndLiquidFuels",
-          "ProductionOfHeatCoolFromBioenergy",
-          "ProductionOfHeatCoolUsingWasteHeat",
-          "PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
-          "ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies",
-          "ElectricityGenerationFromNuclearEnergyInExistingInstallations",
-          "ElectricityGenerationFromFossilGaseousFuels",
-          "HighEfficiencyCoGenerationOfHeatCoolAndPowerFromFossilGaseousFuels",
-          "ProductionOfHeatCoolFromFossilGaseousFuelsInAnEfficientDistrictHeatingAndCoolingSystem",
-          "ConstructionExtensionAndOperationOfWaterCollectionTreatmentAndSupplySystems",
-          "RenewalOfWaterCollectionTreatmentAndSupplySystems",
-          "ConstructionExtensionAndOperationOfWasteWaterCollectionAndTreatment",
-          "RenewalOfWasteWaterCollectionAndTreatment",
-          "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
-          "AnaerobicDigestionOfSewageSludge",
-          "AnaerobicDigestionOfBioWaste",
-          "CompostingOfBioWaste",
-          "MaterialRecoveryFromNonHazardousWaste",
-          "LandfillGasCaptureAndUtilisation",
-          "TransportOfCo2",
-          "UndergroundPermanentGeologicalStorageOfCo2",
-          "PassengerInterurbanRailTransport",
-          "FreightRailTransport",
-          "UrbanAndSuburbanTransportRoadPassengerTransport",
-          "OperationOfPersonalMobilityDevicesCycleLogistics",
-          "TransportByMotorbikesPassengerCarsAndLightCommercialVehicles",
-          "FreightTransportServicesByRoad",
-          "InlandPassengerWaterTransport",
-          "InlandFreightWaterTransport",
-          "RetrofittingOfInlandWaterPassengerAndFreightTransport",
-          "SeaAndCoastalFreightWaterTransportVesselsForPortOperationsAndAuxiliaryActivities",
-          "SeaAndCoastalPassengerWaterTransport",
-          "RetrofittingOfSeaAndCoastalFreightAndPassengerWaterTransport",
-          "InfrastructureForPersonalMobilityCycleLogistics",
-          "InfrastructureForRailTransport",
-          "InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
-          "InfrastructureEnablingLowCarbonWaterTransport",
-          "LowCarbonAirportInfrastructure",
-          "ConstructionOfNewBuildings",
-          "RenovationOfExistingBuildings",
-          "InstallationMaintenanceAndRepairOfEnergyEfficiencyEquipment",
-          "InstallationMaintenanceAndRepairOfChargingStationsForElectricVehiclesInBuildingsAndParkingSpacesAttachedToBuildings",
-          "InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
-          "InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
-          "AcquisitionAndOwnershipOfBuildings",
-          "DataProcessingHostingAndRelatedActivities",
-          "DataDrivenSolutionsForGhgEmissionsReductions",
-          "CloseToMarketResearchDevelopmentAndInnovation",
-          "ResearchDevelopmentAndInnovationForDirectAirCaptureOfCo2",
-          "ProfessionalServicesRelatedToEnergyPerformanceOfBuildings",
-          "InfrastructureEnablingRoadTransportAndPublicTransport",
-          "InfrastructureForWaterTransport",
-          "AirportInfrastructure",
-          "ComputerProgrammingConsultancyAndRelatedActivities",
-          "ProgrammingAndBroadcastingActivities",
-          "EngineeringActivitiesAndRelatedTechnicalConsultancyDedicatedToAdaptationToClimateChange",
-          "NonLifeInsuranceUnderwritingOfClimateRelatedPerils",
-          "Reinsurance",
-          "Education",
-          "ResidentialCareActivities",
-          "CreativeArtsAndEntertainmentActivities",
-          "LibrariesArchivesMuseumsAndCulturalActivities",
-          "MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities"
-        ]
-      },
       "AmountWithCurrency": {
         "type": "object",
         "properties": {
@@ -10633,13 +10521,6 @@
                 "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexNonAlignedShare"
               }
             ]
-          },
-          "nonAlignedActivities": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/Activity"
-            }
           },
           "alignedShare": {
             "nullable": true,
@@ -10897,13 +10778,6 @@
               }
             ]
           },
-          "nonAlignedActivities": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/Activity"
-            }
-          },
           "alignedShare": {
             "nullable": true,
             "allOf": [
@@ -11048,13 +10922,6 @@
                 "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueNonAlignedShare"
               }
             ]
-          },
-          "nonAlignedActivities": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/Activity"
-            }
           },
           "alignedShare": {
             "nullable": true,
@@ -11563,30 +11430,116 @@
           }
         }
       },
-      "AnreizmechanismenFuerDasManagementSozialesOptions": {
+      "Activity": {
         "type": "string",
         "enum": [
-          "Nein",
-          "JaAufsichtsrat",
-          "JaGeschaeftsleitung",
-          "JaAufsichtsratUndGeschaeftsleitung"
-        ]
-      },
-      "AnreizmechanismenFuerDasManagementUmweltOptions": {
-        "type": "string",
-        "enum": [
-          "Nein",
-          "JaAufsichtsrat",
-          "JaGeschaeftsleitung",
-          "JaAufsichtsratUndGeschaeftsleitung"
-        ]
-      },
-      "ArtDesAuditsOptions": {
-        "type": "string",
-        "enum": [
-          "InterneAnhoerung",
-          "PruefungDurchDritte",
-          "SowohlInternAlsAuchVonDrittanbietern"
+          "Afforestation",
+          "RehabilitationAndRestorationOfForestsIncludingReforestationAndNaturalForestRegenerationAfterAnExtremeEvent",
+          "ForestManagement",
+          "ConservationForestry",
+          "RestorationOfWetlands",
+          "ManufactureOfRenewableEnergyTechnologies",
+          "ManufactureOfEquipmentForTheProductionAndUseOfHydrogen",
+          "ManufactureOfLowCarbonTechnologiesForTransport",
+          "ManufactureOfBatteries",
+          "ManufactureOfEnergyEfficiencyEquipmentForBuildings",
+          "ManufactureOfOtherLowCarbonTechnologies",
+          "ManufactureOfCement",
+          "ManufactureOfAluminium",
+          "ManufactureOfIronAndSteel",
+          "ManufactureOfHydrogen",
+          "ManufactureOfCarbonBlack",
+          "ManufactureOfSodaAsh",
+          "ManufactureOfChlorine",
+          "ManufactureOfOrganicBasicChemicals",
+          "ManufactureOfAnhydrousAmmonia",
+          "ManufactureOfNitricAcid",
+          "ManufactureOfPlasticsInPrimaryForm",
+          "ElectricityGenerationUsingSolarPhotovoltaicTechnology",
+          "ElectricityGenerationUsingConcentratedSolarPowerCspTechnology",
+          "ElectricityGenerationFromWindPower",
+          "ElectricityGenerationFromOceanEnergyTechnologies",
+          "ElectricityGenerationFromHydropower",
+          "ElectricityGenerationFromGeothermalEnergy",
+          "ElectricityGenerationFromRenewableNonFossilGaseousAndLiquidFuels",
+          "ElectricityGenerationFromBioenergy",
+          "TransmissionAndDistributionOfElectricity",
+          "StorageOfElectricity",
+          "StorageOfThermalEnergy",
+          "StorageOfHydrogen",
+          "ManufactureOfBiogasAndBiofuelsForUseInTransportAndOfBioliquids",
+          "TransmissionAndDistributionNetworksForRenewableAndLowCarbonGases",
+          "DistrictHeatingCoolingDistribution",
+          "InstallationAndOperationOfElectricHeatPumps",
+          "CogenerationOfHeatCoolAndPowerFromSolarEnergy",
+          "CogenerationOfHeatCoolAndPowerFromGeothermalEnergy",
+          "CogenerationOfHeatCoolAndPowerFromRenewableNonFossilGaseousAndLiquidFuels",
+          "CogenerationOfHeatCoolAndPowerFromBioenergy",
+          "ProductionOfHeatCoolFromSolarThermalHeating",
+          "ProductionOfHeatCoolFromGeothermalEnergy",
+          "ProductionOfHeatCoolFromRenewableNonFossilGaseousAndLiquidFuels",
+          "ProductionOfHeatCoolFromBioenergy",
+          "ProductionOfHeatCoolUsingWasteHeat",
+          "PreCommercialStagesOfAdvancedTechnologiesToProduceEnergyFromNuclearProcessesWithMinimalWasteFromTheFuelCycle",
+          "ConstructionAndSafeOperationOfNewNuclearPowerPlantsForTheGenerationOfElectricityAndOrHeatIncludingForHydrogenProductionUsingBestAvailableTechnologies",
+          "ElectricityGenerationFromNuclearEnergyInExistingInstallations",
+          "ElectricityGenerationFromFossilGaseousFuels",
+          "HighEfficiencyCoGenerationOfHeatCoolAndPowerFromFossilGaseousFuels",
+          "ProductionOfHeatCoolFromFossilGaseousFuelsInAnEfficientDistrictHeatingAndCoolingSystem",
+          "ConstructionExtensionAndOperationOfWaterCollectionTreatmentAndSupplySystems",
+          "RenewalOfWaterCollectionTreatmentAndSupplySystems",
+          "ConstructionExtensionAndOperationOfWasteWaterCollectionAndTreatment",
+          "RenewalOfWasteWaterCollectionAndTreatment",
+          "CollectionAndTransportOfNonHazardousWasteInSourceSegregatedFractions",
+          "AnaerobicDigestionOfSewageSludge",
+          "AnaerobicDigestionOfBioWaste",
+          "CompostingOfBioWaste",
+          "MaterialRecoveryFromNonHazardousWaste",
+          "LandfillGasCaptureAndUtilisation",
+          "TransportOfCo2",
+          "UndergroundPermanentGeologicalStorageOfCo2",
+          "PassengerInterurbanRailTransport",
+          "FreightRailTransport",
+          "UrbanAndSuburbanTransportRoadPassengerTransport",
+          "OperationOfPersonalMobilityDevicesCycleLogistics",
+          "TransportByMotorbikesPassengerCarsAndLightCommercialVehicles",
+          "FreightTransportServicesByRoad",
+          "InlandPassengerWaterTransport",
+          "InlandFreightWaterTransport",
+          "RetrofittingOfInlandWaterPassengerAndFreightTransport",
+          "SeaAndCoastalFreightWaterTransportVesselsForPortOperationsAndAuxiliaryActivities",
+          "SeaAndCoastalPassengerWaterTransport",
+          "RetrofittingOfSeaAndCoastalFreightAndPassengerWaterTransport",
+          "InfrastructureForPersonalMobilityCycleLogistics",
+          "InfrastructureForRailTransport",
+          "InfrastructureEnablingLowCarbonRoadTransportAndPublicTransport",
+          "InfrastructureEnablingLowCarbonWaterTransport",
+          "LowCarbonAirportInfrastructure",
+          "ConstructionOfNewBuildings",
+          "RenovationOfExistingBuildings",
+          "InstallationMaintenanceAndRepairOfEnergyEfficiencyEquipment",
+          "InstallationMaintenanceAndRepairOfChargingStationsForElectricVehiclesInBuildingsAndParkingSpacesAttachedToBuildings",
+          "InstallationMaintenanceAndRepairOfInstrumentsAndDevicesForMeasuringRegulationAndControllingEnergyPerformanceOfBuildings",
+          "InstallationMaintenanceAndRepairOfRenewableEnergyTechnologies",
+          "AcquisitionAndOwnershipOfBuildings",
+          "DataProcessingHostingAndRelatedActivities",
+          "DataDrivenSolutionsForGhgEmissionsReductions",
+          "CloseToMarketResearchDevelopmentAndInnovation",
+          "ResearchDevelopmentAndInnovationForDirectAirCaptureOfCo2",
+          "ProfessionalServicesRelatedToEnergyPerformanceOfBuildings",
+          "InfrastructureEnablingRoadTransportAndPublicTransport",
+          "InfrastructureForWaterTransport",
+          "AirportInfrastructure",
+          "ComputerProgrammingConsultancyAndRelatedActivities",
+          "ProgrammingAndBroadcastingActivities",
+          "EngineeringActivitiesAndRelatedTechnicalConsultancyDedicatedToAdaptationToClimateChange",
+          "NonLifeInsuranceUnderwritingOfClimateRelatedPerils",
+          "Reinsurance",
+          "Education",
+          "ResidentialCareActivities",
+          "CreativeArtsAndEntertainmentActivities",
+          "LibrariesArchivesMuseumsAndCulturalActivities",
+          "MotionPictureVideoAndTelevisionProgrammeProductionSoundRecordingAndMusicPublishingActivities"
         ]
       },
       "AuflistungDerSektorenOptions": {
@@ -11899,7 +11852,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/FrequenzDerBerichterstattungOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinEsgberichteFrequenzDerBerichterstattungOptions"
               }
             ]
           },
@@ -11933,6 +11886,15 @@
           }
         }
       },
+      "EsgQuestionnaireAllgemeinEsgberichteFrequenzDerBerichterstattungOptions": {
+        "type": "string",
+        "enum": [
+          "Jaehrlich",
+          "Halbjaehrlich",
+          "Vierteljaehrlich",
+          "Monatlich"
+        ]
+      },
       "EsgQuestionnaireAllgemeinFuehrungsstandards": {
         "type": "object",
         "properties": {
@@ -11948,7 +11910,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementUmweltOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementUmweltOptions"
               }
             ]
           },
@@ -11956,11 +11918,29 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/AnreizmechanismenFuerDasManagementSozialesOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementSozialesOptions"
               }
             ]
           }
         }
+      },
+      "EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementSozialesOptions": {
+        "type": "string",
+        "enum": [
+          "Nein",
+          "JaAufsichtsrat",
+          "JaGeschaeftsleitung",
+          "JaAufsichtsratUndGeschaeftsleitung"
+        ]
+      },
+      "EsgQuestionnaireAllgemeinFuehrungsstandardsAnreizmechanismenFuerDasManagementUmweltOptions": {
+        "type": "string",
+        "enum": [
+          "Nein",
+          "JaAufsichtsrat",
+          "JaGeschaeftsleitung",
+          "JaAufsichtsratUndGeschaeftsleitung"
+        ]
       },
       "EsgQuestionnaireAllgemeinOecdLeitsaetze": {
         "type": "object",
@@ -12042,7 +12022,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusZuEOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuEOptions"
               }
             ]
           },
@@ -12062,7 +12042,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusZuSOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuSOptions"
               }
             ]
           },
@@ -12082,7 +12062,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/StatusZuGOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuGOptions"
               }
             ]
           },
@@ -12091,6 +12071,27 @@
             "nullable": true
           }
         }
+      },
+      "EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuEOptions": {
+        "type": "string",
+        "enum": [
+          "Offen",
+          "Geklaert"
+        ]
+      },
+      "EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuGOptions": {
+        "type": "string",
+        "enum": [
+          "Offen",
+          "Geklaert"
+        ]
+      },
+      "EsgQuestionnaireAllgemeinRechtsstreitigkeitenStatusZuSOptions": {
+        "type": "string",
+        "enum": [
+          "Offen",
+          "Geklaert"
+        ]
       },
       "EsgQuestionnaireAllgemeinRisiken": {
         "type": "object",
@@ -12171,15 +12172,13 @@
         }
       },
       "EsgQuestionnaireData": {
+        "required": [
+          "general"
+        ],
         "type": "object",
         "properties": {
           "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireGeneral"
-              }
-            ]
+            "$ref": "#/components/schemas/EsgQuestionnaireGeneral"
           },
           "allgemein": {
             "nullable": true,
@@ -12216,15 +12215,13 @@
         }
       },
       "EsgQuestionnaireGeneral": {
+        "required": [
+          "masterData"
+        ],
         "type": "object",
         "properties": {
           "masterData": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EsgQuestionnaireGeneralMasterData"
-              }
-            ]
+            "$ref": "#/components/schemas/EsgQuestionnaireGeneralMasterData"
           }
         }
       },
@@ -12304,7 +12301,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ArtDesAuditsOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireSozialesAuditArtDesAuditsOptions"
               }
             ]
           },
@@ -12313,6 +12310,14 @@
             "nullable": true
           }
         }
+      },
+      "EsgQuestionnaireSozialesAuditArtDesAuditsOptions": {
+        "type": "string",
+        "enum": [
+          "InterneAnhoerung",
+          "PruefungDurchDritte",
+          "SowohlInternAlsAuchVonDrittanbietern"
+        ]
       },
       "EsgQuestionnaireSozialesEinkommensgleichheit": {
         "type": "object",
@@ -12652,7 +12657,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/TaxonomieBerichterstattungOptions"
+                "$ref": "#/components/schemas/EsgQuestionnaireUmweltTaxonomieTaxonomieBerichterstattungOptions"
               }
             ]
           },
@@ -12672,6 +12677,13 @@
             ]
           }
         }
+      },
+      "EsgQuestionnaireUmweltTaxonomieTaxonomieBerichterstattungOptions": {
+        "type": "string",
+        "enum": [
+          "Nfrd",
+          "Csrd"
+        ]
       },
       "EsgQuestionnaireUmweltTreibhausgasemissionen": {
         "type": "object",
@@ -12948,15 +12960,6 @@
           }
         }
       },
-      "FrequenzDerBerichterstattungOptions": {
-        "type": "string",
-        "enum": [
-          "Jaehrlich",
-          "Halbjaehrlich",
-          "Vierteljaehrlich",
-          "Monatlich"
-        ]
-      },
       "RecyclingImProduktionsprozessValues": {
         "type": "object",
         "properties": {
@@ -12965,34 +12968,6 @@
             "nullable": true
           }
         }
-      },
-      "StatusZuEOptions": {
-        "type": "string",
-        "enum": [
-          "Offen",
-          "Geklaert"
-        ]
-      },
-      "StatusZuGOptions": {
-        "type": "string",
-        "enum": [
-          "Offen",
-          "Geklaert"
-        ]
-      },
-      "StatusZuSOptions": {
-        "type": "string",
-        "enum": [
-          "Offen",
-          "Geklaert"
-        ]
-      },
-      "TaxonomieBerichterstattungOptions": {
-        "type": "string",
-        "enum": [
-          "Nfrd",
-          "Csrd"
-        ]
       },
       "TreibhausgasBerichterstattungUndPrognosenValues": {
         "type": "object",
@@ -13567,6 +13542,10 @@
         ],
         "type": "object",
         "properties": {
+          "permId": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
@@ -13576,16 +13555,12 @@
           "headquarters": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "permId": {
-            "type": "string",
-            "nullable": true
+          "countryCode": {
+            "type": "string"
           }
         }
       },
@@ -13667,6 +13642,7 @@
         "type": "string",
         "enum": [
           "eutaxonomy-financials",
+          "eutaxonomy-non-financials",
           "eutaxonomy-non-financials",
           "lksg",
           "p2p",

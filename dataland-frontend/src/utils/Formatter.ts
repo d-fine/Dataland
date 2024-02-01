@@ -26,7 +26,7 @@ export function formatPercentageNumberAsString(percentageNumber?: number | null,
  * @param amountWithCurrency the object that holds the amount and currency
  * @returns the resulting string from the concatenation
  */
-export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency): string {
+export function formatAmountWithCurrency(amountWithCurrency: AmountWithCurrency | null | undefined): string {
   if (amountWithCurrency?.amount == undefined) {
     return "";
   }

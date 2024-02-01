@@ -4,8 +4,7 @@ import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerData
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { formatPercentageForDatatable } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
-import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames";
-import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
+import { formatAmountWithCurrency } from "@/utils/Formatter";
 import { formatCurrencyForDisplay } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import {
@@ -131,7 +130,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.revenue?.nonEligibleShare?.absoluteShare?.currency),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.revenue?.nonEligibleShare?.absoluteShare)),
           },
         ],
       },
@@ -155,7 +154,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.revenue?.eligibleShare?.absoluteShare?.currency),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.revenue?.eligibleShare?.absoluteShare)),
           },
         ],
       },
@@ -179,22 +178,9 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.revenue?.nonAlignedShare?.absoluteShare?.currency),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.revenue?.nonAlignedShare?.absoluteShare)),
           },
         ],
-      },
-      {
-        type: "cell",
-        label: "Non-Aligned Activities",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatListOfStringsForDatatable(
-            dataset.revenue?.nonAlignedActivities?.map((it) => {
-              return activityApiNameToHumanizedName(it);
-            }),
-            "Non-Aligned Activities",
-          ),
       },
       {
         type: "section",
@@ -216,7 +202,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.revenue?.alignedShare?.absoluteShare?.currency),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.revenue?.alignedShare?.absoluteShare)),
           },
         ],
       },
@@ -327,7 +313,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.capex?.nonEligibleShare?.absoluteShare?.currency),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.capex?.nonEligibleShare?.absoluteShare)),
           },
         ],
       },
@@ -351,7 +337,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.capex?.eligibleShare?.absoluteShare?.currency),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.capex?.eligibleShare?.absoluteShare)),
           },
         ],
       },
@@ -375,22 +361,9 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.capex?.nonAlignedShare?.absoluteShare?.currency),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.capex?.nonAlignedShare?.absoluteShare)),
           },
         ],
-      },
-      {
-        type: "cell",
-        label: "Non-Aligned Activities",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatListOfStringsForDatatable(
-            dataset.capex?.nonAlignedActivities?.map((it) => {
-              return activityApiNameToHumanizedName(it);
-            }),
-            "Non-Aligned Activities",
-          ),
       },
       {
         type: "section",
@@ -412,7 +385,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.capex?.alignedShare?.absoluteShare?.currency),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.capex?.alignedShare?.absoluteShare)),
           },
         ],
       },
@@ -521,7 +494,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.opex?.nonEligibleShare?.absoluteShare?.currency),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.opex?.nonEligibleShare?.absoluteShare)),
           },
         ],
       },
@@ -545,7 +518,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.opex?.eligibleShare?.absoluteShare?.currency),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.opex?.eligibleShare?.absoluteShare)),
           },
         ],
       },
@@ -569,22 +542,9 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.opex?.nonAlignedShare?.absoluteShare?.currency),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.opex?.nonAlignedShare?.absoluteShare)),
           },
         ],
-      },
-      {
-        type: "cell",
-        label: "Non-Aligned Activities",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatListOfStringsForDatatable(
-            dataset.opex?.nonAlignedActivities?.map((it) => {
-              return activityApiNameToHumanizedName(it);
-            }),
-            "Non-Aligned Activities",
-          ),
       },
       {
         type: "section",
@@ -606,7 +566,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(dataset.opex?.alignedShare?.absoluteShare?.currency),
+              formatStringForDatatable(formatAmountWithCurrency(dataset.opex?.alignedShare?.absoluteShare)),
           },
         ],
       },

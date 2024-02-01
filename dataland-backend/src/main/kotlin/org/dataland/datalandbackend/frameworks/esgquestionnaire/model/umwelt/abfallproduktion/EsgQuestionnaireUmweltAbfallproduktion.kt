@@ -8,7 +8,11 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTim
  */
 data class EsgQuestionnaireUmweltAbfallproduktion(
     val berichterstattungAbfallproduktion: YearlyTimeseriesData<BerichterstattungAbfallproduktionValues?>? = null,
+
     val unternehmensGruppenStrategieBzglAbfallproduktion: String? = null,
+
     val recyclingImProduktionsprozess: YearlyTimeseriesData<RecyclingImProduktionsprozessValues?>? = null,
+
     val gefaehrlicherAbfall: String? = null,
+
 )
