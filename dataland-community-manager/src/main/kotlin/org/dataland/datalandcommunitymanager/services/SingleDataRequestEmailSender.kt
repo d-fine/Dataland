@@ -16,6 +16,16 @@ class SingleDataRequestEmailSender(
     @Autowired private val singleDataRequestEmailBuilder: SingleDataRequestEmailBuilder,
     @Autowired private val singleDataRequestInternalEmailBuilder: SingleDataRequestInternalEmailBuilder,
 ) {
+    /**
+     * Sends emails to the proper recepients,
+     * i.e. to the provided contacts and the data owners of the specified companies
+     * or the dataland staff if the company is not known to Dataland
+     * or no contact is specified and no data owner is known
+     * @param userAuthentication the authentication of the user who called this method
+     * @param singleDataRequest the fundamental data request
+     * @param companyIdentifierType the type of the identifer provided by the user or the Dataland company ID
+     * @param companyIdentifierValue an identifier for the company of type [companyIdentifierType]
+     */
     fun sendSingleDataRequestEmails(
         userAuthentication: DatalandJwtAuthentication,
         singleDataRequest: SingleDataRequest,
@@ -51,7 +61,6 @@ class SingleDataRequestEmailSender(
                 companyIdentifierType = companyIdentifierType,
                 companyIdentifierValue = companyIdentifierValue,
             )
-            return
         }
     }
 
@@ -64,7 +73,6 @@ class SingleDataRequestEmailSender(
         emailSender.sendEmail(
             singleDataRequestInternalEmailBuilder.buildSingleDataRequestInternalEmail(
                 userAuthentication = userAuthentication,
-                requesterEmail = userAuthentication.username,
                 companyIdentifierType = companyIdentifierType,
                 companyIdentifierValue = companyIdentifierValue,
                 dataType = singleDataRequest.frameworkName,

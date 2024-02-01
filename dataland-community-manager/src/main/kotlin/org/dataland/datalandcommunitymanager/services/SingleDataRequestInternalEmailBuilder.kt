@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component
  */
 @Component
 class SingleDataRequestInternalEmailBuilder(
-    @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
     @Value("\${dataland.notification.data-request.internal.receivers}") semicolonSeparatedReceiverEmails: String,
@@ -31,7 +30,6 @@ class SingleDataRequestInternalEmailBuilder(
      */
     fun buildSingleDataRequestInternalEmail(
         userAuthentication: DatalandJwtAuthentication,
-        requesterEmail: String,
         companyIdentifierType: DataRequestCompanyIdentifierType,
         companyIdentifierValue: String,
         dataType: DataTypeEnum,

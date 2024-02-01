@@ -52,7 +52,11 @@ class SingleDataRequestManagerTest(
             singleDataRequestEmailSender = mockSingleDataRequestEmailSender,
         )
         val mockSecurityContext = mock(SecurityContext::class.java)
-        mockAuthentication = AuthenticationMock.mockJwtAuthentication("requester@bigplayer.com", "1234-221-1111elf", setOf(DatalandRealmRole.ROLE_USER))
+        mockAuthentication = AuthenticationMock.mockJwtAuthentication(
+            "requester@bigplayer.com",
+            "1234-221-1111elf",
+            setOf(DatalandRealmRole.ROLE_USER),
+        )
         `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
         `when`(mockAuthentication.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
@@ -102,12 +106,13 @@ class SingleDataRequestManagerTest(
 
     private fun prepareMockedDependenciesForEmailSentTest() {
         `when`(
-            mockDataRequestRepository.existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString(),
-            ),
+            mockDataRequestRepository
+                .existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
+                    anyString(),
+                    anyString(),
+                    anyString(),
+                    anyString(),
+                ),
         ).thenReturn(true)
     }
 }

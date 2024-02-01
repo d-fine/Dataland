@@ -30,7 +30,8 @@ import org.springframework.boot.test.mock.mockito.MockBean
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class SingleDataRequestEmailSenderTest(
     @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
-    @Value("\${dataland.notification.data-request.internal.receivers}") semicolonSeparatedInternalReceiverEmails: String,
+    @Value("\${dataland.notification.data-request.internal.receivers}")
+    semicolonSeparatedInternalReceiverEmails: String,
     @Value("\${dataland.notification.data-request.internal.cc}") semicolonSeparatedInternalCcEmails: String,
 ) {
     private lateinit var singleDataRequestEmailSender: SingleDataRequestEmailSender
@@ -193,7 +194,8 @@ class SingleDataRequestEmailSenderTest(
         companyNameExpected: Boolean = false,
     ) {
         val properties = mutableMapOf(
-            "User" to "User ${mockRequesterAuthentication.username} (Keycloak ID: ${mockRequesterAuthentication.userId})",
+            "User" to "User ${mockRequesterAuthentication.username}" +
+                " (Keycloak ID: ${mockRequesterAuthentication.userId})",
             "Data Type" to dataType.name,
             "Reporting Periods" to reportingPeriods.joinToString(", "),
             "Company Identifier (${companyIdentifierType.name})" to companyIdentifier,
