@@ -9,70 +9,46 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
-import org.dataland.frameworktoolbox.specific.uploadconfig.functional.FrameworkUploadOptions
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
- * Represents the EuTaxonomy-Specific List of Activities component
+ * Represents the EuTaxonomy-Specific List of Activities component TODO
  */
-class EuTaxonomyListOfActivitiesComponent(
+class EuTaxonomyListOfActivitiesComponent( // TODO naming
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(identifier, parent, "org.dataland.datalandbackend.") {
+) : ComponentBase(identifier, parent) {
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addProperty(
             this.identifier,
-            this.documentSupport.getJvmTypeReference(
-                TypeReference(
-                    "kotlin.collections.MutableList",
-                    true,
-                    listOf(
-                        TypeReference(
-                            "org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity",
-                            false,
-                        ),
+            TypeReference(
+                "kotlin.collections.MutableList",
+                true,
+                listOf(
+                    TypeReference(
+                        "org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyActivity",
+                        false,
                     ),
                 ),
-                true,
             ),
-            this.documentSupport.getJvmAnnotations(),
         )
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         uploadCategoryBuilder.addStandardUploadConfigCell(
-            frameworkUploadOptions = FrameworkUploadOptions(
-                body = "getActivityNamesAsDropdownOptions()",
-                imports = setOf(
-                    "import { getActivityNamesAsDropdownOptions } from " +
-                        "\"@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames\"",
-                ),
-            ),
             component = this,
-            uploadComponentName = "MultiSelectFormField",
+            uploadComponentName = "NonAlignedActivitiesFormField",
         )
     }
 
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) { // TODO
         sectionBuilder.addAtomicExpression(
-            this.identifier,
-            this.documentSupport.getFixtureExpression(
-                fixtureExpression = "pickSubsetOfElements(Object.values(Activity))",
-                nullableFixtureExpression =
-                "dataGenerator.valueOrNull(pickSubsetOfElements(Object.values(Activity)))",
-                nullable = this.isNullable,
-            ),
-            imports = setOf(
-                TypeScriptImport("Activity", "@clients/backend"),
-                TypeScriptImport(
-                    "pickSubsetOfElements",
-                    "@e2e/fixtures/FixtureUtils",
-                ),
-            ),
+            identifier,
+            "dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2)",
         )
     }
 
@@ -80,19 +56,14 @@ class EuTaxonomyListOfActivitiesComponent(
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
-                "formatListOfStringsForDatatable(" +
-                    "${this.getTypescriptFieldAccessor()}?.map(it => {\n" +
-                    "                  return activityApiNameToHumanizedName(it)}), " +
-                    "'${StringEscapeUtils.escapeEcmaScript(this.label)}'" +
+                "formatNonAlignedActivitiesForDataTable(" +
+                    "${this.getTypescriptFieldAccessor()}," +
+                    "\"${StringEscapeUtils.escapeEcmaScript(label)}\"," +
                     ")",
                 setOf(
                     TypeScriptImport(
-                        "activityApiNameToHumanizedName",
-                        "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames",
-                    ),
-                    TypeScriptImport(
-                        "formatListOfStringsForDatatable",
-                        "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory",
+                        "formatNonAlignedActivitiesForDataTable",
+                        "@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory",
                     ),
                 ),
             ),

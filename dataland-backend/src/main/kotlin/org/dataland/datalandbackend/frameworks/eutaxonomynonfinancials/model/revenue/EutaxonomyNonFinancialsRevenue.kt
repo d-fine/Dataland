@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.rev
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.revenue.nonAlignedShare.EutaxonomyNonFinancialsRevenueNonAlignedShare
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.revenue.nonEligibleShare.EutaxonomyNonFinancialsRevenueNonEligibleShare
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
-import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
+import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyActivity
 import java.math.BigDecimal
 import kotlin.collections.MutableList
 
@@ -26,7 +26,7 @@ data class EutaxonomyNonFinancialsRevenue(
     @field:Valid()
     val nonAlignedShare: EutaxonomyNonFinancialsRevenueNonAlignedShare? = null,
 
-    val nonAlignedActivities: MutableList<Activity>? = null,
+    val nonAlignedActivities: MutableList<EuTaxonomyActivity>? = null,
 
     @field:Valid()
     val alignedShare: EutaxonomyNonFinancialsRevenueAlignedShare? = null,

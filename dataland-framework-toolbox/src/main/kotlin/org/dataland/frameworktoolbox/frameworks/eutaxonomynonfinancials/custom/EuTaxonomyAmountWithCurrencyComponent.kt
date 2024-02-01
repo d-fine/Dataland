@@ -45,7 +45,10 @@ class EuTaxonomyAmountWithCurrencyComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        // do nothing because UploadConfig-generation is deactivated anyway for eu-taxo-non-financials
+        /* do nothing because:
+        1) UploadConfig-generation is deactivated anyway for eu-taxo-non-financials
+        2) We don't have a form-field-component for AmountWithCurrency alone
+         */
         return
     }
 

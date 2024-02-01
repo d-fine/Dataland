@@ -10599,6 +10599,32 @@
           }
         }
       },
+      "EuTaxonomyActivity": {
+        "required": [
+          "activityName"
+        ],
+        "type": "object",
+        "properties": {
+          "activityName": {
+            "$ref": "#/components/schemas/Activity"
+          },
+          "naceCodes": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "share": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+              }
+            ]
+          }
+        }
+      },
       "EutaxonomyNonFinancialsCapex": {
         "type": "object",
         "properties": {
@@ -10638,7 +10664,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/Activity"
+              "$ref": "#/components/schemas/EuTaxonomyActivity"
             }
           },
           "alignedShare": {
@@ -10901,7 +10927,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/Activity"
+              "$ref": "#/components/schemas/EuTaxonomyActivity"
             }
           },
           "alignedShare": {
@@ -11053,7 +11079,7 @@
             "type": "array",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/Activity"
+              "$ref": "#/components/schemas/EuTaxonomyActivity"
             }
           },
           "alignedShare": {
@@ -11150,6 +11176,23 @@
         }
       },
       "EutaxonomyNonFinancialsRevenueNonEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
+          }
+        }
+      },
+      "RelativeAndAbsoluteFinancialShare": {
         "type": "object",
         "properties": {
           "relativeShareInPercent": {
@@ -13569,14 +13612,14 @@
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
           "permId": {

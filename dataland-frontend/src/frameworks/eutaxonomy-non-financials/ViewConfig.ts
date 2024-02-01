@@ -5,8 +5,7 @@ import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dat
 import { formatPercentageForDatatable } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
 import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
-import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames";
-import { formatListOfStringsForDatatable } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
+import { formatNonAlignedActivitiesForDataTable } from "@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory";
 import { formatCurrencyForDisplay } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
 import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
 import {
@@ -190,12 +189,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatListOfStringsForDatatable(
-            dataset.revenue?.nonAlignedActivities?.map((it) => {
-              return activityApiNameToHumanizedName(it);
-            }),
-            "Non-Aligned Activities",
-          ),
+          formatNonAlignedActivitiesForDataTable(dataset.revenue?.nonAlignedActivities, "Non-Aligned Activities"),
       },
       {
         type: "section",
@@ -386,12 +380,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatListOfStringsForDatatable(
-            dataset.capex?.nonAlignedActivities?.map((it) => {
-              return activityApiNameToHumanizedName(it);
-            }),
-            "Non-Aligned Activities",
-          ),
+          formatNonAlignedActivitiesForDataTable(dataset.capex?.nonAlignedActivities, "Non-Aligned Activities"),
       },
       {
         type: "section",
@@ -580,12 +569,7 @@ export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonF
 
         shouldDisplay: (): boolean => true,
         valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatListOfStringsForDatatable(
-            dataset.opex?.nonAlignedActivities?.map((it) => {
-              return activityApiNameToHumanizedName(it);
-            }),
-            "Non-Aligned Activities",
-          ),
+          formatNonAlignedActivitiesForDataTable(dataset.opex?.nonAlignedActivities, "Non-Aligned Activities"),
       },
       {
         type: "section",
