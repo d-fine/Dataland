@@ -7,8 +7,23 @@
         @fetched-company-information="handleFetchedCompanyInformation"
         :show-search-bar="false"
       />
+
       <div class="col-6 mx-auto">
-        <div data-test="selectReportingPeriod" class="bg-white radius-1 p-3" style="text-align: left">
+        <div data-test="selectFramework" class="bg-white radius-1 pt-2 pb-2 pl-5" style="text-align: left">
+          <h4 class="p-0">Select the framework for which you want to request data</h4>
+          <FormKit
+            type="select"
+            name="Framework"
+            placeholder="Framework"
+            :options="frameworkOptions"
+            outer-class="long"
+            data-test="datapoint-framework"
+          />
+        </div>
+      </div>
+
+      <div class="col-6 mx-auto">
+        <div data-test="selectReportingPeriod" class="bg-white radius-1 pt-2 pb-2 pl-5" style="text-align: left">
           <h4 class="p-0">Select at least one reporting period</h4>
           <div class="years-container">
             <button
@@ -25,9 +40,11 @@
       </div>
 
       <div class="col-6 mx-auto">
-        <div data-test="provideContactDetails" class="bg-white radius-1 p-3" style="text-align: left">
+        <div data-test="provideContactDetails" class="bg-white radius-1 pt-2 pb-2 pl-5" style="text-align: left">
           <h4 class="p-0">Provide Contact Details</h4>
-          <label for="Email" class="label-with-optional"> Email <span class="optional-text">Optional</span> </label>
+          <label for="Email" class="label-with-optional">
+            <b>Email</b> <span class="optional-text">Optional</span>
+          </label>
           <FormKit type="text" name="Email" />
           <p class="gray-text font-italic" style="text-align: left">
             By specifying a contact person here, your data request will be directed accordingly.<br />
@@ -37,7 +54,10 @@
             If you don't have a specific contact person, no worries.<br />
             We are committed to fulfilling your request to the best of our ability.
           </p>
-          <label for="Message" class="label-with-optional"> Message <span class="optional-text">Optional</span> </label>
+          <br />
+          <label for="Message" class="label-with-optional">
+            <b>Message</b> <span class="optional-text">Optional</span>
+          </label>
           <FormKit type="textarea" name="Message" />
           <p class="gray-text font-italic" style="text-align: left">
             Let your contact know what exactly your are looking for.
@@ -58,7 +78,7 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import { type Content, type Page } from "@/types/ContentTypes";
 import contentData from "@/assets/content.json";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import { type CompanyInformation } from "@clients/backend";
+import { type CompanyInformation, DataTypeEnum } from "@clients/backend";
 
 export default defineComponent({
   name: "SingleDataRequest",
@@ -75,11 +95,13 @@ export default defineComponent({
     const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
     const footerContent = footerPage?.sections;
     const years: number[] = [2024, 2023, 2022, 2021, 2020];
+    const frameworkOptions: DataTypeEnum[] = Object.values(DataTypeEnum).sort();
     return {
       years,
       selectedYears: [] as number[],
       footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
+      frameworkOptions,
     };
   },
   //TODO: default to be removed
