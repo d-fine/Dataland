@@ -1,23 +1,29 @@
 <template>
   <div class="flex justify-content-center">
     <PrimeButton
-        data-test="contextMenuButton"
-        class="p-button-icon p-button-textcolor p-button-rounded"
-        type="button"
-        icon="pi pi-ellipsis-v"
-        @click="toggle"
-        aria-haspopup="true"
-        aria-controls="overlay_menu"
+      data-test="contextMenuButton"
+      class="p-button-icon p-button-textcolor p-button-rounded"
+      type="button"
+      icon="pi pi-ellipsis-v"
+      @click="toggle"
+      aria-haspopup="true"
+      aria-controls="overlay_menu"
     />
-    <PrimeMenu data-test="contextMenuItem" class="p-menu-white" ref="menu" id="overlay_menu" :model="menuItems"
-               :popup="true"/>
+    <PrimeMenu
+      data-test="contextMenuItem"
+      class="p-menu-white"
+      ref="menu"
+      id="overlay_menu"
+      :model="menuItems"
+      :popup="true"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import PrimeButton from "primevue/button";
 import PrimeMenu from "primevue/menu";
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "ContextMenuButton",

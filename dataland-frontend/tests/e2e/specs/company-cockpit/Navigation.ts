@@ -70,15 +70,13 @@ describe("As a user, I expect the navigation around the company cockpit to work 
         );
     });
 
-
     /**
      * Go through the dialog and claim company ownership with a message
      * @param message message to send with the request
      */
-    function claimOwnershipDialog(message: string) {
+    function claimOwnershipDialog(message: string): void {
         cy.get("[data-test='claimOwnershipDialogMessage']").should("exist");
-        cy.get("[data-test='claimOwnershipDialogMessage']").should("contain.text",
-            someCompanyIdAndName.companyName)
+        cy.get("[data-test='claimOwnershipDialogMessage']").should("contain.text", someCompanyIdAndName.companyName);
         cy.get("[data-test='messageInputField']").should("exist").type(message);
         cy.get("[data-test='submitButton']").should("exist").click();
         cy.get("[data-test='claimOwnershipDialogSubmittedMessage']").should("exist");
@@ -86,7 +84,6 @@ describe("As a user, I expect the navigation around the company cockpit to work 
         cy.get("[data-test='closeButton']").should("exist").click();
         cy.get("[id='claimOwnerShipDialog']").should("not.exist");
     }
-
 
     /**
      * Visit the company cockpit of a predefined company
