@@ -57,12 +57,10 @@ class SingleDataRequestEmailBuilderTest(
             emptySet(),
             email,
         )
-        println(email.content.htmlContent)
         assertTrue(email.content.htmlContent.contains(requesterEmail))
         assertTrue(email.content.htmlContent.contains(companyName))
         assertTrue(email.content.htmlContent.contains("LkSG"))
         assertTrue(email.content.htmlContent.contains(reportingPeriods.joinToString(", ")))
-        println(email.content.htmlContent)
         assertTrue(
             email.content.htmlContent.contains(
                 "href=\"$proxyPrimaryUrl/companies/$companyId\"",
