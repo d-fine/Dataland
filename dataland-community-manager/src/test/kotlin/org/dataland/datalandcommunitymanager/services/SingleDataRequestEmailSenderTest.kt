@@ -43,6 +43,8 @@ class SingleDataRequestEmailSenderTest(
         emptySet(),
     )
 
+    private var contactEmails: MutableList<String> = mutableListOf()
+
     private val dataType = DataTypeEnum.lksg
 
     private val companyIdentifier = "DEsomething"
@@ -135,29 +137,29 @@ class SingleDataRequestEmailSenderTest(
 
     @Test
     fun `validate that an external email is sent to the provided contact for a Dataland company ID`() {
-        val contactEmail = "contact@provider.com"
-        expectSentEmailsToMatchContactEmail(
-            contactEmail,
-        )
+        contactEmails = mutableListOf("contact@provider.com", "othercontact@provider.com")
+        expectSentEmailsToMatchContactEmail()
+        println(contactEmails.size)
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
             mockRequesterAuthentication,
             SingleDataRequest(
                 "unused",
                 dataType,
                 listOfReportingPeriods = reportingPeriods,
-                contactList = listOf(contactEmail),
+                contactList = contactEmails.toList(),
 //                contactList = listOf("contact@provider.com", "othercontact@provider.com"), TODO test multiple contacts
                 message = "not of interest",
             ),
             DataRequestCompanyIdentifierType.DatalandCompanyId,
             companyIdentifier,
         )
-        assertNumEmailsSentEquals(1)
+        assertEquals(0, contactEmails.size)
+        assertNumEmailsSentEquals(2)
     }
 
     private fun expectSentEmailsToMatch(
         expectedSender: EmailContact,
-        expectedReceivers: List<EmailContact>,
+        expectedReceiversGetter: () -> List<EmailContact>,
         expectedCc: List<EmailContact>,
         expectedSubject: String,
         expectedToBeContainedInTextContent: List<String>,
@@ -169,15 +171,13 @@ class SingleDataRequestEmailSenderTest(
         `when`(mockEmailSender.sendEmail(any() ?: mockEmail)).then { invocation ->
             val emailToSend = invocation.arguments[0] as Email
             assertEquals(expectedSender, emailToSend.sender)
-            assertEquals(expectedReceivers, emailToSend.receivers)
+            assertEquals(expectedReceiversGetter(), emailToSend.receivers)
             assertEquals(expectedCc, emailToSend.cc ?: emptyList<EmailContact>())
             assertEquals(expectedSubject, emailToSend.content.subject)
             expectedToBeContainedInTextContent.forEach {
                 assertTrue(emailToSend.content.textContent.contains(it))
             }
             expectedToBeContainedInHtmlContent.forEach {
-                println(emailToSend.content.htmlContent)
-                println(it)
                 assertTrue(emailToSend.content.htmlContent.contains(it))
             }
             expectedNotToBeContainedInTextContent.forEach {
@@ -208,7 +208,7 @@ class SingleDataRequestEmailSenderTest(
         }
         expectSentEmailsToMatch(
             expectedSender = EmailContact("info@dataland.com", "Dataland"),
-            expectedReceivers = internalReceivers,
+            expectedReceiversGetter = { internalReceivers },
             expectedCc = internalCc,
             expectedSubject = "Dataland Single Data Request",
             expectedToBeContainedInTextContent = properties.map { "${it.key}: ${it.value}" },
@@ -218,9 +218,7 @@ class SingleDataRequestEmailSenderTest(
         )
     }
 
-    fun expectSentEmailsToMatchContactEmail(
-        contactEmail: String,
-    ) {
+    fun expectSentEmailsToMatchContactEmail() {
         val sharedContent = listOf(
             "from $companyName",
             "$proxyPrimaryUrl/companies/$companyIdentifier",
@@ -230,7 +228,7 @@ class SingleDataRequestEmailSenderTest(
         )
         expectSentEmailsToMatch(
             expectedSender = EmailContact("info@dataland.com", "Dataland"),
-            expectedReceivers = listOf(EmailContact(contactEmail)),
+            expectedReceiversGetter = { listOf(EmailContact(contactEmails.removeFirst())) },
             expectedCc = listOf(),
             expectedSubject = "A message from Dataland: Your ESG data are high on demand!",
             expectedToBeContainedInTextContent = sharedContent,
