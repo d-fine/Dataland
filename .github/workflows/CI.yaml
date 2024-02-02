@@ -122,8 +122,6 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: gradle
-      - name: DEBUG LOG
-        run: ./gradlew --version
       - name: assemble project
         run: ./gradlew assemble --no-daemon --stacktrace
       - name: Execute linting and detekt
