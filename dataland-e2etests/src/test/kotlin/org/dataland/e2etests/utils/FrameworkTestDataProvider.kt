@@ -9,7 +9,7 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForFinancials
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
@@ -39,7 +39,7 @@ object LocalDateAdapter {
 class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
 
     private val jsonFilesForTesting = mapOf(
-        EuTaxonomyDataForNonFinancials::class.java to
+        EutaxonomyNonFinancialsData::class.java to
             File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForNonFinancials.json"),
         EuTaxonomyDataForFinancials::class.java to
             File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForFinancials.json"),
@@ -77,7 +77,7 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
         return testCompanyInformationWithTData.slice(0 until requiredQuantity)
             .map {
                 it.companyInformation.copy(
-                    identifiers = IdentifierType.values().map { id -> id.value }.associateWith { emptyList() },
+                    identifiers = IdentifierType.entries.map { id -> id.value }.associateWith { emptyList() },
                 )
             }
     }
