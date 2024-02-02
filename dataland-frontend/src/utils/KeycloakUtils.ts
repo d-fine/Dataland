@@ -4,7 +4,7 @@ import type Keycloak from "keycloak-js";
 /**
  * Asserts that the provided getter-function to get a Keycloak-promise is defined, then executes that getter-function
  * and returns the Keycloak-promise
- * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Ppomise
+ * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
  * @returns the Keycloak-promise returned by the getter-function
  */
 export async function waitForAndReturnResolvedKeycloakPromise(

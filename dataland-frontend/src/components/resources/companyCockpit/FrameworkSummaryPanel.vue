@@ -37,6 +37,7 @@ import { computed, inject, onBeforeMount, ref } from "vue";
 import { DataTypeEnum } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import type Keycloak from "keycloak-js";
 import { useRouter } from "vue-router";
@@ -77,6 +78,11 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise")
 const isUserUploader = ref<boolean>();
 onBeforeMount(() => {
   checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
+    .then((result) => {
+      isUserUploader.value = result;
+    })
+    .catch((error) => console.log(error));
+  isUserDataOwnerForCompany(props.companyId, getKeycloakPromise)
     .then((result) => {
       isUserUploader.value = result;
     })
