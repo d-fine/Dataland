@@ -43,30 +43,13 @@ class SingleDataRequestManager(
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
         if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
-            throw AuthenticationMethodNotSupportedException("You are not using a JWT authentication.")
+            throw AuthenticationMethodNotSupportedException("You are not using JWT authentication.")
         }
-        lateinit var identifierTypeToStore: DataRequestCompanyIdentifierType
-        lateinit var identifierValueToStore: String
         val storedDataRequests = mutableListOf<StoredDataRequest>()
-        if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
-            checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
-            identifierTypeToStore = DataRequestCompanyIdentifierType.DatalandCompanyId
-            identifierValueToStore = singleDataRequest.companyIdentifier
-        } else {
-            val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(singleDataRequest.companyIdentifier)
-            dataRequestLogger.logMessageForSingleDataRequest(singleDataRequest.companyIdentifier)
-            if (matchedIdentifierType != null) {
-                val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
-                    singleDataRequest.companyIdentifier,
-                )
-                identifierTypeToStore = datalandCompanyId?.let {
-                    DataRequestCompanyIdentifierType.DatalandCompanyId
-                } ?: matchedIdentifierType
-                identifierValueToStore = datalandCompanyId ?: singleDataRequest.companyIdentifier
-            } else {
-                throwInvalidInputApiExceptionBecauseIdentifierWasRejected()
-            }
-        }
+        val (identifierTypeToStore, identifierValueToStore) = identifyIdentifierTypeAndTryGetDatalandCompanyId(
+            singleDataRequest.companyIdentifier,
+        )
+
         throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest)
         storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
             storedDataRequests, singleDataRequest, identifierValueToStore, identifierTypeToStore,
@@ -80,6 +63,33 @@ class SingleDataRequestManager(
         return storedDataRequests
     }
 
+    private fun identifyIdentifierTypeAndTryGetDatalandCompanyId(
+        companyIdentifier: String,
+    ): Pair<DataRequestCompanyIdentifierType, String> {
+        if (companyIdRegex.matches(companyIdentifier)) {
+            checkIfCompanyIsValid(companyIdentifier)
+            return Pair(DataRequestCompanyIdentifierType.DatalandCompanyId, companyIdentifier)
+        }
+        val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(companyIdentifier)
+        dataRequestLogger.logMessageForSingleDataRequest(companyIdentifier)
+        if (matchedIdentifierType != null) {
+            val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
+                companyIdentifier,
+            )
+            return Pair(
+                datalandCompanyId?.let {
+                    DataRequestCompanyIdentifierType.DatalandCompanyId
+                } ?: matchedIdentifierType,
+                datalandCompanyId ?: companyIdentifier,
+            )
+        }
+        throw InvalidInputApiException(
+            "The provided company identifier has an invalid format.",
+            "The company identifier you provided does not match the patterns " +
+                "of a valid LEI, ISIN, PermId or Dataland CompanyID.",
+        )
+    }
+
     private fun checkIfCompanyIsValid(companyId: String) {
         val bearerTokenOfRequestingUser = DatalandAuthentication.fromContext().credentials as String
         try {
@@ -91,16 +101,6 @@ class SingleDataRequestManager(
             )
         }
         }
-    }
-
-    private fun throwInvalidInputApiExceptionBecauseIdentifierWasRejected() {
-        val summary = "The provided company identifier has an invalid format."
-        val message = "The company identifier you provided does not match the patterns " +
-            "of a valid LEI, ISIN, PermId or Dataland CompanyID."
-        throw InvalidInputApiException(
-            summary,
-            message,
-        )
     }
 
     private fun throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest: SingleDataRequest) {
