@@ -178,7 +178,7 @@ class MetaDataControllerTest {
                 activeDatasets[0].dataId,
             )
         assertTrue(
-            (retrievedDataset.data!!.general!!.numberOfEmployees == newNumberOfEmployees),
+            (retrievedDataset.data.general!!.numberOfEmployees == newNumberOfEmployees),
             "The active dataset does not have numberOfEmployees of the old one plus 1.",
         )
     }
