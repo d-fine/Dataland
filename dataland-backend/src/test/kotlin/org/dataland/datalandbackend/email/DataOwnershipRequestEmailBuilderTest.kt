@@ -1,7 +1,9 @@
 package org.dataland.datalandbackend.email
 
 import org.dataland.datalandbackend.services.DataOwnershipRequestEmailBuilder
+import org.dataland.datalandemail.email.EmailContact
 import org.dataland.datalandemail.utils.assertEmailContactInformationEquals
+import org.dataland.datalandemail.utils.toEmailContacts
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -36,8 +38,12 @@ class DataOwnershipRequestEmailBuilderTest {
             mockAuthentication,
             comment,
         )
-
-        assertEmailContactInformationEquals(senderEmail, senderName, receiverEmails, ccEmails, email)
+        assertEmailContactInformationEquals(
+            EmailContact(senderEmail, senderName),
+            receiverEmails.toEmailContacts(),
+            ccEmails.toEmailContacts(),
+            email
+        )
         mapOf(
             "Environment" to environment,
             "User" to "User ${mockAuthentication.username} (Keycloak ID: ${mockAuthentication.userId})",

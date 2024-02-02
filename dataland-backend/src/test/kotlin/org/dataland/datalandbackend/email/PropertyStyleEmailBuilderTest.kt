@@ -1,8 +1,10 @@
 package org.dataland.datalandbackend.email
 
 import org.dataland.datalandemail.email.Email
+import org.dataland.datalandemail.email.EmailContact
 import org.dataland.datalandemail.email.PropertyStyleEmailBuilder
 import org.dataland.datalandemail.utils.assertEmailContactInformationEquals
+import org.dataland.datalandemail.utils.toEmailContacts
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
@@ -47,7 +49,12 @@ class PropertyStyleEmailBuilderTest {
                 )
             }
         }.build()
-        assertEmailContactInformationEquals(senderEmail, senderName, receiverEmails, ccEmails, email)
+        assertEmailContactInformationEquals(
+            EmailContact(senderEmail, senderName),
+            receiverEmails.toEmailContacts(),
+            ccEmails.toEmailContacts(),
+            email
+        )
         validateEmailContent(properties, email)
     }
 
