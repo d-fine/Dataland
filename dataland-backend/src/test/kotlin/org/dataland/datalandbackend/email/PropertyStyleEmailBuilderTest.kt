@@ -40,12 +40,7 @@ class PropertyStyleEmailBuilderTest {
                     senderEmailContact,
                     receiverEmailContacts!!,
                     ccEmailContacts,
-                    buildPropertyStyleEmailContent(
-                        subject,
-                        textTitle,
-                        htmlTitle,
-                        properties,
-                    ),
+                    buildPropertyStyleEmailContent(subject, textTitle, htmlTitle, properties),
                 )
             }
         }.build()

@@ -32,7 +32,7 @@ class DataOwnershipRequestEmailBuilderTest {
             senderName = senderName,
             semicolonSeparatedReceiverEmails = receiverEmails.joinToString(";"),
             semicolonSeparatedCcEmails = ccEmails.joinToString(";"),
-        ).buildDataOwnershipRequest(companyId, companyName, mockAuthentication, comment,)
+        ).buildDataOwnershipRequest(companyId, companyName, mockAuthentication, comment)
         assertEmailContactInformationEquals(
             EmailContact(senderEmail, senderName),
             receiverEmails.toEmailContacts(),

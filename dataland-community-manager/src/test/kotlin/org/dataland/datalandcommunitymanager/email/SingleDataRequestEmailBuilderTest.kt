@@ -38,19 +38,15 @@ class SingleDataRequestEmailBuilderTest(
         val mockCompanyInformation = mock(CompanyInformation::class.java)
         `when`(mockCompanyInformation.companyName).thenReturn(companyName)
         `when`(mockCompanyGetter.getCompanyInfo(anyString())).thenReturn(mockCompanyInformation)
-        val email = SingleDataRequestEmailBuilder(
-            proxyPrimaryUrl = proxyPrimaryUrl,
-            senderEmail = senderEmail,
-            senderName = senderName,
-            companyGetter = mockCompanyGetter,
-        ).buildSingleDataRequestEmail(
-            requesterEmail = requesterEmail,
-            receiverEmail = receiverEmail,
-            companyId = companyId,
-            dataType = DataTypeEnum.lksg,
-            reportingPeriods = reportingPeriods,
-            message = message,
-        )
+        val email = SingleDataRequestEmailBuilder(proxyPrimaryUrl, senderEmail, senderName, mockCompanyGetter)
+            .buildSingleDataRequestEmail(
+                requesterEmail = requesterEmail,
+                receiverEmail = receiverEmail,
+                companyId = companyId,
+                dataType = DataTypeEnum.lksg,
+                reportingPeriods = reportingPeriods,
+                message = message,
+            )
         assertEmailContactInformationEquals(
             EmailContact(senderEmail, senderName),
             setOf(EmailContact(receiverEmail)),
