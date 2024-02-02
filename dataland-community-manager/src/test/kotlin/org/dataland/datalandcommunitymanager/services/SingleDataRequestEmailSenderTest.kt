@@ -48,6 +48,7 @@ class SingleDataRequestEmailSenderTest(
 
     private val companyIdentifier = "DEsomething"
     private val companyName = "Real Company"
+    private val defaultMessage = "Dummy Message"
 
     private val reportingPeriods = listOf("2023", "2022")
 
@@ -85,7 +86,7 @@ class SingleDataRequestEmailSenderTest(
                 dataType,
                 listOfReportingPeriods = listOf(),
                 contactList = listOf("receiver@abc.de", "otherreceiver@something.else"),
-                message = "not of interest",
+                message = defaultMessage,
             ),
             DataRequestCompanyIdentifierType.Isin,
             companyIdentifier,
@@ -105,7 +106,7 @@ class SingleDataRequestEmailSenderTest(
                 dataType,
                 listOfReportingPeriods = reportingPeriods,
                 contactList = listOf("receiver@abc.de", "otherreceiver@something.else"),
-                message = "not of interest",
+                message = defaultMessage,
             ),
             DataRequestCompanyIdentifierType.Isin,
             companyIdentifier,
@@ -126,7 +127,7 @@ class SingleDataRequestEmailSenderTest(
                 dataType,
                 listOfReportingPeriods = reportingPeriods,
                 contactList = listOf(),
-                message = "not of interest",
+                message = defaultMessage,
             ),
             DataRequestCompanyIdentifierType.DatalandCompanyId,
             companyIdentifier,
@@ -144,7 +145,7 @@ class SingleDataRequestEmailSenderTest(
                     dataType,
                     listOfReportingPeriods = reportingPeriods,
                     contactList = contactEmails,
-                    message = "not of interest",
+                    message = defaultMessage,
                 ),
                 DataRequestCompanyIdentifierType.DatalandCompanyId,
                 companyIdentifier,
@@ -161,7 +162,7 @@ class SingleDataRequestEmailSenderTest(
                     dataType,
                     listOfReportingPeriods = reportingPeriods,
                     contactList = contactEmails,
-                    message = "not of interest",
+                    message = defaultMessage,
                 ),
                 DataRequestCompanyIdentifierType.DatalandCompanyId,
                 companyIdentifier,
