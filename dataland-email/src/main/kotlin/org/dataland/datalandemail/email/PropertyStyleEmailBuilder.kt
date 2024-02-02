@@ -144,7 +144,7 @@ abstract class PropertyStyleEmailBuilder(
         htmlTitle: String,
         properties: Map<String, String?>,
     ): Email {
-        require(receiverEmailContacts != null)
+        requireNotNull(receiverEmailContacts)
         return Email(
             senderEmailContact,
             receiverEmailContacts,
