@@ -135,39 +135,41 @@ class SingleDataRequestEmailSenderTest(
     }
 
     @Test
-    fun `validate that an external email is sent to the provided contact for a Dataland company ID`() = assertContactEmailsAreSent(listOf("othercontact@provider.com")) { contactEmails ->
-        singleDataRequestEmailSender.sendSingleDataRequestEmails(
-            mockRequesterAuthentication,
-            SingleDataRequest(
-                "unused",
-                dataType,
-                listOfReportingPeriods = reportingPeriods,
-                contactList = contactEmails,
-                message = "not of interest",
-            ),
-            DataRequestCompanyIdentifierType.DatalandCompanyId,
-            companyIdentifier,
-        )
-    }
+    fun `validate that an external email is sent to the provided contact for a Dataland company ID`() =
+        assertContactEmailsAreSent(listOf("othercontact@provider.com")) { contactEmails ->
+            singleDataRequestEmailSender.sendSingleDataRequestEmails(
+                mockRequesterAuthentication,
+                SingleDataRequest(
+                    "unused",
+                    dataType,
+                    listOfReportingPeriods = reportingPeriods,
+                    contactList = contactEmails,
+                    message = "not of interest",
+                ),
+                DataRequestCompanyIdentifierType.DatalandCompanyId,
+                companyIdentifier,
+            )
+        }
 
     @Test
-    fun `validate that multiple external emails are sent to the provided contacts for a Dataland company ID`() = assertContactEmailsAreSent(listOf("contact@provider.com", "othercontact@provider.com")) { contactEmails ->
-        singleDataRequestEmailSender.sendSingleDataRequestEmails(
-            mockRequesterAuthentication,
-            SingleDataRequest(
-                "unused",
-                dataType,
-                listOfReportingPeriods = reportingPeriods,
-                contactList = contactEmails,
-                message = "not of interest",
-            ),
-            DataRequestCompanyIdentifierType.DatalandCompanyId,
-            companyIdentifier,
-        )
-    }
+    fun `validate that multiple external emails are sent to the provided contacts for a Dataland company ID`() =
+        assertContactEmailsAreSent(listOf("contact@provider.com", "othercontact@provider.com")) { contactEmails ->
+            singleDataRequestEmailSender.sendSingleDataRequestEmails(
+                mockRequesterAuthentication,
+                SingleDataRequest(
+                    "unused",
+                    dataType,
+                    listOfReportingPeriods = reportingPeriods,
+                    contactList = contactEmails,
+                    message = "not of interest",
+                ),
+                DataRequestCompanyIdentifierType.DatalandCompanyId,
+                companyIdentifier,
+            )
+        }
 
     private fun expectSentEmailsToMatch(
-        matchingPattern: EmailMatchingPattern
+        matchingPattern: EmailMatchingPattern,
     ) {
         val mockEmail = mock(Email::class.java)
         `when`(mockEmailSender.sendEmail(any() ?: mockEmail)).then { invocation ->
@@ -204,15 +206,15 @@ class SingleDataRequestEmailSenderTest(
         } else {
             setOf(companyName)
         }
-        expectSentEmailsToMatch(baseInternalEmailMatchingPattern.copy(
-            expectedToBeContainedInTextContent = properties.map { "${it.key}: ${it.value}" }.toSet(),
-            expectedToBeContainedInHtmlContent = properties.map { "${it.key}: </span> ${it.value}" }.toSet(),
-            expectedNotToBeContainedInTextContent = unexpectedValues,
-            expectedNotToBeContainedInHtmlContent = unexpectedValues,
-        ))
+        expectSentEmailsToMatch(
+            baseInternalEmailMatchingPattern.copy(
+                expectedToBeContainedInTextContent = properties.map { "${it.key}: ${it.value}" }.toSet(),
+                expectedToBeContainedInHtmlContent = properties.map { "${it.key}: </span> ${it.value}" }.toSet(),
+                expectedNotToBeContainedInTextContent = unexpectedValues,
+                expectedNotToBeContainedInHtmlContent = unexpectedValues,
+            ),
+        )
     }
-
-
 
     private val baseContactEmailMatchingPattern = EmailMatchingPattern(
         expectedSender = EmailContact("info@dataland.com", "Dataland"),
@@ -233,11 +235,13 @@ class SingleDataRequestEmailSenderTest(
             reportingPeriods.joinToString(", "),
             mockRequesterAuthentication.username,
         )
-        expectSentEmailsToMatch(baseContactEmailMatchingPattern.copy(
-            expectedReceiversGetter = expectedReceiversGetter,
-            expectedToBeContainedInTextContent = sharedContent,
-            expectedToBeContainedInHtmlContent = sharedContent,
-        ))
+        expectSentEmailsToMatch(
+            baseContactEmailMatchingPattern.copy(
+                expectedReceiversGetter = expectedReceiversGetter,
+                expectedToBeContainedInTextContent = sharedContent,
+                expectedToBeContainedInHtmlContent = sharedContent,
+            ),
+        )
     }
 
     private fun assertContactEmailsAreSent(contactEmails: List<String>, test: (List<String>) -> Unit) {

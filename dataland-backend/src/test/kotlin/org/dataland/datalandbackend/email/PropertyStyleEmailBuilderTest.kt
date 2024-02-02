@@ -53,7 +53,7 @@ class PropertyStyleEmailBuilderTest {
             EmailContact(senderEmail, senderName),
             receiverEmails.toEmailContacts(),
             ccEmails.toEmailContacts(),
-            email
+            email,
         )
         validateEmailContent(properties, email)
     }

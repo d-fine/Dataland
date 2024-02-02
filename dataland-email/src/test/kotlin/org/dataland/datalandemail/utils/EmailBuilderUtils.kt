@@ -35,7 +35,7 @@ fun assertEmailMatchesPattern(email: Email, validationPattern: EmailMatchingPatt
         validationPattern.expectedSender,
         validationPattern.expectedReceiversGetter(),
         validationPattern.expectedCc,
-        email
+        email,
     )
     assertEquals(validationPattern.expectedSubject, email.content.subject)
     validationPattern.expectedToBeContainedInTextContent.forEach {

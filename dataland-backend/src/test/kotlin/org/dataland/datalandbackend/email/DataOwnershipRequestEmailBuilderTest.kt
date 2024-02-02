@@ -42,7 +42,7 @@ class DataOwnershipRequestEmailBuilderTest {
             EmailContact(senderEmail, senderName),
             receiverEmails.toEmailContacts(),
             ccEmails.toEmailContacts(),
-            email
+            email,
         )
         mapOf(
             "Environment" to environment,

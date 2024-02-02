@@ -55,7 +55,7 @@ class SingleDataRequestEmailBuilderTest(
             EmailContact(senderEmail, senderName),
             setOf(EmailContact(receiverEmail)),
             emptySet(),
-            email
+            email,
         )
         println(email.content.htmlContent)
         assertTrue(email.content.htmlContent.contains(requesterEmail))
