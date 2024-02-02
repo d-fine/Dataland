@@ -13,7 +13,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 
 class EmailSenderTest {
-    private class EmailSendException : Exception()
+    private class EmailSendException : RuntimeException()
 
     @Test
     fun `check if the mail sender works as expected`() {
