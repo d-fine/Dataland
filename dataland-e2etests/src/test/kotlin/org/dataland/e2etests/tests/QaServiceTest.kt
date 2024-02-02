@@ -1,7 +1,7 @@
 package org.dataland.e2etests.tests
 
 import org.awaitility.Awaitility.await
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -22,7 +22,7 @@ import org.dataland.datalandqaservice.openApiClient.model.QaStatus as QaServiceQ
 class QaServiceTest {
     private val apiAccessor = ApiAccessor()
     private val dataController = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-    lateinit var dummyCompanyAssociatedData: CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+    lateinit var dummyCompanyAssociatedData: CompanyAssociatedDataEutaxonomyNonFinancialsData
     companion object {
         private const val SLEEP_DURATION_MS: Long = 1000
     }
@@ -36,7 +36,7 @@ class QaServiceTest {
         val testDataEuTaxonomyNonFinancials = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getTData(1).first()
         dummyCompanyAssociatedData =
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+            CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 storedCompanyInfos.companyId,
                 "",
                 testDataEuTaxonomyNonFinancials,
@@ -77,7 +77,7 @@ class QaServiceTest {
 
     private fun uploadDatasetAndValidatePendingState(): String {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val dataId = dataController.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+        val dataId = dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(
             dummyCompanyAssociatedData, false,
         ).dataId
         assertEquals(
@@ -109,14 +109,14 @@ class QaServiceTest {
                 if (shouldUploaderBeVisible) TechnicalUser.Uploader.technicalUserId else null,
                 apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId,
             )
-            dataController.getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataId)
+            dataController.getCompanyAssociatedEutaxonomyNonFinancialsData(dataId)
         } else {
             val metaInfoException = assertThrows<BackendClientException> {
                 apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
             }
             assertEquals("Client error : 403 ", metaInfoException.message)
             val dataException = assertThrows<BackendClientException> {
-                dataController.getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataId)
+                dataController.getCompanyAssociatedEutaxonomyNonFinancialsData(dataId)
             }
             assertEquals("Client error : 403 ", dataException.message)
         }
@@ -133,7 +133,7 @@ class QaServiceTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val numberOfUploadedDatasets = 20
         val listOfDataIdsAsExpectedFromReviewQueue = (1..numberOfUploadedDatasets).map {
-            dataController.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+            dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(
                 dummyCompanyAssociatedData, false,
             ).dataId
         }

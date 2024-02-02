@@ -2,7 +2,7 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandapikeymanager.openApiClient.model.ApiKeyMetaInfo
 import org.dataland.datalandapikeymanager.openApiClient.model.RevokeApiKeyResponse
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY
 import org.dataland.e2etests.auth.ApiKeyAuthenticationHelper
@@ -116,9 +116,9 @@ class DataRetrievalViaApiKeyTest {
         )
         apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(TechnicalUser.Reader, 1)
         val downloadedCompanyAssociatedEuTaxoDataNonFinancials = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-            .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
+            .getCompanyAssociatedEutaxonomyNonFinancialsData(mapOfIds.getValue("dataId"))
         assertEquals(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+            CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 companyId = mapOfIds.getValue("companyId"),
                 reportingPeriod = "", data = testDataEuTaxonomyNonFinancials,
             ),
