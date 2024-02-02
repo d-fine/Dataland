@@ -42,24 +42,32 @@ class SingleDataRequestEmailSender(
             )
             return
         }
-        singleDataRequest.contactList?.forEach { contactEmail ->
-            emailSender.sendEmail(
-                singleDataRequestEmailBuilder.buildSingleDataRequestEmail(
-                    requesterEmail = userAuthentication.username,
-                    receiverEmail = contactEmail,
-                    companyId = companyIdentifierValue,
-                    dataType = singleDataRequest.frameworkName,
-                    reportingPeriods = singleDataRequest.listOfReportingPeriods,
-                    message = singleDataRequest.message,
-                ),
-            )
-        }
+        sendEmailToSpecifiedContacts(userAuthentication, singleDataRequest, companyIdentifierValue)
         if ((singleDataRequest.contactList?.count() ?: 0) == 0) {
             sendInternalEmail(
                 userAuthentication = userAuthentication,
                 singleDataRequest = singleDataRequest,
                 companyIdentifierType = companyIdentifierType,
                 companyIdentifierValue = companyIdentifierValue,
+            )
+        }
+    }
+
+    private fun sendEmailToSpecifiedContacts(
+        userAuthentication: DatalandJwtAuthentication,
+        singleDataRequest: SingleDataRequest,
+        datalandCompanyId: String,
+    ) {
+        singleDataRequest.contactList?.forEach { contactEmail ->
+            emailSender.sendEmail(
+                singleDataRequestEmailBuilder.buildSingleDataRequestEmail(
+                    requesterEmail = userAuthentication.username,
+                    receiverEmail = contactEmail,
+                    companyId = datalandCompanyId,
+                    dataType = singleDataRequest.frameworkName,
+                    reportingPeriods = singleDataRequest.listOfReportingPeriods,
+                    message = singleDataRequest.message,
+                ),
             )
         }
     }
