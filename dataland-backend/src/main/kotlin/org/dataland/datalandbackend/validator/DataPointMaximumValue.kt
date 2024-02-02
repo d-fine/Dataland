@@ -7,6 +7,7 @@ import jakarta.validation.Payload
 import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import java.math.BigDecimal
+import java.math.BigInteger
 import kotlin.properties.Delegates
 import kotlin.reflect.KClass
 
@@ -36,13 +37,14 @@ class DataPointMaximumValidator : ConstraintValidator<DataPointMaximumValue, Bas
         return if (dataPoint == null) {
             true
         } else {
-            when (dataPoint.value) {
+            when (val datapointValue = dataPoint.value) {
                 null -> true
-                is BigDecimal -> dataPoint.value as BigDecimal <= BigDecimal.valueOf(maximumValue)
-                is Long -> dataPoint.value as Long <= maximumValue
+                is BigDecimal -> datapointValue <= BigDecimal.valueOf(maximumValue)
+                is BigInteger -> datapointValue <= BigInteger.valueOf(maximumValue)
+                is Long -> datapointValue <= maximumValue
                 else -> throw InvalidInputApiException(
                     "This validator is used for a wrong type",
-                    "Type ${dataPoint.value} inside BaseDataPoint is not handled by number validator",
+                    "Type $datapointValue inside BaseDataPoint is not handled by number validator",
                 )
             }
         }

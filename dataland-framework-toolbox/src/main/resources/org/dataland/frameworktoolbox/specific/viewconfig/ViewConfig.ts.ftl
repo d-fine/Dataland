@@ -11,7 +11,7 @@
   expandOnPageLoad: ${sectionConfig.expandOnPageLoad?c},
   shouldDisplay: <@frameworklambda sectionConfig.shouldDisplay/>,
   children: [<@mldtconfig sectionConfig.children/>],
-  <#if sectionConfig.labelBadgeColor??>labelBadgeColor: ${sectionConfig.labelBadgeColor?c},</#if>
+  <#if sectionConfig.labelBadgeColor??>labelBadgeColor: "${sectionConfig.labelBadgeColor.value?js_string}",</#if>
 }</#macro>
 <#macro frameworklambda lambda>
 (<#if lambda.usesDataset>dataset: ${frameworkDataType}</#if>): ${lambda.returnParameter} => ${lambda.lambdaBody}
@@ -27,6 +27,6 @@
 import { type ${frameworkDataType} } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-<#list imports as import>${import}
+<#list imports as import>import {<#list import.members as member>${member}<#sep>, </#sep></#list>} from "${import.file}";
 </#list>
 export const ${viewConfigConstName}ViewConfiguration: MLDTConfig<${frameworkDataType}> = [<@mldtconfig viewConfig/>];

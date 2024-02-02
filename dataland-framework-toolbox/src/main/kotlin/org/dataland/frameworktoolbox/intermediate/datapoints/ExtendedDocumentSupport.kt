@@ -1,6 +1,8 @@
 package org.dataland.frameworktoolbox.intermediate.datapoints
 
+import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
+import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
 /**
@@ -37,5 +39,9 @@ data object ExtendedDocumentSupport : DocumentSupport {
         } else {
             "dataGenerator.guaranteedExtendedDataPoint($fixtureExpression)"
         }
+    }
+
+    override fun getJvmAnnotations(): List<Annotation> {
+        return listOf(ValidAnnotation)
     }
 }

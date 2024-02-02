@@ -2,8 +2,10 @@
 import { type BaseFrameworkDefinition } from "@/frameworks/FrameworkDefinition";
 import esgQuestionnaireBaseFrameworkDefinition from "@/frameworks/esg-questionnaire/BaseFrameworkDefinition";
 import heimathafenBaseFrameworkDefinition from "@/frameworks/heimathafen/BaseFrameworkDefinition";
+import sfdrBaseFrameworkDefinition from "@/frameworks/sfdr/BaseFrameworkDefinition";
 
 export const FrameworkDefinitions: Record<string, BaseFrameworkDefinition<object>> = {
   esgQuestionnaire: esgQuestionnaireBaseFrameworkDefinition,
   heimathafen: heimathafenBaseFrameworkDefinition,
+  sfdr: sfdrBaseFrameworkDefinition,
 };

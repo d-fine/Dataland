@@ -13,10 +13,10 @@ function exportFixturesEsgQuestionnaire(): void {
     "../testing/data/CompanyInformationWithEsgQuestionnaireData.json",
     JSON.stringify(companyInformationWithEsgQuestionnaireData, null, "\t"),
   );
-  const preparedFixtureEsgQuestionnaireDataForFinancials = generateEsgQuestionnairePreparedFixtures();
+  const preparedFixtureEsgQuestionnaireData = generateEsgQuestionnairePreparedFixtures();
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithEsgQuestionnairePreparedFixtures.json",
-    JSON.stringify(preparedFixtureEsgQuestionnaireDataForFinancials, null, "\t"),
+    JSON.stringify(preparedFixtureEsgQuestionnaireData, null, "\t"),
   );
 }
 

@@ -12,12 +12,7 @@ import {
   type YesNo,
   type YesNoNa,
 } from "@clients/backend";
-import {
-  generateCurrencyValue,
-  generateFloat,
-  generateInt,
-  generatePercentageValue,
-} from "@e2e/fixtures/common/NumberFixtures";
+import { generateCurrencyValue, generateFloat, generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { generateReferencedDocuments, getReferencedDocumentId } from "@e2e/utils/DocumentReference";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { type BaseDataPoint, type ExtendedDataPoint } from "@/utils/DataPoint";
@@ -77,12 +72,12 @@ export class Generator {
     return generatePercentageValue();
   }
 
-  randomInt(max = 10000): number | null {
-    return this.valueOrNull(this.guaranteedInt(max));
+  randomInt(min: number = 0, max: number = 10000): number | null {
+    return this.valueOrNull(this.guaranteedInt(min, max));
   }
 
-  guaranteedInt(max: number = 10000): number {
-    return generateInt(max);
+  guaranteedInt(min: number = 0, max: number = 10000): number {
+    return faker.number.int({ min: min, max: max });
   }
 
   randomFloat(min: number = 0, max: number = 1e5): number | null {
@@ -118,13 +113,14 @@ export class Generator {
     return this.generateExtendedDataPoint(this.valueOrNull(input));
   }
 
-  randomCurrencyDataPoint(input = generateCurrencyValue()): CurrencyDataPoint | null {
-    return this.valueOrNull(this.guaranteedCurrencyDataPoint(input));
+  randomCurrencyDataPoint(min: number = 0, max: number = 1e10): CurrencyDataPoint | null {
+    return this.valueOrNull(this.guaranteedCurrencyDataPoint(min, max));
   }
 
-  guaranteedCurrencyDataPoint(input = generateCurrencyValue()): CurrencyDataPoint {
+  guaranteedCurrencyDataPoint(min: number = 0, max: number = 1e10): CurrencyDataPoint {
     const localCurrency = generateCurrencyCode();
-    return this.generateCurrencyExtendedDataPoint(this.valueOrNull(input), localCurrency);
+    const value = generateCurrencyValue(min, max);
+    return this.generateCurrencyExtendedDataPoint(this.valueOrNull(value), localCurrency);
   }
 
   randomArray<T>(generator: () => T, min = 0, max = 5): T[] | null {

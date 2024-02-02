@@ -40,8 +40,8 @@
 
                     <PrimeButton
                       type="button"
-                      @click="goToCompanies()"
-                      label="TO COMPANIES"
+                      @click="goToLandingPage()"
+                      label="BACK TO LANDING PAGE"
                       class="uppercase p-button-outlined"
                     />
                   </template>
@@ -386,10 +386,10 @@ export default defineComponent({
     },
 
     /**
-     * Go to companies page
+     * Go to landing page
      */
-    goToCompanies() {
-      void this.$router.push("/companies");
+    goToLandingPage() {
+      void this.$router.push("/");
     },
   },
   mounted() {

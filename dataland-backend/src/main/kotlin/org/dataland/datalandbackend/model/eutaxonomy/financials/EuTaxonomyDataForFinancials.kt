@@ -19,7 +19,8 @@ import java.util.EnumSet
  * --- API model ---
  * Fields of the questionnaire for the EuTaxonomyForFinancials framework
  */
-@DataType("eutaxonomy-financials")
+@Suppress("MagicNumber")
+@DataType("eutaxonomy-financials", 1)
 data class EuTaxonomyDataForFinancials(
     val financialServicesTypes: EnumSet<FinancialServicesType>? = null,
 

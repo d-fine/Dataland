@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
-import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -15,7 +14,6 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -24,13 +22,12 @@ import org.springframework.transaction.annotation.Transactional
 /**
  * Implementation of a request manager service for all operations concerning the processing of single data requests
  */
-@Service
+@Service("SingleDataRequestManager")
 class SingleDataRequestManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyGetter: CompanyGetter,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val singleDataRequestEmailSender: SingleDataRequestEmailSender,
 ) {
     private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyGetter, objectMapper)
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
@@ -42,9 +39,6 @@ class SingleDataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
-        if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
-            throw AuthenticationMethodNotSupportedException()
-        }
         lateinit var identifierTypeToStore: DataRequestCompanyIdentifierType
         lateinit var identifierValueToStore: String
         val storedDataRequests = mutableListOf<StoredDataRequest>()
@@ -70,12 +64,6 @@ class SingleDataRequestManager(
         throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest)
         storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
             storedDataRequests, singleDataRequest, identifierValueToStore, identifierTypeToStore,
-        )
-        singleDataRequestEmailSender.sendSingleDataRequestEmails(
-            userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
-            singleDataRequest = singleDataRequest,
-            companyIdentifierType = identifierTypeToStore,
-            companyIdentifierValue = identifierValueToStore,
         )
         return storedDataRequests
     }

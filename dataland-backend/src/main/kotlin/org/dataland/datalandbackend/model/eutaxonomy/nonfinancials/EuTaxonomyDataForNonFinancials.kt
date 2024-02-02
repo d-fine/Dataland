@@ -6,7 +6,8 @@ import org.dataland.datalandbackend.annotations.DataType
  * --- API model ---
  * Fields of the questionnaire for the EuTaxonomyForNonFinancials framework
  */
-@DataType("eutaxonomy-non-financials")
+@Suppress("MagicNumber")
+@DataType("eutaxonomy-non-financials", 2)
 data class EuTaxonomyDataForNonFinancials(
     val general: EuTaxonomyGeneral?,
 
