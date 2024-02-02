@@ -216,6 +216,6 @@ class DataOwnersManager(
     fun isUserDataOwner(userIdRequester: String): Boolean {
         val userIdAuthenticated = SecurityContextHolder.getContext().authentication.name
         return userIdAuthenticated == userIdRequester
-        //TODO test if this sonar fix works
+        // TODO test if this sonar fix works
     }
 }
