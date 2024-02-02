@@ -13347,20 +13347,20 @@
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
-          "headquarters": {
+          "companyId": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "companyName": {
+          "countryCode": {
             "type": "string"
           },
-          "companyId": {
+          "headquarters": {
             "type": "string"
           }
         }
