@@ -1,5 +1,10 @@
 import { Generator } from "@e2e/utils/FakeFixtureUtils";
-import type { AmountWithCurrency, AssuranceDataPoint, EuTaxonomyActivity, EuTaxonomyAlignedActivity } from "@clients/backend";
+import type {
+  AmountWithCurrency,
+  AssuranceDataPoint,
+  EuTaxonomyActivity,
+  EuTaxonomyAlignedActivity,
+} from "@clients/backend";
 import { generateAssuranceDatapoint } from "@e2e/fixtures/eutaxonomy-shared/AssuranceDataFixture";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
@@ -52,11 +57,11 @@ export class EutaxonomyNonFinancialsGenerator extends Generator {
       substantialContributionToClimateChangeMitigationInPercent: this.randomPercentageValue(),
       substantialContributionToClimateChangeAdaptionInPercent: this.randomPercentageValue(),
       substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
-          this.randomPercentageValue(),
+        this.randomPercentageValue(),
       substantialContributionToTransitionToACircularEconomyInPercent: this.randomPercentageValue(),
       substantialContributionToPollutionPreventionAndControlInPercent: this.randomPercentageValue(),
       substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
-          this.randomPercentageValue(),
+        this.randomPercentageValue(),
       dnshToClimateChangeMitigation: this.randomYesNo(),
       dnshToClimateChangeAdaption: this.randomYesNo(),
       dnshToSustainableUseAndProtectionOfWaterAndMarineResources: this.randomYesNo(),
@@ -66,5 +71,4 @@ export class EutaxonomyNonFinancialsGenerator extends Generator {
       minimumSafeguards: this.randomYesNo(),
     };
   }
-
 }

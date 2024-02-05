@@ -5,7 +5,8 @@ import {
   type LksgData,
   type PathwaysToParisData,
   type SfdrData,
-  type SmeData, EutaxonomyNonFinancialsData,
+  type SmeData,
+  type EutaxonomyNonFinancialsData,
 } from "@clients/backend";
 
 export interface Category {
