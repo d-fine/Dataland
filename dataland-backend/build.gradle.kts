@@ -29,7 +29,7 @@ plugins {
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-email"))
-//    testImplementation(project(":dataland-email").dependencyProject.sourceSets.test.get().output)
+    testImplementation(project(":dataland-email").dependencyProject.sourceSets.test.get().output)
     implementation(libs.jackson.module.kotlin)
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)

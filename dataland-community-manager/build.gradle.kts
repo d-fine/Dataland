@@ -30,7 +30,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-email"))
-//    testImplementation(project(":dataland-email").dependencyProject.sourceSets.test.get().output)
+    testImplementation(project(":dataland-email").dependencyProject.sourceSets.test.get().output)
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)
     implementation(libs.okhttp)
