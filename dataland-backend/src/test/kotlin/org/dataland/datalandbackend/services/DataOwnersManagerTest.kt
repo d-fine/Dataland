@@ -33,6 +33,7 @@ class DataOwnersManagerTest {
             mockCompanyRepository,
             mock(EmailSender::class.java),
             mock(DataOwnershipRequestEmailBuilder::class.java),
+            mock(SecurityUtilsService::class.java),
         )
     }
 
