@@ -4,7 +4,9 @@
       <h2 class="claim-panel__ownership-question" data-test="claimOwnershipPanelHeading">
         Responsible for {{ companyName }}?
       </h2>
-      <a class="link" @click="openDialog" data-test="claimOwnershipPanelLink">Claim company dataset ownership.</a>
+      <h2 class="link --underlined" @click="openDialog" data-test="claimOwnershipPanelLink">
+        Claim company dataset ownership.
+      </h2>
     </div>
   </div>
   <ClaimOwnershipDialog
