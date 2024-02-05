@@ -26,16 +26,17 @@ class EuTaxonomyAlignedActivitiesComponent(
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
-                "formatEuTaxonomyActivityForDataTable(${getTypescriptFieldAccessor(true)}, \"${
-                    StringEscapeUtils.escapeEcmaScript(
-                        label,
-                    )
-                }\")",
+                "formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(" +
+                    "${getTypescriptFieldAccessor(true)}, \"${
+                        StringEscapeUtils.escapeEcmaScript(
+                            label,
+                        )
+                    }\")",
                 setOf(
                     TypeScriptImport(
                         "formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable",
                         "@/components/resources/dataTable/conversion/" +
-                                "EuTaxonomyNonFinancialsAlignedActivitiesDataGetterFactory.ts",
+                            "EuTaxonomyNonFinancialsAlignedActivitiesDataGetterFactory.ts",
                     ),
                 ),
             ),

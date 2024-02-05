@@ -2,668 +2,747 @@
 import { type EutaxonomyNonFinancialsData } from "@clients/backend";
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { type AvailableMLDTDisplayObjectTypes } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
-import { formatPercentageForDatatable } from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
-import { formatStringForDatatable } from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
-import { formatAmountWithCurrency } from "@/utils/Formatter";
-import { formatNonAlignedActivitiesForDataTable } from "@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory";
-import { formatCurrencyForDisplay } from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
-import { formatNumberForDatatable } from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
-import {
-  formatAssuranceProviderForDataTable,
-  formatAssuranceForDataTable,
-} from "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory";
-import { formatYesNoValueForDatatable } from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
-import { getOriginalNameFromTechnicalName } from "@/components/resources/dataTable/conversion/Utils";
-export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonFinancialsData> = [
-  {
-    type: "section",
-    label: "General",
-    expandOnPageLoad: true,
-    shouldDisplay: (): boolean => true,
-    children: [
-      {
-        type: "cell",
-        label: "Fiscal Year Deviation",
-        explanation: "Does the fiscal year deviate from the calendar year?",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => {
-          const mappings = {
+import {formatPercentageForDatatable} from "@/components/resources/dataTable/conversion/PercentageValueGetterFactory";
+import {formatStringForDatatable} from "@/components/resources/dataTable/conversion/PlainStringValueGetterFactory";
+import {formatAmountWithCurrency} from "@/utils/Formatter";
+import {formatNonAlignedActivitiesForDataTable} from "@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory";
+import {formatCurrencyForDisplay} from "@/components/resources/dataTable/conversion/CurrencyDataPointValueGetterFactory";
+import {formatNumberForDatatable} from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
+import {formatAssuranceProviderForDataTable, formatAssuranceForDataTable} from "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory";
+import {formatYesNoValueForDatatable} from "@/components/resources/dataTable/conversion/YesNoValueGetterFactory";
+import {getOriginalNameFromTechnicalName} from "@/components/resources/dataTable/conversion/Utils";
+export const eutaxonomyNonFinancialsViewConfiguration: MLDTConfig<EutaxonomyNonFinancialsData> = [    {
+      type: "section",
+      label: "General",
+      expandOnPageLoad: true,
+      shouldDisplay: (): boolean => true
+    ,
+      children: [    {
+          type: "cell",
+          label: "Fiscal Year Deviation",
+          explanation: "Does the fiscal year deviate from the calendar year?",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => {
+        const mappings = {
             Deviation: "Deviation",
             NoDeviation: "No Deviation",
-          };
-          return formatStringForDatatable(
-            dataset.general?.fiscalYearDeviation
-              ? getOriginalNameFromTechnicalName(dataset.general?.fiscalYearDeviation, mappings)
-              : "",
-          );
+        }
+        return formatStringForDatatable(
+        dataset.general?.fiscalYearDeviation ? getOriginalNameFromTechnicalName(dataset.general?.fiscalYearDeviation, mappings) : ""
+        )
+        }
+        ,
         },
-      },
-      {
-        type: "cell",
-        label: "Fiscal Year End",
-        explanation: "The date at which the fiscal year ends.",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatStringForDatatable(dataset.general?.fiscalYearEnd),
-      },
-      {
-        type: "cell",
-        label: "Scope Of Entities",
-        explanation: "Are all Group legal entities covered in the reports?",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(dataset.general?.scopeOfEntities),
-      },
-      {
-        type: "cell",
-        label: "NFRD Mandatory",
-        explanation: "Is the NFRD mandatory for your company?",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(dataset.general?.nfrdMandatory),
-      },
-      {
-        type: "cell",
-        label: "EU Taxonomy Activity Level Reporting",
-        explanation: "Activity level disclosure",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatYesNoValueForDatatable(dataset.general?.euTaxonomyActivityLevelReporting),
-      },
-      {
-        type: "cell",
-        label: "Assurance",
-        explanation: "Level of assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatAssuranceForDataTable(dataset.general?.assurance, "Assurance"),
-      },
-      {
-        type: "cell",
-        label: "Assurance Provider",
-        explanation: "Provider of the Assurance",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatAssuranceProviderForDataTable(dataset.general?.assurance),
-      },
-      {
-        type: "cell",
-        label: "Number Of Employees",
-        explanation: "Total number of employees (including temporary workers with assignment duration >6 months)",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatNumberForDatatable(dataset.general?.numberOfEmployees, ""),
-      },
-    ],
-    labelBadgeColor: "orange",
-  },
-  {
-    type: "section",
-    label: "Revenue",
-    expandOnPageLoad: false,
-    shouldDisplay: (): boolean => true,
-    children: [
-      {
-        type: "cell",
-        label: "Total Amount",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatCurrencyForDisplay(dataset.revenue?.totalAmount, "Total Amount"),
-      },
-      {
-        type: "section",
-        label: "Non-Eligible Share",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Relative Share in Percent",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.revenue?.nonEligibleShare?.relativeShareInPercent),
-          },
-          {
-            type: "cell",
-            label: "Absolute Share",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.revenue?.nonEligibleShare?.absoluteShare)),
-          },
+        {
+          type: "cell",
+          label: "Fiscal Year End",
+          explanation: "The date at which the fiscal year ends.",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.general?.fiscalYearEnd)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Scope Of Entities",
+          explanation: "Are all Group legal entities covered in the reports?",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.general?.scopeOfEntities)
+        ,
+        },
+        {
+          type: "cell",
+          label: "NFRD Mandatory",
+          explanation: "Is the NFRD mandatory for your company?",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.general?.nfrdMandatory)
+        ,
+        },
+        {
+          type: "cell",
+          label: "EU Taxonomy Activity Level Reporting",
+          explanation: "Activity level disclosure",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatYesNoValueForDatatable(dataset.general?.euTaxonomyActivityLevelReporting)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Assurance",
+          explanation: "Level of assurance of the EU Taxonomy disclosure (Reasonable Assurance, Limited Assurance, None)",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatAssuranceForDataTable(dataset.general?.assurance, "Assurance")
+        ,
+        },
+        {
+          type: "cell",
+          label: "Assurance Provider",
+          explanation: "Provider of the Assurance",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatAssuranceProviderForDataTable(dataset.general?.assurance)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Number Of Employees",
+          explanation: "Total number of employees (including temporary workers with assignment duration >6 months)",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatNumberForDatatable(dataset.general?.numberOfEmployees, "")
+        ,
+        },
         ],
-      },
-      {
-        type: "section",
-        label: "Eligible Share",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Relative Share in Percent",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.revenue?.eligibleShare?.relativeShareInPercent),
-          },
-          {
-            type: "cell",
-            label: "Absolute Share",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.revenue?.eligibleShare?.absoluteShare)),
-          },
+      labelBadgeColor: "orange",
+    },
+    {
+      type: "section",
+      label: "Revenue",
+      expandOnPageLoad: false,
+      shouldDisplay: (): boolean => true
+    ,
+      children: [    {
+          type: "cell",
+          label: "Total Amount",
+    
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatCurrencyForDisplay(dataset.revenue?.totalAmount, "Total Amount")
+        ,
+        },
+        {
+          type: "section",
+          label: "Non-Eligible Share",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Relative Share in Percent",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.nonEligibleShare?.relativeShareInPercent)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Absolute Share",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(
+            formatAmountWithCurrency(dataset.revenue?.nonEligibleShare?.absoluteShare)
+            )
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Eligible Share",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Relative Share in Percent",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.eligibleShare?.relativeShareInPercent)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Absolute Share",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(
+            formatAmountWithCurrency(dataset.revenue?.eligibleShare?.absoluteShare)
+            )
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Non-Aligned Share",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Relative Share in Percent",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.nonAlignedShare?.relativeShareInPercent)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Absolute Share",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(
+            formatAmountWithCurrency(dataset.revenue?.nonAlignedShare?.absoluteShare)
+            )
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "cell",
+          label: "Non-Aligned Activities",
+    
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatNonAlignedActivitiesForDataTable(dataset.revenue?.nonAlignedActivities,"Non-Aligned Activities",)
+        ,
+        },
+        {
+          type: "section",
+          label: "Aligned Share",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Relative Share in Percent",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.alignedShare?.relativeShareInPercent)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Absolute Share",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(
+            formatAmountWithCurrency(dataset.revenue?.alignedShare?.absoluteShare)
+            )
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Climate Change Mitigation In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.substantialContributionToClimateChangeMitigationInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Climate Change Adaptation In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Transition to a Circular Economy In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Pollution Prevention and Control In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Enabling Share In Percent",
+    
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.enablingShareInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Transitional Share In Percent",
+    
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.revenue?.transitionalShareInPercent)
+        ,
+        },
         ],
-      },
-      {
-        type: "section",
-        label: "Non-Aligned Share",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Relative Share in Percent",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.revenue?.nonAlignedShare?.relativeShareInPercent),
-          },
-          {
-            type: "cell",
-            label: "Absolute Share",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.revenue?.nonAlignedShare?.absoluteShare)),
-          },
+      labelBadgeColor: "green",
+    },
+    {
+      type: "section",
+      label: "CapEx",
+      expandOnPageLoad: false,
+      shouldDisplay: (): boolean => true
+    ,
+      children: [    {
+          type: "cell",
+          label: "Total Amount",
+    
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatCurrencyForDisplay(dataset.capex?.totalAmount, "Total Amount")
+        ,
+        },
+        {
+          type: "section",
+          label: "Non-Eligible Share",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Relative Share in Percent",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.nonEligibleShare?.relativeShareInPercent)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Absolute Share",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(
+            formatAmountWithCurrency(dataset.capex?.nonEligibleShare?.absoluteShare)
+            )
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Eligible Share",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Relative Share in Percent",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.eligibleShare?.relativeShareInPercent)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Absolute Share",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(
+            formatAmountWithCurrency(dataset.capex?.eligibleShare?.absoluteShare)
+            )
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Non-Aligned Share",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Relative Share in Percent",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.nonAlignedShare?.relativeShareInPercent)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Absolute Share",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(
+            formatAmountWithCurrency(dataset.capex?.nonAlignedShare?.absoluteShare)
+            )
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "cell",
+          label: "Non-Aligned Activities",
+    
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatNonAlignedActivitiesForDataTable(dataset.capex?.nonAlignedActivities,"Non-Aligned Activities",)
+        ,
+        },
+        {
+          type: "section",
+          label: "Aligned Share",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Relative Share in Percent",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.alignedShare?.relativeShareInPercent)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Absolute Share",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(
+            formatAmountWithCurrency(dataset.capex?.alignedShare?.absoluteShare)
+            )
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Climate Change Mitigation In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.substantialContributionToClimateChangeMitigationInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Climate Change Adaptation In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.substantialContributionToClimateChangeAdaptationInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Transition to a Circular Economy In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Pollution Prevention and Control In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Enabling Share In Percent",
+    
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.enablingShareInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Transitional Share In Percent",
+    
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.capex?.transitionalShareInPercent)
+        ,
+        },
         ],
-      },
-      {
-        type: "cell",
-        label: "Non-Aligned Activities",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatNonAlignedActivitiesForDataTable(dataset.revenue?.nonAlignedActivities, "Non-Aligned Activities"),
-      },
-      {
-        type: "section",
-        label: "Aligned Share",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Relative Share in Percent",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.revenue?.alignedShare?.relativeShareInPercent),
-          },
-          {
-            type: "cell",
-            label: "Absolute Share",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.revenue?.alignedShare?.absoluteShare)),
-          },
+      labelBadgeColor: "yellow",
+    },
+    {
+      type: "section",
+      label: "OpEx",
+      expandOnPageLoad: false,
+      shouldDisplay: (): boolean => true
+    ,
+      children: [    {
+          type: "cell",
+          label: "Total Amount",
+    
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatCurrencyForDisplay(dataset.opex?.totalAmount, "Total Amount")
+        ,
+        },
+        {
+          type: "section",
+          label: "Non-Eligible Share",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Relative Share in Percent",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.nonEligibleShare?.relativeShareInPercent)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Absolute Share",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(
+            formatAmountWithCurrency(dataset.opex?.nonEligibleShare?.absoluteShare)
+            )
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Eligible Share",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Relative Share in Percent",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.eligibleShare?.relativeShareInPercent)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Absolute Share",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(
+            formatAmountWithCurrency(dataset.opex?.eligibleShare?.absoluteShare)
+            )
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "section",
+          label: "Non-Aligned Share",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Relative Share in Percent",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.nonAlignedShare?.relativeShareInPercent)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Absolute Share",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(
+            formatAmountWithCurrency(dataset.opex?.nonAlignedShare?.absoluteShare)
+            )
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "cell",
+          label: "Non-Aligned Activities",
+    
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatNonAlignedActivitiesForDataTable(dataset.opex?.nonAlignedActivities,"Non-Aligned Activities",)
+        ,
+        },
+        {
+          type: "section",
+          label: "Aligned Share",
+          expandOnPageLoad: false,
+          shouldDisplay: (): boolean => true
+        ,
+          children: [    {
+              type: "cell",
+              label: "Relative Share in Percent",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.alignedShare?.relativeShareInPercent)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Absolute Share",
+    
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(
+            formatAmountWithCurrency(dataset.opex?.alignedShare?.absoluteShare)
+            )
+            ,
+            },
+            ],
+    
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Climate Change Mitigation In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.substantialContributionToClimateChangeMitigationInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Climate Change Adaptation In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.substantialContributionToClimateChangeAdaptationInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Transition to a Circular Economy In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.substantialContributionToTransitionToACircularEconomyInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Pollution Prevention and Control In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.substantialContributionToPollutionPreventionAndControlInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent",
+          explanation: "Grade of the substantial contribution criterion fulfillment",
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Enabling Share In Percent",
+    
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.enablingShareInPercent)
+        ,
+        },
+        {
+          type: "cell",
+          label: "Transitional Share In Percent",
+    
+          shouldDisplay: (): boolean => true
+        ,
+          valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes => formatPercentageForDatatable(dataset.opex?.transitionalShareInPercent)
+        ,
+        },
         ],
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Climate Change Mitigation In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.revenue?.substantialContributionToClimateChangeMitigationInPercent),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Climate Change Adaptation In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.revenue?.substantialContributionToClimateChangeAdaptationInPercent),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(
-            dataset.revenue?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
-          ),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Transition to a Circular Economy In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.revenue?.substantialContributionToTransitionToACircularEconomyInPercent),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Pollution Prevention and Control In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(
-            dataset.revenue?.substantialContributionToPollutionPreventionAndControlInPercent,
-          ),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(
-            dataset.revenue?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
-          ),
-      },
-      {
-        type: "cell",
-        label: "Enabling Share In Percent",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.revenue?.enablingShareInPercent),
-      },
-      {
-        type: "cell",
-        label: "Transitional Share In Percent",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.revenue?.transitionalShareInPercent),
-      },
-    ],
-    labelBadgeColor: "green",
-  },
-  {
-    type: "section",
-    label: "CapEx",
-    expandOnPageLoad: false,
-    shouldDisplay: (): boolean => true,
-    children: [
-      {
-        type: "cell",
-        label: "Total Amount",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatCurrencyForDisplay(dataset.capex?.totalAmount, "Total Amount"),
-      },
-      {
-        type: "section",
-        label: "Non-Eligible Share",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Relative Share in Percent",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.capex?.nonEligibleShare?.relativeShareInPercent),
-          },
-          {
-            type: "cell",
-            label: "Absolute Share",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.capex?.nonEligibleShare?.absoluteShare)),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Eligible Share",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Relative Share in Percent",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.capex?.eligibleShare?.relativeShareInPercent),
-          },
-          {
-            type: "cell",
-            label: "Absolute Share",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.capex?.eligibleShare?.absoluteShare)),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Non-Aligned Share",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Relative Share in Percent",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.capex?.nonAlignedShare?.relativeShareInPercent),
-          },
-          {
-            type: "cell",
-            label: "Absolute Share",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.capex?.nonAlignedShare?.absoluteShare)),
-          },
-        ],
-      },
-      {
-        type: "cell",
-        label: "Non-Aligned Activities",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatNonAlignedActivitiesForDataTable(dataset.capex?.nonAlignedActivities, "Non-Aligned Activities"),
-      },
-      {
-        type: "section",
-        label: "Aligned Share",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Relative Share in Percent",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.capex?.alignedShare?.relativeShareInPercent),
-          },
-          {
-            type: "cell",
-            label: "Absolute Share",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.capex?.alignedShare?.absoluteShare)),
-          },
-        ],
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Climate Change Mitigation In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.substantialContributionToClimateChangeMitigationInPercent),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Climate Change Adaptation In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.substantialContributionToClimateChangeAdaptationInPercent),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(
-            dataset.capex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
-          ),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Transition to a Circular Economy In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.substantialContributionToTransitionToACircularEconomyInPercent),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Pollution Prevention and Control In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.substantialContributionToPollutionPreventionAndControlInPercent),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(
-            dataset.capex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
-          ),
-      },
-      {
-        type: "cell",
-        label: "Enabling Share In Percent",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.enablingShareInPercent),
-      },
-      {
-        type: "cell",
-        label: "Transitional Share In Percent",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.capex?.transitionalShareInPercent),
-      },
-    ],
-    labelBadgeColor: "yellow",
-  },
-  {
-    type: "section",
-    label: "OpEx",
-    expandOnPageLoad: false,
-    shouldDisplay: (): boolean => true,
-    children: [
-      {
-        type: "cell",
-        label: "Total Amount",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatCurrencyForDisplay(dataset.opex?.totalAmount, "Total Amount"),
-      },
-      {
-        type: "section",
-        label: "Non-Eligible Share",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Relative Share in Percent",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.opex?.nonEligibleShare?.relativeShareInPercent),
-          },
-          {
-            type: "cell",
-            label: "Absolute Share",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.opex?.nonEligibleShare?.absoluteShare)),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Eligible Share",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Relative Share in Percent",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.opex?.eligibleShare?.relativeShareInPercent),
-          },
-          {
-            type: "cell",
-            label: "Absolute Share",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.opex?.eligibleShare?.absoluteShare)),
-          },
-        ],
-      },
-      {
-        type: "section",
-        label: "Non-Aligned Share",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Relative Share in Percent",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.opex?.nonAlignedShare?.relativeShareInPercent),
-          },
-          {
-            type: "cell",
-            label: "Absolute Share",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.opex?.nonAlignedShare?.absoluteShare)),
-          },
-        ],
-      },
-      {
-        type: "cell",
-        label: "Non-Aligned Activities",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatNonAlignedActivitiesForDataTable(dataset.opex?.nonAlignedActivities, "Non-Aligned Activities"),
-      },
-      {
-        type: "section",
-        label: "Aligned Share",
-        expandOnPageLoad: false,
-        shouldDisplay: (): boolean => true,
-        children: [
-          {
-            type: "cell",
-            label: "Relative Share in Percent",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(dataset.opex?.alignedShare?.relativeShareInPercent),
-          },
-          {
-            type: "cell",
-            label: "Absolute Share",
-
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-              formatStringForDatatable(formatAmountWithCurrency(dataset.opex?.alignedShare?.absoluteShare)),
-          },
-        ],
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Climate Change Mitigation In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.substantialContributionToClimateChangeMitigationInPercent),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Climate Change Adaptation In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.substantialContributionToClimateChangeAdaptationInPercent),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(
-            dataset.opex?.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
-          ),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Transition to a Circular Economy In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.substantialContributionToTransitionToACircularEconomyInPercent),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Pollution Prevention and Control In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.substantialContributionToPollutionPreventionAndControlInPercent),
-      },
-      {
-        type: "cell",
-        label: "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems In Percent",
-        explanation: "Grade of the substantial contribution criterion fulfillment",
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(
-            dataset.opex?.substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent,
-          ),
-      },
-      {
-        type: "cell",
-        label: "Enabling Share In Percent",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.enablingShareInPercent),
-      },
-      {
-        type: "cell",
-        label: "Transitional Share In Percent",
-
-        shouldDisplay: (): boolean => true,
-        valueGetter: (dataset: EutaxonomyNonFinancialsData): AvailableMLDTDisplayObjectTypes =>
-          formatPercentageForDatatable(dataset.opex?.transitionalShareInPercent),
-      },
-    ],
-    labelBadgeColor: "blue",
-  },
-];
+      labelBadgeColor: "blue",
+    },
+    ];
