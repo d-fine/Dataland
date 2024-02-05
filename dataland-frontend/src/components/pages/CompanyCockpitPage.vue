@@ -1,7 +1,7 @@
 <template>
   <TheHeader v-if="!useMobileView" />
   <TheContent class="paper-section flex">
-    <CompanyInfoSheet :company-id="companyId" @fetched-company-information="getCompanyName" />
+    <CompanyInfoSheet :company-id="companyId" />
     <div class="card-wrapper">
       <div class="card-grid">
         <ClaimOwnershipPanel v-if="!isUserDataOwner && isUserUploader && isCompanyIdValid" :company-id="companyId" />
@@ -26,7 +26,7 @@
 import { defineComponent, inject } from "vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
-import { type AggregatedFrameworkDataSummary, type CompanyInformation, type DataTypeEnum } from "@clients/backend";
+import { type AggregatedFrameworkDataSummary, type DataTypeEnum } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import TheFooter from "@/components/generics/TheNewFooter.vue";
@@ -100,7 +100,6 @@ export default defineComponent({
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
-      companyName: undefined as string | undefined,
       isUserUploader: false,
       isUserDataOwner: undefined as boolean | undefined,
       footerContent,
@@ -125,13 +124,6 @@ export default defineComponent({
       this.aggregatedFrameworkDataSummary = (
         await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
       ).data as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary } | undefined;
-    },
-    /**
-     * Retrieves the company name from companyInfo object
-     * @param companyInfo company information object
-     */
-    getCompanyName(companyInfo: CompanyInformation) {
-      this.companyName = companyInfo.companyName;
     },
 
     /**
