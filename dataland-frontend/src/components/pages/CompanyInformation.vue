@@ -58,7 +58,7 @@ import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
-import { checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import { getUserId } from "@/utils/KeycloakUtils";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 
 export default defineComponent({
@@ -76,9 +76,9 @@ export default defineComponent({
       waitingForData: true,
       companyIdDoesNotExist: false,
       isUserDataOwner: false,
-      isUserUploader: false,
       dialogIsOpen: false,
       claimIsSubmitted: false,
+      userId: undefined as string | undefined,
     };
   },
   computed: {
@@ -94,7 +94,7 @@ export default defineComponent({
     },
     contextMenuItems() {
       const listOfItems = [];
-      if (!this.isUserDataOwner && this.isUserIdDefined()) {
+      if (!this.isUserDataOwner && this.userId) {
         listOfItems.push({
           label: "Claim Company Dataset Ownership",
           command: () => {
@@ -104,9 +104,7 @@ export default defineComponent({
       }
       return listOfItems;
     },
-    userId() {
-      return getUserId(assertDefined(this.getKeycloakPromise));
-    },
+
     isCompanyIdValid() {
       const uuidRegexExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       return uuidRegexExp.test(this.companyId);
@@ -121,11 +119,7 @@ export default defineComponent({
   mounted() {
     void this.getCompanyInformation();
     void this.getDataOwnerInformation();
-    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
-      .then((result) => {
-        this.isUserUploader = result;
-      })
-      .catch((error) => console.log(error));
+    void this.awaitUserId();
   },
   watch: {
     companyId() {
@@ -169,13 +163,13 @@ export default defineComponent({
      * Get the Information about Data-ownership
      */
     async getDataOwnerInformation() {
-      if ((await this.userId) && this.isCompanyIdValid) {
+      if (this.userId !== undefined && this.isCompanyIdValid) {
         try {
           const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
             .backendClients.companyDataController;
           const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
             this.companyId,
-            assertDefined(await this.userId),
+            assertDefined(this.userId),
           );
           if (axiosResponse.status == 200) {
             this.isUserDataOwner = true;
@@ -197,11 +191,10 @@ export default defineComponent({
       this.claimIsSubmitted = true;
     },
     /**
-     * Checks if the User ID is defined, e.g. that a user is logged in.
-     * @returns boolean if yes or no
+     * gets the user ID in an async manner
      */
-    isUserIdDefined() {
-      return (await this.userId) !== undefined;
+    async awaitUserId(): Promise<void> {
+      this.userId = await getUserId(assertDefined(this.getKeycloakPromise));
     },
   },
 });

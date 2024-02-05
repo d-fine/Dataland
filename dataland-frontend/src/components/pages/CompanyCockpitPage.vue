@@ -37,7 +37,7 @@ import FrameworkSummaryPanel from "@/components/resources/companyCockpit/Framewo
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
-import { checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import { getUserId } from "@/utils/KeycloakUtils";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 
 export default defineComponent({
@@ -52,9 +52,6 @@ export default defineComponent({
     useMobileView() {
       return this.injectedUseMobileView;
     },
-    userId() {
-      return getUserId(assertDefined(this.getKeycloakPromise));
-    },
     isCompanyIdValid() {
       const uuidRegexExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       return uuidRegexExp.test(this.companyId);
@@ -66,6 +63,7 @@ export default defineComponent({
         try {
           await this.getAggregatedFrameworkDataSummary();
           await this.getDataOwnerInformation();
+          await this.awaitUserId();
         } catch (error) {
           console.error("Error fetching data for new company:", error);
         }
@@ -100,19 +98,15 @@ export default defineComponent({
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
-      isUserUploader: false,
       isUserDataOwner: undefined as boolean | undefined,
       footerContent,
+      userId: undefined as string | undefined,
     };
   },
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
     void this.getDataOwnerInformation();
-    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
-      .then((result) => {
-        this.isUserUploader = result;
-      })
-      .catch((error) => console.log(error));
+    void this.awaitUserId();
   },
   methods: {
     /**
@@ -130,13 +124,13 @@ export default defineComponent({
      * Get the Information about Data-ownership
      */
     async getDataOwnerInformation() {
-      if ((await this.userId) && this.isCompanyIdValid) {
+      if (this.userId !== undefined && this.isCompanyIdValid) {
         try {
           const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
             .backendClients.companyDataController;
           const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
             this.companyId,
-            assertDefined(await this.userId),
+            assertDefined(this.userId),
           );
           if (axiosResponse.status == 200) {
             this.isUserDataOwner = true;
@@ -151,6 +145,12 @@ export default defineComponent({
       } else {
         this.isUserDataOwner = false;
       }
+    },
+    /**
+     * gets the user ID in an async manner
+     */
+    async awaitUserId(): Promise<void> {
+      this.userId = await getUserId(assertDefined(this.getKeycloakPromise));
     },
   },
 });
