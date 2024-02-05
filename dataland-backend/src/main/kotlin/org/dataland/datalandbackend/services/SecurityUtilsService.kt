@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import okhttp3.internal.concurrent.TaskRunner.Companion.logger
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.stereotype.Service
 
@@ -9,6 +10,14 @@ import org.springframework.stereotype.Service
  */
 @Service("SecurityUtilsService")
 class SecurityUtilsService {
+    /**
+     * Returns true if and only if the user is authenticated
+     */
+    fun isUserAuthenticated(userId: String): Boolean {
+        val currentAuthentication = DatalandAuthentication.fromContextOrNull() ?: return false
+        logger.info("currentAuthentication $currentAuthentication")
+        return currentAuthentication.isAuthenticated
+    }
     /**
      * Returns true if and only if the currently authenticated user has the provided user id
      */
