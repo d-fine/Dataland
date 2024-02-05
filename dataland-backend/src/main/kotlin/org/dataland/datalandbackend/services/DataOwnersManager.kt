@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.nio.file.AccessDeniedException
 import java.util.*
 import kotlin.jvm.optionals.getOrElse
 import kotlin.jvm.optionals.getOrNull
@@ -135,12 +134,7 @@ class DataOwnersManager(
         companyId: String,
         userId: String,
     ) {
-        if (!securityUtilsService.isUserAuthenticated(userId)) {
-            throw AccessDeniedException(
-                "Access Denied " +
-                    "Access to this resource has been denied. Please contact support if you believe this to be an error",
-            )
-        }
+        securityUtilsService.isUserAuthenticated()
         checkIfCompanyIsValid(companyId)
         val failException = ResourceNotFoundApiException(
             "User is not a data owner",
