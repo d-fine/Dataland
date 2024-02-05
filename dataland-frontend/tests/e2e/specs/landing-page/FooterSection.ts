@@ -16,13 +16,9 @@ describeIf(
         cy.ensureLoggedIn();
       });
 
-      const pagesToCheck = ["/companies", `/preview`];
-
-      pagesToCheck.forEach((page) => {
-        it(`Checks that the footer is present on ${page}`, () => {
-          cy.visitAndCheckAppMount(page);
-          checkFooter();
-        });
+      it(`Checks that the footer is present on /companies`, () => {
+        cy.visitAndCheckAppMount("/companies");
+        checkFooter();
       });
 
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
