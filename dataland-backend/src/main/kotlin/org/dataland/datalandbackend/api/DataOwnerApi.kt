@@ -127,7 +127,10 @@ interface DataOwnerApi {
         method = [RequestMethod.HEAD],
         value = ["/{companyId}/data-owners/{userId}"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') or " +
+            "@DataOwnersManager.checkIfCurrentUserIsDataOwner(#companyId.toString(), #userId.toString())",
+    )
     fun isUserDataOwnerForCompany(
         @PathVariable("companyId") companyId: UUID,
         @PathVariable("userId") userId: UUID,

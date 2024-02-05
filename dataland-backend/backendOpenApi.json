@@ -13343,25 +13343,25 @@
         ],
         "type": "object",
         "properties": {
-          "permId": {
-            "type": "string",
-            "nullable": true
-          },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
-          "headquarters": {
+          "companyId": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "companyName": {
+          "headquarters": {
             "type": "string"
           },
-          "companyId": {
+          "countryCode": {
             "type": "string"
+          },
+          "permId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

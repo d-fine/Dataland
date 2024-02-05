@@ -12,6 +12,7 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -124,12 +125,35 @@ class DataOwnersManager(
     }
 
     /**
+     * Method to check if the current authorized user is data owner for the given company
+     * @param companyId the ID of the company
+     * @param userId the ID of the user
+     * @return true if the current authorized user is data owner for the given company
+     */
+    @Transactional(readOnly = true)
+    fun checkIfCurrentUserIsDataOwner(companyId: String, userId: String): Boolean {
+        logger.info("Check for authorization if user with Id $userId is data owner of company with Id $companyId.")
+        if (
+            !dataOwnerRepository.getReferenceById(companyId).dataOwners.contains(
+                DatalandAuthentication.fromContext().userId,
+            )
+        ) {
+            return true
+        } else {
+            throw AccessDeniedException("403 returned")
+        }
+    }
+
+    /**
      * Method to check whether a specified user is a data owner of a given company, which throws an exception if not
      * @param companyId the ID of the company
      * @param userId the ID of the user
      */
     @Transactional(readOnly = true)
-    fun checkUserCompanyCombinationForDataOwnership(companyId: String, userId: String) {
+    fun checkUserCompanyCombinationForDataOwnership(
+        companyId: String,
+        userId: String,
+    ) {
         checkIfCompanyIsValid(companyId)
         val failException = ResourceNotFoundApiException(
             "User is not a data owner",
