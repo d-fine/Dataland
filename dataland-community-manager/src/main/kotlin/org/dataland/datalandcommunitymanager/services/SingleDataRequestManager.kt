@@ -7,17 +7,28 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.amqp.rabbit.annotation.Argument
+import org.springframework.amqp.rabbit.annotation.Exchange
+import org.springframework.amqp.rabbit.annotation.Queue
+import org.springframework.amqp.rabbit.annotation.QueueBinding
+import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.messaging.handler.annotation.Header
+import org.springframework.messaging.handler.annotation.Payload
+
 
 /**
  * Implementation of a request manager service for all operations concerning the processing of single data requests
@@ -187,5 +198,31 @@ class SingleDataRequestManager(
         dataRequestRepository.save(dataRequestEntity)
         dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         return utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
+    }
+
+    /**
+     * Method to send out a confirmation email to the requester as soon as the requested data is provided by the company
+     * @param messageAsJsonString the message body as json string
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value = Queue(
+                    "dataQualityAssuredBackendDataManager",
+                    arguments = [
+                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
+                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                        Argument(name = "defaultRequeueRejected", value = "false"),
+                    ],
+                ),
+                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
+                key = [RoutingKeyNames.data],
+            ),
+        ],
+    )
+    fun sendAnsweredRequestConfirmationEmail(
+        @Payload messageAsJsonString: String,
+    ) {
+
     }
 }
