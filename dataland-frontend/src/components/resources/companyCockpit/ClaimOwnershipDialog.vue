@@ -49,6 +49,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { inject, defineComponent } from "vue";
 import type Keycloak from "keycloak-js";
+import { FormKit } from "@formkit/vue";
 
 export default defineComponent({
   name: "ClaimOwnershipDialog",
@@ -60,6 +61,7 @@ export default defineComponent({
   components: {
     PrimeDialog,
     PrimeButton,
+    FormKit,
   },
   data() {
     return {

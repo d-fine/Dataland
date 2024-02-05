@@ -15,12 +15,15 @@
   border: 0 none;
   background: $card-background;
   max-width: 80%;
+
   .p-dialog-header {
-    padding: 1.5rem;
+    padding: 1rem;
+
     .p-dialog-title {
       font-weight: 600;
       font-size: 1.25rem;
     }
+
     .p-dialog-header-icon {
       width: 2rem;
       height: 2rem;
@@ -29,37 +32,46 @@
       background: transparent;
       transition: background-color .2s, color .2s, box-shadow .2s;
       margin-left: .5rem;
+
       &:enabled:hover {
         color: #1b1b1b;
       }
+
       &:focus {
         outline: 0 none;
         outline-offset: 0;
       }
+
       &:last-child {
         margin-right: 0;
       }
     }
   }
+
   .p-dialog-content {
-    padding: 1.5rem;
+    padding: 1rem;
+
     .p-datatable-table {
       min-width: 100%;
     }
   }
+
   .p-dialog-footer {
-    padding: 1.5rem;
+    padding: 1rem;
     text-align: right;
+
     button {
       margin: 0 .5rem 0 0;
       width: auto;
     }
   }
 }
+
 .p-dialog.p-confirm-dialog {
   .p-confirm-dialog-icon {
     font-size: 2rem;
   }
+
   .p-confirm-dialog-message {
     margin-left: 1rem;
   }
@@ -71,13 +83,16 @@
   border-radius: 0;
   box-shadow: 0 0 3px 3px $shadow-color;
   padding: 1rem;
+
   .title {
     margin: 0 0 1rem 0;
   }
+
   .three-in-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
+
     a {
       text-decoration: none;
     }
