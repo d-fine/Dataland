@@ -69,7 +69,7 @@ internal class CompanyDataControllerTest(
                 status().isOk,
                 content().contentType(MediaType.APPLICATION_JSON),
             ) */ // TODO commenting out test for now to have proper CI feedback.  Discussion postponed for now
-        Assertions.assertEquals(
+        Assertions.assertEquals( // TODO dummy pass for test for now
             true,
             true,
         )
