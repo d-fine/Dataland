@@ -11,7 +11,8 @@ import org.dataland.datalandbackend.model.sme.categories.production.SmeProductio
  * --- API model ---
  * Fields of the sme framework.
 */
-@DataType("sme")
+@Suppress("MagicNumber")
+@DataType("sme", 5)
 data class SmeData(
     @field:JsonProperty(required = true)
     val general: SmeGeneral,

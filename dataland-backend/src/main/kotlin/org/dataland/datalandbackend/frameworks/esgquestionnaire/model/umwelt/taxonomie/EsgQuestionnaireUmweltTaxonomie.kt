@@ -9,8 +9,11 @@ import java.util.EnumSet
  * The data-model for the Taxonomie section
  */
 data class EsgQuestionnaireUmweltTaxonomie(
-    val taxonomieBerichterstattung: TaxonomieBerichterstattungOptions? = null,
+    val taxonomieBerichterstattung: EsgQuestionnaireUmweltTaxonomieTaxonomieBerichterstattungOptions? = null,
+
     val euTaxonomieKompassAktivitaeten: EnumSet<Activity>? = null,
+
     val umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten:
     YearlyTimeseriesData<UmsatzInvestitionsaufwandFuerNachhaltigeAktivitaetenValues?>? = null,
+
 )

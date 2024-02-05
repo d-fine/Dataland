@@ -13,10 +13,10 @@ function exportFixturesHeimathafen(): void {
     "../testing/data/CompanyInformationWithHeimathafenData.json",
     JSON.stringify(companyInformationWithHeimathafenData, null, "\t"),
   );
-  const preparedFixtureHeimathafenDataForFinancials = generateHeimathafenPreparedFixtures();
+  const preparedFixtureHeimathafenData = generateHeimathafenPreparedFixtures();
   fs.writeFileSync(
     "../testing/data/CompanyInformationWithHeimathafenPreparedFixtures.json",
-    JSON.stringify(preparedFixtureHeimathafenDataForFinancials, null, "\t"),
+    JSON.stringify(preparedFixtureHeimathafenData, null, "\t"),
   );
 }
 
