@@ -32,32 +32,16 @@ class SingleDataRequestManagerTest {
 
     @BeforeEach
     fun setupSingleDataRequestManager() {
-        val mockObjectMapper = mock(ObjectMapper::class.java)
-        `when`(mockObjectMapper.readValue(
-            any() as String?,
-            any() ?: object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
-        )).thenReturn(
-            mutableListOf(),
-        )
-        val mockCompanyGetter = mock(CompanyGetter::class.java)
+        val mockObjectMapper = mockObjectMapper()
+        val mockDataRequestRepository = mockDataRequestRepository()
         mockSingleDataRequestEmailSender = mock(SingleDataRequestEmailSender::class.java)
-        val mockDataRequestRepository = mock(DataRequestRepository::class.java)
         singleDataRequestManager = SingleDataRequestManager(
             dataRequestRepository = mockDataRequestRepository,
             dataRequestLogger = mock(DataRequestLogger::class.java),
-            companyGetter = mockCompanyGetter,
+            companyGetter = mock(CompanyGetter::class.java),
             objectMapper = mockObjectMapper,
             singleDataRequestEmailSender = mockSingleDataRequestEmailSender,
         )
-        `when`(
-            mockDataRequestRepository
-                .existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
-                    anyString(),
-                    anyString(),
-                    anyString(),
-                    anyString(),
-                ),
-        ).thenReturn(true)
         val mockSecurityContext = mock(SecurityContext::class.java)
         mockAuthentication = AuthenticationMock.mockJwtAuthentication(
             "requester@bigplayer.com",
@@ -67,6 +51,30 @@ class SingleDataRequestManagerTest {
         `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
         `when`(mockAuthentication.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
+    }
+
+    private fun mockDataRequestRepository(): DataRequestRepository {
+        return mock(DataRequestRepository::class.java).also {
+            `when`(
+                it.existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
+                    anyString(),
+                    anyString(),
+                    anyString(),
+                    anyString(),
+                ),
+            ).thenReturn(true)
+        }
+    }
+
+    private fun mockObjectMapper(): ObjectMapper {
+        return mock(ObjectMapper::class.java).also {
+            `when`(it.readValue(
+                any() as String?,
+                any() ?: object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
+            )).thenReturn(
+                mutableListOf(),
+            )
+        }
     }
 
     @Test
