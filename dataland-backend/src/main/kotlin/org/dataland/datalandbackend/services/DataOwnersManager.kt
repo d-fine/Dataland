@@ -12,7 +12,6 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -121,26 +120,6 @@ class DataOwnersManager(
                 "No data owners found",
                 "The companyId '$companyId' does not have any data owners.",
             )
-        }
-    }
-
-    /**
-     * Method to check if the current authorized user is data owner for the given company
-     * @param companyId the ID of the company
-     * @param userId the ID of the user
-     * @return true if the current authorized user is data owner for the given company
-     */
-    @Transactional(readOnly = true)
-    fun checkIfCurrentUserIsDataOwner(companyId: String, userId: String): Boolean {
-        logger.info("Check for authorization if user with Id $userId is data owner of company with Id $companyId.")
-        if (
-            !dataOwnerRepository.getReferenceById(companyId).dataOwners.contains(
-                DatalandAuthentication.fromContext().userId,
-            )
-        ) {
-            return true
-        } else {
-            throw AccessDeniedException("403 returned")
         }
     }
 

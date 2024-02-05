@@ -129,7 +129,7 @@ interface DataOwnerApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') or " +
-            "@DataOwnersManager.checkIfCurrentUserIsDataOwner(#companyId.toString(), #userId.toString())",
+            "@SecurityUtilsService.isUserIdOfRequestingUser(#userId.toString())",
     )
     fun isUserDataOwnerForCompany(
         @PathVariable("companyId") companyId: UUID,

@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyDataOwners
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
-import org.dataland.e2etests.READER_USER_ID
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -234,25 +233,24 @@ class DataOwnerControllerTest {
     }
 
     @Test
-    fun `get data owner from an existing company as data owner`(){
+    fun `get data owner from an existing company as data owner`() {
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
         )
         val dataOwnersForCompany = apiAccessor.companyDataControllerApi.postDataOwner(companyId, dataReaderUserId)
         validateDataOwnersForCompany(companyId, listOf(dataReaderUserId), dataOwnersForCompany)
-        assertDoesNotThrow { apiAccessor.companyDataControllerApi.isUserDataOwnerForCompany(companyId, dataReaderUserId)
+        assertDoesNotThrow {
+            apiAccessor.companyDataControllerApi.isUserDataOwnerForCompany(companyId, dataReaderUserId)
         }
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(
-            TechnicalUser.entries.filter { it != TechnicalUser.Admin }.random(),
-        )
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
         checkHeadException(companyId, dataReaderUserId)
+
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        assertDoesNotThrow { apiAccessor.companyDataControllerApi.isUserDataOwnerForCompany(companyId, dataReaderUserId)
+        assertDoesNotThrow {
+            apiAccessor.companyDataControllerApi.isUserDataOwnerForCompany(companyId, dataReaderUserId)
         }
-
     }
-
-
 
     @Test
     fun `post as a data owner and check if bypassQa is forbidden`() {
