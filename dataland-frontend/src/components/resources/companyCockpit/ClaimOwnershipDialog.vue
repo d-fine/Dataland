@@ -28,6 +28,8 @@
         placeholder="Write your message."
         data-test="messageInputField"
         wrapper-class="full-width-wrapper"
+        input-class="textarea"
+        inner-class="no-shadow"
       />
     </div>
     <div v-else>
@@ -128,5 +130,13 @@ export default defineComponent({
 <style lang="scss">
 .full-width-wrapper {
   max-width: 100%;
+}
+
+.textarea {
+  background-color: var(--gray-200);
+}
+
+.no-shadow {
+  box-shadow: none;
 }
 </style>
