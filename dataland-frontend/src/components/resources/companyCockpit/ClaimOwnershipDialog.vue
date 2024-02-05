@@ -4,6 +4,7 @@
     :dismissable-mask="true"
     :modal="true"
     header="Header"
+    :closable="!claimIsSubmitted"
     footer="Footer"
     class="col-6"
     v-model:visible="dialogIsVisible"
@@ -19,23 +20,24 @@
         quality and transparency over your company's data.
       </p>
       <p>Feel free to share any additional information with us:</p>
+
       <FormKit
         v-model="claimOwnershipMessage"
         type="textarea"
         name="claimOwnershipMessage"
         placeholder="Write your message."
-        class="w-full p-inputtext"
         data-test="messageInputField"
+        wrapper-class="full-width-wrapper"
       />
     </div>
     <div v-else>
       <p data-test="claimOwnershipDialogSubmittedMessage">We will reach out to you soon via email.</p>
     </div>
     <template #footer v-if="!claimIsSubmitted">
-      <PrimeButton label="SUBMIT" @click="submitInput" data-test="submitButton" />
+      <PrimeButton class="w-full" label="SUBMIT" @click="submitInput" data-test="submitButton" />
     </template>
     <template #footer v-else>
-      <PrimeButton label="CLOSE" @click="$emit('closeDialog')" data-test="closeButton" />
+      <PrimeButton class="p-button p-button-outlined" label="CLOSE" @click="closeDialog" data-test="closeButton" />
     </template>
   </PrimeDialog>
 </template>
@@ -105,6 +107,13 @@ export default defineComponent({
         console.error(error);
       }
     },
+    /**
+     * closes the dialog window and emits this event
+     */
+    closeDialog(): void {
+      this.dialogIsVisible = false;
+      this.$emit("closeDialog");
+    },
   },
   watch: {
     dialogIsOpen(newValue: boolean): void {
@@ -113,3 +122,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss">
+.full-width-wrapper {
+  max-width: 100%;
+}
+</style>
