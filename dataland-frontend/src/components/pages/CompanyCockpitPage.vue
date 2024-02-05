@@ -4,7 +4,7 @@
     <CompanyInfoSheet :company-id="companyId" />
     <div class="card-wrapper">
       <div class="card-grid">
-        <ClaimOwnershipPanel v-if="!isUserDataOwner && isUserUploader && isCompanyIdValid" :company-id="companyId" />
+        <ClaimOwnershipPanel v-if="!isUserDataOwner && userId && isCompanyIdValid" :company-id="companyId" />
 
         <FrameworkSummaryPanel
           v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"

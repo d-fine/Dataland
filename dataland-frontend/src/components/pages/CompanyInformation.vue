@@ -94,7 +94,7 @@ export default defineComponent({
     },
     contextMenuItems() {
       const listOfItems = [];
-      if (!this.isUserDataOwner && this.isUserUploader) {
+      if (!this.isUserDataOwner && this.isUserIdDefined()) {
         listOfItems.push({
           label: "Claim Company Dataset Ownership",
           command: () => {
@@ -195,6 +195,13 @@ export default defineComponent({
      */
     onClaimSubmitted() {
       this.claimIsSubmitted = true;
+    },
+    /**
+     * Checks if the User ID is defined, e.g. that a user is logged in.
+     * @returns boolean if yes or no
+     */
+    isUserIdDefined() {
+      return (await this.userId) !== undefined;
     },
   },
 });
