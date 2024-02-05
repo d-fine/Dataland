@@ -13,6 +13,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
  */
 data class AggregatedDataRequest(
     val dataType: DataTypeEnum?,
+    val reportingPeriod: String?,
     val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
     val dataRequestCompanyIdentifierValue: String,
     val count: Long,
