@@ -3,7 +3,7 @@
     <TheHeader />
     <TheContent class="paper-section no-ui-message">
       <CompanyInfoSheet
-        :company-id="companyId"
+        :company-id="companyIdentifier"
         @fetched-company-information="handleFetchedCompanyInformation"
         :show-search-bar="false"
       />
@@ -26,7 +26,7 @@
           <FormKit
             type="select"
             placeholder="Select framework"
-            v-model:selectedItemsBindInternal="selectedFramework"
+            v-model:selectedItemsBindInternal="frameworkName"
             name="Framework"
             :options="frameworkOptions"
             outer-class="long"
@@ -44,7 +44,7 @@
               v-for="year in years"
               :key="year"
               @click="toggleSelection(year)"
-              :class="{ selected: selectedYears.includes(year) }"
+              :class="{ selected: listOfReportingPeriods.includes(year) }"
             >
               {{ year }}
             </button>
@@ -58,7 +58,7 @@
           <label for="Email" class="label-with-optional">
             <b>Email</b> <span class="optional-text">Optional</span>
           </label>
-          <FormKit type="text" v-model="email" name="Email" />
+          <FormKit type="text" v-model="contactList" name="Email" />
           <p class="gray-text font-italic" style="text-align: left">
             By specifying a contact person here, your data request will be directed accordingly.<br />
             this increases the chances of expediting the fulfillment of your request.
@@ -91,10 +91,13 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import { type Content, type Page } from "@/types/ContentTypes";
 import contentData from "@/assets/content.json";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import { type CompanyInformation, DataTypeEnum } from "@clients/backend";
+import { type CompanyInformation, DataTypeEnum, type ErrorResponse  } from "@clients/backend";
 import { type SingleDataRequest } from "@clients/communitymanager";
 import PrimeButton from "primevue/button";
 import type Keycloak from "keycloak-js";
+import { AxiosError } from "axios";
+import { ApiClientProvider } from "@/services/ApiClients";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "SingleDataRequest",
@@ -119,18 +122,18 @@ export default defineComponent({
     const frameworkOptions: DataTypeEnum[] = Object.values(DataTypeEnum).sort();
     return {
       years,
-      selectedYears: [] as number[],
+      listOfReportingPeriods: [] as String[],
       footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions,
-      selectedFramework: DataTypeEnum,
-      email: "",
+      frameworkName: DataTypeEnum,
+      contactList: "",
       message: "",
     };
   },
   //TODO: default to be removed
   props: {
-    companyId: {
+    companyIdentifier: {
       type: String,
       required: true,
       default: "d9923b5c-8a67-4aad-8112-640af606bccb",
@@ -142,12 +145,12 @@ export default defineComponent({
      * @param year - the year to be toggled on in the year selection
      */
     toggleSelection(year: number): void {
-      const index = this.selectedYears.indexOf(year);
+      const index = this.listOfReportingPeriods.indexOf(year);
 
       if (index === -1) {
-        this.selectedYears.push(year);
+        this.listOfReportingPeriods.push(year);
       } else {
-        this.selectedYears.splice(index, 1);
+        this.listOfReportingPeriods.splice(index, 1);
       }
     },
     /**
@@ -163,10 +166,10 @@ export default defineComponent({
      */
     collectDataToSend(): SingleDataRequest {
       return {
-        companyId: this.companyId,
-        selectedFramework: this.selectedFramework,
-        yearsRequested: this.selectedYears,
-        email: this.email,
+        companyIdentifier: this.companyIdentifier,
+        frameworkName: this.frameworkName,
+        listOfReportingPeriods: this.selectedYears,
+        contactList: this.contactList,
         message: this.message,
       };
     },
