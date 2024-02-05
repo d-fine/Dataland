@@ -21,7 +21,7 @@ appear.
 - [ ] eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI, we're using 17.
 - [ ] some sec fixes or updates to `package.json` in /frontend and /keycloak break the build:
   - frontend:
-    - [ ] axios > 1.6.2.. in the last MM axios was updated to 1.6.7 and it works. Nevertheless, one could still keep an eye on it
+    - [ ] axios was updated to latest version 1.6.7 in sprint 60; however, it caused issues before when updating to > 1.6.2, so keep an eye on it)
     - [ ] keycloak-js > 22.0.5
     - [ ] primevue > 3.44.0
     - [ ] vue > 3.4.5
