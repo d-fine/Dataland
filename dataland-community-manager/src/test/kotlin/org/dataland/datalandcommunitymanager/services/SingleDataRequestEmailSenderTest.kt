@@ -3,7 +3,6 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.DatalandCommunityManager
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandemail.email.Email
 import org.dataland.datalandemail.email.EmailContact
@@ -20,21 +19,8 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 
-@SpringBootTest(classes = [DatalandCommunityManager::class], properties = ["spring.profiles.active=nodb"])
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-class SingleDataRequestEmailSenderTest(
-    @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
-    @Value("\${dataland.notification.data-request.internal.receivers}")
-    semicolonSeparatedInternalReceiverEmails: String,
-    @Value("\${dataland.notification.data-request.internal.cc}") semicolonSeparatedInternalCcEmails: String,
-) {
+class SingleDataRequestEmailSenderTest {
     private lateinit var singleDataRequestEmailSender: SingleDataRequestEmailSender
     private lateinit var mockEmailSender: EmailSender
 
@@ -44,6 +30,8 @@ class SingleDataRequestEmailSenderTest(
         emptySet(),
     )
 
+    private val proxyPrimaryUrl = "https://local-dev.dataland.com"
+
     private val dataType = DataTypeEnum.lksg
 
     private val companyIdentifier = "DEsomething"
@@ -52,20 +40,27 @@ class SingleDataRequestEmailSenderTest(
 
     private val reportingPeriods = listOf("2023", "2022")
 
-    private val internalReceivers = semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedInternalReceiverEmails)
-    private val internalCc = semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedInternalCcEmails)
-
-    @MockBean
-    lateinit var mockCompanyGetter: CompanyGetter
-
-    @Autowired
-    lateinit var singleDataRequestInternalEmailBuilder: SingleDataRequestInternalEmailBuilder
-
-    @Autowired
-    lateinit var singleDataRequestEmailBuilder: SingleDataRequestEmailBuilder
+    private val semicolonSeparatedInternalReceiverEmails = "testReceiver@company.com"
+    private val semicolonSeparatedInternalCcEmails = "testReceiver@company.com"
+    private val internalReceivers = semicolonSeparatedEmailsToEmailContacts("testReceiver@company.com")
+    private val internalCc = semicolonSeparatedEmailsToEmailContacts("testReceiver@company.com")
 
     @BeforeEach
     fun setupSingleDataRequestEmailSender() {
+        val mockCompanyGetter: CompanyGetter = mock(CompanyGetter::class.java)
+        val singleDataRequestEmailBuilder = SingleDataRequestEmailBuilder(
+            proxyPrimaryUrl,
+            "info@dataland.com",
+            "Dataland",
+            mockCompanyGetter,
+        )
+        val singleDataRequestInternalEmailBuilder = SingleDataRequestInternalEmailBuilder(
+            "info@dataland.com",
+            "Dataland",
+            semicolonSeparatedInternalReceiverEmails,
+            semicolonSeparatedInternalCcEmails,
+            mockCompanyGetter,
+        )
         mockEmailSender = mock(EmailSender::class.java)
         singleDataRequestEmailSender = SingleDataRequestEmailSender(
             mockEmailSender,

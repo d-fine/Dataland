@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.email
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.DatalandCommunityManager
 import org.dataland.datalandcommunitymanager.services.CompanyGetter
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestEmailBuilder
 import org.dataland.datalandemail.email.EmailContact
@@ -12,17 +11,9 @@ import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest(classes = [DatalandCommunityManager::class], properties = ["spring.profiles.active=nodb"])
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-class SingleDataRequestEmailBuilderTest(
-    @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
-) {
-
+class SingleDataRequestEmailBuilderTest {
+    private val proxyPrimaryUrl = "local-dev.dataland.com"
     private val requesterEmail = "requester@dataland.com"
     private val senderEmail = "sender@dataland.com"
     private val senderName = "Test"
