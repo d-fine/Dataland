@@ -1,6 +1,6 @@
 import { type Category } from "@/utils/GenericFrameworkTypes";
 
-export const euTaxonomyForNonFinancialsDataModel = [
+export const eutaxonomyNonFinancialsDataModel = [
   {
     name: "general",
     label: "General",

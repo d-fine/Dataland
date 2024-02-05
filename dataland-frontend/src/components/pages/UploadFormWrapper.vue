@@ -28,6 +28,7 @@ import CreateLksgDataset from "@/components/forms/CreateLksgDataset.vue";
 import CreateSfdrDataset from "@/components/forms/CreateSfdrDataset.vue";
 import CreateP2pDataset from "@/components/forms/CreateP2pDataset.vue";
 import CreateEuTaxonomyForFinancials from "@/components/forms/CreateEuTaxonomyForFinancials.vue";
+import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEuTaxonomyForNonFinancials.vue";
 
 import CompanyInformation from "@/components/pages/CompanyInformation.vue";
 import TheFooter from "@/components/generics/TheNewFooter.vue";
@@ -71,6 +72,8 @@ export default defineComponent({
   computed: {
     frameworkToUploadComponent() {
       switch (this.frameworkType) {
+        case `${DataTypeEnum.EutaxonomyNonFinancials}`:
+          return CreateEuTaxonomyForNonFinancials;
         case `${DataTypeEnum.EutaxonomyFinancials}`:
           return CreateEuTaxonomyForFinancials;
         case `${DataTypeEnum.Lksg}`:

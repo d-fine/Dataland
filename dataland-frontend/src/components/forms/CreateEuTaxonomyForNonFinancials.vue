@@ -50,7 +50,7 @@
 
             <FormKit type="group" name="data" label="data">
               <div
-                v-for="category in euTaxonomyForNonFinancialsDataModel"
+                v-for="category in eutaxonomyNonFinancialsDataModel"
                 :key="category"
                 :label="category.label"
                 :name="category.name"
@@ -98,7 +98,7 @@
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
           <ul>
-            <li v-for="category in euTaxonomyForNonFinancialsDataModel" :key="category">
+            <li v-for="category in eutaxonomyNonFinancialsDataModel" :key="category">
               <ul>
                 <li v-for="subcategory in category.subcategories" :key="subcategory">
                   <a
@@ -129,7 +129,7 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { euTaxonomyForNonFinancialsDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDataModel.ts";
+import { eutaxonomyNonFinancialsDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/UploadConfig";
 import {
   type CompanyAssociatedDataEutaxonomyNonFinancialsData,
   type CompanyReport,
@@ -221,7 +221,7 @@ export default defineComponent({
       waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedEutaxonomyNonFinancialsData: {} as CompanyAssociatedDataEutaxonomyNonFinancialsData,
-      euTaxonomyForNonFinancialsDataModel,
+      eutaxonomyNonFinancialsDataModel,
       route: useRoute(),
       message: "",
       smoothScroll: smoothScroll,
@@ -246,7 +246,7 @@ export default defineComponent({
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
       return createSubcategoryVisibilityMap(
-        this.euTaxonomyForNonFinancialsDataModel,
+        this.eutaxonomyNonFinancialsDataModel,
         this.companyAssociatedEutaxonomyNonFinancialsData.data,
       );
     },
