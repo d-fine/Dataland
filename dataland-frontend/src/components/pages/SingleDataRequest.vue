@@ -15,6 +15,7 @@
           label="Submit"
           class="p-button p-button-sm d-letters place-self-center ml-auto"
           name="submit_request_button"
+          @click="submitRequest()"
         >
           Submit Data Request
         </PrimeButton>
@@ -29,6 +30,10 @@
             v-model:selectedItemsBindInternal="frameworkName"
             name="Framework"
             :options="frameworkOptions"
+            validation="required"
+            :validation-messages="{
+                          required: 'Select a framework',
+                        }"
             outer-class="long"
             data-test="datapoint-framework"
           />
@@ -118,11 +123,11 @@ export default defineComponent({
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
     const footerContent = footerPage?.sections;
-    const years: number[] = [2024, 2023, 2022, 2021, 2020];
+    const years: string[] = ["2024", "2023", "2022", "2021", "2020"];
     const frameworkOptions: DataTypeEnum[] = Object.values(DataTypeEnum).sort();
     return {
       years,
-      listOfReportingPeriods: [] as String[],
+      listOfReportingPeriods: [] as string[],
       footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions,
@@ -144,7 +149,7 @@ export default defineComponent({
      * Toggle on the button for the selected year and add it to the list of selected years
      * @param year - the year to be toggled on in the year selection
      */
-    toggleSelection(year: number): void {
+    toggleSelection(year: string): void {
       const index = this.listOfReportingPeriods.indexOf(year);
 
       if (index === -1) {
@@ -160,6 +165,7 @@ export default defineComponent({
     handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
       this.fetchedCompanyInformation = fetchedCompanyInformation;
     },
+    //TODO: add reporting period validation
     /**
      * Builds a SingleDataRequest object using the currently entered inputs and returns it
      * @returns the SingleDataRequest object
@@ -172,6 +178,28 @@ export default defineComponent({
         contactList: this.contactList,
         message: this.message,
       };
+    },
+    /**
+     * Submits the data request to the request service
+     */
+    async submitRequest(): Promise<void> {
+      try {
+        const singleDataRequestObject = this.collectDataToSend();
+        const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+            .requestController;
+        const response = await requestDataControllerApi.postSingleDataRequest(singleDataRequestObject);
+        this.message = response.data.message;
+
+      } catch (error) {
+        console.error(error);
+        if (error instanceof AxiosError) {
+          const responseMessages = (error.response?.data as ErrorResponse)?.errors;
+          this.message = responseMessages ? responseMessages[0].message : error.message;
+        } else {
+          this.message =
+              "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+        }
+      }
     },
   },
 });
