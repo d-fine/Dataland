@@ -68,10 +68,12 @@ class SingleDataRequestManagerTest {
 
     private fun mockObjectMapper(): ObjectMapper {
         return mock(ObjectMapper::class.java).also {
-            `when`(it.readValue(
-                any() as String?,
-                any() ?: object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
-            )).thenReturn(
+            `when`(
+                it.readValue(
+                    any() as String?,
+                    any() ?: object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
+                ),
+            ).thenReturn(
                 mutableListOf(),
             )
         }
