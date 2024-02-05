@@ -3,18 +3,31 @@
     <TheHeader />
     <TheContent class="paper-section no-ui-message">
       <CompanyInfoSheet
-        :company-id="companyID"
+        :company-id="companyId"
         @fetched-company-information="handleFetchedCompanyInformation"
         :show-search-bar="false"
       />
+
+      <div class="col-6 mx-auto next-to-each-other">
+        <h2>Request Data</h2>
+        <PrimeButton
+          type="submit"
+          label="Submit"
+          class="p-button p-button-sm d-letters place-self-center ml-auto"
+          name="submit_request_button"
+        >
+          Submit Data Request
+        </PrimeButton>
+      </div>
 
       <div class="col-6 mx-auto">
         <div data-test="selectFramework" class="bg-white radius-1 pt-2 pb-2 pl-5" style="text-align: left">
           <h4 class="p-0">Select the framework for which you want to request data</h4>
           <FormKit
             type="select"
+            placeholder="Select framework"
+            v-model:selectedItemsBindInternal="selectedFramework"
             name="Framework"
-            placeholder="Framework"
             :options="frameworkOptions"
             outer-class="long"
             data-test="datapoint-framework"
@@ -45,7 +58,7 @@
           <label for="Email" class="label-with-optional">
             <b>Email</b> <span class="optional-text">Optional</span>
           </label>
-          <FormKit type="text" name="Email" />
+          <FormKit type="text" v-model="email" name="Email" />
           <p class="gray-text font-italic" style="text-align: left">
             By specifying a contact person here, your data request will be directed accordingly.<br />
             this increases the chances of expediting the fulfillment of your request.
@@ -58,7 +71,7 @@
           <label for="Message" class="label-with-optional">
             <b>Message</b> <span class="optional-text">Optional</span>
           </label>
-          <FormKit type="textarea" name="Message" />
+          <FormKit type="textarea" v-model="message" name="Message" />
           <p class="gray-text font-italic" style="text-align: left">
             Let your contact know what exactly your are looking for.
           </p>
@@ -71,7 +84,7 @@
 
 <script lang="ts">
 import TheContent from "@/components/generics/TheContent.vue";
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 import TheFooter from "@/components/generics/TheNewFooter.vue";
 import TheHeader from "@/components/generics/TheHeader.vue";
 import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vue";
@@ -79,6 +92,9 @@ import { type Content, type Page } from "@/types/ContentTypes";
 import contentData from "@/assets/content.json";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import { type CompanyInformation, DataTypeEnum } from "@clients/backend";
+import { type SingleDataRequest } from "@clients/communitymanager";
+import PrimeButton from "primevue/button";
+import type Keycloak from "keycloak-js";
 
 export default defineComponent({
   name: "SingleDataRequest",
@@ -88,8 +104,13 @@ export default defineComponent({
     TheHeader,
     TheContent,
     TheFooter,
+    PrimeButton,
   },
-
+  setup() {
+    return {
+      getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+    };
+  },
   data() {
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
@@ -102,14 +123,17 @@ export default defineComponent({
       footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions,
+      selectedFramework: DataTypeEnum,
+      email: "",
+      message: "",
     };
   },
   //TODO: default to be removed
   props: {
-    companyID: {
+    companyId: {
       type: String,
       required: true,
-      default: "945a4a7d-4152-4901-a655-374ed3f4b0be",
+      default: "d9923b5c-8a67-4aad-8112-640af606bccb",
     },
   },
   methods: {
@@ -132,6 +156,19 @@ export default defineComponent({
      */
     handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
       this.fetchedCompanyInformation = fetchedCompanyInformation;
+    },
+    /**
+     * Builds a SingleDataRequest object using the currently entered inputs and returns it
+     * @returns the SingleDataRequest object
+     */
+    collectDataToSend(): SingleDataRequest {
+      return {
+        companyId: this.companyId,
+        selectedFramework: this.selectedFramework,
+        yearsRequested: this.selectedYears,
+        email: this.email,
+        message: this.message,
+      };
     },
   },
 });
