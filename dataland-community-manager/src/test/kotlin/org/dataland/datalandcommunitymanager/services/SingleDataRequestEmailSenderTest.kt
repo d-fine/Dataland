@@ -40,23 +40,26 @@ class SingleDataRequestEmailSenderTest {
 
     private val reportingPeriods = listOf("2023", "2022")
 
-    private val semicolonSeparatedInternalReceiverEmails = "testReceiver@company.com"
-    private val semicolonSeparatedInternalCcEmails = "testReceiver@company.com"
-    private val internalReceivers = semicolonSeparatedEmailsToEmailContacts("testReceiver@company.com")
-    private val internalCc = semicolonSeparatedEmailsToEmailContacts("testReceiver@company.com")
+    private val senderEmail = "info@dataland.com"
+    private val senderName = "Dataland"
+
+    private val semicolonSeparatedInternalReceiverEmails = "testReceiver@dataland.com"
+    private val semicolonSeparatedInternalCcEmails = "testCc@dataland.com"
+    private val internalReceivers = semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedInternalReceiverEmails)
+    private val internalCc = semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedInternalReceiverEmails)
 
     @BeforeEach
     fun setupSingleDataRequestEmailSender() {
         val mockCompanyGetter: CompanyGetter = mock(CompanyGetter::class.java)
         val singleDataRequestEmailBuilder = SingleDataRequestEmailBuilder(
             proxyPrimaryUrl,
-            "info@dataland.com",
-            "Dataland",
+            senderEmail,
+            senderName,
             mockCompanyGetter,
         )
         val singleDataRequestInternalEmailBuilder = SingleDataRequestInternalEmailBuilder(
-            "info@dataland.com",
-            "Dataland",
+            senderEmail,
+            senderName,
             semicolonSeparatedInternalReceiverEmails,
             semicolonSeparatedInternalCcEmails,
             mockCompanyGetter,
@@ -175,7 +178,7 @@ class SingleDataRequestEmailSenderTest {
     }
 
     private val baseInternalEmailMatchingPattern = EmailMatchingPattern(
-        expectedSender = EmailContact("info@dataland.com", "Dataland"),
+        expectedSender = EmailContact(senderEmail, senderName),
         expectedReceiversGetter = { internalReceivers },
         expectedCc = internalCc,
         expectedSubject = "Dataland Single Data Request",
@@ -213,7 +216,7 @@ class SingleDataRequestEmailSenderTest {
     }
 
     private val baseContactEmailMatchingPattern = EmailMatchingPattern(
-        expectedSender = EmailContact("info@dataland.com", "Dataland"),
+        expectedSender = EmailContact(senderEmail, senderName),
         expectedReceiversGetter = { setOf(EmailContact("placeholder")) },
         expectedCc = emptySet(),
         expectedSubject = "A message from Dataland: Your ESG data are high on demand!",
