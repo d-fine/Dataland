@@ -732,7 +732,7 @@ export const esgQuestionnaireDataModel = [
             name: "treibhausgasBerichterstattungUndPrognosen",
             label: "Treibhausgas-Berichterstattung und Prognosen",
             description:
-              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope1, Scope 2 und Scope 3 Emissionen# für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
+              "Welche Treibhausgasinformationen werden derzeit auf Unternehmens-/Konzernebene berichtet und prognostiziert? Bitte geben Sie die Scope 1, Scope 2 und Scope 3 Emissionen für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an (in tCO2-Äquiv.).",
             options: [
               {
                 label: "Scope 1 (in tCO2-Äquiv.)",
@@ -863,7 +863,7 @@ export const esgQuestionnaireDataModel = [
         fields: [
           {
             name: "berichterstattungEnergieverbrauchVonImmobilienvermoegen",
-            label: "Berichterstattung Energieverbrauch von Immobilienvermoegen",
+            label: "Berichterstattung Energieverbrauch von Immobilienvermögen",
             description:
               "Bitte geben Sie den Anteil an energieeffizienten Immobilienanlagen (%) für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre an.",
             options: [
@@ -973,7 +973,7 @@ export const esgQuestionnaireDataModel = [
             name: "recyclingImProduktionsprozess",
             label: "Recycling im Produktionsprozess",
             description:
-              "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereitsrecyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre.",
+              "Bitte geben Sie an, wie hoch der Anteil an Recyclaten (bereits recyceltes wiederverwertetes Material) im Produktionsprozess für das aktuelle Kalenderjahr, die letzten drei Jahre sowie die Prognosen für die kommenden drei Jahre ist.",
             options: [
               {
                 label: "% Recycelte Werkstoffe im Produktionsprozess (in %)",

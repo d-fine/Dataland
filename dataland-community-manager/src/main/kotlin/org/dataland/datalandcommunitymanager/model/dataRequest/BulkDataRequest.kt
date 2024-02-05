@@ -30,4 +30,14 @@ data class BulkDataRequest(
         ),
     )
     val listOfFrameworkNames: List<DataTypeEnum>,
+
+    @field:JsonProperty(required = true)
+    @field:ArraySchema(
+        arraySchema = Schema(
+            type = "string",
+            example = "[\"2022\", \"2023\"]",
+        ),
+        schema = Schema(type = "string"),
+    )
+    val listOfReportingPeriods: List<String>,
 )

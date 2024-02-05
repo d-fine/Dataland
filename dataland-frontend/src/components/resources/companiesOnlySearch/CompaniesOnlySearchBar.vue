@@ -11,10 +11,12 @@
       :auto-option-focus="false"
       placeholder="Search company by name or identifier (e.g. PermID, LEI, ...)"
       :input-class="inputClass"
-      panel-class="d-framework-searchbar-panel"
-      style="z-index: 10"
+      panel-class="d-framework-searchbar-panel search__autocomplete"
+      append-to="self"
       @complete="searchCompanyName($event)"
       @item-select="$emit('selectCompany', $event.value)"
+      @focus="$emit('focus')"
+      @blur="$emit('blur')"
     >
       <template #option="slotProps">
         <i class="pi pi-search pl-3 pr-3" aria-hidden="true" />
@@ -52,7 +54,9 @@ export default defineComponent({
   mounted() {
     const autocompleteRefsObject = this.autocomplete?.$refs as Record<string, unknown>;
     const inputOfAutocompleteComponent = autocompleteRefsObject.focusInput as HTMLInputElement;
-    inputOfAutocompleteComponent.focus();
+    if (window.innerWidth > 768) {
+      inputOfAutocompleteComponent.focus();
+    }
   },
 
   data: function () {
@@ -83,7 +87,7 @@ export default defineComponent({
       this.saveCurrentSearchStringIfValid(newValue);
     },
   },
-  emits: ["selectCompany"],
+  emits: ["focus", "blur", "selectCompany"],
   methods: {
     /**
      * The input string is stored in the variable latestValidSearchString if it is a string and not empty
