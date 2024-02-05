@@ -18,6 +18,7 @@ class SecurityUtilsService {
         logger.info("currentAuthentication $currentAuthentication")
         return currentAuthentication.isAuthenticated
     }
+
     /**
      * Returns true if and only if the currently authenticated user has the provided user id
      */

@@ -136,8 +136,9 @@ class DataOwnersManager(
         userId: String,
     ) {
         if (!securityUtilsService.isUserAuthenticated(userId)) {
-            throw AccessDeniedException("Access Denied " +
-                    "Access to this resource has been denied. Please contact support if you believe this to be an error"
+            throw AccessDeniedException(
+                "Access Denied " +
+                    "Access to this resource has been denied. Please contact support if you believe this to be an error",
             )
         }
         checkIfCompanyIsValid(companyId)
