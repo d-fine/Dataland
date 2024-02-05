@@ -33,7 +33,10 @@ class SingleDataRequestEmailSender(
         companyIdentifierValue: String,
     ) {
         if (singleDataRequest.listOfReportingPeriods.isEmpty()) return
-        if (companyIdentifierType != DataRequestCompanyIdentifierType.DatalandCompanyId) {
+        if (
+            companyIdentifierType != DataRequestCompanyIdentifierType.DatalandCompanyId ||
+            singleDataRequest.contactList.isNullOrEmpty()
+        ) {
             sendInternalEmail(
                 userAuthentication = userAuthentication,
                 singleDataRequest = singleDataRequest,
@@ -43,14 +46,6 @@ class SingleDataRequestEmailSender(
             return
         }
         sendEmailToSpecifiedContacts(userAuthentication, singleDataRequest, companyIdentifierValue)
-        if ((singleDataRequest.contactList?.count() ?: 0) == 0) {
-            sendInternalEmail(
-                userAuthentication = userAuthentication,
-                singleDataRequest = singleDataRequest,
-                companyIdentifierType = companyIdentifierType,
-                companyIdentifierValue = companyIdentifierValue,
-            )
-        }
     }
 
     private fun sendEmailToSpecifiedContacts(
@@ -74,9 +69,9 @@ class SingleDataRequestEmailSender(
 
     private fun sendInternalEmail(
         userAuthentication: DatalandJwtAuthentication,
-        singleDataRequest: SingleDataRequest,
         companyIdentifierType: DataRequestCompanyIdentifierType,
         companyIdentifierValue: String,
+        singleDataRequest: SingleDataRequest,
     ) {
         emailSender.sendEmail(
             singleDataRequestInternalEmailBuilder.buildSingleDataRequestInternalEmail(
