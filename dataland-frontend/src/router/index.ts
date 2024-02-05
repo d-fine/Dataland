@@ -13,6 +13,7 @@ const DataPrivacy = (): Promise<RouteComponent> => import("@/components/pages/Da
 const NoContentFound = (): Promise<RouteComponent> => import("@/components/pages/NoContentFound.vue");
 const ApiKeysPage = (): Promise<RouteComponent> => import("@/components/pages/ApiKeysPage.vue");
 const RequestData = (): Promise<RouteComponent> => import("@/components/pages/RequestData.vue");
+//TODO: update url to include company ID
 const SingleDataRequest = (): Promise<RouteComponent> => import("@/components/pages/SingleDataRequest.vue");
 const ViewFrameworkData = (): Promise<RouteComponent> => import("@/components/pages/ViewFrameworkData.vue");
 const DatasetOverview = (): Promise<RouteComponent> => import("@/components/pages/DatasetOverview.vue");
