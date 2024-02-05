@@ -1,7 +1,7 @@
 import { generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type EuTaxonomyDataForNonFinancials } from "@clients/backend";
-import { generateEuTaxonomyDataForNonFinancials } from "@e2e/fixtures/frameworks/eutaxonomy-non-financials/EuTaxonomyDataForNonFinancialsFixtures.ts.old";
+import { generateEuTaxonomyDataForNonFinancials } from "@e2e/fixtures/frameworks/eutaxonomy-non-financials/EuTaxonomyDataForNonFinancialsFixtures.ts.old.old";
 
 type generatorFunction = (
   input: FixtureData<EuTaxonomyDataForNonFinancials>,

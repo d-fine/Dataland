@@ -13606,25 +13606,25 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
           "permId": {
             "type": "string",
             "nullable": true
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
           }
         }
       },
@@ -13706,7 +13706,6 @@
         "type": "string",
         "enum": [
           "eutaxonomy-financials",
-          "eutaxonomy-non-financials",
           "eutaxonomy-non-financials",
           "lksg",
           "p2p",

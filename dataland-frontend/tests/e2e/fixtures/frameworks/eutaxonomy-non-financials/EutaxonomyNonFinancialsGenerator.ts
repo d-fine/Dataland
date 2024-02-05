@@ -41,4 +41,30 @@ export class EutaxonomyNonFinancialsGenerator extends Generator {
       },
     };
   }
+
+  /**
+   * Generates a random aligned activity
+   * @returns a random aligned activity
+   */
+  generateAlignedActivity(): EutaxonomyalignedActivity {
+    return {
+      ...this.generateActivity(),
+      substantialContributionToClimateChangeMitigationInPercent: this.randomPercentageValue(),
+      substantialContributionToClimateChangeAdaptionInPercent: this.randomPercentageValue(),
+      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
+          this.randomPercentageValue(),
+      substantialContributionToTransitionToACircularEconomyInPercent: this.randomPercentageValue(),
+      substantialContributionToPollutionPreventionAndControlInPercent: this.randomPercentageValue(),
+      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
+          this.randomPercentageValue(),
+      dnshToClimateChangeMitigation: this.randomYesNo(),
+      dnshToClimateChangeAdaption: this.randomYesNo(),
+      dnshToSustainableUseAndProtectionOfWaterAndMarineResources: this.randomYesNo(),
+      dnshToTransitionToACircularEconomy: this.randomYesNo(),
+      dnshToPollutionPreventionAndControl: this.randomYesNo(),
+      dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: this.randomYesNo(),
+      minimumSafeguards: this.randomYesNo(),
+    };
+  }
+
 }

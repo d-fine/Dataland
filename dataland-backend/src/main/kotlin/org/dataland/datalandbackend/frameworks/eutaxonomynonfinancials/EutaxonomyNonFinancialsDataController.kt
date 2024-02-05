@@ -34,7 +34,7 @@ class EutaxonomyNonFinancialsDataController(
 ) {
     @Operation(operationId = "getCompanyAssociatedEutaxonomyNonFinancialsData")
     override fun getCompanyAssociatedData(dataId: String):
-        ResponseEntity<CompanyAssociatedData<EutaxonomyNonFinancialsData>> {
+            ResponseEntity<CompanyAssociatedData<EutaxonomyNonFinancialsData>> {
         return super.getCompanyAssociatedData(dataId)
     }
 

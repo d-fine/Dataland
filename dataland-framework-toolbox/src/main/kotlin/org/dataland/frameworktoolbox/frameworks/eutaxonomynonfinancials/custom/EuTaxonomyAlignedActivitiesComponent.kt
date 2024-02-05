@@ -33,22 +33,9 @@ class EuTaxonomyAlignedActivitiesComponent(
                 }\")",
                 setOf(
                     TypeScriptImport(
-                        "formatEuTaxonomyActivityForDataTable",
-                        "@/components/resources/dataTable/conversion/GenericModalValueGetterFactory",
-                    ),
-                ),
-            ),
-        )
-        sectionConfigBuilder.addCell(
-            label = "Assurance Provider",
-            explanation = "Provider of the Assurance",
-            shouldDisplay = availableIf.toFrameworkBooleanLambda(),
-            valueGetter = FrameworkDisplayValueLambda(
-                "formatAssuranceProviderForDataTable(${getTypescriptFieldAccessor(true)})",
-                setOf(
-                    TypeScriptImport(
-                        "formatAssuranceProviderForDataTable",
-                        "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory",
+                        "formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable",
+                        "@/components/resources/dataTable/conversion/" +
+                                "EuTaxonomyNonFinancialsAlignedActivitiesDataGetterFactory.ts",
                     ),
                 ),
             ),
@@ -59,7 +46,8 @@ class EuTaxonomyAlignedActivitiesComponent(
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         sectionBuilder.addAtomicExpression(
             identifier,
-            "dataGenerator.generateEutaxonomyAlignedActivity()",
+            "dataGenerator.generateAlignedActivity()",
+
         )
     }
 

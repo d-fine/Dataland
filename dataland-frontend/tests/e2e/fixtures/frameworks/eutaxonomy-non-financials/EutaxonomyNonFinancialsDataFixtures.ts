@@ -3,8 +3,8 @@ import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type EutaxonomyNonFinancialsData } from "@clients/backend";
 import { EutaxonomyNonFinancialsGenerator } from "@e2e/fixtures/frameworks/eutaxonomy-non-financials/EutaxonomyNonFinancialsGenerator";
-import { pickOneElement, generateFixtureDataset } from "@e2e/fixtures/FixtureUtils";
-import { EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions } from "@clients/backend";
+import {pickOneElement, generateFixtureDataset} from "@e2e/fixtures/FixtureUtils";
+import {EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions} from "@clients/backend";
 
 /**
  * Generates a set number of eutaxonomy-non-financials fixtures
@@ -19,6 +19,7 @@ export function generateEutaxonomyNonFinancialsFixtures(
   return generateFixtureDataset<EutaxonomyNonFinancialsData>(
     () => generateEutaxonomyNonFinancialsData(nullProbability),
     numFixtures,
+    
   );
 }
 
@@ -27,112 +28,102 @@ export function generateEutaxonomyNonFinancialsFixtures(
  * @param nullProbability the probability (as number between 0 and 1) for "null" values in optional fields
  * @returns a random eutaxonomy-non-financials dataset
  */
-export function generateEutaxonomyNonFinancialsData(
-  nullProbability = DEFAULT_PROBABILITY,
-): EutaxonomyNonFinancialsData {
+export function generateEutaxonomyNonFinancialsData(nullProbability = DEFAULT_PROBABILITY): EutaxonomyNonFinancialsData {
   const dataGenerator = new EutaxonomyNonFinancialsGenerator(nullProbability);
   return {
     general: {
-      fiscalYearDeviation: dataGenerator.valueOrNull(
-        pickOneElement(Object.values(EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions)),
-      ),
-      fiscalYearEnd: dataGenerator.randomFutureDate(),
-      scopeOfEntities: dataGenerator.randomYesNoNa(),
-      nfrdMandatory: dataGenerator.randomYesNo(),
-      euTaxonomyActivityLevelReporting: dataGenerator.randomYesNo(),
-      assurance: dataGenerator.generateAssuranceDatapoint(),
-      numberOfEmployees: dataGenerator.randomFloat(),
-      referencedReports: dataGenerator.reports,
+        fiscalYearDeviation: dataGenerator.valueOrNull(pickOneElement(Object.values(EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions))),
+        fiscalYearEnd: dataGenerator.randomFutureDate(),
+        scopeOfEntities: dataGenerator.randomYesNoNa(),
+        nfrdMandatory: dataGenerator.randomYesNo(),
+        euTaxonomyActivityLevelReporting: dataGenerator.randomYesNo(),
+        assurance: dataGenerator.generateAssuranceDatapoint(),
+        numberOfEmployees: dataGenerator.randomFloat(),
+        referencedReports: dataGenerator.reports,
     },
     revenue: {
-      totalAmount: dataGenerator.randomCurrencyDataPoint(),
-      nonEligibleShare: {
-        relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
-      },
-      eligibleShare: {
-        relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
-      },
-      nonAlignedShare: {
-        relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
-      },
-      nonAlignedActivities: dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2),
-      alignedShare: {
-        relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
-      },
-      substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
-      substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),
-      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
-        dataGenerator.randomPercentageValue(),
-      substantialContributionToTransitionToACircularEconomyInPercent: dataGenerator.randomPercentageValue(),
-      substantialContributionToPollutionPreventionAndControlInPercent: dataGenerator.randomPercentageValue(),
-      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
-        dataGenerator.randomPercentageValue(),
-      enablingShareInPercent: dataGenerator.randomPercentageValue(),
-      transitionalShareInPercent: dataGenerator.randomPercentageValue(),
+        totalAmount: dataGenerator.randomCurrencyDataPoint(),
+        nonEligibleShare: {
+            relativeShareInPercent: dataGenerator.randomPercentageValue(),
+            absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        },
+        eligibleShare: {
+            relativeShareInPercent: dataGenerator.randomPercentageValue(),
+            absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        },
+        nonAlignedShare: {
+            relativeShareInPercent: dataGenerator.randomPercentageValue(),
+            absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        },
+        nonAlignedActivities: dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2),
+        alignedShare: {
+            relativeShareInPercent: dataGenerator.randomPercentageValue(),
+            absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        },
+        substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToTransitionToACircularEconomyInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToPollutionPreventionAndControlInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: dataGenerator.randomPercentageValue(),
+        enablingShareInPercent: dataGenerator.randomPercentageValue(),
+        transitionalShareInPercent: dataGenerator.randomPercentageValue(),
     },
     capex: {
-      totalAmount: dataGenerator.randomCurrencyDataPoint(),
-      nonEligibleShare: {
-        relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
-      },
-      eligibleShare: {
-        relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
-      },
-      nonAlignedShare: {
-        relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
-      },
-      nonAlignedActivities: dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2),
-      alignedShare: {
-        relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
-      },
-      substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
-      substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),
-      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
-        dataGenerator.randomPercentageValue(),
-      substantialContributionToTransitionToACircularEconomyInPercent: dataGenerator.randomPercentageValue(),
-      substantialContributionToPollutionPreventionAndControlInPercent: dataGenerator.randomPercentageValue(),
-      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
-        dataGenerator.randomPercentageValue(),
-      enablingShareInPercent: dataGenerator.randomPercentageValue(),
-      transitionalShareInPercent: dataGenerator.randomPercentageValue(),
+        totalAmount: dataGenerator.randomCurrencyDataPoint(),
+        nonEligibleShare: {
+            relativeShareInPercent: dataGenerator.randomPercentageValue(),
+            absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        },
+        eligibleShare: {
+            relativeShareInPercent: dataGenerator.randomPercentageValue(),
+            absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        },
+        nonAlignedShare: {
+            relativeShareInPercent: dataGenerator.randomPercentageValue(),
+            absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        },
+        nonAlignedActivities: dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2),
+        alignedShare: {
+            relativeShareInPercent: dataGenerator.randomPercentageValue(),
+            absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        },
+        substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToTransitionToACircularEconomyInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToPollutionPreventionAndControlInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: dataGenerator.randomPercentageValue(),
+        enablingShareInPercent: dataGenerator.randomPercentageValue(),
+        transitionalShareInPercent: dataGenerator.randomPercentageValue(),
     },
     opex: {
-      totalAmount: dataGenerator.randomCurrencyDataPoint(),
-      nonEligibleShare: {
-        relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
-      },
-      eligibleShare: {
-        relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
-      },
-      nonAlignedShare: {
-        relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
-      },
-      nonAlignedActivities: dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2),
-      alignedShare: {
-        relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
-      },
-      substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
-      substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),
-      substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
-        dataGenerator.randomPercentageValue(),
-      substantialContributionToTransitionToACircularEconomyInPercent: dataGenerator.randomPercentageValue(),
-      substantialContributionToPollutionPreventionAndControlInPercent: dataGenerator.randomPercentageValue(),
-      substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
-        dataGenerator.randomPercentageValue(),
-      enablingShareInPercent: dataGenerator.randomPercentageValue(),
-      transitionalShareInPercent: dataGenerator.randomPercentageValue(),
+        totalAmount: dataGenerator.randomCurrencyDataPoint(),
+        nonEligibleShare: {
+            relativeShareInPercent: dataGenerator.randomPercentageValue(),
+            absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        },
+        eligibleShare: {
+            relativeShareInPercent: dataGenerator.randomPercentageValue(),
+            absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        },
+        nonAlignedShare: {
+            relativeShareInPercent: dataGenerator.randomPercentageValue(),
+            absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        },
+        nonAlignedActivities: dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2),
+        alignedShare: {
+            relativeShareInPercent: dataGenerator.randomPercentageValue(),
+            absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        },
+        substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToTransitionToACircularEconomyInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToPollutionPreventionAndControlInPercent: dataGenerator.randomPercentageValue(),
+        substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: dataGenerator.randomPercentageValue(),
+        enablingShareInPercent: dataGenerator.randomPercentageValue(),
+        transitionalShareInPercent: dataGenerator.randomPercentageValue(),
     },
-  };
+}
 }
