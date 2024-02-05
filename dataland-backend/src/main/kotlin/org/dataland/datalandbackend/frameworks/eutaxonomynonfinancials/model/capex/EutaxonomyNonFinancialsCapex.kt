@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.cap
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.capex.nonEligibleShare.EutaxonomyNonFinancialsCapexNonEligibleShare
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyActivity
+import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyAlignedActivity
 import java.math.BigDecimal
 import kotlin.collections.MutableList
 
@@ -42,6 +43,8 @@ data class EutaxonomyNonFinancialsCapex(
     val substantialContributionToPollutionPreventionAndControlInPercent: BigDecimal? = null,
 
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent: BigDecimal? = null,
+
+    val alignedActivities: MutableList<EuTaxonomyAlignedActivity>? = null,
 
     val enablingShareInPercent: BigDecimal? = null,
 

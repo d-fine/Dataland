@@ -82,6 +82,7 @@ class FrameworkFixtureGeneratorBuilder(
     private fun buildDataFixtures(dataFixturesTsPath: Path) {
         val imports = rootSectionBuilder.imports +
             TypeScriptImport("generateFixtureDataset", "@e2e/fixtures/FixtureUtils")
+        // + TypeScriptImport("type ${frameworkData}", "@clients/backend")
 
         val freeMarkerContext = mapOf(
             "frameworkIdentifier" to framework.identifier,

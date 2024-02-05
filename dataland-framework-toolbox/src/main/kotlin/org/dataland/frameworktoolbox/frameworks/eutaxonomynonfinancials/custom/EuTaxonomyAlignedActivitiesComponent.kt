@@ -6,6 +6,8 @@ import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
 import org.dataland.frameworktoolbox.intermediate.components.requireDocumentSupportIn
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
+import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
+import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -36,7 +38,23 @@ class EuTaxonomyAlignedActivitiesComponent(
                     TypeScriptImport(
                         "formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable",
                         "@/components/resources/dataTable/conversion/" +
-                            "EuTaxonomyNonFinancialsAlignedActivitiesDataGetterFactory.ts",
+                            "EuTaxonomyNonFinancialsAlignedActivitiesDataGetterFactory",
+                    ),
+                ),
+            ),
+        )
+    }
+
+    override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+        dataClassBuilder.addProperty(
+            this.identifier,
+            TypeReference(
+                "kotlin.collections.MutableList",
+                true,
+                listOf(
+                    TypeReference(
+                        "org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyAlignedActivity",
+                        false,
                     ),
                 ),
             ),
@@ -47,8 +65,7 @@ class EuTaxonomyAlignedActivitiesComponent(
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         sectionBuilder.addAtomicExpression(
             identifier,
-            "dataGenerator.generateAlignedActivity()",
-
+            "dataGenerator.randomArray(() => dataGenerator.generateAlignedActivity(), 0, 10)",
         )
     }
 

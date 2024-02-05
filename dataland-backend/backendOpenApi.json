@@ -10625,6 +10625,112 @@
           }
         }
       },
+      "EuTaxonomyAlignedActivity": {
+        "required": [
+          "activityName"
+        ],
+        "type": "object",
+        "properties": {
+          "activityName": {
+            "$ref": "#/components/schemas/Activity"
+          },
+          "naceCodes": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "share": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptionInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "dnshToClimateChangeMitigation": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dnshToClimateChangeAdaption": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dnshToSustainableUseAndProtectionOfWaterAndMarineResources": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dnshToTransitionToACircularEconomy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dnshToPollutionPreventionAndControl": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "dnshToProtectionAndRestorationOfBiodiversityAndEcosystems": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "minimumSafeguards": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          }
+        }
+      },
       "EutaxonomyNonFinancialsCapex": {
         "type": "object",
         "properties": {
@@ -10698,6 +10804,13 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
             "type": "number",
             "nullable": true
+          },
+          "alignedActivities": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
+            }
           },
           "enablingShareInPercent": {
             "type": "number",
@@ -10962,6 +11075,13 @@
             "type": "number",
             "nullable": true
           },
+          "alignedActivities": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
+            }
+          },
           "enablingShareInPercent": {
             "type": "number",
             "nullable": true
@@ -11113,6 +11233,13 @@
           "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
             "type": "number",
             "nullable": true
+          },
+          "alignedActivities": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
+            }
           },
           "enablingShareInPercent": {
             "type": "number",
@@ -13616,15 +13743,15 @@
           "countryCode": {
             "type": "string"
           },
-          "permId": {
-            "type": "string",
-            "nullable": true
-          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
+          },
+          "permId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

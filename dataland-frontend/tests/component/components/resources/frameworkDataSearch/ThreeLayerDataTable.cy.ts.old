@@ -2,7 +2,7 @@ import ThreeLayerDataTable from "@/components/resources/frameworkDataSearch/Thre
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { euTaxonomyForNonFinancialsDisplayDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsDisplayDataModel";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
-import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModel";
+import { DataAndMetaInformationEuTaxonomyForNonFinancialsViewModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsViewModelTs";
 import {
   DataTypeEnum,
   type DataAndMetaInformationEuTaxonomyDataForNonFinancials,

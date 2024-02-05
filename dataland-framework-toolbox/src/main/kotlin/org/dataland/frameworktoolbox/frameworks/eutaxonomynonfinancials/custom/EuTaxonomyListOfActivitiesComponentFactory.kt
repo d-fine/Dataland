@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component
 class EuTaxonomyListOfActivitiesComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component.trim() == "Custom - List of EuTaxonomyActivity"
+        row.component.trim() == "Custom List of EuTaxonomyActivity"
 
     override fun generateComponent(
         row: TemplateRow,

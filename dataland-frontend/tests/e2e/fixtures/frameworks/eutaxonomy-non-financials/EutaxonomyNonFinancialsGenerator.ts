@@ -1,5 +1,5 @@
 import { Generator } from "@e2e/utils/FakeFixtureUtils";
-import type { AmountWithCurrency, AssuranceDataPoint, EuTaxonomyActivity } from "@clients/backend";
+import type { AmountWithCurrency, AssuranceDataPoint, EuTaxonomyActivity, EuTaxonomyAlignedActivity } from "@clients/backend";
 import { generateAssuranceDatapoint } from "@e2e/fixtures/eutaxonomy-shared/AssuranceDataFixture";
 import { generateCurrencyCode } from "@e2e/fixtures/common/CurrencyFixtures";
 import { pickOneElement } from "@e2e/fixtures/FixtureUtils";
@@ -46,7 +46,7 @@ export class EutaxonomyNonFinancialsGenerator extends Generator {
    * Generates a random aligned activity
    * @returns a random aligned activity
    */
-  generateAlignedActivity(): EutaxonomyalignedActivity {
+  generateAlignedActivity(): EuTaxonomyAlignedActivity {
     return {
       ...this.generateActivity(),
       substantialContributionToClimateChangeMitigationInPercent: this.randomPercentageValue(),

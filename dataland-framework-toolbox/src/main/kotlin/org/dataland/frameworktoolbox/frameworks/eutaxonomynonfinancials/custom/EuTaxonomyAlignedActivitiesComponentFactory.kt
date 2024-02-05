@@ -8,14 +8,16 @@ import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtil
 import org.dataland.frameworktoolbox.template.components.TemplateComponentFactory
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
 /**
  * TODO add documentation
  */
+@Component
 class EuTaxonomyAlignedActivitiesComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component.trim() == "Custom - AlignedActivitiesFormField"
+        row.component.trim() == "Custom AlignedActivitiesFormField"
 
     override fun generateComponent(
         row: TemplateRow,
@@ -25,7 +27,7 @@ class EuTaxonomyAlignedActivitiesComponentFactory(@Autowired val templateDiagnos
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<EuTaxonomyListOfActivitiesComponent>(
+        return componentGroup.create<EuTaxonomyAlignedActivitiesComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)

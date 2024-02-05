@@ -5,7 +5,7 @@ import {
     MLDTDisplayObjectForEmptyString,
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 
-import { EutaxonomyNonFinancialsData } from "@clients/backend";
+import {EuTaxonomyAlignedActivity, EutaxonomyNonFinancialsData} from "@clients/backend";
 import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
 
 /**
@@ -15,7 +15,7 @@ import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDa
  * @returns the display-value for the table
  */
 export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
-    input: EutaxonomyNonFinancialsData | null | undefined,
+    input: EuTaxonomyAlignedActivity[] | null | undefined,
     fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
     if (!input) {

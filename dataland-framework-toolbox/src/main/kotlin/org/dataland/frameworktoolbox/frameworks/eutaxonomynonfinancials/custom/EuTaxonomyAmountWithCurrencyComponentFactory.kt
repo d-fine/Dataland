@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component
 class EuTaxonomyAmountWithCurrencyComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component.trim() == "Custom – AmountWithCurrency" // TODO rename to EuTaxonomyAmountWithCurrencyComponent
+        row.component.trim() == "Custom AmountWithCurrency" // TODO rename to EuTaxonomyAmountWithCurrencyComponent
 
     override fun generateComponent(
         row: TemplateRow,

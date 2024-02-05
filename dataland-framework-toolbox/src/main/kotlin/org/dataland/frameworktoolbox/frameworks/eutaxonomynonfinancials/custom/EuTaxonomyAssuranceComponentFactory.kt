@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component
 class EuTaxonomyAssuranceComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component.trim() == "Custom – EuTaxonomyAssuranceComponent"
+        row.component.trim() == "Custom EuTaxonomyAssuranceComponent"
 
     override fun generateComponent(
         row: TemplateRow,
