@@ -27,11 +27,11 @@ class FrameworkRegistryImportsUpdater {
             "frameworks" to allRegisteredFrameworks
                 .sortedBy { it.name }
                 .map {
-                mapOf(
-                    "identifier" to it.name,
-                    "baseNameInCamelCase" to getNameFromLabel(it.name),
-                )
-            }
+                    mapOf(
+                        "identifier" to it.name,
+                        "baseNameInCamelCase" to getNameFromLabel(it.name),
+                    )
+                },
         )
         writeIntoRegistryTsFiles(repository, freeMarkerContext)
     }
