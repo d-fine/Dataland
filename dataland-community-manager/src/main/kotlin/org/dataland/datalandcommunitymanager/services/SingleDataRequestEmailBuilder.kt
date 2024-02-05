@@ -69,7 +69,7 @@ class SingleDataRequestEmailBuilder(
                     it.append(message)
                 }
             }
-            .append("\n\nRegister as a data owner under $proxyPrimaryUrl/companies/$companyId")
+            .append("\n\nRegister as a data owner on $proxyPrimaryUrl/companies/$companyId")
             .toString()
     }
 
