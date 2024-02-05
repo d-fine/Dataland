@@ -15,6 +15,7 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
+import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.springframework.beans.factory.annotation.Autowired
@@ -202,8 +203,11 @@ class SingleDataRequestManager(
 
     /**
      * Method to send out a confirmation email to the requester as soon as the requested data is provided by the company
-     * @param messageAsJsonString the message body as json string
+     * @param jsonString the message describing the result of the completed QA process
+     * @param correlationId the correlation ID of the current user process
+     * @param type the type of the message
      */
+
     @RabbitListener(
         bindings = [
             QueueBinding(
@@ -220,8 +224,11 @@ class SingleDataRequestManager(
             ),
         ],
     )
+    @Transactional
     fun sendAnsweredRequestConfirmationEmail(
         @Payload messageAsJsonString: String,
+        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+        @Header(MessageHeaderKey.Type) type: String,
     ) {
 
     }
