@@ -129,7 +129,7 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { eutaxonomyNonFinancialsDataModel } from "@/components/resources/frameworkDataSearch/euTaxonomy/UploadConfig";
+import { eutaxonomyNonFinancialsDataModel } from "@/frameworks/eutaxonomy-non-financials/UploadConfig";
 import {
   type CompanyAssociatedDataEutaxonomyNonFinancialsData,
   type CompanyReport,
