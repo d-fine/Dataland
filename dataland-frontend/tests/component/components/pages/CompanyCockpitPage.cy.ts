@@ -170,7 +170,7 @@ describe("Component test for the company cockpit", () => {
 
   it("Check for all expected elements from a non-logged-in users perspective", () => {
     mockRequestsOnMounted();
-    mountCompanyCockpitWithAuthentication(false, false).then(() => {
+    mountCompanyCockpitWithAuthentication(false, false, [], "").then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
@@ -187,7 +187,7 @@ describe("Component test for the company cockpit", () => {
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
       validateCompanyInformationBanner();
-      validateClaimOwnershipPanel(false);
+      validateClaimOwnershipPanel(true);
       validateFrameworkSummaryPanels(false);
     });
   });
