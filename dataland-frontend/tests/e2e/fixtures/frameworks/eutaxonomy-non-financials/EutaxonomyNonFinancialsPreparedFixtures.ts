@@ -1,6 +1,9 @@
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { type EutaxonomyNonFinancialsData } from "@clients/backend";
-import { generateEutaxonomyNonFinancialsFixtures } from "./EutaxonomyNonFinancialsDataFixtures";
+import {
+  generateEutaxonomyNonFinancialsData,
+  generateEutaxonomyNonFinancialsFixtures,
+} from "./EutaxonomyNonFinancialsDataFixtures";
 
 /**
  * Generates eutaxonomy-non-financials prepared fixtures by generating random eutaxonomy-non-financials datasets and
@@ -13,7 +16,7 @@ export function generateEutaxonomyNonFinancialsPreparedFixtures(): Array<Fixture
 
   const manipulatorFunctions: Array<
     (input: FixtureData<EutaxonomyNonFinancialsData>) => FixtureData<EutaxonomyNonFinancialsData>
-  > = [];
+  > = [createDatasetThatHasAllFieldsDefined];
   const preparedFixturesBeforeManipulation = generateEutaxonomyNonFinancialsFixtures(manipulatorFunctions.length);
 
   for (let i = 0; i < manipulatorFunctions.length; i++) {
@@ -22,3 +25,17 @@ export function generateEutaxonomyNonFinancialsPreparedFixtures(): Array<Fixture
   preparedFixtures.push(generateEutaxonomyNonFinancialsFixtures(1, 0)[0]);
   return preparedFixtures;
 }
+
+/**
+ * Creates a prepared fixture that has only defined fields and no fields with missing values
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
+function createDatasetThatHasAllFieldsDefined(
+  input: FixtureData<EutaxonomyNonFinancialsData>,
+): FixtureData<EutaxonomyNonFinancialsData> {
+  input.companyInformation.companyName = "all-fields-defined-for-eu-taxo-non-financials";
+  input.t = generateEutaxonomyNonFinancialsData(0);
+  return input;
+}
+//TODO naceCodes is null im prepared fixture!!!
