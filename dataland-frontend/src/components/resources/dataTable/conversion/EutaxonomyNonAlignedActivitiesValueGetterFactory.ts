@@ -6,7 +6,40 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type EuTaxonomyActivity } from "@clients/backend";
 import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
-import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/frameworks/eutaxonomy-non-financials/EuTaxonomyForNonFinancialsModalColumnHeaders";
+
+export const euTaxonomyNonFinancialsModalColumnHeaders = {
+  alignedActivities: {
+    activityName: "Activity",
+    naceCodes: "NACE Code(s)",
+    share: "Share",
+    revenue: "Revenue",
+    revenuePercent: "Revenue (%)",
+    substantialContributionToClimateChangeMitigationInPercent: "Climate Change Mitigation",
+    substantialContributionToClimateChangeAdaptionInPercent: "Climate Change Adaptation",
+    substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
+      "Water and Marine Resources",
+    substantialContributionToTransitionToACircularEconomyInPercent: "Circular Economy",
+    substantialContributionToPollutionPreventionAndControlInPercent: "Pollution Prevention",
+    substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
+      "Biodiversity and Ecosystems",
+    dnshToClimateChangeMitigation: "Climate Change Mitigation",
+    dnshToClimateChangeAdaption: "Climate Change Adaptation",
+    dnshToSustainableUseAndProtectionOfWaterAndMarineResources: "Water and Marine Resources",
+    dnshToTransitionToACircularEconomy: "Circular Economy",
+    dnshToPollutionPreventionAndControl: "Pollution Prevention",
+    dnshToProtectionAndRestorationOfBiodiversityAndEcosystems: "Biodiversity and Ecosystems",
+    minimumSafeguards: "Minimum safeguards",
+    substantialContributionCriteria: "Substantial Contribution Criteria",
+    dnshCriteria: "DNSH Criteria",
+  },
+  nonAlignedActivities: {
+    activityName: "Activity",
+    naceCodes: "NACE Code(s)",
+    share: "Share",
+    revenue: "Revenue",
+    revenuePercent: "Revenue (%)",
+  },
+};
 
 /**
  * Formats the provided assurance datapoint for the datatable TODO rewrite
@@ -36,7 +69,7 @@ export function formatNonAlignedActivitiesForDataTable(
         data: {
           listOfRowContents: nonAlignedActivities,
           kpiKeyOfTable: "TESTTESTODO", // TODO what do pick? Ideas later
-          columnHeaders: euTaxonomyForNonFinancialsModalColumnHeaders,
+          columnHeaders: euTaxonomyNonFinancialsModalColumnHeaders,
         },
       },
     },

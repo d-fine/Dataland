@@ -7,6 +7,7 @@ import {
 
 import { type EuTaxonomyAlignedActivity } from "@clients/backend";
 import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDataTable.vue";
+import { euTaxonomyNonFinancialsModalColumnHeaders } from "@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory";
 
 /**
  * Formats a EuTaxonomyAlignedActivities coomponent for display in the table using a modal
@@ -33,8 +34,9 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
             dismissableMask: true,
           },
           data: {
-            label: fieldLabel,
-            input: input,
+            listOfRowContents: input,
+            kpiKeyOfTable: "TESTTESTODO", // TODO what do pick? Ideas later
+            columnHeaders: euTaxonomyNonFinancialsModalColumnHeaders,
           },
         },
       },
