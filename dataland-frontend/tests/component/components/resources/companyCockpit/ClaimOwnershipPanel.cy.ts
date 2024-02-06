@@ -14,7 +14,7 @@ describe("Component test for ClaimOwnershipPanel", () => {
         " Responsible for TestClaimOwnershipPanelCompany? ",
       );
       cy.get("[data-test='claimOwnershipPanelLink']")
-        .should("have.text", "Claim company dataset ownership.")
+        .should("have.text", " Claim company dataset ownership. ")
         .click()
         .get("#claimOwnerShipDialog")
         .should("exist")
