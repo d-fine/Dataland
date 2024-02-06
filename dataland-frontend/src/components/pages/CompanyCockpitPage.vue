@@ -124,7 +124,7 @@ export default defineComponent({
      * Get the Information about Data-ownership
      */
     async getDataOwnerInformation() {
-      void (await this.awaitUserId());
+      await this.awaitUserId();
       if (this.userId !== undefined && this.isCompanyIdValid) {
         try {
           const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
