@@ -1,4 +1,4 @@
-import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEuTaxonomyForNonFinancials.vue";
+import CreateEuTaxonomyNonFinancials from "@/components/forms/CreateEuTaxonomyNonFinancials.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
 import { type CompanyAssociatedDataEutaxonomyNonFinancialsData } from "@clients/backend";
@@ -279,7 +279,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
   it("Check that warning appears if two pdf files with same name or illegal character are selected for upload", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithDialog(
-      CreateEuTaxonomyForNonFinancials,
+      CreateEuTaxonomyNonFinancials,
       {
         keycloak: minimalKeycloakMock({}),
       },
@@ -293,7 +293,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
 
   it("Open upload page prefilled and assure that new file needs unique name and has to be referenced ", () => {
     cy.stub(DataPointFormWithToggle);
-    cy.mountWithPlugins(CreateEuTaxonomyForNonFinancials, {
+    cy.mountWithPlugins(CreateEuTaxonomyNonFinancials, {
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
@@ -309,7 +309,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
 
   it("Open upload page, fill out and validate the upload form, except for new activities", () => {
     cy.stub(DataPointFormWithToggle);
-    cy.mountWithPlugins(CreateEuTaxonomyForNonFinancials, {
+    cy.mountWithPlugins(CreateEuTaxonomyNonFinancials, {
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
