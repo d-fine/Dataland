@@ -86,7 +86,15 @@ import {
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames";
 import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatter";
-import { euTaxonomyObjectives } from "@/frameworks/eutaxonomy-non-financials/EuTaxonomyForNonFinancialsModalColumnHeaders";
+
+export const euTaxonomyObjectives = [
+  "ClimateChangeMitigation",
+  "ClimateChangeAdaption",
+  "SustainableUseAndProtectionOfWaterAndMarineResources",
+  "TransitionToACircularEconomy",
+  "PollutionPreventionAndControl",
+  "ProtectionAndRestorationOfBiodiversityAndEcosystems",
+];
 
 type ActivityFieldValueObject = {
   activity: string;
