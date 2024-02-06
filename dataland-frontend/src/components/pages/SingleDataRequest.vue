@@ -7,80 +7,85 @@
         @fetched-company-information="handleFetchedCompanyInformation"
         :show-search-bar="false"
       />
-
-      <div class="col-6 mx-auto next-to-each-other">
-        <h2>Request Data</h2>
-        <PrimeButton
-          type="submit"
-          label="Submit"
-          class="p-button p-button-sm d-letters place-self-center ml-auto"
-          name="submit_request_button"
-          @click="submitRequest()"
-        >
-          Submit Data Request
-        </PrimeButton>
-      </div>
-
-      <div class="col-6 mx-auto">
-        <div data-test="selectFramework" class="bg-white radius-1 pt-2 pb-2 pl-5" style="text-align: left">
-          <h4 class="p-0">Select the framework for which you want to request data</h4>
-          <FormKit
-            type="select"
-            placeholder="Select framework"
-            v-model:selectedItemsBindInternal="frameworkName"
-            name="Framework"
-            :options="frameworkOptions"
-            validation="required"
-            :validation-messages="{
-                          required: 'Select a framework',
-                        }"
-            outer-class="long"
-            data-test="datapoint-framework"
-          />
+      <div class="col-12 mb-2 bg-white">
+        <div class="text-left company-details px-4">
+          <h1 data-test="headerLabel">Single Data Request</h1>
         </div>
       </div>
-
-      <div class="col-6 mx-auto">
-        <div data-test="selectReportingPeriod" class="bg-white radius-1 pt-2 pb-2 pl-5" style="text-align: left">
-          <h4 class="p-0">Select at least one reporting period</h4>
-          <div class="years-container">
-            <button
-              class="years"
-              v-for="year in years"
-              :key="year"
-              @click="toggleSelection(year)"
-              :class="{ selected: listOfReportingPeriods.includes(year) }"
-            >
-              {{ year }}
-            </button>
+      <div class="col-12">
+        <FormKit
+            :actions="false"
+            v-model="singleDataRequestModel"
+            type="form"
+            @submit="submitRequest"
+            id="requestDataFormId"
+            name="requestDataFormName"
+        >
+      <div class="col-12">
+      <div class="grid px-8 py-4 justify-content-center uploadFormWrapper">
+        <div class="col-12 md:col-8 xl:col-6">
+          <div class="grid">
+            <div class="col-12">
+              <BasicFormSection :data-test="'reportingPeriods'" header="Select at least one reporting period">
+                <div class="flex flex-wrap mt-4 py-2">
+                  <ToggleChipFormInputs
+                    :name="'reportingPeriods'"
+                    :options="reportingPeriods"
+                    @changed="selectedReportingPeriodsError = false"
+                  />
+                </div>
+                <p
+                  v-if="selectedReportingPeriodsError"
+                  class="text-danger text-xs mt-2"
+                  data-test="reportingPeriodErrorMessage"
+                >
+                  Select at least one reporting period.
+                </p>
+              </BasicFormSection>
+                <BasicFormSection :data-test="'selectFrameworkDiv'" header="Select a framework">
+                  <FormKit
+                    type="select"
+                    placeholder="Select framework"
+                    v-model:selectedItemsBindInternal="frameworkName"
+                    name="Framework"
+                    :options="frameworkOptions"
+                    validation="required"
+                    :validation-messages="{
+                      required: 'Select a framework',
+                    }"
+                    outer-class="long"
+                    data-test="datapoint-framework"
+                  />
+              </BasicFormSection>
+              <BasicFormSection :data-test="'provideContactDetails'" header="Provide Contact Details">
+                <label for="Email" class="label-with-optional">
+                <b>Email</b><span class="optional-text">Optional</span>
+                </label>
+                <FormKit v-model="contactList" type="text" name="contactDetails" />
+                <p class="gray-text font-italic" style="text-align: left">
+                  By specifying a contact person here, your data request will be directed accordingly.<br />
+                  this increases the chances of expediting the fulfillment of your request.
+                </p>
+                <br />
+                <p class="gray-text font-italic" style="text-align: left">
+                  If you don't have a specific contact person, no worries.<br />
+                  We are committed to fulfilling your request to the best of our ability.
+                </p>
+                <br/>
+                <label for="Message" class="label-with-optional">
+                  <b>Message</b><span class="optional-text">Optional</span>
+                </label>
+                <FormKit v-model="message" type="textarea" name="message" />
+                <p class="gray-text font-italic" style="text-align: left">
+                  Let your contact know what exactly your are looking for.
+                </p>
+              </BasicFormSection>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="col-6 mx-auto">
-        <div data-test="provideContactDetails" class="bg-white radius-1 pt-2 pb-2 pl-5" style="text-align: left">
-          <h4 class="p-0">Provide Contact Details</h4>
-          <label for="Email" class="label-with-optional">
-            <b>Email</b> <span class="optional-text">Optional</span>
-          </label>
-          <FormKit type="text" v-model="contactList" name="Email" />
-          <p class="gray-text font-italic" style="text-align: left">
-            By specifying a contact person here, your data request will be directed accordingly.<br />
-            this increases the chances of expediting the fulfillment of your request.
-          </p>
-          <p class="gray-text font-italic" style="text-align: left">
-            If you don't have a specific contact person, no worries.<br />
-            We are committed to fulfilling your request to the best of our ability.
-          </p>
-          <br />
-          <label for="Message" class="label-with-optional">
-            <b>Message</b> <span class="optional-text">Optional</span>
-          </label>
-          <FormKit type="textarea" v-model="message" name="Message" />
-          <p class="gray-text font-italic" style="text-align: left">
-            Let your contact know what exactly your are looking for.
-          </p>
-        </div>
+      </div>
+        </FormKit>
       </div>
     </TheContent>
     <TheFooter :is-light-version="true" :sections="footerContent" />
@@ -88,6 +93,7 @@
 </template>
 
 <script lang="ts">
+import { FormKit } from "@formkit/vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import { defineComponent, inject } from "vue";
 import TheFooter from "@/components/generics/TheNewFooter.vue";
@@ -96,21 +102,26 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import { type Content, type Page } from "@/types/ContentTypes";
 import contentData from "@/assets/content.json";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import { type CompanyInformation, DataTypeEnum, type ErrorResponse  } from "@clients/backend";
+import { type CompanyInformation, DataTypeEnum, type ErrorResponse } from "@clients/backend";
 import { type SingleDataRequest } from "@clients/communitymanager";
 import PrimeButton from "primevue/button";
 import type Keycloak from "keycloak-js";
 import { AxiosError } from "axios";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue";
+import BasicFormSection from "@/components/general/BasicFormSection.vue";
 
 export default defineComponent({
   name: "SingleDataRequest",
   components: {
+    BasicFormSection,
+    ToggleChipFormInputs,
     CompanyInfoSheet,
     AuthenticationWrapper,
     TheHeader,
     TheContent,
+    FormKit,
     TheFooter,
     PrimeButton,
   },
@@ -123,18 +134,30 @@ export default defineComponent({
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
     const footerContent = footerPage?.sections;
-    const years: string[] = ["2024", "2023", "2022", "2021", "2020"];
     const frameworkOptions: DataTypeEnum[] = Object.values(DataTypeEnum).sort();
     return {
-      years,
-      listOfReportingPeriods: [] as string[],
+      singleDataRequestModel: {},
       footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions,
       frameworkName: DataTypeEnum,
       contactList: "",
       message: "",
+      selectedReportingPeriodsError: false,
+      reportingPeriods: [
+        { name: "2023", value: false },
+        { name: "2022", value: false },
+        { name: "2021", value: false },
+        { name: "2020", value: false },
+      ],
     };
+  },
+  computed: {
+    selectedReportingPeriods(): string[] {
+      return this.reportingPeriods
+        .filter((reportingPeriod) => reportingPeriod.value)
+        .map((reportingPeriod) => reportingPeriod.name);
+    },
   },
   //TODO: default to be removed
   props: {
@@ -145,6 +168,14 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Check whether reporting periods have been selected
+     */
+    checkReportingPeriods(): void {
+      if (!this.selectedReportingPeriods.length) {
+        this.selectedReportingPeriodsError = true;
+      }
+    },
     /**
      * Toggle on the button for the selected year and add it to the list of selected years
      * @param year - the year to be toggled on in the year selection
@@ -174,7 +205,7 @@ export default defineComponent({
       return {
         companyIdentifier: this.companyIdentifier,
         frameworkName: this.frameworkName,
-        listOfReportingPeriods: this.selectedYears,
+        listOfReportingPeriods: this.selectedReportingPeriods,
         contactList: this.contactList,
         message: this.message,
       };
@@ -186,10 +217,9 @@ export default defineComponent({
       try {
         const singleDataRequestObject = this.collectDataToSend();
         const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-            .requestController;
+          .requestController;
         const response = await requestDataControllerApi.postSingleDataRequest(singleDataRequestObject);
         this.message = response.data.message;
-
       } catch (error) {
         console.error(error);
         if (error instanceof AxiosError) {
@@ -197,7 +227,7 @@ export default defineComponent({
           this.message = responseMessages ? responseMessages[0].message : error.message;
         } else {
           this.message =
-              "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
         }
       }
     },
@@ -214,7 +244,7 @@ export default defineComponent({
 
 .optional-text {
   font-style: italic;
-  color: var(--primary-orange);
+  color: #e67f3f;
   margin-left: 8px;
 }
 
