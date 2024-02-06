@@ -154,6 +154,7 @@ export default defineComponent({
       frameworkName: "" as DataTypeEnum,
       contactList: "",
       dataRequesterMessage: "",
+      message: "",
       selectedReportingPeriodsError: false,
       reportingPeriods: [
         { name: "2023", value: false },
