@@ -1,7 +1,7 @@
 import CreateEuTaxonomyForNonFinancials from "@/components/forms/CreateEuTaxonomyForNonFinancials.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { TEST_PDF_FILE_BASEPATH, TEST_PDF_FILE_NAME } from "@sharedUtils/ConstantsForPdfs";
-import { type CompanyAssociatedDataEuTaxonomyDataForNonFinancials } from "@clients/backend";
+import { type CompanyAssociatedDataEutaxonomyNonFinancialsData } from "@clients/backend";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import DataPointFormWithToggle from "@/components/forms/parts/kpiSelection/DataPointFormWithToggle.vue";
 import { UploadReports } from "@sharedUtils/components/UploadReports";
@@ -195,7 +195,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
    * This method returns a mocked dataset for eu taxonomy for non financials with some fields filled.
    * @returns the dataset
    */
-  function createMockCompanyAssociatedDataEuTaxoNonFinancials(): CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
+  function createMockCompanyAssociatedDataEutaxoNonFinancials(): CompanyAssociatedDataEutaxonomyNonFinancialsData {
     return {
       companyId: "abc",
       reportingPeriod: "2020",
@@ -274,7 +274,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     };
   }
 
-  const companyAssociatedEuTaxoFinancialsData = createMockCompanyAssociatedDataEuTaxoNonFinancials();
+  const companyAssociatedDataEutaxoNonFinancials = createMockCompanyAssociatedDataEutaxoNonFinancials();
 
   it("Check that warning appears if two pdf files with same name or illegal character are selected for upload", () => {
     cy.stub(DataPointFormWithToggle);
@@ -291,14 +291,14 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     });
   });
 
-  it("Open upload page prefilled and assure that only the sections that the dataset holds are displayed", () => {
+  it("Open upload page prefilled and assure that new file needs unique name and has to be referenced ", () => {
     cy.stub(DataPointFormWithToggle);
     cy.mountWithPlugins(CreateEuTaxonomyForNonFinancials, {
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
-          referencedReportsForPrefill: companyAssociatedEuTaxoFinancialsData?.data?.general?.referencedReports,
-          companyAssociatedEuTaxonomyDataForNonFinancials: companyAssociatedEuTaxoFinancialsData,
+          referencedReportsForPrefill: companyAssociatedDataEutaxoNonFinancials?.data?.general?.referencedReports,
+          companyAssociatedEutaxonomyNonFinancialsData: companyAssociatedDataEutaxoNonFinancials,
         };
       },
     }).then(() => {
@@ -313,8 +313,8 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
       keycloak: minimalKeycloakMock({}),
       data() {
         return {
-          referencedReportsForPrefill: companyAssociatedEuTaxoFinancialsData?.data?.general?.referencedReports,
-          companyAssociatedEuTaxonomyDataForNonFinancials: companyAssociatedEuTaxoFinancialsData,
+          referencedReportsForPrefill: companyAssociatedDataEutaxoNonFinancials?.data?.general?.referencedReports,
+          companyAssociatedEutaxonomyNonFinancialsData: companyAssociatedDataEutaxoNonFinancials,
         };
       },
     }).then(() => {

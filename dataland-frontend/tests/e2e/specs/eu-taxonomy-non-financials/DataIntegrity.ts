@@ -33,33 +33,6 @@ describeIf(
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
   function (): void {
-    /*
-
-    function validateSomeValuesForTheReuploadedDataset(company: StoredCompany, dataId: string): void {
-      cy.visit(`/companies/${company.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/${dataId}`);
-      cy.get("h1").should("contain", company.companyInformation.companyName);
-      cy.get('span[data-test="_general"]').contains("General").should("exist");
-      ["Assurance", "CapEx", "OpEx"].forEach((category) => {
-        cy.get(`span[data-test="${category}"]`).contains(category.toUpperCase()).should("exist");
-      });
-      cy.get('td > [data-test="fiscalYearEnd"]')
-        .parent()
-        .next("td")
-        .contains(assertDefined(euTaxonomyForNonFinancialsFixtureForTest?.t?.general?.fiscalYearEnd))
-        .should("exist");
-      cy.get('div > [data-test="CapEx"]').click();
-      cy.get('td > [data-test="relativeShareInPercent"]')
-        .parent()
-        .next("td")
-        .contains(
-          roundNumber(
-            assertDefined(euTaxonomyForNonFinancialsFixtureForTest?.t?.capex?.eligibleShare?.relativeShareInPercent),
-            2,
-          ),
-        )
-        .should("exist");
-    } */ // TODO Emanuel: I have to think about moving this stuff to the respective component test of non-financials
-
     it(
       "Create a company and an EU taxonomy for non-financials dataset via api, then re-upload it with the " +
         "upload form in Edit mode and assure that it worked by validating a couple of values",
@@ -115,7 +88,6 @@ describeIf(
                         dataSetFromPrefillRequest as Record<string, object>,
                         reuploadedDatasetFromBackend as Record<string, object>,
                       );
-                      cy.get('span[data-test="hideEmptyDataToggle"]').should("not.exist"); //this line can be removed once MLDT has been integrated
                       cy.url().should("eq", getBaseUrl() + "/datasets");
                       cy.get('[data-test="datasets-table"]').should("be.visible");
                     });
