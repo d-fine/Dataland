@@ -28,7 +28,6 @@ class DataOwnersManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val emailSender: EmailSender,
     @Autowired private val dataOwnershipRequestEmailBuilder: DataOwnershipRequestEmailBuilder,
-    @Autowired private val securityUtilsService: SecurityUtilsService,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -134,7 +133,6 @@ class DataOwnersManager(
         companyId: String,
         userId: String,
     ) {
-        securityUtilsService.isUserAuthenticated()
         checkIfCompanyIsValid(companyId)
         val failException = ResourceNotFoundApiException(
             "User is not a data owner",
