@@ -46,7 +46,7 @@
                   <FormKit
                     type="select"
                     placeholder="Select framework"
-                    v-model:selectedItemsBindInternal="frameworkName"
+                    v-model="frameworkName"
                     name="Framework"
                     :options="frameworkOptions"
                     validation="required"
@@ -75,7 +75,7 @@
                 <label for="Message" class="label-with-optional">
                   <b>Message</b><span class="optional-text">Optional</span>
                 </label>
-                <FormKit v-model="message" type="textarea" name="message" />
+                <FormKit v-model="dataRequesterMessage" type="textarea" name="dataRequesterMessage" />
                 <p class="gray-text font-italic" style="text-align: left">
                   Let your contact know what exactly your are looking for.
                 </p>
@@ -151,9 +151,9 @@ export default defineComponent({
       footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions,
-      frameworkName: DataTypeEnum,
+      frameworkName: "" as DataTypeEnum,
       contactList: "",
-      message: "",
+      dataRequesterMessage: "",
       selectedReportingPeriodsError: false,
       reportingPeriods: [
         { name: "2023", value: false },
@@ -188,26 +188,12 @@ export default defineComponent({
       }
     },
     /**
-     * Toggle on the button for the selected year and add it to the list of selected years
-     * @param year - the year to be toggled on in the year selection
-     */
-    toggleSelection(year: string): void {
-      const index = this.listOfReportingPeriods.indexOf(year);
-
-      if (index === -1) {
-        this.listOfReportingPeriods.push(year);
-      } else {
-        this.listOfReportingPeriods.splice(index, 1);
-      }
-    },
-    /**
      * Saves the company information emitted by the CompanyInformation vue components event.
      * @param fetchedCompanyInformation the company information for the current company Id
      */
     handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
       this.fetchedCompanyInformation = fetchedCompanyInformation;
     },
-    //TODO: add reporting period validation
     /**
      * Builds a SingleDataRequest object using the currently entered inputs and returns it
      * @returns the SingleDataRequest object
@@ -218,27 +204,29 @@ export default defineComponent({
         frameworkName: this.frameworkName,
         listOfReportingPeriods: this.selectedReportingPeriods,
         contactList: this.contactList,
-        message: this.message,
+        message: this.dataRequesterMessage,
       };
     },
     /**
      * Submits the data request to the request service
      */
     async submitRequest(): Promise<void> {
-      try {
-        const singleDataRequestObject = this.collectDataToSend();
-        const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-          .requestController;
-        const response = await requestDataControllerApi.postSingleDataRequest(singleDataRequestObject);
-        this.message = response.data.message;
-      } catch (error) {
-        console.error(error);
-        if (error instanceof AxiosError) {
-          const responseMessages = (error.response?.data as ErrorResponse)?.errors;
-          this.message = responseMessages ? responseMessages[0].message : error.message;
-        } else {
-          this.message =
-            "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+      if(!this.selectedReportingPeriodsError) {
+        try {
+          const singleDataRequestObject = this.collectDataToSend();
+          const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+              .requestController;
+          const response = await requestDataControllerApi.postSingleDataRequest(singleDataRequestObject);
+          this.message = response.data.message;
+        } catch (error) {
+          console.error(error);
+          if (error instanceof AxiosError) {
+            const responseMessages = (error.response?.data as ErrorResponse)?.errors;
+            this.message = responseMessages ? responseMessages[0].message : error.message;
+          } else {
+            this.message =
+                "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+          }
         }
       }
     },
