@@ -48,7 +48,8 @@ expected_vars=( \
   RABBITMQ_PASS_HASH \
   INTERNAL_BACKEND_URL \
   DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET \
-)
+  DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET \
+  )
 
 for var in "${expected_vars[@]}"
 do

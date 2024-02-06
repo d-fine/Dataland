@@ -30,6 +30,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-email"))
+    implementation(project(":dataland-message-queue-utils"))
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)
     implementation(libs.okhttp)
@@ -43,6 +44,7 @@ dependencies {
     implementation(Spring.boot.actuator)
     implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.validation)
+    implementation(Spring.boot.amqp)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
     kapt(Spring.boot.configurationProcessor)

@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
@@ -16,6 +17,7 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
+import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,6 +31,11 @@ import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
+import org.dataland.datalandmessagequeueutils.constants.ActionType
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 
 
 /**
@@ -40,6 +47,7 @@ class SingleDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyGetter: CompanyGetter,
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val messageUtils: MessageQueueUtils,
 ) {
     private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyGetter, objectMapper)
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
@@ -226,10 +234,16 @@ class SingleDataRequestManager(
     )
     @Transactional
     fun sendAnsweredRequestConfirmationEmail(
-        @Payload messageAsJsonString: String,
+        @Payload jsonString: String,
         @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
-
+        messageUtils.validateMessageType(type, MessageType.QaCompleted)
+        val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
+        val dataId = qaCompletedMessage.identifier
+        if (dataId.isEmpty()) {
+            throw MessageQueueRejectException("Provided data ID is empty")
+        }
+        MetaDataControllerApi("http://backend:8080/api").getDataMetaInfo(dataId)
     }
 }
