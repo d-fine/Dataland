@@ -46,7 +46,7 @@ class SingleDataRequestEmailSenderTest {
     private val semicolonSeparatedInternalReceiverEmails = "testReceiver@dataland.com"
     private val semicolonSeparatedInternalCcEmails = "testCc@dataland.com"
     private val internalReceivers = semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedInternalReceiverEmails)
-    private val internalCc = semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedInternalReceiverEmails)
+    private val internalCc = semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedInternalCcEmails)
 
     @BeforeEach
     fun setupSingleDataRequestEmailSender() {
