@@ -40,7 +40,7 @@ class FrameworkTestDataProvider<T> (private val clazz: Class<T>) {
 
     private val jsonFilesForTesting = mapOf(
         EutaxonomyNonFinancialsData::class.java to
-            File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForNonFinancials.json"),
+            File("./build/resources/test/CompanyInformationWithEutaxonomyNonFinancialsData.json"),
         EuTaxonomyDataForFinancials::class.java to
             File("./build/resources/test/CompanyInformationWithEuTaxonomyDataForFinancials.json"),
         LksgData::class.java to
