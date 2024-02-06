@@ -35,7 +35,7 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
           },
           data: {
             listOfRowContents: input,
-            kpiKeyOfTable: "TESTTESTODO", // TODO what do pick? Ideas later
+            kpiKeyOfTable: "alignedActivities",
             columnHeaders: euTaxonomyNonFinancialsModalColumnHeaders,
           },
         },

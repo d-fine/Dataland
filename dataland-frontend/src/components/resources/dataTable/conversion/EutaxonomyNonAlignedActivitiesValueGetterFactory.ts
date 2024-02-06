@@ -68,7 +68,7 @@ export function formatNonAlignedActivitiesForDataTable(
         },
         data: {
           listOfRowContents: nonAlignedActivities,
-          kpiKeyOfTable: "TESTTESTODO", // TODO what do pick? Ideas later
+          kpiKeyOfTable: "nonAlignedActivities",
           columnHeaders: euTaxonomyNonFinancialsModalColumnHeaders,
         },
       },
