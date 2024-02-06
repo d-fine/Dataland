@@ -13733,6 +13733,12 @@
         ],
         "type": "object",
         "properties": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
           "headquarters": {
             "type": "string"
           },
@@ -13741,12 +13747,6 @@
             "nullable": true
           },
           "countryCode": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
             "type": "string"
           },
           "permId": {
@@ -13774,10 +13774,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
