@@ -81,6 +81,17 @@
                 </p>
               </BasicFormSection>
             </div>
+            <div class="col-12 flex align-items-end">
+              <PrimeButton
+                  type="submit"
+                  label="Submit"
+                  class="p-button p-button-sm d-letters ml-auto"
+                  name="submit_request_button"
+                  @click="checkReportingPeriods()"
+              >
+                SUBMIT DATA REQUEST
+              </PrimeButton>
+            </div>
           </div>
         </div>
       </div>
