@@ -6,8 +6,6 @@ source ./deployment/deployment_utils.sh
 
 profile=production
 
-echo "Starting $environment server"
-curl "$TARGETSERVER_STARTUP_URL" > /dev/null
 echo "Setting $environment server as deployment target"
 target_server_url="$TARGETSERVER_URL"
 
