@@ -34,6 +34,7 @@ class SingleDataRequestEmailSenderTest {
 
     private val dataType = DataTypeEnum.lksg
 
+    private val properCompanyId = "d623c5b6-ba18-23c3-1234-333555554444"
     private val companyIdentifier = "DEsomething"
     private val companyName = "Real Company"
     private val defaultMessage = "Dummy Message"
@@ -80,7 +81,7 @@ class SingleDataRequestEmailSenderTest {
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
             mockRequesterAuthentication,
             SingleDataRequest(
-                "unused",
+                properCompanyId,
                 dataType,
                 listOfReportingPeriods = listOf(),
                 contactList = listOf("receiver@abc.de", "otherreceiver@something.else"),
@@ -100,7 +101,7 @@ class SingleDataRequestEmailSenderTest {
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
             mockRequesterAuthentication,
             SingleDataRequest(
-                "unused",
+                properCompanyId,
                 dataType,
                 listOfReportingPeriods = reportingPeriods,
                 contactList = listOf("receiver@abc.de", "otherreceiver@something.else"),
@@ -121,7 +122,7 @@ class SingleDataRequestEmailSenderTest {
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
             mockRequesterAuthentication,
             SingleDataRequest(
-                "unused",
+                properCompanyId,
                 dataType,
                 listOfReportingPeriods = reportingPeriods,
                 contactList = listOf(),
@@ -134,29 +135,12 @@ class SingleDataRequestEmailSenderTest {
     }
 
     @Test
-    fun `validate that an external email is sent to the provided contact for a Dataland company ID`() =
-        assertContactEmailsAreSent(listOf("othercontact@provider.com")) { contactEmails ->
-            singleDataRequestEmailSender.sendSingleDataRequestEmails(
-                mockRequesterAuthentication,
-                SingleDataRequest(
-                    "unused",
-                    dataType,
-                    listOfReportingPeriods = reportingPeriods,
-                    contactList = contactEmails,
-                    message = defaultMessage,
-                ),
-                DataRequestCompanyIdentifierType.DatalandCompanyId,
-                companyIdentifier,
-            )
-        }
-
-    @Test
     fun `validate that multiple external emails are sent to the provided contacts for a Dataland company ID`() =
         assertContactEmailsAreSent(listOf("contact@provider.com", "othercontact@provider.com")) { contactEmails ->
             singleDataRequestEmailSender.sendSingleDataRequestEmails(
                 mockRequesterAuthentication,
                 SingleDataRequest(
-                    "unused",
+                    properCompanyId,
                     dataType,
                     listOfReportingPeriods = reportingPeriods,
                     contactList = contactEmails,
