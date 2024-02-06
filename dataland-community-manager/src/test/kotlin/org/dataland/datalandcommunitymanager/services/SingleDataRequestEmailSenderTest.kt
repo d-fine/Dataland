@@ -113,7 +113,7 @@ class SingleDataRequestEmailSenderTest {
     }
 
     @Test
-    fun `validate that an internal email is sent if there are no contact provided`() {
+    fun `validate that an internal email is sent if there are no contacts provided`() {
         expectSentEmailsToMatchInternalEmail(
             DataRequestCompanyIdentifierType.DatalandCompanyId,
             true,
