@@ -6,7 +6,7 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import { type EuTaxonomyActivity } from "@clients/backend";
 import NonAlignedActivitiesDataTable from "@/components/general/NonAlignedActivitiesDataTable.vue";
-import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
+import { euTaxonomyForNonFinancialsModalColumnHeaders } from "@/frameworks/eutaxonomy-non-financials/EuTaxonomyForNonFinancialsModalColumnHeaders";
 
 /**
  * Formats the provided assurance datapoint for the datatable TODO rewrite
