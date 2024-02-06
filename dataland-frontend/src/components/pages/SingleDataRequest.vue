@@ -14,88 +14,88 @@
       </div>
       <div class="col-12">
         <FormKit
-            :actions="false"
-            v-model="singleDataRequestModel"
-            type="form"
-            @submit="submitRequest"
-            id="requestDataFormId"
-            name="requestDataFormName"
+          :actions="false"
+          v-model="singleDataRequestModel"
+          type="form"
+          @submit="submitRequest"
+          id="requestDataFormId"
+          name="requestDataFormName"
         >
-      <div class="col-12">
-      <div class="grid px-8 py-4 justify-content-center uploadFormWrapper">
-        <div class="col-12 md:col-8 xl:col-6">
-          <div class="grid">
-            <div class="col-12">
-              <BasicFormSection :data-test="'reportingPeriods'" header="Select at least one reporting period">
-                <div class="flex flex-wrap mt-4 py-2">
-                  <ToggleChipFormInputs
-                    :name="'reportingPeriods'"
-                    :options="reportingPeriods"
-                    @changed="selectedReportingPeriodsError = false"
-                  />
+          <div class="col-12">
+            <div class="grid px-8 py-4 justify-content-center uploadFormWrapper">
+              <div class="col-12 md:col-8 xl:col-6">
+                <div class="grid">
+                  <div class="col-12">
+                    <BasicFormSection :data-test="'reportingPeriods'" header="Select at least one reporting period">
+                      <div class="flex flex-wrap mt-4 py-2">
+                        <ToggleChipFormInputs
+                          :name="'reportingPeriods'"
+                          :options="reportingPeriods"
+                          @changed="selectedReportingPeriodsError = false"
+                        />
+                      </div>
+                      <p
+                        v-if="selectedReportingPeriodsError"
+                        class="text-danger text-xs mt-2"
+                        data-test="reportingPeriodErrorMessage"
+                      >
+                        Select at least one reporting period.
+                      </p>
+                    </BasicFormSection>
+                    <BasicFormSection :data-test="'selectFrameworkDiv'" header="Select a framework">
+                      <FormKit
+                        type="select"
+                        placeholder="Select framework"
+                        v-model="frameworkName"
+                        name="Framework"
+                        :options="frameworkOptions"
+                        validation="required"
+                        :validation-messages="{
+                          required: 'Select a framework',
+                        }"
+                        outer-class="long"
+                        data-test="datapoint-framework"
+                      />
+                    </BasicFormSection>
+                    <BasicFormSection :data-test="'provideContactDetails'" header="Provide Contact Details">
+                      <label for="Email" class="label-with-optional">
+                        <b>Email</b><span class="optional-text">Optional</span>
+                      </label>
+                      <FormKit v-model="contact" type="text" name="contactDetails" />
+                      <p class="gray-text font-italic" style="text-align: left">
+                        By specifying a contact person here, your data request will be directed accordingly.<br />
+                        this increases the chances of expediting the fulfillment of your request.
+                      </p>
+                      <br />
+                      <p class="gray-text font-italic" style="text-align: left">
+                        If you don't have a specific contact person, no worries.<br />
+                        We are committed to fulfilling your request to the best of our ability.
+                      </p>
+                      <br />
+                      <label for="Message" class="label-with-optional">
+                        <b>Message</b><span class="optional-text">Optional</span>
+                      </label>
+                      <FormKit v-model="dataRequesterMessage" type="textarea" name="dataRequesterMessage" />
+                      <p class="gray-text font-italic" style="text-align: left">
+                        Let your contact know what exactly your are looking for.
+                      </p>
+                    </BasicFormSection>
+                  </div>
+                  <div class="col-12 flex align-items-end">
+                    <PrimeButton
+                      type="submit"
+                      label="Submit"
+                      class="p-button p-button-sm d-letters ml-auto"
+                      name="submit_request_button"
+                      @click="checkReportingPeriods()"
+                    >
+                      SUBMIT DATA REQUEST
+                    </PrimeButton>
+                  </div>
                 </div>
-                <p
-                  v-if="selectedReportingPeriodsError"
-                  class="text-danger text-xs mt-2"
-                  data-test="reportingPeriodErrorMessage"
-                >
-                  Select at least one reporting period.
-                </p>
-              </BasicFormSection>
-                <BasicFormSection :data-test="'selectFrameworkDiv'" header="Select a framework">
-                  <FormKit
-                    type="select"
-                    placeholder="Select framework"
-                    v-model="frameworkName"
-                    name="Framework"
-                    :options="frameworkOptions"
-                    validation="required"
-                    :validation-messages="{
-                      required: 'Select a framework',
-                    }"
-                    outer-class="long"
-                    data-test="datapoint-framework"
-                  />
-              </BasicFormSection>
-              <BasicFormSection :data-test="'provideContactDetails'" header="Provide Contact Details">
-                <label for="Email" class="label-with-optional">
-                <b>Email</b><span class="optional-text">Optional</span>
-                </label>
-                <FormKit v-model="contactList" type="text" name="contactDetails" />
-                <p class="gray-text font-italic" style="text-align: left">
-                  By specifying a contact person here, your data request will be directed accordingly.<br />
-                  this increases the chances of expediting the fulfillment of your request.
-                </p>
-                <br />
-                <p class="gray-text font-italic" style="text-align: left">
-                  If you don't have a specific contact person, no worries.<br />
-                  We are committed to fulfilling your request to the best of our ability.
-                </p>
-                <br/>
-                <label for="Message" class="label-with-optional">
-                  <b>Message</b><span class="optional-text">Optional</span>
-                </label>
-                <FormKit v-model="dataRequesterMessage" type="textarea" name="dataRequesterMessage" />
-                <p class="gray-text font-italic" style="text-align: left">
-                  Let your contact know what exactly your are looking for.
-                </p>
-              </BasicFormSection>
-            </div>
-            <div class="col-12 flex align-items-end">
-              <PrimeButton
-                  type="submit"
-                  label="Submit"
-                  class="p-button p-button-sm d-letters ml-auto"
-                  name="submit_request_button"
-                  @click="checkReportingPeriods()"
-              >
-                SUBMIT DATA REQUEST
-              </PrimeButton>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      </div>
         </FormKit>
       </div>
     </TheContent>
@@ -152,7 +152,7 @@ export default defineComponent({
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions,
       frameworkName: "" as DataTypeEnum,
-      contactList: "",
+      contact: "",
       dataRequesterMessage: "",
       message: "",
       selectedReportingPeriodsError: false,
@@ -200,11 +200,12 @@ export default defineComponent({
      * @returns the SingleDataRequest object
      */
     collectDataToSend(): SingleDataRequest {
+      const contactAsList = [this.contact];
       return {
         companyIdentifier: this.companyIdentifier,
         frameworkName: this.frameworkName,
         listOfReportingPeriods: this.selectedReportingPeriods,
-        contactList: this.contactList,
+        contactList: contactAsList,
         message: this.dataRequesterMessage,
       };
     },
@@ -212,13 +213,13 @@ export default defineComponent({
      * Submits the data request to the request service
      */
     async submitRequest(): Promise<void> {
-      if(!this.selectedReportingPeriodsError) {
+      if (!this.selectedReportingPeriodsError) {
         try {
           const singleDataRequestObject = this.collectDataToSend();
           const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-              .requestController;
+            .requestController;
           const response = await requestDataControllerApi.postSingleDataRequest(singleDataRequestObject);
-          this.message = response.data.message;
+          this.message = response.data.message as string;
         } catch (error) {
           console.error(error);
           if (error instanceof AxiosError) {
@@ -226,7 +227,7 @@ export default defineComponent({
             this.message = responseMessages ? responseMessages[0].message : error.message;
           } else {
             this.message =
-                "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
+              "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
           }
         }
       }
