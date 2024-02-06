@@ -48,6 +48,7 @@ class SingleDataRequestManager(
     @Autowired private val companyGetter: CompanyGetter,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val messageUtils: MessageQueueUtils,
+    @Autowired private val metaDataControllerApi: MetaDataControllerApi,
 ) {
     private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyGetter, objectMapper)
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
@@ -220,7 +221,7 @@ class SingleDataRequestManager(
         bindings = [
             QueueBinding(
                 value = Queue(
-                    "dataQualityAssuredBackendDataManager",
+                    "dataQualityAssuredCommunityManagerDataManager",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -244,6 +245,15 @@ class SingleDataRequestManager(
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
-        MetaDataControllerApi("http://backend:8080/api").getDataMetaInfo(dataId)
+        val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
+        val filter = GetDataRequestsSearchFilter(
+            dataTypeNameFilter =
+                metaData.dataType.name,
+            userIdFilter = "",
+            requestStatus = RequestStatus.Open,
+            reportingPeriodFilter = metaData.reportingPeriod,
+            dataRequestCompanyIdentifierValueFilter = metaData.companyId,
+        )
+        dataRequestRepository.searchDataRequestEntity(filter)
     }
 }
