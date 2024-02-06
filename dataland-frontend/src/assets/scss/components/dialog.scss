@@ -25,16 +25,17 @@
     }
 
     .p-dialog-header-icon {
-      width: 2rem;
-      height: 2rem;
-      color: #6c757d;
-      border: 0 none;
-      background: transparent;
+      width: 1.5rem;
+      height: 1.5rem;
+      color: $card-background;
+      border: none;
+      background: $brown-lighter;
       transition: background-color .2s, color .2s, box-shadow .2s;
       margin-left: .5rem;
+      border-radius: 1rem;
 
       &:enabled:hover {
-        color: #1b1b1b;
+        background: darken($brown-lighter, 20%);
       }
 
       &:focus {
