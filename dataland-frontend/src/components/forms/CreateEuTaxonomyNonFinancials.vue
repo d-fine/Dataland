@@ -175,7 +175,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  name: "CreateEuTaxonomyForNonFinancials", // TODO renaming
+  name: "CreateEuTaxonomyNonFinancials",
   components: {
     SubmitButton,
     SubmitSideBar,
@@ -289,7 +289,7 @@ export default defineComponent({
       }
       this.referencedReportsForPrefill = euTaxonomyForNonFinancialsResponseData.data.general?.referencedReports ?? {};
       this.companyAssociatedEutaxonomyNonFinancialsData = objectDropNull(
-        euTaxonomyForNonFinancialsResponseData as ObjectType,
+        euTaxonomyNonFinancialsResponseData as ObjectType,
       ) as CompanyAssociatedDataEutaxonomyNonFinancialsData;
       this.waitingForData = false;
     },
