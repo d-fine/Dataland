@@ -4,13 +4,8 @@
       <p class="font-medium text-xl">Loading company information...</p>
       <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
     </div>
-    <div v-else-if="companyInformation && !waitingForData" class="company-details">
-      <div class="company-details__headline">
-        <div class="left-elements">
-          <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
-        </div>
-        <SingleDataRequestButton />
-      </div>
+    <div v-else-if="companyInformation && !waitingForData" class="text-left company-details">
+      <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
 
       <div class="company-details__separator" />
 
@@ -41,11 +36,9 @@ import { defineComponent, inject } from "vue";
 import { type CompanyInformation, IdentifierType } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
 
 export default defineComponent({
   name: "CompanyInformation",
-  components: { SingleDataRequestButton },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -132,13 +125,6 @@ export default defineComponent({
   flex-direction: column;
   width: 100%;
 
-  &__headline {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
-  }
-
   &__separator {
     @media only screen and (max-width: $small) {
       width: 100%;
@@ -161,10 +147,5 @@ export default defineComponent({
       padding-right: 40px;
     }
   }
-}
-
-.left-elements {
-  display: flex;
-  align-items: center;
 }
 </style>

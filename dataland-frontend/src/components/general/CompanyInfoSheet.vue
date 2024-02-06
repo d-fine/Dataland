@@ -1,7 +1,11 @@
 <template>
   <div ref="sheet" :class="`sheet ${isCollapsed ? 'visuals-hidden' : ''}`" data-test="sheet">
     <template v-if="!useMobileView">
-      <BackButton />
+      <div :class="` ${showSingleDataRequestButton ? 'headline' : ''}`">
+        <BackButton />
+        <SingleDataRequestButton v-if="showSingleDataRequestButton" />
+      </div>
+
       <CompaniesOnlySearchBar
         v-if="showSearchBar"
         @select-company="$router.push(`/companies/${$event.companyId}`)"
@@ -36,6 +40,7 @@
 import BackButton from "@/components/general/BackButton.vue";
 import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
+import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
 import { type CompanyInformation } from "@clients/backend";
 import { computed, inject, onMounted, onUnmounted, ref } from "vue";
 
@@ -45,11 +50,15 @@ const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.va
 const sheet = ref<HTMLDivElement>();
 const attachedSheet = ref<HTMLDivElement>();
 
-const { companyId, showSearchBar } = defineProps({
+const { companyId, showSearchBar, showSingleDataRequestButton } = defineProps({
   companyId: String,
   showSearchBar: {
     type: Boolean,
     default: true,
+  },
+  showSingleDataRequestButton: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -86,6 +95,7 @@ function onScroll(): void {
   sheetRect.value = sheet.value!.getBoundingClientRect();
   attachedSheetHeight.value = attachedSheet.value!.getBoundingClientRect().height;
 }
+
 onMounted(() => {
   window.addEventListener("scroll", onScroll);
 });
@@ -124,6 +134,14 @@ const isCollapsed = computed<boolean>(() => {
 
 .visuals-hidden {
   visibility: hidden;
+}
+
+.headline {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .mobile-header {
