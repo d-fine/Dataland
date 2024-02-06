@@ -118,8 +118,8 @@ export default defineComponent({
   },
   mounted() {
     void this.getCompanyInformation();
-    void this.getDataOwnerInformation();
     void this.awaitUserId();
+    void this.getDataOwnerInformation();
   },
   watch: {
     companyId() {
@@ -163,6 +163,7 @@ export default defineComponent({
      * Get the Information about Data-ownership
      */
     async getDataOwnerInformation() {
+      void (await this.awaitUserId());
       if (this.userId !== undefined && this.isCompanyIdValid) {
         try {
           const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())

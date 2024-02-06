@@ -105,8 +105,8 @@ export default defineComponent({
   },
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
-    void this.getDataOwnerInformation();
     void this.awaitUserId();
+    void this.getDataOwnerInformation();
   },
   methods: {
     /**
@@ -124,6 +124,7 @@ export default defineComponent({
      * Get the Information about Data-ownership
      */
     async getDataOwnerInformation() {
+      void (await this.awaitUserId());
       if (this.userId !== undefined && this.isCompanyIdValid) {
         try {
           const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
@@ -134,6 +135,7 @@ export default defineComponent({
           );
           if (axiosResponse.status == 200) {
             this.isUserDataOwner = true;
+            console.log(axiosResponse);
           }
         } catch (error) {
           console.error(error);
@@ -151,6 +153,7 @@ export default defineComponent({
      */
     async awaitUserId(): Promise<void> {
       this.userId = await getUserId(assertDefined(this.getKeycloakPromise));
+      console.log(this.userId);
     },
   },
 });
