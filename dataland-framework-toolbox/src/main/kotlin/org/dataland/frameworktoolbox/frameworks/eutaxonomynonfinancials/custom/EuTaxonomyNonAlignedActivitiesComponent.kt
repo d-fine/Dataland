@@ -15,9 +15,9 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
- * Represents the EuTaxonomy-Specific List of Activities component TODO
+ * Represents the EuTaxonomy-Specific "EuTaxonomyNonAlignedActivities" component
  */
-class EuTaxonomyNonAlignedActivitiesComponent( // TODO naming
+class EuTaxonomyNonAlignedActivitiesComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
@@ -46,7 +46,7 @@ class EuTaxonomyNonAlignedActivitiesComponent( // TODO naming
         )
     }
 
-    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) { // TODO
+    override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         sectionBuilder.addAtomicExpression(
             identifier,
             "dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2)",
