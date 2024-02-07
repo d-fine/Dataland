@@ -1,209 +1,190 @@
-import EuTaxonomyForNonFinancialsPanel from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsPanel.vue";
 import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {
-  Activity,
-  type DataAndMetaInformationEuTaxonomyDataForNonFinancials,
-  DataTypeEnum,
-  type EuTaxonomyAlignedActivity,
-  type EuTaxonomyDetailsPerCashFlowType,
+    Activity, CurrencyDataPoint,
+    DataTypeEnum, EuTaxonomyActivity,
+    type EuTaxonomyAlignedActivity,
+    EutaxonomyNonFinancialsCapex, EutaxonomyNonFinancialsData, SfdrData,
 } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import type { CompanyReport } from "@clients/backend";
 import { roundNumber } from "@/utils/NumberConversionUtils";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
+import {mountMLDTFrameworkPanelFromFakeFixture} from "../../../../testUtils/MultiLayerDataTableComponentTestUtils";
+import {
+  eutaxonomyNonFinancialsViewConfiguration
+} from "../../../../../../src/frameworks/eutaxonomy-non-financials/ViewConfig";
+import {FixtureData} from "../../../../../sharedUtils/Fixtures";
+import {
+    getCellValueContainer,
+    getSectionHead
+} from "../../../../../sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
 
 describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
-  let mockedBackendDataForTest: DataAndMetaInformationEuTaxonomyDataForNonFinancials[];
+  let fixturesForTests: FixtureData<EutaxonomyNonFinancialsData>[];
 
-  let capexOfDatasetAlpha: EuTaxonomyDetailsPerCashFlowType;
+  let alphaCapex: EutaxonomyNonFinancialsCapex;
 
-  let capexOfDatasetBeta: EuTaxonomyDetailsPerCashFlowType;
+  let betaCapex: EutaxonomyNonFinancialsCapex;
 
-  let capexOfDatasetGamma: EuTaxonomyDetailsPerCashFlowType;
+  let gammaCapex: EutaxonomyNonFinancialsCapex;
   let gammaReportingPeriod: string;
   let gammaCapexFirstAlignedActivity: EuTaxonomyAlignedActivity;
+  let gammaCapexFirstNonAlignedActivity: EuTaxonomyActivity
+  let gammaCapexTotalAmount: CurrencyDataPoint;
 
   before(function () {
-    cy.fixture("EuTaxonomyForNonFinancialsMocks.json").then(
-      (mockedBackendResponse: DataAndMetaInformationEuTaxonomyDataForNonFinancials[]) => {
-        mockedBackendDataForTest = mockedBackendResponse;
+    cy.fixture("CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json").then(
+      (preparedFixtures: FixtureData<EutaxonomyNonFinancialsData>[]) => {
+        fixturesForTests = preparedFixtures
 
-        const revenueOfDatasetAlpha = assertDefined(mockedBackendDataForTest[0].data.revenue);
-        const revenueOfDatasetAlphaTotalAmount = assertDefined(revenueOfDatasetAlpha.totalAmount);
+        const revenueOfDatasetAlphaTotalAmount = assertDefined(fixturesForTests[0].t.revenue?.totalAmount)
         revenueOfDatasetAlphaTotalAmount.value = 0;
         revenueOfDatasetAlphaTotalAmount.currency = "EUR";
-        capexOfDatasetAlpha = assertDefined(mockedBackendDataForTest[0].data.capex);
 
-        capexOfDatasetBeta = assertDefined(mockedBackendDataForTest[1].data.capex);
+        alphaCapex = assertDefined(fixturesForTests[0].t.capex);
 
-        capexOfDatasetGamma = assertDefined(mockedBackendDataForTest[2].data.capex);
-        gammaReportingPeriod = mockedBackendDataForTest[2].metaInfo.reportingPeriod;
-        const gammaCapexAlignedActivities = assertDefined(capexOfDatasetGamma.alignedActivities);
+        betaCapex = assertDefined(fixturesForTests[1].t.capex);
+
+        gammaCapex = assertDefined(fixturesForTests[2].t.capex);
+        gammaReportingPeriod = fixturesForTests[2].reportingPeriod;
+        const gammaCapexAlignedActivities = assertDefined(gammaCapex.alignedActivities);
         if (gammaCapexAlignedActivities.length < 1) {
           throw new Error(
             "Aligned activities list for capex of gamma dataset needs at least one element for this test to make sense.",
           );
         }
-        gammaCapexAlignedActivities.splice(1);
         gammaCapexFirstAlignedActivity = gammaCapexAlignedActivities[0];
         gammaCapexFirstAlignedActivity.activityName = Activity.Afforestation;
         gammaCapexFirstAlignedActivity.substantialContributionToClimateChangeAdaptionInPercent = 0;
+
+          const gammaCapexNonAlignedActivities = assertDefined(gammaCapex.nonAlignedActivities);
+          if (gammaCapexNonAlignedActivities.length < 1) {
+              throw new Error(
+                  "Non-Aligned activities list for capex of gamma dataset needs at least one element for this test to make sense.",
+              );
+          }
+          gammaCapexFirstNonAlignedActivity = gammaCapexNonAlignedActivities[0]
+          gammaCapexFirstNonAlignedActivity.activityName = Activity.Education;
+          assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent = 0
+
+          gammaCapexTotalAmount = assertDefined(gammaCapex.totalAmount)
+
       },
     );
   });
 
-  it("Check if the panel fetches, converts and displays data correctly", () => {
-    const mockCompanyId = "mock-company-Id";
-    cy.intercept(
-      `/api/data/${DataTypeEnum.EutaxonomyNonFinancials}/companies/${mockCompanyId}`,
-      mockedBackendDataForTest,
-    );
-    cy.mountWithDialog(
-      EuTaxonomyForNonFinancialsPanel,
-      {
-        keycloak: minimalKeycloakMock({}),
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-      },
-      {
-        companyId: "mock-company-Id",
-      },
-    ).then(() => {
-      const alphaContributionToClimateChangeMitigation = roundNumber(
-        assertDefined(capexOfDatasetAlpha.substantialContributionToClimateChangeMitigationInPercent),
-        2,
-      );
+  it.only("Check if the panel fetches, converts and displays data correctly", () => { // TODO
+    mountMLDTFrameworkPanelFromFakeFixture(
+        DataTypeEnum.EutaxonomyNonFinancials,
+        eutaxonomyNonFinancialsViewConfiguration,
+        fixturesForTests
+        ).then(() => {
       const betaTotalAlignedCapexPercentage = roundNumber(
-        assertDefined(capexOfDatasetBeta.alignedShare?.relativeShareInPercent),
+        assertDefined(betaCapex.alignedShare?.relativeShareInPercent),
         2,
       );
+        const gammaCapexTotalAmountFormattedString =
+            formatAmountWithCurrency(
+                {
+                    amount: assertDefined(gammaCapexTotalAmount.value),
+                    currency: assertDefined(gammaCapexTotalAmount.currency) }
+            )
       const gammaTotalAlignedCapexAbsoluteShareString = formatAmountWithCurrency(
-        assertDefined(capexOfDatasetGamma.alignedShare?.absoluteShare),
+        assertDefined(gammaCapex.alignedShare?.absoluteShare),
       );
       const gammaContributionToClimateChangeMitigation = roundNumber(
-        assertDefined(capexOfDatasetGamma.substantialContributionToClimateChangeMitigationInPercent),
+        assertDefined(gammaCapex.substantialContributionToClimateChangeMitigationInPercent),
         2,
       );
 
-      cy.get(`[data-test='Revenue']`).click();
 
-      cy.get('tr:has(td > span:contains("Total Revenue"))').next("tr").find("span").should("contain", "Value");
+        getSectionHead("Revenue").click()
+        getCellValueContainer("Total Amount", 0).invoke("text")
+            .should("match", /^0\s*EUR\s.*/)
+        getSectionHead("Revenue").click()
 
-      cy.get('tr:has(td > span:contains("Total Revenue"))')
-        .next("tr")
-        .find("td")
-        .eq(1)
-        .invoke("text")
-        .should("match", /^0 EUR$/);
+        getSectionHead("CapEx").click()
+        getSectionHead("Aligned Share").click()
+        getCellValueContainer("Relative Share in Percent", 1).invoke("text")
+            .should("equal", `${betaTotalAlignedCapexPercentage} %`)
+        getCellValueContainer("Absolute Share", 2).invoke("text")
+            .should("equal", `${gammaTotalAlignedCapexAbsoluteShareString}`)
+        getCellValueContainer("Substantial Contribution to Climate Change Mitigation In Percent", 2)
+            .invoke("text")
+            .should("equal", `${gammaContributionToClimateChangeMitigation} %`)
 
-      cy.get('[data-test="CapEx"]').click();
-      cy.get('tr:has(td > span:contains("Aligned CapEx"))')
-        .first()
-        .next("tr")
-        .find("span")
-        .should("contain", "Percentage")
-        .should("contain", betaTotalAlignedCapexPercentage);
 
-      cy.get('tr:has(td > span:contains("Aligned CapEx"))')
-        .first()
-        .next("tr")
-        .next("tr")
-        .find("span")
-        .should("contain", "Absolute share")
-        .should("contain", gammaTotalAlignedCapexAbsoluteShareString);
+        getCellValueContainer("Total Amount", 2)
+            .invoke("text")
+            .should("match", new RegExp(`^${gammaCapexTotalAmountFormattedString}\\s.*$`))
+        getCellValueContainer("Total Amount", 2).click()
+        cy.contains("td", gammaCapexTotalAmountFormattedString).should('exist');
+        cy.contains("td", assertDefined(gammaCapexTotalAmount.quality).toString() ).should('exist');
+        cy.contains("td", assertDefined(gammaCapexTotalAmount.comment).toString() ).should('exist');
+        cy.get(`span[data-test="Report-Download-${assertDefined(gammaCapexTotalAmount.dataSource).fileName}"]`).should('exist');
+        cy.get('body').type('{esc}');
 
-      cy.get('[data-test="CapEx"]')
-        .parent()
-        .parent()
-        .parent()
-        .contains("td", "Substantial Contribution to Climate Change Mitigation")
-        .siblings("td")
-        .find("span")
-        .should("contain", alphaContributionToClimateChangeMitigation)
-        .should("contain", gammaContributionToClimateChangeMitigation);
 
-      cy.get(`[data-test="${gammaReportingPeriod}_capex_alignedActivities"]`).click();
+        getCellValueContainer("Aligned Activities", 2).click()
       cy.get("tr")
         .contains("td", assertDefined(gammaCapexFirstAlignedActivity.activityName))
         .nextAll()
         .eq(4)
         .invoke("text")
         .should("match", /^0 %$/);
+        cy.get('body').type('{esc}');
+
+
+        getCellValueContainer("Non-Aligned Activities", 2).click()
+        cy.get("tr")
+            .contains("td", assertDefined(gammaCapexFirstNonAlignedActivity.activityName)) // TODO
+            .nextAll()
+            .eq(2)
+            .invoke("text")
+            .should("match", new RegExp(
+                `^${assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent}\\s.*$`)
+            );
     });
   });
 
   it("Checks if the reports banner and the corresponding modal is properly displayed", () => {
-    const reportsAndReportingPeriods =
-      extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(mockedBackendDataForTest);
-    const hightestIndexOfReportingPeriods = calculateIndexOfNewestReportingPeriod(reportsAndReportingPeriods[1]);
-    cy.mountWithDialog(
+    const allReportingPeriods = fixturesForTests.map((it) => it.reportingPeriod)
+    const allReports = fixturesForTests.map(
+        (it) => assertDefined(it.t.general).referencedReports
+    )
+    const expectedLatestReportingPeriod = allReportingPeriods[0]
+      cy.mountWithDialog(
       ShowMultipleReportsBanner,
       {
         keycloak: minimalKeycloakMock({}),
       },
       {
-        reports: reportsAndReportingPeriods[0],
-        reportingPeriods: reportsAndReportingPeriods[1],
+        reports: allReports,
+        reportingPeriods: allReportingPeriods,
       },
     ).then(() => {
       cy.get(`[data-test="frameworkNewDataTableTitle"`).contains(
-        `Data extracted from the company report. Company Reports(${reportsAndReportingPeriods[1][hightestIndexOfReportingPeriods]})`,
+        `Data extracted from the company report. Company Reports(${expectedLatestReportingPeriod})`,
       );
       cy.get('[data-test="documentLinkTest"]').contains("IntegratedReport");
 
       cy.get(`[data-test="previousReportsLinkToModal"]`).contains("Previous years reports").click();
-      for (let i = 0; i < reportsAndReportingPeriods[1]?.length; i++) {
-        if (i != hightestIndexOfReportingPeriods) {
-          cy.get(`[data-test="previousReportsList"]`).contains(`Company Reports (${reportsAndReportingPeriods[1][i]})`);
-          for (const key in reportsAndReportingPeriods[0][i]) {
-            cy.get(`[data-test='Report-Download-${key}']`).contains(key);
+
+      for (let i = 0; i < fixturesForTests.length; i++) {
+        const reportingPeriodOfDataset = allReportingPeriods[i]
+        const reportsForDataset = allReports[i]
+
+        if (reportingPeriodOfDataset != expectedLatestReportingPeriod) {
+          cy.get(`[data-test="previousReportsList"]`).contains(`Company Reports (${reportingPeriodOfDataset})`);
+          for (const reportKey in reportsForDataset) {
+            cy.get(`[data-test='Report-Download-${reportKey}']`).contains(reportKey);
           }
         }
       }
       cy.get(`[data-test="frameworkNewDataTableTitle"`).contains(
-        `Data extracted from the company report. Company Reports(${reportsAndReportingPeriods[1][hightestIndexOfReportingPeriods]})`,
+        `Data extracted from the company report. Company Reports(${expectedLatestReportingPeriod})`,
       );
     });
   });
 });
-
-/**
- * Extracts the reports and reporting periods for all data sets.
- * @param dataAndMetaInfoSets array of data sets including meta information
- * @returns array containing an array of company reports and an array of the corresponding reporting periods
- * as strings
- */
-export function extractReportsAndReportingPeriodsFromDataAndMetaInfoSets(
-  dataAndMetaInfoSets: Array<DataAndMetaInformationEuTaxonomyDataForNonFinancials>,
-): [Array<{ [p: string]: CompanyReport } | undefined>, Array<string>] {
-  const reportingPeriods = [];
-  let tempReportingPeriod: string | undefined;
-  for (const dataAndMetaInfoSet of dataAndMetaInfoSets) {
-    tempReportingPeriod = dataAndMetaInfoSet.metaInfo.reportingPeriod;
-    if (tempReportingPeriod) {
-      reportingPeriods.push(tempReportingPeriod);
-    }
-  }
-  const allReports: Array<{ [p: string]: CompanyReport } | undefined> = dataAndMetaInfoSets.map(
-    (dataAndMetaInfoSet) => dataAndMetaInfoSet?.data?.general?.referencedReports ?? undefined,
-  );
-  return [allReports, reportingPeriods];
-}
-
-/**
- * Returns the index of the with the newest reporting period in the array containing all reporting periods.
- * @param reportingPeriods array containing all reporting periods.
- * @returns index of the newest reporting period
- */
-export function calculateIndexOfNewestReportingPeriod(reportingPeriods: Array<string>): number {
-  let indexOfHighestReportingPeriod = 0;
-  let tempHighestReportingPeriodNumber = 0;
-  for (let i = 0; i < reportingPeriods.length; i++) {
-    if (Number(reportingPeriods[i]) > tempHighestReportingPeriodNumber) {
-      tempHighestReportingPeriodNumber = Number(reportingPeriods[i]);
-      indexOfHighestReportingPeriod = i;
-    }
-  }
-  return indexOfHighestReportingPeriod;
-}
+//TODO CAREFUL: Git thinks this is a new file!!!
