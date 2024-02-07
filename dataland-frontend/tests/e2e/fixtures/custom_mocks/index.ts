@@ -1,7 +1,6 @@
 import fs from "fs";
 import { extractMetaInfoAssociatedWithReportingPeriodByDataType } from "@e2e/fixtures/custom_mocks/CustomMetaDataFormatFixtures";
 import { generateMetaInfoDataForOneCompany } from "@e2e/fixtures/custom_mocks/DataMetaInformationFaker";
-//import { generateEuTaxonomyForNonFinancials } from "@e2e/fixtures/custom_mocks/EuTaxonomyDataForNonFinancialsFaker";
 import { generateMapOfFrameworkNameToAggregatedFrameworkDataSummary } from "@e2e/fixtures/custom_mocks/MapOfDataTypeToAggregatedFrameworkDataSummaryFaker";
 import { generateListOfDataSearchStoredCompany } from "@e2e/fixtures/custom_mocks/DataSearchStoredCompanyFaker";
 
