@@ -24,6 +24,7 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaptation : BaseJavaMig
     /**
      * Migrates substantialContributionToClimateChangeAdaption field to substantialContributionToClimateChangeAdaptation
      */
+    @Suppress("NestedBlockDepth")
     fun migrateSubstantialContributionToClimateChangeAdaptation(dataTableEntity: DataTableEntity) {
         val euTaxoDataSet = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
         listOf("revenue", "capex", "opex").forEach { cashFlowType ->
@@ -35,15 +36,17 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaptation : BaseJavaMig
                     euTaxoDataSubsetCashFlowType.getOrJsonNull(it.key),
                 )
                 euTaxoDataSubsetCashFlowType.remove(it.key)
-                euTaxoDataSubsetCashFlowType.getJSONArray("alignedActivities").forEach { actitivy ->
-                    actitivy as JSONObject
-                    actitivy.put(it.value, actitivy.get(it.key))
-                    actitivy.remove(it.key)
-                    actitivy.put(
-                        mapOfOldToNewdDnshFieldName.values.first(),
-                        actitivy.get(mapOfOldToNewdDnshFieldName.keys.first()),
-                    )
-                    actitivy.remove(mapOfOldToNewdDnshFieldName.keys.first())
+                if (euTaxoDataSubsetCashFlowType.getOrJavaNull("alignedActivities") != null) {
+                    euTaxoDataSubsetCashFlowType.getJSONArray("alignedActivities").forEach { actitivy ->
+                        actitivy as JSONObject
+                        actitivy.put(it.value, actitivy[it.key])
+                        actitivy.remove(it.key)
+                        actitivy.put(
+                            mapOfOldToNewdDnshFieldName.values.first(),
+                            actitivy[mapOfOldToNewdDnshFieldName.keys.first()],
+                        )
+                        actitivy.remove(mapOfOldToNewdDnshFieldName.keys.first())
+                    }
                 }
             }
         }
