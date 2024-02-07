@@ -1,9 +1,9 @@
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import {
-  type CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
+  type CompanyAssociatedDataEutaxonomyNonFinancialsData, CompanyReport,
   type DataMetaInformation,
   DataTypeEnum,
-  type EuTaxonomyDataForNonFinancials,
+  type EutaxonomyNonFinancialsData,
 } from "@clients/backend";
 import { describeIf } from "@e2e/support/TestUtility";
 import { getKeycloakToken } from "@e2e/utils/Auth";
@@ -23,11 +23,11 @@ describeIf(
   },
   function () {
     let frontendDocumentHash = "";
-    let testData: FixtureData<EuTaxonomyDataForNonFinancials>;
+    let testData: FixtureData<EutaxonomyNonFinancialsData>;
     const uploadReports = new UploadReports("referencedReports");
     before(function () {
       cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (
-        jsonContent: FixtureData<EuTaxonomyDataForNonFinancials>[],
+        jsonContent: FixtureData<EutaxonomyNonFinancialsData>[],
       ) {
         testData = jsonContent[0];
       });
@@ -45,7 +45,7 @@ describeIf(
           const referencedReports = assertDefined(
             (
               interceptionOfGetDataRequestForEditMode?.response
-                ?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+                ?.body as CompanyAssociatedDataEutaxonomyNonFinancialsData
             )?.data.general?.referencedReports,
           );
           expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(isPdfTestFileExpected);
@@ -133,10 +133,10 @@ describeIf(
               cy.get('select[name="fileName"]').select(`${TEST_PDF_FILE_NAME}2`);
             });
             cy.intercept({ method: "POST", url: `**/api/data/**`, times: 1 }, (request) => {
-              const data = assertDefined(request.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials).data;
+              const data = assertDefined(request.body as CompanyAssociatedDataEutaxonomyNonFinancialsData).data;
               expect(TEST_PDF_FILE_NAME in assertDefined(data.general?.referencedReports)).to.equal(true);
               expect(`${TEST_PDF_FILE_NAME}2` in assertDefined(data.general?.referencedReports)).to.equal(true);
-              frontendDocumentHash = assertDefined(data.general?.referencedReports)[TEST_PDF_FILE_NAME].fileReference;
+              frontendDocumentHash = (assertDefined(data.general?.referencedReports)[TEST_PDF_FILE_NAME]).fileReference;
             }).as("submittedData");
             cy.get('button[data-test="submitButton"]').click();
 

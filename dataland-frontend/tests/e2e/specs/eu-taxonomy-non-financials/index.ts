@@ -3,5 +3,5 @@
  */
 describe("EU Taxonomy for non-financials upload page tests", () => {
   require("./DataIntegrity.ts");
-  //require("./DataUpload.ts.old"); TODO reactivate later
+  require("./DataUpload.ts");
 });
