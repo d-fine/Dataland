@@ -84,7 +84,9 @@ onBeforeMount(() => {
     .catch((error) => console.log(error));
   isUserDataOwnerForCompany(props.companyId, getKeycloakPromise)
     .then((result) => {
-      isUserUploader.value = result;
+      if (isUserUploader.value == false) {
+        isUserUploader.value = result;
+      }
     })
     .catch((error) => console.log(error));
 });
