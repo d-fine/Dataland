@@ -1,7 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
@@ -39,12 +38,10 @@ class SingleDataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
-        lateinit var identifierTypeToStore: DataRequestCompanyIdentifierType
         lateinit var identifierValueToStore: String
         val storedDataRequests = mutableListOf<StoredDataRequest>()
         if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
             checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
-            identifierTypeToStore = DataRequestCompanyIdentifierType.DatalandCompanyId
             identifierValueToStore = singleDataRequest.companyIdentifier
         } else {
             val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(singleDataRequest.companyIdentifier)
@@ -53,9 +50,6 @@ class SingleDataRequestManager(
                 val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
                     singleDataRequest.companyIdentifier,
                 )
-                identifierTypeToStore = datalandCompanyId?.let {
-                    DataRequestCompanyIdentifierType.DatalandCompanyId
-                } ?: matchedIdentifierType
                 identifierValueToStore = datalandCompanyId ?: singleDataRequest.companyIdentifier
             } else {
                 throwInvalidInputApiExceptionBecauseIdentifierWasRejected()
@@ -63,7 +57,7 @@ class SingleDataRequestManager(
         }
         throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest)
         storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
-            storedDataRequests, singleDataRequest, identifierValueToStore, identifierTypeToStore,
+            storedDataRequests, singleDataRequest, identifierValueToStore,
         )
         return storedDataRequests
     }
@@ -104,14 +98,12 @@ class SingleDataRequestManager(
         storedDataRequests: MutableList<StoredDataRequest>,
         singleDataRequest: SingleDataRequest,
         identifierValueToStore: String,
-        identifierTypeToStore: DataRequestCompanyIdentifierType,
     ) {
         for (reportingPeriod in singleDataRequest.listOfReportingPeriods.distinct()) {
             storedDataRequests.add(
                 utils.buildStoredDataRequestFromDataRequestEntity(
                     utils.storeDataRequestEntityIfNotExisting(
                         identifierValueToStore,
-                        identifierTypeToStore,
                         singleDataRequest.frameworkName,
                         reportingPeriod,
                         singleDataRequest.contactList,

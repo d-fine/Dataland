@@ -1,7 +1,5 @@
 package org.dataland.datalandcommunitymanager.entities
 
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
-
 /**
  * Received entity when doing a database query to get aggregated info about the count of existing data requests
  * on Dataland.
@@ -13,7 +11,6 @@ import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifier
 data class AggregatedDataRequestEntity(
     val dataTypeName: String,
     val reportingPeriod: String,
-    val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
     val dataRequestCompanyIdentifierValue: String,
     val count: Long,
 )

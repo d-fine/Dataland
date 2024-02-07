@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -49,15 +48,14 @@ class BulkDataRequestManager(
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
         for (userProvidedIdentifierValue in cleanedBulkDataRequest.listOfCompanyIdentifiers) {
-            val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(userProvidedIdentifierValue)
-            if (matchedIdentifierType == null) {
+            val datalandCompanyID = utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
+            if (datalandCompanyID == null) {
                 rejectedIdentifiers.add(userProvidedIdentifierValue)
                 continue
             }
             acceptedIdentifiers.add(userProvidedIdentifierValue)
             processAcceptedIdentifier(
-                userProvidedIdentifierValue,
-                matchedIdentifierType,
+                datalandCompanyID,
                 cleanedBulkDataRequest.listOfFrameworkNames,
                 cleanedBulkDataRequest.listOfReportingPeriods,
             )
@@ -83,7 +81,6 @@ class BulkDataRequestManager(
                 dataRequestEntity.creationTimestamp,
                 utils.getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
                 dataRequestEntity.reportingPeriod,
-                dataRequestEntity.dataRequestCompanyIdentifierType,
                 dataRequestEntity.dataRequestCompanyIdentifierValue,
                 objectMapper.readValue(
                     dataRequestEntity.messageHistory,
@@ -118,7 +115,6 @@ class BulkDataRequestManager(
             AggregatedDataRequest(
                 utils.getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataTypeName),
                 aggregatedDataRequestEntity.reportingPeriod,
-                aggregatedDataRequestEntity.dataRequestCompanyIdentifierType,
                 aggregatedDataRequestEntity.dataRequestCompanyIdentifierValue,
                 aggregatedDataRequestEntity.count,
             )
@@ -193,21 +189,14 @@ class BulkDataRequestManager(
     }
 
     private fun processAcceptedIdentifier(
-        userProvidedIdentifierValue: String,
-        matchedIdentifierType: DataRequestCompanyIdentifierType,
+        datalandCompanyID: String,
         requestedFrameworks: List<DataTypeEnum>,
         requestedReportingPeriods: List<String>,
     ) {
-        val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
-        val identifierTypeToStore = datalandCompanyId?.let {
-            DataRequestCompanyIdentifierType.DatalandCompanyId
-        } ?: matchedIdentifierType
-        val identifierValueToStore = datalandCompanyId ?: userProvidedIdentifierValue
         for (framework in requestedFrameworks) {
             for (reportingPeriod in requestedReportingPeriods) {
                 utils.storeDataRequestEntityIfNotExisting(
-                    identifierValueToStore,
-                    identifierTypeToStore,
+                    datalandCompanyID,
                     framework,
                     reportingPeriod,
                 )
@@ -257,9 +246,8 @@ class BulkDataRequestManager(
     }
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
-        val summary = "All provided company identifiers have an invalid format."
-        val message = "The company identifiers you provided do not match the patterns " +
-            "of a valid LEI, ISIN or PermId."
+        val summary = "All provided company identifiers are invalid."
+        val message = "The company identifiers you provided do not match an existing company on dataland"
         throw InvalidInputApiException(
             summary,
             message,

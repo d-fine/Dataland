@@ -6,7 +6,6 @@ import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 
 /**
@@ -26,9 +25,6 @@ data class DataRequestEntity(
     val dataTypeName: String,
 
     val reportingPeriod: String,
-
-    @Enumerated(EnumType.STRING)
-    val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
 
     val dataRequestCompanyIdentifierValue: String,
 

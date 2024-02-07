@@ -81,7 +81,6 @@ class DataRequestManagerUtils(
             dataRequestEntity.creationTimestamp,
             getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
             dataRequestEntity.reportingPeriod,
-            dataRequestEntity.dataRequestCompanyIdentifierType,
             dataRequestEntity.dataRequestCompanyIdentifierValue,
             objectMapper.readValue(
                 dataRequestEntity.messageHistory,
@@ -112,7 +111,6 @@ class DataRequestManagerUtils(
      */
     fun storeDataRequestEntityIfNotExisting(
         identifierValue: String,
-        identifierType: DataRequestCompanyIdentifierType,
         dataType: DataTypeEnum,
         reportingPeriod: String,
         contactList: List<String>? = null,
@@ -121,7 +119,6 @@ class DataRequestManagerUtils(
         val dataRequestEntity = buildDataRequestEntity(
             dataType,
             reportingPeriod,
-            identifierType,
             identifierValue,
             contactList,
             message,
@@ -135,7 +132,6 @@ class DataRequestManagerUtils(
     private fun buildDataRequestEntity(
         framework: DataTypeEnum,
         reportingPeriod: String,
-        identifierType: DataRequestCompanyIdentifierType,
         identifierValue: String,
         contactList: List<String>?,
         message: String?,
@@ -154,7 +150,6 @@ class DataRequestManagerUtils(
             creationTimestamp = currentTimestamp,
             dataTypeName = framework.value,
             reportingPeriod = reportingPeriod,
-            dataRequestCompanyIdentifierType = identifierType,
             dataRequestCompanyIdentifierValue = identifierValue,
             messageHistory = objectMapper.writeValueAsString(messageHistory),
             lastModifiedDate = currentTimestamp,

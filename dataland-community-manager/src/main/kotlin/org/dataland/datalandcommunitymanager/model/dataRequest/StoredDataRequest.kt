@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 
 /**
@@ -26,8 +25,6 @@ data class StoredDataRequest(
     val dataType: DataTypeEnum?,
 
     val reportingPeriod: String,
-
-    val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
 
     val dataRequestCompanyIdentifierValue: String,
 
