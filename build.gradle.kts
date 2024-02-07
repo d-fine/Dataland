@@ -117,14 +117,14 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts," +
                 "dataland-frontend/src/frameworks/esg-questionnaire/ViewConfig.ts," +
-                "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts," +
-                "dataland-frontend/src/frameworks/heimathafen/UploadConfig.ts," +
-
-                // backend
-                "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
                 "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts," +
-                "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts",
+                "dataland-frontend/src/frameworks/heimathafen/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/eutaxonomy-non-financials/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
+
+                // backend
+                "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt",
         )
         property(
             "sonar.exclusions",
@@ -143,17 +143,16 @@ sonar {
 
                 // frontend fixtures
                 "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts," +
+                "dataland-frontend/tests/e2e/fixtures/frameworks/sfdr/SfdrDataFixtures.ts," +
 
                 // frontend configs
                 "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts," +
-                // no need to cover the heimathafen-ViewConfig because there are no custom fields
+                // -> no need to cover the heimathafen-ViewConfig because there are no custom fields
 
                 // backend
                 "dataland-backend/src/main/kotlin/," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
-                "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt," +
-                "dataland-frontend/src/components/generics/TheNewFooter.vue" +
-                "dataland-frontend/tests/e2e/fixtures/frameworks/sfdr/SfdrDataFixtures.ts",
+                "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt",
         )
     }
 }
