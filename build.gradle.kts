@@ -107,11 +107,9 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
-                "EuTaxonomyForNonFinancialsDataModel.ts," +
                 "dataland-frontend/src/components/forms/parts/elements/derived/ActivityTree.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
-                "EuTaxonomyForNonFinancialsDisplayDataModel.ts," +
 
                 // frontend configs
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +

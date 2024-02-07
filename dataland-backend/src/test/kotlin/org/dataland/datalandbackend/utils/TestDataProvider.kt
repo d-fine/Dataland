@@ -28,7 +28,7 @@ class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
             .map { it.copy(identifiers = IdentifierType.values().associateWith { emptyList() }) }
     }
 
-    fun getEuTaxonomyForNonFinancialsDataset(): EutaxonomyNonFinancialsData {
+    fun getEuTaxonomyNonFinancialsDataset(): EutaxonomyNonFinancialsData {
         return testCompanyInformationWithEutaxonomyNonFinancialsData.first().t
     }
 

@@ -9,7 +9,7 @@ import java.time.LocalDate
 
 /**
  * Interface describing fields that are present in both
- * EuTaxonomyForFinancials and EuTaxonomyForNonFinancials to ensure naming consistency
+ * EuTaxonomyForFinancials and EuTaxonomyNonFinancials to ensure naming consistency
  */
 interface EuTaxonomyCommonFields {
     val fiscalYearDeviation: FiscalYearDeviation?
