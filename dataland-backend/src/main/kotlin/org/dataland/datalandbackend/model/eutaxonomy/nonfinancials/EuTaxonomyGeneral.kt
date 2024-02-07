@@ -1,13 +1,13 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
 import io.swagger.v3.oas.annotations.media.Schema
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AssuranceDataPoint
 import org.dataland.datalandbackend.interfaces.frameworks.EuTaxonomyCommonFields
 import org.dataland.datalandbackend.interfaces.frameworks.FrameworkBase
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
-import org.dataland.datalandbackend.model.eutaxonomy.AssuranceDataPoint
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.math.BigDecimal
 import java.time.LocalDate

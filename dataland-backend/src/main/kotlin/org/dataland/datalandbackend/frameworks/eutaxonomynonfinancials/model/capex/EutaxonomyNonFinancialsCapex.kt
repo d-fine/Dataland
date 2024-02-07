@@ -2,13 +2,13 @@
 package org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.capex
 
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.capex.alignedShare.EutaxonomyNonFinancialsCapexAlignedShare
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.capex.eligibleShare.EutaxonomyNonFinancialsCapexEligibleShare
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.capex.nonAlignedShare.EutaxonomyNonFinancialsCapexNonAlignedShare
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.capex.nonEligibleShare.EutaxonomyNonFinancialsCapexNonEligibleShare
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
-import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyActivity
-import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyAlignedActivity
 import java.math.BigDecimal
 import kotlin.collections.MutableList
 

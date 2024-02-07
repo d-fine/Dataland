@@ -20,7 +20,11 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 class EuTaxonomyAssuranceComponent(
     identifier: String,
     parent: FieldNodeParent,
-) : ComponentBase(identifier, parent, "org.dataland.datalandbackend.model.eutaxonomy.AssuranceDataPoint") {
+) : ComponentBase(
+    identifier, parent,
+    "org.dataland.datalandbackend.frameworks" +
+        ".eutaxonomynonfinancials.custom.AssuranceDataPoint",
+) {
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))

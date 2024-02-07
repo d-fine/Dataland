@@ -1,7 +1,8 @@
-package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
+package org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.enums.eutaxonomy.nonfinancials.Activity
+import org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.RelativeAndAbsoluteFinancialShare
 
 /**
  * --- API model ---

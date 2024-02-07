@@ -1,5 +1,7 @@
 package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
 
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyActivity
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAlignedActivity
 import org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint
 import java.math.BigDecimal
 
