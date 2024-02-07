@@ -21,8 +21,6 @@ abstract class InDevelopmentPavedRoadFramework(
     frameworkTemplateCsvFile: File,
     order: Int,
     enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
-    // TODO rather give a list of disabled features. The user usually wants to disable one Feature and has to list every
-    // other component for that
 ) :
     PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile, order, enabledFeatures) {
 

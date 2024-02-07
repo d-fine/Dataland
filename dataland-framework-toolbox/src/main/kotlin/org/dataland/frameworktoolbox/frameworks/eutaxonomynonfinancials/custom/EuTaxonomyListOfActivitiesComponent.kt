@@ -30,7 +30,8 @@ class EuTaxonomyListOfActivitiesComponent( // TODO naming
                 true,
                 listOf(
                     TypeReference(
-                        "org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyActivity",
+                        "org.dataland.datalandbackend.frameworks" +
+                            ".eutaxonomynonfinancials.custom.EuTaxonomyActivity",
                         false,
                     ),
                 ),
