@@ -569,7 +569,11 @@
 					},
 					{
 						"activityName": "StorageOfThermalEnergy",
-						"naceCodes": null,
+						"naceCodes": [
+							"C27",
+							"C28",
+							"C25"
+						],
 						"share": {
 							"relativeShareInPercent": 50.04,
 							"absoluteShare": {
