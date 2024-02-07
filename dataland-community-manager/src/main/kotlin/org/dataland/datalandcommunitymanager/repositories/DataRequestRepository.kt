@@ -3,7 +3,6 @@ package org.dataland.datalandcommunitymanager.repositories
 import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -85,21 +84,32 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     fun searchDataRequestEntity(
         @Param("searchFilter") searchFilter: GetDataRequestsSearchFilter,
     ): List<DataRequestEntity>
+
+    /** This method updates the Request Status to Answered for an open request with a specific framework,
+     * reporting period as well as company identifier as soon as the (manual) QA accepted the provided data
+     * by the corresponding company.
+     * @param dataRequestCompanyIdentifierValue to check for
+     * @param reportingPeriod to check for
+     * @param dataTypeName to check for
+     * @returns the aggregated data requests
+     */
     @Transactional
     @Modifying
     @Query
-        (
+    (
         "UPDATE DataRequestEntity d " +
-                "SET d.requestStatus = :#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Answered} " +
-                "WHERE " +
-                "(d.dataTypeName = :#{#dataTypeName} AND " +
-                "d.requestStatus = :#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Open} AND " +
-                "d.reportingPeriod = :#{#reportingPeriod} AND " +
-                "d.dataRequestCompanyIdentifierValue = :#{#dataRequestCompanyIdentifierValue})",
+            "SET d.requestStatus = " +
+            ":#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Answered} " +
+            "WHERE " +
+            "(d.dataTypeName = :#{#dataTypeName} AND " +
+            "d.requestStatus = :#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Open} " +
+            "AND " +
+            "d.reportingPeriod = :#{#reportingPeriod} AND " +
+            "d.dataRequestCompanyIdentifierValue = :#{#dataRequestCompanyIdentifierValue})",
     )
-    fun updateDataRequestEntitiesByDataRequestCompanyIdentifierValueAndReportingPeriodAndRequestStatusEqualsAndDataTypeName(
-        dataRequestCompanyIdentifierValue: String, reportingPeriod: String, requestStatus: RequestStatus,
+    fun updateDataRequestEntitiesByDataRequestCompanyIdentifierValueAndReportingPeriodAndDataTypeName(
+        dataRequestCompanyIdentifierValue: String,
+        reportingPeriod: String,
         dataTypeName: String,
     )
-
 }

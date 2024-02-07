@@ -13343,9 +13343,11 @@
         ],
         "type": "object",
         "properties": {
-          "permId": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
           },
           "countryCode": {
             "type": "string"
@@ -13357,11 +13359,9 @@
             "type": "string",
             "nullable": true
           },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
+          "permId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

@@ -813,7 +813,8 @@
         "type": "string",
         "enum": [
           "Open",
-          "Resolved"
+          "Answered",
+          "Closed"
         ]
       },
       "StoredDataRequest": {

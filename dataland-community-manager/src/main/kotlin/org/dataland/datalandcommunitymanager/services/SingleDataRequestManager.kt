@@ -19,21 +19,20 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
-import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * Implementation of a request manager service for all operations concerning the processing of single data requests
@@ -210,7 +209,6 @@ class SingleDataRequestManager(
     /**
      * Method to send out a confirmation email to the requester as soon as the requested data is provided by the company
      * @param jsonString the message describing the result of the completed QA process
-     * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
 
@@ -233,7 +231,6 @@ class SingleDataRequestManager(
     @Transactional
     fun sendAnsweredRequestConfirmationEmail(
         @Payload jsonString: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.QaCompleted)
@@ -244,8 +241,7 @@ class SingleDataRequestManager(
         }
         val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
         val filter = GetDataRequestsSearchFilter(
-            dataTypeNameFilter =
-                metaData.dataType.name,
+            dataTypeNameFilter = metaData.dataType.name,
             userIdFilter = "",
             requestStatus = RequestStatus.Open,
             reportingPeriodFilter = metaData.reportingPeriod,
