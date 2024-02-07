@@ -26,6 +26,9 @@ class ApiClients(
         return CompanyDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
     }
 
+    /**
+     * Creates an auto-authenticated version of the MetaDataControllerApi of the backend
+     */
     @Bean
     fun getMetaDataControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
