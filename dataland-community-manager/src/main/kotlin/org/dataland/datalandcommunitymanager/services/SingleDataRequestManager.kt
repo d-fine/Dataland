@@ -33,6 +33,7 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 
 
 /**
