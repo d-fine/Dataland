@@ -50,7 +50,7 @@ class SingleDataRequestEmailBuilderTest {
         assertTrue(email.content.htmlContent.contains(reportingPeriods.joinToString(", ")))
         assertTrue(
             email.content.htmlContent.contains(
-                "href=\"$proxyPrimaryUrl/companies/$companyId\"",
+                "href=\"https://$proxyPrimaryUrl/companies/$companyId\"",
             ),
         )
     }
