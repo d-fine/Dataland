@@ -12,7 +12,6 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -211,14 +210,5 @@ class DataOwnersManager(
         if (userAuthentication !is DatalandJwtAuthentication) {
             throw AuthenticationMethodNotSupportedException()
         }
-    }
-
-    /**
-     * Method to determine if the owner doing the request is data owner of the specified company
-     */
-    fun isUserDataOwner(userIdRequester: String): Boolean {
-        val userIdAuthenticated = SecurityContextHolder.getContext().authentication.name
-        return userIdAuthenticated == userIdRequester
-        // TODO test if this sonar fix works
     }
 }
