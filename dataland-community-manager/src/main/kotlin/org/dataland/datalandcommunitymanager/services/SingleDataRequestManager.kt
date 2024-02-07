@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -18,21 +19,21 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
-import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+
 
 /**
  * Implementation of a request manager service for all operations concerning the processing of single data requests
@@ -41,12 +42,12 @@ import org.springframework.transaction.annotation.Transactional
 class SingleDataRequestManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val companyGetter: CompanyGetter,
+    @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
 ) {
-    private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyGetter, objectMapper)
+    private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyApi, objectMapper)
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
 
     /**
@@ -86,15 +87,15 @@ class SingleDataRequestManager(
     }
 
     private fun checkIfCompanyIsValid(companyId: String) {
-        val bearerTokenOfRequestingUser = DatalandAuthentication.fromContext().credentials as String
         try {
-            companyGetter.getCompanyById(companyId, bearerTokenOfRequestingUser)
-        } catch (e: ClientException) { if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
-            throw ResourceNotFoundApiException(
-                "Company not found",
-                "Dataland-backend does not know the company ID $companyId",
-            )
-        }
+            companyApi.getCompanyById(companyId)
+        } catch (e: ClientException) {
+            if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
+                throw ResourceNotFoundApiException(
+                    "Company not found",
+                    "Dataland-backend does not know the company ID $companyId",
+                )
+            }
         }
     }
 
@@ -232,6 +233,7 @@ class SingleDataRequestManager(
     @Transactional
     fun sendAnsweredRequestConfirmationEmail(
         @Payload jsonString: String,
+        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.QaCompleted)
@@ -243,7 +245,7 @@ class SingleDataRequestManager(
         val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
         val filter = GetDataRequestsSearchFilter(
             dataTypeNameFilter =
-            metaData.dataType.name,
+                metaData.dataType.name,
             userIdFilter = "",
             requestStatus = RequestStatus.Open,
             reportingPeriodFilter = metaData.reportingPeriod,

@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -29,12 +30,12 @@ import java.util.*
 class BulkDataRequestManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val companyGetter: CompanyGetter,
+    @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
     @Autowired private val emailSender: EmailSender,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
-    private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyGetter, objectMapper)
+    private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyApi, objectMapper)
 
     /**
      * Processes a bulk data request from a user
