@@ -16,26 +16,66 @@ export function generateEutaxonomyNonFinancialsPreparedFixtures(): Array<Fixture
 
   const manipulatorFunctions: Array<
     (input: FixtureData<EutaxonomyNonFinancialsData>) => FixtureData<EutaxonomyNonFinancialsData>
-  > = [createDatasetThatHasAllFieldsDefined];
+  > = [
+    createCompanyAlphaWithAllFieldsDefined,
+    createCompanyBetaWithAllFieldsDefined,
+    createCompanyGammaWithAllFieldsDefined,
+  ];
   const preparedFixturesBeforeManipulation = generateEutaxonomyNonFinancialsFixtures(manipulatorFunctions.length);
 
   for (let i = 0; i < manipulatorFunctions.length; i++) {
     preparedFixtures.push(manipulatorFunctions[i](preparedFixturesBeforeManipulation[i]));
   }
-  preparedFixtures.push(generateEutaxonomyNonFinancialsFixtures(1, 0)[0]);
   return preparedFixtures;
 }
 
 /**
  * Creates a prepared fixture that has only defined fields and no fields with missing values
  * @param input the base fixture to modify
+ * @param companyName the name of the associated company
+ * @param reportingPeriod of the dataset
  * @returns the modified fixture
  */
 function createDatasetThatHasAllFieldsDefined(
   input: FixtureData<EutaxonomyNonFinancialsData>,
+  companyName: string,
+  reportingPeriod: string,
 ): FixtureData<EutaxonomyNonFinancialsData> {
-  input.companyInformation.companyName = "all-fields-defined-for-eu-taxo-non-financials";
+  input.companyInformation.companyName = companyName;
+  input.reportingPeriod = reportingPeriod;
   input.t = generateEutaxonomyNonFinancialsData(0);
   return input;
 }
-//TODO naceCodes is null im prepared fixture!!!
+
+/**
+ * Creates a prepared fixture that has no fields with missing values and a specific name
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
+function createCompanyAlphaWithAllFieldsDefined(
+  input: FixtureData<EutaxonomyNonFinancialsData>,
+): FixtureData<EutaxonomyNonFinancialsData> {
+  return createDatasetThatHasAllFieldsDefined(input, "all-fields-defined-for-eu-taxo-non-financials-alpha", "2023");
+}
+
+/**
+ * Creates a prepared fixture that has no fields with missing values and a specific name
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
+function createCompanyBetaWithAllFieldsDefined(
+  input: FixtureData<EutaxonomyNonFinancialsData>,
+): FixtureData<EutaxonomyNonFinancialsData> {
+  return createDatasetThatHasAllFieldsDefined(input, "all-fields-defined-for-eu-taxo-non-financials-beta", "2022");
+}
+
+/**
+ * Creates a prepared fixture that has no fields with missing values and a specific name
+ * @param input the base fixture to modify
+ * @returns the modified fixture
+ */
+function createCompanyGammaWithAllFieldsDefined(
+  input: FixtureData<EutaxonomyNonFinancialsData>,
+): FixtureData<EutaxonomyNonFinancialsData> {
+  return createDatasetThatHasAllFieldsDefined(input, "all-fields-defined-for-eu-taxo-non-financials-gamma", "2021");
+}
