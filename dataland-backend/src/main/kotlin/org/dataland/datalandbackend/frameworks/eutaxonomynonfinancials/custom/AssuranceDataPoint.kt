@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.eutaxonomy
+package org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint

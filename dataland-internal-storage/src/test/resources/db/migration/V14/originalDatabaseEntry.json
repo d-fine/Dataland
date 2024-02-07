@@ -1,7 +1,4 @@
-{
-  "companyId": "string",
-  "reportingPeriod": "string",
-  "data": {
+ {
     "general": {
       "fiscalYearDeviation": "Deviation",
       "fiscalYearEnd": "2024-01-24",
@@ -86,7 +83,7 @@
         }
       },
       "substantialContributionToClimateChangeMitigationInPercent": 0,
-      "substantialContributionToClimateChangeAdaptionInPercent": 0,
+      "substantialContributionToClimateChangeAdaptionInPercent": null,
       "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 0,
       "substantialContributionToTransitionToACircularEconomyInPercent": 0,
       "substantialContributionToPollutionPreventionAndControlInPercent": 0,
@@ -105,7 +102,7 @@
             }
           },
           "substantialContributionToClimateChangeMitigationInPercent": 0,
-          "substantialContributionToClimateChangeAdaptionInPercent": 0,
+          "substantialContributionToClimateChangeAdaptionInPercent": null,
           "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": 0,
           "substantialContributionToTransitionToACircularEconomyInPercent": 0,
           "substantialContributionToPollutionPreventionAndControlInPercent": 0,
@@ -309,4 +306,3 @@
       "transitionalShareInPercent": 0
     }
   }
-}

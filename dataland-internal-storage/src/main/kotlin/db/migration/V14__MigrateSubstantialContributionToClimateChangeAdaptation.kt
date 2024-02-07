@@ -2,6 +2,7 @@ package db.migration
 
 import db.migration.utils.DataTableEntity
 import db.migration.utils.getOrJavaNull
+import db.migration.utils.getOrJsonNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
@@ -24,18 +25,14 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaptation : BaseJavaMig
      * Migrates substantialContributionToClimateChangeAdaption field to substantialContributionToClimateChangeAdaptation
      */
     fun migrateSubstantialContributionToClimateChangeAdaptation(dataTableEntity: DataTableEntity) {
-        val companyAssociatedDatasetAsString = dataTableEntity.companyAssociatedData
-        val euTaxoDataset = JSONObject(companyAssociatedDatasetAsString.getString("data"))
-        val euTaxoDataSubset = euTaxoDataset.getOrJavaNull("data") ?: return
-        euTaxoDataSubset as JSONObject
-
+        val euTaxoDataSet = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
         listOf("revenue", "capex", "opex").forEach { cashFlowType ->
             mapOfOldToNewFieldNames.forEach {
-                val euTaxoDataSubsetCashFlowType = euTaxoDataSubset.getOrJavaNull(cashFlowType) ?: return@forEach
+                val euTaxoDataSubsetCashFlowType = euTaxoDataSet.getOrJavaNull(cashFlowType) ?: return@forEach
                 euTaxoDataSubsetCashFlowType as JSONObject
                 euTaxoDataSubsetCashFlowType.put(
                     it.value,
-                    euTaxoDataSubsetCashFlowType.getInt(it.key),
+                    euTaxoDataSubsetCashFlowType.getOrJsonNull(it.key),
                 )
                 euTaxoDataSubsetCashFlowType.remove(it.key)
                 euTaxoDataSubsetCashFlowType.getJSONArray("alignedActivities").forEach { actitivy ->
@@ -50,8 +47,7 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaptation : BaseJavaMig
                 }
             }
         }
-        euTaxoDataset.put("data", euTaxoDataSubset)
-        dataTableEntity.companyAssociatedData.put("data", euTaxoDataset.toString())
+        dataTableEntity.companyAssociatedData.put("data", euTaxoDataSet.toString())
     }
 
     override fun migrate(context: Context?) {

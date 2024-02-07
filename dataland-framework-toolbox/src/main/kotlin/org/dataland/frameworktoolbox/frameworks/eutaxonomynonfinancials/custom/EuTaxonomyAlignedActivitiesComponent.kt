@@ -53,7 +53,8 @@ class EuTaxonomyAlignedActivitiesComponent(
                 true,
                 listOf(
                     TypeReference(
-                        "org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.EuTaxonomyAlignedActivity",
+                        "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials" +
+                            ".custom.EuTaxonomyAlignedActivity",
                         false,
                     ),
                 ),
