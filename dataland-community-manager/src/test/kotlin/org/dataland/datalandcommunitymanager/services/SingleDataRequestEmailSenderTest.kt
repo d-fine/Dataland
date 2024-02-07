@@ -59,6 +59,7 @@ class SingleDataRequestEmailSenderTest {
             mockCompanyGetter,
         )
         val singleDataRequestInternalEmailBuilder = SingleDataRequestInternalEmailBuilder(
+            proxyPrimaryUrl
             senderEmail,
             senderName,
             semicolonSeparatedInternalReceiverEmails,
@@ -177,6 +178,7 @@ class SingleDataRequestEmailSenderTest {
         companyNameExpected: Boolean = false,
     ) {
         val properties = mutableMapOf(
+            "Environment" to proxyPrimaryUrl,
             "User" to "User ${mockRequesterAuthentication.username}" +
                 " (Keycloak ID: ${mockRequesterAuthentication.userId})",
             "Data Type" to dataType.name,

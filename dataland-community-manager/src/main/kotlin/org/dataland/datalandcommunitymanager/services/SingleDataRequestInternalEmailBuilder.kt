@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class SingleDataRequestInternalEmailBuilder(
+    @Value("\${dataland.proxy.primary.url}") proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
     @Value("\${dataland.notification.data-request.internal.receivers}") semicolonSeparatedReceiverEmails: String,
@@ -36,6 +37,7 @@ class SingleDataRequestInternalEmailBuilder(
         reportingPeriods: List<String>,
     ): Email {
         val properties = mutableMapOf(
+            "Environment" to proxyPrimaryUrl,
             "User" to buildUserInfo(userAuthentication),
             "Data Type" to dataType.name,
             "Reporting Periods" to reportingPeriods.joinToString(", "),
