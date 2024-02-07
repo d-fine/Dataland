@@ -43,7 +43,7 @@ describeIf(
             "2021",
             p2pFixtureForTest.t,
           ).then(() => {
-            postDataOwner(token, "18b67ecc-1176-4506-8414-1e81661017ca", storedCompany.companyId).then(() => {});
+            void postDataOwner(token, "18b67ecc-1176-4506-8414-1e81661017ca", storedCompany.companyId);
             logout();
             login(reader_name, reader_pw);
             cy.intercept("**/api/companies/" + storedCompany.companyId + "/info").as("getCompanyInformation");
@@ -57,7 +57,9 @@ describeIf(
                 "exist",
               );
             });
-            cy.get(`div[data-test="lksg-summary-panel"]`).should("exist").click();
+            cy.get(`div[data-test="lksg-summary-panel"] a[data-test="lksg-provide-data-button"]`)
+              .should("exist")
+              .click();
 
             cy.get(`div[data-pc-section="title"]`).should("contain", "New Dataset - LkSG");
           });
@@ -72,6 +74,7 @@ describeIf(
  * @param token authentication token of the user doing the post request
  * @param userId of the user that should be set as a data owner
  * @param companyId of the company for which the user should be set as a data owner
+ * @returns the api response of the postDataOwner endpoint
  */
 export async function postDataOwner(token: string, userId: string, companyId: string): Promise<CompanyDataOwners> {
   const apiResponse = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postDataOwner(
