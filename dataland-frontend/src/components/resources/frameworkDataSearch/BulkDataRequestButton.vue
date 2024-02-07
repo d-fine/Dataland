@@ -1,8 +1,8 @@
 <template>
-  <router-link to="/requests" class="no-underline" data-test="requestDataButton">
+  <router-link to="/bulkdatarequest" class="no-underline" data-test="bulkDataRequestButton">
     <PrimeButton class="uppercase p-button p-button-sm mr-3">
       <i class="material-icons"> add_box </i>
-      <span class="d-letters pl-2"> Request Data </span>
+      <span class="d-letters pl-2"> BULK DATA REQUEST </span>
     </PrimeButton>
   </router-link>
 </template>
@@ -11,7 +11,7 @@
 import PrimeButton from "primevue/button";
 import { defineComponent } from "vue";
 export default defineComponent({
-  name: "RequestDataButton",
+  name: "BulkDataRequestButton",
   components: { PrimeButton },
 });
 </script>

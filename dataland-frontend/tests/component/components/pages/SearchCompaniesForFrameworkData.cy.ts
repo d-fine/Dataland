@@ -20,16 +20,16 @@ describe("Component tests for the Dataland companies search page", function (): 
   });
 
   /**
-   * Method to check the existence and the redirect-functionality of the Request Data button
+   * Method to check the existence and the redirect-functionality of the Bulk Request Data button
    * @param keycloakMock to be used for the login status
    */
-  function verifyExistenceAndFunctionalityOfRequestDataButton(keycloakMock: Keycloak): void {
+  function verifyExistenceAndFunctionalityOfBulkDataRequestButton(keycloakMock: Keycloak): void {
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
     }).then((mounted) => {
       cy.wait(500);
-      cy.get("button").contains("Request Data").should("exist").click({ force: true });
-      cy.wrap(mounted.component).its("$route.path").should("eq", "/requests");
+      cy.get("button").contains("Bulk Request Data").should("exist").click({ force: true });
+      cy.wrap(mounted.component).its("$route.path").should("eq", "/bulkdatarequest");
     });
   }
 
@@ -96,15 +96,15 @@ describe("Component tests for the Dataland companies search page", function (): 
     },
   );
 
-  it("Check that the 'Request Data' button exists and works as expected for a data reader", () => {
+  it("Check that the 'Bulk Request Data' button exists and works as expected for a data reader", () => {
     const keycloakMock = minimalKeycloakMock({});
-    verifyExistenceAndFunctionalityOfRequestDataButton(keycloakMock);
+    verifyExistenceAndFunctionalityOfBulkDataRequestButton(keycloakMock);
   });
 
-  it("Check that the 'Request Data' button exists and works as expected for uploaders and reviewers", () => {
+  it("Check that the 'Bulk Request Data' button exists and works as expected for uploaders and reviewers", () => {
     const keycloakMock = minimalKeycloakMock({
       roles: [KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_REVIEWER],
     });
-    verifyExistenceAndFunctionalityOfRequestDataButton(keycloakMock);
+    verifyExistenceAndFunctionalityOfBulkDataRequestButton(keycloakMock);
   });
 });
