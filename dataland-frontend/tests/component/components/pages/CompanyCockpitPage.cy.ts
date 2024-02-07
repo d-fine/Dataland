@@ -14,7 +14,7 @@ describe("Component test for the company cockpit", () => {
     AggregatedDataRequestDataTypeEnum,
     AggregatedFrameworkDataSummary
   >;
-  const dummyCompanyId = "abcde-fghij-klmop";
+  const dummyCompanyId = "550e8400-e29b-11d4-a716-446655440000";
 
   before(function () {
     cy.fixture("CompanyInformationWithSmeData").then(function (jsonContent) {
@@ -30,7 +30,7 @@ describe("Component test for the company cockpit", () => {
   });
 
   /**
-   * Mocks the two requests that happen when the company cockpit page is being mounted
+   * Mocks the three requests that happen when the company cockpit page is being mounted
    */
   function mockRequestsOnMounted(): void {
     cy.intercept(`**/api/companies/${dummyCompanyId}/info`, {
@@ -41,6 +41,10 @@ describe("Component test for the company cockpit", () => {
       body: mockMapOfDataTypeToAggregatedFrameworkDataSummary,
       times: 1,
     }).as("fetchAggregatedFrameworkMetaInfo");
+
+    cy.intercept("**/api/companies/*/data-owners/mock-data-owner-id", {
+      status: 200,
+    }).as("fetchUserIsDataOwnerTrue");
   }
 
   /**
@@ -56,17 +60,20 @@ describe("Component test for the company cockpit", () => {
    * @param isLoggedIn determines if the mount shall happen from a logged-in users perspective
    * @param isMobile determines if the mount shall happen from a mobie-users perspective
    * @param roles defines the roles of the user if the mount happens from a logged-in users perspective
+   * @param userId defines a custom user id for the logged-in user
    * @returns the mounted component
    */
   function mountCompanyCockpitWithAuthentication(
     isLoggedIn: boolean,
     isMobile: boolean,
     roles?: string[],
+    userId?: string,
   ): Cypress.Chainable {
     return cy.mountWithPlugins(CompanyCockpitPage, {
       keycloak: minimalKeycloakMock({
         authenticated: isLoggedIn,
         roles: roles,
+        userId: userId,
       }),
       global: {
         provide: {
@@ -101,9 +108,19 @@ describe("Component test for the company cockpit", () => {
 
   /**
    * Validates the existence of the banner that shows info about the company
+   * @param isUserDataOwner is the mocked user data owner?
    */
-  function validateCompanyInformationBanner(): void {
+  function validateCompanyInformationBanner(isUserDataOwner?: boolean): void {
     cy.contains("h1", companyInformationForTest.companyName);
+    cy.get("[data-test='verifiedDataOwnerBadge']").should(isUserDataOwner ? "exist" : "not.exist");
+  }
+
+  /**
+   * Validates the existence of the panel that shows the offer to claim data ownership
+   * @param isThisExpected is this panel expected
+   */
+  function validateClaimOwnershipPanel(isThisExpected: boolean): void {
+    cy.get("[data-test='claimOwnershipPanelLink']").should(isThisExpected ? "exist" : "not.exist");
   }
 
   /**
@@ -153,11 +170,12 @@ describe("Component test for the company cockpit", () => {
 
   it("Check for all expected elements from a non-logged-in users perspective", () => {
     mockRequestsOnMounted();
-    mountCompanyCockpitWithAuthentication(false, false).then(() => {
+    mountCompanyCockpitWithAuthentication(false, false, [], "").then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
       validateCompanyInformationBanner();
+      validateClaimOwnershipPanel(false);
       validateFrameworkSummaryPanels(false);
     });
   });
@@ -169,6 +187,7 @@ describe("Component test for the company cockpit", () => {
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
       validateCompanyInformationBanner();
+      validateClaimOwnershipPanel(true);
       validateFrameworkSummaryPanels(false);
     });
   });
@@ -180,6 +199,18 @@ describe("Component test for the company cockpit", () => {
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
       validateCompanyInformationBanner();
+      validateClaimOwnershipPanel(true);
+      validateFrameworkSummaryPanels(true);
+    });
+  });
+  it("Check for all expected elements from a logged-in data owner perspective with uploader-rights", () => {
+    mockRequestsOnMounted();
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], "mock-data-owner-id").then(() => {
+      waitForRequestsOnMounted();
+      validateBackButtonExistence(false);
+      validateSearchBarExistence(true);
+      validateCompanyInformationBanner(true);
+      validateClaimOwnershipPanel(false);
       validateFrameworkSummaryPanels(true);
     });
   });
@@ -200,6 +231,7 @@ describe("Component test for the company cockpit", () => {
       validateBackButtonExistence(true);
       validateSearchBarExistence(false);
       validateCompanyInformationBanner();
+      validateClaimOwnershipPanel(true);
       validateFrameworkSummaryPanels(false);
     });
   });

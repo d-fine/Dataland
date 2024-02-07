@@ -1,8 +1,9 @@
 package org.dataland.datalandbackend.services
 
-import org.dataland.datalandemail.email.BaseEmailBuilder
 import org.dataland.datalandemail.email.Email
+import org.dataland.datalandemail.email.PropertyStyleEmailBuilder
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
@@ -16,7 +17,7 @@ class DataOwnershipRequestEmailBuilder(
     @Value("\${dataland.notification.sender.name}") senderName: String,
     @Value("\${dataland.notification.data-ownership-request.receivers}") semicolonSeparatedReceiverEmails: String,
     @Value("\${dataland.notification.data-ownership-request.cc}") semicolonSeparatedCcEmails: String,
-) : BaseEmailBuilder(
+) : PropertyStyleEmailBuilder(
     senderEmail = senderEmail,
     senderName = senderName,
     semicolonSeparatedReceiverEmails = semicolonSeparatedReceiverEmails,
@@ -37,7 +38,7 @@ class DataOwnershipRequestEmailBuilder(
             "Data Ownership Request",
             mapOf(
                 "Environment" to proxyPrimaryUrl,
-                "User" to buildUserInfo(userAuthentication),
+                "User" to buildUserInfo(userAuthentication as DatalandJwtAuthentication),
                 "Company (Dataland ID)" to companyId,
                 "Company Name" to companyName,
                 "Comment" to comment,
