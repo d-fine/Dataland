@@ -131,15 +131,11 @@ sonar {
 
             // frontend components
             "dataland-frontend/src/components/general/SlideShow.vue," +
-                "dataland-frontend/src/components/resources/newLandingPage/TheQuotes.vue," +
-                "dataland-frontend/src/components/resources/aboutPage/TheAboutIntro.vue," +
-                "dataland-frontend/src/components/resources/aboutPage/TheAboutPrinciples.vue," +
                 "dataland-frontend/src/components/pages/AboutPage.vue," +
                 "dataland-frontend/src/components/generics/TheNewHeader.vue," +
+                "dataland-frontend/src/components/generics/TheNewFooter.vue," +
                 "dataland-frontend/src/components/resources/aboutPage/**," +
                 "dataland-frontend/src/components/resources/newLandingPage/**," +
-                "dataland-frontend/src/components/pages/AboutPage.vue," +
-                "dataland-frontend/src/components/generics/TheNewFooter.vue," +
 
                 // frontend configs
                 "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts," +
