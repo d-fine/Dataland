@@ -282,12 +282,12 @@ export default defineComponent({
       ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyNonFinancials);
 
       const dataResponse = await euTaxonomyForNonFinancialsDataControllerApi.getFrameworkData(dataId);
-      const euTaxonomyForNonFinancialsResponseData = dataResponse.data;
-      this.listOfFilledKpis = getFilledKpis(euTaxonomyForNonFinancialsResponseData);
-      if (euTaxonomyForNonFinancialsResponseData?.reportingPeriod) {
-        this.reportingPeriod = new Date(euTaxonomyForNonFinancialsResponseData.reportingPeriod);
+      const euTaxonomyNonFinancialsResponseData = dataResponse.data;
+      this.listOfFilledKpis = getFilledKpis(euTaxonomyNonFinancialsResponseData);
+      if (euTaxonomyNonFinancialsResponseData?.reportingPeriod) {
+        this.reportingPeriod = new Date(euTaxonomyNonFinancialsResponseData.reportingPeriod);
       }
-      this.referencedReportsForPrefill = euTaxonomyForNonFinancialsResponseData.data.general?.referencedReports ?? {};
+      this.referencedReportsForPrefill = euTaxonomyNonFinancialsResponseData.data.general?.referencedReports ?? {};
       this.companyAssociatedEutaxonomyNonFinancialsData = objectDropNull(
         euTaxonomyNonFinancialsResponseData as ObjectType,
       ) as CompanyAssociatedDataEutaxonomyNonFinancialsData;
