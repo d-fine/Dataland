@@ -44,20 +44,7 @@ class EuTaxonomyAssuranceComponent(
                 ),
             ),
         )
-        sectionConfigBuilder.addCell(
-            label = "Assurance Provider",
-            explanation = "Provider of the Assurance",
-            shouldDisplay = availableIf.toFrameworkBooleanLambda(),
-            valueGetter = FrameworkDisplayValueLambda(
-                "formatAssuranceProviderForDataTable(${getTypescriptFieldAccessor(true)})",
-                setOf(
-                    TypeScriptImport(
-                        "formatAssuranceProviderForDataTable",
-                        "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory",
-                    ),
-                ),
-            ),
-        )
+        createNewViewConfigCellForAssuranceProvider(sectionConfigBuilder)
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
@@ -73,6 +60,23 @@ class EuTaxonomyAssuranceComponent(
         sectionBuilder.addAtomicExpression(
             identifier,
             "dataGenerator.generateAssuranceDatapoint()",
+        )
+    }
+
+    private fun createNewViewConfigCellForAssuranceProvider(sectionConfigBuilder: SectionConfigBuilder) {
+        sectionConfigBuilder.addCell(
+            label = "Assurance Provider",
+            explanation = "Provider of the Assurance",
+            shouldDisplay = availableIf.toFrameworkBooleanLambda(),
+            valueGetter = FrameworkDisplayValueLambda(
+                "formatAssuranceProviderForDataTable(${getTypescriptFieldAccessor(true)})",
+                setOf(
+                    TypeScriptImport(
+                        "formatAssuranceProviderForDataTable",
+                        "@/components/resources/dataTable/conversion/EutaxonomyAssuranceValueGetterFactory",
+                    ),
+                ),
+            ),
         )
     }
 }
