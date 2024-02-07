@@ -60,6 +60,7 @@
                 >arrow_drop_down</span
               >
             </PrimeButton>
+            <SingleDataRequestButton :company-id="companyID" />
             <router-link
               v-if="hasUserUploaderRights"
               :to="targetLinkForAddingNewDataset"
@@ -109,6 +110,7 @@ import QualityAssuranceButtons from "@/components/resources/frameworkDataSearch/
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import type FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import InputSwitch from "primevue/inputswitch";
+import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -124,6 +126,7 @@ export default defineComponent({
     SelectReportingPeriodDialog,
     QualityAssuranceButtons,
     InputSwitch,
+    SingleDataRequestButton,
   },
   emits: ["updateActiveDataMetaInfoForChosenFramework"],
   props: {
