@@ -11,10 +11,10 @@ import { waitForAndReturnResolvedKeycloakPromise } from "@/utils/KeycloakUtils";
  * @returns a promise, which resolves to a boolean
  */
 export async function isUserDataOwnerForCompany(
-  companyId: string,
+  companyId?: string,
   keycloakPromiseGetter?: () => Promise<Keycloak>,
 ): Promise<boolean> {
-  if (keycloakPromiseGetter) {
+  if (keycloakPromiseGetter && companyId) {
     const resolvedKeycloakPromise = await waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter);
     const userId = resolvedKeycloakPromise?.idTokenParsed?.sub;
     try {
