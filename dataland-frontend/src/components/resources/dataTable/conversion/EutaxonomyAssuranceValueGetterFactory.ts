@@ -46,7 +46,7 @@ export function formatAssuranceForDataTable(
 export function formatAssuranceProviderForDataTable(
   assurance: AssuranceDataPoint | undefined | null,
 ): AvailableMLDTDisplayObjectTypes {
-  if (!assurance || !assurance.provider) {
+  if (!assurance?.provider) {
     return MLDTDisplayObjectForEmptyString;
   }
 
