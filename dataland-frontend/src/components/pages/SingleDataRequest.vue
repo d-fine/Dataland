@@ -55,14 +55,14 @@
                           required: 'Select a framework',
                         }"
                         outer-class="long"
-                        data-test="datapoint-framework"
+                        :data-test="'datapoint-framework'"
                       />
                     </BasicFormSection>
                     <BasicFormSection header="Provide Contact Details">
                       <label for="Email" class="label-with-optional">
                         <b>Email</b><span class="optional-text">Optional</span>
                       </label>
-                      <FormKit v-model="contact" type="text" name="contactDetails" />
+                      <FormKit v-model="contact" type="text" name="contactDetails" data-test="contactEmail" />
                       <p class="gray-text font-italic" style="text-align: left">
                         By specifying a contact person here, your data request will be directed accordingly.<br />
                         this increases the chances of expediting the fulfillment of your request.
@@ -76,7 +76,12 @@
                       <label for="Message" class="label-with-optional">
                         <b>Message</b><span class="optional-text">Optional</span>
                       </label>
-                      <FormKit v-model="dataRequesterMessage" type="textarea" name="dataRequesterMessage" />
+                      <FormKit
+                        v-model="dataRequesterMessage"
+                        type="textarea"
+                        name="dataRequesterMessage"
+                        data-test="dataRequesterMessage"
+                      />
                       <p class="gray-text font-italic" style="text-align: left">
                         Let your contact know what exactly your are looking for.
                       </p>
