@@ -1,7 +1,9 @@
 import { createWebHistory, createRouter, type RouteComponent } from "vue-router";
+
 const CompanyCockpitPage = (): Promise<RouteComponent> => import("@/components/pages/CompanyCockpitPage.vue");
 const NewLandingPage = (): Promise<RouteComponent> => import("@/components/pages/NewLandingPage.vue");
 import AboutPage from "@/components/pages/AboutPage.vue";
+
 const QualityAssurance = (): Promise<RouteComponent> => import("@/components/pages/QualityAssurance.vue");
 const SearchCompaniesForFrameworkData = (): Promise<RouteComponent> =>
   import("@/components/pages/SearchCompaniesForFrameworkData.vue");
@@ -103,8 +105,9 @@ const routes = [
     component: RequestData,
   },
   {
-    path: "/singledatarequest",
+    path: "/singledatarequest/:companyId",
     name: "Single Data Request",
+    props: true,
     component: SingleDataRequest,
   },
   {

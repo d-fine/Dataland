@@ -170,13 +170,8 @@ export default defineComponent({
         .filter((reportingPeriod) => reportingPeriod.value)
         .map((reportingPeriod) => reportingPeriod.name);
     },
-  },
-  //TODO: default to be removed
-  props: {
-    companyIdentifier: {
-      type: String,
-      required: true,
-      default: "d9923b5c-8a67-4aad-8112-640af606bccb",
+    companyIdentifier() {
+      return this.$route.params.companyId;
     },
   },
   methods: {

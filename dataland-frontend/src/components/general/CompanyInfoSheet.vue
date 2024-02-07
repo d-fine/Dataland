@@ -3,7 +3,7 @@
     <template v-if="!useMobileView">
       <div :class="` ${showSingleDataRequestButton ? 'headline' : ''}`">
         <BackButton />
-        <SingleDataRequestButton v-if="showSingleDataRequestButton" />
+        <SingleDataRequestButton v-if="showSingleDataRequestButton" :company-id="companyId" />
       </div>
 
       <CompaniesOnlySearchBar
