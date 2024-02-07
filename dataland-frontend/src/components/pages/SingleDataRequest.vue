@@ -14,6 +14,7 @@
       </div>
       <div class="col-12">
         <FormKit
+          v-if="!submitted"
           :actions="false"
           v-model="singleDataRequestModel"
           type="form"
@@ -97,6 +98,25 @@
             </div>
           </div>
         </FormKit>
+        <div v-if="submitted">
+          <template v-if="submittingSucceded">
+            <em class="material-icons info-icon green-text">check_circle</em>
+            <h1 class="status-text" data-test="requestStatusText">Success</h1>
+          </template>
+
+          <template v-if="!submittingSucceded">
+            <em class="material-icons info-icon red-text">error</em>
+            <h1 class="status-text" data-test="requestStatusText">Request Unsuccessful</h1>
+            <p>{{ errorMessage }}</p>
+          </template>
+
+          <PrimeButton
+            type="button"
+            @click="goToCompanyPage()"
+            label="BACK TO COMPANY PAGE"
+            class="uppercase p-button-outlined"
+          />
+        </div>
       </div>
     </TheContent>
     <TheFooter :is-light-version="true" :sections="footerContent" />
@@ -154,7 +174,7 @@ export default defineComponent({
       frameworkName: "" as DataTypeEnum,
       contact: "",
       dataRequesterMessage: "",
-      message: "",
+      errorMessage: "",
       selectedReportingPeriodsError: false,
       reportingPeriods: [
         { name: "2023", value: false },
@@ -162,6 +182,8 @@ export default defineComponent({
         { name: "2021", value: false },
         { name: "2020", value: false },
       ],
+      submittingSucceded: false,
+      submitted: false,
     };
   },
   computed: {
@@ -170,8 +192,8 @@ export default defineComponent({
         .filter((reportingPeriod) => reportingPeriod.value)
         .map((reportingPeriod) => reportingPeriod.name);
     },
-    companyIdentifier() {
-      return this.$route.params.companyId;
+    companyIdentifier(): string {
+      return this.$route.params.companyId as string;
     },
   },
   methods: {
@@ -214,18 +236,29 @@ export default defineComponent({
           const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
             .requestController;
           const response = await requestDataControllerApi.postSingleDataRequest(singleDataRequestObject);
-          this.message = response.data.message as string;
+          this.errorMessage = response.statusText;
+          this.submittingSucceded = true;
         } catch (error) {
           console.error(error);
           if (error instanceof AxiosError) {
             const responseMessages = (error.response?.data as ErrorResponse)?.errors;
-            this.message = responseMessages ? responseMessages[0].message : error.message;
+            this.errorMessage = responseMessages ? responseMessages[0].message : error.message;
           } else {
-            this.message =
+            this.errorMessage =
               "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
           }
         }
+        this.submitted = true;
       }
+    },
+    /**
+     * Go to company cockpit page
+     */
+    goToCompanyPage() {
+      const thisCompanyId = this.companyIdentifier;
+      void this.$router.push({
+        path: `/companies/${thisCompanyId}`,
+      });
     },
   },
 });
