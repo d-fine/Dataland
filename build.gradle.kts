@@ -103,15 +103,7 @@ sonar {
 
             // frontend
             "dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
-                "EuTaxonomyForNonFinancialsDataModel.ts," +
                 "dataland-frontend/src/components/forms/parts/elements/derived/ActivityTree.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
-                "EuTaxonomyForNonFinancialsDisplayDataModel.ts," +
                 "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-non-financials/" +
                 "EutaxonomyNonFinancialsDataFixtures.ts," +
                 // TODO are next two really needed???
@@ -127,6 +119,9 @@ sonar {
                 "dataland-frontend/src/frameworks/heimathafen/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/eutaxonomy-non-financials/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
+                "dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts," +
+                "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
+                "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
 
                 // backend
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt",
