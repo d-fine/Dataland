@@ -42,7 +42,7 @@
                         Select at least one reporting period.
                       </p>
                     </BasicFormSection>
-                    <BasicFormSection :data-test="'selectFrameworkDiv'" header="Select a framework">
+                    <BasicFormSection :data-test="'selectFramework'" header="Select a framework">
                       <FormKit
                         type="select"
                         placeholder="Select framework"
@@ -57,7 +57,7 @@
                         data-test="datapoint-framework"
                       />
                     </BasicFormSection>
-                    <BasicFormSection :data-test="'provideContactDetails'" header="Provide Contact Details">
+                    <BasicFormSection header="Provide Contact Details">
                       <label for="Email" class="label-with-optional">
                         <b>Email</b><span class="optional-text">Optional</span>
                       </label>
