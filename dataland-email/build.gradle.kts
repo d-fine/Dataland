@@ -27,6 +27,8 @@ dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-keycloak-adapter"))
     implementation(libs.mailjet.client)
+
+    testImplementation(Spring.boot.test)
 }
 
 tasks.bootJar {
