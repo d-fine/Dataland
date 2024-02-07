@@ -1,6 +1,5 @@
-package org.dataland.datalandbackend.model.eutaxonomy.nonfinancials
+package org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom
 
-import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AmountWithCurrency
 import java.math.BigDecimal
 
 /**
