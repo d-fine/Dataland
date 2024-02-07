@@ -103,13 +103,7 @@ sonar {
 
             // frontend
             "dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
                 "dataland-frontend/src/components/forms/parts/elements/derived/ActivityTree.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
-                "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
 
                 // frontend configs
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
