@@ -217,7 +217,7 @@ export default defineComponent({
   emits: ["datasetCreated"],
   data() {
     return {
-      formId: "createEuTaxonomyForNonFinancialsForm",
+      formId: "createEuTaxonomyNonFinancialsForm",
       waitingForData: true,
       dataDate: undefined as Date | undefined,
       companyAssociatedEutaxonomyNonFinancialsData: {} as CompanyAssociatedDataEutaxonomyNonFinancialsData,
