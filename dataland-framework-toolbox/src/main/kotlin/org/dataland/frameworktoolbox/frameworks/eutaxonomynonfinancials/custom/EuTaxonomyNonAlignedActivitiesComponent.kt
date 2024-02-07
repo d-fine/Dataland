@@ -17,7 +17,7 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 /**
  * Represents the EuTaxonomy-Specific List of Activities component TODO
  */
-class EuTaxonomyListOfActivitiesComponent( // TODO naming
+class EuTaxonomyNonAlignedActivitiesComponent( // TODO naming
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
