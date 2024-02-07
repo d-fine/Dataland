@@ -1,5 +1,8 @@
 <template>
-  <div :class="`summary-panel${hasAccessibleViewPage && !useMobileView ? '--interactive' : ''}`" @click="onClickPanel">
+  <div
+    :class="` summary-panel ${hasAccessibleViewPage && !useMobileView ? 'summary-panel--interactive' : ''}`"
+    @click="onClickPanel"
+  >
     <div>
       <div class="summary-panel__title">
         {{ title }}
@@ -125,18 +128,29 @@ function onCursorLeaveProvideButton(): void {
 <style scoped lang="scss">
 .summary-panel {
   width: 100%;
-  max-width: 339px;
-  height: 282px;
   background-color: var(--surface-card);
-  padding: 24px;
-  border-radius: 8px;
+  padding: $spacing-md;
+  border-radius: $radius-xxs;
   text-align: left;
-  box-shadow: 0 0 12px #9494943d;
+  box-shadow: 0 0 12px var(--gray-300);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 282px;
 
-  @media only screen and (min-width: $small) {
+  &--interactive {
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 0 32px 8px #1e1e1e14;
+
+      .summary-panel__separator {
+        border-bottom-color: var(--primary-color);
+      }
+    }
+  }
+
+  @media only screen and (max-width: $small) {
     &--interactive {
       width: 339px;
       height: 282px;
@@ -152,6 +166,7 @@ function onCursorLeaveProvideButton(): void {
 
       &:hover {
         box-shadow: 0 0 32px 8px #1e1e1e14;
+
         .summary-panel__separator {
           border-bottom-color: var(--primary-color);
         }

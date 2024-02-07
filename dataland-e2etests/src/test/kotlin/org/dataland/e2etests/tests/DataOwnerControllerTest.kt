@@ -233,6 +233,26 @@ class DataOwnerControllerTest {
     }
 
     @Test
+    fun `get data owner from an existing company as data owner`() {
+        val companyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
+        val dataOwnersForCompany = apiAccessor.companyDataControllerApi.postDataOwner(companyId, dataReaderUserId)
+        validateDataOwnersForCompany(companyId, listOf(dataReaderUserId), dataOwnersForCompany)
+        assertDoesNotThrow {
+            apiAccessor.companyDataControllerApi.isUserDataOwnerForCompany(companyId, dataReaderUserId)
+        }
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reviewer)
+        checkHeadException(companyId, dataReaderUserId)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
+        assertDoesNotThrow {
+            apiAccessor.companyDataControllerApi.isUserDataOwnerForCompany(companyId, dataReaderUserId)
+        }
+    }
+
+    @Test
     fun `post as a data owner and check if bypassQa is forbidden`() {
         val companyId = UUID.fromString(
             apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,

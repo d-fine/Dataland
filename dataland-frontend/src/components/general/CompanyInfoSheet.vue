@@ -45,9 +45,7 @@ const { companyId } = defineProps<{
   companyId: string;
 }>();
 
-const emit = defineEmits<{
-  fetchedCompanyInformation: [companyInformation: CompanyInformation];
-}>();
+const emit = defineEmits(["fetchedCompanyInformation"]);
 
 /**
  * On fetched company information defines the companyName and emits an event of type "fetchedCompanyInformation"
@@ -78,6 +76,7 @@ function onScroll(): void {
   sheetRect.value = sheet.value!.getBoundingClientRect();
   attachedSheetHeight.value = attachedSheet.value!.getBoundingClientRect().height;
 }
+
 onMounted(() => {
   window.addEventListener("scroll", onScroll);
 });
