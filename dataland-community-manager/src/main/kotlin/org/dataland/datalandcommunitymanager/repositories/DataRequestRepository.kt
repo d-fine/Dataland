@@ -111,7 +111,6 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     fun updateDataRequestEntitiesByDataRequestCompanyIdentifierValueAndReportingPeriodAndRequestStatusEqualsAndDataTypeName(
         dataRequestCompanyIdentifierValue: String,
         reportingPeriod: String,
-        requestStatus: RequestStatus,
         dataTypeName: String,
     )
 }
