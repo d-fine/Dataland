@@ -4,8 +4,28 @@
       <p class="font-medium text-xl">Loading company information...</p>
       <i class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
     </div>
-    <div v-else-if="companyInformation && !waitingForData" class="text-left company-details">
-      <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
+    <div v-else-if="companyInformation && !waitingForData" class="company-details">
+      <div class="company-details__headline">
+        <div class="left-elements">
+          <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
+          <div class="p-badge badge-light-green outline" data-test="verifiedDataOwnerBadge" v-if="isUserDataOwner">
+            <span class="material-icons-outlined fs-sm">verified</span>
+            Verified Data Owner
+          </div>
+        </div>
+        <div>
+          <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
+        </div>
+      </div>
+
+      <ClaimOwnershipDialog
+        :company-id="companyId"
+        :company-name="companyInformation.companyName"
+        :dialog-is-open="dialogIsOpen"
+        :claim-is-submitted="claimIsSubmitted"
+        @claim-submitted="onClaimSubmitted"
+        @close-dialog="onCloseDialog"
+      />
 
       <div class="company-details__separator" />
 
@@ -36,9 +56,14 @@ import { defineComponent, inject } from "vue";
 import { type CompanyInformation, IdentifierType } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
+import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
+import { getUserId } from "@/utils/KeycloakUtils";
+import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
+  components: { ClaimOwnershipDialog, ContextMenuButton },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -50,6 +75,10 @@ export default defineComponent({
       companyInformation: null as CompanyInformation | null,
       waitingForData: true,
       companyIdDoesNotExist: false,
+      isUserDataOwner: false,
+      dialogIsOpen: false,
+      claimIsSubmitted: false,
+      userId: undefined as string | undefined,
     };
   },
   computed: {
@@ -63,6 +92,23 @@ export default defineComponent({
     displayIsin() {
       return this.companyInformation?.identifiers?.[IdentifierType.Isin]?.[0] ?? "—";
     },
+    contextMenuItems() {
+      const listOfItems = [];
+      if (!this.isUserDataOwner && this.userId) {
+        listOfItems.push({
+          label: "Claim Company Dataset Ownership",
+          command: () => {
+            this.dialogIsOpen = true;
+          },
+        });
+      }
+      return listOfItems;
+    },
+
+    isCompanyIdValid() {
+      const uuidRegexExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      return uuidRegexExp.test(this.companyId);
+    },
   },
   props: {
     companyId: {
@@ -72,13 +118,23 @@ export default defineComponent({
   },
   mounted() {
     void this.getCompanyInformation();
+    void this.awaitUserId();
+    void this.getDataOwnerInformation();
   },
   watch: {
     companyId() {
       void this.getCompanyInformation();
+      void this.getDataOwnerInformation();
+      this.claimIsSubmitted = false;
     },
   },
   methods: {
+    /**
+     * handles the close button click event of the dialog
+     */
+    onCloseDialog() {
+      this.dialogIsOpen = false;
+    },
     /**
      * Uses the dataland API to retrieve information about the company identified by the local
      * companyId object.
@@ -95,21 +151,51 @@ export default defineComponent({
         }
       } catch (error) {
         console.error(error);
-        if (this.getErrorMessage(error).includes("404")) {
+        if (getErrorMessage(error).includes("404")) {
           this.companyIdDoesNotExist = true;
         }
         this.waitingForData = false;
         this.companyInformation = null;
       }
     },
+
     /**
-     * Tries to find a message in an error
-     * @param error the error to extract a message from
-     * @returns the extracted message
+     * Get the Information about Data-ownership
      */
-    getErrorMessage(error: unknown) {
-      const noStringMessage = error instanceof Error ? error.message : "";
-      return typeof error === "string" ? error : noStringMessage;
+    async getDataOwnerInformation() {
+      await this.awaitUserId();
+      if (this.userId !== undefined && this.isCompanyIdValid) {
+        try {
+          const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
+            .backendClients.companyDataController;
+          const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
+            this.companyId,
+            assertDefined(this.userId),
+          );
+          if (axiosResponse.status == 200) {
+            this.isUserDataOwner = true;
+          }
+        } catch (error) {
+          console.log(error);
+          if (getErrorMessage(error).includes("404")) {
+            this.isUserDataOwner = false;
+          }
+        }
+      } else {
+        this.isUserDataOwner = false;
+      }
+    },
+    /**
+     * handles the emitted claim event
+     */
+    onClaimSubmitted() {
+      this.claimIsSubmitted = true;
+    },
+    /**
+     * gets the user ID in an async manner
+     */
+    async awaitUserId(): Promise<void> {
+      this.userId = await getUserId(assertDefined(this.getKeycloakPromise));
     },
   },
 });
@@ -124,6 +210,13 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  &__headline {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+  }
 
   &__separator {
     @media only screen and (max-width: $small) {
@@ -147,5 +240,15 @@ export default defineComponent({
       padding-right: 40px;
     }
   }
+}
+
+.left-elements {
+  display: flex;
+  align-items: center;
+}
+
+.fs-sm {
+  font-size: $fs-sm;
+  margin-right: 0.25rem;
 }
 </style>
