@@ -4,7 +4,7 @@
     <TheAboutIntro :sections="aboutPage?.sections" />
     <TheAboutPrinciples :sections="aboutPage?.sections" />
   </main>
-  <TheFooter :sections="landingPage?.sections" />
+  <TheFooter :sections="landingPage?.sections" :is-light-version="true" />
 </template>
 
 <script setup lang="ts">
