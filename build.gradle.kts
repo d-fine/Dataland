@@ -112,7 +112,7 @@ sonar {
                 "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/heimathafen/UploadConfig.ts," +
-                "dataland-frontend/src/frameworks/eutaxonomy-non-financials/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/custom/EuTaxoNonFinancialsStaticUploadConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +

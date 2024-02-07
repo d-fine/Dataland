@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component
 class EuTaxonomyAlignedActivitiesComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component.trim() == "Custom AlignedActivitiesFormField"
+        row.component.trim() == "Custom EuTaxonomyAlignedActivitiesComponent"
 
     override fun generateComponent(
         row: TemplateRow,

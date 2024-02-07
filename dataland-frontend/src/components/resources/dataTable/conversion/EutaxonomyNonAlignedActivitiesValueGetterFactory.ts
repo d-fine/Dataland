@@ -42,10 +42,11 @@ export const euTaxonomyNonFinancialsModalColumnHeaders = {
 };
 
 /**
- * Formats the provided assurance datapoint for the datatable TODO rewrite
- * @param nonAlignedActivities the assurance object to display
- * @param fieldLabel the label of the assurance datapoint
- * @returns the value formatted for display
+ * Formats an array of EuTaxonomyActivity for the display in the multi-layer-data-table.
+ * This list is behind the field "nonAlignedActivities" in the eutaxonomy-non-financials framework.
+ * @param nonAlignedActivities the list of EuTaxonomyActivity objects
+ * @param fieldLabel the label of the respective field in the framework
+ * @returns the display object for the multi-layer-data-table to render a modal to display the non-aligned activities
  */
 export function formatNonAlignedActivitiesForDataTable(
   nonAlignedActivities: Array<EuTaxonomyActivity> | undefined | null,

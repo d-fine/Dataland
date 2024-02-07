@@ -20,7 +20,7 @@ before(function () {
   cy.fixture("CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json").then(function (jsonContent) {
     const preparedFixtures = jsonContent as Array<FixtureData<EutaxonomyNonFinancialsData>>;
     euTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture(
-      "all-fields-defined-for-eu-taxo-non-financials",
+      "all-fields-defined-for-eu-taxo-non-financials-alpha",
       preparedFixtures,
     );
   });

@@ -11,15 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * Generates EuTaxonomyListOfActivitiesComponent from rows with the component "Custom - List of EuTaxonomyActivity"
+ * Generates EuTaxonomyNonAlignedActivitiesComponent from rows with the component "Custom - List of EuTaxonomyActivity"
  *
  */
 
 @Component
-class EuTaxonomyListOfActivitiesComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
+class EuTaxonomyNonAlignedActivitiesComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component.trim() == "Custom List of EuTaxonomyActivity"
+        row.component.trim() == "Custom EuTaxonomyNonAlignedActivitiesComponent"
 
     override fun generateComponent(
         row: TemplateRow,
@@ -29,7 +29,7 @@ class EuTaxonomyListOfActivitiesComponentFactory(@Autowired val templateDiagnost
         templateDiagnostic.optionsNotUsed(row)
         templateDiagnostic.unitNotUsed(row)
 
-        return componentGroup.create<EuTaxonomyListOfActivitiesComponent>(
+        return componentGroup.create<EuTaxonomyNonAlignedActivitiesComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)
