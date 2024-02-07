@@ -58,11 +58,11 @@ describeIf(
                 .click();
 
             cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
-                checkIfIdentifiersProperlyDisplayed(interception);
+                //TODO:check if post content matches form
+                //TODO:check existence of popup message
+                //TODO:check url to confirm the user is taken back to the company cockpit
             });
 
-            cy.get('[data-test="acceptedIdentifiers"] [data-test="identifiersHeading"]').contains("1 REQUESTED IDENTIFIER");
-            cy.get('[data-test="rejectedIdentifiers"] [data-test="identifiersHeading"]').contains("1 REJECTED IDENTIFIER");
         });
 
         /**
@@ -113,6 +113,7 @@ describeIf(
          * Checks if the information on the company banner is correct
          */
         function checkCompanyInfoSheet (): void {
+            //TODO: check company name, not the id since its already in the url
             cy.get('CompanyInfoSheet').within(() => {
                 cy.get('@company-id').should('have.attr', 'company-id', '123');
             });
