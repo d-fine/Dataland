@@ -59,7 +59,7 @@ class SingleDataRequestEmailSenderTest {
             mockCompanyGetter,
         )
         val singleDataRequestInternalEmailBuilder = SingleDataRequestInternalEmailBuilder(
-            proxyPrimaryUrl
+            proxyPrimaryUrl,
             senderEmail,
             senderName,
             semicolonSeparatedInternalReceiverEmails,
