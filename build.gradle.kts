@@ -101,7 +101,7 @@ sonar {
         property(
             "sonar.cpd.exclusions",
 
-            // frontend components
+            // frontend
             "dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
@@ -112,6 +112,11 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/sme/SmeDataModel.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/" +
                 "EuTaxonomyForNonFinancialsDisplayDataModel.ts," +
+                "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-non-financials/" +
+                "EutaxonomyNonFinancialsDataFixtures.ts," +
+                // TODO are next two really needed???
+                // "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts,"+
+                // "dataland-frontend/tests/e2e/fixtures/frameworks/sfdr/SfdrDataFixtures.ts," +
 
                 // frontend configs
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
@@ -140,10 +145,6 @@ sonar {
                 "dataland-frontend/src/components/resources/newLandingPage/**," +
                 "dataland-frontend/src/components/pages/AboutPage.vue," +
                 "dataland-frontend/src/components/generics/TheNewFooter.vue," +
-
-                // frontend fixtures
-                "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts," +
-                "dataland-frontend/tests/e2e/fixtures/frameworks/sfdr/SfdrDataFixtures.ts," +
 
                 // frontend configs
                 "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts," +
