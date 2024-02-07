@@ -88,7 +88,7 @@ class SingleDataRequestEmailBuilder(
             "message" to message,
             "dataType" to readableFrameworkNameMapping[dataType],
             "reportingPeriods" to reportingPeriods.joinToString(", "),
-            "baseUrl" to proxyPrimaryUrl,
+            "baseUrl" to "https://$proxyPrimaryUrl",
         )
         val freemarkerTemplate = FreeMarker.configuration
             .getTemplate("/claim_ownership.html.ftl")
