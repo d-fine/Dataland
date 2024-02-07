@@ -104,11 +104,6 @@ sonar {
             // frontend
             "dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
                 "dataland-frontend/src/components/forms/parts/elements/derived/ActivityTree.ts," +
-                "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-non-financials/" +
-                "EutaxonomyNonFinancialsDataFixtures.ts," +
-                // TODO are next two really needed???
-                // "dataland-frontend/tests/e2e/fixtures/frameworks/esg-questionnaire/EsgQuestionnaireDataFixtures.ts,"+
-                // "dataland-frontend/tests/e2e/fixtures/frameworks/sfdr/SfdrDataFixtures.ts," +
 
                 // frontend configs
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
