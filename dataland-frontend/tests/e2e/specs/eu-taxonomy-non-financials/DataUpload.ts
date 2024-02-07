@@ -26,7 +26,7 @@ describeIf(
     let testData: FixtureData<EutaxonomyNonFinancialsData>;
     const uploadReports = new UploadReports("referencedReports");
     before(function () {
-      cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancials").then(function (
+      cy.fixture("CompanyInformationWithEutaxonomyNonFinancialsData").then(function (
         jsonContent: FixtureData<EutaxonomyNonFinancialsData>[],
       ) {
         testData = jsonContent[0];
