@@ -9,12 +9,6 @@ import { generateListOfDataSearchStoredCompany } from "@e2e/fixtures/custom_mock
  * Generates mocks that are not only dataset mocks
  */
 export function exportCustomMocks(): void {
-  // TODO: PUT BACK IN
-  /*fs.writeFileSync(
-    "../testing/data/EuTaxonomyForNonFinancialsMocks.json",
-    JSON.stringify(generateEuTaxonomyForNonFinancials(), null, "\t"),
-  );*/
-
   const metaInfoDataForOneCompany = generateMetaInfoDataForOneCompany();
   fs.writeFileSync(
     "../testing/data/MetaInfoDataMocksForOneCompany.json",

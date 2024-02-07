@@ -20,7 +20,8 @@ class EuTaxonomyAmountWithCurrencyComponent(
     parent: FieldNodeParent,
 ) : ComponentBase(
     identifier, parent,
-    "org.dataland.datalandbackend.model.eutaxonomy.nonfinancials.AmountWithCurrency",
+    "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom" +
+        ".AmountWithCurrency",
 ) {
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {

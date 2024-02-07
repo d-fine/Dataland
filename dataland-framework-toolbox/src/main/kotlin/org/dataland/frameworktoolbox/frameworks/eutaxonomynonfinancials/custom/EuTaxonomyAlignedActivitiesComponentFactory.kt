@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * TODO add documentation
+ * Generates EuTaxonomyAlignedActivities from the corresponding component
  */
 @Component
 class EuTaxonomyAlignedActivitiesComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :

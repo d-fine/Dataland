@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.interfaces.frameworks
 
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AssuranceDataPoint
 import org.dataland.datalandbackend.model.enums.commons.FiscalYearDeviation
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.model.enums.commons.YesNoNa
-import org.dataland.datalandbackend.model.eutaxonomy.AssuranceDataPoint
 import java.math.BigDecimal
 import java.time.LocalDate
 
