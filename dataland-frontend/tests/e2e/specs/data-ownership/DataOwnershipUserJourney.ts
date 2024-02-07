@@ -1,19 +1,15 @@
 import { describeIf } from "@e2e/support/TestUtility";
-import { admin_name, admin_pw, getBaseUrl, reader_name, reader_pw } from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { getKeycloakToken, login, logout } from "@e2e/utils/Auth";
 import {
   CompanyDataControllerApi,
   type CompanyDataOwners,
   Configuration,
-  type DataMetaInformation,
   DataTypeEnum,
-  P2pDataControllerApi,
   type PathwaysToParisData,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
-import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
-import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM } from "@/utils/Constants";
 
@@ -26,7 +22,7 @@ before(function () {
 });
 
 describeIf(
-  "As a user, I expect to be able to edit and submit P2P data via the upload form",
+  "As a user, I expect to be able to upload data for one company for which iam data owner",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
@@ -35,8 +31,7 @@ describeIf(
       cy.ensureLoggedIn(admin_name, admin_pw);
     });
 
-
-    it("Owner Test", () => {
+    it("Upload a company, set a user as the data owner and then verify that the upload pages are displayed for that user", () => {
       const uniqueCompanyMarker = Date.now().toString();
       const testCompanyName = "Company-Created-In-Data-Owner-Test-" + uniqueCompanyMarker;
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
@@ -71,6 +66,13 @@ describeIf(
     });
   },
 );
+
+/**
+ * Method that sets a user as a data owner of the specified company
+ * @param token authentication token of the user doing the post request
+ * @param userId of the user that should be set as a data owner
+ * @param companyId of the company for which the user should be set as a data owner
+ */
 export async function postDataOwner(token: string, userId: string, companyId: string): Promise<CompanyDataOwners> {
   const apiResponse = await new CompanyDataControllerApi(new Configuration({ accessToken: token })).postDataOwner(
     companyId,
