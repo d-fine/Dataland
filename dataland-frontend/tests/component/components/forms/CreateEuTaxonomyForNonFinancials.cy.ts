@@ -164,7 +164,7 @@ describe("Component tests for the Eu Taxonomy for non financials that test depen
     cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeMitigationInPercent"]')
       .clear()
       .type("15");
-    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptiatonInPercent"]')
+    cy.get('div[label="Revenue"] input[name="substantialContributionToClimateChangeAdaptationInPercent"]')
       .clear()
       .type("15");
     cy.get(
