@@ -22,13 +22,13 @@ import java.util.*
  * Class to manage the token retrieval from keycloak via service account
  */
 @Service
-@ConditionalOnProperty(name = ["dataland.dataland-community-manager.client-id"])
+@ConditionalOnProperty(name = ["dataland.keycloak.client-id"])
 class KeycloakTokenManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Qualifier("UnauthenticatedOkHttpClient") private val httpClient: OkHttpClient,
     @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
-    @Value("\${dataland.dataland-community-manager.client-id}") private val clientId: String,
-    @Value("\${dataland.dataland-community-manager.client-secret}") private val clientSecret: String,
+    @Value("\${dataland.keycloak.client-id}") private val clientId: String,
+    @Value("\${dataland.keycloak.client-secret}") private val clientSecret: String,
 ) {
     @JsonIgnoreProperties(ignoreUnknown = true)
     data class KeycloakAccessTokenResponse(
