@@ -2,7 +2,7 @@
   <div v-if="hasUserRequiredRole || isUserDataOwner">
     <slot></slot>
   </div>
-  <div v-if="!hasUserRequiredRole && waitingForData" class="d-center-div text-center px-7 py-4">
+  <div v-if="!hasUserRequiredRole && waitingForDataOwnershipData" class="d-center-div text-center px-7 py-4">
     <p class="font-medium text-xl">Checking for data ownership...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
@@ -30,7 +30,7 @@ export default defineComponent({
     return {
       hasUserRequiredRole: null as boolean | null,
       isUserDataOwner: null as boolean | null,
-      waitingForData: true,
+        waitingForDataOwnershipData: true,
     };
   },
   props: {
@@ -54,7 +54,7 @@ export default defineComponent({
     isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
       .then((isUserDataOwner) => {
         this.isUserDataOwner = isUserDataOwner;
-        this.waitingForData = false;
+        this.waitingForDataOwnershipData = false;
       })
       .catch((error) => console.log(error));
   },
