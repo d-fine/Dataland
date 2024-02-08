@@ -2,6 +2,7 @@ import { type DataTypeEnum, type DataMetaInformationForMyDatasets, QaStatus } fr
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
+import { getUserId } from "@/utils/KeycloakUtils";
 
 export enum DatasetStatus {
   QaPending,
@@ -43,11 +44,7 @@ export function getDatasetStatus(dataMetaInfo: DataMetaInformationForMyDatasets)
  * @returns the filtered DatasetTableInfos
  */
 export async function getMyDatasetTableInfos(getKeycloakPromise: () => Promise<Keycloak>): Promise<DatasetTableInfo[]> {
-  let userId: string | undefined;
-  const parsedIdToken = (await getKeycloakPromise()).idTokenParsed;
-  if (parsedIdToken) {
-    userId = parsedIdToken.sub;
-  }
+  const userId = await getUserId(getKeycloakPromise);
   const userUploadsControllerApi = new ApiClientProvider(getKeycloakPromise()).backendClients.userUploadsController;
   const storedCompaniesUploadedByCurrentUser = (
     await userUploadsControllerApi.getUserUploadsDataMetaInformation(assertDefined(userId))
