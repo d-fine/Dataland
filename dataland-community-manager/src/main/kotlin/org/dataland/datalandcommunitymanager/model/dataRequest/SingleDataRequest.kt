@@ -15,6 +15,6 @@ data class SingleDataRequest(
     val companyIdentifier: String,
     val frameworkName: DataTypeEnum,
     val listOfReportingPeriods: List<String>,
-    val contactList: List<String>,
+    val contactList: List<String>?,
     val message: String?,
 )
