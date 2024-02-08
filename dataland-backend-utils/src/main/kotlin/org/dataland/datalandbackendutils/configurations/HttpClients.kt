@@ -1,8 +1,9 @@
-package org.dataland.datalandcommunitymanager.configurations
+package org.dataland.datalandbackendutils.configurations
 
 import okhttp3.OkHttpClient
-import org.dataland.datalandcommunitymanager.services.KeycloakTokenManager
+import org.dataland.datalandbackendutils.services.KeycloakTokenManager
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -15,6 +16,7 @@ class HttpClients {
      * Returns an OkHttpClient that automatically authenticates all requests
      */
     @Bean("AuthenticatedOkHttpClient")
+    @ConditionalOnBean(KeycloakTokenManager::class)
     fun getAuthenticatedOkHttpClient(
         @Autowired keycloakTokenManager: KeycloakTokenManager,
     ): OkHttpClient {

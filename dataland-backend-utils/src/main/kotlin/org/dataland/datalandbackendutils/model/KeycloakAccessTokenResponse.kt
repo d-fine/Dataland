@@ -1,4 +1,4 @@
-package org.dataland.datalandcommunitymanager.model
+package org.dataland.datalandbackendutils.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty

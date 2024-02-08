@@ -1,16 +1,16 @@
-package org.dataland.datalandcommunitymanager.services
+package org.dataland.datalandbackendutils.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.dataland.datalandcommunitymanager.model.KeycloakAccessTokenResponse
+import org.dataland.datalandbackendutils.model.KeycloakAccessTokenResponse
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
@@ -21,6 +21,7 @@ import java.util.*
  * Class to manage the token retrieval from keycloak via service account
  */
 @Service
+@ConditionalOnProperty(name = ["dataland.dataland-community-manager.client-id"])
 class KeycloakTokenManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Qualifier("UnauthenticatedOkHttpClient") private val httpClient: OkHttpClient,
