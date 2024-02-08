@@ -45,21 +45,31 @@ class SingleDataRequestManager(
         if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
             throw AuthenticationMethodNotSupportedException("You are not using JWT authentication.")
         }
+        lateinit var datalandCompanyID: String
         val storedDataRequests = mutableListOf<StoredDataRequest>()
-        val (identifierTypeToStore, identifierValueToStore) = identifyIdentifierTypeAndTryGetDatalandCompanyId(
+
+        /**
+         * val (identifierTypeToStore, identifierValueToStore) = identifyIdentifierTypeAndTryGetDatalandCompanyId(
+         * singleDataRequest.companyIdentifier,
+         )
+         */
+
+        val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
             singleDataRequest.companyIdentifier,
         )
-
-        throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest)
-        storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
-            storedDataRequests, singleDataRequest, identifierValueToStore, identifierTypeToStore,
-        )
-        singleDataRequestEmailSender.sendSingleDataRequestEmails(
-            userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
-            singleDataRequest = singleDataRequest,
-            companyIdentifierType = identifierTypeToStore,
-            companyIdentifierValue = identifierValueToStore,
-        )
+        if (datalandCompanyId == null) {
+            throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
+        } else {
+            throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest)
+            storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
+                storedDataRequests, singleDataRequest, datalandCompanyID,
+            )
+            singleDataRequestEmailSender.sendSingleDataRequestEmails(
+                userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
+                singleDataRequest = singleDataRequest,
+                datalandCompanyId,
+            )
+        }
         return storedDataRequests
     }
 
@@ -115,15 +125,13 @@ class SingleDataRequestManager(
     private fun storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
         storedDataRequests: MutableList<StoredDataRequest>,
         singleDataRequest: SingleDataRequest,
-        identifierValueToStore: String,
-        identifierTypeToStore: DataRequestCompanyIdentifierType,
+        datalandCompanyId: String,
     ) {
         for (reportingPeriod in singleDataRequest.listOfReportingPeriods.distinct()) {
             storedDataRequests.add(
                 utils.buildStoredDataRequestFromDataRequestEntity(
                     utils.storeDataRequestEntityIfNotExisting(
-                        identifierValueToStore,
-                        identifierTypeToStore,
+                        datalandCompanyId,
                         singleDataRequest.frameworkName,
                         reportingPeriod,
                         singleDataRequest.contactList,
@@ -199,5 +207,14 @@ class SingleDataRequestManager(
         dataRequestRepository.save(dataRequestEntity)
         dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         return utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
+    }
+    private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
+        val summary = "All provided company identifiers have an invalid format."
+        val message = "The company identifiers you provided do not match the patterns " +
+            "of a valid LEI, ISIN or PermId."
+        throw InvalidInputApiException(
+            summary,
+            message,
+        )
     }
 }
