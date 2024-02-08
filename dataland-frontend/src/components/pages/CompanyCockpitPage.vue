@@ -151,7 +151,6 @@ export default defineComponent({
      */
     async awaitUserId(): Promise<void> {
       this.userId = await getUserId(assertDefined(this.getKeycloakPromise));
-      console.log(this.userId);
     },
   },
 });
