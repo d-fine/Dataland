@@ -30,7 +30,7 @@ export default defineComponent({
     return {
       hasUserRequiredRole: null as boolean | null,
       isUserDataOwner: null as boolean | null,
-        waitingForDataOwnershipData: true,
+      waitingForDataOwnershipData: true,
     };
   },
   props: {

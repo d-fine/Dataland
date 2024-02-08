@@ -109,6 +109,7 @@ import QualityAssuranceButtons from "@/components/resources/frameworkDataSearch/
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import type FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import InputSwitch from "primevue/inputswitch";
+import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -202,6 +203,13 @@ export default defineComponent({
     checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
+      })
+      .catch((error) => console.log(error));
+    isUserDataOwnerForCompany(this.companyID, this.getKeycloakPromise)
+      .then((hasUserUploaderRights) => {
+        if (!this.hasUserUploaderRights) {
+          this.hasUserUploaderRights = hasUserUploaderRights;
+        }
       })
       .catch((error) => console.log(error));
     checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
