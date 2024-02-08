@@ -47,8 +47,7 @@ class SingleDataRequestManager(
     @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val singleDataRequestEmailSender: SingleDataRequestEmailSender,
-    @Autowired private val messageUtils: MessageQueueUtils,
-    @Autowired private val metaDataControllerApi: MetaDataControllerApi,
+
 ) {
     private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyApi, objectMapper)
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
@@ -217,49 +216,5 @@ class SingleDataRequestManager(
         dataRequestRepository.save(dataRequestEntity)
         dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         return utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
-    }
-
-    /**
-     * Method to send out a confirmation email to the requester as soon as the requested data is provided by the company
-     * @param jsonString the message describing the result of the completed QA process
-     * @param type the type of the message
-     */
-
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value = Queue(
-                    "dataQualityAssuredCommunityManagerDataManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
-                key = [RoutingKeyNames.data],
-            ),
-        ],
-    )
-    @Transactional
-    fun sendAnsweredRequestConfirmationEmail(
-        @Payload jsonString: String,
-        @Header(MessageHeaderKey.Type) type: String,
-    ) {
-        messageUtils.validateMessageType(type, MessageType.QaCompleted)
-        val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
-        val dataId = qaCompletedMessage.identifier
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
-        val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
-        val filter = GetDataRequestsSearchFilter(
-            dataTypeNameFilter = metaData.dataType.name,
-            userIdFilter = "",
-            requestStatus = RequestStatus.Open,
-            reportingPeriodFilter = metaData.reportingPeriod,
-            dataRequestCompanyIdentifierValueFilter = metaData.companyId,
-        )
-        dataRequestRepository.searchDataRequestEntity(filter)
     }
 }

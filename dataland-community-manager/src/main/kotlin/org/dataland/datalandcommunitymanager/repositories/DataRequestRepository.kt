@@ -107,7 +107,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "d.reportingPeriod = :#{#reportingPeriod} AND " +
             "d.dataRequestCompanyIdentifierValue = :#{#dataRequestCompanyIdentifierValue})",
     )
-    fun updateDataRequestEntitiesByDataRequestCompanyIdentifierValueAndReportingPeriodAndDataTypeName(
+    fun updateDataRequestEntitiesFromOpenToAnswered(
         dataRequestCompanyIdentifierValue: String,
         reportingPeriod: String,
         dataTypeName: String,
