@@ -752,17 +752,18 @@
       "SingleDataRequest": {
         "required": [
           "companyIdentifier",
-          "contactList",
           "frameworkName",
           "listOfReportingPeriods"
         ],
         "type": "object",
         "properties": {
           "companyIdentifier": {
-            "type": "string"
+            "type": "string",
+            "example": "DE0005190003"
           },
           "frameworkName": {
             "type": "string",
+            "example": "p2p",
             "enum": [
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
@@ -776,12 +777,19 @@
           },
           "listOfReportingPeriods": {
             "type": "array",
+            "example": [
+              "2022",
+              "2023"
+            ],
             "items": {
               "type": "string"
             }
           },
           "contactList": {
             "type": "array",
+            "example": [
+              "testuser@dataland.com"
+            ],
             "items": {
               "type": "string"
             }
