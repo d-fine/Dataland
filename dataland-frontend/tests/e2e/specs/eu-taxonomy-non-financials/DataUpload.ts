@@ -161,7 +161,6 @@ describeIf(
             cy.url().should("eq", getBaseUrl() + "/datasets");
             cy.get('[data-test="datasets-table"]').should("be.visible");
 
-            cy.pause(); //TODO
             goToEditFormAndValidateExistenceOfReports(storedCompany.companyId, true);
             uploadReports.removeAlreadyUploadedReport(TEST_PDF_FILE_NAME);
             cy.intercept({ method: "POST", url: `**/api/data/**`, times: 1 }, (request) => {
