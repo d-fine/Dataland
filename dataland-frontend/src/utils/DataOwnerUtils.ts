@@ -23,7 +23,6 @@ export async function isUserDataOwnerForCompany(
       ).backendClients.companyDataController.isUserDataOwnerForCompany(companyId, assertDefined(userId));
       return true;
     } catch (error) {
-      console.log(error);
       if ((error as AxiosError)?.response?.status == 404) {
         return false;
       }
