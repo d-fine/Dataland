@@ -199,7 +199,7 @@ class SingleDataRequestsTest {
 
         assertStatusForDataRequestId(storedDataRequestId, RequestStatus.open)
 
-        patchDataRequestAndAssertNewStatus(storedDataRequestId, RequestStatus.resolved)
+        patchDataRequestAndAssertNewStatus(storedDataRequestId, RequestStatus.answered)
 
         patchDataRequestAndAssertNewStatus(storedDataRequestId, RequestStatus.open)
     }
@@ -210,7 +210,7 @@ class SingleDataRequestsTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequest(nonExistingDataRequestId, RequestStatus.resolved)
+            requestControllerApi.patchDataRequest(nonExistingDataRequestId, RequestStatus.answered)
         }
         val responseBody = (clientException.response as ClientError<*>).body as String
 
@@ -235,7 +235,7 @@ class SingleDataRequestsTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
 
         val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequest(storedDataRequestId, RequestStatus.resolved)
+            requestControllerApi.patchDataRequest(storedDataRequestId, RequestStatus.answered)
         }
         assertEquals("Client error : 403 ", clientException.message)
     }
@@ -257,7 +257,7 @@ class SingleDataRequestsTest {
         )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val req2 = requestControllerApi.postSingleDataRequest(requestB).first()
-        requestControllerApi.patchDataRequest(UUID.fromString(req2.dataRequestId), RequestStatus.resolved)
+        requestControllerApi.patchDataRequest(UUID.fromString(req2.dataRequestId), RequestStatus.answered)
 
         return listOf(requestA, requestB)
     }
@@ -272,7 +272,7 @@ class SingleDataRequestsTest {
             dataType = RequestControllerApi.DataTypeGetDataRequests.lksg,
         )
         val reportingPeriod2021DataRequests = requestControllerApi.getDataRequests(reportingPeriod = "2021")
-        val resolvedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.resolved)
+        val resolvedDataRequests = requestControllerApi.getDataRequests(requestStatus = RequestStatus.answered)
         val specificPermIdDataRequests = requestControllerApi.getDataRequests(
             dataRequestCompanyIdentifierValue = permIdOfRequestB,
         )
@@ -290,7 +290,7 @@ class SingleDataRequestsTest {
         assertTrue(allDataRequests.size > 1)
         assertTrue(lksgDataRequests.all { it.dataType == StoredDataRequest.DataType.lksg })
         assertTrue(reportingPeriod2021DataRequests.all { it.reportingPeriod == "2021" })
-        assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.resolved })
+        assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.answered })
         assertTrue(specificPermIdDataRequests.all { it.dataRequestCompanyIdentifierValue == permIdOfRequestB })
         assertTrue(specificUsersDataRequests.all { it.userId == UPLOADER_USER_ID })
     }
