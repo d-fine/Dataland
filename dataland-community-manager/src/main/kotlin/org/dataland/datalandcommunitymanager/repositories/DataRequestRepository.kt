@@ -43,14 +43,15 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         "SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity(" +
             "d.dataTypeName, " +
             "d.reportingPeriod, " +
-            "d.datalandCompanyId, " +
+            "d.dataRequestCompanyIdentifierType, " +
+            "d.dataRequestCompanyIdentifierValue, " +
             "COUNT(d.userId))" +
             "FROM DataRequestEntity d " +
             "WHERE (:dataTypes IS NULL OR d.dataTypeName IN :dataTypes) " +
             "  AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%)" +
-            "  AND (:identifierValue IS NULL OR d.datalandCompanyId LIKE %:identifierValue%) " +
-            "GROUP BY d.dataTypeName, d.reportingPeriod, d.datalandCompanyId," +
-            "  d.datalandCompanyId",
+            "  AND (:identifierValue IS NULL OR d.dataRequestCompanyIdentifierValue LIKE %:identifierValue%) " +
+            "GROUP BY d.dataTypeName, d.reportingPeriod, d.dataRequestCompanyIdentifierType," +
+            "  d.dataRequestCompanyIdentifierValue",
     )
     fun getAggregatedDataRequests(
         @Param("identifierValue") identifierValue: String?,
@@ -76,7 +77,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR d.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
             "(:#{#searchFilter.dataRequestCompanyIdentifierValueFilterLength} =0 " +
-            "OR d.datalandCompanyId = :#{#searchFilter.datalandCompanyId})",
+            "OR d.dataRequestCompanyIdentifierValue = :#{#searchFilter.dataRequestCompanyIdentifierValueFilter})",
     )
     fun searchDataRequestEntity(
         @Param("searchFilter") searchFilter: GetDataRequestsSearchFilter,

@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
+import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 
 /**
@@ -9,7 +10,8 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
  * @param userId the user who created this data request
  * @param creationTimestamp when the user created the data request
  * @param dataType is the enum type of the framework for which the user requested data
- * @param datalandCompanyId the value of the company identifier for this data request
+ * @param dataRequestCompanyIdentifierType the type of the company identifier for this data request
+ * @param dataRequestCompanyIdentifierValue the value of the company identifier for this data request
  * @param lastModifiedDate the date when the data request has been modified the last time
  * @param messageHistory a list of all message objects which were created during the life cycle
  * @param requestStatus the current status of the data request
@@ -25,7 +27,9 @@ data class StoredDataRequest(
 
     val reportingPeriod: String,
 
-    val datalandCompanyId: String,
+    val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
+
+    val dataRequestCompanyIdentifierValue: String,
 
     val messageHistory: MutableList<StoredDataRequestMessageObject>,
 

@@ -81,7 +81,8 @@ class DataRequestManagerUtils(
             dataRequestEntity.creationTimestamp,
             getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
             dataRequestEntity.reportingPeriod,
-            dataRequestEntity.datalandCompanyId,
+            dataRequestEntity.dataRequestCompanyIdentifierType,
+            dataRequestEntity.dataRequestCompanyIdentifierValue,
             objectMapper.readValue(
                 dataRequestEntity.messageHistory,
                 object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
@@ -110,7 +111,8 @@ class DataRequestManagerUtils(
      * @param message a message to equip the notification with
      */
     fun storeDataRequestEntityIfNotExisting(
-        datalandCompanyId: String,
+        identifierValue: String,
+        identifierType: DataRequestCompanyIdentifierType,
         dataType: DataTypeEnum,
         reportingPeriod: String,
         contactList: List<String>? = null,
@@ -119,11 +121,12 @@ class DataRequestManagerUtils(
         val dataRequestEntity = buildDataRequestEntity(
             dataType,
             reportingPeriod,
-            datalandCompanyId,
+            identifierType,
+            identifierValue,
             contactList,
             message,
         )
-        if (!isDataRequestAlreadyExisting(datalandCompanyId, dataType, reportingPeriod)) {
+        if (!isDataRequestAlreadyExisting(identifierValue, dataType, reportingPeriod)) {
             storeDataRequestEntity(dataRequestEntity)
         }
         return dataRequestEntity
@@ -132,7 +135,8 @@ class DataRequestManagerUtils(
     private fun buildDataRequestEntity(
         framework: DataTypeEnum,
         reportingPeriod: String,
-        datalandCompanyId: String,
+        identifierType: DataRequestCompanyIdentifierType,
+        identifierValue: String,
         contactList: List<String>?,
         message: String?,
     ): DataRequestEntity {
@@ -150,7 +154,8 @@ class DataRequestManagerUtils(
             creationTimestamp = currentTimestamp,
             dataTypeName = framework.value,
             reportingPeriod = reportingPeriod,
-            datalandCompanyId = datalandCompanyId,
+            dataRequestCompanyIdentifierType = identifierType,
+            dataRequestCompanyIdentifierValue = identifierValue,
             messageHistory = objectMapper.writeValueAsString(messageHistory),
             lastModifiedDate = currentTimestamp,
             requestStatus = RequestStatus.Open,

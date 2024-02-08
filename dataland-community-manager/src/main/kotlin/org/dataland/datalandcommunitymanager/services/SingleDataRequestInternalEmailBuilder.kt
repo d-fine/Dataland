@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandemail.email.Email
 import org.dataland.datalandemail.email.PropertyStyleEmailBuilder
@@ -30,7 +31,8 @@ class SingleDataRequestInternalEmailBuilder(
      */
     fun buildSingleDataRequestInternalEmail(
         userAuthentication: DatalandJwtAuthentication,
-        datalandCompanyId: String,
+        companyIdentifierType: DataRequestCompanyIdentifierType,
+        companyIdentifierValue: String,
         dataType: DataTypeEnum,
         reportingPeriods: List<String>,
     ): Email {
@@ -39,9 +41,11 @@ class SingleDataRequestInternalEmailBuilder(
             "User" to buildUserInfo(userAuthentication),
             "Data Type" to dataType.name,
             "Reporting Periods" to reportingPeriods.joinToString(", "),
-            "Company Identifier" to datalandCompanyId,
+            "Company Identifier (${companyIdentifierType.name})" to companyIdentifierValue,
         )
-        properties["Company Name"] = companyGetter.getCompanyInfo(datalandCompanyId).companyName
+        if (companyIdentifierType == DataRequestCompanyIdentifierType.DatalandCompanyId) {
+            properties["Company Name"] = companyGetter.getCompanyInfo(companyIdentifierValue).companyName
+        }
         return buildPropertyStyleEmail(
             subject = "Dataland Single Data Request",
             textTitle = "A single data request has been submitted",
