@@ -22,7 +22,9 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-
+/**
+ * This service checks if freshly uploaded an validated data answer a data request
+ */
 @Service("DataRequestUpdater")
 class DataRequestUpdater(
     @Autowired private val messageUtils: MessageQueueUtils,
@@ -67,7 +69,11 @@ class DataRequestUpdater(
         logger.info("Received data QA completed message for dataset with ID $dataId")
         messageUtils.rejectMessageOnException {
             val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
-            dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(metaData.companyId, metaData.reportingPeriod, metaData.dataType.name )
+            dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(
+                metaData.companyId,
+                metaData.reportingPeriod,
+                metaData.dataType.name,
+            )
         }
     }
 }
