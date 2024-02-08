@@ -4,13 +4,11 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -44,8 +42,6 @@ class SingleDataRequestManagerTest {
             companyApi = mock(CompanyDataControllerApi::class.java),
             objectMapper = mockObjectMapper,
             singleDataRequestEmailSender = mockSingleDataRequestEmailSender,
-            messageUtils = mock(MessageQueueUtils::class.java),
-            metaDataControllerApi = mock(MetaDataControllerApi::class.java),
         )
         val mockSecurityContext = mock(SecurityContext::class.java)
         mockAuthentication = AuthenticationMock.mockJwtAuthentication(
