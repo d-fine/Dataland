@@ -146,11 +146,11 @@ jobs:
         run: ./gradlew :dataland-frontend:npm_run_fakefixtures --stacktrace
       - name: verify OpenApi Files
         if: always()
+        env:
+          DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
         run: testing/verifyOpenApiFiles.sh
       - name: verify no it.only exists
         if: always()
-        env:
-          DATALAND_COMMUNITY_MANAGER_CLIENT_SECRET: "password"
         run: |
           ! grep -ri "it\.only" dataland-frontend/tests/
       - name: Upload Test and Coverage Reports
