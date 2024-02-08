@@ -13,5 +13,5 @@ export function selectSingleReportAndFillWithData(
   const uploadReports = new UploadReports(uploadReportsName);
   uploadReports.selectFile(filename);
   uploadReports.validateReportToUploadHasContainerInTheFileSelector(filename);
-  uploadReports.fillAllFormsOfReportsSelectedForUpload(1);
+  uploadReports.fillAllFormsOfReportsSelectedForUpload();
 }
