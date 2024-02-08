@@ -7,7 +7,7 @@ import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.dataland.datalandbatchmanager.service.KeycloakTokenManager
+import org.dataland.datalandbackendutils.services.KeycloakTokenManager
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -19,7 +19,7 @@ import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest(classes = [ObjectMapper::class, OkHttpClient::class])
+@SpringBootTest(classes = [ObjectMapper::class, OkHttpClient::class]) // TODO move to backend utils
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class KeycloakTokenManagerTest {
     @Mock lateinit var httpClient: OkHttpClient

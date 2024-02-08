@@ -22,6 +22,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":dataland-backend-utils"))
     implementation(libs.moshi.kotlin)
     implementation(libs.jackson.dataformat.csv)
     implementation(libs.jackson.kotlin)
