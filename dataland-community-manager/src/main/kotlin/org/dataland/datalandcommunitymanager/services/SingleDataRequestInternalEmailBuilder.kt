@@ -39,7 +39,7 @@ class SingleDataRequestInternalEmailBuilder(
             "User" to buildUserInfo(userAuthentication),
             "Data Type" to dataType.name,
             "Reporting Periods" to reportingPeriods.joinToString(", "),
-            "Company Identifier" to datalandCompanyId,
+            "Dataland Company ID" to datalandCompanyId,
         )
         properties["Company Name"] = companyGetter.getCompanyInfo(datalandCompanyId).companyName
         return buildPropertyStyleEmail(

@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
@@ -80,7 +79,7 @@ class SingleDataRequestManagerTest {
     }
 
     @Test
-    fun `validate that an email is sent with a Dataland company ID provided`() {
+    fun `validate that an email is sent for a Dataland company ID provided`() {
         val request = SingleDataRequest(
             companyIdentifier = companyIdRegexSafeCompanyId,
             frameworkName = DataTypeEnum.lksg,
@@ -94,28 +93,7 @@ class SingleDataRequestManagerTest {
         verify(mockSingleDataRequestEmailSender, times(1)).sendSingleDataRequestEmails(
             mockAuthentication,
             request,
-            DataRequestCompanyIdentifierType.DatalandCompanyId,
             companyIdRegexSafeCompanyId,
-        )
-    }
-
-    @Test
-    fun `validate that an email is sent with an ISIN provided`() {
-        val request = SingleDataRequest(
-            companyIdentifier = "DK0083647253",
-            frameworkName = DataTypeEnum.lksg,
-            listOfReportingPeriods = listOf("1969"),
-            contactList = listOf("contact@othercompany.com"),
-            message = "You forgot to upload data about the moon landing.",
-        )
-        singleDataRequestManager.processSingleDataRequest(
-            request,
-        )
-        verify(mockSingleDataRequestEmailSender, times(1)).sendSingleDataRequestEmails(
-            mockAuthentication,
-            request,
-            DataRequestCompanyIdentifierType.Isin,
-            request.companyIdentifier,
         )
     }
 }
