@@ -98,7 +98,10 @@ describeIf(
       isOnViewPage: boolean,
     ): void {
       const searchBarSelector = isOnViewPage ? "input#company_search_bar_standard" : "input#search_bar_top";
-      cy.intercept({ url: `/api/companies${isOnViewPage ? "/names" : ""}?*`, times: 1 }).as("autocompleteSuggestions");
+      cy.intercept({
+        url: `/api/companies${isOnViewPage ? "/names" : ""}?*`,
+        times: 1,
+      }).as("autocompleteSuggestions");
       cy.get(searchBarSelector).click();
       cy.get(searchBarSelector).type(companyName, { force: true });
       cy.wait("@autocompleteSuggestions", { timeout: Cypress.env("long_timeout_in_ms") as number });
@@ -415,6 +418,7 @@ describeIf(
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`);
 
       getElementAndAssertExistence("noDataForThisDataIdPresentErrorIndicator", "exist");
+      getElementAndAssertExistence("claimOwnershipPanelLink", "not.exist");
 
       cy.visit(
         `/companies/${nonExistingCompanyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`,
@@ -422,6 +426,7 @@ describeIf(
 
       getElementAndAssertExistence("noCompanyWithThisIdErrorIndicator", "not.exist");
       getElementAndAssertExistence("noDataCouldBeLoadedErrorIndicator", "not.exist");
+      getElementAndAssertExistence("claimOwnershipPanelLink", "not.exist");
 
       typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
 

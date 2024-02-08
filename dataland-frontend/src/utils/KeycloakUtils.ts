@@ -25,6 +25,7 @@ export async function getKeycloakRolesForUser(keycloakPromiseGetter: () => Promi
     return resolvedKeycloakPromise.realmAccess.roles;
   } else return [];
 }
+
 export const KEYCLOAK_ROLE_USER = "ROLE_USER";
 export const KEYCLOAK_ROLE_UPLOADER = "ROLE_UPLOADER";
 export const KEYCLOAK_ROLE_REVIEWER = "ROLE_REVIEWER";
@@ -81,4 +82,18 @@ export function registerAndRedirectToSearchPage(keycloak: Keycloak): void {
   const baseUrl = window.location.origin;
   const url = keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/companies` });
   location.assign(url);
+}
+
+/**
+ * Gets the user id
+ * @param getKeycloakPromise the keycloak promise
+ * @returns the user id as string or undefined
+ */
+export async function getUserId(getKeycloakPromise: () => Promise<Keycloak>): Promise<string | undefined> {
+  const parsedIdToken = (await getKeycloakPromise()).idTokenParsed;
+  if (parsedIdToken) {
+    return parsedIdToken.sub;
+  } else {
+    return undefined;
+  }
 }
