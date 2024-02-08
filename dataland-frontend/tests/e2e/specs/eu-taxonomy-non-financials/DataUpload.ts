@@ -102,13 +102,14 @@ describeIf(
       cy.intercept({ url: `**/documents/*`, method: "HEAD", times: 1 }).as("documentExists");
       cy.intercept(`**/documents/`, cy.spy().as("postDocument"));
       cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyNonFinancials}`).as("postCompanyAssociatedData");
-      cy.intercept(`**/api/users/**`).as("getDataForMyDatasetsPage");
       cy.get('button[data-test="submitButton"]').click();
+
       cy.wait("@documentExists", { timeout: Cypress.env("short_timeout_in_ms") as number })
         .its("response.statusCode")
         .should("equal", 200);
       cy.wait("@postCompanyAssociatedData", { timeout: Cypress.env("short_timeout_in_ms") as number });
-      cy.wait("@getDataForMyDatasetsPage");
+      cy.url().should("eq", getBaseUrl() + "/datasets");
+      cy.get('[data-test="datasets-table"]').should("be.visible");
       cy.get("@postDocument").should("not.have.been.called");
     }
 
@@ -167,18 +168,17 @@ describeIf(
               const submittedEutaxonomyNonFinancialsData = assertDefined(
                 request.body as CompanyAssociatedDataEutaxonomyNonFinancialsData,
               ).data;
-              expect(
-                TEST_PDF_FILE_NAME in assertDefined(submittedEutaxonomyNonFinancialsData.general?.referencedReports),
-              ).to.equal(false);
-              expect(
-                `${TEST_PDF_FILE_NAME}2` in
-                  assertDefined(submittedEutaxonomyNonFinancialsData.general?.referencedReports),
-              ).to.equal(true);
+              const submittedReports = assertDefined(submittedEutaxonomyNonFinancialsData.general?.referencedReports);
+              expect(TEST_PDF_FILE_NAME in submittedReports).to.equal(false);
+              expect(`${TEST_PDF_FILE_NAME}2` in submittedReports).to.equal(true);
             }).as("submitEditData");
             cy.get('button[data-test="submitButton"]').click();
             cy.wait(`@submitEditData`, { timeout: Cypress.env("long_timeout_in_ms") as number }).then(
               (interception) => {
                 expect(interception.response?.statusCode).to.eq(200);
+                cy.url().should("eq", getBaseUrl() + "/datasets");
+                cy.get('[data-test="datasets-table"]').should("be.visible");
+
                 goToEditFormAndValidateExistenceOfReports(storedCompany.companyId, false);
                 const metaDataOfReuploadedDataset = assertDefined(interception.response?.body) as DataMetaInformation;
                 checkThatFilesWithSameContentDontGetReuploaded(
