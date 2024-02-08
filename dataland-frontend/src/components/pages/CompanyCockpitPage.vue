@@ -135,10 +135,8 @@ export default defineComponent({
           );
           if (axiosResponse.status == 200) {
             this.isUserDataOwner = true;
-            console.log(axiosResponse);
           }
         } catch (error) {
-          console.error(error);
           this.isUserDataOwner = false;
           if (getErrorMessage(error).includes("404")) {
             this.isUserDataOwner = false;
