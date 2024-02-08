@@ -55,7 +55,7 @@ export class EutaxonomyNonFinancialsGenerator extends Generator {
     return {
       ...this.generateActivity(),
       substantialContributionToClimateChangeMitigationInPercent: this.randomPercentageValue(),
-      substantialContributionToClimateChangeAdaptionInPercent: this.randomPercentageValue(),
+      substantialContributionToClimateChangeAdaptationInPercent: this.randomPercentageValue(),
       substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
         this.randomPercentageValue(),
       substantialContributionToTransitionToACircularEconomyInPercent: this.randomPercentageValue(),
@@ -63,7 +63,7 @@ export class EutaxonomyNonFinancialsGenerator extends Generator {
       substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
         this.randomPercentageValue(),
       dnshToClimateChangeMitigation: this.randomYesNo(),
-      dnshToClimateChangeAdaption: this.randomYesNo(),
+      dnshToClimateChangeAdaptation: this.randomYesNo(),
       dnshToSustainableUseAndProtectionOfWaterAndMarineResources: this.randomYesNo(),
       dnshToTransitionToACircularEconomy: this.randomYesNo(),
       dnshToPollutionPreventionAndControl: this.randomYesNo(),
