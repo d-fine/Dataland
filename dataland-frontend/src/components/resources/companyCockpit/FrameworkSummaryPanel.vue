@@ -78,23 +78,23 @@ const injectedUseMobileView = inject<{ value: boolean }>("useMobileView");
 const useMobileView = computed<boolean | undefined>(() => injectedUseMobileView?.value);
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
-const isUserUploader = ref<boolean>();
+const isUserAllowedToUpload = ref<boolean>();
 onBeforeMount(() => {
   checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
     .then((result) => {
-      isUserUploader.value = result;
+      isUserAllowedToUpload.value = result;
     })
     .catch((error) => console.log(error));
   isUserDataOwnerForCompany(props.companyId, getKeycloakPromise)
     .then((result) => {
-      if (!isUserUploader.value) {
-        isUserUploader.value = result;
+      if (!isUserAllowedToUpload.value) {
+        isUserAllowedToUpload.value = result;
       }
     })
     .catch((error) => console.log(error));
 });
 const showProvideDataButton = computed(() => {
-  return isUserUploader.value && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
+  return isUserAllowedToUpload.value && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
 });
 
 const authenticated = inject<{ value: boolean }>("authenticated");
