@@ -152,8 +152,8 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: "between:0,100",
           },
           {
-            name: "substantialContributionToClimateChangeAdaptionInPercent",
-            label: "Substantial Contribution to Climate Change Adaption",
+            name: "substantialContributionToClimateChangeAdaptationInPercent",
+            label: "Substantial Contribution to Climate Change Adaptation",
             description: "Grade of the substantial contribution criterion fulfillment",
             unit: "%",
             component: "PercentageFormField",
@@ -318,8 +318,8 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: "between:0,100",
           },
           {
-            name: "substantialContributionToClimateChangeAdaptionInPercent",
-            label: "Substantial Contribution to Climate Change Adaption",
+            name: "substantialContributionToClimateChangeAdaptationInPercent",
+            label: "Substantial Contribution to Climate Change Adaptation",
             description: "Grade of the substantial contribution criterion fulfillment",
             unit: "%",
             component: "PercentageFormField",
@@ -483,8 +483,8 @@ export const eutaxonomyNonFinancialsDataModel = [
             validation: "between:0,100",
           },
           {
-            name: "substantialContributionToClimateChangeAdaptionInPercent",
-            label: "Substantial Contribution to Climate Change Adaption",
+            name: "substantialContributionToClimateChangeAdaptationInPercent",
+            label: "Substantial Contribution to Climate Change Adaptation",
             description: "Grade of the substantial contribution criterion fulfillment",
             unit: "%",
             component: "PercentageFormField",
