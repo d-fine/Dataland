@@ -1,4 +1,4 @@
-import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import { reader_name, reader_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
 import { type SingleDataRequest } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
@@ -51,6 +51,16 @@ describeIf(
       cy.get("[data-test=requestStatusText]").should("contain.text", "Success");
       cy.get('[data-test="backToCompanyPageButton"]').click();
       cy.url().should("contain", "/companies/");
+    });
+
+    it("As a data_reader trying to submit a request should lead to an appropriate error message", () => {
+      cy.ensureLoggedIn(reader_name, reader_pw);
+      cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
+      chooseReportingPeriod();
+      chooseFramework();
+      cy.get("button[type='submit']").should("exist").click();
+      cy.get("[data-test=submittedDiv]").should("exist");
+      cy.get("[data-test=requestStatusText]").should("contain.text", "Request Unsuccessful");
     });
 
     /**
