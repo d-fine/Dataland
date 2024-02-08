@@ -180,8 +180,8 @@ export default defineComponent({
           {
             substantialContributionToClimateChangeMitigationInPercent:
               col.substantialContributionToClimateChangeMitigationInPercent,
-            substantialContributionToClimateChangeAdaptionInPercent:
-              col.substantialContributionToClimateChangeAdaptionInPercent,
+            substantialContributionToClimateChangeAdaptationInPercent:
+              col.substantialContributionToClimateChangeAdaptationInPercent,
             substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
               col.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
             substantialContributionToTransitionToACircularEconomyInPercent:
@@ -198,7 +198,7 @@ export default defineComponent({
           "dnshCriteria",
           {
             dnshToClimateChangeMitigation: col.dnshToClimateChangeMitigation,
-            dnshToClimateChangeAdaption: col.dnshToClimateChangeAdaption,
+            dnshToClimateChangeAdaptation: col.dnshToClimateChangeAdaptation,
             dnshToSustainableUseAndProtectionOfWaterAndMarineResources:
               col.dnshToSustainableUseAndProtectionOfWaterAndMarineResources,
             dnshToTransitionToACircularEconomy: col.dnshToTransitionToACircularEconomy,
