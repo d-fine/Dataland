@@ -21,13 +21,14 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+
 @Service("DataRequestUpdater")
-class DataRequestUpdater (
+class DataRequestUpdater(
     @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestRepository: DataRequestRepository,
-){
+) {
     /**
      * Method to send out a confirmation email to the requester as soon as the requested data is provided by the company
      * @param jsonString the message describing the result of the completed QA process
@@ -61,6 +62,7 @@ class DataRequestUpdater (
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
-        dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(metaData.companyId, metaData.reportingPeriod, metaData.dataType.name )
+        dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(metaData.companyId,
+            metaData.reportingPeriod, metaData.dataType.name)
     }
 }
