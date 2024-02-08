@@ -1,11 +1,12 @@
 package org.dataland.datalandbackendutils.services
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.dataland.datalandbackendutils.model.KeycloakAccessTokenResponse
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -29,6 +30,15 @@ class KeycloakTokenManager(
     @Value("\${dataland.dataland-community-manager.client-id}") private val clientId: String,
     @Value("\${dataland.dataland-community-manager.client-secret}") private val clientSecret: String,
 ) {
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    data class KeycloakAccessTokenResponse(
+        @JsonProperty("access_token")
+        val accessToken: String,
+
+        @JsonProperty("expires_in")
+        val expiresIn: Int,
+    )
+
     companion object {
         private const val LIFETIME_THRESHOLD_IN_SECONDS = 30
     }
