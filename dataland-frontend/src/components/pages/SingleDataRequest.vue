@@ -171,7 +171,7 @@ export default defineComponent({
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
     const footerContent = footerPage?.sections;
-    const frameworkOptions: DataTypeEnum[] = Object.values(DataTypeEnum).sort();
+    const frameworkOptions: DataTypeEnum[] = Object.values(DataTypeEnum);
     return {
       singleDataRequestModel: {},
       footerContent,
