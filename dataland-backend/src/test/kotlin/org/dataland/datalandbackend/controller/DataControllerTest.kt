@@ -35,18 +35,18 @@ internal class DataControllerTest(
     @Autowired @Spy
     var objectMapper: ObjectMapper,
 ) {
-    final val testDataProvider = TestDataProvider(objectMapper)
+    val testDataProvider = TestDataProvider(objectMapper)
 
     val testDataType = DataType.valueOf("eutaxonomy-non-financials")
     val storedCompanyEntity = testDataProvider.getEmptyStoredCompanyEntity()
-    final val someEuTaxoData = testDataProvider.getEuTaxonomyNonFinancialsDataset()
+    val someEuTaxoData = testDataProvider.getEuTaxonomyNonFinancialsDataset()
     val someEuTaxoDataAsString = objectMapper.writeValueAsString(someEuTaxoData)!!
 
-    final val testUserId = "testuser"
-    final val otherUserId = "otheruser"
-    private final val testUserPendingDataId = "testuser_pending"
-    private final val otherUserPendingDataId = "otheruser_pending"
-    private final val otherUserAcceptedDataId = "otheruser_accepted"
+    val testUserId = "testuser"
+    val otherUserId = "otheruser"
+    val testUserPendingDataId = "testuser_pending"
+    val otherUserPendingDataId = "otheruser_pending"
+    val otherUserAcceptedDataId = "otheruser_accepted"
     val testUserPendingDataMetaInformationEntity =
         buildDataMetaInformationEntity(testUserPendingDataId, testUserId, QaStatus.Pending)
     val otherUserPendingDataMetaInformationEntity =
