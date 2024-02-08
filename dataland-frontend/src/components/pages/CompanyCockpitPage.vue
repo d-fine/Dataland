@@ -4,7 +4,10 @@
     <CompanyInfoSheet :company-id="companyId" />
     <div class="card-wrapper">
       <div class="card-grid">
-        <ClaimOwnershipPanel v-if="!isUserDataOwner && userId && isCompanyIdValid" :company-id="companyId" />
+        <ClaimOwnershipPanel
+          v-if="!isUserDataOwner && userId && isCompanyIdValid && !hasCompanyDataOwner"
+          :company-id="companyId"
+        />
 
         <FrameworkSummaryPanel
           v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
@@ -62,7 +65,8 @@ export default defineComponent({
       if (newCompanyId !== oldCompanyId) {
         try {
           await this.getAggregatedFrameworkDataSummary();
-          await this.getDataOwnerInformation();
+          await this.getCompanyDataOwnerInformation();
+          await this.getUserDataOwnerInformation();
           await this.awaitUserId();
         } catch (error) {
           console.error("Error fetching data for new company:", error);
@@ -99,14 +103,16 @@ export default defineComponent({
         | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
       isUserDataOwner: undefined as boolean | undefined,
+      hasCompanyDataOwner: undefined as boolean | undefined,
       footerContent,
       userId: undefined as string | undefined,
     };
   },
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
+    void this.getCompanyDataOwnerInformation();
     void this.awaitUserId();
-    void this.getDataOwnerInformation();
+    void this.getUserDataOwnerInformation();
   },
   methods: {
     /**
@@ -119,11 +125,26 @@ export default defineComponent({
         await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
       ).data as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary } | undefined;
     },
+    /**
+     * Retrieves if the company has any data owner
+     */
+    async getCompanyDataOwnerInformation(): Promise<void> {
+      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
+        .companyDataController;
+      const atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).data.length > 0) as
+        | boolean
+        | undefined;
 
+      if (atLeastOneDataOwner !== undefined) {
+        this.hasCompanyDataOwner = atLeastOneDataOwner;
+      } else {
+        this.hasCompanyDataOwner = false;
+      }
+    },
     /**
      * Get the Information about Data-ownership
      */
-    async getDataOwnerInformation() {
+    async getUserDataOwnerInformation() {
       await this.awaitUserId();
       if (this.userId !== undefined && this.isCompanyIdValid) {
         try {
@@ -135,7 +156,6 @@ export default defineComponent({
           );
           if (axiosResponse.status == 200) {
             this.isUserDataOwner = true;
-            console.log(axiosResponse);
           }
         } catch (error) {
           console.error(error);
@@ -153,7 +173,6 @@ export default defineComponent({
      */
     async awaitUserId(): Promise<void> {
       this.userId = await getUserId(assertDefined(this.getKeycloakPromise));
-      console.log(this.userId);
     },
   },
 });

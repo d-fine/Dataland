@@ -8,7 +8,7 @@
       <div class="company-details__headline">
         <div class="left-elements">
           <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
-          <div class="p-badge badge-light-green outline" data-test="verifiedDataOwnerBadge" v-if="isUserDataOwner">
+          <div class="p-badge badge-light-green outline" data-test="verifiedDataOwnerBadge" v-if="hasCompanyDataOwner">
             <span class="material-icons-outlined fs-sm">verified</span>
             Verified Data Owner
           </div>
@@ -76,6 +76,7 @@ export default defineComponent({
       waitingForData: true,
       companyIdDoesNotExist: false,
       isUserDataOwner: false,
+      hasCompanyDataOwner: false,
       dialogIsOpen: false,
       claimIsSubmitted: false,
       userId: undefined as string | undefined,
@@ -118,13 +119,15 @@ export default defineComponent({
   },
   mounted() {
     void this.getCompanyInformation();
+    void this.getCompanyDataOwnerInformation();
     void this.awaitUserId();
-    void this.getDataOwnerInformation();
+    void this.getUserDataOwnerInformation();
   },
   watch: {
     companyId() {
       void this.getCompanyInformation();
-      void this.getDataOwnerInformation();
+      void this.getUserDataOwnerInformation();
+      void this.getCompanyDataOwnerInformation();
       this.claimIsSubmitted = false;
     },
   },
@@ -158,11 +161,26 @@ export default defineComponent({
         this.companyInformation = null;
       }
     },
+    /**
+     * Retrieves if the company has any data owner
+     */
+    async getCompanyDataOwnerInformation(): Promise<void> {
+      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
+        .companyDataController;
+      const atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).data.length > 0) as
+        | boolean
+        | undefined;
 
+      if (atLeastOneDataOwner !== undefined) {
+        this.hasCompanyDataOwner = atLeastOneDataOwner;
+      } else {
+        this.hasCompanyDataOwner = false;
+      }
+    },
     /**
      * Get the Information about Data-ownership
      */
-    async getDataOwnerInformation() {
+    async getUserDataOwnerInformation() {
       await this.awaitUserId();
       if (this.userId !== undefined && this.isCompanyIdValid) {
         try {
