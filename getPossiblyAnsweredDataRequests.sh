@@ -1,23 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# TODO should not be in the final commit
 # This script delivers the IDs of data requests that open but for which there is data
 
 TARGET=$1
 ADMIN_BEARER_TOKEN=$2
 
-#curl -L -s -X GET -H "accept: application/json" -H "Authorization: Bearer $ADMIN_BEARER_TOKEN" "https://$TARGET/community/requests"
-REQUESTS=$(curl -L -s -X GET -H "accept: application/json" -H "Authorization: Bearer $ADMIN_BEARER_TOKEN" "https://$TARGET/community/requests" | jq -c '.[]')
-#echo $REQUESTS
-#  jq -c '.[] | { requestId: .dataRequestId, companyId: .dataRequestCompanyIdentifierValue, dataType: .dataType, reportingPeriod: .reportingPeriod}')
-
 OUTPUT_FILE=request_ids.txt
 rm $OUTPUT_FILE || true
 touch $OUTPUT_FILE
-for REQUEST in $REQUESTS; do
+
+REQUESTS=$(curl -L -s -X GET -H "accept: application/json" -H "Authorization: Bearer $ADMIN_BEARER_TOKEN" "https://$TARGET/community/requests" | jq -c '.[]')
+for REQUEST in ${REQUESTS[@]}; do
   REQUEST_ID=$(jq -r '.dataRequestId' <<< "$REQUEST")
   COMPANY_IDENTIFIER_TYPE=$(jq -r '.dataRequestCompanyIdentifierType' <<< "$REQUEST")
   COMPANY_IDENTIFIER=$(jq -r '.dataRequestCompanyIdentifierValue' <<< "$REQUEST")
+  REQUEST_STATUS=$(jq -r '.requestStatus' <<< "$REQUEST")
+  if [ "$REQUEST_STATUS" != 'Open' ]; then
+    continue
+  fi
   if [ "$COMPANY_IDENTIFIER_TYPE" = "DatalandCompanyId" ]; then
     COMPANY_IDS=("$COMPANY_IDENTIFIER")
   else
