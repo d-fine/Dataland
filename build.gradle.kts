@@ -139,11 +139,7 @@ sonar {
                 // backend
                 "dataland-backend/src/main/kotlin/," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
-                "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt" +
-
-                // toolbox
-                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/eutaxonomynon" +
-                "financials/custom/EuTaxonomyAssuranceComponent.kt",
+                "org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/Activity.kt",
         )
     }
 }
