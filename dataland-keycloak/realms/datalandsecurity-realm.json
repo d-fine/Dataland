@@ -522,172 +522,148 @@
   "webAuthnPolicyPasswordlessCreateTimeout": 0,
   "webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister": false,
   "webAuthnPolicyPasswordlessAcceptableAaguids": [],
-  "users": [
-    {
-      "id": "136a9394-4873-4a61-a25b-65b1e8e7cc2f",
-      "createdTimestamp": 1673357193251,
-      "username": "data_admin",
-      "enabled": true,
-      "totp": false,
-      "emailVerified": true,
-      "credentials": [
-        {
-          "id": "f327a74c-ae09-43d6-bd98-a5c4a8080a55",
-          "type": "password",
-          "createdDate": 1673357534834,
-          "secretData": "{\"value\":\"${KEYCLOAK_DATALAND_ADMIN_VALUE}\",\"salt\":\"${KEYCLOAK_DATALAND_ADMIN_SALT}\",\"additionalParameters\":{}}",
-          "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
-        }
-      ],
-      "disableableCredentialTypes": [],
-      "requiredActions": [],
-      "realmRoles": [
-        "ROLE_ADMIN",
-        "default-roles-datalandsecurity"
-      ],
-      "notBefore": 0,
-      "groups": []
-    },
-    {
-      "id": "f9f59ab3-f688-4a08-b6d6-370ec8f1c823",
-      "createdTimestamp": 1707400654610,
-      "username": "data_premium_user",
-      "enabled": true,
-      "totp": false,
-      "emailVerified": true,
-      "credentials": [
-        {
-          "id": "dd625a76-56ff-4fe6-856d-4df290964b0d",
-          "type": "password",
-          "createdDate": 1707401232213,
-          "secretData": "{\"value\":\"${KEYCLOAK_PREMIUM_USER_VALUE}\",\"salt\":\"${KEYCLOAK_PREMIUM_USER_SALT}\",\"additionalParameters\":{ }}",
-          "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{ }}"
-        }
-      ],
-      "disableableCredentialTypes": [],
-      "requiredActions": [],
-      "realmRoles": [
-        "ROLE_PREMIUM_USER",
-        "default-roles-datalandsecurity"
-      ],
-      "notBefore": 0,
-      "groups": []
-    },
-    {
-      "id": "f7a02ff1-0dab-4e10-a908-7d775c1014ae",
-      "createdTimestamp": 1684915574777,
-      "username": "data_reviewer",
-      "enabled": true,
-      "totp": false,
-      "emailVerified": true,
-      "credentials": [
-        {
-          "id": "18740e54-9c4b-462e-a5d8-ca527acb6b12",
-          "type": "password",
-          "createdDate": 1684915574777,
-          "secretData": "{\"value\":\"${KEYCLOAK_REVIEWER_VALUE}\",\"salt\":\"${KEYCLOAK_REVIEWER_SALT}\",\"additionalParameters\":{ }}",
-          "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{ }}"
-        }
-      ],
-      "disableableCredentialTypes": [],
-      "requiredActions": [],
-      "realmRoles": [
-        "ROLE_REVIEWER",
-        "default-roles-datalandsecurity"
-      ],
-      "notBefore": 0,
-      "groups": []
-    },
-    {
-      "id": "c5ef10b1-de23-4a01-9005-e62ea226ee83",
-      "createdTimestamp": 1655881231268,
-      "username": "data_uploader",
-      "enabled": true,
-      "totp": false,
-      "emailVerified": true,
-      "credentials": [
-        {
-          "id": "b0bb5d63-0e6b-47af-a3f7-462e1a881cd9",
-          "type": "password",
-          "createdDate": 1655881525020,
-          "secretData": "{\"value\":\"${KEYCLOAK_UPLOADER_VALUE}\",\"salt\":\"${KEYCLOAK_UPLOADER_SALT}\",\"additionalParameters\":{ }}",
-          "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{ }}"
-        }
-      ],
-      "disableableCredentialTypes": [],
-      "requiredActions": [],
-      "realmRoles": [
-        "ROLE_UPLOADER",
-        "default-roles-datalandsecurity"
-      ],
-      "notBefore": 0,
-      "groups": []
-    },
-    {
-      "id": "18b67ecc-1176-4506-8414-1e81661017ca",
-      "createdTimestamp": 1655881254758,
-      "username": "data_reader",
-      "enabled": true,
-      "totp": false,
-      "emailVerified": true,
-      "credentials": [
-        {
-          "id": "2146c047-7342-4adb-ae73-33e268ab398b",
-          "type": "password",
-          "createdDate": 1655881581628,
-          "secretData": "{\"value\":\"${KEYCLOAK_READER_VALUE}\",\"salt\":\"${KEYCLOAK_READER_SALT}\",\"additionalParameters\":{ }}",
-          "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{ }}"
-        }
-      ],
-      "disableableCredentialTypes": [],
-      "requiredActions": [],
-      "realmRoles": [
-        "ROLE_USER",
-        "default-roles-datalandsecurity"
-      ],
-      "notBefore": 0,
-      "groups": []
-    },
-    {
-      "id": "d5fcac69-9e77-4b91-9295-609f41676cc0",
-      "createdTimestamp": 1702466529529,
-      "username": "service-account-dataland-batch-manager",
-      "enabled": true,
-      "totp": false,
-      "emailVerified": false,
-      "serviceAccountClientId": "dataland-batch-manager",
-      "credentials": [],
-      "disableableCredentialTypes": [],
-      "requiredActions": [
-        "terms_and_conditions"
-      ],
-      "realmRoles": [
-        "ROLE_UPLOADER",
-        "default-roles-datalandsecurity"
-      ],
-      "notBefore": 0,
-      "groups": []
-    },
-    {
-      "id": "f4627eda-1361-4548-a9d3-c0120be9bdb7",
-      "createdTimestamp": 123456789,
-      "username": "service-account-dataland-automated-qa",
-      "enabled": true,
-      "totp": false,
-      "emailVerified": false,
-      "serviceAccountClientId": "dataland-automated-qa-service",
-      "credentials": [],
-      "disableableCredentialTypes": [],
-      "requiredActions": [
-        "terms_and_conditions"
-      ],
-      "realmRoles": [
-        "ROLE_REVIEWER",
-        "default-roles-datalandsecurity"
-      ],
-      "notBefore": 0,
-      "groups": []
-    }
+  "users" : [ {
+    "id" : "136a9394-4873-4a61-a25b-65b1e8e7cc2f",
+    "createdTimestamp" : 1673357193251,
+    "username" : "data_admin",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "credentials" : [ {
+      "id" : "f327a74c-ae09-43d6-bd98-a5c4a8080a55",
+      "type" : "password",
+      "createdDate" : 1673357534834,
+      "secretData" : "{\"value\":\"${KEYCLOAK_DATALAND_ADMIN_VALUE}\",\"salt\":\"${KEYCLOAK_DATALAND_ADMIN_SALT}\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_ADMIN", "default-roles-datalandsecurity" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "f7a02ff1-0dab-4e10-a908-7d775c1014ae",
+    "createdTimestamp" : 1684915574777,
+    "username" : "data_reviewer",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "credentials" : [
+      {
+        "id" : "18740e54-9c4b-462e-a5d8-ca527acb6b12",
+        "type" : "password",
+        "createdDate" : 1684915574777,
+        "secretData" : "{\"value\":\"${KEYCLOAK_REVIEWER_VALUE}\",\"salt\":\"${KEYCLOAK_REVIEWER_SALT}\",\"additionalParameters\":{ }}",
+        "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{ }}"
+      }
+    ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [
+      "ROLE_REVIEWER",
+      "default-roles-datalandsecurity"
+    ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "f9f59ab3-f688-4a08-b6d6-370ec8f1c823",
+    "createdTimestamp" : 1707400654610,
+    "username" : "data_premium_user",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "credentials" : [ {
+        "id" : "dd625a76-56ff-4fe6-856d-4df290964b0d",
+        "type" : "password",
+        "createdDate" : 1707401232213,
+        "secretData" : "{\"value\":\"${KEYCLOAK_PREMIUM_USER_VALUE}\",\"salt\":\"${KEYCLOAK_PREMIUM_USER_SALT}\",\"additionalParameters\":{ }}",
+        "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{ }}"
+      } ],
+    "disableableCredentialTypes": [ ],
+    "requiredActions": [ ],
+    "realmRoles": [
+      "ROLE_PREMIUM_USER",
+      "default-roles-datalandsecurity"
+    ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "c5ef10b1-de23-4a01-9005-e62ea226ee83",
+    "createdTimestamp" : 1655881231268,
+    "username" : "data_uploader",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "credentials" : [
+      {
+        "id" : "b0bb5d63-0e6b-47af-a3f7-462e1a881cd9",
+        "type" : "password",
+        "createdDate" : 1655881525020,
+        "secretData" : "{\"value\":\"${KEYCLOAK_UPLOADER_VALUE}\",\"salt\":\"${KEYCLOAK_UPLOADER_SALT}\",\"additionalParameters\":{ }}",
+        "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{ }}"
+      }
+    ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [
+      "ROLE_UPLOADER",
+      "default-roles-datalandsecurity"
+    ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "18b67ecc-1176-4506-8414-1e81661017ca",
+    "createdTimestamp" : 1655881254758,
+    "username" : "data_reader",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "credentials" : [
+      {
+        "id" : "2146c047-7342-4adb-ae73-33e268ab398b",
+        "type" : "password",
+        "createdDate" : 1655881581628,
+        "secretData" : "{\"value\":\"${KEYCLOAK_READER_VALUE}\",\"salt\":\"${KEYCLOAK_READER_SALT}\",\"additionalParameters\":{ }}",
+        "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{ }}"
+      }
+    ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [
+      "ROLE_USER",
+      "default-roles-datalandsecurity"
+    ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+      "id" : "d5fcac69-9e77-4b91-9295-609f41676cc0",
+      "createdTimestamp" : 1702466529529,
+      "username" : "service-account-dataland-batch-manager",
+      "enabled" : true,
+      "totp" : false,
+      "emailVerified" : false,
+      "serviceAccountClientId" : "dataland-batch-manager",
+      "credentials" : [ ],
+      "disableableCredentialTypes" : [ ],
+      "requiredActions" : [ "terms_and_conditions" ],
+      "realmRoles" : [ "ROLE_UPLOADER", "default-roles-datalandsecurity" ],
+      "notBefore" : 0,
+      "groups" : [ ]
+    }, {
+    "id": "f4627eda-1361-4548-a9d3-c0120be9bdb7",
+    "createdTimestamp" : 123456789,
+    "username" : "service-account-dataland-automated-qa",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : false,
+    "serviceAccountClientId" : "dataland-automated-qa-service",
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ "terms_and_conditions" ],
+    "realmRoles" : [ "ROLE_REVIEWER", "default-roles-datalandsecurity" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }
   ],
   "scopeMappings": [
     {
@@ -766,9 +742,7 @@
       "redirectUris": [
         "/realms/datalandsecurity/account/*"
       ],
-      "webOrigins": [
-        "+"
-      ],
+      "webOrigins": ["+"],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
