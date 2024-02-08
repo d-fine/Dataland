@@ -151,6 +151,14 @@ describe("Component test for the company cockpit", () => {
     cy.get(attachedSheetSelector).should(isScrolled ? "have.not.css" : "have.css", "visibility", "hidden");
   }
 
+  /**
+   * Validates the existence or non-existence of the single data request button
+   * @param isButtonExpected self explanatory
+   */
+  function validateSingleDataRequestButton(isButtonExpected: boolean): void {
+    cy.get('[data-test="singleDataRequestButton"]').should(isButtonExpected ? "exist" : "not.exist");
+  }
+
   it("Check for all expected elements from a non-logged-in users perspective", () => {
     mockRequestsOnMounted();
     mountCompanyCockpitWithAuthentication(false, false).then(() => {
@@ -170,6 +178,7 @@ describe("Component test for the company cockpit", () => {
       validateSearchBarExistence(true);
       validateCompanyInformationBanner();
       validateFrameworkSummaryPanels(false);
+      validateSingleDataRequestButton(false);
     });
   });
 
@@ -181,6 +190,7 @@ describe("Component test for the company cockpit", () => {
       validateSearchBarExistence(true);
       validateCompanyInformationBanner();
       validateFrameworkSummaryPanels(true);
+      validateSingleDataRequestButton(true);
     });
   });
 

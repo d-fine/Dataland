@@ -103,7 +103,7 @@
             </div>
           </div>
         </FormKit>
-        <div v-if="submitted">
+        <div v-if="submitted" data-test="submittedDiv">
           <template v-if="submittingSucceded">
             <em class="material-icons info-icon green-text">check_circle</em>
             <h1 class="status-text" data-test="requestStatusText">Success</h1>
@@ -120,6 +120,7 @@
             @click="goToCompanyPage()"
             label="BACK TO COMPANY PAGE"
             class="uppercase p-button-outlined"
+            data-test="backToCompanyPageButton"
           />
         </div>
       </div>

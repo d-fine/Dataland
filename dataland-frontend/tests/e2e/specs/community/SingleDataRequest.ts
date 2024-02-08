@@ -1,13 +1,13 @@
-import { admin_name, admin_pw } from "@e2e/utils/Cypress";
+import { uploader_name, uploader_pw } from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
 import { type SingleDataRequest } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
-import { CompanyIdAndName, CompanyInformation, DataTypeEnum, type StoredCompany } from "@clients/backend";
+import { DataTypeEnum, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 
 describeIf(
-  "As a user I want to be able to navigate to the single data request page and submit a request",
+  "As a data_uploader I want to be able to navigate to the single data request page and submit a request",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
@@ -16,12 +16,18 @@ describeIf(
     const testCompanyName = "Company-for-single-data-request" + uniqueCompanyMarker;
     let testStoredCompany: StoredCompany;
     beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
-      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      cy.ensureLoggedIn(uploader_name, uploader_pw);
+      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
         return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
           testStoredCompany = storedCompany;
         });
       });
+    });
+
+    it("Navigate to the single request page via the company cockpit", () => {
+      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}`);
+      cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
+      cy.url().should("contain", `/singledatarequest/${testStoredCompany.companyId}`);
     });
 
     it("Fill out the request page and check correct validation, request and success message", () => {
@@ -39,17 +45,18 @@ describeIf(
 
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
         checkIfRequestContentIsValid(interception);
-        //TODO:check existence of popup message
-        //TODO:check url to confirm the user is taken back to the company cockpit
       });
-    });
-    it("Crate a company and navigate to its single request page via the company cockpit", () => {
-      cy.intercept("**/api/companies/singledatarequest/" + testStoredCompany.companyId).as("goToSingleRequestPage");
-      cy.get("SingleDataRequestButton").should("exist").click();
-      cy.wait("@goToSingleRequestPage", { timeout: Cypress.env("medium_timeout_in_ms") as number });
-      cy.url().should("contain", `/companies/singledatarequest/${testStoredCompany.companyId}`);
+      checkCompanyInfoSheet();
+      cy.get("[data-test=submittedDiv]").should("exist");
+      cy.get("[data-test=requestStatusText]").should("contain.text", "Success");
+      cy.get('[data-test="backToCompanyPageButton"]').click();
+      cy.url().should("contain", "/companies/");
     });
 
+    /**
+     * Checks if the request body that is sent to the backend is valid and matches the given information
+     * @param interception the object of interception with the backend
+     */
     function checkIfRequestContentIsValid(interception: Interception): void {
       if (interception.request !== undefined) {
         const requestBody = interception.request.body as SingleDataRequest;
