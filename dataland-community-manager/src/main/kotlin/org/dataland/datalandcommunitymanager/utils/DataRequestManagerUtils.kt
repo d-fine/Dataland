@@ -81,7 +81,7 @@ class DataRequestManagerUtils(
             dataRequestEntity.creationTimestamp,
             getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
             dataRequestEntity.reportingPeriod,
-            dataRequestEntity.dataRequestCompanyIdentifierValue,
+            dataRequestEntity.datalandCompanyId,
             objectMapper.readValue(
                 dataRequestEntity.messageHistory,
                 object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
@@ -110,7 +110,7 @@ class DataRequestManagerUtils(
      * @param message a message to equip the notification with
      */
     fun storeDataRequestEntityIfNotExisting(
-        identifierValue: String,
+        datalandCompanyId: String,
         dataType: DataTypeEnum,
         reportingPeriod: String,
         contactList: List<String>? = null,
@@ -119,11 +119,11 @@ class DataRequestManagerUtils(
         val dataRequestEntity = buildDataRequestEntity(
             dataType,
             reportingPeriod,
-            identifierValue,
+            datalandCompanyId,
             contactList,
             message,
         )
-        if (!isDataRequestAlreadyExisting(identifierValue, dataType, reportingPeriod)) {
+        if (!isDataRequestAlreadyExisting(datalandCompanyId, dataType, reportingPeriod)) {
             storeDataRequestEntity(dataRequestEntity)
         }
         return dataRequestEntity
@@ -132,7 +132,7 @@ class DataRequestManagerUtils(
     private fun buildDataRequestEntity(
         framework: DataTypeEnum,
         reportingPeriod: String,
-        identifierValue: String,
+        datalandCompanyId: String,
         contactList: List<String>?,
         message: String?,
     ): DataRequestEntity {
@@ -150,7 +150,7 @@ class DataRequestManagerUtils(
             creationTimestamp = currentTimestamp,
             dataTypeName = framework.value,
             reportingPeriod = reportingPeriod,
-            dataRequestCompanyIdentifierValue = identifierValue,
+            datalandCompanyId = datalandCompanyId,
             messageHistory = objectMapper.writeValueAsString(messageHistory),
             lastModifiedDate = currentTimestamp,
             requestStatus = RequestStatus.Open,

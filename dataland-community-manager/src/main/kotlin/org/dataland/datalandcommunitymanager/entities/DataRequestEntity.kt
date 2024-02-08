@@ -26,7 +26,7 @@ data class DataRequestEntity(
 
     val reportingPeriod: String,
 
-    val dataRequestCompanyIdentifierValue: String,
+    val datalandCompanyId: String,
 
     @Column(columnDefinition = "text")
     var messageHistory: String?,

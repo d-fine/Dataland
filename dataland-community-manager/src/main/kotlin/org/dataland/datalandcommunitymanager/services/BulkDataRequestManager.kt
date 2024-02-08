@@ -48,17 +48,21 @@ class BulkDataRequestManager(
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
         for (userProvidedIdentifierValue in cleanedBulkDataRequest.listOfCompanyIdentifiers) {
-            val datalandCompanyID = utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
-            if (datalandCompanyID == null) {
+            val datalandCompanyId = getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
+            if (datalandCompanyId == null) {
                 rejectedIdentifiers.add(userProvidedIdentifierValue)
                 continue
             }
             acceptedIdentifiers.add(userProvidedIdentifierValue)
-            processAcceptedIdentifier(
-                datalandCompanyID,
-                cleanedBulkDataRequest.listOfFrameworkNames,
-                cleanedBulkDataRequest.listOfReportingPeriods,
-            )
+            for (framework in cleanedBulkDataRequest.listOfFrameworkNames) {
+                for (reportingPeriod in cleanedBulkDataRequest.listOfReportingPeriods) {
+                    utils.storeDataRequestEntityIfNotExisting(
+                        datalandCompanyId,
+                        framework,
+                        reportingPeriod,
+                    )
+                }
+            }
         }
         if (acceptedIdentifiers.isNotEmpty()) {
             sendBulkDataRequestNotificationMail(cleanedBulkDataRequest, acceptedIdentifiers, bulkDataRequestId)
@@ -81,7 +85,7 @@ class BulkDataRequestManager(
                 dataRequestEntity.creationTimestamp,
                 utils.getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
                 dataRequestEntity.reportingPeriod,
-                dataRequestEntity.dataRequestCompanyIdentifierValue,
+                dataRequestEntity.datalandCompanyId,
                 objectMapper.readValue(
                     dataRequestEntity.messageHistory,
                     object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
@@ -92,6 +96,19 @@ class BulkDataRequestManager(
         }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
         return retrievedStoredDataRequestsForUser
+    }
+
+    fun getDatalandCompanyIdForIdentifierValue(identifierValue: String): String? {
+        var datalandCompanyId: String? = null
+        val bearerTokenOfRequestingUser = DatalandAuthentication.fromContext().credentials as String
+        val matchingCompanyIdsAndNamesOnDataland =
+            companyGetter.getCompanyIdsAndNamesForSearchString(identifierValue, bearerTokenOfRequestingUser)
+        if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
+            datalandCompanyId = matchingCompanyIdsAndNamesOnDataland.first().companyId
+        }
+        dataRequestLogger
+            .logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(identifierValue, datalandCompanyId)
+        return datalandCompanyId
     }
 
     /** This method triggers a query to get aggregated data requests.
@@ -115,7 +132,7 @@ class BulkDataRequestManager(
             AggregatedDataRequest(
                 utils.getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataTypeName),
                 aggregatedDataRequestEntity.reportingPeriod,
-                aggregatedDataRequestEntity.dataRequestCompanyIdentifierValue,
+                aggregatedDataRequestEntity.datalandCompanyId,
                 aggregatedDataRequestEntity.count,
             )
         }
@@ -188,22 +205,6 @@ class BulkDataRequestManager(
         return removeDuplicatesInRequestLists(bulkDataRequest)
     }
 
-    private fun processAcceptedIdentifier(
-        datalandCompanyID: String,
-        requestedFrameworks: List<DataTypeEnum>,
-        requestedReportingPeriods: List<String>,
-    ) {
-        for (framework in requestedFrameworks) {
-            for (reportingPeriod in requestedReportingPeriods) {
-                utils.storeDataRequestEntityIfNotExisting(
-                    datalandCompanyID,
-                    framework,
-                    reportingPeriod,
-                )
-            }
-        }
-    }
-
     private fun buildResponseMessageForBulkDataRequest(
         totalNumberOfRequestedCompanyIdentifiers: Int,
         numberOfRejectedCompanyIdentifiers: Int,
@@ -246,8 +247,9 @@ class BulkDataRequestManager(
     }
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
-        val summary = "All provided company identifiers are invalid."
-        val message = "The company identifiers you provided do not match an existing company on dataland"
+        val summary = "All provided company identifiers have an invalid format."
+        val message = "The company identifiers you provided do not match the patterns " +
+            "of a valid LEI, ISIN or PermId."
         throw InvalidInputApiException(
             summary,
             message,
