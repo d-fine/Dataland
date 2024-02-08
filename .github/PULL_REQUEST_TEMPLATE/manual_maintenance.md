@@ -21,7 +21,7 @@ appear.
 - [ ] eclipse-temurin exists in version 21 already but cannot be updated, as that breaks e2e tests in CI, we're using 17.
 - [ ] some sec fixes or updates to `package.json` in /frontend and /keycloak break the build:
   - frontend:
-    - [ ] axios > 1.6.2
+    - [ ] axios was updated to latest version 1.6.7 in sprint 60; however, it caused issues before when updating to > 1.6.2, so keep an eye on it)
     - [ ] keycloak-js > 22.0.5
     - [ ] primevue > 3.44.0
     - [ ] vue > 3.4.5
@@ -33,7 +33,7 @@ appear.
   - keycloak:
     - [ ] @zxcvbn-ts/language-common > 2.0.1 (issues in rebuilding keycloak Docker images)
     - [ ] @zxcvbn-ts/language-en > 2.1.0(issues in rebuilding keycloak Docker images)
-    - [ ] vite > 4.5.1
+    - [ ] @types/node > 20.10.8 causes issues with vite > 4.5.1 which causes build to fail
 - [ ] Update e2etests/Dockerfile update breaks the build
 - [ ] Update Ktlint to >= 49.0 breaks the ktlint tasks (issue described here: 
   https://github.com/JLLeitschuh/ktlint-gradle/issues/665 and possible fix here: 
@@ -47,6 +47,10 @@ appear.
 - [ ] Execute `gradlew dependencyUpdates` to get a report on Dependencies with updates
 - [ ] Execute `refreshVersions` in Gradle tasks or `gradlew refreshVersions` to generate version suggestions in `versions.properties`
 - [ ] Update versions in `versions.properties`
+  - [] as of 31.01.2024 plugin.org.springframework.boot=3.2.2 will break the CI, 3.2.1 works fine
+  - [] here is the error message for future reference
+    - tests/e2e/specs/infrastructure/VerifyDeployment.ts(10,38): error TS2339: Property 'health' does not exist on type 'ActuatorApi'. 
+    - tests/e2e/specs/infrastructure/VerifyDeployment.ts(11,20): error TS18046: 'healthResponse' is of type 'unknown'.
 - [ ] Update the gradle wrapper: execute `gradle wrapper --gradle-version X.Y.Z`
 
 ### Dataland frontend
@@ -76,9 +80,17 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-api-key-manager/Dockerfile`
 - [ ] `./dataland-api-key-manager/DockerfileBase`
 - [ ] `./dataland-api-key-manager/DockerfileTest`
+- [ ] `./dataland-automated-qa-service/Dockerfile`
+- [ ] `./dataland-automated-qa-service/DockerfileBase`
+- [ ] `./dataland-automated-qa-service/DockerfileTest`
 - [ ] `./dataland-backend/Dockerfile`
 - [ ] `./dataland-backend/DockerfileBase`
 - [ ] `./dataland-backend/DockerfileTest`
+- [ ] `./dataland-batch-manager/Dockerfile`
+- [ ] `./dataland-batch-manager/DockerfileBase`
+- [ ] `./dataland-community-manager/Dockerfile`
+- [ ] `./dataland-community-manager/DockerfileBase`
+- [ ] `./dataland-community-manager/DockerfileTest`
 - [ ] `./dataland-document-manager/Dockerfile`
 - [ ] `./dataland-document-manager/DockerfileBase`
 - [ ] `./dataland-document-manager/DockerfileTest`
@@ -86,18 +98,19 @@ Update versions in the following dockerfiles
 - [ ] `./dataland-e2etests/DockerfileBase`
 - [ ] `./dataland-frontend/Dockerfile`
 - [ ] `./dataland-frontend/DockerfileTest`
+- [ ] `./dataland-inbound-admin-proxy/Dockerfile`
+- [ ] `./dataland-inbound-proxy/Dockerfile`
 - [ ] `./dataland-internal-storage/Dockerfile`
 - [ ] `./dataland-internal-storage/DockerfileBase`
 - [ ] `./dataland-internal-storage/DockerfileTest`
+- [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
+- [ ] `./dataland-pgadmin/Dockerfile`
 - [ ] `./dataland-qa-service/Dockerfile`
 - [ ] `./dataland-qa-service/DockerfileBase`
 - [ ] `./dataland-qa-service/DockerfileTest`
-- [ ] `./dataland-automated-qa-service/DockerfileBase`
 - [ ] `./dataland-rabbitmq/Dockerfile`
 - [ ] `./dataland-inbound-admin-proxy/Dockerfile`
 - [ ] `./dataland-inbound-proxy/Dockerfile`
-- [ ] `./dataland-pgadmin/Dockerfile`
-- [ ] `./dataland-keycloak/Dockerfile`  (also update realm json files with new version)
 - [ ] `./base-dockerfiles/DockerfileGradle`
 - [ ] Update the versions of the external images for api-key-manager-db, backend-db, keycloak-db, internal-storage-db,
   document-manager-db, qa-service-db, community-manager-db and frontend-dev in `./docker-compose.yml`
@@ -199,8 +212,7 @@ check that all ssh-keys are set and erased from people that have left
   - [ ] Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your
     authorization has worked by assuring that you get a 200 response
 - [ ] If any work on the UI is to be merged, those changes were also documented in the Figma
-- [ ] The local Dev stack still works: execute `startDevelopmentStack.sh` and execute `npm run testpipeline`
-  and `npm run testcomponent` in dataland-frontend
+- [ ] The local Dev stack still works: execute `startDevelopmentStack.sh` and `npm run testcomponent` in dataland-frontend (a bunch of cypress frontend e2e tests fails locally without manually clicking away the cookie banner => meaningless to run testpipeline)
 - [ ] After(!) the cypress tests have passed locally, execute the backend-e2e-tests `./gradlew dataland-e2etests:test`
 - [ ] Locally: Go to the swagger-UI, authorize, run a "GET" request to the companies endpoint and assure that your
   authorization has worked by assuring that you get a 200 response

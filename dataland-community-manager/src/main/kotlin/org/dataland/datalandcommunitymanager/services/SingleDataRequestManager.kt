@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
+import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -27,6 +28,8 @@ import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.messaging.handler.annotation.Header
@@ -43,6 +46,7 @@ class SingleDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyApi: CompanyDataControllerApi,
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val singleDataRequestEmailSender: SingleDataRequestEmailSender,
     @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val metaDataControllerApi: MetaDataControllerApi,
 ) {
@@ -56,33 +60,52 @@ class SingleDataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
-        lateinit var identifierTypeToStore: DataRequestCompanyIdentifierType
-        lateinit var identifierValueToStore: String
-        val storedDataRequests = mutableListOf<StoredDataRequest>()
-        if (companyIdRegex.matches(singleDataRequest.companyIdentifier)) {
-            checkIfCompanyIsValid(singleDataRequest.companyIdentifier)
-            identifierTypeToStore = DataRequestCompanyIdentifierType.DatalandCompanyId
-            identifierValueToStore = singleDataRequest.companyIdentifier
-        } else {
-            val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(singleDataRequest.companyIdentifier)
-            dataRequestLogger.logMessageForSingleDataRequest(singleDataRequest.companyIdentifier)
-            if (matchedIdentifierType != null) {
-                val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
-                    singleDataRequest.companyIdentifier,
-                )
-                identifierTypeToStore = datalandCompanyId?.let {
-                    DataRequestCompanyIdentifierType.DatalandCompanyId
-                } ?: matchedIdentifierType
-                identifierValueToStore = datalandCompanyId ?: singleDataRequest.companyIdentifier
-            } else {
-                throwInvalidInputApiExceptionBecauseIdentifierWasRejected()
-            }
+        if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
+            throw AuthenticationMethodNotSupportedException("You are not using JWT authentication.")
         }
+        val storedDataRequests = mutableListOf<StoredDataRequest>()
+        val (identifierTypeToStore, identifierValueToStore) = identifyIdentifierTypeAndTryGetDatalandCompanyId(
+            singleDataRequest.companyIdentifier,
+        )
+
         throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest)
         storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
             storedDataRequests, singleDataRequest, identifierValueToStore, identifierTypeToStore,
         )
+        singleDataRequestEmailSender.sendSingleDataRequestEmails(
+            userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
+            singleDataRequest = singleDataRequest,
+            companyIdentifierType = identifierTypeToStore,
+            companyIdentifierValue = identifierValueToStore,
+        )
         return storedDataRequests
+    }
+
+    private fun identifyIdentifierTypeAndTryGetDatalandCompanyId(
+        companyIdentifier: String,
+    ): Pair<DataRequestCompanyIdentifierType, String> {
+        if (companyIdRegex.matches(companyIdentifier)) {
+            checkIfCompanyIsValid(companyIdentifier)
+            return Pair(DataRequestCompanyIdentifierType.DatalandCompanyId, companyIdentifier)
+        }
+        val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(companyIdentifier)
+        dataRequestLogger.logMessageForSingleDataRequest(companyIdentifier)
+        if (matchedIdentifierType != null) {
+            val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
+                companyIdentifier,
+            )
+            return Pair(
+                datalandCompanyId?.let {
+                    DataRequestCompanyIdentifierType.DatalandCompanyId
+                } ?: matchedIdentifierType,
+                datalandCompanyId ?: companyIdentifier,
+            )
+        }
+        throw InvalidInputApiException(
+            "The provided company identifier has an invalid format.",
+            "The company identifier you provided does not match the patterns " +
+                "of a valid LEI, ISIN, PermId or Dataland CompanyID.",
+        )
     }
 
     private fun checkIfCompanyIsValid(companyId: String) {
@@ -96,16 +119,6 @@ class SingleDataRequestManager(
                 )
             }
         }
-    }
-
-    private fun throwInvalidInputApiExceptionBecauseIdentifierWasRejected() {
-        val summary = "The provided company identifier has an invalid format."
-        val message = "The company identifier you provided does not match the patterns " +
-            "of a valid LEI, ISIN, PermId or Dataland CompanyID."
-        throw InvalidInputApiException(
-            summary,
-            message,
-        )
     }
 
     private fun throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest: SingleDataRequest) {

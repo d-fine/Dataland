@@ -31,6 +31,7 @@ dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-email"))
     implementation(project(":dataland-message-queue-utils"))
+    testImplementation(project(":dataland-email").dependencyProject.sourceSets.test.get().output)
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)
     implementation(libs.okhttp)
@@ -57,6 +58,7 @@ dependencies {
     implementation(libs.jackson.kotlin)
     implementation(libs.flyway)
     implementation(libs.flyway.core)
+    implementation(libs.freemarker)
 }
 
 openApi {
