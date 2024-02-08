@@ -10653,7 +10653,7 @@
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToClimateChangeAdaptionInPercent": {
+          "substantialContributionToClimateChangeAdaptationInPercent": {
             "type": "number",
             "nullable": true
           },
@@ -10681,7 +10681,7 @@
               }
             ]
           },
-          "dnshToClimateChangeAdaption": {
+          "dnshToClimateChangeAdaptation": {
             "nullable": true,
             "allOf": [
               {
@@ -13739,12 +13739,12 @@
           "companyId": {
             "type": "string"
           },
+          "countryCode": {
+            "type": "string"
+          },
           "sector": {
             "type": "string",
             "nullable": true
-          },
-          "countryCode": {
-            "type": "string"
           },
           "headquarters": {
             "type": "string"
