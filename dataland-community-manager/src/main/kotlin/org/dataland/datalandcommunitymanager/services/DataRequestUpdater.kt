@@ -10,6 +10,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -28,6 +29,8 @@ class DataRequestUpdater (
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestRepository: DataRequestRepository,
 ){
+    private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
+
     /**
      * Method to send out a confirmation email to the requester as soon as the requested data is provided by the company
      * @param jsonString the message describing the result of the completed QA process
@@ -60,7 +63,10 @@ class DataRequestUpdater (
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
-        val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
-        dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(metaData.companyId, metaData.reportingPeriod, metaData.dataType.name )
+        logger.info("Received data QA completed message for dataset with ID $dataId")
+        messageUtils.rejectMessageOnException {
+            val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
+            dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(metaData.companyId, metaData.reportingPeriod, metaData.dataType.name )
+        }
     }
 }
