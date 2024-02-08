@@ -19,6 +19,7 @@ plugins {
     jacoco
     id("org.springframework.boot")
     kotlin("kapt")
+    id("com.gorylenko.gradle-git-properties")
 }
 
 dependencies {
@@ -95,4 +96,8 @@ tasks.register<Copy>("getTestData") {
 
 tasks.getByName("processTestResources") {
     dependsOn("getTestData")
+}
+
+gitProperties {
+    keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }
