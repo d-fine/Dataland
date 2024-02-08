@@ -62,9 +62,7 @@ const { companyId, showSearchBar, showSingleDataRequestButton } = defineProps({
   },
 });
 
-const emit = defineEmits<{
-  fetchedCompanyInformation: [companyInformation: CompanyInformation];
-}>();
+const emit = defineEmits(["fetchedCompanyInformation"]);
 
 /**
  * On fetched company information defines the companyName and emits an event of type "fetchedCompanyInformation"

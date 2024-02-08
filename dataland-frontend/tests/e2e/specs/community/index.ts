@@ -3,5 +3,5 @@
  */
 describe("Community pages tests", () => {
   require("./BulkDataRequest");
-  //TODO: add require("./SingleDataRequest"); after test is ready
+  require("./SingleDataRequest");
 });
