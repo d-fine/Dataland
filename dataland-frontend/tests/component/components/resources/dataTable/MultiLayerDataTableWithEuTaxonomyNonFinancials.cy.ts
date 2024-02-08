@@ -50,7 +50,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         }
         gammaCapexFirstAlignedActivity = gammaCapexAlignedActivities[0];
         gammaCapexFirstAlignedActivity.activityName = Activity.Afforestation;
-        gammaCapexFirstAlignedActivity.substantialContributionToClimateChangeAdaptionInPercent = 0;
+        gammaCapexFirstAlignedActivity.substantialContributionToClimateChangeAdaptationInPercent = 0;
 
         const gammaCapexNonAlignedActivities = assertDefined(gammaCapex.nonAlignedActivities);
         if (gammaCapexNonAlignedActivities.length < 1) {
