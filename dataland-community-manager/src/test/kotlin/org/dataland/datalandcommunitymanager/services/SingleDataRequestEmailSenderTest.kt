@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -116,6 +115,7 @@ class SingleDataRequestEmailSenderTest {
     @Test
     fun `validate that an internal email is sent if there are no contacts provided`() {
         expectSentEmailsToMatchInternalEmail(
+            DataRequestCompanyIdentifierType.DatalandCompanyId,
             true,
         )
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
@@ -240,7 +240,4 @@ class SingleDataRequestEmailSenderTest {
 
     private fun semicolonSeparatedEmailsToEmailContacts(semicolonSeparatedEmails: String): Set<EmailContact> =
         semicolonSeparatedEmails.split(";").filter { it.isNotBlank() }.toEmailContacts()
-
 }
-
-
