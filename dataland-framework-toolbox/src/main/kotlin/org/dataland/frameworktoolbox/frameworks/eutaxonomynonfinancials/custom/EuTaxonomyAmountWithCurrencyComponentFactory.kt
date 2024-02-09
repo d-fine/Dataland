@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * Generates EuTaxonomyAmountWithCurrency from rows with the component "Custom - AmountWithCurrency"
+ * Generates EuTaxonomyAmountWithCurrency from rows with the component "Custom EuTaxonomyAmountWithCurrencyComponent"
  */
 @Component
 class EuTaxonomyAmountWithCurrencyComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
