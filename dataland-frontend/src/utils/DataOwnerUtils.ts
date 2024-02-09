@@ -19,7 +19,7 @@ export async function isUserDataOwnerForCompany(
     const userId = resolvedKeycloakPromise?.idTokenParsed?.sub;
     try {
       await new ApiClientProvider(
-        assertDefined(keycloakPromiseGetter)(),
+        keycloakPromiseGetter(),
       ).backendClients.companyDataController.isUserDataOwnerForCompany(companyId, assertDefined(userId));
       return true;
     } catch (error) {
