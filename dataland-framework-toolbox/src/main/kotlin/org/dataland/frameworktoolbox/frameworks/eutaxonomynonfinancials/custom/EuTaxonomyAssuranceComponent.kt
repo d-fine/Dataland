@@ -57,9 +57,15 @@ class EuTaxonomyAssuranceComponent(
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
+        val guaranteedAssuranceDataPointGenerator = "dataGenerator.generateAssuranceDatapoint()"
+        val fixtureExpression = if (isNullable) {
+            "dataGenerator.valueOrNull($guaranteedAssuranceDataPointGenerator)"
+        } else {
+            guaranteedAssuranceDataPointGenerator
+        }
         sectionBuilder.addAtomicExpression(
             identifier,
-            "dataGenerator.generateAssuranceDatapoint()",
+            fixtureExpression,
         )
     }
 
