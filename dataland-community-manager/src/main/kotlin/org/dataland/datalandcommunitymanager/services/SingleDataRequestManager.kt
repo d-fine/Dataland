@@ -1,7 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
@@ -16,6 +15,7 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -32,6 +32,7 @@ class SingleDataRequestManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val singleDataRequestEmailSender: SingleDataRequestEmailSender,
 ) {
+    val logger = LoggerFactory.getLogger(javaClass)
     private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyGetter, objectMapper)
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
 
@@ -47,16 +48,11 @@ class SingleDataRequestManager(
         }
         lateinit var datalandCompanyID: String
         val storedDataRequests = mutableListOf<StoredDataRequest>()
-
-        /**
-         * val (identifierTypeToStore, identifierValueToStore) = identifyIdentifierTypeAndTryGetDatalandCompanyId(
-         * singleDataRequest.companyIdentifier,
-         )
-         */
-
+        logger.info("The datalandCompanyId is: $singleDataRequest.companyIdentifier")
         val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
             singleDataRequest.companyIdentifier,
         )
+        logger.info("The datalandCompanyId is: $datalandCompanyId")
         if (datalandCompanyId == null) {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         } else {
@@ -71,33 +67,6 @@ class SingleDataRequestManager(
             )
         }
         return storedDataRequests
-    }
-
-    private fun identifyIdentifierTypeAndTryGetDatalandCompanyId(
-        companyIdentifier: String,
-    ): Pair<DataRequestCompanyIdentifierType, String> {
-        if (companyIdRegex.matches(companyIdentifier)) {
-            checkIfCompanyIsValid(companyIdentifier)
-            return Pair(DataRequestCompanyIdentifierType.DatalandCompanyId, companyIdentifier)
-        }
-        val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(companyIdentifier)
-        dataRequestLogger.logMessageForSingleDataRequest(companyIdentifier)
-        if (matchedIdentifierType != null) {
-            val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
-                companyIdentifier,
-            )
-            return Pair(
-                datalandCompanyId?.let {
-                    DataRequestCompanyIdentifierType.DatalandCompanyId
-                } ?: matchedIdentifierType,
-                datalandCompanyId ?: companyIdentifier,
-            )
-        }
-        throw InvalidInputApiException(
-            "The provided company identifier has an invalid format.",
-            "The company identifier you provided does not match the patterns " +
-                "of a valid LEI, ISIN, PermId or Dataland CompanyID.",
-        )
     }
 
     private fun checkIfCompanyIsValid(companyId: String) {

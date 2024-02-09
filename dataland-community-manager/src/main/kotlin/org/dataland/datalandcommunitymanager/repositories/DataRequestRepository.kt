@@ -26,7 +26,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      */
     fun existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
         userId: String,
-        dataRequestCompanyIdentifierValue: String,
+        datalandCompanyId: String,
         dataTypeName: String,
         reportingPeriod: String,
     ): Boolean
@@ -34,7 +34,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     /** This method queries data requests and aggregates all the userIds, so that the result contains the count of
      * data requests for one specific identifierValue, identifierType and framework.
      * It also filters these results based on the provided identifier value and frameworks.
-     * @param identifierValue to check for
+     * @param datalandCompanyId to check for
      * @param reportingPeriod to check for
      * @param dataTypes to check for
      * @returns the aggregated data requests

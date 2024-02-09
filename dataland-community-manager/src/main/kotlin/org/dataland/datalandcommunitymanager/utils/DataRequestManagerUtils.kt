@@ -102,8 +102,7 @@ class DataRequestManagerUtils(
 
     /**
      * Stores a DataRequestEntity from all necessary parameters if this object does not already exist in the database
-     * @param identifierValue the value of the company identifier
-     * @param identifierType the type of the company identifier
+     * @param datalandCompanyId the companyID in dataland
      * @param dataType the enum entry corresponding to the framework
      * @param reportingPeriod the reporting period
      * @param contactList a list of email addresses to inform about the potentially stored data request

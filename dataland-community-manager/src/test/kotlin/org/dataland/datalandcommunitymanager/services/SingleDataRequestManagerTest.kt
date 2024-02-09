@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
@@ -78,8 +79,15 @@ class SingleDataRequestManagerTest {
         }
     }
 
+
     @Test
     fun `validate that an email is sent for a Dataland company ID provided`() {
+        val mokCompany = CompanyInformation (
+            companyName = "test",
+            headquarters ="Frankfurt",
+            identifiers =  ("Lei",  listOf("ExampleLei")),
+            countryCode = "DE",
+        )
         val request = SingleDataRequest(
             companyIdentifier = companyIdRegexSafeCompanyId,
             frameworkName = DataTypeEnum.lksg,
@@ -96,4 +104,5 @@ class SingleDataRequestManagerTest {
             companyIdRegexSafeCompanyId,
         )
     }
+
 }
