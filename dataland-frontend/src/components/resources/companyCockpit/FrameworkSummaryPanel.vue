@@ -85,12 +85,12 @@ onBeforeMount(() => {
       isUserAllowedToUpload.value = result;
     })
     .catch((error) => console.log(error));
-  if(!isUserAllowedToUpload.value) {
-      isUserDataOwnerForCompany(props.companyId, getKeycloakPromise)
-          .then((result) => {
-                  isUserAllowedToUpload.value = result;
-          })
-          .catch((error) => console.log(error));
+  if (!isUserAllowedToUpload.value) {
+    isUserDataOwnerForCompany(props.companyId, getKeycloakPromise)
+      .then((result) => {
+        isUserAllowedToUpload.value = result;
+      })
+      .catch((error) => console.log(error));
   }
 });
 const showProvideDataButton = computed(() => {
