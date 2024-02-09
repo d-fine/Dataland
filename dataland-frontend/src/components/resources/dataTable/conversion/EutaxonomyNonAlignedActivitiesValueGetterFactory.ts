@@ -15,7 +15,7 @@ export const euTaxonomyNonFinancialsModalColumnHeaders = {
     revenue: "Revenue",
     revenuePercent: "Revenue (%)",
     substantialContributionToClimateChangeMitigationInPercent: "Climate Change Mitigation",
-    substantialContributionToClimateChangeAdaptionInPercent: "Climate Change Adaptation",
+    substantialContributionToClimateChangeAdaptationInPercent: "Climate Change Adaptation",
     substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
       "Water and Marine Resources",
     substantialContributionToTransitionToACircularEconomyInPercent: "Circular Economy",
@@ -23,7 +23,7 @@ export const euTaxonomyNonFinancialsModalColumnHeaders = {
     substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent:
       "Biodiversity and Ecosystems",
     dnshToClimateChangeMitigation: "Climate Change Mitigation",
-    dnshToClimateChangeAdaption: "Climate Change Adaptation",
+    dnshToClimateChangeAdaptation: "Climate Change Adaptation",
     dnshToSustainableUseAndProtectionOfWaterAndMarineResources: "Water and Marine Resources",
     dnshToTransitionToACircularEconomy: "Circular Economy",
     dnshToPollutionPreventionAndControl: "Pollution Prevention",

@@ -89,7 +89,7 @@ import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/util
 
 export const euTaxonomyObjectives = [
   "ClimateChangeMitigation",
-  "ClimateChangeAdaption",
+  "ClimateChangeAdaptation",
   "SustainableUseAndProtectionOfWaterAndMarineResources",
   "TransitionToACircularEconomy",
   "PollutionPreventionAndControl",

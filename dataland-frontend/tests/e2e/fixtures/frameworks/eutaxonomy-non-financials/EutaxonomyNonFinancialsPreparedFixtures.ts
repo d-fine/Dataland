@@ -4,6 +4,7 @@ import {
   generateEutaxonomyNonFinancialsData,
   generateEutaxonomyNonFinancialsFixtures,
 } from "./EutaxonomyNonFinancialsDataFixtures";
+import { EutaxonomyNonFinancialsGenerator } from "@e2e/fixtures/frameworks/eutaxonomy-non-financials/EutaxonomyNonFinancialsGenerator";
 
 /**
  * Generates eutaxonomy-non-financials prepared fixtures by generating random eutaxonomy-non-financials datasets and
@@ -77,5 +78,27 @@ function createCompanyBetaWithAllFieldsDefined(
 function createCompanyGammaWithAllFieldsDefined(
   input: FixtureData<EutaxonomyNonFinancialsData>,
 ): FixtureData<EutaxonomyNonFinancialsData> {
-  return createDatasetThatHasAllFieldsDefined(input, "all-fields-defined-for-eu-taxo-non-financials-gamma", "2021");
+  input.companyInformation.companyName = "all-fields-defined-for-eu-taxo-non-financials-gamma";
+  input.reportingPeriod = "2021";
+  input.t = generateEutaxonomyNonFinancialsData(0);
+  const eutaxoNonFinancialsGenerator = new EutaxonomyNonFinancialsGenerator(0);
+  const someNonAlignedActivities = eutaxoNonFinancialsGenerator.randomArray(
+    () => eutaxoNonFinancialsGenerator.generateActivity(),
+    1,
+    4,
+  );
+  const someAlignedActivities = eutaxoNonFinancialsGenerator.randomArray(
+    () => eutaxoNonFinancialsGenerator.generateAlignedActivity(),
+    1,
+    10,
+  );
+
+  const modifiedInput = { ...input };
+  if (modifiedInput.t.capex?.nonAlignedActivities) {
+    modifiedInput.t.capex.nonAlignedActivities = someNonAlignedActivities;
+  }
+  if (modifiedInput.t.capex?.alignedActivities) {
+    modifiedInput.t.capex.alignedActivities = someAlignedActivities;
+  }
+  return modifiedInput;
 }
