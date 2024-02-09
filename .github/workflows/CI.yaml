@@ -51,9 +51,9 @@ jobs:
           cache: gradle
       - name: Frontend component testing
         run: timeout -v 15m ./testing/execute_frontend_component_tests.sh
-# Uncomment the lines below to enable debug logging for investigating flaky component tests.
-#        env:
-#          DEBUG: cypress:*
+        # Uncomment the lines below to enable debug logging for investigating flaky component tests.
+        #        env:
+        #          DEBUG: cypress:*
         if: always()
       - name: Upload Cypress Component Testing Logs
         if: always()
@@ -187,7 +187,7 @@ jobs:
           vars: ${{ toJSON(vars) }}
       - name: Prepare python environment
         if: always()
-        run: | 
+        run: |
           cd ./dataland-automated-qa-service
           pip install --no-cache-dir -r requirements.txt
           pip install -e .
@@ -285,6 +285,9 @@ jobs:
           KEYCLOAK_REVIEWER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_REVIEWER_SALT: "K9nzg086pCNjq8dxl84GZg=="
           KEYCLOAK_REVIEWER_PASSWORD: "password"
+          KEYCLOAK_PREMIUM_USER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
+          KEYCLOAK_PREMIUM_USER_SALT: "K9nzg086pCNjq8dxl84GZg=="
+          KEYCLOAK_PREMIUM_USER_PASSWORD: "password"
           KEYCLOAK_ADMIN: "admin"
           KEYCLOAK_ADMIN_PASSWORD: "password"
           KEYCLOAK_GOOGLE_ID: "irrelevant_in_ci"
