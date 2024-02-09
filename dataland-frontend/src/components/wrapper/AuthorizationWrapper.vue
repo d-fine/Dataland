@@ -52,12 +52,14 @@ export default defineComponent({
         this.hasUserRequiredRole = hasUserRequiredRole;
       })
       .catch((error) => console.log(error));
-    isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
-      .then((isUserDataOwner) => {
-        this.isUserDataOwner = isUserDataOwner;
-        this.waitingForDataOwnershipData = false;
-      })
-      .catch((error) => console.log(error));
+    if(!this.hasUserRequiredRole) {
+        isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
+            .then((isUserDataOwner) => {
+                this.isUserDataOwner = isUserDataOwner;
+                this.waitingForDataOwnershipData = false;
+            })
+            .catch((error) => console.log(error));
+    }
   },
 });
 </script>

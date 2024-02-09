@@ -85,13 +85,13 @@ onBeforeMount(() => {
       isUserAllowedToUpload.value = result;
     })
     .catch((error) => console.log(error));
-  isUserDataOwnerForCompany(props.companyId, getKeycloakPromise)
-    .then((result) => {
-      if (!isUserAllowedToUpload.value) {
-        isUserAllowedToUpload.value = result;
-      }
-    })
-    .catch((error) => console.log(error));
+  if(!isUserAllowedToUpload.value) {
+      isUserDataOwnerForCompany(props.companyId, getKeycloakPromise)
+          .then((result) => {
+                  isUserAllowedToUpload.value = result;
+          })
+          .catch((error) => console.log(error));
+  }
 });
 const showProvideDataButton = computed(() => {
   return isUserAllowedToUpload.value && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
