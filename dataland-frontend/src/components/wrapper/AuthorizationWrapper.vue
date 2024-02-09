@@ -39,10 +39,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    companyId: {
-      type: String,
-      required: true,
-    },
+    companyId: String,
   },
   setup() {
     return {
@@ -57,9 +54,6 @@ export default defineComponent({
       .catch((error) => console.log(error));
     isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
       .then((isUserDataOwner) => {
-        console.log("Here");
-        console.log(this.companyId);
-        console.log(isUserDataOwner);
         this.isUserDataOwner = isUserDataOwner;
         this.waitingForDataOwnershipData = false;
       })
