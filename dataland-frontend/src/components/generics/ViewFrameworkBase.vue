@@ -205,13 +205,13 @@ export default defineComponent({
         this.hasUserUploaderRights = hasUserUploaderRights;
       })
       .catch((error) => console.log(error));
-    isUserDataOwnerForCompany(this.companyID, this.getKeycloakPromise)
-      .then((hasUserUploaderRights) => {
-        if (!this.hasUserUploaderRights) {
-          this.hasUserUploaderRights = hasUserUploaderRights;
-        }
-      })
-      .catch((error) => console.log(error));
+    if(!this.hasUserUploaderRights) {
+        isUserDataOwnerForCompany(this.companyID, this.getKeycloakPromise)
+            .then((hasUserUploaderRights) => {
+                    this.hasUserUploaderRights = hasUserUploaderRights;
+            })
+            .catch((error) => console.log(error));
+    }
     checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
       .then((hasUserReviewerRights) => {
         this.hasUserReviewerRights = hasUserReviewerRights;
