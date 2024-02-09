@@ -47,10 +47,10 @@ class EuTaxonomyAlignedActivitiesComponent(
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         dataClassBuilder.addProperty(
-            this.identifier,
+            identifier,
             TypeReference(
                 "kotlin.collections.MutableList",
-                true,
+                isNullable,
                 listOf(
                     TypeReference(
                         "org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials" +
