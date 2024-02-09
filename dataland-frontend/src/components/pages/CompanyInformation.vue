@@ -95,7 +95,7 @@ export default defineComponent({
     },
     contextMenuItems() {
       const listOfItems = [];
-      if (!this.isUserDataOwner && this.userId) {
+      if (!this.isUserDataOwner && this.userId !== undefined) {
         listOfItems.push({
           label: "Claim Company Dataset Ownership",
           command: () => {
