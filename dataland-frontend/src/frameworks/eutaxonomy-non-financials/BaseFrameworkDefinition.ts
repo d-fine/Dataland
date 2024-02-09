@@ -9,7 +9,7 @@ export class BaseEutaxonomyNonFinancialsFrameworkDefinition
   implements BaseFrameworkDefinition<EutaxonomyNonFinancialsData>
 {
   readonly identifier = "eutaxonomy-non-financials";
-  readonly explanation = "Das Eu Taxonomy Non-Financials Framework";
+  readonly explanation = "The EU-Taxonomy framework for non-financial companies";
   readonly label = "EU Taxonomy Non-Financials";
   getFrameworkApiClient(
     configuration?: Configuration,
