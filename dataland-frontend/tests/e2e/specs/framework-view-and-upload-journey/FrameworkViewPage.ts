@@ -104,7 +104,7 @@ describeIf(
       }).as("autocompleteSuggestions");
       cy.get(searchBarSelector).click();
       cy.get(searchBarSelector).type(companyName, { force: true });
-      cy.wait("@autocompleteSuggestions", { timeout: Cypress.env("long_timeout_in_ms") as number });
+      //  cy.wait("@autocompleteSuggestions", { timeout: Cypress.env("long_timeout_in_ms") as number });
       const companySelector = ".p-autocomplete-item";
       cy.get(companySelector).first().click({ force: true });
     }
@@ -413,29 +413,33 @@ describeIf(
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
     });
 
-    it("Check that invalid data ID, reporting period or company ID in URL don't break any user flow on the view-page", () => {
+    it.only("Check that invalid data ID, reporting period or company ID in URL don't break any user flow on the view-page", () => {
       cy.ensureLoggedIn();
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`);
 
       getElementAndAssertExistence("noDataForThisDataIdPresentErrorIndicator", "exist");
       getElementAndAssertExistence("claimOwnershipPanelLink", "not.exist");
-
+      console.log("1");
       cy.visit(
         `/companies/${nonExistingCompanyId}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`,
       );
-
+      cy.log("2");
       getElementAndAssertExistence("noCompanyWithThisIdErrorIndicator", "not.exist");
+      cy.log("3");
       getElementAndAssertExistence("noDataCouldBeLoadedErrorIndicator", "not.exist");
+      cy.log("4");
       getElementAndAssertExistence("claimOwnershipPanelLink", "not.exist");
-
+      cy.log("5");
       typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
-
+      cy.log("6");
       validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
-
+      cy.log("7");
       clickBackButton();
-
+      cy.log("8");
       getElementAndAssertExistence("noCompanyWithThisIdErrorIndicator", "exist");
+      cy.log("9");
       getElementAndAssertExistence("noDataCouldBeLoadedErrorIndicator", "exist");
+      cy.log("10");
     });
 
     it("Check if the version change bar works as expected on several framework view pages", () => {

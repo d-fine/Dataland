@@ -1,11 +1,12 @@
 <template>
-  <div v-if="hasUserRequiredRole || isUserDataOwner">
-    <slot></slot>
-  </div>
   <div v-if="!hasUserRequiredRole && waitingForDataOwnershipData" class="d-center-div text-center px-7 py-4">
     <p class="font-medium text-xl">Checking for data ownership...</p>
     <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
   </div>
+  <div v-if="hasUserRequiredRole || isUserDataOwner">
+    <slot></slot>
+  </div>
+
   <TheContent v-else class="paper-section flex">
     <MiddleCenterDiv class="col-12">
       <div class="col-6 md:col-8 lg:col-12">
@@ -38,7 +39,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    companyId: String,
+    companyId: {
+      type: String,
+      required: true,
+    },
   },
   setup() {
     return {
@@ -53,6 +57,9 @@ export default defineComponent({
       .catch((error) => console.log(error));
     isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
       .then((isUserDataOwner) => {
+        console.log("Here");
+        console.log(this.companyId);
+        console.log(isUserDataOwner);
         this.isUserDataOwner = isUserDataOwner;
         this.waitingForDataOwnershipData = false;
       })
