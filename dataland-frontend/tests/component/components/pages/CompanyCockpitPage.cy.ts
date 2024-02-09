@@ -31,8 +31,9 @@ describe("Component test for the company cockpit", () => {
 
   /**
    * Mocks the three requests that happen when the company cockpit page is being mounted
+   * @param hasCompanyDataOwner has the company at least one data owner
    */
-  function mockRequestsOnMounted(): void {
+  function mockRequestsOnMounted(hasCompanyDataOwner: boolean = false): void {
     cy.intercept(`**/api/companies/${dummyCompanyId}/info`, {
       body: companyInformationForTest,
       times: 1,
@@ -45,6 +46,15 @@ describe("Component test for the company cockpit", () => {
     cy.intercept("**/api/companies/*/data-owners/mock-data-owner-id", {
       status: 200,
     }).as("fetchUserIsDataOwnerTrue");
+    if (hasCompanyDataOwner) {
+      cy.intercept("**/api/companies/*/data-owners", {
+        status: 200,
+      }).as("fetchHasCompanyDataOwnersFalse");
+    } else {
+      cy.intercept("**/api/companies/*/data-owners", {
+        status: 404,
+      }).as("fetchHasCompanyDataOwnersFalse");
+    }
   }
 
   /**
@@ -108,11 +118,11 @@ describe("Component test for the company cockpit", () => {
 
   /**
    * Validates the existence of the banner that shows info about the company
-   * @param isUserDataOwner is the mocked user data owner?
+   * @param hasCompanyDataOwner has the mocked company at least one data owner?
    */
-  function validateCompanyInformationBanner(isUserDataOwner?: boolean): void {
+  function validateCompanyInformationBanner(hasCompanyDataOwner?: boolean): void {
     cy.contains("h1", companyInformationForTest.companyName);
-    cy.get("[data-test='verifiedDataOwnerBadge']").should(isUserDataOwner ? "exist" : "not.exist");
+    cy.get("[data-test='verifiedDataOwnerBadge']").should(hasCompanyDataOwner ? "exist" : "not.exist");
   }
 
   /**
@@ -169,31 +179,32 @@ describe("Component test for the company cockpit", () => {
   }
 
   it("Check for all expected elements from a non-logged-in users perspective", () => {
-    mockRequestsOnMounted();
+    mockRequestsOnMounted(false);
+
     mountCompanyCockpitWithAuthentication(false, false, [], "").then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
-      validateCompanyInformationBanner();
+      validateCompanyInformationBanner(false);
       validateClaimOwnershipPanel(false);
       validateFrameworkSummaryPanels(false);
     });
   });
 
   it("Check for all expected elements from a logged-in users perspective with read-only rights", () => {
-    mockRequestsOnMounted();
+    mockRequestsOnMounted(true);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_USER]).then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
-      validateCompanyInformationBanner();
-      validateClaimOwnershipPanel(true);
+      validateCompanyInformationBanner(true);
+      validateClaimOwnershipPanel(false);
       validateFrameworkSummaryPanels(false);
     });
   });
 
   it("Check for all expected elements from a logged-in users perspective with uploader-rights", () => {
-    mockRequestsOnMounted();
+    mockRequestsOnMounted(false);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER]).then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
@@ -204,7 +215,7 @@ describe("Component test for the company cockpit", () => {
     });
   });
   it("Check for all expected elements from a logged-in data owner perspective with uploader-rights", () => {
-    mockRequestsOnMounted();
+    mockRequestsOnMounted(true);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], "mock-data-owner-id").then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
