@@ -79,19 +79,25 @@ const useMobileView = computed<boolean | undefined>(() => injectedUseMobileView?
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
 const isUserAllowedToUpload = ref<boolean>();
+//TODO Move rolecheck and owenercheck to company cockpit
 onBeforeMount(() => {
   checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
     .then((result) => {
       isUserAllowedToUpload.value = result;
+      console.log(isUserAllowedToUpload.value);
+    })
+    .then(() => {
+      if (!isUserAllowedToUpload.value) {
+        isUserDataOwnerForCompany(props.companyId, getKeycloakPromise)
+          .then((result) => {
+            console.log("fwewwww");
+            console.log(isUserAllowedToUpload.value);
+            isUserAllowedToUpload.value = result;
+          })
+          .catch((error) => console.log(error));
+      }
     })
     .catch((error) => console.log(error));
-  if (!isUserAllowedToUpload.value) {
-    isUserDataOwnerForCompany(props.companyId, getKeycloakPromise)
-      .then((result) => {
-        isUserAllowedToUpload.value = result;
-      })
-      .catch((error) => console.log(error));
-  }
 });
 const showProvideDataButton = computed(() => {
   return isUserAllowedToUpload.value && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);

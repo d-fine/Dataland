@@ -204,20 +204,23 @@ export default defineComponent({
       .then((hasUserUploaderRights) => {
         this.hasUserUploaderRights = hasUserUploaderRights;
       })
-      .catch((error) => console.log(error));
-    if (!this.hasUserUploaderRights) {
-      isUserDataOwnerForCompany(this.companyID, this.getKeycloakPromise)
-        .then((hasUserUploaderRights) => {
-          this.hasUserUploaderRights = hasUserUploaderRights;
-        })
-        .catch((error) => console.log(error));
-    }
-    checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
-      .then((hasUserReviewerRights) => {
-        this.hasUserReviewerRights = hasUserReviewerRights;
+      .then(() => {
+        checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
+          .then((hasUserReviewerRights) => {
+            this.hasUserReviewerRights = hasUserReviewerRights;
+          })
+          .then(() => {
+            if (!this.hasUserUploaderRights && !this.hasUserReviewerRights) {
+              isUserDataOwnerForCompany(this.companyID, this.getKeycloakPromise)
+                .then((hasUserUploaderRights) => {
+                  this.hasUserUploaderRights = hasUserUploaderRights;
+                })
+                .catch((error) => console.log(error));
+            }
+          })
+          .catch((error) => console.log(error));
       })
       .catch((error) => console.log(error));
-
     window.addEventListener("scroll", this.windowScrollHandler);
   },
   methods: {

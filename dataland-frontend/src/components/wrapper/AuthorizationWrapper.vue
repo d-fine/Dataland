@@ -51,15 +51,17 @@ export default defineComponent({
       .then((hasUserRequiredRole) => {
         this.hasUserRequiredRole = hasUserRequiredRole;
       })
+      .then(() => {
+        if (!this.hasUserRequiredRole) {
+          isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
+            .then((isUserDataOwner) => {
+              this.isUserDataOwner = isUserDataOwner;
+              this.waitingForDataOwnershipData = false;
+            })
+            .catch((error) => console.log(error));
+        }
+      })
       .catch((error) => console.log(error));
-    if (!this.hasUserRequiredRole) {
-      isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
-        .then((isUserDataOwner) => {
-          this.isUserDataOwner = isUserDataOwner;
-          this.waitingForDataOwnershipData = false;
-        })
-        .catch((error) => console.log(error));
-    }
   },
 });
 </script>
