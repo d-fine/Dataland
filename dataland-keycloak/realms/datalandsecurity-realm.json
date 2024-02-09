@@ -87,7 +87,7 @@
       {
         "id": "919a5003-4250-47b1-b271-f6ce80f8be75",
         "name": "ROLE_PREMIUM_USER",
-        "description": "A user role for paying users",
+        "description": "",
         "composite": true,
         "composites": {
           "realm": [
@@ -572,13 +572,15 @@
     "enabled" : true,
     "totp" : false,
     "emailVerified" : true,
-    "credentials" : [ {
+    "credentials" : [
+      {
         "id" : "dd625a76-56ff-4fe6-856d-4df290964b0d",
         "type" : "password",
         "createdDate" : 1707401232213,
         "secretData" : "{\"value\":\"${KEYCLOAK_PREMIUM_USER_VALUE}\",\"salt\":\"${KEYCLOAK_PREMIUM_USER_SALT}\",\"additionalParameters\":{ }}",
         "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{ }}"
-      } ],
+      }
+    ],
     "disableableCredentialTypes": [ ],
     "requiredActions": [ ],
     "realmRoles": [
