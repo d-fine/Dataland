@@ -17,7 +17,7 @@ import java.io.File
 class EuTaxonomyNonFinancialsFramework : InDevelopmentPavedRoadFramework(
     identifier = "eutaxonomy-non-financials",
     label = "EU Taxonomy Non-Financials",
-    explanation = "Das Eu Taxonomy Non-Financials Framework",
+    explanation = "The EU-Taxonomy framework for non-financial companies",
     File(
         "./dataland-framework-toolbox/inputs/euTaxonomyNonFinancials/EutaxonomyNonFinancials.xlsx",
     ),
