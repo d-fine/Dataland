@@ -3,8 +3,6 @@ package org.dataland.e2etests.tests.communityManager
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
-import org.dataland.datalandbackend.openApiClient.model.CompanyId
-import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -30,13 +28,14 @@ class DataRequestUpdaterTest {
 
     @BeforeAll
     fun authenticateAsReader() { jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader) }
+
     @Test
     fun `post single data request and provide data approve it and change the request status`() {
         val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
             testCompanyInformation,
             testDataEuTaxonomyNonFinancials,
         )
-//created two single data requests
+// created two single data requests
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = mapOfIds["companyId"]!!.toString(),
             frameworkName = SingleDataRequest.FrameworkName.eutaxonomyMinusNonMinusFinancials,
@@ -44,7 +43,7 @@ class DataRequestUpdaterTest {
             contactList = listOf("someContact@webserver.de", "simpleString"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
-//post two singe data requests
+// post two singe data requests
 
         val allStoredDataRequests = requestControllerApi.postSingleDataRequest(singleDataRequest)
 
@@ -56,7 +55,7 @@ class DataRequestUpdaterTest {
                 UUID.fromString(storedDataRequest.dataRequestId),
             )
             println(storedDataRequest.dataRequestId)
-            println("Starting request status: " +retrievedDataRequest.requestStatus)
+            println("Starting request status: " + retrievedDataRequest.requestStatus)
             Assertions.assertEquals(storedDataRequest, retrievedDataRequest)
         }
         dummyCompanyAssociatedData =
@@ -65,7 +64,7 @@ class DataRequestUpdaterTest {
                 "2022",
                 testDataEuTaxonomyNonFinancials,
             )
-
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val testQaStatus = uploadDatasetAndValidatePendingState()
         Thread.sleep(1000)
         println(apiAccessor.metaDataControllerApi.getDataMetaInfo(testQaStatus).qaStatus)
@@ -73,11 +72,9 @@ class DataRequestUpdaterTest {
             val retrievedDataRequest = requestControllerApi.getDataRequestById(
                 UUID.fromString(storedDataRequest.dataRequestId),
             )
-            println("Ending request status: " +retrievedDataRequest.requestStatus)
+            println("Ending request status: " + retrievedDataRequest.requestStatus)
             Assertions.assertEquals(storedDataRequest, retrievedDataRequest)
         }
-
-
     }
     private fun uploadDatasetAndValidatePendingState(): String {
         val dataId = dataController.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
