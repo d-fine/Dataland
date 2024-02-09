@@ -38,7 +38,6 @@ import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
 import { getUserId } from "@/utils/KeycloakUtils";
-import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -138,9 +137,6 @@ export default defineComponent({
           }
         } catch (error) {
           this.isUserDataOwner = false;
-          if (getErrorMessage(error).includes("404")) {
-            this.isUserDataOwner = false;
-          }
         }
       } else {
         this.isUserDataOwner = false;
