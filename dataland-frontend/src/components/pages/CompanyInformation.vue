@@ -167,7 +167,7 @@ export default defineComponent({
     async getCompanyDataOwnerInformation(): Promise<void> {
       const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
         .companyDataController;
-      const atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).data.length > 0) as
+      const atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).status == 200) as
         | boolean
         | undefined;
 
