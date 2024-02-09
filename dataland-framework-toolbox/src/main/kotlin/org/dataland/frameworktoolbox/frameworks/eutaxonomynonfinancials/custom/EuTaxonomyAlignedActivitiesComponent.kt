@@ -64,9 +64,14 @@ class EuTaxonomyAlignedActivitiesComponent(
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
+        val fixtureExpression = if (isNullable) {
+            "dataGenerator.randomArray(() => dataGenerator.generateAlignedActivity(), 0, 10)"
+        } else {
+            "dataGenerator.guaranteedArray(() => dataGenerator.generateAlignedActivity(), 0, 10)"
+        }
         sectionBuilder.addAtomicExpression(
             identifier,
-            "dataGenerator.randomArray(() => dataGenerator.generateAlignedActivity(), 0, 10)",
+            fixtureExpression,
         )
     }
 
