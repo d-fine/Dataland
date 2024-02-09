@@ -84,14 +84,11 @@ onBeforeMount(() => {
   checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
     .then((result) => {
       isUserAllowedToUpload.value = result;
-      console.log(isUserAllowedToUpload.value);
     })
     .then(() => {
       if (!isUserAllowedToUpload.value) {
         isUserDataOwnerForCompany(props.companyId, getKeycloakPromise)
           .then((result) => {
-            console.log("fwewwww");
-            console.log(isUserAllowedToUpload.value);
             isUserAllowedToUpload.value = result;
           })
           .catch((error) => console.log(error));
