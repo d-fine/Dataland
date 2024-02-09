@@ -42,7 +42,7 @@ export function generateEutaxonomyNonFinancialsData(
       scopeOfEntities: dataGenerator.randomYesNoNa(),
       nfrdMandatory: dataGenerator.randomYesNo(),
       euTaxonomyActivityLevelReporting: dataGenerator.randomYesNo(),
-      assurance: dataGenerator.generateAssuranceDatapoint(),
+      assurance: dataGenerator.valueOrNull(dataGenerator.generateAssuranceDatapoint()),
       numberOfEmployees: dataGenerator.randomFloat(),
       referencedReports: dataGenerator.reports,
     },
