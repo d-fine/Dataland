@@ -11,10 +11,12 @@ import { waitForAndReturnResolvedKeycloakPromise } from "@/utils/KeycloakUtils";
  * @returns a promise, which resolves to a boolean
  */
 export async function isUserDataOwnerForCompany(
-  companyId?: string,
+  companyId: string,
   keycloakPromiseGetter?: () => Promise<Keycloak>,
 ): Promise<boolean> {
-  if (keycloakPromiseGetter && companyId) {
+  const uuidRegexExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const isCompanyIdValid = uuidRegexExp.test(companyId);
+  if (keycloakPromiseGetter && companyId && isCompanyIdValid) {
     const resolvedKeycloakPromise = await waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter);
     const userId = resolvedKeycloakPromise?.idTokenParsed?.sub;
     try {
