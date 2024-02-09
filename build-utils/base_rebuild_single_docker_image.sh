@@ -35,7 +35,7 @@ full_image_reference="ghcr.io/d-fine/dataland/$docker_image_name:$input_sha"
 echo "${docker_image_name^^}_VERSION=$input_sha" >> ./${BUILD_SCRIPT:-default}_github_env.log
 echo "${docker_image_name^^}_VERSION=$input_sha" >> ${GITHUB_OUTPUT:-/dev/null}
 sha1_manifest=$(docker manifest inspect "$full_image_reference" || echo "no sha1 manifest")
-if [[ "$sha1_manifest" != "no sha1 manifest" ]] ; then
+if [[ ! "$sha1_manifest" =~ "no sha1 manifest" ]] ; then
   echo "docker manifest found. No rebuild for $full_image_reference required"
   exit 0
 fi
