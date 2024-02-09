@@ -168,14 +168,21 @@ export default defineComponent({
       if (this.isCompanyIdValid) {
         const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
           .companyDataController;
-        const atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).status == 200) as
-          | boolean
-          | undefined;
+        try {
+          const atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).status == 200) as
+            | boolean
+            | undefined;
 
-        if (atLeastOneDataOwner !== undefined) {
-          this.hasCompanyDataOwner = atLeastOneDataOwner;
-        } else {
-          this.hasCompanyDataOwner = false;
+          if (atLeastOneDataOwner !== undefined) {
+            this.hasCompanyDataOwner = atLeastOneDataOwner;
+          } else {
+            this.hasCompanyDataOwner = false;
+          }
+        } catch (error) {
+          console.error(error);
+          if (getErrorMessage(error).includes("404")) {
+            this.hasCompanyDataOwner = false;
+          }
         }
       } else {
         this.hasCompanyDataOwner = false;
