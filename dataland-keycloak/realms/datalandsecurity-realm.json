@@ -566,17 +566,17 @@
     "notBefore" : 0,
     "groups" : [ ]
   }, {
-    "id" : "f9f59ab3-f688-4a08-b6d6-370ec8f1c823",
-    "createdTimestamp" : 1707400654610,
+    "id" : "68129cce-52e5-473e-bec9-90046eebc619",
+    "createdTimestamp" : 1707483673877,
     "username" : "data_premium_user",
     "enabled" : true,
     "totp" : false,
     "emailVerified" : true,
     "credentials" : [
       {
-        "id" : "dd625a76-56ff-4fe6-856d-4df290964b0d",
+        "id" : "42e7e900-5f86-4dad-8e2f-b74b716b7b95",
         "type" : "password",
-        "createdDate" : 1707401232213,
+        "createdDate" : 1707483977301,
         "secretData" : "{\"value\":\"${KEYCLOAK_PREMIUM_USER_VALUE}\",\"salt\":\"${KEYCLOAK_PREMIUM_USER_SALT}\",\"additionalParameters\":{ }}",
         "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{ }}"
       }
