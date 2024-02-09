@@ -265,4 +265,18 @@ class DataOwnerControllerTest {
         assertFailingApiUploadToCompany(companyId, frameworkSampleData, true)
         assertSucceedingApiUploadToCompany(companyId, frameworkSampleData)
     }
+
+    @Test
+    fun `check for a company that is has a data owner `() {
+        val companyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyDataControllerApi.postDataOwner(companyId, dataReaderUserId)
+        val dataOwnersAfterPostRequest = apiAccessor.companyDataControllerApi.postDataOwner(
+            companyId,
+            dataReaderUserId,
+        )
+        apiAccessor.companyDataControllerApi.hasCompanyDataOwner(companyId)
+    }
 }

@@ -154,4 +154,29 @@ interface DataOwnerApi {
         @PathVariable("companyId") companyId: UUID,
         @RequestParam comment: String? = null,
     )
+
+    /**
+     * A method to verify if a company has data owners
+     * @param companyId the ID of the company for which the information should be retrieved
+     */
+    @Operation(
+        summary = "Validation if data owners exists for the specified company.",
+        description = "Checks whether company has data owners or not",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "The specified company have data owners."),
+            ApiResponse(
+                responseCode = "404",
+                description = "The specified company has no data owners yet",
+            ),
+        ],
+    )
+    @RequestMapping(
+        method = [RequestMethod.HEAD],
+        value = ["/{companyId}/data-owners/{companyId}"],
+    )
+    fun hasCompanyDataOwner(
+        @PathVariable("companyId") companyId: UUID,
+    )
 }

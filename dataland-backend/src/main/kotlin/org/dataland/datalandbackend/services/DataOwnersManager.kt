@@ -171,7 +171,24 @@ class DataOwnersManager(
     }
 
     /**
-     * Method to send an data ownership request if an ownership does not already exist
+     * A method to verify if a company has data owners
+     * @param companyId the ID of the company for which the information should be retrieved
+     */
+    @Transactional
+    fun checkCompanyForDataOwnership(companyId: String) {
+        checkIfCompanyIsValid(companyId)
+        val dataOwnersEntity = getDataOwnerFromCompany(companyId)
+        val failException = ResourceNotFoundApiException(
+            "Company has no data owners",
+            "Company with $companyId has no .",
+        )
+        if (!dataOwnersEntity.dataOwners.isNotEmpty()) {
+            throw failException
+        }
+    }
+
+    /**
+     * Method to send a data ownership request if an ownership does not already exist
      * @param companyId the ID of the company for which data ownership is being requested
      * @param userAuthentication the DatalandAuthentication of the user who should become a data owner
      */
