@@ -174,7 +174,7 @@ interface DataOwnerApi {
     )
     @RequestMapping(
         method = [RequestMethod.HEAD],
-        value = ["/{companyId}/data-owners/{companyId}"],
+        value = ["/{companyId}/data-owners"],
     )
     fun hasCompanyDataOwner(
         @PathVariable("companyId") companyId: UUID,
