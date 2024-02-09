@@ -31,7 +31,7 @@ class KeycloakTokenManager(
     @Value("\${dataland.keycloak.client-secret}") private val clientSecret: String,
 ) {
     @JsonIgnoreProperties(ignoreUnknown = true)
-    data class KeycloakAccessTokenResponse(
+    private data class KeycloakAccessTokenResponse(
         @JsonProperty("access_token")
         val accessToken: String,
 
@@ -64,7 +64,6 @@ class KeycloakTokenManager(
     private fun updateAccessToken() {
         logger.info("Updating Keycloak Access Token.")
         val authorizationHeader = Base64.getEncoder().encodeToString(("$clientId:$clientSecret").toByteArray())
-
         val mediaType = "application/x-www-form-urlencoded".toMediaType()
         val body = "grant_type=client_credentials".toRequestBody(mediaType)
         val request = Request.Builder()
@@ -74,9 +73,10 @@ class KeycloakTokenManager(
             .addHeader("Authorization", "Basic $authorizationHeader")
             .build()
         val response = httpClient.newCall(request).execute()
-
-        val parsedResponseBody = objectMapper.readValue(response.body!!.string(), KeycloakAccessTokenResponse::class.java)
-
+        val parsedResponseBody = objectMapper.readValue(
+            response.body!!.string(),
+            KeycloakAccessTokenResponse::class.java
+        )
         currentAccessToken = parsedResponseBody.accessToken
         currentAccessTokenExpireTime = Instant.now() + Duration.ofSeconds(parsedResponseBody.expiresIn.toLong())
         logger.info("Acquired new access token!")
