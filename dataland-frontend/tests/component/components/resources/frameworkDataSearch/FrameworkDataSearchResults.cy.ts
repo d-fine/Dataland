@@ -28,7 +28,7 @@ describe("Component tests for 'Bulk Request Data' button on the level of company
     cy.mountWithPlugins<typeof FrameworkDataSearchResults>(FrameworkDataSearchResults, {
       keycloak: keycloakMock,
     }).then((mounted) => {
-      cy.get("button").contains("Bulk Request Data").should("exist").click();
+      cy.get("button").contains("BULK DATA REQUEST").should("exist").click();
       cy.wrap(mounted.component).its("$route.path").should("eq", "/bulkdatarequest");
     });
   });

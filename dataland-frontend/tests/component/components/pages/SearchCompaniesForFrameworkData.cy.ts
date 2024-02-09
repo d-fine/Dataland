@@ -28,7 +28,7 @@ describe("Component tests for the Dataland companies search page", function (): 
       keycloak: keycloakMock,
     }).then((mounted) => {
       cy.wait(500);
-      cy.get("button").contains("Bulk Request Data").should("exist").click({ force: true });
+      cy.get("button").contains("BULK DATA REQUEST").should("exist").click({ force: true });
       cy.wrap(mounted.component).its("$route.path").should("eq", "/bulkdatarequest");
     });
   }
