@@ -50,20 +50,20 @@ export function generateEutaxonomyNonFinancialsData(
       totalAmount: dataGenerator.randomCurrencyDataPoint(),
       nonEligibleShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        absoluteShare: dataGenerator.valueOrNull(dataGenerator.generateAmountWithCurrency()),
       },
       eligibleShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        absoluteShare: dataGenerator.valueOrNull(dataGenerator.generateAmountWithCurrency()),
       },
       nonAlignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        absoluteShare: dataGenerator.valueOrNull(dataGenerator.generateAmountWithCurrency()),
       },
       nonAlignedActivities: dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2),
       alignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        absoluteShare: dataGenerator.valueOrNull(dataGenerator.generateAmountWithCurrency()),
       },
       substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
       substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),
@@ -81,20 +81,20 @@ export function generateEutaxonomyNonFinancialsData(
       totalAmount: dataGenerator.randomCurrencyDataPoint(),
       nonEligibleShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        absoluteShare: dataGenerator.valueOrNull(dataGenerator.generateAmountWithCurrency()),
       },
       eligibleShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        absoluteShare: dataGenerator.valueOrNull(dataGenerator.generateAmountWithCurrency()),
       },
       nonAlignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        absoluteShare: dataGenerator.valueOrNull(dataGenerator.generateAmountWithCurrency()),
       },
       nonAlignedActivities: dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2),
       alignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        absoluteShare: dataGenerator.valueOrNull(dataGenerator.generateAmountWithCurrency()),
       },
       substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
       substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),
@@ -112,20 +112,20 @@ export function generateEutaxonomyNonFinancialsData(
       totalAmount: dataGenerator.randomCurrencyDataPoint(),
       nonEligibleShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        absoluteShare: dataGenerator.valueOrNull(dataGenerator.generateAmountWithCurrency()),
       },
       eligibleShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        absoluteShare: dataGenerator.valueOrNull(dataGenerator.generateAmountWithCurrency()),
       },
       nonAlignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        absoluteShare: dataGenerator.valueOrNull(dataGenerator.generateAmountWithCurrency()),
       },
       nonAlignedActivities: dataGenerator.randomArray(() => dataGenerator.generateActivity(), 0, 2),
       alignedShare: {
         relativeShareInPercent: dataGenerator.randomPercentageValue(),
-        absoluteShare: dataGenerator.generateAmountWithCurrency(),
+        absoluteShare: dataGenerator.valueOrNull(dataGenerator.generateAmountWithCurrency()),
       },
       substantialContributionToClimateChangeMitigationInPercent: dataGenerator.randomPercentageValue(),
       substantialContributionToClimateChangeAdaptationInPercent: dataGenerator.randomPercentageValue(),

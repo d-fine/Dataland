@@ -55,9 +55,15 @@ class EuTaxonomyAmountWithCurrencyComponent(
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
+        val guaranteedAmountWithCurrencyGenerator = "dataGenerator.generateAmountWithCurrency()"
+        val fixtureExpression = if (isNullable) {
+            "dataGenerator.valueOrNull($guaranteedAmountWithCurrencyGenerator)"
+        } else {
+            guaranteedAmountWithCurrencyGenerator
+        }
         sectionBuilder.addAtomicExpression(
             identifier,
-            "dataGenerator.generateAmountWithCurrency()",
+            fixtureExpression,
         )
     }
 }
