@@ -10,7 +10,7 @@ import AlignedActivitiesDataTable from "@/components/general/AlignedActivitiesDa
 import { euTaxonomyNonFinancialsModalColumnHeaders } from "@/components/resources/dataTable/conversion/EutaxonomyNonAlignedActivitiesValueGetterFactory";
 
 /**
- * Formats a EuTaxonomyAlignedActivities coomponent for display in the table using a modal
+ * Formats a EuTaxonomyAlignedActivities component for display in the table using a modal
  * @param input the input to display
  * @param fieldLabel the label of the containing field
  * @returns the display-value for the table
