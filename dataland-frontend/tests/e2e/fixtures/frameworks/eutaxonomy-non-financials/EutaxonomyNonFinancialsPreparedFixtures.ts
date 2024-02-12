@@ -71,7 +71,9 @@ function createCompanyBetaWithAllFieldsDefined(
 }
 
 /**
- * Creates a prepared fixture that has no fields with missing values and a specific name
+ * Creates a prepared fixture that has no fields with missing values and a specific name.
+ * The aligned and non-aligned activities lists need at least one element each because this fixture is used in a test
+ * where modals for displaying these lists are validated.
  * @param input the base fixture to modify
  * @returns the modified fixture
  */
