@@ -32,6 +32,7 @@ dependencies {
     testImplementation(Spring.boot.test)
     implementation(Spring.boot.security)
     kapt(Spring.boot.configurationProcessor)
+    implementation(Spring.boot.web)
 }
 
 tasks.test {
