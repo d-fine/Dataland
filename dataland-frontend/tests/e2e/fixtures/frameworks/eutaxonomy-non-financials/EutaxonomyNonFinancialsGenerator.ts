@@ -42,7 +42,7 @@ export class EutaxonomyNonFinancialsGenerator extends Generator {
       naceCodes: this.valueOrNull(getRandomNumberOfNaceCodesForSpecificActivity(randomActivityName)),
       share: {
         relativeShareInPercent: this.randomPercentageValue(),
-        absoluteShare: this.generateAmountWithCurrency(),
+        absoluteShare: this.valueOrNull(this.generateAmountWithCurrency()),
       },
     };
   }
