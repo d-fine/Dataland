@@ -118,7 +118,7 @@ export default defineComponent({
       isUserDataOwner: undefined as boolean | undefined,
       footerContent,
       userId: undefined as string | undefined,
-      isUserAllowedToUpload: false | undefined,
+      isUserAllowedToUpload: false as boolean | undefined,
     };
   },
   mounted() {
