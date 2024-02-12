@@ -17,7 +17,6 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     jacoco
-    id("org.springframework.boot")
     kotlin("kapt")
     id("com.gorylenko.gradle-git-properties")
 }
