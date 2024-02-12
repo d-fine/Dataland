@@ -21,7 +21,7 @@ import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatus
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
@@ -34,9 +34,9 @@ class SingleDataRequestsTest {
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
-    @BeforeAll
+    @BeforeEach
     fun authenticateAsPremiumUser() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
     }
 
     @Test
