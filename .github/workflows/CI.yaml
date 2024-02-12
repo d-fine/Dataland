@@ -51,9 +51,9 @@ jobs:
           cache: gradle
       - name: Frontend component testing
         run: timeout -v 15m ./testing/execute_frontend_component_tests.sh
-        # Uncomment the lines below to enable debug logging for investigating flaky component tests.
-        #        env:
-        #          DEBUG: cypress:*
+# Uncomment the lines below to enable debug logging for investigating flaky component tests.
+#        env:
+#          DEBUG: cypress:*
         if: always()
       - name: Upload Cypress Component Testing Logs
         if: always()
@@ -187,7 +187,7 @@ jobs:
           vars: ${{ toJSON(vars) }}
       - name: Prepare python environment
         if: always()
-        run: |
+        run: | 
           cd ./dataland-automated-qa-service
           pip install --no-cache-dir -r requirements.txt
           pip install -e .
