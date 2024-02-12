@@ -184,6 +184,7 @@ services:
       <<: *rabbit-mq-user-and-pass
       KEYCLOAK_DATALAND_ADMIN_PASSWORD: ${KEYCLOAK_DATALAND_ADMIN_PASSWORD}
       KEYCLOAK_REVIEWER_PASSWORD: ${KEYCLOAK_REVIEWER_PASSWORD}
+      KEYCLOAK_PREMIUM_USER_PASSWORD: ${KEYCLOAK_PREMIUM_USER_PASSWORD}
       KEYCLOAK_UPLOADER_PASSWORD: ${KEYCLOAK_UPLOADER_PASSWORD}
       KEYCLOAK_READER_PASSWORD: ${KEYCLOAK_READER_PASSWORD}
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
@@ -212,7 +213,7 @@ services:
     command: sh -c "cd /app && npm install && npm run dev"
     <<: *uncritical-constants-env
     environment:
-      POLLING: "false"
+      POLLING: "true"
   frontend:
     restart: always
     profiles: [ "production", "testing" ]
