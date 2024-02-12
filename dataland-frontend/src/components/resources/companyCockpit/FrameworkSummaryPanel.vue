@@ -79,7 +79,6 @@ const useMobileView = computed<boolean | undefined>(() => injectedUseMobileView?
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
 const isUserAllowedToUpload = ref<boolean>();
-//TODO Move rolecheck and owenercheck to company cockpit
 onBeforeMount(() => {
   checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
     .then((result) => {
