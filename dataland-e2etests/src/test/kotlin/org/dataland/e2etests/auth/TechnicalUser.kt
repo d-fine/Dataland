@@ -3,6 +3,8 @@ package org.dataland.e2etests.auth
 import org.dataland.e2etests.ADMIN_EXTENDED_ROLES
 import org.dataland.e2etests.ADMIN_USER_ID
 import org.dataland.e2etests.MUTUAL_ROLES_DATALAND_USERS
+import org.dataland.e2etests.PREMIUM_USER_EXTENDED_ROLES
+import org.dataland.e2etests.PREMIUM_USER_ID
 import org.dataland.e2etests.READER_USER_ID
 import org.dataland.e2etests.REVIEWER_EXTENDED_ROLES
 import org.dataland.e2etests.REVIEWER_USER_ID
@@ -14,4 +16,5 @@ enum class TechnicalUser(val technicalUserId: String, val roles: List<String>) {
     Uploader(UPLOADER_USER_ID, MUTUAL_ROLES_DATALAND_USERS + UPLOADER_EXTENDED_ROLES),
     Reader(READER_USER_ID, MUTUAL_ROLES_DATALAND_USERS),
     Reviewer(REVIEWER_USER_ID, MUTUAL_ROLES_DATALAND_USERS + REVIEWER_EXTENDED_ROLES),
+    PremiumUser(PREMIUM_USER_ID, MUTUAL_ROLES_DATALAND_USERS + PREMIUM_USER_EXTENDED_ROLES)
 }
