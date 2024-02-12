@@ -51,7 +51,10 @@ const sheet = ref<HTMLDivElement>();
 const attachedSheet = ref<HTMLDivElement>();
 
 const { companyId, showSearchBar, showSingleDataRequestButton } = defineProps({
-  companyId: String,
+  companyId: {
+    type: String,
+    required: true,
+  },
   showSearchBar: {
     type: Boolean,
     default: true,
