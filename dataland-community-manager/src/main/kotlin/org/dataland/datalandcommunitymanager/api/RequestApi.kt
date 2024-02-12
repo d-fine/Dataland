@@ -55,7 +55,7 @@ interface RequestApi {
         @Valid @RequestBody
         bulkDataRequest: BulkDataRequest,
     ):
-            ResponseEntity<BulkDataRequestResponse>
+        ResponseEntity<BulkDataRequestResponse>
 
     /** A method for users to get all their existing data requests.
      * @return all data requests of the user in a list
@@ -124,7 +124,7 @@ interface RequestApi {
         @Valid @RequestBody
         singleDataRequest: SingleDataRequest,
     ):
-            ResponseEntity<List<StoredDataRequest>>
+        ResponseEntity<List<StoredDataRequest>>
 
     /** A method for users to get a data request by its ID.
      * @return the data requests corresponding to the provided ID
