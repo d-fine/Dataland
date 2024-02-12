@@ -3,7 +3,7 @@ import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type AggregatedFrameworkDataSummary, type CompanyInformation, type SmeData } from "@clients/backend";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { AggregatedDataRequestDataTypeEnum } from "@clients/communitymanager";
-import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
+import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_PREMIUM_USER } from "@/utils/KeycloakUtils";
 import type * as Cypress from "cypress";
 import { setMobileDeviceViewport } from "@sharedUtils/TestSetupUtils";
 import { computed } from "vue";
@@ -168,6 +168,14 @@ describe("Component test for the company cockpit", () => {
     cy.get(attachedSheetSelector).should(isScrolled ? "have.not.css" : "have.css", "visibility", "hidden");
   }
 
+  /**
+   * Validates the existence or non-existence of the single data request button
+   * @param isButtonExpected self explanatory
+   */
+  function validateSingleDataRequestButton(isButtonExpected: boolean): void {
+    cy.get('[data-test="singleDataRequestButton"]').should(isButtonExpected ? "exist" : "not.exist");
+  }
+
   it("Check for all expected elements from a non-logged-in users perspective", () => {
     mockRequestsOnMounted();
     mountCompanyCockpitWithAuthentication(false, false, [], "").then(() => {
@@ -189,6 +197,7 @@ describe("Component test for the company cockpit", () => {
       validateCompanyInformationBanner();
       validateClaimOwnershipPanel(true);
       validateFrameworkSummaryPanels(false);
+      validateSingleDataRequestButton(false);
     });
   });
 
@@ -212,6 +221,14 @@ describe("Component test for the company cockpit", () => {
       validateCompanyInformationBanner(true);
       validateClaimOwnershipPanel(false);
       validateFrameworkSummaryPanels(true);
+      validateSingleDataRequestButton(false);
+    });
+  });
+  it("Check for some expected elements from a logged-in premium user perspective", () => {
+    mockRequestsOnMounted();
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_PREMIUM_USER], "mock-data-owner-id").then(() => {
+      waitForRequestsOnMounted();
+      validateSingleDataRequestButton(true);
     });
   });
 

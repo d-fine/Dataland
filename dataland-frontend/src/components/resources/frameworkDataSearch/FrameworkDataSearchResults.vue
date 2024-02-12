@@ -52,7 +52,7 @@
       <p class="font-medium text-xl">
         Please double-check the spelling and try again or request the data you are missing!
       </p>
-      <RequestDataButton />
+      <BulkDataRequestButton />
     </div>
   </div>
 </template>
@@ -62,12 +62,12 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Tooltip from "primevue/tooltip";
 import { defineComponent } from "vue";
-import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
+import BulkDataRequestButton from "@/components/resources/frameworkDataSearch/BulkDataRequestButton.vue";
 import { type BasicCompanyInformation } from "@clients/backend";
 
 export default defineComponent({
   name: "FrameworkDataSearchResults",
-  components: { RequestDataButton, DataTable, Column },
+  components: { BulkDataRequestButton, DataTable, Column },
   directives: {
     tooltip: Tooltip,
   },

@@ -226,7 +226,7 @@ import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue"
 import { type BulkDataRequest } from "@clients/communitymanager";
 
 export default defineComponent({
-  name: "RequestBulkData",
+  name: "BulkDataRequest",
   components: {
     MultiSelectFormFieldBindData,
     AuthenticationWrapper,

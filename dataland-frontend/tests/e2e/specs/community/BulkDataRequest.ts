@@ -5,14 +5,14 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { DataTypeEnum } from "@clients/backend";
 
 describeIf(
-  "As a user I want to be able to request data",
+  "As a user I want to be able to conduct a bulk request request",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
   () => {
     beforeEach(() => {
       cy.ensureLoggedIn(admin_name, admin_pw);
-      cy.visitAndCheckAppMount("/requests");
+      cy.visitAndCheckAppMount("/bulkdatarequest");
     });
 
     it("When identifiers are accepted and rejected", () => {
