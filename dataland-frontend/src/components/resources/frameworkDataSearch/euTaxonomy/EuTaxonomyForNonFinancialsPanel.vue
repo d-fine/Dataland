@@ -38,6 +38,7 @@ import {
   DataTypeEnum,
   type EuTaxonomyDataForNonFinancials,
   FiscalYearDeviation,
+  type CompanyReport,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
@@ -54,7 +55,6 @@ import {
   formatNumberToReadableFormat,
 } from "@/utils/Formatter";
 import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
-import type { CompanyReport } from "@clients/backend";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
@@ -110,9 +110,9 @@ export default defineComponent({
           assertDefined(this.getKeycloakPromise)(),
         ).getUnifiedFrameworkDataController(DataTypeEnum.EutaxonomyNonFinancials);
         if (this.singleDataMetaInfoToDisplay) {
-          const singleEuTaxonomyForNonFinancialsDataData = (
+          const singleEuTaxonomyForNonFinancialsDataData: EuTaxonomyDataForNonFinancials = (
             await euTaxonomyForNonFinancialsDataControllerApi.getFrameworkData(this.singleDataMetaInfoToDisplay.dataId)
-          ).data.data;
+          ).data.data as EuTaxonomyDataForNonFinancials;
           fetchedData = [
             { metaInfo: this.singleDataMetaInfoToDisplay, data: singleEuTaxonomyForNonFinancialsDataData },
           ];
