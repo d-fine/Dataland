@@ -60,6 +60,7 @@ import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
+import { getUserId } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -113,6 +114,7 @@ export default defineComponent({
   },
   mounted() {
     void this.getCompanyInformation();
+    void this.awaitUserId();
     void this.setDataOwnershipStatus();
   },
   watch: {
@@ -167,6 +169,12 @@ export default defineComponent({
      */
     onClaimSubmitted() {
       this.claimIsSubmitted = true;
+    },
+    /**
+     * gets the user ID in an async manner
+     */
+    async awaitUserId(): Promise<void> {
+      this.userId = await getUserId(assertDefined(this.getKeycloakPromise));
     },
   },
 });
