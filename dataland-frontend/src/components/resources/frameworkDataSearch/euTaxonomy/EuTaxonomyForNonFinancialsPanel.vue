@@ -38,6 +38,7 @@ import {
   DataTypeEnum,
   type EuTaxonomyDataForNonFinancials,
   FiscalYearDeviation,
+  type CompanyReport,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { defineComponent, inject } from "vue";
@@ -54,7 +55,6 @@ import {
   formatNumberToReadableFormat,
 } from "@/utils/Formatter";
 import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearch/ShowMultipleReportsBanner.vue";
-import type { CompanyReport } from "@clients/backend";
 
 export default defineComponent({
   name: "EuTaxonomyForNonFinancialsPanel",
