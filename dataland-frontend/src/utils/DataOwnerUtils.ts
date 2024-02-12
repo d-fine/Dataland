@@ -16,19 +16,21 @@ export async function isUserDataOwnerForCompany(
 ): Promise<boolean> {
   const uuidRegexExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   const isCompanyIdValid = uuidRegexExp.test(companyId);
-  if (keycloakPromiseGetter && companyId && isCompanyIdValid) {
+  if (keycloakPromiseGetter && isCompanyIdValid) {
     const resolvedKeycloakPromise = await waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter);
     const userId = resolvedKeycloakPromise?.idTokenParsed?.sub;
-    try {
-      await new ApiClientProvider(
-        keycloakPromiseGetter(),
-      ).backendClients.companyDataController.isUserDataOwnerForCompany(companyId, assertDefined(userId));
-      return true;
-    } catch (error) {
-      if ((error as AxiosError)?.response?.status == 404) {
-        return false;
+    if (userId) {
+      try {
+        await new ApiClientProvider(
+          keycloakPromiseGetter(),
+        ).backendClients.companyDataController.isUserDataOwnerForCompany(companyId, assertDefined(userId));
+        return true;
+      } catch (error) {
+        if ((error as AxiosError)?.response?.status == 404) {
+          return false;
+        }
+        throw error;
       }
-      throw error;
-    }
+    } else return false;
   } else return false;
 }
