@@ -155,6 +155,7 @@ export default defineComponent({
 
     /**
      * Set the data-ownership status of current user
+     * @returns a void promise so that the setter-function can be awaited
      */
     async setDataOwnershipStatus(): Promise<void> {
       return isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise).then((result) => {
