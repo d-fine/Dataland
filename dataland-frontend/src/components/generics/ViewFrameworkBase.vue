@@ -353,7 +353,7 @@ export default defineComponent({
         })
         .then(() => {
           return checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise).then((hasUserUploaderRights) => {
-            (this.hasUserUploaderRights = hasUserUploaderRights);
+            this.hasUserUploaderRights = hasUserUploaderRights;
           });
         })
         .then(() => {
