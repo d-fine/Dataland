@@ -2,6 +2,7 @@ import ShowMultipleReportsBanner from "@/components/resources/frameworkDataSearc
 import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import {
   Activity,
+  type CompanyReport,
   type CurrencyDataPoint,
   DataTypeEnum,
   type EuTaxonomyActivity,
