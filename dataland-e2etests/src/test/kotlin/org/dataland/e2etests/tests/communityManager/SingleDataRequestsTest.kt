@@ -78,7 +78,7 @@ class SingleDataRequestsTest {
         assertTrue(
             responseBody.contains(
                 "The company identifier you provided does not match the patterns" +
-                        " of a valid LEI, ISIN, PermId or Dataland CompanyID.",
+                    " of a valid LEI, ISIN, PermId or Dataland CompanyID.",
             ),
         )
     }
