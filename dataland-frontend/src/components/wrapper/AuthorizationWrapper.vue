@@ -7,7 +7,10 @@
     <slot></slot>
   </div>
 
-  <TheContent v-if="!waitingForDataOwnershipData" class="paper-section flex">
+  <TheContent
+    v-if="!waitingForDataOwnershipData && !isUserDataOwner && !hasUserRequiredRole"
+    class="paper-section flex"
+  >
     <MiddleCenterDiv class="col-12">
       <div class="col-6 md:col-8 lg:col-12">
         <h1>You do not have permission to visit this page.</h1>
@@ -47,21 +50,27 @@ export default defineComponent({
     };
   },
   mounted: function () {
-    checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise)
-      .then((hasUserRequiredRole) => {
-        this.hasUserRequiredRole = hasUserRequiredRole;
-      })
-      .then(() => {
-        if (!this.hasUserRequiredRole) {
-          isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
-            .then((isUserDataOwner) => {
+    void this.setUploaderRightsForUser();
+  },
+  methods: {
+    /**
+     * Set if the user is allowed to upload data for the current company
+     * @returns a promise that resolves to void, so the successful execution of the function can be awaited
+     */
+    async setUploaderRightsForUser(): Promise<void> {
+      return checkIfUserHasRole(this.requiredRole, this.getKeycloakPromise)
+        .then((hasUserRequiredRole) => {
+          this.hasUserRequiredRole = hasUserRequiredRole;
+        })
+        .then(() => {
+          if (!this.hasUserRequiredRole) {
+            return isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise).then((isUserDataOwner) => {
               this.isUserDataOwner = isUserDataOwner;
               this.waitingForDataOwnershipData = false;
-            })
-            .catch((error) => console.log(error));
-        }
-      })
-      .catch((error) => console.log(error));
+            });
+          }
+        });
+    },
   },
 });
 </script>
