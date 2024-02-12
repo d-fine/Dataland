@@ -54,7 +54,7 @@ describeIf(
       });
       checkCompanyInfoSheet();
       cy.get("[data-test=submittedDiv]").should("exist");
-      cy.get("[data-test=requestStatusText]").should("contain.text", "Success");
+      cy.get("[data-test=requestStatusText]").should("contain.text", "Submitting your data request was successful.");
       cy.get('[data-test="backToCompanyPageButton"]').click();
       cy.url().should("contain", "/companies/");
     });
@@ -66,7 +66,10 @@ describeIf(
       chooseFramework();
       submit();
       cy.get("[data-test=submittedDiv]").should("exist");
-      cy.get("[data-test=requestStatusText]").should("contain.text", "Request Unsuccessful");
+      cy.get("[data-test=requestStatusText]").should(
+        "contain.text",
+        "The submission of your data request was unsuccessful.",
+      );
     });
 
     /**
