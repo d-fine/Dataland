@@ -74,8 +74,10 @@ class DataRequestUpdater(
                 metaData.reportingPeriod,
                 metaData.dataType.name,
             )
-            logger.info("Changed Request Status for company Id ${metaData.companyId}, " +
-                    "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}")
+            logger.info(
+                "Changed Request Status for company Id ${metaData.companyId}, " +
+                    "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}",
+            )
         }
     }
 }

@@ -75,7 +75,7 @@ class KeycloakTokenManager(
         val response = httpClient.newCall(request).execute()
         val parsedResponseBody = objectMapper.readValue(
             response.body!!.string(),
-            KeycloakAccessTokenResponse::class.java
+            KeycloakAccessTokenResponse::class.java,
         )
         currentAccessToken = parsedResponseBody.accessToken
         currentAccessTokenExpireTime = Instant.now() + Duration.ofSeconds(parsedResponseBody.expiresIn.toLong())
