@@ -18,7 +18,7 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaptation : BaseJavaMig
             to "substantialContributionToClimateChangeAdaptationInPercent",
     )
 
-    private val pairOfOldToNewdDnshFieldName = "dnshToClimateChangeAdaption" to "dnshToClimateChangeAdaptation"
+    private val pairOfOldToNewDnshFieldName = "dnshToClimateChangeAdaption" to "dnshToClimateChangeAdaptation"
 
     /**
      * Migrates substantialContributionToClimateChangeAdaption field to substantialContributionToClimateChangeAdaptation
@@ -41,10 +41,10 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaptation : BaseJavaMig
                         actitivy.put(it.value, actitivy[it.key])
                         actitivy.remove(it.key)
                         actitivy.put(
-                            pairOfOldToNewdDnshFieldName.second,
-                            actitivy[pairOfOldToNewdDnshFieldName.first],
+                            pairOfOldToNewDnshFieldName.second,
+                            actitivy[pairOfOldToNewDnshFieldName.first],
                         )
-                        actitivy.remove(pairOfOldToNewdDnshFieldName.first)
+                        actitivy.remove(pairOfOldToNewDnshFieldName.first)
                     }
                 }
             }
