@@ -2,6 +2,8 @@ import type Keycloak from "keycloak-js";
 import { type KeycloakInitOptions } from "keycloak-js";
 import { KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
 
+export const KEYCLOAK_ROLE_PREMIUM_USER = "ROLE_PREMIUM_USER";
+
 export interface KeycloakMockConfiguration {
   userId?: string;
   roles?: Array<string>;

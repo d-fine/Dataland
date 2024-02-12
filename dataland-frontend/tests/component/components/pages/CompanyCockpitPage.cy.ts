@@ -1,5 +1,5 @@
 import CompanyCockpitPage from "@/components/pages/CompanyCockpitPage.vue";
-import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
+import { minimalKeycloakMock, KEYCLOAK_ROLE_PREMIUM_USER } from "@ct/testUtils/Keycloak";
 import { type AggregatedFrameworkDataSummary, type CompanyInformation, type SmeData } from "@clients/backend";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { AggregatedDataRequestDataTypeEnum } from "@clients/communitymanager";
@@ -221,6 +221,13 @@ describe("Component test for the company cockpit", () => {
       validateCompanyInformationBanner(true);
       validateClaimOwnershipPanel(false);
       validateFrameworkSummaryPanels(true);
+      validateSingleDataRequestButton(false);
+    });
+  });
+  it("Check for some expected elements from a logged-in premium user perspective", () => {
+    mockRequestsOnMounted();
+    mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_PREMIUM_USER], "mock-data-owner-id").then(() => {
+      waitForRequestsOnMounted();
       validateSingleDataRequestButton(true);
     });
   });

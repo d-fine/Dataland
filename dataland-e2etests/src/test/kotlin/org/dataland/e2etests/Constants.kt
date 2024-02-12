@@ -1,4 +1,5 @@
 package org.dataland.e2etests
+
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 
 const val BASE_PATH_TO_DATALAND_BACKEND = "https://local-dev.dataland.com:443/api"
@@ -26,6 +27,7 @@ const val REVIEWER_USER_NAME = "data_reviewer"
 const val REVIEWER_USER_ID = "f7a02ff1-0dab-4e10-a908-7d775c1014ae"
 val REVIEWER_USER_PASSWORD: String = System.getenv("KEYCLOAK_REVIEWER_PASSWORD")
 val REVIEWER_EXTENDED_ROLES = listOf("ROLE_REVIEWER")
+
 
 const val UPLOADER_USER_NAME = "data_uploader"
 const val UPLOADER_USER_ID = "c5ef10b1-de23-4a01-9005-e62ea226ee83"

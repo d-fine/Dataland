@@ -1,4 +1,11 @@
-import { reader_name, reader_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import {
+  premium_user_name,
+  premium_user_pw,
+  reader_name,
+  reader_pw,
+  uploader_name,
+  uploader_pw,
+} from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
 import { type SingleDataRequest } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
@@ -7,7 +14,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 
 describeIf(
-  "As a data_uploader I want to be able to navigate to the single data request page and submit a request",
+  "As a premium user, I want to be able to navigate to the single data request page and submit a request",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
@@ -22,6 +29,7 @@ describeIf(
           testStoredCompany = storedCompany;
         });
       });
+      cy.ensureLoggedIn(premium_user_name, premium_user_pw);
     });
 
     it("Navigate to the single request page via the company cockpit", () => {
