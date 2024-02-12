@@ -86,7 +86,15 @@ import {
 } from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model";
 import { activityApiNameToHumanizedName } from "@/components/resources/frameworkDataSearch/EuTaxonomyActivityNames";
 import { formatAmountWithCurrency, formatPercentageNumberAsString } from "@/utils/Formatter";
-import { euTaxonomyObjectives } from "@/components/resources/frameworkDataSearch/euTaxonomy/EuTaxonomyForNonFinancialsModalColumnHeaders";
+
+export const euTaxonomyObjectives = [
+  "ClimateChangeMitigation",
+  "ClimateChangeAdaptation",
+  "SustainableUseAndProtectionOfWaterAndMarineResources",
+  "TransitionToACircularEconomy",
+  "PollutionPreventionAndControl",
+  "ProtectionAndRestorationOfBiodiversityAndEcosystems",
+];
 
 type ActivityFieldValueObject = {
   activity: string;
@@ -172,8 +180,8 @@ export default defineComponent({
           {
             substantialContributionToClimateChangeMitigationInPercent:
               col.substantialContributionToClimateChangeMitigationInPercent,
-            substantialContributionToClimateChangeAdaptionInPercent:
-              col.substantialContributionToClimateChangeAdaptionInPercent,
+            substantialContributionToClimateChangeAdaptationInPercent:
+              col.substantialContributionToClimateChangeAdaptationInPercent,
             substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent:
               col.substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent,
             substantialContributionToTransitionToACircularEconomyInPercent:
@@ -190,7 +198,7 @@ export default defineComponent({
           "dnshCriteria",
           {
             dnshToClimateChangeMitigation: col.dnshToClimateChangeMitigation,
-            dnshToClimateChangeAdaption: col.dnshToClimateChangeAdaption,
+            dnshToClimateChangeAdaptation: col.dnshToClimateChangeAdaptation,
             dnshToSustainableUseAndProtectionOfWaterAndMarineResources:
               col.dnshToSustainableUseAndProtectionOfWaterAndMarineResources,
             dnshToTransitionToACircularEconomy: col.dnshToTransitionToACircularEconomy,

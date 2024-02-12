@@ -3,7 +3,7 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.AggregatedFrameworkDataSummary
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformationPatch
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -147,7 +147,10 @@ class CompanyDataControllerTest {
                 updatedCompany.companyInformation.companyAlternativeNames!!.toSet(),
             "The company alternative names should have been updated",
         )
-        assertEquals(null, updatedCompany.companyInformation.sector, "The sector should have been deleted")
+        assertEquals(
+            null, updatedCompany.companyInformation.sector,
+            "The sector should have been deleted",
+        )
     }
 
     @Test
@@ -341,13 +344,13 @@ class CompanyDataControllerTest {
         return apiAccessor.companyDataControllerApi.postCompany(companyInformation).companyId
     }
 
-    val dummyCompanyAssociatedDataWithoutCompanyId = CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+    val dummyCompanyAssociatedDataWithoutCompanyId = CompanyAssociatedDataEutaxonomyNonFinancialsData(
         companyId = "placeholder",
         reportingPeriod = "placeholder",
         data = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first(),
     )
     private fun uploadDummyDataset(companyId: String, reportingPeriod: String = "default", bypassQa: Boolean = false) {
-        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEutaxonomyNonFinancialsData(
             dummyCompanyAssociatedDataWithoutCompanyId.copy(companyId = companyId, reportingPeriod = reportingPeriod),
             bypassQa,
         )
@@ -360,25 +363,18 @@ class CompanyDataControllerTest {
         uploadDummyDataset(companyId = companyId, reportingPeriod = "2022", bypassQa = true)
         uploadDummyDataset(companyId = companyId, reportingPeriod = "2021", bypassQa = true)
         sleep(100)
-        val expectedMap = mapOf(
-            DataTypeEnum.esgMinusQuestionnaire.toString() to
-                AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
-            DataTypeEnum.heimathafen.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
-            DataTypeEnum.eutaxonomyMinusFinancials.toString() to AggregatedFrameworkDataSummary(
-                numberOfProvidedReportingPeriods = 0,
-            ),
-            DataTypeEnum.eutaxonomyMinusNonMinusFinancials.toString() to AggregatedFrameworkDataSummary(
-                numberOfProvidedReportingPeriods = 2,
-            ),
-            DataTypeEnum.lksg.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
-            DataTypeEnum.p2p.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
-            DataTypeEnum.sfdr.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
-            DataTypeEnum.sme.toString() to AggregatedFrameworkDataSummary(numberOfProvidedReportingPeriods = 0),
-
-        )
+        val exceptionMap: Map<DataTypeEnum, Long> = mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to 2)
+        val expectedMap = DataTypeEnum.entries.associate {
+                framework ->
+            val numOfReportingPeriods = exceptionMap[framework] ?: 0
+            framework.toString() to AggregatedFrameworkDataSummary(
+                numberOfProvidedReportingPeriods = numOfReportingPeriods,
+            )
+        }
         val aggregatedFrameworkDataSummary = apiAccessor.companyDataControllerApi.getAggregatedFrameworkDataSummary(
             companyId = companyId,
-        )
+        ).toSortedMap()
+
         assertEquals(
             expectedMap,
             aggregatedFrameworkDataSummary,

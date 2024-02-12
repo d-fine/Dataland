@@ -22,7 +22,7 @@ abstract class InDevelopmentPavedRoadFramework(
     order: Int,
     enabledFeatures: Set<FrameworkGenerationFeatures> = FrameworkGenerationFeatures.entries.toSet(),
 ) :
-    PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile, order) {
+    PavedRoadFramework(identifier, label, explanation, frameworkTemplateCsvFile, order, enabledFeatures) {
 
     private fun compileDataModel(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.DataModel)) {

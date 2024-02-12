@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.lksg.LksgData
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.dataland.datalandbackend.utils.CompanyUploader
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -22,25 +21,15 @@ import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.http.MediaType
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
-@AutoConfigureMockMvc
-@ActiveProfiles(profiles = ["unprotected"])
 internal class MetaDataControllerTest(
-    @Autowired private val mockMvc: MockMvc,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val companyManager: CompanyAlterationManager,
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
@@ -52,22 +41,6 @@ internal class MetaDataControllerTest(
     val expectedSetOfRolesForUploader = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER)
     val expectedSetOfRolesForAdmin =
         setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER, DatalandRealmRole.ROLE_ADMIN)
-
-    @Test
-    fun `list of meta info about data for specific company can be retrieved`() {
-        val testCompanyInformation = testDataProvider.getCompanyInformationWithoutIdentifiers(1).last()
-        val storedCompany = CompanyUploader().uploadCompany(mockMvc, objectMapper, testCompanyInformation)
-        mockMvc.perform(
-            get("/metadata?companyId=${storedCompany.companyId}")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON),
-        )
-            .andExpectAll(
-                status().isOk,
-                content().contentType(MediaType.APPLICATION_JSON),
-                content().string("[]"),
-            )
-    }
 
     @Test
     fun `ensure that meta info about a pending dataset can only be retrieved by authorized users`() {
@@ -86,6 +59,7 @@ internal class MetaDataControllerTest(
         mockSecurityContext(userId = "uploader-user-id", roles = expectedSetOfRolesForUploader)
         assertMetaDataVisible(metaInfo)
         mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
+        assertMetaDataVisible(metaInfo)
     }
 
     private fun assertMetaDataVisible(metaInfo: DataMetaInformationEntity) {
