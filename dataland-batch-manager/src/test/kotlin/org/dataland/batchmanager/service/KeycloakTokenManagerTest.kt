@@ -7,7 +7,7 @@ import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.dataland.datalandbatchmanager.service.KeycloakTokenManager
+import org.dataland.datalandbackendutils.services.KeycloakTokenManager
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
