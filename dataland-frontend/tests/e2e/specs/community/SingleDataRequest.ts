@@ -48,9 +48,7 @@ describeIf(
 
       cy.get('[data-test="contactEmail"]').type("example@Email.com");
       cy.get('[data-test="dataRequesterMessage"]').type("Some message");
-
-      cy.get("button[type='submit']").should("exist").click();
-
+      submit();
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
         checkIfRequestContentIsValid(interception);
       });
@@ -66,7 +64,7 @@ describeIf(
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       chooseReportingPeriod();
       chooseFramework();
-      cy.get("button[type='submit']").should("exist").click();
+      submit();
       cy.get("[data-test=submittedDiv]").should("exist");
       cy.get("[data-test=requestStatusText]").should("contain.text", "Request Unsuccessful");
     });
@@ -83,7 +81,12 @@ describeIf(
         assert.equal(requestBody.message, "Some message");
       }
     }
-
+    /**
+     * Clicks submit button
+     */
+    function submit(): void {
+      cy.get("button[type='submit']").should("exist").click();
+    }
     /**
      * Choose reporting periods
      */
@@ -121,7 +124,7 @@ describeIf(
      * Checks basic validation
      */
     function checkValidation(): void {
-      cy.get("button[type='submit']").should("exist").click();
+      submit();
       cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'")
         .should("be.visible")
         .should("contain.text", "Select at least one reporting period.");
