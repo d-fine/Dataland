@@ -6,7 +6,6 @@
 }</#macro>
 import { DEFAULT_PROBABILITY } from "@e2e/utils/FakeFixtureUtils";
 import { type FixtureData } from "@sharedUtils/Fixtures";
-import { type ${frameworkBaseName}Data } from "@clients/backend";
 import { ${frameworkBaseName}Generator } from "@e2e/fixtures/frameworks/${frameworkIdentifier}/${frameworkBaseName}Generator";
 <#list imports as import>import {<#list import.members as member>${member}<#sep>, </#sep></#list>} from "${import.file}";
 </#list>

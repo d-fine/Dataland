@@ -564,9 +564,9 @@
     "/data/eutaxonomy-non-financials": {
       "post": {
         "tags": [
-          "eu-taxonomy-data-for-non-financials-controller"
+          "eutaxonomy-non-financials-data-controller"
         ],
-        "operationId": "postCompanyAssociatedEuTaxonomyDataForNonFinancials",
+        "operationId": "postCompanyAssociatedEutaxonomyNonFinancialsData",
         "parameters": [
           {
             "name": "bypassQa",
@@ -582,7 +582,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyDataForNonFinancials"
+                "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
               }
             }
           },
@@ -2318,9 +2318,9 @@
     "/data/eutaxonomy-non-financials/{dataId}": {
       "get": {
         "tags": [
-          "eu-taxonomy-data-for-non-financials-controller"
+          "eutaxonomy-non-financials-data-controller"
         ],
-        "operationId": "getCompanyAssociatedEuTaxonomyDataForNonFinancials",
+        "operationId": "getCompanyAssociatedEutaxonomyNonFinancialsData",
         "parameters": [
           {
             "name": "dataId",
@@ -2337,7 +2337,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataEuTaxonomyDataForNonFinancials"
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
                 }
               }
             }
@@ -2376,9 +2376,9 @@
     "/data/eutaxonomy-non-financials/companies/{companyId}": {
       "get": {
         "tags": [
-          "eu-taxonomy-data-for-non-financials-controller"
+          "eutaxonomy-non-financials-data-controller"
         ],
-        "operationId": "getAllCompanyEuTaxonomyDataForNonFinancials",
+        "operationId": "getAllCompanyEutaxonomyNonFinancialsData",
         "parameters": [
           {
             "name": "companyId",
@@ -2414,7 +2414,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DataAndMetaInformationEuTaxonomyDataForNonFinancials"
+                    "$ref": "#/components/schemas/DataAndMetaInformationEutaxonomyNonFinancialsData"
                   }
                 }
               }
@@ -10580,7 +10580,7 @@
           }
         }
       },
-      "CompanyAssociatedDataEuTaxonomyDataForNonFinancials": {
+      "CompanyAssociatedDataEutaxonomyNonFinancialsData": {
         "required": [
           "companyId",
           "data",
@@ -10595,48 +10595,7 @@
             "type": "string"
           },
           "data": {
-            "$ref": "#/components/schemas/EuTaxonomyDataForNonFinancials"
-          }
-        }
-      },
-      "CompanyReport": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "fileReference": {
-            "type": "string"
-          },
-          "fileName": {
-            "type": "string",
-            "nullable": true
-          },
-          "isGroupLevel": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/YesNoNa"
-              }
-            ]
-          },
-          "reportDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "currency": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "example": {
-          "string": {
-            "fileReference": "string",
-            "fileName": "string",
-            "isGroupLevel": "Yes",
-            "reportDate": "2023-10-12",
-            "currency": "string"
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsData"
           }
         }
       },
@@ -10694,7 +10653,7 @@
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToClimateChangeAdaptionInPercent": {
+          "substantialContributionToClimateChangeAdaptationInPercent": {
             "type": "number",
             "nullable": true
           },
@@ -10722,7 +10681,7 @@
               }
             ]
           },
-          "dnshToClimateChangeAdaption": {
+          "dnshToClimateChangeAdaptation": {
             "nullable": true,
             "allOf": [
               {
@@ -10772,44 +10731,7 @@
           }
         }
       },
-      "EuTaxonomyDataForNonFinancials": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EuTaxonomyGeneral"
-              }
-            ]
-          },
-          "revenue": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
-              }
-            ]
-          },
-          "capex": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
-              }
-            ]
-          },
-          "opex": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EuTaxonomyDetailsPerCashFlowType"
-              }
-            ]
-          }
-        }
-      },
-      "EuTaxonomyDetailsPerCashFlowType": {
+      "EutaxonomyNonFinancialsCapex": {
         "type": "object",
         "properties": {
           "totalAmount": {
@@ -10824,7 +10746,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexNonEligibleShare"
               }
             ]
           },
@@ -10832,7 +10754,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexEligibleShare"
               }
             ]
           },
@@ -10840,7 +10762,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexNonAlignedShare"
               }
             ]
           },
@@ -10855,7 +10777,7 @@
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/RelativeAndAbsoluteFinancialShare"
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapexAlignedShare"
               }
             ]
           },
@@ -10863,7 +10785,7 @@
             "type": "number",
             "nullable": true
           },
-          "substantialContributionToClimateChangeAdaptionInPercent": {
+          "substantialContributionToClimateChangeAdaptationInPercent": {
             "type": "number",
             "nullable": true
           },
@@ -10900,14 +10822,119 @@
           }
         }
       },
-      "EuTaxonomyGeneral": {
+      "EutaxonomyNonFinancialsCapexAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsCapexEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsCapexNonAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsCapexNonEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneral"
+              }
+            ]
+          },
+          "revenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenue"
+              }
+            ]
+          },
+          "capex": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsCapex"
+              }
+            ]
+          },
+          "opex": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpex"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsGeneral": {
         "type": "object",
         "properties": {
           "fiscalYearDeviation": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/FiscalYearDeviation"
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions"
               }
             ]
           },
@@ -10954,9 +10981,6 @@
           },
           "referencedReports": {
             "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/CompanyReport"
-            },
             "nullable": true,
             "example": {
               "string": {
@@ -10970,12 +10994,330 @@
           }
         }
       },
-      "FiscalYearDeviation": {
+      "EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions": {
         "type": "string",
         "enum": [
           "Deviation",
           "NoDeviation"
         ]
+      },
+      "EutaxonomyNonFinancialsOpex": {
+        "type": "object",
+        "properties": {
+          "totalAmount": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "nonEligibleShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexNonEligibleShare"
+              }
+            ]
+          },
+          "eligibleShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexEligibleShare"
+              }
+            ]
+          },
+          "nonAlignedShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexNonAlignedShare"
+              }
+            ]
+          },
+          "nonAlignedActivities": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyActivity"
+            }
+          },
+          "alignedShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsOpexAlignedShare"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "alignedActivities": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
+            }
+          },
+          "enablingShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "transitionalShareInPercent": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsOpexAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsOpexEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsOpexNonAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsOpexNonEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsRevenue": {
+        "type": "object",
+        "properties": {
+          "totalAmount": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CurrencyDataPoint"
+              }
+            ]
+          },
+          "nonEligibleShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueNonEligibleShare"
+              }
+            ]
+          },
+          "eligibleShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueEligibleShare"
+              }
+            ]
+          },
+          "nonAlignedShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueNonAlignedShare"
+              }
+            ]
+          },
+          "nonAlignedActivities": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyActivity"
+            }
+          },
+          "alignedShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EutaxonomyNonFinancialsRevenueAlignedShare"
+              }
+            ]
+          },
+          "substantialContributionToClimateChangeMitigationInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToClimateChangeAdaptationInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToTransitionToACircularEconomyInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToPollutionPreventionAndControlInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "alignedActivities": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EuTaxonomyAlignedActivity"
+            }
+          },
+          "enablingShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "transitionalShareInPercent": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsRevenueAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsRevenueEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsRevenueNonAlignedShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
+          }
+        }
+      },
+      "EutaxonomyNonFinancialsRevenueNonEligibleShare": {
+        "type": "object",
+        "properties": {
+          "relativeShareInPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "absoluteShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AmountWithCurrency"
+              }
+            ]
+          }
+        }
       },
       "RelativeAndAbsoluteFinancialShare": {
         "type": "object",
@@ -11010,6 +11352,47 @@
           },
           "data": {
             "$ref": "#/components/schemas/EuTaxonomyDataForFinancials"
+          }
+        }
+      },
+      "CompanyReport": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileReference": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "isGroupLevel": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YesNoNa"
+              }
+            ]
+          },
+          "reportDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "example": {
+          "string": {
+            "fileReference": "string",
+            "fileName": "string",
+            "isGroupLevel": "Yes",
+            "reportDate": "2023-10-12",
+            "currency": "string"
           }
         }
       },
@@ -11316,6 +11699,13 @@
             }
           }
         }
+      },
+      "FiscalYearDeviation": {
+        "type": "string",
+        "enum": [
+          "Deviation",
+          "NoDeviation"
+        ]
       },
       "InsuranceKpis": {
         "type": "object",
@@ -13289,7 +13679,7 @@
           }
         }
       },
-      "DataAndMetaInformationEuTaxonomyDataForNonFinancials": {
+      "DataAndMetaInformationEutaxonomyNonFinancialsData": {
         "required": [
           "data",
           "metaInfo"
@@ -13300,7 +13690,7 @@
             "$ref": "#/components/schemas/DataMetaInformation"
           },
           "data": {
-            "$ref": "#/components/schemas/EuTaxonomyDataForNonFinancials"
+            "$ref": "#/components/schemas/EutaxonomyNonFinancialsData"
           }
         }
       },
@@ -13343,20 +13733,20 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "headquarters": {
             "type": "string"
           },
           "permId": {
