@@ -63,7 +63,7 @@ export default defineComponent({
       if (newCompanyId !== oldCompanyId) {
         try {
           await this.getAggregatedFrameworkDataSummary();
-          await this.getDataOwnerInformation();
+          await this.setUploaderRightsForUser();
           await this.awaitUserId();
         } catch (error) {
           console.error("Error fetching data for new company:", error);
@@ -85,20 +85,7 @@ export default defineComponent({
     };
   },
   created() {
-    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
-      .then((result) => {
-        this.isUserAllowedToUpload = result;
-      })
-      .then(() => {
-        if (!this.isUserAllowedToUpload) {
-          isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
-            .then((result) => {
-              this.isUserAllowedToUpload = result;
-            })
-            .catch((error) => console.log(error));
-        }
-      })
-      .catch((error) => console.log(error));
+    void this.setUploaderRightsForUser();
   },
   props: {
     companyId: {
@@ -124,7 +111,6 @@ export default defineComponent({
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
     void this.awaitUserId();
-    void this.getDataOwnerInformation();
   },
   methods: {
     /**
@@ -139,27 +125,22 @@ export default defineComponent({
     },
 
     /**
-     * Get the Information about Data-ownership
+     * Set if the user is allowed to upload data for the current company
+     * @returns a promise that resolves to void, so the successful execution of the function can be awaited
      */
-    async getDataOwnerInformation() {
-      await this.awaitUserId();
-      if (this.userId !== undefined && this.isCompanyIdValid) {
-        try {
-          const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-            .backendClients.companyDataController;
-          const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
-            this.companyId,
-            assertDefined(this.userId),
-          );
-          if (axiosResponse.status == 200) {
-            this.isUserDataOwner = true;
+    async setUploaderRightsForUser(): Promise<void> {
+      return isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
+        .then((result) => {
+          this.isUserDataOwner = result;
+          this.isUserAllowedToUpload = result;
+        })
+        .then(() => {
+          if (!this.isUserAllowedToUpload) {
+            return checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise).then((result) => {
+              this.isUserAllowedToUpload = result;
+            });
           }
-        } catch (error) {
-          this.isUserDataOwner = false;
-        }
-      } else {
-        this.isUserDataOwner = false;
-      }
+        });
     },
     /**
      * gets the user ID in an async manner

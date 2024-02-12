@@ -58,8 +58,8 @@ import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
-import { getUserId } from "@/utils/KeycloakUtils";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
+import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -104,11 +104,6 @@ export default defineComponent({
       }
       return listOfItems;
     },
-
-    isCompanyIdValid() {
-      const uuidRegexExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      return uuidRegexExp.test(this.companyId);
-    },
   },
   props: {
     companyId: {
@@ -118,13 +113,12 @@ export default defineComponent({
   },
   mounted() {
     void this.getCompanyInformation();
-    void this.awaitUserId();
-    void this.getDataOwnerInformation();
+    void this.setDataOwnershipStatus();
   },
   watch: {
     companyId() {
       void this.getCompanyInformation();
-      void this.getDataOwnerInformation();
+      void this.setDataOwnershipStatus();
       this.claimIsSubmitted = false;
     },
   },
@@ -160,42 +154,18 @@ export default defineComponent({
     },
 
     /**
-     * Get the Information about Data-ownership
+     * Set the data-ownership status of current user
      */
-    async getDataOwnerInformation() {
-      await this.awaitUserId();
-      if (this.userId !== undefined && this.isCompanyIdValid) {
-        try {
-          const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-            .backendClients.companyDataController;
-          const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
-            this.companyId,
-            assertDefined(this.userId),
-          );
-          if (axiosResponse.status == 200) {
-            this.isUserDataOwner = true;
-          }
-        } catch (error) {
-          console.log(error);
-          if (getErrorMessage(error).includes("404")) {
-            this.isUserDataOwner = false;
-          }
-        }
-      } else {
-        this.isUserDataOwner = false;
-      }
+    async setDataOwnershipStatus(): Promise<void> {
+      return isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise).then((result) => {
+        this.isUserDataOwner = result;
+      });
     },
     /**
      * handles the emitted claim event
      */
     onClaimSubmitted() {
       this.claimIsSubmitted = true;
-    },
-    /**
-     * gets the user ID in an async manner
-     */
-    async awaitUserId(): Promise<void> {
-      this.userId = await getUserId(assertDefined(this.getKeycloakPromise));
     },
   },
 });
