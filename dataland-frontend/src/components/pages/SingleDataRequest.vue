@@ -104,14 +104,16 @@
           </div>
         </FormKit>
         <div v-if="submitted" data-test="submittedDiv">
-          <template v-if="submittingSucceded">
+          <template v-if="submittingSucceeded">
             <em class="material-icons info-icon green-text">check_circle</em>
-            <h1 class="status-text" data-test="requestStatusText">Success</h1>
+            <h1 class="status-text" data-test="requestStatusText">Submitting your data request was successful.</h1>
           </template>
 
-          <template v-if="!submittingSucceded">
+          <template v-if="!submittingSucceeded">
             <em class="material-icons info-icon red-text">error</em>
-            <h1 class="status-text" data-test="requestStatusText">Request Unsuccessful</h1>
+            <h1 class="status-text" data-test="requestStatusText">
+              The submission of your data request was unsuccessful.
+            </h1>
             <p>{{ errorMessage }}</p>
           </template>
 
@@ -188,7 +190,7 @@ export default defineComponent({
         { name: "2021", value: false },
         { name: "2020", value: false },
       ],
-      submittingSucceded: false,
+      submittingSucceeded: false,
       submitted: false,
     };
   },
@@ -243,7 +245,7 @@ export default defineComponent({
             .requestController;
           const response = await requestDataControllerApi.postSingleDataRequest(singleDataRequestObject);
           this.errorMessage = response.statusText;
-          this.submittingSucceded = true;
+          this.submittingSucceeded = true;
         } catch (error) {
           console.error(error);
           if (error instanceof AxiosError) {

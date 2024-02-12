@@ -1,4 +1,11 @@
-import { reader_name, reader_pw, uploader_name, uploader_pw } from "@e2e/utils/Cypress";
+import {
+  premium_user_name,
+  premium_user_pw,
+  reader_name,
+  reader_pw,
+  uploader_name,
+  uploader_pw,
+} from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
 import { type SingleDataRequest } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
@@ -7,7 +14,7 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 
 describeIf(
-  "As a data_uploader I want to be able to navigate to the single data request page and submit a request",
+  "As a premium user, I want to be able to navigate to the single data request page and submit a request",
   {
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
@@ -22,6 +29,7 @@ describeIf(
           testStoredCompany = storedCompany;
         });
       });
+      cy.ensureLoggedIn(premium_user_name, premium_user_pw);
     });
 
     it("Navigate to the single request page via the company cockpit", () => {
@@ -39,16 +47,14 @@ describeIf(
       chooseFramework();
 
       cy.get('[data-test="contactEmail"]').type("example@Email.com");
-      cy.get('[data-test="dataRequesterMessage"]').type("Some message");
-
-      cy.get("button[type='submit']").should("exist").click();
-
+      cy.get('[data-test="dataRequesterMessage"]').type("Frontend test message");
+      submit();
       cy.wait("@postRequestData", { timeout: Cypress.env("short_timeout_in_ms") as number }).then((interception) => {
         checkIfRequestContentIsValid(interception);
       });
       checkCompanyInfoSheet();
       cy.get("[data-test=submittedDiv]").should("exist");
-      cy.get("[data-test=requestStatusText]").should("contain.text", "Success");
+      cy.get("[data-test=requestStatusText]").should("contain.text", "Submitting your data request was successful.");
       cy.get('[data-test="backToCompanyPageButton"]').click();
       cy.url().should("contain", "/companies/");
     });
@@ -58,9 +64,12 @@ describeIf(
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       chooseReportingPeriod();
       chooseFramework();
-      cy.get("button[type='submit']").should("exist").click();
+      submit();
       cy.get("[data-test=submittedDiv]").should("exist");
-      cy.get("[data-test=requestStatusText]").should("contain.text", "Request Unsuccessful");
+      cy.get("[data-test=requestStatusText]").should(
+        "contain.text",
+        "The submission of your data request was unsuccessful.",
+      );
     });
 
     /**
@@ -70,12 +79,25 @@ describeIf(
     function checkIfRequestContentIsValid(interception: Interception): void {
       if (interception.request !== undefined) {
         const requestBody = interception.request.body as SingleDataRequest;
-        expect(requestBody.companyIdentifier).to.equal(testStoredCompany.companyId);
-        expect(requestBody.contactList).to.include("example@Email.com");
-        assert.equal(requestBody.message, "Some message");
+        console.log(interception.request.body);
+        const expectedRequest: SingleDataRequest = {
+          companyIdentifier: testStoredCompany.companyId,
+          frameworkName: "lksg",
+          listOfReportingPeriods: ["2023"],
+          contactList: ["example@Email.com"],
+          message: "Frontend test message",
+        };
+        console.log(expectedRequest);
+        console.log(requestBody);
+        expect(requestBody).to.deep.equal(expectedRequest);
       }
     }
-
+    /**
+     * Clicks submit button
+     */
+    function submit(): void {
+      cy.get("button[type='submit']").should("exist").click();
+    }
     /**
      * Choose reporting periods
      */
@@ -83,8 +105,9 @@ describeIf(
       cy.get('[data-test="reportingPeriods"] div[data-test="toggleChipsFormInput"]')
         .should("exist")
         .get('[data-test="toggle-chip"')
-        .first()
+        .contains("2023")
         .click()
+        .parent()
         .should("have.class", "toggled");
 
       cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'").should("not.exist");
@@ -101,7 +124,7 @@ describeIf(
         .should("exist")
         .click()
         .get('[data-test="datapoint-framework"]')
-        .select(3);
+        .select("lksg");
       cy.get('[data-test="datapoint-framework"]')
         .children()
         .should("have.length", numberOfFrameworks + 1);
@@ -113,7 +136,7 @@ describeIf(
      * Checks basic validation
      */
     function checkValidation(): void {
-      cy.get("button[type='submit']").should("exist").click();
+      submit();
       cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'")
         .should("be.visible")
         .should("contain.text", "Select at least one reporting period.");

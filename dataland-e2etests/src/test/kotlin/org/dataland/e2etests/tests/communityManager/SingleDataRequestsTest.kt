@@ -8,7 +8,7 @@ import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
-import org.dataland.e2etests.UPLOADER_USER_ID
+import org.dataland.e2etests.PREMIUM_USER_ID
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -35,7 +35,9 @@ class SingleDataRequestsTest {
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
     @BeforeAll
-    fun authenticateAsReader() { jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader) }
+    fun authenticateAsReader() {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+    }
 
     @Test
     fun `post single data request and check if retrieval of stored requests via their IDs works as expected`() {
@@ -76,7 +78,7 @@ class SingleDataRequestsTest {
         assertTrue(
             responseBody.contains(
                 "The company identifier you provided does not match the patterns of a valid LEI, ISIN, PermId or " +
-                    "Dataland CompanyID.",
+                        "Dataland CompanyID.",
             ),
         )
     }
@@ -221,7 +223,7 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `patch data request as an uploader and assert that it is forbidden`() {
+    fun `patch data request as an reader and assert that it is forbidden`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
@@ -232,7 +234,7 @@ class SingleDataRequestsTest {
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
         assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
 
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
         val clientException = assertThrows<ClientException> {
             requestControllerApi.patchDataRequest(storedDataRequestId, RequestStatus.resolved)
@@ -246,7 +248,6 @@ class SingleDataRequestsTest {
             frameworkName = SingleDataRequest.FrameworkName.lksg,
             listOfReportingPeriods = listOf("2022"),
         )
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         requestControllerApi.postSingleDataRequest(requestA)
 
         val specificPermId = System.currentTimeMillis().toString()
@@ -276,7 +277,7 @@ class SingleDataRequestsTest {
         val specificPermIdDataRequests = requestControllerApi.getDataRequests(
             dataRequestCompanyIdentifierValue = permIdOfRequestB,
         )
-        val specificUsersDataRequests = requestControllerApi.getDataRequests(userId = UPLOADER_USER_ID)
+        val specificUsersDataRequests = requestControllerApi.getDataRequests(userId = PREMIUM_USER_ID)
 
         val allQueryResults = listOf(
             allDataRequests, lksgDataRequests, reportingPeriod2021DataRequests,
@@ -292,7 +293,7 @@ class SingleDataRequestsTest {
         assertTrue(reportingPeriod2021DataRequests.all { it.reportingPeriod == "2021" })
         assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.resolved })
         assertTrue(specificPermIdDataRequests.all { it.dataRequestCompanyIdentifierValue == permIdOfRequestB })
-        assertTrue(specificUsersDataRequests.all { it.userId == UPLOADER_USER_ID })
+        assertTrue(specificUsersDataRequests.all { it.userId == PREMIUM_USER_ID })
     }
 
     @Test

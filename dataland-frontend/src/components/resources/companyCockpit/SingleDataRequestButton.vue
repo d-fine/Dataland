@@ -2,7 +2,7 @@
   <PrimeButton
     v-if="isUserAllowed"
     @click="onClick"
-    class="uppercase p-button p-button-sm mr-3"
+    class="uppercase p-button p-button-sm"
     data-test="singleDataRequestButton"
   >
     <span class="d-letters pl-2"> Request Data </span>
@@ -13,7 +13,7 @@
 import { defineComponent, inject } from "vue";
 import PrimeButton from "primevue/button";
 import type Keycloak from "keycloak-js";
-import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import { checkIfUserHasRole, KEYCLOAK_ROLE_PREMIUM_USER } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "SingleDataRequestButton",
@@ -30,7 +30,7 @@ export default defineComponent({
     },
   },
   mounted() {
-    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
+    checkIfUserHasRole(KEYCLOAK_ROLE_PREMIUM_USER, this.getKeycloakPromise)
       .then((result) => {
         this.isUserAllowed = result;
       })
