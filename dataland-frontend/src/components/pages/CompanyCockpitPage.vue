@@ -9,7 +9,7 @@
         <FrameworkSummaryPanel
           v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
           :key="framework"
-          :is-user-allowed-to-upload="isUserDataOwner"
+          :is-user-allowed-to-upload="isUserAllowedToUpload"
           :company-id="companyId"
           :framework="framework"
           :number-of-provided-reporting-periods="
