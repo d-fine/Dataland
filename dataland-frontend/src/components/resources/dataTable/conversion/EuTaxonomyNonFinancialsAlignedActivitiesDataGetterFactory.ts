@@ -25,7 +25,7 @@ export function formatEuTaxonomyNonFinancialsAlignedActivitiesDataForTable(
     return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
       displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
       displayValue: {
-        label: `Show data`,
+        label: `Show ${input.length} activit${input.length > 1 ? "ies" : "y"}`,
         modalComponent: AlignedActivitiesDataTable,
         modalOptions: {
           props: {
