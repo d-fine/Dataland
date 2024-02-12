@@ -35,7 +35,7 @@ class SingleDataRequestsTest {
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
     @BeforeAll
-    fun authenticateAsReader() {
+    fun authenticateAsPremiumUser() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
     }
 
@@ -78,7 +78,7 @@ class SingleDataRequestsTest {
         assertTrue(
             responseBody.contains(
                 "The company identifier you provided does not match the patterns of a valid LEI, ISIN, PermId or " +
-                    "Dataland CompanyID.",
+                        "Dataland CompanyID.",
             ),
         )
     }
