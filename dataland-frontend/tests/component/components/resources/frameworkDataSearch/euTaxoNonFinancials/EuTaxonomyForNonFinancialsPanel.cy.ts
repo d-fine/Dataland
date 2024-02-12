@@ -7,9 +7,9 @@ import {
   DataTypeEnum,
   type EuTaxonomyAlignedActivity,
   type EuTaxonomyDetailsPerCashFlowType,
+  type CompanyReport,
 } from "@clients/backend";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import type { CompanyReport } from "@clients/backend";
 import { roundNumber } from "@/utils/NumberConversionUtils";
 import { formatAmountWithCurrency } from "@/utils/Formatter";
 
