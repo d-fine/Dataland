@@ -63,7 +63,8 @@
           "realm": [
             "ROLE_USER",
             "ROLE_UPLOADER",
-            "ROLE_REVIEWER"
+            "ROLE_REVIEWER",
+            "ROLE_PREMIUM_USER"
           ]
         },
         "clientRole": false,
