@@ -78,7 +78,7 @@ class SingleDataRequestsTest {
         assertTrue(
             responseBody.contains(
                 "The company identifier you provided does not match the patterns of a valid LEI, ISIN, PermId or " +
-                    "Dataland CompanyID.",
+                        "Dataland CompanyID.",
             ),
         )
     }
@@ -248,7 +248,6 @@ class SingleDataRequestsTest {
             frameworkName = SingleDataRequest.FrameworkName.lksg,
             listOfReportingPeriods = listOf("2022"),
         )
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         requestControllerApi.postSingleDataRequest(requestA)
 
         val specificPermId = System.currentTimeMillis().toString()
