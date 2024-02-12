@@ -145,6 +145,9 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
     const allReportingPeriods = fixturesForTests.map((it) => it.reportingPeriod);
     const allReports = fixturesForTests.map((it) => assertDefined(it.t.general).referencedReports);
     const expectedLatestReportingPeriod = allReportingPeriods[0];
+    const nameOfFirstReportOfExpectedLatestReportingPeriod = Object.keys(
+      allReports[0] as Map<string, CompanyReport>,
+    )[0];
     cy.mountWithDialog(
       ShowMultipleReportsBanner,
       {
@@ -158,7 +161,7 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
       cy.get(`[data-test="frameworkNewDataTableTitle"`).contains(
         `Data extracted from the company report. Company Reports(${expectedLatestReportingPeriod})`,
       );
-      cy.get('[data-test="documentLinkTest"]').contains("IntegratedReport");
+      cy.get('[data-test="documentLinkTest"]').contains(nameOfFirstReportOfExpectedLatestReportingPeriod);
 
       cy.get(`[data-test="previousReportsLinkToModal"]`).contains("Previous years reports").click();
 
