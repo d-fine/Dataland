@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 /**
- * This service checks if freshly uploaded an validated data answer a data request
+ * This service checks if freshly uploaded a validated data answer a data request
  */
 @Service("DataRequestUpdater")
 class DataRequestUpdater(
@@ -56,7 +56,7 @@ class DataRequestUpdater(
         ],
     )
     @Transactional
-    fun sendAnsweredRequestConfirmationEmail(
+    fun changeRequestStatusAfterUpload(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.Type) type: String,
     ) {
@@ -66,14 +66,16 @@ class DataRequestUpdater(
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
+        val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
         logger.info("Received data QA completed message for dataset with ID $dataId")
         messageUtils.rejectMessageOnException {
-            val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
             dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(
                 metaData.companyId,
                 metaData.reportingPeriod,
                 metaData.dataType.name,
             )
+            logger.info("Changed Request Status for company Id ${metaData.companyId}, " +
+                    "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}")
         }
     }
 }

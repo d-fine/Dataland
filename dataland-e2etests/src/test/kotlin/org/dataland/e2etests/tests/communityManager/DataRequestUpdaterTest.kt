@@ -66,7 +66,7 @@ class DataRequestUpdaterTest {
             )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val testQaStatus = uploadDatasetAndValidatePendingState()
-        Thread.sleep(1000)
+        Thread.sleep(4000)
         println(apiAccessor.metaDataControllerApi.getDataMetaInfo(testQaStatus).qaStatus)
         for (storedDataRequest in allStoredDataRequests) {
             val retrievedDataRequest = requestControllerApi.getDataRequestById(
