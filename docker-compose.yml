@@ -213,7 +213,7 @@ services:
     command: sh -c "cd /app && npm install && npm run dev"
     <<: *uncritical-constants-env
     environment:
-      POLLING: "true"
+      POLLING: "false"
   frontend:
     restart: always
     profiles: [ "production", "testing" ]
