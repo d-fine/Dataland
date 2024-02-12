@@ -36,15 +36,15 @@ class V14__MigrateSubstantialContributionToClimateChangeAdaptation : BaseJavaMig
                 )
                 euTaxoDataSubsetCashFlowType.remove(it.key)
                 if (euTaxoDataSubsetCashFlowType.getOrJavaNull("alignedActivities") != null) {
-                    euTaxoDataSubsetCashFlowType.getJSONArray("alignedActivities").forEach { actitivy ->
-                        actitivy as JSONObject
-                        actitivy.put(it.value, actitivy[it.key])
-                        actitivy.remove(it.key)
-                        actitivy.put(
+                    euTaxoDataSubsetCashFlowType.getJSONArray("alignedActivities").forEach { activity ->
+                        activity as JSONObject
+                        activity.put(it.value, activity[it.key])
+                        activity.remove(it.key)
+                        activity.put(
                             pairOfOldToNewDnshFieldName.second,
-                            actitivy[pairOfOldToNewDnshFieldName.first],
+                            activity[pairOfOldToNewDnshFieldName.first],
                         )
-                        actitivy.remove(pairOfOldToNewDnshFieldName.first)
+                        activity.remove(pairOfOldToNewDnshFieldName.first)
                     }
                 }
             }
