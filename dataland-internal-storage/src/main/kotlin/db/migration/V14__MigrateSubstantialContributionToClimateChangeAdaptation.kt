@@ -9,8 +9,8 @@ import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
 
 /**
- * This migration script updates the existing SFDR datasets, more specifically it introduces an additional layer to
- * each sector in the high-impact climate sectors
+ * This migration script changes the substring "Adaption" to "Adaptation" in all field names that are
+ * "substantialContributionToClimateChangeAdaptionInPercent" in all eu-taxonomy-non-financial datasets
  */
 class V14__MigrateSubstantialContributionToClimateChangeAdaptation : BaseJavaMigration() {
     private val mapOfOldToNewFieldNames = mapOf(
