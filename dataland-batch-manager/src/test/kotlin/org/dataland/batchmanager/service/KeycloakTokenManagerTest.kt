@@ -19,7 +19,7 @@ import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest(classes = [ObjectMapper::class, OkHttpClient::class]) // TODO move to backend utils
+@SpringBootTest(classes = [ObjectMapper::class, OkHttpClient::class])
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class KeycloakTokenManagerTest {
     @Mock lateinit var httpClient: OkHttpClient
