@@ -36,7 +36,7 @@ class SingleDataRequestsTest {
 
     @BeforeEach
     fun authenticateAsPremiumUser() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
     }
 
     @Test
