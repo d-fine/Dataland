@@ -9,6 +9,7 @@
         <FrameworkSummaryPanel
           v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
           :key="framework"
+          :is-user-allowed-to-upload="isUserDataOwner"
           :company-id="companyId"
           :framework="framework"
           :number-of-provided-reporting-periods="
@@ -37,7 +38,8 @@ import FrameworkSummaryPanel from "@/components/resources/companyCockpit/Framewo
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
-import { getUserId } from "@/utils/KeycloakUtils";
+import { checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -82,6 +84,22 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
+  created() {
+    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
+      .then((result) => {
+        this.isUserAllowedToUpload = result;
+      })
+      .then(() => {
+        if (!this.isUserAllowedToUpload) {
+          isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
+            .then((result) => {
+              this.isUserAllowedToUpload = result;
+            })
+            .catch((error) => console.log(error));
+        }
+      })
+      .catch((error) => console.log(error));
+  },
   props: {
     companyId: {
       type: String,
@@ -100,6 +118,7 @@ export default defineComponent({
       isUserDataOwner: undefined as boolean | undefined,
       footerContent,
       userId: undefined as string | undefined,
+      isUserAllowedToUpload: false | undefined,
     };
   },
   mounted() {
