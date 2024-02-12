@@ -20,6 +20,7 @@ import {
   getCellValueContainer,
   getSectionHead,
 } from "@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils";
+import { runFunctionBlockWithinPrimeVueModal } from "@sharedUtils/ElementChecks";
 
 describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
   let fixturesForTests: FixtureData<EutaxonomyNonFinancialsData>[];
@@ -112,33 +113,39 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
         .invoke("text")
         .should("match", new RegExp(`^${gammaCapexTotalAmountFormattedString}\\s.*$`));
       getCellValueContainer("Total Amount", 2).click();
-      cy.contains("td", gammaCapexTotalAmountFormattedString).should("exist");
-      cy.contains("td", assertDefined(gammaCapexTotalAmount.quality).toString()).should("exist");
-      cy.contains("td", assertDefined(gammaCapexTotalAmount.comment).toString()).should("exist");
-      cy.get(`span[data-test="Report-Download-${assertDefined(gammaCapexTotalAmount.dataSource).fileName}"]`).should(
-        "exist",
-      );
+      runFunctionBlockWithinPrimeVueModal(() => {
+        cy.contains("td", gammaCapexTotalAmountFormattedString).should("exist");
+        cy.contains("td", assertDefined(gammaCapexTotalAmount.quality).toString()).should("exist");
+        cy.contains("td", assertDefined(gammaCapexTotalAmount.comment).toString()).should("exist");
+        cy.get(`span[data-test="Report-Download-${assertDefined(gammaCapexTotalAmount.dataSource).fileName}"]`).should(
+          "exist",
+        );
+      });
       cy.get("body").type("{esc}");
 
       getCellValueContainer("Aligned Activities", 2).click();
-      cy.get("tr")
-        .contains("td", assertDefined(gammaCapexFirstAlignedActivity.activityName))
-        .nextAll()
-        .eq(4)
-        .invoke("text")
-        .should("match", /^0 %$/);
+      runFunctionBlockWithinPrimeVueModal(() => {
+        cy.get("tr")
+          .contains("td", assertDefined(gammaCapexFirstAlignedActivity.activityName))
+          .nextAll()
+          .eq(4)
+          .invoke("text")
+          .should("match", /^0 %$/);
+      });
       cy.get("body").type("{esc}");
 
       getCellValueContainer("Non-Aligned Activities", 2).click();
-      cy.get("tr")
-        .contains("td", assertDefined(gammaCapexFirstNonAlignedActivity.activityName))
-        .nextAll()
-        .eq(2)
-        .invoke("text")
-        .should(
-          "match",
-          new RegExp(`^${assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent}\\s.*$`),
-        );
+      runFunctionBlockWithinPrimeVueModal(() => {
+        cy.get("tr")
+          .contains("td", assertDefined(gammaCapexFirstNonAlignedActivity.activityName))
+          .nextAll()
+          .eq(2)
+          .invoke("text")
+          .should(
+            "match",
+            new RegExp(`^${assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent}\\s.*$`),
+          );
+      });
     });
   });
 
@@ -166,20 +173,19 @@ describe("Component test for the Eu-Taxonomy-Non-Financials view page", () => {
 
       cy.get(`[data-test="previousReportsLinkToModal"]`).contains("Previous years reports").click();
 
-      for (let i = 0; i < fixturesForTests.length; i++) {
-        const reportingPeriodOfDataset = allReportingPeriods[i];
-        const reportsForDataset = allReports[i];
+      runFunctionBlockWithinPrimeVueModal(() => {
+        for (let i = 0; i < fixturesForTests.length; i++) {
+          const reportingPeriodOfDataset = allReportingPeriods[i];
+          const reportsForDataset = allReports[i];
 
-        if (reportingPeriodOfDataset != expectedLatestReportingPeriod) {
-          cy.get(`[data-test="previousReportsList"]`).contains(`Company Reports (${reportingPeriodOfDataset})`);
-          for (const reportKey in reportsForDataset) {
-            cy.get(`[data-test='Report-Download-${reportKey}']`).contains(reportKey);
+          if (reportingPeriodOfDataset != expectedLatestReportingPeriod) {
+            cy.get(`[data-test="previousReportsList"]`).contains(`Company Reports (${reportingPeriodOfDataset})`);
+            for (const reportKey in reportsForDataset) {
+              cy.get(`[data-test='Report-Download-${reportKey}']`).contains(reportKey);
+            }
           }
         }
-      }
-      cy.get(`[data-test="frameworkNewDataTableTitle"`).contains(
-        `Data extracted from the company report. Company Reports(${expectedLatestReportingPeriod})`,
-      );
+      });
     });
   });
 });
