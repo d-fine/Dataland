@@ -2,7 +2,7 @@
   <PrimeButton
     v-if="isUserAllowed"
     @click="onClick"
-    class="uppercase p-button p-button-sm mr-3"
+    class="uppercase p-button p-button-sm"
     data-test="singleDataRequestButton"
   >
     <span class="d-letters pl-2"> Request Data </span>

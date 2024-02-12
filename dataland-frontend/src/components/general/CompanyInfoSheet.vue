@@ -1,9 +1,8 @@
 <template>
   <div ref="sheet" :class="`sheet ${isCollapsed ? 'visuals-hidden' : ''}`" data-test="sheet">
     <template v-if="!useMobileView">
-      <div :class="` ${showSingleDataRequestButton ? 'headline' : ''}`">
+      <div class="headline">
         <BackButton />
-        <SingleDataRequestButton v-if="showSingleDataRequestButton" :company-id="companyId" />
       </div>
 
       <CompaniesOnlySearchBar
@@ -22,6 +21,7 @@
     </template>
     <CompanyInformationBanner
       :companyId="companyId"
+      :show-single-data-request-button="showSingleDataRequestButton"
       @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
       class="w-12"
     />
@@ -40,7 +40,6 @@
 import BackButton from "@/components/general/BackButton.vue";
 import CompanyInformationBanner from "@/components/pages/CompanyInformation.vue";
 import CompaniesOnlySearchBar from "@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue";
-import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
 import { type CompanyInformation } from "@clients/backend";
 import { computed, inject, onMounted, onUnmounted, ref } from "vue";
 
