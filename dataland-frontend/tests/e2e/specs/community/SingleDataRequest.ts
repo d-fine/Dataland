@@ -79,7 +79,6 @@ describeIf(
     function checkIfRequestContentIsValid(interception: Interception): void {
       if (interception.request !== undefined) {
         const requestBody = interception.request.body as SingleDataRequest;
-        console.log(interception.request.body);
         const expectedRequest: SingleDataRequest = {
           companyIdentifier: testStoredCompany.companyId,
           frameworkName: "lksg",
@@ -87,8 +86,6 @@ describeIf(
           contactList: ["example@Email.com"],
           message: "Frontend test message",
         };
-        console.log(expectedRequest);
-        console.log(requestBody);
         expect(requestBody).to.deep.equal(expectedRequest);
       }
     }
