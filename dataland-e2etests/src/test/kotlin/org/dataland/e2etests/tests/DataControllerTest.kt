@@ -1,7 +1,7 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -33,10 +33,10 @@ class DataControllerTest {
         )
         val companyAssociatedDataEuTaxonomyDataForNonFinancials =
             apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-                .getCompanyAssociatedEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
+                .getCompanyAssociatedEutaxonomyNonFinancialsData(mapOfIds.getValue("dataId"))
 
         assertEquals(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+            CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 mapOfIds.getValue("companyId"),
                 "",
                 testDataEuTaxonomyNonFinancials,
@@ -54,7 +54,7 @@ class DataControllerTest {
         )
         val getDataByIdResponse = apiAccessor.unauthorizedEuTaxonomyDataNonFinancialsControllerApi
             .getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(mapOfIds.getValue("dataId"))
-        val expectedCompanyAssociatedData = CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+        val expectedCompanyAssociatedData = CompanyAssociatedDataEutaxonomyNonFinancialsData(
             mapOfIds.getValue("companyId"),
             "",
             testDataEuTaxonomyNonFinancials,
@@ -86,8 +86,8 @@ class DataControllerTest {
         val exception =
             assertThrows<ClientException> {
                 apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-                    .postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-                        CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+                    .postCompanyAssociatedEutaxonomyNonFinancialsData(
+                        CompanyAssociatedDataEutaxonomyNonFinancialsData(
                             testCompanyId,
                             "",
                             testDataEuTaxonomyNonFinancials,

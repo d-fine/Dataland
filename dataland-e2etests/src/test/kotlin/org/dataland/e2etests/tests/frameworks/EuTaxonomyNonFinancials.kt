@@ -39,7 +39,7 @@ class EuTaxonomyNonFinancials {
         )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val downloadedAssociatedData = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-            .getCompanyAssociatedEuTaxonomyDataForNonFinancials(receivedDataMetaInformation!!.dataId)
+            .getCompanyAssociatedEutaxonomyNonFinancialsData(receivedDataMetaInformation!!.dataId)
         val downloadedAssociatedDataType = apiAccessor.metaDataControllerApi
             .getDataMetaInfo(receivedDataMetaInformation.dataId).dataType
 

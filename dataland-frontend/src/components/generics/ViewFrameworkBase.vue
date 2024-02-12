@@ -24,10 +24,7 @@
               @change="handleChangeFrameworkEvent"
             />
             <slot name="reportingPeriodDropdown" />
-            <div
-              class="flex align-content-start align-items-center pl-3"
-              v-if="dataType != DataTypeEnum.EutaxonomyNonFinancials && dataType !== DataTypeEnum.Sme"
-            >
+            <div class="flex align-content-start align-items-center pl-3" v-if="dataType !== DataTypeEnum.Sme">
               <InputSwitch
                 class="form-field vertical-middle"
                 data-test="hideEmptyDataToggleButton"
@@ -200,27 +197,8 @@ export default defineComponent({
     this.chosenDataTypeInDropdown = this.dataType ?? "";
     void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
 
-    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
-      .then((hasUserUploaderRights) => {
-        this.hasUserUploaderRights = hasUserUploaderRights;
-      })
-      .then(() => {
-        checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
-          .then((hasUserReviewerRights) => {
-            this.hasUserReviewerRights = hasUserReviewerRights;
-          })
-          .then(() => {
-            if (!this.hasUserUploaderRights && !this.hasUserReviewerRights) {
-              isUserDataOwnerForCompany(this.companyID, this.getKeycloakPromise)
-                .then((hasUserUploaderRights) => {
-                  this.hasUserUploaderRights = hasUserUploaderRights;
-                })
-                .catch((error) => console.log(error));
-            }
-          })
-          .catch((error) => console.log(error));
-      })
-      .catch((error) => console.log(error));
+    void this.setViewPageAttributsForUser();
+
     window.addEventListener("scroll", this.windowScrollHandler);
   },
   methods: {
@@ -231,7 +209,6 @@ export default defineComponent({
     handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
       this.fetchedCompanyInformation = fetchedCompanyInformation;
     },
-
     /**
      * Opens Overlay Panel for selecting a reporting period to edit data for
      * @param event event
@@ -364,6 +341,28 @@ export default defineComponent({
         this.isDataProcessedSuccesfully = false;
         console.error(error);
       }
+    },
+    /**
+     * Set if the user is allowed to upload data for the current company
+     * @returns a promise that resolves to void, so the successful execution of the function can be awaited
+     */
+    async setViewPageAttributsForUser(): Promise<void> {
+      return checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
+        .then((hasUserReviewerRights) => {
+          this.hasUserReviewerRights = hasUserReviewerRights;
+        })
+        .then(() => {
+          return checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise).then((hasUserUploaderRights) => {
+            return (this.hasUserUploaderRights = hasUserUploaderRights);
+          });
+        })
+        .then(() => {
+          if (!this.hasUserUploaderRights) {
+            return isUserDataOwnerForCompany(this.companyID, this.getKeycloakPromise).then((hasUserUploaderRights) => {
+              this.hasUserUploaderRights = hasUserUploaderRights;
+            });
+          }
+        });
     },
   },
   watch: {

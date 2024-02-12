@@ -27,3 +27,13 @@ export function validateCompanyCockpitPage(expectedCompanyName: string, expected
   );
   cy.url().should("contain", `/companies/${expectedCompanyId}`);
 }
+
+/**
+ * Runs a function block within the prime-vue modal dialog window.
+ * This can be used to ensure that cypress-assertions are actually run on elements inside the modal.
+ * @param functionBlock to run within the modal
+ */
+export function runFunctionBlockWithinPrimeVueModal(functionBlock: () => void): void {
+  const selectorForPrimeVueModal = ".p-dialog-mask";
+  cy.get(selectorForPrimeVueModal).within(functionBlock);
+}
