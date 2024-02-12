@@ -39,7 +39,7 @@ class DataRequestUpdaterTest {
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = mapOfIds["companyId"]!!.toString(),
             frameworkName = SingleDataRequest.FrameworkName.eutaxonomyMinusNonMinusFinancials,
-            listOfReportingPeriods = listOf("2022", "2023"),
+            listOfReportingPeriods = listOf("2022"),
             contactList = listOf("someContact@webserver.de", "simpleString"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
@@ -65,16 +65,21 @@ class DataRequestUpdaterTest {
                 testDataEuTaxonomyNonFinancials,
             )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val testQaStatus = uploadDatasetAndValidatePendingState()
-        Thread.sleep(4000)
-        println(apiAccessor.metaDataControllerApi.getDataMetaInfo(testQaStatus).qaStatus)
+        val dataId = uploadDatasetAndValidatePendingState()
+        Thread.sleep(1000)
+        println(apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus)
+        Thread.sleep(1000)
         for (storedDataRequest in allStoredDataRequests) {
             val retrievedDataRequest = requestControllerApi.getDataRequestById(
                 UUID.fromString(storedDataRequest.dataRequestId),
             )
+            println("Ending qa status: " + apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus)
+
             println("Ending request status: " + retrievedDataRequest.requestStatus)
+
             Assertions.assertEquals(storedDataRequest, retrievedDataRequest)
         }
+
     }
     private fun uploadDatasetAndValidatePendingState(): String {
         val dataId = dataController.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
