@@ -10,7 +10,6 @@ plugins {
     kotlin("jvm")
     id("com.github.node-gradle.node")
     id("org.openapi.generator")
-    id("org.springframework.boot")
 }
 
 node {
