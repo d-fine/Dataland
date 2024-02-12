@@ -63,8 +63,8 @@ export default defineComponent({
       if (newCompanyId !== oldCompanyId) {
         try {
           await this.getAggregatedFrameworkDataSummary();
-          await this.setUploaderRightsForUser();
           await this.awaitUserId();
+          await this.setUploaderRightsForUser();
         } catch (error) {
           console.error("Error fetching data for new company:", error);
         }
@@ -85,6 +85,7 @@ export default defineComponent({
     };
   },
   created() {
+    void this.awaitUserId();
     void this.setUploaderRightsForUser();
   },
   props: {
@@ -117,7 +118,7 @@ export default defineComponent({
      * Retrieves the aggregated framework data summary
      */
     async getAggregatedFrameworkDataSummary(): Promise<void> {
-      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
+      const companyDataControllerApi = new ApiClientProvider(this.getKeycloakPromise()).backendClients
         .companyDataController;
       this.aggregatedFrameworkDataSummary = (
         await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
