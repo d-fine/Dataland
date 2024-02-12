@@ -7,7 +7,7 @@
     <slot></slot>
   </div>
 
-  <TheContent v-else class="paper-section flex">
+  <TheContent v-if="!waitingForDataOwnershipData" class="paper-section flex">
     <MiddleCenterDiv class="col-12">
       <div class="col-6 md:col-8 lg:col-12">
         <h1>You do not have permission to visit this page.</h1>
