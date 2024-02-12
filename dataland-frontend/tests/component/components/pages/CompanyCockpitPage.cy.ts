@@ -1,9 +1,9 @@
 import CompanyCockpitPage from "@/components/pages/CompanyCockpitPage.vue";
-import { minimalKeycloakMock, KEYCLOAK_ROLE_PREMIUM_USER } from "@ct/testUtils/Keycloak";
+import { minimalKeycloakMock } from "@ct/testUtils/Keycloak";
 import { type AggregatedFrameworkDataSummary, type CompanyInformation, type SmeData } from "@clients/backend";
 import { type FixtureData } from "@sharedUtils/Fixtures";
 import { AggregatedDataRequestDataTypeEnum } from "@clients/communitymanager";
-import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from "@/utils/KeycloakUtils";
+import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER, KEYCLOAK_ROLE_PREMIUM_USER } from "@/utils/KeycloakUtils";
 import type * as Cypress from "cypress";
 import { setMobileDeviceViewport } from "@sharedUtils/TestSetupUtils";
 import { computed } from "vue";
