@@ -173,7 +173,7 @@ class DataOwnersManager(
      * A method to verify if a company has data owners
      * @param companyId the ID of the company for which the information should be retrieved
      */
-    @Transactional
+    @Transactional(readOnly=true)
     fun checkCompanyForDataOwnership(companyId: String) {
         checkIfCompanyIsValid(companyId)
         val dataOwnersEntity = getDataOwnerFromCompany(companyId)
