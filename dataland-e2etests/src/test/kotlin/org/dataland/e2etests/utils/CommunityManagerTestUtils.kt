@@ -252,7 +252,6 @@ fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientE
     )
 }
 
-@Suppress("LongParameterList")
 fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
     framework: BulkDataRequest.ListOfFrameworkNames,
@@ -283,7 +282,6 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     )
 }
 
-@Suppress("NestedBlockDepth")
 fun iterateThroughFrameworksReportingPeriodsIdentifiersAndStatiAndCheckAggregationWithCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
     frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
@@ -297,8 +295,7 @@ fun iterateThroughFrameworksReportingPeriodsIdentifiersAndStatiAndCheckAggregati
             identifierMap.forEach { (identifierType, identifierValue) ->
                 requestStati.forEach { status ->
                     checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
-                        aggregatedDataRequests, framework, reportingPeriod,
-                        identifierType, identifierValue, status, count,
+                        aggregatedDataRequests, framework, reportingPeriod, identifierType, identifierValue, status, count,
                     )
                 }
             }

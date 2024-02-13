@@ -56,7 +56,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "  AND (:identifierValue IS NULL OR d.dataRequestCompanyIdentifierValue LIKE %:identifierValue%) " +
             "  AND (:status IS NULL OR d.requestStatus = :status) " +
             "GROUP BY d.dataTypeName, d.reportingPeriod, d.dataRequestCompanyIdentifierType," +
-            "  d.dataRequestCompanyIdentifierValue, d.requestStatus",
+            "  d.dataRequestCompanyIdentifierValue",
     )
     fun getAggregatedDataRequests(
         @Param("identifierValue") identifierValue: String?,

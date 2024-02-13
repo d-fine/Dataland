@@ -411,18 +411,18 @@ class BulkDataRequestsTest {
         iterateThroughFrameworksReportingPeriodsIdentifiersAndStatiAndCheckAggregationWithCount(
             aggregatedDataRequests, frameworks, reportingPeriods, identifierMap, allRequestStati, 2,
         )
-        val aggregatedRequestsNoFilter = requestControllerApi.getAggregatedDataRequests()
+        val aggregatedDataRequestsNoFilter = requestControllerApi.getAggregatedDataRequests()
         iterateThroughFrameworksReportingPeriodsIdentifiersAndStatiAndCheckAggregationWithCount(
-            aggregatedRequestsNoFilter, frameworks, reportingPeriods, identifierMap, setOf(RequestStatus.open), 2,
+            aggregatedDataRequestsNoFilter, frameworks, reportingPeriods, identifierMap, setOf(RequestStatus.open), 2,
         )
         iterateThroughFrameworksReportingPeriodsIdentifiersAndStatiAndCheckAggregationWithCount(
-            aggregatedRequestsNoFilter, frameworks, reportingPeriods, identifierMap, setOf(RequestStatus.answered), 0,
+            aggregatedDataRequestsNoFilter, frameworks, reportingPeriods, identifierMap, setOf(RequestStatus.answered), 0,
         )
         iterateThroughFrameworksReportingPeriodsIdentifiersAndStatiAndCheckAggregationWithCount(
-            aggregatedRequestsNoFilter, frameworks, reportingPeriods, identifierMap, setOf(RequestStatus.closed), 0,
+            aggregatedDataRequestsNoFilter, frameworks, reportingPeriods, identifierMap, setOf(RequestStatus.closed), 0,
         )
         iterateThroughFrameworksReportingPeriodsIdentifiersAndStatiAndCheckAggregationWithCount(
-            aggregatedRequestsNoFilter, frameworks, reportingPeriods, identifierMap, allRequestStati, 2,
+            aggregatedDataRequestsNoFilter, frameworks, reportingPeriods, identifierMap, allRequestStati, 2,
         )
     }
 }
