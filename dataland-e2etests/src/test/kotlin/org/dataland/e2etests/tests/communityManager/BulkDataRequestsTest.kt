@@ -386,6 +386,7 @@ class BulkDataRequestsTest {
             aggregatedDataRequestsForEmptyString, frameworks, reportingPeriods, identifierMap, 1,
         )
     }
+
     @Test
     fun `post bulk data request and check that the filter for request status on aggregated level works properly`() {
         val randomLei = generateRandomLei()
@@ -399,29 +400,29 @@ class BulkDataRequestsTest {
         val allRequestStati = RequestStatus.entries.toSet()
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests()
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedDataRequests, randomLei, setOf(RequestStatus.open), 2
+            aggregatedDataRequests, randomLei, setOf(RequestStatus.open), 2,
         )
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedDataRequests, randomLei, setOf(RequestStatus.answered), 0
+            aggregatedDataRequests, randomLei, setOf(RequestStatus.answered), 0,
         )
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedDataRequests, randomLei, setOf(RequestStatus.closed), 0
+            aggregatedDataRequests, randomLei, setOf(RequestStatus.closed), 0,
         )
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedDataRequests, randomLei, allRequestStati, 2
+            aggregatedDataRequests, randomLei, allRequestStati, 2,
         )
         val aggregatedRequestsNoFilter = requestControllerApi.getAggregatedDataRequests()
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedRequestsNoFilter, randomLei, setOf(RequestStatus.open), 2
+            aggregatedRequestsNoFilter, randomLei, setOf(RequestStatus.open), 2,
         )
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedRequestsNoFilter, randomLei, setOf(RequestStatus.answered), 0
+            aggregatedRequestsNoFilter, randomLei, setOf(RequestStatus.answered), 0,
         )
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedRequestsNoFilter, randomLei, setOf(RequestStatus.closed), 0
+            aggregatedRequestsNoFilter, randomLei, setOf(RequestStatus.closed), 0,
         )
         assertNumberOfMatchesOnRequestStatusEquals(
-            aggregatedRequestsNoFilter, randomLei, allRequestStati, 2
+            aggregatedRequestsNoFilter, randomLei, allRequestStati, 2,
         )
     }
 
