@@ -30,12 +30,12 @@
                 <tbody>
                 <tr>
                     <td style="text-align: left; width: 20px; padding: 0">
-                        <img src="${baseUrl}/images/email/gr1.png" width="13" height="13" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
+                        <img src="${baseUrl}/images/email/gr1.png" width="13" height="13" style="border: 0 none; height: auto; outline: none; text-decoration: none;">
                     </td>
                     <td style="text-align: right; width: 480px; padding: 0;">
                     </td>
                     <td style="text-align: right; width: 20px; padding: 0">
-                        <img src="${baseUrl}/images/email/gr2.png" width="13" height="13" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
+                        <img src="${baseUrl}/images/email/gr2.png" width="13" height="13" style="border: 0 none; height: auto; outline: none; text-decoration: none;">
                     </td>
                 </tr>
                 <tr>
@@ -103,12 +103,12 @@
 
                 <tr>
                     <td style="text-align: left; width: 20px; padding: 0">
-                        <img src="${baseUrl}/images/email/gr4.png" width="13" height="13" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
+                        <img src="${baseUrl}/images/email/gr4.png" width="13" height="13" style="border: 0 none; height: auto; outline: none; text-decoration: none;">
                     </td>
                     <td style="text-align: right; width: 480px; padding: 0">
                     </td>
                     <td style="text-align: right; width: 20px; padding: 0">
-                        <img src="${baseUrl}/images/email/gr3.png" width="13" height="13" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
+                        <img src="${baseUrl}/images/email/gr3.png" width="13" height="13" style="border: 0 none; height: auto; outline: none; text-decoration: none;">
                     </td>
                 </tr>
                 </tbody>
