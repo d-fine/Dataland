@@ -27,8 +27,10 @@ class DataRequestUpdaterTest {
 
     private val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithoutIdentifiers(1).first()
+
     @BeforeAll
     fun authenticateAsReader() { jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader) }
+
     @Test
     fun `post single data request and provide data approve it and change the request status`() {
         val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
@@ -75,7 +77,7 @@ class DataRequestUpdaterTest {
         )
     }
 
-    private fun checkRequestStatusAfterUpload(retrievedDataRequest: StoredDataRequest){
+    private fun checkRequestStatusAfterUpload(retrievedDataRequest: StoredDataRequest) {
         if (retrievedDataRequest.reportingPeriod == "2022") {
             Assertions.assertEquals(RequestStatus.answered, retrievedDataRequest.requestStatus)
         } else {
