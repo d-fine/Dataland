@@ -58,8 +58,9 @@ import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
-import { checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_ADMIN } from "@/utils/KeycloakUtils";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
+import { getCompanyDataOwnerInformation } from "@/utils/api/CompanyDataOwner";
+import { getUserId } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -119,16 +120,22 @@ export default defineComponent({
   },
   mounted() {
     void this.getCompanyInformation();
-    void this.getCompanyDataOwnerInformation();
+    void getCompanyDataOwnerInformation(assertDefined(this.getKeycloakPromise), this.companyId);
     void this.awaitUserId();
     void this.getUserDataOwnerInformation();
   },
   watch: {
-    companyId() {
-      void this.getCompanyInformation();
-      void this.getUserDataOwnerInformation();
-      void this.getCompanyDataOwnerInformation();
-      this.claimIsSubmitted = false;
+    async companyId(newCompanyId, oldCompanyId) {
+      if (newCompanyId !== oldCompanyId) {
+        try {
+          await this.getCompanyInformation();
+          await getCompanyDataOwnerInformation(assertDefined(this.getKeycloakPromise), newCompanyId as string);
+          await this.getUserDataOwnerInformation();
+          this.claimIsSubmitted = false;
+        } catch (error) {
+          console.error("Error fetching data for new company:", error);
+        }
+      }
     },
   },
   methods: {
@@ -159,38 +166,6 @@ export default defineComponent({
         }
         this.waitingForData = false;
         this.companyInformation = null;
-      }
-    },
-    /**
-     * Retrieves if the company has any data owner
-     */
-    async getCompanyDataOwnerInformation(): Promise<void> {
-      if (!this.isCompanyIdValid) {
-        this.hasCompanyDataOwner = false;
-        return;
-      }
-      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
-        .companyDataController;
-      let atLeastOneDataOwner: boolean | undefined;
-      try {
-        if (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise)) {
-          atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).data.length > 0) as
-            | boolean
-            | undefined;
-        } else {
-          atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).status == 200) as
-            | boolean
-            | undefined;
-        }
-
-        if (atLeastOneDataOwner !== undefined) {
-          this.hasCompanyDataOwner = atLeastOneDataOwner;
-        } else {
-          this.hasCompanyDataOwner = false;
-        }
-      } catch (error) {
-        console.error(error);
-        this.hasCompanyDataOwner = false;
       }
     },
     /**

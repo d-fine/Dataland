@@ -40,8 +40,9 @@ import FrameworkSummaryPanel from "@/components/resources/companyCockpit/Framewo
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
-import { checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_ADMIN } from "@/utils/KeycloakUtils";
+import { getUserId } from "@/utils/KeycloakUtils";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
+import { getCompanyDataOwnerInformation } from "@/utils/api/CompanyDataOwner";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -65,7 +66,7 @@ export default defineComponent({
       if (newCompanyId !== oldCompanyId) {
         try {
           await this.getAggregatedFrameworkDataSummary();
-          await this.getCompanyDataOwnerInformation();
+          await getCompanyDataOwnerInformation(assertDefined(this.getKeycloakPromise), newCompanyId as string);
           await this.getUserDataOwnerInformation();
           await this.awaitUserId();
         } catch (error) {
@@ -110,7 +111,7 @@ export default defineComponent({
   },
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
-    void this.getCompanyDataOwnerInformation();
+    void getCompanyDataOwnerInformation(assertDefined(this.getKeycloakPromise), this.companyId);
     void this.awaitUserId();
     void this.getUserDataOwnerInformation();
   },
@@ -124,34 +125,6 @@ export default defineComponent({
       this.aggregatedFrameworkDataSummary = (
         await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
       ).data as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary } | undefined;
-    },
-    /**
-     * Retrieves if the company has any data owner
-     */
-    async getCompanyDataOwnerInformation(): Promise<void> {
-      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
-        .companyDataController;
-      let atLeastOneDataOwner: boolean | undefined;
-      try {
-        if (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise)) {
-          atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).data.length > 0) as
-            | boolean
-            | undefined;
-        } else {
-          atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).status == 200) as
-            | boolean
-            | undefined;
-        }
-
-        if (atLeastOneDataOwner !== undefined) {
-          this.hasCompanyDataOwner = atLeastOneDataOwner;
-        } else {
-          this.hasCompanyDataOwner = false;
-        }
-      } catch (error) {
-        console.error(error);
-        this.hasCompanyDataOwner = false;
-      }
     },
     /**
      * Get the Information about Data-ownership
