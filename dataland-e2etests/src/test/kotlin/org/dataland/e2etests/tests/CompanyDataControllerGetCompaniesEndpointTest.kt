@@ -1,7 +1,7 @@
 package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
@@ -274,8 +274,8 @@ class CompanyDataControllerGetCompaniesEndpointTest {
     }
 
     private fun uploadDummyDataset(companyId: String, bypassQa: Boolean = false) {
-        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+        apiAccessor.dataControllerApiForEuTaxonomyNonFinancials.postCompanyAssociatedEutaxonomyNonFinancialsData(
+            CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 companyId = companyId,
                 reportingPeriod = "dummy",
                 data = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials.getTData(1).first(),

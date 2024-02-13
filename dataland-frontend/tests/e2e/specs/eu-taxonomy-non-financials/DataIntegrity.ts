@@ -2,28 +2,25 @@ import { describeIf } from "@e2e/support/TestUtility";
 import { admin_name, admin_pw, getBaseUrl } from "@e2e/utils/Cypress";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import {
-  type CompanyAssociatedDataEuTaxonomyDataForNonFinancials,
   Configuration,
   type DataMetaInformation,
   DataTypeEnum,
-  type EuTaxonomyDataForNonFinancials,
-  EuTaxonomyDataForNonFinancialsControllerApi,
-  type StoredCompany,
+  type EutaxonomyNonFinancialsData,
+  type CompanyAssociatedDataEutaxonomyNonFinancialsData,
+  EutaxonomyNonFinancialsDataControllerApi,
 } from "@clients/backend";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { submitButton } from "@sharedUtils/components/SubmitButton";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import { compareObjectKeysAndValuesDeep } from "@e2e/utils/GeneralUtils";
-import { roundNumber } from "@/utils/NumberConversionUtils";
 
-let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EuTaxonomyDataForNonFinancials>;
+let euTaxonomyForNonFinancialsFixtureForTest: FixtureData<EutaxonomyNonFinancialsData>;
 before(function () {
-  cy.fixture("CompanyInformationWithEuTaxonomyDataForNonFinancialsPreparedFixtures").then(function (jsonContent) {
-    const preparedFixtures = jsonContent as Array<FixtureData<EuTaxonomyDataForNonFinancials>>;
+  cy.fixture("CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json").then(function (jsonContent) {
+    const preparedFixtures = jsonContent as Array<FixtureData<EutaxonomyNonFinancialsData>>;
     euTaxonomyForNonFinancialsFixtureForTest = getPreparedFixture(
-      "all-fields-defined-for-eu-taxo-non-financials",
+      "all-fields-defined-for-eu-taxo-non-financials-alpha",
       preparedFixtures,
     );
   });
@@ -36,36 +33,6 @@ describeIf(
     executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
   },
   function (): void {
-    /**
-     * validates that the data uploaded via api is displayed correctly for a company
-     * @param company the company associated to the data uploaded via form
-     * @param dataId the company data id for accessing its view page
-     */
-    function validateSomeValuesForTheReuploadedDataset(company: StoredCompany, dataId: string): void {
-      cy.visit(`/companies/${company.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}/${dataId}`);
-      cy.get("h1").should("contain", company.companyInformation.companyName);
-      cy.get('span[data-test="_general"]').contains("General").should("exist");
-      ["Assurance", "CapEx", "OpEx"].forEach((category) => {
-        cy.get(`span[data-test="${category}"]`).contains(category.toUpperCase()).should("exist");
-      });
-      cy.get('td > [data-test="fiscalYearEnd"]')
-        .parent()
-        .next("td")
-        .contains(assertDefined(euTaxonomyForNonFinancialsFixtureForTest?.t?.general?.fiscalYearEnd))
-        .should("exist");
-      cy.get('div > [data-test="CapEx"]').click();
-      cy.get('td > [data-test="relativeShareInPercent"]')
-        .parent()
-        .next("td")
-        .contains(
-          roundNumber(
-            assertDefined(euTaxonomyForNonFinancialsFixtureForTest?.t?.capex?.eligibleShare?.relativeShareInPercent),
-            2,
-          ),
-        )
-        .should("exist");
-    }
-
     it(
       "Create a company and an EU taxonomy for non-financials dataset via api, then re-upload it with the " +
         "upload form in Edit mode and assure that it worked by validating a couple of values",
@@ -82,7 +49,7 @@ describeIf(
               "2021",
               euTaxonomyForNonFinancialsFixtureForTest.t,
             ).then((dataMetaInformation) => {
-              let dataSetFromPrefillRequest: EuTaxonomyDataForNonFinancials;
+              let dataSetFromPrefillRequest: EutaxonomyNonFinancialsData;
               cy.ensureLoggedIn(admin_name, admin_pw);
               cy.intercept({
                 url: `api/data/${dataMetaInformation.dataType}/${dataMetaInformation.dataId}`,
@@ -99,7 +66,7 @@ describeIf(
               cy.wait("@getDataToPrefillForm", { timeout: Cypress.env("medium_timeout_in_ms") as number }).then(
                 (interception) => {
                   dataSetFromPrefillRequest = (
-                    interception.response?.body as CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+                    interception.response?.body as CompanyAssociatedDataEutaxonomyNonFinancialsData
                   ).data;
                 },
               );
@@ -113,21 +80,16 @@ describeIf(
                 (interception) => {
                   cy.url().should("eq", getBaseUrl() + "/datasets");
                   const dataMetaInformationOfReuploadedDataset = interception.response?.body as DataMetaInformation;
-                  return new EuTaxonomyDataForNonFinancialsControllerApi(new Configuration({ accessToken: token }))
-                    .getCompanyAssociatedEuTaxonomyDataForNonFinancials(dataMetaInformationOfReuploadedDataset.dataId)
+                  return new EutaxonomyNonFinancialsDataControllerApi(new Configuration({ accessToken: token }))
+                    .getCompanyAssociatedEutaxonomyNonFinancialsData(dataMetaInformationOfReuploadedDataset.dataId)
                     .then((axiosResponse) => {
                       const reuploadedDatasetFromBackend = axiosResponse.data.data;
                       compareObjectKeysAndValuesDeep(
                         dataSetFromPrefillRequest as Record<string, object>,
                         reuploadedDatasetFromBackend as Record<string, object>,
                       );
-                      cy.get('span[data-test="hideEmptyDataToggle"]').should("not.exist"); //this line can be removed once MLDT has been integrated
                       cy.url().should("eq", getBaseUrl() + "/datasets");
                       cy.get('[data-test="datasets-table"]').should("be.visible");
-                      validateSomeValuesForTheReuploadedDataset(
-                        storedCompany,
-                        dataMetaInformationOfReuploadedDataset.dataId,
-                      );
                     });
                 },
               );

@@ -20,12 +20,11 @@ export function formatCurrencyForDisplay(
   dataPoint: CurrencyDataPoint | null | undefined,
   fieldLabel: string,
 ): AvailableMLDTDisplayObjectTypes {
-  const datapointValue = formatAmountWithCurrency({ amount: dataPoint?.value });
-  const valueForDisplay = datapointValue ? `${datapointValue} ${dataPoint?.currency ?? ""}`.trim() : "";
+  const datapointValue = formatAmountWithCurrency({ amount: dataPoint?.value, currency: dataPoint?.currency }).trim();
 
   return wrapDisplayValueWithDatapointInformation(
     {
-      displayValue: valueForDisplay,
+      displayValue: datapointValue,
       displayComponentName: MLDTDisplayComponentName.StringDisplayComponent,
     },
     fieldLabel,

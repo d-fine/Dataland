@@ -24,12 +24,14 @@ class FrameworkRegistryImportsUpdater {
         }!!
 
         val freeMarkerContext = mapOf(
-            "frameworks" to allRegisteredFrameworks.map {
-                mapOf(
-                    "identifier" to it.name,
-                    "baseNameInCamelCase" to getNameFromLabel(it.name),
-                )
-            },
+            "frameworks" to allRegisteredFrameworks
+                .sortedBy { it.name }
+                .map {
+                    mapOf(
+                        "identifier" to it.name,
+                        "baseNameInCamelCase" to getNameFromLabel(it.name),
+                    )
+                },
         )
         writeIntoRegistryTsFiles(repository, freeMarkerContext)
     }

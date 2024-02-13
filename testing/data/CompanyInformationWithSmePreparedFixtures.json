@@ -2,52 +2,50 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-year-2023",
-			"headquarters": "Fort Andrew",
-			"headquartersPostalCode": "09336-6460",
-			"sector": "functionalities",
+			"headquarters": "Kingburgh",
+			"headquartersPostalCode": "65668",
+			"sector": "schemas",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"Ys4wYZgTmMoppNR0qJDM"
+				],
 				"Isin": [
-					"xbz1g1mU5pMQ"
+					"9OJPinXuVOU4"
 				],
-				"PermId": [
-					"IMCsla2Flk"
+				"PermId": [],
+				"Ticker": [
+					"wweyJGQ"
 				],
-				"Ticker": [],
-				"Duns": [
-					"eoR628nXQ"
-				],
-				"VatNumber": [
-					"tuPRTmxyR"
-				],
+				"Duns": [],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "LK",
+			"countryCode": "CW",
 			"companyAlternativeNames": [
-				"Bogisich - Lindgren",
-				"Littel, Marquardt and Waelchi"
+				"Olson - Davis"
 			],
-			"companyLegalForm": "AG",
-			"website": "https://complete-productivity.com/",
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://alarming-stain.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"14.14",
-						"22.19",
-						"41.10"
+						"47.42",
+						"90",
+						"91.03",
+						"93"
 					],
 					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Candelario Divide 23704",
-						"postalCode": "62299",
-						"city": "Waukegan",
-						"state": "Missouri",
-						"country": "AD"
+						"streetAndHouseNumber": "Walker Trace 46156",
+						"postalCode": "37008-7793",
+						"city": "Lillafort",
+						"state": "Arkansas",
+						"country": "ZW"
 					},
-					"numberOfEmployees": 6110,
-					"fiscalYearStart": "2024-08-06"
+					"numberOfEmployees": 9547,
+					"fiscalYearStart": "2024-04-27"
 				},
 				"companyFinancials": {
 					"revenueInEUR": 0,
@@ -59,75 +57,119 @@
 				"sites": {
 					"listOfProductionSites": [
 						{
-							"nameOfProductionSite": "Franey LLC",
+							"nameOfProductionSite": "Wyman, McDermott and Willms",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Gregory Expressway 936",
-								"postalCode": "13678",
-								"city": "Lynnbury",
-								"state": null,
-								"country": "WS"
+								"streetAndHouseNumber": "Dalton Port 9562",
+								"postalCode": "51763-4154",
+								"city": "Colemanview",
+								"state": "Mississippi",
+								"country": "KP"
 							},
-							"shareOfTotalRevenueInPercent": null
+							"shareOfTotalRevenueInPercent": 40.94
 						},
 						{
-							"nameOfProductionSite": "Bauch - Nicolas",
+							"nameOfProductionSite": "Bosco Group",
 							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Prohaska Squares 735",
-								"postalCode": "10507-2590",
-								"city": "Priscillafort",
-								"state": "Ohio",
-								"country": "KE"
+								"streetAndHouseNumber": "Dooley Loop 94128",
+								"postalCode": "15365-4085",
+								"city": "Vincenzatown",
+								"state": "Rhode Island",
+								"country": "LS"
 							},
-							"shareOfTotalRevenueInPercent": 66.83
-						},
-						{
-							"nameOfProductionSite": "Maggio - Upton",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Bramley Close 9638",
-								"postalCode": "31648-2575",
-								"city": "West Hildaview",
-								"state": "Vermont",
-								"country": "MK"
-							},
-							"shareOfTotalRevenueInPercent": null
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Blanda View 499",
-								"postalCode": null,
-								"city": "Lucindaland",
-								"state": null,
-								"country": "TO"
-							},
-							"shareOfTotalRevenueInPercent": 0.41
-						},
-						{
-							"nameOfProductionSite": "Dooley - Ankunding",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "W High Street 59182",
-								"postalCode": null,
-								"city": "Paxtonville",
-								"state": "New York",
-								"country": "PR"
-							},
-							"shareOfTotalRevenueInPercent": null
+							"shareOfTotalRevenueInPercent": 73.39
 						}
 					]
 				},
 				"products": {
+					"listOfProducts": []
+				}
+			},
+			"power": {
+				"investments": {
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
+				},
+				"consumption": {
+					"powerConsumptionInMWh": 1322,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 857,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+				}
+			},
+			"insurances": {
+				"naturalHazards": {
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 5438216,
+					"naturalHazardsCovered": null
+				}
+			}
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "SME-maximum-address",
+			"headquarters": "Beerstad",
+			"headquartersPostalCode": "48930",
+			"sector": "users",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"Lhiy4mAC3EUg"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"ba63zbOUc"
+				],
+				"VatNumber": [
+					"xKpD3RaNi"
+				],
+				"CompanyRegistrationNumber": [
+					"CoV4MH2oS7mNbEg"
+				]
+			},
+			"countryCode": "PA",
+			"companyAlternativeNames": [
+				"Gusikowski, Abernathy and Moore",
+				"Hagenes - Roob",
+				"Hoeger, Russel and Hansen"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://perky-leek.org/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"general": {
+				"basicInformation": {
+					"sector": [
+						"84.3"
+					],
+					"addressOfHeadquarters": {
+						"streetAndHouseNumber": "Main Street 12",
+						"postalCode": "12345",
+						"city": "Nonexistingen",
+						"state": "Fiction",
+						"country": "Imagination"
+					},
+					"numberOfEmployees": 6831,
+					"fiscalYearStart": "2024-07-27"
+				},
+				"companyFinancials": {
+					"revenueInEUR": 27066342,
+					"operatingCostInEUR": 68287751,
+					"capitalAssetsInEUR": 60746408
+				}
+			},
+			"production": {
+				"sites": {
+					"listOfProductionSites": []
+				},
+				"products": {
 					"listOfProducts": [
 						{
-							"name": "Luxurious Steel Soap",
-							"shareOfTotalRevenueInPercent": 13.18
-						},
-						{
-							"name": "Tasty Steel Shirt",
-							"shareOfTotalRevenueInPercent": 42.53
-						},
-						{
-							"name": "Sleek Metal Shirt",
-							"shareOfTotalRevenueInPercent": null
+							"name": "Sleek Granite Hat",
+							"shareOfTotalRevenueInPercent": 73.28
 						}
 					]
 				}
@@ -137,154 +179,23 @@
 					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "LessThan1"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 449,
-					"powerFromRenewableSources": "No",
-					"energyConsumptionHeatingAndHotWaterInMWh": 562,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
+					"powerConsumptionInMWh": 582,
+					"powerFromRenewableSources": "Yes",
+					"energyConsumptionHeatingAndHotWaterInMWh": 395,
+					"primaryEnergySourceForHeatingAndHotWater": "Gas",
+					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "Between50And75"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
 					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 23713728,
+					"amountCoveredByInsuranceAgainstNaturalHazards": 27552658,
 					"naturalHazardsCovered": [
-						"Avalanche"
-					]
-				}
-			}
-		},
-		"reportingPeriod": "2023"
-	},
-	{
-		"companyInformation": {
-			"companyName": "SME-maximum-address",
-			"headquarters": "Haverhill",
-			"headquartersPostalCode": null,
-			"sector": "supply-chains",
-			"identifiers": {
-				"Lei": [
-					"6CSbaUbNLOiai0VgcSZR"
-				],
-				"Isin": [
-					"6Kfg4vwE1LBk",
-					"GVdNLoQLQbx8"
-				],
-				"PermId": [],
-				"Ticker": [
-					"IunCn03"
-				],
-				"Duns": [
-					"caceBHNO6"
-				],
-				"VatNumber": [
-					"8Ilm48YvK"
-				],
-				"CompanyRegistrationNumber": [
-					"Zv7bO9S7I7pSUVS"
-				]
-			},
-			"countryCode": "BZ",
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Sole Trader",
-			"website": null,
-			"isTeaserCompany": false
-		},
-		"t": {
-			"general": {
-				"basicInformation": {
-					"sector": [
-						"46.13"
-					],
-					"addressOfHeadquarters": {
-						"streetAndHouseNumber": "Main Street 12",
-						"postalCode": "12345",
-						"city": "Nonexistingen",
-						"state": "Fiction",
-						"country": "Imagination"
-					},
-					"numberOfEmployees": 2678,
-					"fiscalYearStart": "2024-05-01"
-				},
-				"companyFinancials": {
-					"revenueInEUR": 8470846,
-					"operatingCostInEUR": 29318359,
-					"capitalAssetsInEUR": null
-				}
-			},
-			"production": {
-				"sites": {
-					"listOfProductionSites": [
-						{
-							"nameOfProductionSite": "Bogan, Brown and Conroy",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "McLaughlin Lane 1216",
-								"postalCode": "84264",
-								"city": "Littelmouth",
-								"state": null,
-								"country": "EE"
-							},
-							"shareOfTotalRevenueInPercent": 16.07
-						},
-						{
-							"nameOfProductionSite": "Bradtke, Daniel and Franey",
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "O'Keefe Spurs 44742",
-								"postalCode": "62173",
-								"city": "Kenosha",
-								"state": null,
-								"country": "CD"
-							},
-							"shareOfTotalRevenueInPercent": 41.62
-						},
-						{
-							"nameOfProductionSite": null,
-							"addressOfProductionSite": {
-								"streetAndHouseNumber": "Ludwig Place 598",
-								"postalCode": "59227",
-								"city": "Arcadia",
-								"state": "Idaho",
-								"country": "US"
-							},
-							"shareOfTotalRevenueInPercent": 6.97
-						}
-					]
-				},
-				"products": {
-					"listOfProducts": [
-						{
-							"name": "Incredible Wooden Cheese",
-							"shareOfTotalRevenueInPercent": 74.11
-						},
-						{
-							"name": "Small Frozen Bike",
-							"shareOfTotalRevenueInPercent": 39.19
-						}
-					]
-				}
-			},
-			"power": {
-				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between10And15"
-				},
-				"consumption": {
-					"powerConsumptionInMWh": null,
-					"powerFromRenewableSources": null,
-					"energyConsumptionHeatingAndHotWaterInMWh": 804,
-					"primaryEnergySourceForHeatingAndHotWater": null,
-					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "GreaterThan75"
-				}
-			},
-			"insurances": {
-				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "Yes",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 20853018,
-					"naturalHazardsCovered": [
+						"EarthQuake",
 						"Snow",
 						"Avalanche",
-						"Wind",
-						"EarthQuake",
-						"Hail"
+						"Hail",
+						"Flooding"
 					]
 				}
 			}
@@ -294,43 +205,44 @@
 	{
 		"companyInformation": {
 			"companyName": "SME-minimum-address",
-			"headquarters": "Lake Alfredo",
-			"headquartersPostalCode": "26183",
-			"sector": "infrastructures",
+			"headquarters": "Kamilleshire",
+			"headquartersPostalCode": "58544-1978",
+			"sector": "lifetime value",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"n8XzJaBIajt6bRwxgDc1"
+				],
 				"Isin": [
-					"SRxxGNXwdQUs",
-					"LSNqK8UDThnL"
+					"Rpid1yBugPmn"
 				],
-				"PermId": [
-					"afbBxjDbVo"
+				"PermId": [],
+				"Ticker": [
+					"9EWEAcO"
 				],
-				"Ticker": [],
 				"Duns": [
-					"6tPGqGr8L"
+					"JWjnJwbtg"
 				],
 				"VatNumber": [
-					"KCtke9oOU"
+					"LJXRjJrHD"
 				],
-				"CompanyRegistrationNumber": [
-					"WOCj4M1HpIIoX03"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MX",
+			"countryCode": "BI",
 			"companyAlternativeNames": [
-				"Krajcik - Bartell",
-				"Rippin - Hahn"
+				"Dooley, Murazik and Green",
+				"Gutkowski and Sons",
+				"Rutherford - Rosenbaum",
+				"Tremblay - Ullrich"
 			],
 			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": null,
+			"website": "https://tiny-conformation.info",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"basicInformation": {
 					"sector": [
-						"90.02"
+						"95.21"
 					],
 					"addressOfHeadquarters": {
 						"streetAndHouseNumber": null,
@@ -339,52 +251,95 @@
 						"state": null,
 						"country": "Uninspired"
 					},
-					"numberOfEmployees": 178,
-					"fiscalYearStart": "2024-07-08"
+					"numberOfEmployees": 1725,
+					"fiscalYearStart": "2024-11-18"
 				},
 				"companyFinancials": {
-					"revenueInEUR": 3990307,
-					"operatingCostInEUR": 69260689,
-					"capitalAssetsInEUR": 49983208
+					"revenueInEUR": 76549664,
+					"operatingCostInEUR": 61825533,
+					"capitalAssetsInEUR": 10538377
 				}
 			},
 			"production": {
 				"sites": {
-					"listOfProductionSites": null
+					"listOfProductionSites": [
+						{
+							"nameOfProductionSite": null,
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Glebe Close 81621",
+								"postalCode": "62974-9831",
+								"city": "Dejonland",
+								"state": "Oklahoma",
+								"country": "PF"
+							},
+							"shareOfTotalRevenueInPercent": 64.51
+						},
+						{
+							"nameOfProductionSite": "Stoltenberg - Berge",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Thora Lodge 328",
+								"postalCode": null,
+								"city": "Fort Ona",
+								"state": "Wyoming",
+								"country": "SG"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Lubowitz, Ankunding and Dach",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Borer Extensions 7008",
+								"postalCode": "20720-5177",
+								"city": "Eagan",
+								"state": "West Virginia",
+								"country": "UY"
+							},
+							"shareOfTotalRevenueInPercent": null
+						},
+						{
+							"nameOfProductionSite": "Dach, Rohan and Hudson",
+							"addressOfProductionSite": {
+								"streetAndHouseNumber": "Oaklands 8843",
+								"postalCode": "94588",
+								"city": "Auburn",
+								"state": "Texas",
+								"country": "UY"
+							},
+							"shareOfTotalRevenueInPercent": 63.14
+						}
+					]
 				},
 				"products": {
 					"listOfProducts": [
 						{
-							"name": "Fantastic Fresh Pants",
-							"shareOfTotalRevenueInPercent": 68.84
-						},
-						{
-							"name": "Awesome Bronze Tuna",
-							"shareOfTotalRevenueInPercent": 77.13
+							"name": "Oriental Soft Cheese",
+							"shareOfTotalRevenueInPercent": 49.91
 						}
 					]
 				}
 			},
 			"power": {
 				"investments": {
-					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "GreaterThan25"
+					"percentageRangeForInvestmentsInEnhancingEnergyEfficiency": "Between20And25"
 				},
 				"consumption": {
-					"powerConsumptionInMWh": 1297,
-					"powerFromRenewableSources": "Yes",
-					"energyConsumptionHeatingAndHotWaterInMWh": 493,
-					"primaryEnergySourceForHeatingAndHotWater": null,
+					"powerConsumptionInMWh": 596,
+					"powerFromRenewableSources": "No",
+					"energyConsumptionHeatingAndHotWaterInMWh": 481,
+					"primaryEnergySourceForHeatingAndHotWater": "DistrictHeating",
 					"percentageRangeForEnergyConsumptionCoveredByOwnRenewablePowerGeneration": "LessThan25"
 				}
 			},
 			"insurances": {
 				"naturalHazards": {
-					"insuranceAgainstNaturalHazards": "No",
-					"amountCoveredByInsuranceAgainstNaturalHazards": 15243564,
+					"insuranceAgainstNaturalHazards": "Yes",
+					"amountCoveredByInsuranceAgainstNaturalHazards": 47426682,
 					"naturalHazardsCovered": [
-						"Flooding",
-						"Wind",
 						"EarthQuake",
+						"Wind",
+						"Snow",
+						"Hail",
+						"Flooding",
 						"Avalanche"
 					]
 				}

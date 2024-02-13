@@ -141,7 +141,7 @@ export default defineComponent({
      * Redirects the user to the data-request/invite screen
      */
     async goToDataRequest() {
-      await this.$router.push("/requests");
+      await this.$router.push("/bulkdatarequest");
     },
     /**
      * Redirects the user to the api-key management interface
