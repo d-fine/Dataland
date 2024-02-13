@@ -40,7 +40,7 @@ import FrameworkSummaryPanel from "@/components/resources/companyCockpit/Framewo
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
-import { getUserId } from "@/utils/KeycloakUtils";
+import { checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_ADMIN } from "@/utils/KeycloakUtils";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 
 export default defineComponent({
@@ -131,13 +131,25 @@ export default defineComponent({
     async getCompanyDataOwnerInformation(): Promise<void> {
       const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
         .companyDataController;
-      const atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).status == 200) as
-        | boolean
-        | undefined;
+      let atLeastOneDataOwner: boolean | undefined;
+      try {
+        if (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise)) {
+          atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).data.length > 0) as
+            | boolean
+            | undefined;
+        } else {
+          atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).status == 200) as
+            | boolean
+            | undefined;
+        }
 
-      if (atLeastOneDataOwner !== undefined) {
-        this.hasCompanyDataOwner = atLeastOneDataOwner;
-      } else {
+        if (atLeastOneDataOwner !== undefined) {
+          this.hasCompanyDataOwner = atLeastOneDataOwner;
+        } else {
+          this.hasCompanyDataOwner = false;
+        }
+      } catch (error) {
+        console.error(error);
         this.hasCompanyDataOwner = false;
       }
     },

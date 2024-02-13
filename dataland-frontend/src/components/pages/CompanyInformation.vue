@@ -58,7 +58,7 @@ import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
-import { getUserId } from "@/utils/KeycloakUtils";
+import { checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_ADMIN } from "@/utils/KeycloakUtils";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 
 export default defineComponent({
@@ -165,26 +165,27 @@ export default defineComponent({
      * Retrieves if the company has any data owner
      */
     async getCompanyDataOwnerInformation(): Promise<void> {
-      if (this.isCompanyIdValid) {
-        const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
-          .companyDataController;
-        try {
-          const atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).status == 200) as
+      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
+        .companyDataController;
+      let atLeastOneDataOwner: boolean | undefined;
+      try {
+        if (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise)) {
+          atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).data.length > 0) as
             | boolean
             | undefined;
-
-          if (atLeastOneDataOwner !== undefined) {
-            this.hasCompanyDataOwner = atLeastOneDataOwner;
-          } else {
-            this.hasCompanyDataOwner = false;
-          }
-        } catch (error) {
-          console.error(error);
-          if (getErrorMessage(error).includes("404")) {
-            this.hasCompanyDataOwner = false;
-          }
+        } else {
+          atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(this.companyId)).status == 200) as
+            | boolean
+            | undefined;
         }
-      } else {
+
+        if (atLeastOneDataOwner !== undefined) {
+          this.hasCompanyDataOwner = atLeastOneDataOwner;
+        } else {
+          this.hasCompanyDataOwner = false;
+        }
+      } catch (error) {
+        console.error(error);
         this.hasCompanyDataOwner = false;
       }
     },

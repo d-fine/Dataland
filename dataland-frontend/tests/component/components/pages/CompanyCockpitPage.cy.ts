@@ -48,11 +48,7 @@ describe("Component test for the company cockpit", () => {
     }).as("fetchUserIsDataOwnerTrue");
     if (hasCompanyDataOwner) {
       cy.intercept("**/api/companies/*/data-owners", {
-        status: 200,
-      }).as("fetchHasCompanyDataOwnersFalse");
-    } else {
-      cy.intercept("**/api/companies/*/data-owners", {
-        status: 404,
+        body: [],
       }).as("fetchHasCompanyDataOwnersFalse");
     }
   }
