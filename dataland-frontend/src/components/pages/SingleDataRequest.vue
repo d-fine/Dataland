@@ -156,7 +156,6 @@ import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 export default defineComponent({
   name: "SingleDataRequest",
   components: {
-    SingleSelectFormField,
     BasicFormSection,
     ToggleChipFormInputs,
     CompanyInfoSheet,
