@@ -38,9 +38,9 @@ class DataRequestUpdaterTest {
         )
 
         val singleDataRequest = SingleDataRequest(
-            companyIdentifier = mapOfIds["companyId"]!!.toString(),
+            companyIdentifier = mapOfIds.get("companyId").toString(),
             frameworkName = SingleDataRequest.FrameworkName.eutaxonomyMinusNonMinusFinancials,
-            listOfReportingPeriods = listOf("2022"),
+            listOfReportingPeriods = listOf("2022", "2023"),
             contactList = listOf("someContact@webserver.de", "simpleString"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
@@ -55,24 +55,27 @@ class DataRequestUpdaterTest {
             )
             Assertions.assertEquals(storedDataRequest.requestStatus, retrievedDataRequest.requestStatus)
         }
-        dummyCompanyAssociatedData =
-            CompanyAssociatedDataEutaxonomyNonFinancialsData(
-                mapOfIds["companyId"]!!.toString(),
-                "2022",
-                testDataEuTaxonomyNonFinancials,
-            )
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val dataId = uploadDatasetAndValidatePendingState()
+
+        val dataId = uploadDatasetAndValidatePendingState(mapOfIds)
         Thread.sleep(1000)
-        println(apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).qaStatus)
         for (storedDataRequest in allStoredDataRequests) {
             val retrievedDataRequest = requestControllerApi.getDataRequestById(
                 UUID.fromString(storedDataRequest.dataRequestId),
             )
-            Assertions.assertEquals(RequestStatus.answered, retrievedDataRequest.requestStatus)
+            if (retrievedDataRequest.reportingPeriod == "2022") {
+                Assertions.assertEquals(RequestStatus.answered, retrievedDataRequest.requestStatus)
+            } else {
+                Assertions.assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
+            }
         }
     }
-    private fun uploadDatasetAndValidatePendingState(): String {
+    private fun uploadDatasetAndValidatePendingState(mapOfIds: Map<String, String>): String {
+        dummyCompanyAssociatedData =
+            CompanyAssociatedDataEutaxonomyNonFinancialsData(
+                mapOfIds.get("companyId").toString(),
+                "2022",
+                testDataEuTaxonomyNonFinancials,
+            )
         val dataId = dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(
             dummyCompanyAssociatedData, true,
         ).dataId
