@@ -63,6 +63,7 @@ import { getUserId } from "@/utils/KeycloakUtils";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
 import { getCompanyDataOwnerInformation } from "@/utils/api/CompanyDataOwner";
+import { isCompanyIdValid } from "@/utils/ValidationsUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -107,11 +108,6 @@ export default defineComponent({
         });
       }
       return listOfItems;
-    },
-
-    isCompanyIdValid() {
-      const uuidRegexExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      return uuidRegexExp.test(this.companyId);
     },
   },
   props: {
@@ -180,7 +176,7 @@ export default defineComponent({
      */
     async getUserDataOwnerInformation() {
       await this.awaitUserId();
-      if (this.userId !== undefined && this.isCompanyIdValid) {
+      if (this.userId !== undefined && isCompanyIdValid(this.companyId)) {
         try {
           const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
             .backendClients.companyDataController;

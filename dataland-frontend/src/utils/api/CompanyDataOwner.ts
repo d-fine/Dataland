@@ -2,6 +2,7 @@ import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_ADMIN } from "@/utils/KeycloakUtils";
+import { isCompanyIdValid } from "@/utils/ValidationsUtils";
 
 /**
  * Get the Information about Data-ownership
@@ -13,6 +14,9 @@ export async function getCompanyDataOwnerInformation(
   getKeycloakPromise: () => Promise<Keycloak>,
   companyId: string,
 ): Promise<boolean> {
+  if (!isCompanyIdValid(companyId)) {
+    return false;
+  }
   const companyDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients
     .companyDataController;
   let atLeastOneDataOwner: boolean | undefined;
