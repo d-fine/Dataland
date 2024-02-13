@@ -68,6 +68,9 @@ export default defineComponent({
         }
       }
     },
+    async authenticated() {
+      await this.setUploaderRightsForUser();
+    },
   },
   components: {
     ClaimOwnershipPanel,
