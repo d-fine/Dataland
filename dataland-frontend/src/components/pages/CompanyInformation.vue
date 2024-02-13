@@ -165,6 +165,10 @@ export default defineComponent({
      * Retrieves if the company has any data owner
      */
     async getCompanyDataOwnerInformation(): Promise<void> {
+      if (!this.isCompanyIdValid) {
+        this.hasCompanyDataOwner = false;
+        return;
+      }
       const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
         .companyDataController;
       let atLeastOneDataOwner: boolean | undefined;
