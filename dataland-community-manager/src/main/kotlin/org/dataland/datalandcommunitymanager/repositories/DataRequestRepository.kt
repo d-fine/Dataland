@@ -98,11 +98,12 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     @Query
     (
         "UPDATE DataRequestEntity d " +
-            "SET d.requestStatus = " +
-            ":#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Answered} " +
+            "SET d.requestStatus = 'Answered' " +
+//            ":#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Answered} " +
             "WHERE " +
             "(d.dataTypeName = :#{#dataTypeName} AND " +
-            "d.requestStatus = :#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Open} " +
+//            "d.requestStatus = :#{T(org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus).Open} " +
+            "d.requestStatus = 'Open' " +
             "AND " +
             "d.reportingPeriod = :#{#reportingPeriod} AND " +
             "d.dataRequestCompanyIdentifierValue = :#{#dataRequestCompanyIdentifierValue})",
