@@ -258,13 +258,15 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     reportingPeriod: String,
     identifierType: DataRequestCompanyIdentifierType,
     identifierValue: String,
+    status: RequestStatus,
     count: Long,
 ) {
     val matchingAggregatedRequests = aggregatedDataRequests.filter { aggregatedDataRequest ->
         aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
             aggregatedDataRequest.reportingPeriod == reportingPeriod &&
             aggregatedDataRequest.dataRequestCompanyIdentifierType == identifierType &&
-            aggregatedDataRequest.dataRequestCompanyIdentifierValue == identifierValue
+            aggregatedDataRequest.dataRequestCompanyIdentifierValue == identifierValue &&
+            aggregatedDataRequest.requestStatus == status
     }
     assertEquals(
         1,
@@ -280,19 +282,22 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     )
 }
 
-fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
+fun iterateThroughFrameworksReportingPeriodsIdentifiersAndStatiAndCheckAggregationWithCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
     frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
     reportingPeriods: List<String>,
     identifierMap: Map<DataRequestCompanyIdentifierType, String>,
+    requestStati: Set<RequestStatus>,
     count: Long,
 ) {
     frameworks.forEach { framework ->
         reportingPeriods.forEach { reportingPeriod ->
             identifierMap.forEach { (identifierType, identifierValue) ->
-                checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
-                    aggregatedDataRequests, framework, reportingPeriod, identifierType, identifierValue, count,
-                )
+                requestStati.forEach { status ->
+                    checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
+                        aggregatedDataRequests, framework, reportingPeriod, identifierType, identifierValue, status, count,
+                    )
+                }
             }
         }
     }

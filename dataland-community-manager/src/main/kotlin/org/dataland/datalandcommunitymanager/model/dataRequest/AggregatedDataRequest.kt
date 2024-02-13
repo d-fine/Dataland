@@ -16,5 +16,6 @@ data class AggregatedDataRequest(
     val reportingPeriod: String?,
     val dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
     val dataRequestCompanyIdentifierValue: String,
+    val requestStatus: RequestStatus,
     val count: Long,
 )
