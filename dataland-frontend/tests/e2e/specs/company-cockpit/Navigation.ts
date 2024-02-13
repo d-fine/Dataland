@@ -2,12 +2,11 @@ import { reader_name, reader_pw, uploader_name, uploader_pw } from "@e2e/utils/C
 import { searchBasicCompanyInformationForDataType } from "@e2e/utils/GeneralApiUtils";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { type CompanyIdAndName, DataTypeEnum } from "@clients/backend";
+import { submitButton } from "@sharedUtils/components/SubmitButton";
 
 describe("As a user, I expect the navigation around the company cockpit to work as expected", () => {
   let alphaCompanyIdAndName: CompanyIdAndName;
   let betaCompanyIdAndName: CompanyIdAndName;
-
-  const companyCockpitRegex = /\/companies\/[0-9a-fA-F-]{36}$/;
 
   before(() => {
     getKeycloakToken(reader_name, reader_pw)
@@ -30,8 +29,7 @@ describe("As a user, I expect the navigation around the company cockpit to work 
   it("From the landing page visit the company cockpit via the searchbar", () => {
     cy.visitAndCheckAppMount("/");
     searchCompanyAndChooseFirstSuggestion(alphaCompanyIdAndName.companyName);
-    cy.url().should("match", companyCockpitRegex);
-    cy.get("h1").should("exist");
+    cy.contains("h1", alphaCompanyIdAndName.companyName);
   });
 
   it("From the company cockpit page visit the company cockpit of a different company", () => {
@@ -42,7 +40,7 @@ describe("As a user, I expect the navigation around the company cockpit to work 
     searchCompanyAndChooseFirstSuggestion(betaCompanyIdAndName.companyName);
     cy.wait("@fetchAggregatedFrameworkSummaryForBeta");
     cy.url().should("not.contain", `/companies/${alphaCompanyIdAndName.companyId}`);
-    cy.url().should("match", companyCockpitRegex);
+    cy.contains("h1", betaCompanyIdAndName.companyName);
   });
 
   it("From the company cockpit page visit a view page", () => {
@@ -53,6 +51,7 @@ describe("As a user, I expect the navigation around the company cockpit to work 
       "contain",
       `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`,
     );
+    cy.get("[data-test='frameworkDataTableTitle']").should("exist");
   });
 
   it("From the company cockpit page visit an upload page", () => {
@@ -63,6 +62,7 @@ describe("As a user, I expect the navigation around the company cockpit to work 
       "contain",
       `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`,
     );
+    submitButton.exists();
   });
   it("From the company cockpit page claim data ownership via the panel and context menu", () => {
     cy.ensureLoggedIn(uploader_name, uploader_pw);
