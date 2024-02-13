@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.repositories
 import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -47,11 +48,13 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "d.reportingPeriod, " +
             "d.dataRequestCompanyIdentifierType, " +
             "d.dataRequestCompanyIdentifierValue, " +
+            "d.requestStatus, " +
             "COUNT(d.userId))" +
             "FROM DataRequestEntity d " +
             "WHERE (:dataTypes IS NULL OR d.dataTypeName IN :dataTypes) " +
             "  AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%)" +
             "  AND (:identifierValue IS NULL OR d.dataRequestCompanyIdentifierValue LIKE %:identifierValue%) " +
+            "  AND (:status IS NULL OR d.requestStatus = :status) " +
             "GROUP BY d.dataTypeName, d.reportingPeriod, d.dataRequestCompanyIdentifierType," +
             "  d.dataRequestCompanyIdentifierValue",
     )
@@ -59,6 +62,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         @Param("identifierValue") identifierValue: String?,
         @Param("dataTypes") dataTypeNames: List<String>?,
         @Param("reportingPeriod") reportingPeriod: String?,
+        @Param("status") status: RequestStatus?,
     ): List<AggregatedDataRequestEntity>
 
     /**

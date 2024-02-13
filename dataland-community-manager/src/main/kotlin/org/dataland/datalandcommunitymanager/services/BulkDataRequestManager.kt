@@ -10,6 +10,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -107,6 +108,7 @@ class BulkDataRequestManager(
         identifierValue: String?,
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriod: String?,
+        status: RequestStatus?,
     ): List<AggregatedDataRequest> {
         val dataTypesFilterForQuery = if (dataTypes != null && dataTypes.isEmpty()) {
             null
@@ -114,7 +116,12 @@ class BulkDataRequestManager(
             dataTypes?.map { it.value }
         }
         val aggregatedDataRequestEntities =
-            dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery, reportingPeriod)
+            dataRequestRepository.getAggregatedDataRequests(
+                identifierValue,
+                dataTypesFilterForQuery,
+                reportingPeriod,
+                status,
+            )
         val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
             AggregatedDataRequest(
                 utils.getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataTypeName),
