@@ -35,6 +35,15 @@ dependencies {
     implementation(libs.bcpkix.jdk15on)
     implementation(libs.bcprov.jdk15on)
     implementation(libs.mailjet.client)
+    testImplementation(Spring.boot.test)
+}
+
+tasks.test {
+    useJUnitPlatform()
+
+    extensions.configure(JacocoTaskExtension::class) {
+        setDestinationFile(file("$buildDir/jacoco/jacoco.exec"))
+    }
 }
 
 tasks.bootJar {
