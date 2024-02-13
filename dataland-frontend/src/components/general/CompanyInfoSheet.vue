@@ -1,8 +1,15 @@
 <template>
   <div ref="sheet" :class="`sheet ${isCollapsed ? 'visuals-hidden' : ''}`" data-test="sheet">
     <template v-if="!useMobileView">
-      <BackButton />
-      <CompaniesOnlySearchBar @select-company="$router.push(`/companies/${$event.companyId}`)" class="w-8 mt-2" />
+      <div class="headline">
+        <BackButton />
+      </div>
+
+      <CompaniesOnlySearchBar
+        v-if="showSearchBar"
+        @select-company="$router.push(`/companies/${$event.companyId}`)"
+        class="w-8 mt-2"
+      />
     </template>
     <template v-else>
       <div class="mobile-header">
@@ -14,6 +21,7 @@
     </template>
     <CompanyInformationBanner
       :companyId="companyId"
+      :show-single-data-request-button="showSingleDataRequestButton"
       @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
       class="w-12"
     />
@@ -41,9 +49,20 @@ const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.va
 const sheet = ref<HTMLDivElement>();
 const attachedSheet = ref<HTMLDivElement>();
 
-const { companyId } = defineProps<{
-  companyId: string;
-}>();
+const { companyId, showSearchBar, showSingleDataRequestButton } = defineProps({
+  companyId: {
+    type: String,
+    required: true,
+  },
+  showSearchBar: {
+    type: Boolean,
+    default: true,
+  },
+  showSingleDataRequestButton: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const emit = defineEmits(["fetchedCompanyInformation"]);
 
@@ -115,6 +134,14 @@ const isCollapsed = computed<boolean>(() => {
 
 .visuals-hidden {
   visibility: hidden;
+}
+
+.headline {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .mobile-header {

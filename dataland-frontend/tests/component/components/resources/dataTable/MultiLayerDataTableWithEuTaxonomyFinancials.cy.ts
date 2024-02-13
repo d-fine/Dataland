@@ -8,7 +8,7 @@ import {
 
 import { type MLDTConfig } from "@/components/resources/dataTable/MultiLayerDataTableConfiguration";
 import { mountMLDTFrameworkPanelFromFakeFixture } from "@ct/testUtils/MultiLayerDataTableComponentTestUtils";
-import { configForEuTaxonomyFinancialsMLDT } from "@/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/configForEutaxonomyFinancialsMLDT";
+import { configForEuTaxonomyFinancialsMLDT } from "@/components/resources/frameworkDataSearch/euTaxonomy/configForEutaxonomyFinancialsMLDT";
 import { formatPercentageNumberAsString } from "@/utils/Formatter";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import { euTaxonomyKpiNameMappings } from "@/components/forms/parts/kpiSelection/EuTaxonomyKPIsModel";

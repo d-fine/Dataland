@@ -4,7 +4,7 @@ import com.squareup.moshi.JsonAdapter
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 
 class UnauthorizedEuTaxonomyDataNonFinancialsControllerApi {
@@ -12,9 +12,9 @@ class UnauthorizedEuTaxonomyDataNonFinancialsControllerApi {
     private val client = OkHttpClient()
 
     private fun transferJsonToCompanyAssociatedDataEuTaxonomyDataForNonFinancials(inputString: String):
-        CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
-        val jsonAdapter: JsonAdapter<CompanyAssociatedDataEuTaxonomyDataForNonFinancials> =
-            moshi.adapter(CompanyAssociatedDataEuTaxonomyDataForNonFinancials::class.java)
+        CompanyAssociatedDataEutaxonomyNonFinancialsData {
+        val jsonAdapter: JsonAdapter<CompanyAssociatedDataEutaxonomyNonFinancialsData> =
+            moshi.adapter(CompanyAssociatedDataEutaxonomyNonFinancialsData::class.java)
         return jsonAdapter.fromJson(inputString)!!
     }
 
@@ -26,7 +26,7 @@ class UnauthorizedEuTaxonomyDataNonFinancialsControllerApi {
     }
 
     fun getCompanyAssociatedDataEuTaxonomyDataForNonFinancials(dataId: String):
-        CompanyAssociatedDataEuTaxonomyDataForNonFinancials {
+        CompanyAssociatedDataEutaxonomyNonFinancialsData {
         val response = client.newCall(buildGetCompanyAssociatedDataEuTaxonomyDataForNonFinancialsRequest(dataId))
             .execute()
         require(response.isSuccessful) { "Unauthorized access failed, response is: $response" }

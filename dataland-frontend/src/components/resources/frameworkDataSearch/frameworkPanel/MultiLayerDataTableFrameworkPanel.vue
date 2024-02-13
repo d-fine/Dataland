@@ -44,7 +44,7 @@ import {
   type DataMetaInformation,
   DataTypeEnum,
   type EuTaxonomyDataForFinancials,
-  type EuTaxonomyDataForNonFinancials,
+  type EutaxonomyNonFinancialsData,
 } from "@clients/backend";
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
@@ -86,7 +86,7 @@ const sortedReports = computed(() => {
   switch (props.frameworkIdentifier) {
     case DataTypeEnum.EutaxonomyNonFinancials: {
       return mldtDatasets.value.map(
-        (mldtDataset) => (mldtDataset.dataset as EuTaxonomyDataForNonFinancials).general?.referencedReports,
+        (mldtDataset) => (mldtDataset.dataset as EutaxonomyNonFinancialsData).general?.referencedReports,
       );
     }
     case DataTypeEnum.EutaxonomyFinancials: {
