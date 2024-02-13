@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyDataOwners
 import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
-import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -284,14 +283,13 @@ class DataOwnerControllerTest {
             companyId,
             dataReaderUserId,
         )
-        assertDoesNotThrow { apiAccessor.companyDataControllerApi.hasCompanyDataOwner(companyId)}
+        assertDoesNotThrow { apiAccessor.companyDataControllerApi.hasCompanyDataOwner(companyId) }
 
-        assertDoesNotThrow {apiAccessor.companyDataControllerApi.deleteDataOwner(companyId, dataReaderUserId)}
+        assertDoesNotThrow { apiAccessor.companyDataControllerApi.deleteDataOwner(companyId, dataReaderUserId) }
         val headExceptionForNonExistingDataOwners = assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.hasCompanyDataOwner(companyId)
         }
         assertErrorCodeForClientException(headExceptionForNonExistingDataOwners, 404)
-
     }
 
     @Test
@@ -311,16 +309,15 @@ class DataOwnerControllerTest {
         val checkIfUserIsUnauthorizedResponse = assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.getDataOwners(companyId)
         }
-        assertErrorCodeForClientException(checkIfUserIsUnauthorizedResponse , 403)
-        assertDoesNotThrow { apiAccessor.companyDataControllerApi.hasCompanyDataOwner(companyId)}
+        assertErrorCodeForClientException(checkIfUserIsUnauthorizedResponse, 403)
+        assertDoesNotThrow { apiAccessor.companyDataControllerApi.hasCompanyDataOwner(companyId) }
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        assertDoesNotThrow {apiAccessor.companyDataControllerApi.deleteDataOwner(companyId, dataReaderUserId)}
+        assertDoesNotThrow { apiAccessor.companyDataControllerApi.deleteDataOwner(companyId, dataReaderUserId) }
         createUnauthorizedUser()
         val headExceptionForNonExistingDataOwners = assertThrows<ClientException> {
             apiAccessor.companyDataControllerApi.hasCompanyDataOwner(companyId)
         }
         assertErrorCodeForClientException(headExceptionForNonExistingDataOwners, 404)
-
     }
 }

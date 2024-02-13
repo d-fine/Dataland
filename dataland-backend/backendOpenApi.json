@@ -13398,20 +13398,20 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
+          "companyName": {
             "type": "string"
           },
-          "countryCode": {
+          "companyId": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "companyName": {
+          "headquarters": {
             "type": "string"
           },
-          "companyId": {
+          "countryCode": {
             "type": "string"
           },
           "permId": {
