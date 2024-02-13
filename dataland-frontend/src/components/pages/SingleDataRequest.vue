@@ -43,6 +43,14 @@
                         Select at least one reporting period.
                       </p>
                     </BasicFormSection>
+                    <SingleSelectFormField
+                        name="Framework"
+                        validation="required"
+                        validation-label="Select a framework"
+                        placeholder="Select framework"
+                        :options="frameworkOptions"
+                        label="Select a framework"
+                    />
                     <BasicFormSection :data-test="'selectFramework'" header="Select a framework">
                       <FormKit
                         type="select"
@@ -150,10 +158,14 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue";
 import BasicFormSection from "@/components/general/BasicFormSection.vue";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 
 export default defineComponent({
   name: "SingleDataRequest",
   components: {
+    SingleSelectFormField,
     BasicFormSection,
     ToggleChipFormInputs,
     CompanyInfoSheet,
@@ -173,12 +185,11 @@ export default defineComponent({
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
     const footerContent = footerPage?.sections;
-    const frameworkOptions: DataTypeEnum[] = Object.values(DataTypeEnum);
     return {
       singleDataRequestModel: {},
       footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
-      frameworkOptions,
+      frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
       frameworkName: "" as DataTypeEnum,
       contact: "",
       dataRequesterMessage: "",
@@ -260,6 +271,17 @@ export default defineComponent({
       }
     },
     /**
+     * Populates the availableFrameworks property in the format expected by the dropdown filter
+     */
+    retrieveFrameworkOptions() {
+      this.frameworkOptions = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+        return {
+          value: dataTypeEnum,
+          label: humanizeStringOrNumber(dataTypeEnum),
+        };
+      });
+    },
+    /**
      * Go to company cockpit page
      */
     goToCompanyPage() {
@@ -268,6 +290,9 @@ export default defineComponent({
         path: `/companies/${thisCompanyId}`,
       });
     },
+  },
+  mounted() {
+    this.retrieveFrameworkOptions();
   },
 });
 </script>
