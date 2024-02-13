@@ -3,6 +3,7 @@ package org.dataland.e2etests.tests.communityManager
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
+import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
@@ -20,16 +21,14 @@ class DataRequestUpdaterTest {
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     private val dataController = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-    lateinit var dummyCompanyAssociatedData: CompanyAssociatedDataEutaxonomyNonFinancialsData
+    private lateinit var dummyCompanyAssociatedData: CompanyAssociatedDataEutaxonomyNonFinancialsData
     private val testDataEuTaxonomyNonFinancials = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getTData(1).first()
 
     private val testCompanyInformation = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getCompanyInformationWithoutIdentifiers(1).first()
-
     @BeforeAll
     fun authenticateAsReader() { jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader) }
-
     @Test
     fun `post single data request and provide data approve it and change the request status`() {
         val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
@@ -38,7 +37,7 @@ class DataRequestUpdaterTest {
         )
 
         val singleDataRequest = SingleDataRequest(
-            companyIdentifier = mapOfIds.get("companyId").toString(),
+            companyIdentifier = mapOfIds["companyId"].toString(),
             frameworkName = SingleDataRequest.FrameworkName.eutaxonomyMinusNonMinusFinancials,
             listOfReportingPeriods = listOf("2022", "2023"),
             contactList = listOf("someContact@webserver.de", "simpleString"),
@@ -48,7 +47,6 @@ class DataRequestUpdaterTest {
         val allStoredDataRequests = requestControllerApi.postSingleDataRequest(singleDataRequest)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-
         for (storedDataRequest in allStoredDataRequests) {
             val retrievedDataRequest = requestControllerApi.getDataRequestById(
                 UUID.fromString(storedDataRequest.dataRequestId),
@@ -56,29 +54,32 @@ class DataRequestUpdaterTest {
             Assertions.assertEquals(storedDataRequest.requestStatus, retrievedDataRequest.requestStatus)
         }
 
-        val dataId = uploadDatasetAndValidatePendingState(mapOfIds)
+        uploadDatasetAndValidatePendingState(mapOfIds)
         Thread.sleep(1000)
         for (storedDataRequest in allStoredDataRequests) {
             val retrievedDataRequest = requestControllerApi.getDataRequestById(
                 UUID.fromString(storedDataRequest.dataRequestId),
             )
-            if (retrievedDataRequest.reportingPeriod == "2022") {
-                Assertions.assertEquals(RequestStatus.answered, retrievedDataRequest.requestStatus)
-            } else {
-                Assertions.assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
-            }
+            checkRequestStatusAfterUpload(retrievedDataRequest)
         }
     }
-    private fun uploadDatasetAndValidatePendingState(mapOfIds: Map<String, String>): String {
+    private fun uploadDatasetAndValidatePendingState(mapOfIds: Map<String, String>) {
         dummyCompanyAssociatedData =
             CompanyAssociatedDataEutaxonomyNonFinancialsData(
-                mapOfIds.get("companyId").toString(),
+                mapOfIds["companyId"].toString(),
                 "2022",
                 testDataEuTaxonomyNonFinancials,
             )
-        val dataId = dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(
+        dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(
             dummyCompanyAssociatedData, true,
-        ).dataId
-        return dataId
+        )
+    }
+
+    private fun checkRequestStatusAfterUpload(retrievedDataRequest: StoredDataRequest){
+        if (retrievedDataRequest.reportingPeriod == "2022") {
+            Assertions.assertEquals(RequestStatus.answered, retrievedDataRequest.requestStatus)
+        } else {
+            Assertions.assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
+        }
     }
 }
