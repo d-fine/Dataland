@@ -11,7 +11,7 @@ data class GetDataRequestsSearchFilter(
     val userIdFilter: String,
     val requestStatus: RequestStatus?,
     val reportingPeriodFilter: String,
-    val dataRequestCompanyIdentifierValueFilter: String,
+    val datalandCompanyIdFilter: String,
 ) {
     val dataTypeNameFilterLength: Int
         get() = dataTypeNameFilter.length
@@ -22,6 +22,6 @@ data class GetDataRequestsSearchFilter(
     val reportingPeriodFilterLength: Int
         get() = reportingPeriodFilter.length
 
-    val dataRequestCompanyIdentifierValueFilterLength: Int
-        get() = dataRequestCompanyIdentifierValueFilter.length
+    val datalandCompanyIdFilterLength: Int
+        get() = datalandCompanyIdFilter.length
 }

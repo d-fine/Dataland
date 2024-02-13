@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.utils
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -24,33 +23,6 @@ class DataRequestManagerUtils(
     @Autowired private val companyGetter: CompanyGetter,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
-    private val isinRegex = Regex("^[A-Z]{2}[A-Z\\d]{10}$")
-    private val leiRegex = Regex("^[0-9A-Z]{18}[0-9]{2}$")
-    private val permIdRegex = Regex("^\\d+$")
-
-    /**
-     * Determines the type corresponding to the value of a provided company identifier
-     * @param identifierValue the identifier value
-     * @return the identifier type
-     */
-    fun determineIdentifierTypeViaRegex(identifierValue: String): DataRequestCompanyIdentifierType? {
-        val matchingRegexes =
-            listOf(leiRegex, isinRegex, permIdRegex).filter { it.matches(identifierValue) }
-        return when (matchingRegexes.size) {
-            0 -> null
-            1 -> {
-                when {
-                    matchingRegexes[0] == leiRegex -> DataRequestCompanyIdentifierType.Lei
-                    matchingRegexes[0] == isinRegex -> DataRequestCompanyIdentifierType.Isin
-                    matchingRegexes[0] == permIdRegex -> DataRequestCompanyIdentifierType.PermId
-                    else -> null
-                }
-            }
-
-            else -> DataRequestCompanyIdentifierType.MultipleRegexMatches
-        }
-    }
-
     /**
      * Returns the ID of the company corresponding to a provided identifier value, else null if none is found
      * @param identifierValue the identifier value
@@ -172,7 +144,7 @@ class DataRequestManagerUtils(
     ): Boolean {
         val requestingUserId = DatalandAuthentication.fromContext().userId
         val isAlreadyExisting = dataRequestRepository
-            .existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
+            .existsByUserIdAndDatalandCompanyIdAndDataTypeNameAndReportingPeriod(
                 requestingUserId, identifierValue, framework.name, reportingPeriod,
             )
         if (isAlreadyExisting) {

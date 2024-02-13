@@ -2,7 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
@@ -34,13 +34,22 @@ class SingleDataRequestManagerTest {
     fun setupSingleDataRequestManager() {
         val mockObjectMapper = mockObjectMapper()
         val mockDataRequestRepository = mockDataRequestRepository()
+        val companyGetter = mock(CompanyGetter::class.java)
         mockSingleDataRequestEmailSender = mock(SingleDataRequestEmailSender::class.java)
         singleDataRequestManager = SingleDataRequestManager(
             dataRequestRepository = mockDataRequestRepository,
             dataRequestLogger = mock(DataRequestLogger::class.java),
-            companyGetter = mock(CompanyGetter::class.java),
+            companyGetter = companyGetter,
             objectMapper = mockObjectMapper,
             singleDataRequestEmailSender = mockSingleDataRequestEmailSender,
+        )
+        `when`(companyGetter.getCompanyIdsAndNamesForSearchString(anyString(), anyString())).thenReturn(
+            listOf(
+                CompanyIdAndName(
+                    companyName = "Dummmy",
+                    companyId = companyIdRegexSafeCompanyId,
+                ),
+            ),
         )
         val mockSecurityContext = mock(SecurityContext::class.java)
         mockAuthentication = AuthenticationMock.mockJwtAuthentication(
@@ -56,7 +65,7 @@ class SingleDataRequestManagerTest {
     private fun mockDataRequestRepository(): DataRequestRepository {
         return mock(DataRequestRepository::class.java).also {
             `when`(
-                it.existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
+                it.existsByUserIdAndDatalandCompanyIdAndDataTypeNameAndReportingPeriod(
                     anyString(),
                     anyString(),
                     anyString(),
@@ -79,15 +88,8 @@ class SingleDataRequestManagerTest {
         }
     }
 
-
     @Test
     fun `validate that an email is sent for a Dataland company ID provided`() {
-        val mokCompany = CompanyInformation (
-            companyName = "test",
-            headquarters ="Frankfurt",
-            identifiers =  ("Lei",  listOf("ExampleLei")),
-            countryCode = "DE",
-        )
         val request = SingleDataRequest(
             companyIdentifier = companyIdRegexSafeCompanyId,
             frameworkName = DataTypeEnum.lksg,
@@ -104,5 +106,4 @@ class SingleDataRequestManagerTest {
             companyIdRegexSafeCompanyId,
         )
     }
-
 }

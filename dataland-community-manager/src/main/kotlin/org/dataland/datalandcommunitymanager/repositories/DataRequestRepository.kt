@@ -20,11 +20,10 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
 
     /** This method checks if a data request with the provided params already exists in the database.
      * @param userId to check for
-     * @param dataRequestCompanyIdentifierValue to check for
-     * @param dataTypeName to check for
+     * @param datalandCompanyId to check for
      * @returns a Boolean stating the result of the check
      */
-    fun existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
+    fun existsByUserIdAndDatalandCompanyIdAndDataTypeNameAndReportingPeriod(
         userId: String,
         datalandCompanyId: String,
         dataTypeName: String,
@@ -49,8 +48,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "WHERE (:dataTypes IS NULL OR d.dataTypeName IN :dataTypes) " +
             "  AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%)" +
             "  AND (:identifierValue IS NULL OR d.datalandCompanyId LIKE %:identifierValue%) " +
-            "GROUP BY d.dataTypeName, d.reportingPeriod, d.datalandCompanyId," +
-            "  d.datalandCompanyId",
+            "GROUP BY d.dataTypeName, d.reportingPeriod, d.datalandCompanyId",
     )
     fun getAggregatedDataRequests(
         @Param("identifierValue") identifierValue: String?,
@@ -75,7 +73,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "OR d.requestStatus = :#{#searchFilter.requestStatus}) AND " +
             "(:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
             "OR d.reportingPeriod = :#{#searchFilter.reportingPeriodFilter}) AND " +
-            "(:#{#searchFilter.dataRequestCompanyIdentifierValueFilterLength} =0 " +
+            "(:#{#searchFilter.datalandCompanyIdFilterLength} =0 " +
             "OR d.datalandCompanyId = :#{#searchFilter.datalandCompanyId})",
     )
     fun searchDataRequestEntity(

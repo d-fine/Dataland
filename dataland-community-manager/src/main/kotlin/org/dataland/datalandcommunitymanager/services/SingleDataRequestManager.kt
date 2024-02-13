@@ -1,7 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
@@ -17,7 +16,6 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -34,7 +32,6 @@ class SingleDataRequestManager(
 ) {
     val logger = LoggerFactory.getLogger(javaClass)
     private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyGetter, objectMapper)
-    val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
 
     /**
      * Processes a single data request from a user
@@ -46,7 +43,6 @@ class SingleDataRequestManager(
         if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
             throw AuthenticationMethodNotSupportedException("You are not using JWT authentication.")
         }
-        lateinit var datalandCompanyID: String
         val storedDataRequests = mutableListOf<StoredDataRequest>()
         logger.info("The datalandCompanyId is: $singleDataRequest.companyIdentifier")
         val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
@@ -58,7 +54,7 @@ class SingleDataRequestManager(
         } else {
             throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest)
             storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
-                storedDataRequests, singleDataRequest, datalandCompanyID,
+                storedDataRequests, singleDataRequest, datalandCompanyId,
             )
             singleDataRequestEmailSender.sendSingleDataRequestEmails(
                 userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
@@ -67,19 +63,6 @@ class SingleDataRequestManager(
             )
         }
         return storedDataRequests
-    }
-
-    private fun checkIfCompanyIsValid(companyId: String) {
-        val bearerTokenOfRequestingUser = DatalandAuthentication.fromContext().credentials as String
-        try {
-            companyGetter.getCompanyById(companyId, bearerTokenOfRequestingUser)
-        } catch (e: ClientException) { if (e.statusCode == HttpStatus.NOT_FOUND.value()) {
-            throw ResourceNotFoundApiException(
-                "Company not found",
-                "Dataland-backend does not know the company ID $companyId",
-            )
-        }
-        }
     }
 
     private fun throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest: SingleDataRequest) {
@@ -147,14 +130,14 @@ class SingleDataRequestManager(
         userId: String?,
         requestStatus: RequestStatus?,
         reportingPeriod: String?,
-        dataRequestCompanyIdentifierValue: String?,
+        datalandCompanyId: String?,
     ): List<StoredDataRequest>? {
         val filter = GetDataRequestsSearchFilter(
             dataTypeNameFilter = dataType?.name ?: "",
             userIdFilter = userId ?: "",
             requestStatus = requestStatus,
             reportingPeriodFilter = reportingPeriod ?: "",
-            dataRequestCompanyIdentifierValueFilter = dataRequestCompanyIdentifierValue ?: "",
+            datalandCompanyIdFilter = datalandCompanyId ?: "",
         )
         val result = dataRequestRepository.searchDataRequestEntity(filter)
 
@@ -180,7 +163,7 @@ class SingleDataRequestManager(
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
         val summary = "All provided company identifiers have an invalid format."
         val message = "The company identifiers you provided do not match the patterns " +
-            "of a valid LEI, ISIN or PermId."
+            "of a valid LEI, ISIN, PermId or dataland CompanyID"
         throw InvalidInputApiException(
             summary,
             message,
