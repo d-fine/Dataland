@@ -263,11 +263,10 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     count: Long,
 ) {
     val matchingAggregatedRequests = aggregatedDataRequests.filter { aggregatedDataRequest ->
-        val matchesIdentifier = aggregatedDataRequest.dataRequestCompanyIdentifierType == identifierType &&
-            aggregatedDataRequest.dataRequestCompanyIdentifierValue == identifierValue
         aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
             aggregatedDataRequest.reportingPeriod == reportingPeriod &&
-            matchesIdentifier &&
+            aggregatedDataRequest.dataRequestCompanyIdentifierType == identifierType &&
+            aggregatedDataRequest.dataRequestCompanyIdentifierValue == identifierValue &&
             aggregatedDataRequest.requestStatus == status
     }
     assertEquals(
