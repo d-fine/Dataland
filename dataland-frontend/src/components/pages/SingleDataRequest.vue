@@ -43,14 +43,6 @@
                         Select at least one reporting period.
                       </p>
                     </BasicFormSection>
-                    <SingleSelectFormField
-                        name="Framework"
-                        validation="required"
-                        validation-label="Select a framework"
-                        placeholder="Select framework"
-                        :options="frameworkOptions"
-                        label="Select a framework"
-                    />
                     <BasicFormSection :data-test="'selectFramework'" header="Select a framework">
                       <FormKit
                         type="select"
@@ -160,7 +152,6 @@ import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue"
 import BasicFormSection from "@/components/general/BasicFormSection.vue";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import SingleSelectFormField from "@/components/forms/parts/fields/SingleSelectFormField.vue";
 
 export default defineComponent({
   name: "SingleDataRequest",
