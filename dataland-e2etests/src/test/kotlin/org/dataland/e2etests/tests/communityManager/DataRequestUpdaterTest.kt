@@ -2,7 +2,7 @@ package org.dataland.e2etests.tests.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
-import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -19,7 +19,7 @@ class DataRequestUpdaterTest {
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     private val dataController = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-    lateinit var dummyCompanyAssociatedData: CompanyAssociatedDataEuTaxonomyDataForNonFinancials
+    lateinit var dummyCompanyAssociatedData: CompanyAssociatedDataEutaxonomyNonFinancialsData
     private val testDataEuTaxonomyNonFinancials = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
         .getTData(1).first()
 
@@ -59,7 +59,7 @@ class DataRequestUpdaterTest {
             Assertions.assertEquals(storedDataRequest, retrievedDataRequest)
         }
         dummyCompanyAssociatedData =
-            CompanyAssociatedDataEuTaxonomyDataForNonFinancials(
+            CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 mapOfIds["companyId"]!!.toString(),
                 "2022",
                 testDataEuTaxonomyNonFinancials,
@@ -82,7 +82,7 @@ class DataRequestUpdaterTest {
 
     }
     private fun uploadDatasetAndValidatePendingState(): String {
-        val dataId = dataController.postCompanyAssociatedEuTaxonomyDataForNonFinancials(
+        val dataId = dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(
             dummyCompanyAssociatedData, true,
         ).dataId
         return dataId

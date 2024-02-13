@@ -72,7 +72,7 @@ class DataRequestUpdater(
             dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(
                 metaData.companyId,
                 metaData.reportingPeriod,
-                metaData.dataType.name,
+                metaData.dataType.value,
             )
             logger.info(
                 "Changed Request Status for company Id ${metaData.companyId}, " +
