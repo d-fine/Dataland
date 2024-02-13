@@ -128,7 +128,6 @@ class BulkDataRequestManager(
                 aggregatedDataRequestEntity.reportingPeriod,
                 aggregatedDataRequestEntity.dataRequestCompanyIdentifierType,
                 aggregatedDataRequestEntity.dataRequestCompanyIdentifierValue,
-                aggregatedDataRequestEntity.requestStatus,
                 aggregatedDataRequestEntity.count,
             )
         }

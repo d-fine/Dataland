@@ -258,15 +258,13 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     reportingPeriod: String,
     identifierType: DataRequestCompanyIdentifierType,
     identifierValue: String,
-    status: RequestStatus,
     count: Long,
 ) {
     val matchingAggregatedRequests = aggregatedDataRequests.filter { aggregatedDataRequest ->
         aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
             aggregatedDataRequest.reportingPeriod == reportingPeriod &&
             aggregatedDataRequest.dataRequestCompanyIdentifierType == identifierType &&
-            aggregatedDataRequest.dataRequestCompanyIdentifierValue == identifierValue &&
-            aggregatedDataRequest.requestStatus == status
+            aggregatedDataRequest.dataRequestCompanyIdentifierValue == identifierValue
     }
     assertEquals(
         1,
@@ -282,22 +280,19 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     )
 }
 
-fun iterateThroughFrameworksReportingPeriodsIdentifiersAndStatiAndCheckAggregationWithCount(
+fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
     frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
     reportingPeriods: List<String>,
     identifierMap: Map<DataRequestCompanyIdentifierType, String>,
-    requestStati: Set<RequestStatus>,
     count: Long,
 ) {
     frameworks.forEach { framework ->
         reportingPeriods.forEach { reportingPeriod ->
             identifierMap.forEach { (identifierType, identifierValue) ->
-                requestStati.forEach { status ->
-                    checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
-                        aggregatedDataRequests, framework, reportingPeriod, identifierType, identifierValue, status, count,
-                    )
-                }
+                checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
+                    aggregatedDataRequests, framework, reportingPeriod, identifierType, identifierValue, count,
+                )
             }
         }
     }

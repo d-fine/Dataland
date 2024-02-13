@@ -477,14 +477,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "$ref": "#/components/schemas/RequestStatus"
-            }
           }
         ],
         "responses": {
@@ -986,8 +978,7 @@
         "required": [
           "count",
           "dataRequestCompanyIdentifierType",
-          "dataRequestCompanyIdentifierValue",
-          "requestStatus"
+          "dataRequestCompanyIdentifierValue"
         ],
         "type": "object",
         "properties": {
@@ -1012,9 +1003,6 @@
           },
           "dataRequestCompanyIdentifierValue": {
             "type": "string"
-          },
-          "requestStatus": {
-            "$ref": "#/components/schemas/RequestStatus"
           },
           "count": {
             "type": "integer",
