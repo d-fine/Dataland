@@ -1,4 +1,3 @@
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { type AxiosError } from "axios";
@@ -23,7 +22,7 @@ export async function isUserDataOwnerForCompany(
       try {
         await new ApiClientProvider(
           keycloakPromiseGetter(),
-        ).backendClients.companyDataController.isUserDataOwnerForCompany(companyId, assertDefined(userId));
+        ).backendClients.companyDataController.isUserDataOwnerForCompany(companyId, userId);
         return true;
       } catch (error) {
         if ((error as AxiosError)?.response?.status == 404) {

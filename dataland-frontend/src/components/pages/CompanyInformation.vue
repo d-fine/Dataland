@@ -62,7 +62,6 @@ import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwn
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
 import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
-import { getUserId } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -70,6 +69,7 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      authenticated: inject<boolean>("authenticated"),
     };
   },
   emits: ["fetchedCompanyInformation"],
@@ -81,7 +81,6 @@ export default defineComponent({
       isUserDataOwner: false,
       dialogIsOpen: false,
       claimIsSubmitted: false,
-      userId: undefined as string | undefined,
     };
   },
   computed: {
@@ -97,7 +96,7 @@ export default defineComponent({
     },
     contextMenuItems() {
       const listOfItems = [];
-      if (!this.isUserDataOwner && this.userId) {
+      if (!this.isUserDataOwner && this.authenticated) {
         listOfItems.push({
           label: "Claim Company Dataset Ownership",
           command: () => {
@@ -120,7 +119,6 @@ export default defineComponent({
   },
   mounted() {
     void this.getCompanyInformation();
-    void this.awaitUserId();
     void this.setDataOwnershipStatus();
   },
   watch: {
@@ -175,12 +173,6 @@ export default defineComponent({
      */
     onClaimSubmitted() {
       this.claimIsSubmitted = true;
-    },
-    /**
-     * gets the user ID in an async manner
-     */
-    async awaitUserId(): Promise<void> {
-      this.userId = await getUserId(assertDefined(this.getKeycloakPromise));
     },
   },
 });

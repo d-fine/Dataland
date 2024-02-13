@@ -4,7 +4,7 @@
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <div class="card-wrapper">
       <div class="card-grid">
-        <ClaimOwnershipPanel v-if="!isUserDataOwner && userId && isCompanyIdValid" :company-id="companyId" />
+        <ClaimOwnershipPanel v-if="!isUserDataOwner && authenticated && isCompanyIdValid" :company-id="companyId" />
 
         <FrameworkSummaryPanel
           v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
@@ -29,7 +29,6 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import { type AggregatedFrameworkDataSummary, type DataTypeEnum } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import TheFooter from "@/components/generics/TheNewFooter.vue";
 import contentData from "@/assets/content.json";
 import type { Content, Page } from "@/types/ContentTypes";
@@ -38,7 +37,7 @@ import FrameworkSummaryPanel from "@/components/resources/companyCockpit/Framewo
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
-import { checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 
 export default defineComponent({
@@ -63,7 +62,6 @@ export default defineComponent({
       if (newCompanyId !== oldCompanyId) {
         try {
           await this.getAggregatedFrameworkDataSummary();
-          await this.awaitUserId();
           await this.setUploaderRightsForUser();
         } catch (error) {
           console.error("Error fetching data for new company:", error);
@@ -82,10 +80,10 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      authenticated: inject<boolean>("authenticated"),
     };
   },
   created() {
-    void this.awaitUserId();
     void this.setUploaderRightsForUser();
   },
   props: {
@@ -103,15 +101,13 @@ export default defineComponent({
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
-      isUserDataOwner: undefined as boolean | undefined,
+      isUserDataOwner: false as boolean,
       footerContent,
-      userId: undefined as string | undefined,
-      isUserAllowedToUpload: false as boolean | undefined,
+      isUserAllowedToUpload: false as boolean,
     };
   },
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
-    void this.awaitUserId();
   },
   methods: {
     /**
@@ -129,25 +125,21 @@ export default defineComponent({
      * Set if the user is allowed to upload data for the current company
      * @returns a promise that resolves to void, so the successful execution of the function can be awaited
      */
-    async setUploaderRightsForUser(): Promise<void> {
-      return isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
-        .then((result) => {
-          this.isUserDataOwner = result;
-          this.isUserAllowedToUpload = result;
-        })
-        .then(() => {
-          if (!this.isUserAllowedToUpload) {
-            return checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise).then((result) => {
-              this.isUserAllowedToUpload = result;
-            });
-          }
-        });
-    },
-    /**
-     * gets the user ID in an async manner
-     */
-    async awaitUserId(): Promise<void> {
-      this.userId = await getUserId(assertDefined(this.getKeycloakPromise));
+    async setUploaderRightsForUser() {
+      if (this.authenticated) {
+        await isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
+          .then((result) => {
+            this.isUserDataOwner = result;
+            this.isUserAllowedToUpload = result;
+          })
+          .then(() => {
+            if (!this.isUserAllowedToUpload) {
+              return checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise).then((result) => {
+                this.isUserAllowedToUpload = result;
+              });
+            }
+          });
+      }
     },
   },
 });
