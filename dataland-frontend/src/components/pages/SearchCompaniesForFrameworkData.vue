@@ -54,7 +54,7 @@
             </div>
 
             <div v-if="!pageScrolled" id="createButtonAndPageTitle" class="flex align-content-end align-items-center">
-              <RequestDataButton />
+              <BulkDataRequestButton />
               <NewDatasetButton v-if="hasUserUploaderRights" />
               <span>{{ currentlyVisiblePageText }}</span>
             </div>
@@ -98,7 +98,7 @@ import TheFooter from "@/components/generics/TheNewFooter.vue";
 import contentData from "@/assets/content.json";
 import type { Content, Page } from "@/types/ContentTypes";
 import type Keycloak from "keycloak-js";
-import RequestDataButton from "@/components/resources/frameworkDataSearch/RequestDataButton.vue";
+import BulkDataRequestButton from "@/components/resources/frameworkDataSearch/BulkDataRequestButton.vue";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import DatasetsTabMenu from "@/components/general/DatasetsTabMenu.vue";
 import NewDatasetButton from "@/components/general/NewDatasetButton.vue";
@@ -116,7 +116,7 @@ export default defineComponent({
   name: "SearchCompaniesForFrameworkData",
   components: {
     NewDatasetButton,
-    RequestDataButton,
+    BulkDataRequestButton,
     DatasetsTabMenu,
     FrameworkDataSearchFilters,
     AuthenticationWrapper,

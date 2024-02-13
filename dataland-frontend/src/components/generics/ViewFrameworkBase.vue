@@ -1,7 +1,11 @@
 <template>
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
   <TheContent class="paper-section min-h-screen">
-    <CompanyInfoSheet :company-id="companyID" @fetched-company-information="handleFetchedCompanyInformation" />
+    <CompanyInfoSheet
+      :company-id="companyID"
+      @fetched-company-information="handleFetchedCompanyInformation"
+      :show-single-data-request-button="true"
+    />
     <div v-if="isDataProcessedSuccesfully">
       <MarginWrapper
         class="text-left surface-0 dataland-toolbar"

@@ -1,7 +1,7 @@
 <template>
   <TheHeader v-if="!useMobileView" />
   <TheContent class="paper-section flex">
-    <CompanyInfoSheet :company-id="companyId" />
+    <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <div class="card-wrapper">
       <div class="card-grid">
         <ClaimOwnershipPanel v-if="!isUserDataOwner && userId && isCompanyIdValid" :company-id="companyId" />

@@ -13,7 +13,8 @@
             Verified Data Owner
           </div>
         </div>
-        <div>
+        <div class="right-elements">
+          <SingleDataRequestButton :company-id="companyId" v-if="showSingleDataRequestButton" />
           <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
         </div>
       </div>
@@ -59,12 +60,13 @@ import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
+import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
 import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 import { getUserId } from "@/utils/KeycloakUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
-  components: { ClaimOwnershipDialog, ContextMenuButton },
+  components: { ClaimOwnershipDialog, ContextMenuButton, SingleDataRequestButton },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -110,6 +112,10 @@ export default defineComponent({
     companyId: {
       type: String,
       required: true,
+    },
+    showSingleDataRequestButton: {
+      type: Boolean,
+      default: false,
     },
   },
   mounted() {
@@ -221,7 +227,8 @@ export default defineComponent({
   }
 }
 
-.left-elements {
+.left-elements,
+.right-elements {
   display: flex;
   align-items: center;
 }
