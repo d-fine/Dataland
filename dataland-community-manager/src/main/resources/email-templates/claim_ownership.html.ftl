@@ -29,13 +29,11 @@
             <table style="background-color: #f6f6f6; border-collapse: collapse; padding: 0; margin: 0; width: 520px">
                 <tbody>
                 <tr>
-                    <td style="text-align: left; width: 20px; padding: 0">
-                        <img src="${baseUrl}/images/email/gr1.png" width="13" height="13" style="border: 0 none; height: auto; outline: none; text-decoration: none;">
+                    <td style="text-align: left; width: 20px; height: 13px; padding: 0">
                     </td>
                     <td style="text-align: right; width: 480px; padding: 0;">
                     </td>
                     <td style="text-align: right; width: 20px; padding: 0">
-                        <img src="${baseUrl}/images/email/gr2.png" width="13" height="13" style="border: 0 none; height: auto; outline: none; text-decoration: none;">
                     </td>
                 </tr>
                 <tr>
@@ -102,14 +100,9 @@
                 </tr>
 
                 <tr>
-                    <td style="text-align: left; width: 20px; padding: 0">
-                        <img src="${baseUrl}/images/email/gr4.png" width="13" height="13" style="border: 0 none; height: auto; outline: none; text-decoration: none;">
-                    </td>
-                    <td style="text-align: right; width: 480px; padding: 0">
-                    </td>
-                    <td style="text-align: right; width: 20px; padding: 0">
-                        <img src="${baseUrl}/images/email/gr3.png" width="13" height="13" style="border: 0 none; height: auto; outline: none; text-decoration: none;">
-                    </td>
+                    <td style="text-align: left; width: 20px; height: 13px; padding: 0"></td>
+                    <td style="text-align: right; width: 480px; padding: 0"></td>
+                    <td style="text-align: right; width: 20px; padding: 0"></td>
                 </tr>
                 </tbody>
             </table>
@@ -137,19 +130,13 @@
         <td colspan="3" style="height: 20px">&nbsp;</td>
     </tr>
     <tr>
-        <td style="text-align: left; padding:0; margin:0; border: 0; height: 54px; width: 26px">
-            <img src="${baseUrl}/images/email/action_button_left_img.png" width="26" height="54" alt=""
-                 style="border: 0 none; height: auto; line-height: 100%; display:block; outline: none; text-decoration: none;">
-        </td>
+        <td style="text-align: left; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
         <td style="background-color: #ff5c00; text-align: center; padding:0; margin:0; border: 0; height: 54px; width: 468px;">
             <a href="${baseUrl}/companies/${companyId}" target="_blank" style="border: 0 none; line-height: 30px; color: #ffffff; font-size: 18px; width: 100%; display: block; text-decoration: none;">
                 REGISTER AND CLAIM OWNERSHIP
             </a>
         </td>
-        <td style="background-color: #ffffff; text-align: right; padding:0; margin:0; border: 0; height: 54px; width: 26px">
-            <img src="${baseUrl}/images/email/action_button_right_img.png" width="26" height="54" alt=""
-                 style="border: 0 none; height: auto; line-height: 100%; display:block; outline: none; text-decoration: none;">
-        </td>
+        <td style="background-color: #ffffff; text-align: right; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
     </tr>
 
     <tr>
