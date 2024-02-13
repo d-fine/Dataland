@@ -101,9 +101,9 @@ export default defineComponent({
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
-      isUserDataOwner: false as boolean,
+      isUserDataOwner: false,
+      isUserAllowedToUpload: false,
       footerContent,
-      isUserAllowedToUpload: false as boolean,
     };
   },
   mounted() {
