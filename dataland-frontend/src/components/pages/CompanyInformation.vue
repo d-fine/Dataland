@@ -122,7 +122,10 @@ export default defineComponent({
   },
   mounted() {
     void this.getCompanyInformation();
-    void getCompanyDataOwnerInformation(assertDefined(this.getKeycloakPromise), this.companyId);
+    this.hasCompanyDataOwner = await getCompanyDataOwnerInformation(
+      assertDefined(this.getKeycloakPromise),
+      this.companyId,
+    );
     void this.awaitUserId();
     void this.getUserDataOwnerInformation();
   },
@@ -131,7 +134,10 @@ export default defineComponent({
       if (newCompanyId !== oldCompanyId) {
         try {
           await this.getCompanyInformation();
-          await getCompanyDataOwnerInformation(assertDefined(this.getKeycloakPromise), newCompanyId as string);
+          this.hasCompanyDataOwner = await getCompanyDataOwnerInformation(
+            assertDefined(this.getKeycloakPromise),
+            newCompanyId as string,
+          );
           await this.getUserDataOwnerInformation();
           this.claimIsSubmitted = false;
         } catch (error) {

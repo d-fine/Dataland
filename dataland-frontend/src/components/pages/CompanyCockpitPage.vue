@@ -63,7 +63,10 @@ export default defineComponent({
       if (newCompanyId !== oldCompanyId) {
         try {
           await this.getAggregatedFrameworkDataSummary();
-          await getCompanyDataOwnerInformation(assertDefined(this.getKeycloakPromise), newCompanyId as string);
+          this.hasCompanyDataOwner = await getCompanyDataOwnerInformation(
+            assertDefined(this.getKeycloakPromise),
+            newCompanyId as string,
+          );
           await this.getUserDataOwnerInformation();
           await this.awaitUserId();
         } catch (error) {
