@@ -141,7 +141,7 @@
         </td>
         <td style="background-color: #ff5c00; text-align: center; padding:0; margin:0; border: 0; height: 54px; width: 468px;">
             <a href="${baseUrl}/companies/${companyId}" target="_blank" style="border: 0 none; line-height: 30px; color: #ffffff; font-size: 18px; width: 100%; display: block; text-decoration: none;">
-                CALL TO ACTION
+                REGISTER AND CLAIM OWNERSHIP
             </a>
         </td>
         <td style="background-color: #ffffff; text-align: right; padding:0; margin:0; border: 0; height: 54px; width: 26px">
@@ -163,7 +163,6 @@
     </tbody>
 </table>
 
-<#include "./general/why_dataland.ftl">
 <#include "./general/why_me.ftl">
 <#include "./general/footer.ftl">
 
