@@ -7,10 +7,12 @@ import {
   type InsuranceKpis,
   type InvestmentFirmKpis,
 } from "@clients/backend";
-import { generateEuTaxonomyWithBaseFields } from "@e2e/fixtures/eutaxonomy-shared/EuTaxonomySharedValuesFixtures";
 import { DEFAULT_PROBABILITY, Generator } from "@e2e/utils/FakeFixtureUtils";
 import { generatePercentageValue } from "@e2e/fixtures/common/NumberFixtures";
 import { pickSubsetOfElements } from "@e2e/fixtures/FixtureUtils";
+import { generateFiscalYearDeviation } from "@e2e/fixtures/common/FiscalYearDeviationFixtures";
+import { generatePastDate } from "@e2e/fixtures/common/DateFixtures";
+import { generateAssuranceDatapoint } from "@e2e/fixtures/eutaxonomy-shared/AssuranceDataFixture";
 
 /**
  * Generates a single eutaxonomy-financials fixture
@@ -35,23 +37,30 @@ export class EuFinancialsGenerator extends Generator {
   generateEuTaxonomyDataForFinancialsWithTypes(
     financialServicesTypes = this.financialServicesTypes,
   ): EuTaxonomyDataForFinancials {
-    const returnBase: EuTaxonomyDataForFinancials = generateEuTaxonomyWithBaseFields(
-      this.reports,
-      this.nullProbability,
-    );
     const eligibilityKpis = Object.fromEntries(
       financialServicesTypes.map((it) => [it, this.generateEligibilityKpis()]),
     );
-    returnBase.financialServicesTypes = financialServicesTypes;
-    returnBase.eligibilityKpis = eligibilityKpis;
-    returnBase.creditInstitutionKpis =
-      financialServicesTypes.indexOf("CreditInstitution") >= 0 ? this.generateCreditInstitutionKpis() : null;
-    returnBase.insuranceKpis =
-      financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0 ? this.generateInsuranceKpis() : null;
-    returnBase.investmentFirmKpis =
-      financialServicesTypes.indexOf("InvestmentFirm") >= 0 ? this.generateInvestmentFirmKpis() : null;
-    return returnBase;
+    return {
+      financialServicesTypes: this.valueOrNull(financialServicesTypes),
+      eligibilityKpis: this.valueOrNull(eligibilityKpis),
+      creditInstitutionKpis:
+        financialServicesTypes.indexOf("CreditInstitution") >= 0 ? this.generateCreditInstitutionKpis() : null,
+      investmentFirmKpis:
+        financialServicesTypes.indexOf("InvestmentFirm") >= 0 ? this.generateInvestmentFirmKpis() : null,
+      insuranceKpis:
+        financialServicesTypes.indexOf("InsuranceOrReinsurance") >= 0 ? this.generateInsuranceKpis() : null,
+
+      fiscalYearDeviation: this.valueOrNull(generateFiscalYearDeviation()),
+      fiscalYearEnd: this.valueOrNull(generatePastDate()),
+      scopeOfEntities: this.randomYesNoNa(),
+      nfrdMandatory: this.randomYesNo(),
+      euTaxonomyActivityLevelReporting: this.randomYesNo(),
+      assurance: this.valueOrNull(generateAssuranceDatapoint(this.reports, this.nullProbability)),
+      numberOfEmployees: this.randomInt(),
+      referencedReports: this.reports,
+    };
   }
+
   /**
    * Generates random insurance company KPIs
    * @returns random insurance company KPIs

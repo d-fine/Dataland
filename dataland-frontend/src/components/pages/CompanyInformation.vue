@@ -13,7 +13,8 @@
             Verified Data Owner
           </div>
         </div>
-        <div>
+        <div class="right-elements">
+          <SingleDataRequestButton :company-id="companyId" v-if="showSingleDataRequestButton" />
           <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
         </div>
       </div>
@@ -58,13 +59,14 @@ import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
-import { getErrorMessage } from "@/utils/ErrorMessageUtils";
-import { getCompanyDataOwnerInformation } from "@/utils/api/CompanyDataOwner";
 import { getUserId } from "@/utils/KeycloakUtils";
+import { getErrorMessage } from "@/utils/ErrorMessageUtils";
+import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
+import { getCompanyDataOwnerInformation } from "@/utils/api/CompanyDataOwner";
 
 export default defineComponent({
   name: "CompanyInformation",
-  components: { ClaimOwnershipDialog, ContextMenuButton },
+  components: { ClaimOwnershipDialog, ContextMenuButton, SingleDataRequestButton },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
@@ -117,6 +119,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    showSingleDataRequestButton: {
+      type: Boolean,
+      default: false,
+    },
   },
   mounted() {
     void this.getCompanyInformation();
@@ -168,6 +174,7 @@ export default defineComponent({
         this.companyInformation = null;
       }
     },
+
     /**
      * Get the Information about Data-ownership
      */
@@ -251,7 +258,8 @@ export default defineComponent({
   }
 }
 
-.left-elements {
+.left-elements,
+.right-elements {
   display: flex;
   align-items: center;
 }

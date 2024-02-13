@@ -3,7 +3,7 @@ package org.dataland.e2etests.tests
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyDataOwners
-import org.dataland.datalandbackend.openApiClient.model.EuTaxonomyDataForNonFinancials
+import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -100,7 +100,7 @@ class DataOwnerControllerTest {
 
     private fun assertFailingApiUploadToCompany(
         companyId: UUID,
-        dataSet: EuTaxonomyDataForNonFinancials,
+        dataSet: EutaxonomyNonFinancialsData,
         bypassQa: Boolean = false,
     ) {
         val reportingPeriod = "2022"
@@ -115,7 +115,7 @@ class DataOwnerControllerTest {
         assertErrorCodeForClientException(unauthorizedRequestResponse, 403)
     }
 
-    private fun assertSucceedingApiUploadToCompany(companyId: UUID, dataSet: EuTaxonomyDataForNonFinancials) {
+    private fun assertSucceedingApiUploadToCompany(companyId: UUID, dataSet: EutaxonomyNonFinancialsData) {
         val reportingPeriod = "2022"
         apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
             companyId.toString(),

@@ -119,7 +119,7 @@ interface RequestApi {
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize("hasRole('ROLE_PREMIUM_USER')")
     fun postSingleDataRequest(
         @Valid @RequestBody
         singleDataRequest: SingleDataRequest,
