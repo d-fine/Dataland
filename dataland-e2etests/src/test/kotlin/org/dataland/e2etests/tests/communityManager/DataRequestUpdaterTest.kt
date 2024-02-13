@@ -79,7 +79,6 @@ class DataRequestUpdaterTest {
 
             Assertions.assertEquals(storedDataRequest, retrievedDataRequest)
         }
-
     }
     private fun uploadDatasetAndValidatePendingState(): String {
         val dataId = dataController.postCompanyAssociatedEutaxonomyNonFinancialsData(
