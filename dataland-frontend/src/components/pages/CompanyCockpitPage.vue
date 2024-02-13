@@ -111,11 +111,20 @@ export default defineComponent({
   },
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
-    void getCompanyDataOwnerInformation(assertDefined(this.getKeycloakPromise), this.companyId);
+    void this.updateHasCompanyDataOwner();
     void this.awaitUserId();
     void this.getUserDataOwnerInformation();
   },
   methods: {
+    /**
+     * updates the hasCompanyDataOwner in an async way
+     */
+    async updateHasCompanyDataOwner() {
+      this.hasCompanyDataOwner = await getCompanyDataOwnerInformation(
+        assertDefined(this.getKeycloakPromise),
+        this.companyId,
+      );
+    },
     /**
      * Retrieves the aggregated framework data summary
      */
