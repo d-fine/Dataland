@@ -1,8 +1,10 @@
 package org.dataland.e2etests.tests.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdentifierType
+import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
@@ -25,6 +27,7 @@ import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount
 import org.dataland.e2etests.utils.retrieveTimeAndWaitOneMillisecond
 import org.dataland.e2etests.utils.sendBulkRequestWithEmptyInputAndCheckErrorMessage
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -382,5 +385,56 @@ class BulkDataRequestsTest {
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
             aggregatedDataRequestsForEmptyString, frameworks, reportingPeriods, identifierMap, 1,
         )
+    }
+    @Test
+    fun `post bulk data request and check that the filter for request status on aggregated level works properly`() {
+        val randomLei = generateRandomLei()
+        val identifierMap = mapOf(DataRequestCompanyIdentifierType.lei to randomLei)
+        val frameworks = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
+        val reportingPeriods = listOf("2020", "2021")
+        val response = requestControllerApi.postBulkDataRequest(
+            BulkDataRequest(identifierMap.values.toList(), frameworks, reportingPeriods),
+        )
+        checkThatAllIdentifiersWereAccepted(response, identifierMap.size)
+        val allRequestStati = RequestStatus.entries.toSet()
+        val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests()
+        assertNumberOfMatchesOnRequestStatusEquals(
+            aggregatedDataRequests, randomLei, setOf(RequestStatus.open), 2
+        )
+        assertNumberOfMatchesOnRequestStatusEquals(
+            aggregatedDataRequests, randomLei, setOf(RequestStatus.answered), 0
+        )
+        assertNumberOfMatchesOnRequestStatusEquals(
+            aggregatedDataRequests, randomLei, setOf(RequestStatus.closed), 0
+        )
+        assertNumberOfMatchesOnRequestStatusEquals(
+            aggregatedDataRequests, randomLei, allRequestStati, 2
+        )
+        val aggregatedRequestsNoFilter = requestControllerApi.getAggregatedDataRequests()
+        assertNumberOfMatchesOnRequestStatusEquals(
+            aggregatedRequestsNoFilter, randomLei, setOf(RequestStatus.open), 2
+        )
+        assertNumberOfMatchesOnRequestStatusEquals(
+            aggregatedRequestsNoFilter, randomLei, setOf(RequestStatus.answered), 0
+        )
+        assertNumberOfMatchesOnRequestStatusEquals(
+            aggregatedRequestsNoFilter, randomLei, setOf(RequestStatus.closed), 0
+        )
+        assertNumberOfMatchesOnRequestStatusEquals(
+            aggregatedRequestsNoFilter, randomLei, allRequestStati, 2
+        )
+    }
+
+    private fun assertNumberOfMatchesOnRequestStatusEquals(
+        aggregatedDataRequests: List<AggregatedDataRequest>,
+        companyIdentifier: String,
+        stati: Set<RequestStatus>,
+        count: Long,
+    ) {
+        val numberOfStatusMatches = aggregatedDataRequests.filter {
+            it.dataRequestCompanyIdentifierValue == companyIdentifier &&
+                it.requestStatus in stati
+        }.sumOf { it.count }
+        assertEquals(count, numberOfStatusMatches)
     }
 }
