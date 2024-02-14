@@ -48,7 +48,6 @@ class AggregatedDataRequestsTest {
     @Test
     fun `post bulk data requests for different users and check that aggregation works properly`() {
         val leiForCompany = generateRandomLei()
-        val companyId = getIdForUploadedCompanyWithIdentifiers(leiForCompany)
         val identifierMap = (
             generateMapWithOneRandomValueForEachIdentifierType() + mapOf(
                 DataRequestCompanyIdentifierType.multipleRegexMatches to generateRandomPermId(20),
@@ -62,7 +61,8 @@ class AggregatedDataRequestsTest {
                 it, identifierMap.values.toList(), frameworks, reportingPeriods,
             )
         }
-        identifierMap[DataRequestCompanyIdentifierType.datalandCompanyId] = companyId
+        identifierMap[DataRequestCompanyIdentifierType.datalandCompanyId] =
+            getIdForUploadedCompanyWithIdentifiers(leiForCompany)
         val aggregatedDataRequests = requestControllerApi.getAggregatedDataRequests()
         iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
             aggregatedDataRequests, frameworks, reportingPeriods, identifierMap, TechnicalUser.entries.size.toLong(),
