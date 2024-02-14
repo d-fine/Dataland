@@ -46,7 +46,7 @@ class SingleDataRequestsTest {
             companyIdentifier = stringThatMatchesThePermIdRegex,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
             listOfReportingPeriods = listOf("2022", "2023"),
-            contactList = listOf("someContact@webserver.de", "simpleString"),
+            contactList = listOf("someContact@webserver.de", "simpleString@some.thing"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
         val allStoredDataRequests = requestControllerApi.postSingleDataRequest(singleDataRequest)
@@ -161,27 +161,41 @@ class SingleDataRequestsTest {
         val validLei = generateRandomLei()
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
 
-        val trivialContactListInputs = listOf(null, listOf(), listOf(""), listOf(" "))
-        trivialContactListInputs.forEach {
+        val trivialMessageInputs = listOf(null, "", " ")
+        val allowedTrivialContactListInputs = listOf(null, listOf<String>())
+        allowedTrivialContactListInputs.forEach {
             val clientException = assertThrows<ClientException> {
                 postStandardSingleDataRequest(validLei, it, "Dummy test message.")
             }
             check400ClientExceptionErrorMessage(clientException)
             val responseBody = (clientException.response as ClientError<*>).body as String
+            assertTrue(responseBody.contains("You must provide proper email addresses as contacts."))
             assertTrue(responseBody.contains("Insufficient information to create message object."))
             assertTrue(
                 responseBody.contains(
                     "Without at least one proper email address being provided no message can be forwarded.",
                 ),
             )
-        }
-
-        val trivialMessageInputs = listOf(null, "", " ")
-        trivialContactListInputs.forEach { contactList ->
             trivialMessageInputs.forEach { message ->
-                val storedDataRequest = postStandardSingleDataRequest(validLei, contactList, message)
+                val storedDataRequest = postStandardSingleDataRequest(validLei, it, message)
                 assertTrue(storedDataRequest.messageHistory.isEmpty())
             }
+        }
+    }
+
+    @Test
+    fun `post a single data request inducing a forbidden contact parameter`() {
+        val validLei = generateRandomLei()
+        apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
+
+        val forbiddenContactListInputs = listOf(listOf(""), listOf(" "), listOf("something"))
+        forbiddenContactListInputs.forEach {
+            val clientException = assertThrows<ClientException> {
+                postStandardSingleDataRequest(validLei, it, "Dummy test message.")
+            }
+            check400ClientExceptionErrorMessage(clientException)
+            val responseBody = (clientException.response as ClientError<*>).body as String
+            assertTrue(responseBody.contains("You must provide proper email addresses as contacts."))
         }
     }
 
