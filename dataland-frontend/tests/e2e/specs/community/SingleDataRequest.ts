@@ -58,6 +58,7 @@ describeIf(
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
       cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
       cy.url().should("contain", `/singledatarequest/${testStoredCompany.companyId}`);
+      cy.get('[data-test="datapoint-framework"]').should('have.value', 'LkSG');
     });
 
     it("Fill out the request page and check correct validation, request and success message", () => {
