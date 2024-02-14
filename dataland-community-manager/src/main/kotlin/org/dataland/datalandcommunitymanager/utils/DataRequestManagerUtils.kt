@@ -28,7 +28,7 @@ class DataRequestManagerUtils(
     private val leiRegex = Regex("^[0-9A-Z]{18}[0-9]{2}$")
     private val permIdRegex = Regex("^\\d+$")
 
-    private val emptyMutableListOfStoredDataRequestMessageObjects
+    private val emptyMutableListOfStoredDataRequestMessageObjectsAsString
         = objectMapper.writeValueAsString(mutableListOf<StoredDataRequestMessageObject>())
 
     /**
@@ -87,7 +87,7 @@ class DataRequestManagerUtils(
             dataRequestEntity.dataRequestCompanyIdentifierType,
             dataRequestEntity.dataRequestCompanyIdentifierValue,
             objectMapper.readValue(
-                dataRequestEntity.messageHistory ?: emptyMutableListOfStoredDataRequestMessageObjects,
+                dataRequestEntity.messageHistory ?: emptyMutableListOfStoredDataRequestMessageObjectsAsString,
                 object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
             ),
             dataRequestEntity.lastModifiedDate,
