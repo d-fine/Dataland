@@ -201,7 +201,7 @@ export default defineComponent({
     this.chosenDataTypeInDropdown = this.dataType ?? "";
     void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
 
-    void this.setViewPageAttributsForUser();
+    void this.setViewPageAttributesForUser();
 
     window.addEventListener("scroll", this.windowScrollHandler);
   },
@@ -350,7 +350,7 @@ export default defineComponent({
      * Set if the user is allowed to upload data for the current company
      * @returns a promise that resolves to void, so the successful execution of the function can be awaited
      */
-    async setViewPageAttributsForUser(): Promise<void> {
+    async setViewPageAttributesForUser(): Promise<void> {
       return checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
         .then((hasUserReviewerRights) => {
           this.hasUserReviewerRights = hasUserReviewerRights;
