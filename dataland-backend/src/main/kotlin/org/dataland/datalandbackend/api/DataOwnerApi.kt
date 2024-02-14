@@ -147,7 +147,7 @@ interface DataOwnerApi {
         ],
     )
     @PostMapping(
-        value = ["/{companyId}/data-ownership-request"],
+        value = ["/{companyId}/data-ownership-requests"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun postDataOwnershipRequest(
