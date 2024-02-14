@@ -177,12 +177,11 @@ class DataOwnersManager(
     fun checkCompanyForDataOwnership(companyId: String) {
         checkIfCompanyIsValid(companyId)
         val dataOwnersEntity = getDataOwnerFromCompany(companyId)
-        val failException = ResourceNotFoundApiException(
-            "Company has no data owner.",
-            "Company with $companyId has no data owner(s).",
-        )
         if (dataOwnersEntity.dataOwners.isEmpty()) {
-            throw failException
+            throw ResourceNotFoundApiException(
+                "Company has no data owner.",
+                "Company with $companyId has no data owner(s).",
+            )
         }
     }
 
