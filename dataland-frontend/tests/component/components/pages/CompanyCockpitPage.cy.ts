@@ -182,67 +182,82 @@ describe("Component test for the company cockpit", () => {
     cy.get('[data-test="singleDataRequestButton"]').should(isButtonExpected ? "exist" : "not.exist");
   }
 
-  it("Check for all expected elements from a non-logged-in users perspective", () => {
-    mockRequestsOnMounted(false);
-
+  it("Check for expected elements from a non-logged-in users perspective for a company without data owner", () => {
+    const hasCompanyDataOwner = false;
+    const isClaimOwnershipPanelExpected = false;
+    const isProvideDataButtonExpected = false;
+    mockRequestsOnMounted(hasCompanyDataOwner);
     mountCompanyCockpitWithAuthentication(false, false, [], "").then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
-      validateCompanyInformationBanner(false);
-      validateClaimOwnershipPanel(false);
-      validateFrameworkSummaryPanels(false);
+      validateCompanyInformationBanner(hasCompanyDataOwner);
+      validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
+      validateFrameworkSummaryPanels(isProvideDataButtonExpected);
     });
   });
 
-  it("Check for all expected elements from a logged-in users perspective with read-only rights", () => {
-    mockRequestsOnMounted(true);
+  it("Check for all expected elements from a logged-in users perspective with read-only rights for a company with data owner", () => {
+    const hasCompanyDataOwner = true;
+    const isClaimOwnershipPanelExpected = false;
+    const isProvideDataButtonExpected = false;
+    mockRequestsOnMounted(hasCompanyDataOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_USER]).then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
-      validateCompanyInformationBanner(true);
-      validateClaimOwnershipPanel(false);
-      validateFrameworkSummaryPanels(false);
+      validateCompanyInformationBanner(hasCompanyDataOwner);
+      validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
+      validateFrameworkSummaryPanels(isProvideDataButtonExpected);
       validateSingleDataRequestButton(false);
     });
   });
 
-  it("Check for all expected elements from a logged-in users perspective with uploader-rights", () => {
-    mockRequestsOnMounted(false);
+  it("Check for all expected elements from a logged-in users perspective with uploader-rights for a company without data owner", () => {
+    const hasCompanyDataOwner = false;
+    const isClaimOwnershipPanelExpected = true;
+    const isProvideDataButtonExpected = true;
+    mockRequestsOnMounted(hasCompanyDataOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER]).then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
-      validateCompanyInformationBanner();
-      validateClaimOwnershipPanel(true);
-      validateFrameworkSummaryPanels(true);
+      validateCompanyInformationBanner(hasCompanyDataOwner);
+      validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
+      validateFrameworkSummaryPanels(isProvideDataButtonExpected);
     });
   });
-  it("Check for all expected elements from a logged-in data owner perspective with uploader-rights", () => {
-    mockRequestsOnMounted(true);
+  it("Check for all expected elements from a logged-in data owner perspective with uploader-rights for a company with data owner", () => {
+    const hasCompanyDataOwner = true;
+    const isClaimOwnershipPanelExpected = false;
+    const isProvideDataButtonExpected = false;
+    mockRequestsOnMounted(hasCompanyDataOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], "mock-data-owner-id").then(() => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
-      validateCompanyInformationBanner(true);
-      validateClaimOwnershipPanel(false);
-      validateFrameworkSummaryPanels(true);
-      validateSingleDataRequestButton(false);
+      validateCompanyInformationBanner();
+      validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
+      validateFrameworkSummaryPanels(hasCompanyDataOwner);
+      validateSingleDataRequestButton(isProvideDataButtonExpected);
     });
   });
-  it("Check for some expected elements from a logged-in premium user perspective", () => {
-    mockRequestsOnMounted();
+  it("Check for some expected elements from a logged-in premium user perspective for a company without data owner", () => {
+    const hasCompanyDataOwner = false;
+    mockRequestsOnMounted(hasCompanyDataOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_PREMIUM_USER], "mock-data-owner-id").then(() => {
       waitForRequestsOnMounted();
       validateSingleDataRequestButton(true);
     });
   });
 
-  it("Check for all expected elements from a mobile users perspective with uploader-rights", () => {
+  it("Check for all expected elements from a mobile users perspective with uploader-rights for a company without data owner", () => {
     const scrollDurationInMs = 300;
     setMobileDeviceViewport();
-    mockRequestsOnMounted();
+    const hasCompanyDataOwner = false;
+    const isClaimOwnershipPanelExpected = true;
+    const isProvideDataButtonExpected = false;
+    mockRequestsOnMounted(hasCompanyDataOwner);
     mountCompanyCockpitWithAuthentication(true, true, [KEYCLOAK_ROLE_UPLOADER]).then(() => {
       waitForRequestsOnMounted();
 
@@ -255,8 +270,8 @@ describe("Component test for the company cockpit", () => {
       validateBackButtonExistence(true);
       validateSearchBarExistence(false);
       validateCompanyInformationBanner();
-      validateClaimOwnershipPanel(true);
-      validateFrameworkSummaryPanels(false);
+      validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
+      validateFrameworkSummaryPanels(isProvideDataButtonExpected);
     });
   });
 });
