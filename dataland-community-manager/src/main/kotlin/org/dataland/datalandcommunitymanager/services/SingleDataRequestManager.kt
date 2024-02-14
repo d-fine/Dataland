@@ -87,7 +87,7 @@ class SingleDataRequestManager(
             return Pair(DataRequestCompanyIdentifierType.DatalandCompanyId, companyIdentifier)
         }
         val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(companyIdentifier)
-        dataRequestLogger.logMessageForSingleDataRequest(companyIdentifier)
+        dataRequestLogger.logMessageForReceivingSingleDataRequest(companyIdentifier)
         if (matchedIdentifierType != null) {
             val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
                 companyIdentifier,
