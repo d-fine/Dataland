@@ -171,6 +171,12 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
+  props: {
+    dataType: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
@@ -283,6 +289,9 @@ export default defineComponent({
   },
   mounted() {
     this.retrieveFrameworkOptions();
+    if (this.dataType && this.frameworkOptions.some(option => option.value === this.dataType)) {
+      this.frameworkName = this.dataType as DataTypeEnum;
+    }
   },
 });
 </script>

@@ -28,6 +28,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    dataType: {
+      type: String,
+      default: "",
+    },
   },
   mounted() {
     checkIfUserHasRole(KEYCLOAK_ROLE_PREMIUM_USER, this.getKeycloakPromise)
@@ -50,6 +54,7 @@ export default defineComponent({
       const thisCompanyId = this.companyId;
       return this.$router.push({
         path: `/singledatarequest/${thisCompanyId}`,
+        query: { dataType: this.dataType },
       });
     },
   },
