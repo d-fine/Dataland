@@ -38,8 +38,7 @@ import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
-import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
-import { getCompanyDataOwnerInformation } from "@/utils/api/CompanyDataOwner";
+import {hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany} from "@/utils/DataOwnerUtils";
 import { isCompanyIdValid } from "@/utils/ValidationsUtils";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 
@@ -67,7 +66,7 @@ export default defineComponent({
         try {
           await this.getAggregatedFrameworkDataSummary();
           await this.setUploaderRightsForUser();
-          this.hasCompanyDataOwner = await getCompanyDataOwnerInformation(
+          this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(
             assertDefined(this.getKeycloakPromise),
             newCompanyId as string,
           );
@@ -127,7 +126,7 @@ export default defineComponent({
      * updates the hasCompanyDataOwner in an async way
      */
     async updateHasCompanyDataOwner() {
-      this.hasCompanyDataOwner = await getCompanyDataOwnerInformation(
+      this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(
         assertDefined(this.getKeycloakPromise),
         this.companyId,
       );

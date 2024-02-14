@@ -65,8 +65,7 @@ import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
-import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
-import { getCompanyDataOwnerInformation } from "@/utils/api/CompanyDataOwner";
+import {hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany} from "@/utils/DataOwnerUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -135,7 +134,7 @@ export default defineComponent({
           void this.setDataOwnershipStatus();
 
           void this.getCompanyInformation();
-          this.hasCompanyDataOwner = await getCompanyDataOwnerInformation(
+          this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(
             assertDefined(this.getKeycloakPromise),
             newCompanyId as string,
           );
@@ -151,7 +150,7 @@ export default defineComponent({
      * updates the hasCompanyDataOwner in an async way
      */
     async updateHasCompanyDataOwner() {
-      this.hasCompanyDataOwner = await getCompanyDataOwnerInformation(
+      this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(
         assertDefined(this.getKeycloakPromise),
         this.companyId,
       );
