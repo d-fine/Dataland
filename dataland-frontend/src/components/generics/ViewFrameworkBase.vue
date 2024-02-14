@@ -110,6 +110,7 @@ import QualityAssuranceButtons from "@/components/resources/frameworkDataSearch/
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import type FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import InputSwitch from "primevue/inputswitch";
+import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -200,16 +201,7 @@ export default defineComponent({
     this.chosenDataTypeInDropdown = this.dataType ?? "";
     void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
 
-    checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise)
-      .then((hasUserUploaderRights) => {
-        this.hasUserUploaderRights = hasUserUploaderRights;
-      })
-      .catch((error) => console.log(error));
-    checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
-      .then((hasUserReviewerRights) => {
-        this.hasUserReviewerRights = hasUserReviewerRights;
-      })
-      .catch((error) => console.log(error));
+    void this.setViewPageAttributesForUser();
 
     window.addEventListener("scroll", this.windowScrollHandler);
   },
@@ -221,7 +213,6 @@ export default defineComponent({
     handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
       this.fetchedCompanyInformation = fetchedCompanyInformation;
     },
-
     /**
      * Opens Overlay Panel for selecting a reporting period to edit data for
      * @param event event
@@ -354,6 +345,28 @@ export default defineComponent({
         this.isDataProcessedSuccesfully = false;
         console.error(error);
       }
+    },
+    /**
+     * Set if the user is allowed to upload data for the current company
+     * @returns a promise that resolves to void, so the successful execution of the function can be awaited
+     */
+    async setViewPageAttributesForUser(): Promise<void> {
+      return checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise)
+        .then((hasUserReviewerRights) => {
+          this.hasUserReviewerRights = hasUserReviewerRights;
+        })
+        .then(() => {
+          return checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise).then((hasUserUploaderRights) => {
+            this.hasUserUploaderRights = hasUserUploaderRights;
+          });
+        })
+        .then(() => {
+          if (!this.hasUserUploaderRights) {
+            return isUserDataOwnerForCompany(this.companyID, this.getKeycloakPromise).then((hasUserUploaderRights) => {
+              this.hasUserUploaderRights = hasUserUploaderRights;
+            });
+          }
+        });
     },
   },
   watch: {
