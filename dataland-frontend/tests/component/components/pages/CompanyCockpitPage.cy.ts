@@ -48,7 +48,7 @@ describe("Component test for the company cockpit", () => {
     }).as("fetchUserIsDataOwnerTrue");
     if (hasCompanyDataOwner) {
       cy.intercept("**/api/companies/*/data-owners", {
-        body: ["companyOwnerID"],
+        body: ["company-owner-id"],
       }).as("fetchHasCompanyDataOwnersFalse");
     }
   }
@@ -240,7 +240,8 @@ describe("Component test for the company cockpit", () => {
   it("Check for all expected elements from a logged-in data owner perspective with uploader-rights for a company with data owner", () => {
     const hasCompanyDataOwner = true;
     const isClaimOwnershipPanelExpected = false;
-    const isProvideDataButtonExpected = false;
+    const isProvideDataButtonExpected = true;
+    const isSingleDataRequestButtonExpected = false;
     mockRequestsOnMounted(hasCompanyDataOwner);
     mountCompanyCockpitWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER], "mock-data-owner-id").then(() => {
       waitForRequestsOnMounted();
@@ -248,8 +249,8 @@ describe("Component test for the company cockpit", () => {
       validateSearchBarExistence(true);
       validateCompanyInformationBanner(hasCompanyDataOwner);
       validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
-      validateFrameworkSummaryPanels(isClaimOwnershipPanelExpected);
-      validateSingleDataRequestButton(isProvideDataButtonExpected);
+      validateFrameworkSummaryPanels(isProvideDataButtonExpected);
+      validateSingleDataRequestButton(isSingleDataRequestButtonExpected);
     });
   });
   it("Check for some expected elements from a logged-in premium user perspective for a company without data owner", () => {
