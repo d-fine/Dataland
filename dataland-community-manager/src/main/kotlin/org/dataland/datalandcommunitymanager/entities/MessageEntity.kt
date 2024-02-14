@@ -25,7 +25,7 @@ data class MessageEntity(
 
     val lastModifiedDate: Long,
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "data_request")
     var dataRequest: DataRequestEntity?,
 ) {
