@@ -1284,11 +1284,11 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "The specified company has no data owners yet"
-          },
           "200": {
-            "description": "The specified company have data owners."
+            "description": "The specified company has data owner(s)."
+          },
+          "404": {
+            "description": "The specified company has no data owner(s) yet"
           },
           "default": {
             "description": "An error occurred",
@@ -13788,6 +13788,12 @@
         ],
         "type": "object",
         "properties": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
           "sector": {
             "type": "string",
             "nullable": true
@@ -13796,12 +13802,6 @@
             "type": "string"
           },
           "headquarters": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
             "type": "string"
           },
           "permId": {
