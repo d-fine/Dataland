@@ -165,10 +165,10 @@ interface DataOwnerApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "The specified company have data owners."),
+            ApiResponse(responseCode = "200", description = "The specified company has data owner(s)."),
             ApiResponse(
                 responseCode = "404",
-                description = "The specified company has no data owners yet",
+                description = "The specified company has no data owner(s) yet",
             ),
         ],
     )

@@ -219,7 +219,7 @@ class CompanyDataController(
     }
 
     override fun hasCompanyDataOwner(companyId: UUID) {
-        logger.info("Received a request to check if $companyId have data owners")
+        logger.info("Received a request to check if $companyId has data owner(s)")
         dataOwnersManager.checkCompanyForDataOwnership(companyId.toString())
     }
 }
