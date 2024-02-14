@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyDataOwners
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
+import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -19,9 +20,7 @@ class DataOwnerControllerTest {
     val jwtHelper = JwtAuthenticationHelper()
 
     private fun createUnauthorizedUser() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(
-            TechnicalUser.entries.filter { it != TechnicalUser.Admin }.random(),
-        )
+        GlobalAuth.setBearerToken(null)
     }
 
     private fun validateDataOwnersForCompany(
