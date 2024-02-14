@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.services.CompanyGetter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,6 +20,7 @@ import java.util.*
  */
 class DataRequestManagerUtils(
     @Autowired private val dataRequestRepository: DataRequestRepository,
+    @Autowired private val messageRepository: MessageRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyGetter: CompanyGetter,
     @Autowired private val objectMapper: ObjectMapper,
@@ -27,9 +28,6 @@ class DataRequestManagerUtils(
     private val isinRegex = Regex("^[A-Z]{2}[A-Z\\d]{10}$")
     private val leiRegex = Regex("^[0-9A-Z]{18}[0-9]{2}$")
     private val permIdRegex = Regex("^\\d+$")
-
-    private val emptyMutableListOfStoredDataRequestMessageObjectsAsString =
-        objectMapper.writeValueAsString(mutableListOf<StoredDataRequestMessageObject>())
 
     /**
      * Determines the type corresponding to the value of a provided company identifier
@@ -118,17 +116,24 @@ class DataRequestManagerUtils(
         contactList: List<String>? = null,
         message: String? = null,
     ): DataRequestEntity {
+        findAlreadyExistingDataRequestForCurrentUser(identifierValue, dataType, reportingPeriod)?.also {
+            return it
+        }
         val dataRequestEntity = buildDataRequestEntity(
             dataType,
             reportingPeriod,
             identifierType,
             identifierValue,
-            contactList,
-            message,
         )
-        if (!isDataRequestAlreadyExisting(identifierValue, dataType, reportingPeriod)) {
-            storeDataRequestEntity(dataRequestEntity)
+        dataRequestRepository.save(dataRequestEntity)
+        val messageHistory = if (!contactList.isNullOrEmpty()) {
+            mutableListOf(StoredDataRequestMessageObject(contactList, message, Instant.now().toEpochMilli()))
+        } else {
+            mutableListOf()
         }
+        dataRequestEntity.associateMessages(messageHistory)
+        messageRepository.saveAllAndFlush(dataRequestEntity.messageHistory)
+        dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId)
         return dataRequestEntity
     }
 
@@ -137,17 +142,10 @@ class DataRequestManagerUtils(
         reportingPeriod: String,
         identifierType: DataRequestCompanyIdentifierType,
         identifierValue: String,
-        contactList: List<String>?,
-        message: String?,
     ): DataRequestEntity {
         val dataRequestId = UUID.randomUUID().toString()
         val currentUserId = DatalandAuthentication.fromContext().userId
         val currentTimestamp = Instant.now().toEpochMilli()
-        val messageHistory = if (!contactList.isNullOrEmpty()) {
-            mutableListOf(StoredDataRequestMessageObject(contactList, message, currentTimestamp))
-        } else {
-            mutableListOf()
-        }
         return DataRequestEntity(
             dataRequestId = dataRequestId,
             userId = currentUserId,
@@ -156,31 +154,25 @@ class DataRequestManagerUtils(
             reportingPeriod = reportingPeriod,
             dataRequestCompanyIdentifierType = identifierType,
             dataRequestCompanyIdentifierValue = identifierValue,
-            messageHistory = messageHistory.map { MessageEntity(it) }.toMutableList(),
+            messageHistory = mutableListOf(),
             lastModifiedDate = currentTimestamp,
             requestStatus = RequestStatus.Open,
-        ).also { it.associateMessages() }
+        )
     }
 
-    private fun isDataRequestAlreadyExisting(
+    private fun findAlreadyExistingDataRequestForCurrentUser(
         identifierValue: String,
         framework: DataTypeEnum,
         reportingPeriod: String,
-    ): Boolean {
+    ): DataRequestEntity? {
         val requestingUserId = DatalandAuthentication.fromContext().userId
-        val isAlreadyExisting = dataRequestRepository
-            .existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
+        val foundRequest = dataRequestRepository
+            .findByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
                 requestingUserId, identifierValue, framework.name, reportingPeriod,
             )
-        if (isAlreadyExisting) {
-            dataRequestLogger
-                .logMessageForCheckingIfDataRequestAlreadyExists(identifierValue, framework)
+        if (foundRequest != null) {
+            dataRequestLogger.logMessageForCheckingIfDataRequestAlreadyExists(identifierValue, framework)
         }
-        return isAlreadyExisting
-    }
-
-    private fun storeDataRequestEntity(dataRequestEntity: DataRequestEntity) {
-        dataRequestRepository.save(dataRequestEntity)
-        dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId)
+        return foundRequest
     }
 }
