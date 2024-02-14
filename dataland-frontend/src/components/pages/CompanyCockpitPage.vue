@@ -111,7 +111,7 @@ export default defineComponent({
         | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
       isUserDataOwner: false,
-      hasCompanyDataOwner: undefined as boolean | undefined,
+      hasCompanyDataOwner: false,
       isUserAllowedToUpload: false,
       footerContent,
     };
