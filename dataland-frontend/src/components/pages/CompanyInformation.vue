@@ -59,9 +59,9 @@ import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
-import { getUserId } from "@/utils/KeycloakUtils";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
+import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 import { getCompanyDataOwnerInformation } from "@/utils/api/CompanyDataOwner";
 import { isCompanyIdValid } from "@/utils/ValidationsUtils";
 
@@ -71,6 +71,7 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      authenticated: inject<boolean>("authenticated"),
     };
   },
   emits: ["fetchedCompanyInformation"],
@@ -83,7 +84,6 @@ export default defineComponent({
       hasCompanyDataOwner: false,
       dialogIsOpen: false,
       claimIsSubmitted: false,
-      userId: undefined as string | undefined,
     };
   },
   computed: {
@@ -99,7 +99,7 @@ export default defineComponent({
     },
     contextMenuItems() {
       const listOfItems = [];
-      if (!this.isUserDataOwner && this.userId !== undefined) {
+      if (!this.isUserDataOwner && this.authenticated) {
         listOfItems.push({
           label: "Claim Company Dataset Ownership",
           command: () => {
@@ -122,21 +122,21 @@ export default defineComponent({
   },
   mounted() {
     void this.getCompanyInformation();
+    void this.setDataOwnershipStatus();
     void this.updateHasCompanyDataOwner();
 
-    void this.awaitUserId();
-    void this.getUserDataOwnerInformation();
   },
   watch: {
     async companyId(newCompanyId, oldCompanyId) {
       if (newCompanyId !== oldCompanyId) {
         try {
-          await this.getCompanyInformation();
+          void this.setDataOwnershipStatus();
+
+          void this.getCompanyInformation();
           this.hasCompanyDataOwner = await getCompanyDataOwnerInformation(
             assertDefined(this.getKeycloakPromise),
             newCompanyId as string,
           );
-          await this.getUserDataOwnerInformation();
           this.claimIsSubmitted = false;
         } catch (error) {
           console.error("Error fetching data for new company:", error);
@@ -185,42 +185,19 @@ export default defineComponent({
     },
 
     /**
-     * Get the Information about Data-ownership
+     * Set the data-ownership status of current user
+     * @returns a void promise so that the setter-function can be awaited
      */
-    async getUserDataOwnerInformation() {
-      await this.awaitUserId();
-      if (this.userId !== undefined && isCompanyIdValid(this.companyId)) {
-        try {
-          const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-            .backendClients.companyDataController;
-          const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
-            this.companyId,
-            assertDefined(this.userId),
-          );
-          if (axiosResponse.status == 200) {
-            this.isUserDataOwner = true;
-          }
-        } catch (error) {
-          console.log(error);
-          if (getErrorMessage(error).includes("404")) {
-            this.isUserDataOwner = false;
-          }
-        }
-      } else {
-        this.isUserDataOwner = false;
-      }
+    async setDataOwnershipStatus(): Promise<void> {
+      return isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise).then((result) => {
+        this.isUserDataOwner = result;
+      });
     },
     /**
      * handles the emitted claim event
      */
     onClaimSubmitted() {
       this.claimIsSubmitted = true;
-    },
-    /**
-     * gets the user ID in an async manner
-     */
-    async awaitUserId(): Promise<void> {
-      this.userId = await getUserId(assertDefined(this.getKeycloakPromise));
     },
   },
 });

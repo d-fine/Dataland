@@ -9,6 +9,7 @@
         <FrameworkSummaryPanel
           v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
           :key="framework"
+          :is-user-allowed-to-upload="isUserAllowedToUpload"
           :company-id="companyId"
           :framework="framework"
           :number-of-provided-reporting-periods="
@@ -28,7 +29,6 @@ import TheHeader from "@/components/generics/TheHeader.vue";
 import TheContent from "@/components/generics/TheContent.vue";
 import { type AggregatedFrameworkDataSummary, type DataTypeEnum } from "@clients/backend";
 import { ApiClientProvider } from "@/services/ApiClients";
-import { assertDefined } from "@/utils/TypeScriptUtils";
 import TheFooter from "@/components/generics/TheNewFooter.vue";
 import contentData from "@/assets/content.json";
 import type { Content, Page } from "@/types/ContentTypes";
@@ -37,6 +37,8 @@ import FrameworkSummaryPanel from "@/components/resources/companyCockpit/Framewo
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
+import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
+import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 import { getUserId } from "@/utils/KeycloakUtils";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 import { getCompanyDataOwnerInformation } from "@/utils/api/CompanyDataOwner";
@@ -55,7 +57,7 @@ export default defineComponent({
       return this.injectedUseMobileView;
     },
     isClaimPanelVisible() {
-      return !this.isUserDataOwner && this.userId && isCompanyIdValid(this.companyId) && !this.hasCompanyDataOwner;
+      return !this.isUserDataOwner && this.authenticated && isCompanyIdValid(this.companyId) && !this.hasCompanyDataOwner;
     },
   },
   watch: {
@@ -63,16 +65,18 @@ export default defineComponent({
       if (newCompanyId !== oldCompanyId) {
         try {
           await this.getAggregatedFrameworkDataSummary();
+          await this.setUploaderRightsForUser();
           this.hasCompanyDataOwner = await getCompanyDataOwnerInformation(
             assertDefined(this.getKeycloakPromise),
             newCompanyId as string,
           );
-          await this.getUserDataOwnerInformation();
-          await this.awaitUserId();
         } catch (error) {
           console.error("Error fetching data for new company:", error);
         }
       }
+    },
+    async authenticated() {
+      await this.setUploaderRightsForUser();
     },
   },
   components: {
@@ -86,7 +90,11 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      authenticated: inject<boolean>("authenticated"),
     };
+  },
+  created() {
+    void this.setUploaderRightsForUser();
   },
   props: {
     companyId: {
@@ -105,15 +113,15 @@ export default defineComponent({
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
       isUserDataOwner: undefined as boolean | undefined,
       hasCompanyDataOwner: undefined as boolean | undefined,
+      isUserDataOwner: false,
+      isUserAllowedToUpload: false,
       footerContent,
-      userId: undefined as string | undefined,
     };
   },
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
     void this.updateHasCompanyDataOwner();
-    void this.awaitUserId();
-    void this.getUserDataOwnerInformation();
+
   },
   methods: {
     /**
@@ -129,44 +137,32 @@ export default defineComponent({
      * Retrieves the aggregated framework data summary
      */
     async getAggregatedFrameworkDataSummary(): Promise<void> {
-      const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
+      const companyDataControllerApi = new ApiClientProvider(this.getKeycloakPromise()).backendClients
         .companyDataController;
       this.aggregatedFrameworkDataSummary = (
         await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
       ).data as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary } | undefined;
     },
+
     /**
-     * Get the Information about Data-ownership
+     * Set if the user is allowed to upload data for the current company
+     * @returns a promise that resolves to void, so the successful execution of the function can be awaited
      */
-    async getUserDataOwnerInformation() {
-      await this.awaitUserId();
-      if (this.userId !== undefined && isCompanyIdValid(this.companyId)) {
-        try {
-          const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-            .backendClients.companyDataController;
-          const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
-            this.companyId,
-            assertDefined(this.userId),
-          );
-          if (axiosResponse.status == 200) {
-            this.isUserDataOwner = true;
-          }
-        } catch (error) {
-          console.error(error);
-          this.isUserDataOwner = false;
-          if (getErrorMessage(error).includes("404")) {
-            this.isUserDataOwner = false;
-          }
-        }
-      } else {
-        this.isUserDataOwner = false;
+    async setUploaderRightsForUser() {
+      if (this.authenticated) {
+        await isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise)
+          .then((result) => {
+            this.isUserDataOwner = result;
+            this.isUserAllowedToUpload = result;
+          })
+          .then(() => {
+            if (!this.isUserAllowedToUpload) {
+              return checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise).then((result) => {
+                this.isUserAllowedToUpload = result;
+              });
+            }
+          });
       }
-    },
-    /**
-     * gets the user ID in an async manner
-     */
-    async awaitUserId(): Promise<void> {
-      this.userId = await getUserId(assertDefined(this.getKeycloakPromise));
     },
   },
 });
