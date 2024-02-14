@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -32,11 +33,17 @@ data class DataRequestEntity(
 
     val dataRequestCompanyIdentifierValue: String,
 
-    @Column(columnDefinition = "text")
-    var messageHistory: String?,
+    @OneToMany(mappedBy = "dataRequest")
+    val messageHistory: MutableList<MessageEntity>,
 
     val lastModifiedDate: Long,
 
     @Enumerated(EnumType.STRING)
     var requestStatus: RequestStatus,
-)
+) {
+    fun associateMessages() {
+        messageHistory.forEach {
+            it.dataRequest = this
+        }
+    }
+}

@@ -1,10 +1,10 @@
 package org.dataland.datalandcommunitymanager.utils
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
@@ -86,10 +86,7 @@ class DataRequestManagerUtils(
             dataRequestEntity.reportingPeriod,
             dataRequestEntity.dataRequestCompanyIdentifierType,
             dataRequestEntity.dataRequestCompanyIdentifierValue,
-            objectMapper.readValue(
-                dataRequestEntity.messageHistory ?: emptyMutableListOfStoredDataRequestMessageObjects,
-                object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
-            ),
+            dataRequestEntity.messageHistory.map { it.toStoredDataRequestMessageObject() }.toMutableList(),
             dataRequestEntity.lastModifiedDate,
             dataRequestEntity.requestStatus,
         )
@@ -159,10 +156,10 @@ class DataRequestManagerUtils(
             reportingPeriod = reportingPeriod,
             dataRequestCompanyIdentifierType = identifierType,
             dataRequestCompanyIdentifierValue = identifierValue,
-            messageHistory = objectMapper.writeValueAsString(messageHistory),
+            messageHistory = messageHistory.map { MessageEntity(it) }.toMutableList(),
             lastModifiedDate = currentTimestamp,
             requestStatus = RequestStatus.Open,
-        )
+        ).also { it.associateMessages() }
     }
 
     private fun isDataRequestAlreadyExisting(
