@@ -39,10 +39,9 @@ import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
-import { getUserId } from "@/utils/KeycloakUtils";
-import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 import { getCompanyDataOwnerInformation } from "@/utils/api/CompanyDataOwner";
 import { isCompanyIdValid } from "@/utils/ValidationsUtils";
+import { assertDefined } from "@/utils/TypeScriptUtils";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -57,7 +56,9 @@ export default defineComponent({
       return this.injectedUseMobileView;
     },
     isClaimPanelVisible() {
-      return !this.isUserDataOwner && this.authenticated && isCompanyIdValid(this.companyId) && !this.hasCompanyDataOwner;
+      return (
+        !this.isUserDataOwner && this.authenticated && isCompanyIdValid(this.companyId) && !this.hasCompanyDataOwner
+      );
     },
   },
   watch: {
@@ -111,9 +112,8 @@ export default defineComponent({
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
-      isUserDataOwner: undefined as boolean | undefined,
-      hasCompanyDataOwner: undefined as boolean | undefined,
       isUserDataOwner: false,
+      hasCompanyDataOwner: undefined as boolean | undefined,
       isUserAllowedToUpload: false,
       footerContent,
     };
@@ -121,7 +121,6 @@ export default defineComponent({
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
     void this.updateHasCompanyDataOwner();
-
   },
   methods: {
     /**
