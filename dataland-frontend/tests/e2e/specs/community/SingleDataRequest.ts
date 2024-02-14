@@ -1,17 +1,18 @@
 import {
+  admin_name, admin_pw,
   premium_user_name,
   premium_user_pw,
   reader_name,
   reader_pw,
-  uploader_name,
-  uploader_pw,
 } from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
 import { type SingleDataRequest } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
-import { DataTypeEnum, type StoredCompany } from "@clients/backend";
+import {DataTypeEnum, LksgData, type StoredCompany} from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import {uploadFrameworkData} from "@e2e/utils/FrameworkUpload";
+import {FixtureData, getPreparedFixture} from "@sharedUtils/Fixtures";
 
 describeIf(
   "As a premium user, I want to be able to navigate to the single data request page and submit a request",
@@ -22,18 +23,39 @@ describeIf(
     const uniqueCompanyMarker = Date.now().toString();
     const testCompanyName = "Company-for-single-data-request" + uniqueCompanyMarker;
     let testStoredCompany: StoredCompany;
+    let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
+    function uploadCompanyWithData():void {
+    getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+      return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName))
+          .then(async (storedCompany) => {
+            testStoredCompany=storedCompany;
+            return uploadFrameworkData(
+                DataTypeEnum.Lksg,
+                token,
+                storedCompany.companyId,
+                "2015",
+                getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t,
+            );
+          });
+    });}
+    before(()=>{
+      cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
+      lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+      uploadCompanyWithData()
+    });
+    });
     beforeEach(() => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-          testStoredCompany = storedCompany;
-        });
-      });
       cy.ensureLoggedIn(premium_user_name, premium_user_pw);
     });
 
     it("Navigate to the single request page via the company cockpit", () => {
       cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}`);
+      cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
+      cy.url().should("contain", `/singledatarequest/${testStoredCompany.companyId}`);
+    });
+
+    it("Navigate to the single request page via the view page and verify that the viewed framework is preselected.", () => {
+      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
       cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
       cy.url().should("contain", `/singledatarequest/${testStoredCompany.companyId}`);
     });
