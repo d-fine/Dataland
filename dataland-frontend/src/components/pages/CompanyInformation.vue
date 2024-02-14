@@ -8,7 +8,11 @@
       <div class="company-details__headline">
         <div class="left-elements">
           <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
-          <div class="p-badge badge-light-green outline" data-test="verifiedDataOwnerBadge" v-if="hasCompanyDataOwner">
+          <div
+            class="p-badge badge-light-green outline rounded"
+            data-test="verifiedDataOwnerBadge"
+            v-if="hasCompanyDataOwner"
+          >
             <span class="material-icons-outlined fs-sm">verified</span>
             Verified Data Owner
           </div>
@@ -205,7 +209,9 @@ export default defineComponent({
 .inline-loading {
   width: 450px;
 }
-
+.rounded {
+  border-radius: 0.5rem;
+}
 .company-details {
   display: flex;
   flex-direction: column;
