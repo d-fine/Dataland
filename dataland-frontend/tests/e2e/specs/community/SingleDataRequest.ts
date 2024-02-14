@@ -7,6 +7,8 @@ import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
 import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
 describeIf(
   "As a premium user, I want to be able to navigate to the single data request page and submit a request",
@@ -148,8 +150,11 @@ describeIf(
       cy.get('[data-test="datapoint-framework"]')
         .children()
         .should("have.length", numberOfFrameworks + 1);
-
-      cy.get("[data-test='datapoint-framework']").should("exist").should("contain.text", "LkSsG");
+      ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
+        cy.get("[data-test='datapoint-framework']")
+          .should("exist")
+          .should("contain.text", humanizeStringOrNumber(framework));
+      });
     }
 
     /**
