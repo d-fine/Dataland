@@ -196,6 +196,16 @@ describe("Component test for the company cockpit", () => {
       validateFrameworkSummaryPanels(isProvideDataButtonExpected);
     });
   });
+  it("Check for expected data ownership elements from a non-logged-in users perspective for a company with a data owner", () => {
+    const hasCompanyDataOwner = true;
+    const isClaimOwnershipPanelExpected = false;
+    mockRequestsOnMounted(hasCompanyDataOwner);
+    mountCompanyCockpitWithAuthentication(false, false, [], "").then(() => {
+      waitForRequestsOnMounted();
+      validateCompanyInformationBanner(hasCompanyDataOwner);
+      validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
+    });
+  });
 
   it("Check for all expected elements from a logged-in users perspective with read-only rights for a company with data owner", () => {
     const hasCompanyDataOwner = true;
