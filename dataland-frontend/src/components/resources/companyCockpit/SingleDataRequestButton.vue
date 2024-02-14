@@ -14,6 +14,7 @@ import { defineComponent, inject } from "vue";
 import PrimeButton from "primevue/button";
 import type Keycloak from "keycloak-js";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_PREMIUM_USER } from "@/utils/KeycloakUtils";
+import {DataTypeEnum} from "@clients/backend";
 
 export default defineComponent({
   name: "SingleDataRequestButton",
@@ -27,10 +28,6 @@ export default defineComponent({
     companyId: {
       type: String,
       required: true,
-    },
-    dataType: {
-      type: String,
-      default: "",
     },
   },
   mounted() {
@@ -54,7 +51,9 @@ export default defineComponent({
       const thisCompanyId = this.companyId;
       return this.$router.push({
         path: `/singledatarequest/${thisCompanyId}`,
-        query: { dataType: this.dataType },
+        query: {
+          preSelectedFramework: DataTypeEnum.Lksg,
+        },
       });
     },
   },

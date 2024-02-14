@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="right-elements">
-          <SingleDataRequestButton :company-id="companyId" :data-type="dataType" v-if="showSingleDataRequestButton" />
+          <SingleDataRequestButton :company-id="companyId" v-if="showSingleDataRequestButton" />
           <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
         </div>
       </div>
@@ -81,7 +81,6 @@ export default defineComponent({
       dialogIsOpen: false,
       claimIsSubmitted: false,
       userId: undefined as string | undefined,
-      dataType: "",
     };
   },
   computed: {
@@ -127,7 +126,6 @@ export default defineComponent({
     void this.getCompanyInformation();
     void this.awaitUserId();
     void this.getDataOwnerInformation();
-    void  this.extractDataTypeFromURL();
   },
   watch: {
     companyId() {
@@ -204,16 +202,6 @@ export default defineComponent({
      */
     async awaitUserId(): Promise<void> {
       this.userId = await getUserId(assertDefined(this.getKeycloakPromise));
-    },
-    /**
-     * Extracts the dataType parameter from the URL
-     */
-    extractDataTypeFromURL() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const dataType = urlParams.get("dataType");
-      if (dataType) {
-        this.dataType = dataType;
-      }
     },
   },
 });

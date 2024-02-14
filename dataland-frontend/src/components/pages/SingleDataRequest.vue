@@ -172,7 +172,7 @@ export default defineComponent({
     };
   },
   props: {
-    dataType: {
+    preSelectedFramework: {
       type: String,
       default: "",
     },
@@ -186,7 +186,7 @@ export default defineComponent({
       footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
-      frameworkName: "" as DataTypeEnum,
+      frameworkName: this.preSelectedFramework !== "" ? this.preSelectedFramework as DataTypeEnum : "" as DataTypeEnum,
       contact: "",
       dataRequesterMessage: "",
       errorMessage: "",
@@ -289,9 +289,6 @@ export default defineComponent({
   },
   mounted() {
     this.retrieveFrameworkOptions();
-    if (this.dataType && this.frameworkOptions.some(option => option.value === this.dataType)) {
-      this.frameworkName = this.dataType as DataTypeEnum;
-    }
   },
 });
 </script>
