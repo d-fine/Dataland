@@ -43,3 +43,9 @@ fun TransactionalEmail.TransactionalEmailBuilder
     TransactionalEmail.TransactionalEmailBuilder {
     return this.cc(ccReceivers.map { it.toMailjetSendContact() })
 }
+
+/**
+ * Checks if a string is an email address
+ * @returns true if and only if the string matches email address pattern
+ */
+fun String.isEmailAddress() = Regex("^[a-zA-Z0-9_.!-]+@[a-zA-Z0-9-]+.[a-z]{2,3}\$").matches(this)

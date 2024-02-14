@@ -14,6 +14,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
+import org.dataland.datalandemail.email.isEmailAddress
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -65,7 +66,7 @@ class SingleDataRequestManager(
     }
 
     private fun validateContacts(contacts: List<String>?) {
-        if(!contacts.isNullOrEmpty() && contacts.any { it.isBlank() } ) {
+        if (!contacts.isNullOrEmpty() && contacts.any { !it.isEmailAddress() }) {
             throw InvalidInputApiException(
                 "You must provide proper email addresses as contacts.",
                 "You must provide proper email addresses as contacts.",
