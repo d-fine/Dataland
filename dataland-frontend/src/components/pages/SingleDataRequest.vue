@@ -225,7 +225,7 @@ export default defineComponent({
      * @returns the SingleDataRequest object
      */
     collectDataToSend(): SingleDataRequest {
-      const contactAsList = [this.contact];
+      const contactAsList = this.contact ? [this.contact] : undefined;
       return {
         companyIdentifier: this.companyIdentifier,
         frameworkName: this.frameworkName,

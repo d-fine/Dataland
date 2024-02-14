@@ -45,6 +45,7 @@ class SingleDataRequestManager(
         if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
             throw AuthenticationMethodNotSupportedException("You are not using JWT authentication.")
         }
+        validateContacts(singleDataRequest.contactList)
         val storedDataRequests = mutableListOf<StoredDataRequest>()
         val (identifierTypeToStore, identifierValueToStore) = identifyIdentifierTypeAndTryGetDatalandCompanyId(
             singleDataRequest.companyIdentifier,
@@ -61,6 +62,15 @@ class SingleDataRequestManager(
             companyIdentifierValue = identifierValueToStore,
         )
         return storedDataRequests
+    }
+
+    private fun validateContacts(contacts: List<String>?) {
+        if(!contacts.isNullOrEmpty() && contacts.any { it.isBlank() } ) {
+            throw InvalidInputApiException(
+                "You must provide proper email addresses as contacts.",
+                "You must provide proper email addresses as contacts.",
+            )
+        }
     }
 
     private fun identifyIdentifierTypeAndTryGetDatalandCompanyId(
