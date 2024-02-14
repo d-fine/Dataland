@@ -2,6 +2,7 @@ import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { type AxiosError } from "axios";
 import { waitForAndReturnResolvedKeycloakPromise } from "@/utils/KeycloakUtils";
+import {isCompanyIdValid} from "@/utils/ValidationsUtils";
 
 /**
  * Check if a user is data owner of a company
@@ -13,9 +14,7 @@ export async function isUserDataOwnerForCompany(
   companyId: string,
   keycloakPromiseGetter?: () => Promise<Keycloak>,
 ): Promise<boolean> {
-  const uuidRegexExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-  const isCompanyIdValid = uuidRegexExp.test(companyId);
-  if (keycloakPromiseGetter && isCompanyIdValid) {
+  if (keycloakPromiseGetter && isCompanyIdValid(companyId)) {
     const resolvedKeycloakPromise = await waitForAndReturnResolvedKeycloakPromise(keycloakPromiseGetter);
     const userId = resolvedKeycloakPromise?.idTokenParsed?.sub;
     if (userId) {
