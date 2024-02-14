@@ -12,6 +12,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
 import org.dataland.datalandemail.email.isEmailAddress
@@ -30,10 +31,10 @@ class SingleDataRequestManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyGetter: CompanyGetter,
-    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val singleDataRequestEmailSender: SingleDataRequestEmailSender,
+    @Autowired private val messageRepository: MessageRepository,
 ) {
-    private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyGetter, objectMapper)
+    private val utils = DataRequestManagerUtils(dataRequestRepository, messageRepository, dataRequestLogger, companyGetter)
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
 
     /**

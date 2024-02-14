@@ -10,6 +10,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
 import org.dataland.datalandemail.email.EmailSender
@@ -30,9 +31,9 @@ class BulkDataRequestManager(
     @Autowired private val companyGetter: CompanyGetter,
     @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
     @Autowired private val emailSender: EmailSender,
-    @Autowired private val objectMapper: ObjectMapper,
-) {
-    private val utils = DataRequestManagerUtils(dataRequestRepository, dataRequestLogger, companyGetter, objectMapper)
+    @Autowired private val messageRepository: MessageRepository,
+    ) {
+    private val utils = DataRequestManagerUtils(dataRequestRepository, messageRepository, dataRequestLogger, companyGetter)
 
     /**
      * Processes a bulk data request from a user

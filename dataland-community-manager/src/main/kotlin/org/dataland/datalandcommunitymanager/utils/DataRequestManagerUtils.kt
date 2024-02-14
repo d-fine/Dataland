@@ -23,7 +23,6 @@ class DataRequestManagerUtils(
     @Autowired private val messageRepository: MessageRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyGetter: CompanyGetter,
-    @Autowired private val objectMapper: ObjectMapper,
 ) {
     private val isinRegex = Regex("^[A-Z]{2}[A-Z\\d]{10}$")
     private val leiRegex = Regex("^[0-9A-Z]{18}[0-9]{2}$")
