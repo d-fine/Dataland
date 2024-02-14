@@ -149,7 +149,7 @@ describeIf(
         .children()
         .should("have.length", numberOfFrameworks + 1);
 
-      cy.get("[data-test='datapoint-framework']").should("exist").should("contain.text", "LkSG");
+      cy.get("[data-test='datapoint-framework']").should("exist").should("contain.text", "LkSsG");
     }
 
     /**
