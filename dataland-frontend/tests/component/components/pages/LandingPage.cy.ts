@@ -111,7 +111,9 @@ function getLandingPageSection(sectionTitle: string): Section {
  * @returns the filename of the found image
  */
 function getSingleImageNameInSection(sectionTitle: string): string {
-  return assertDefined(getLandingPageSection(sectionTitle)?.image?.[0]).split("/").slice(-1)[0];
+  return assertDefined(getLandingPageSection(sectionTitle)?.image?.[0])
+    .split("/")
+    .slice(-1)[0];
 }
 
 /**

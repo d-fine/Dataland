@@ -63,7 +63,6 @@ import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
 import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 import { getCompanyDataOwnerInformation } from "@/utils/api/CompanyDataOwner";
-import { isCompanyIdValid } from "@/utils/ValidationsUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -124,7 +123,6 @@ export default defineComponent({
     void this.getCompanyInformation();
     void this.setDataOwnershipStatus();
     void this.updateHasCompanyDataOwner();
-
   },
   watch: {
     async companyId(newCompanyId, oldCompanyId) {
