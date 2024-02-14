@@ -48,7 +48,7 @@ describe("Component test for the company cockpit", () => {
     }).as("fetchUserIsDataOwnerTrue");
     if (hasCompanyDataOwner) {
       cy.intercept("**/api/companies/*/data-owners", {
-        body: [],
+        body: ["companyOwnerID"],
       }).as("fetchHasCompanyDataOwnersFalse");
     }
   }
@@ -246,9 +246,9 @@ describe("Component test for the company cockpit", () => {
       waitForRequestsOnMounted();
       validateBackButtonExistence(false);
       validateSearchBarExistence(true);
-      validateCompanyInformationBanner();
+      validateCompanyInformationBanner(hasCompanyDataOwner);
       validateClaimOwnershipPanel(isClaimOwnershipPanelExpected);
-      validateFrameworkSummaryPanels(hasCompanyDataOwner);
+      validateFrameworkSummaryPanels(isClaimOwnershipPanelExpected);
       validateSingleDataRequestButton(isProvideDataButtonExpected);
     });
   });
