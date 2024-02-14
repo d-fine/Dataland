@@ -278,10 +278,7 @@ class DataOwnerControllerTest {
         )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyDataControllerApi.postDataOwner(companyId, dataReaderUserId)
-        apiAccessor.companyDataControllerApi.postDataOwner(
-            companyId,
-            dataReaderUserId,
-        )
+
         assertDoesNotThrow { apiAccessor.companyDataControllerApi.hasCompanyDataOwner(companyId) }
 
         assertDoesNotThrow { apiAccessor.companyDataControllerApi.deleteDataOwner(companyId, dataReaderUserId) }
@@ -293,15 +290,12 @@ class DataOwnerControllerTest {
 
     @Test
     fun `check company without a data owner if it has a data owner as unauthorized user`() {
-        val randomCompany = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany
-        val companyId = UUID.fromString(randomCompany.companyId)
+        val companyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         apiAccessor.companyDataControllerApi.postDataOwner(companyId, dataReaderUserId)
-        apiAccessor.companyDataControllerApi.postDataOwner(
-            companyId,
-            dataReaderUserId,
-        )
 
         createUnauthorizedUser()
 
@@ -309,8 +303,8 @@ class DataOwnerControllerTest {
             apiAccessor.companyDataControllerApi.getDataOwners(companyId)
         }
         assertErrorCodeForClientException(checkIfUserIsUnauthorizedResponse, 403)
-        assertDoesNotThrow { apiAccessor.companyDataControllerApi.hasCompanyDataOwner(companyId) }
 
+        assertDoesNotThrow { apiAccessor.companyDataControllerApi.hasCompanyDataOwner(companyId) }
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         assertDoesNotThrow { apiAccessor.companyDataControllerApi.deleteDataOwner(companyId, dataReaderUserId) }
         createUnauthorizedUser()
