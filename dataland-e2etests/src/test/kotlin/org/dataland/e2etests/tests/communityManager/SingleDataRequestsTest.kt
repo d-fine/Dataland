@@ -183,7 +183,6 @@ class SingleDataRequestsTest {
         }
     }
 
-
     @Test
     fun `post a single data request inducing a forbidden contact parameter`() {
         val validLei = generateRandomLei()
