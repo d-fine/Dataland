@@ -1,7 +1,6 @@
 import type Keycloak from "keycloak-js";
 import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
-import { checkIfUserHasRole, KEYCLOAK_ROLE_ADMIN } from "@/utils/KeycloakUtils";
 import { isCompanyIdValid } from "@/utils/ValidationsUtils";
 
 /**
@@ -21,19 +20,10 @@ export async function getCompanyDataOwnerInformation(
     .companyDataController;
   let atLeastOneDataOwner: boolean | undefined;
   try {
-    if (await checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, getKeycloakPromise)) {
-      atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(companyId)).data.length > 0) as
-        | boolean
-        | undefined;
-    } else {
-      atLeastOneDataOwner = ((await companyDataControllerApi.getDataOwners(companyId)).status == 200) as
-        | boolean
-        | undefined;
-    }
-
-    if (atLeastOneDataOwner !== undefined) {
-      return true;
-    } else {
+    atLeastOneDataOwner = ((await companyDataControllerApi.hasCompanyDataOwner(companyId)).status == 200) as
+      | boolean
+      | undefined;
+    if (atLeastOneDataOwner == undefined) {
       atLeastOneDataOwner = false;
     }
   } catch (error) {
