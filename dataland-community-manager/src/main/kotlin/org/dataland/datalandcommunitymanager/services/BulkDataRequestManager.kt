@@ -77,21 +77,7 @@ class BulkDataRequestManager(
         val currentUserId = DatalandAuthentication.fromContext().userId
         val retrievedStoredDataRequestEntitiesForUser = dataRequestRepository.findByUserId(currentUserId)
         val retrievedStoredDataRequestsForUser = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
-            StoredDataRequest(
-                dataRequestEntity.dataRequestId,
-                dataRequestEntity.userId,
-                dataRequestEntity.creationTimestamp,
-                utils.getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
-                dataRequestEntity.reportingPeriod,
-                dataRequestEntity.dataRequestCompanyIdentifierType,
-                dataRequestEntity.dataRequestCompanyIdentifierValue,
-                objectMapper.readValue(
-                    dataRequestEntity.messageHistory,
-                    object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
-                ),
-                dataRequestEntity.lastModifiedDate,
-                dataRequestEntity.requestStatus,
-            )
+            utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
         }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
         return retrievedStoredDataRequestsForUser

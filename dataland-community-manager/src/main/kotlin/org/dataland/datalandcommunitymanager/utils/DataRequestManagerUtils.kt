@@ -28,6 +28,9 @@ class DataRequestManagerUtils(
     private val leiRegex = Regex("^[0-9A-Z]{18}[0-9]{2}$")
     private val permIdRegex = Regex("^\\d+$")
 
+    private val emptyMutableListOfStoredDataRequestMessageObjects
+        = objectMapper.writeValueAsString(mutableListOf<StoredDataRequestMessageObject>())
+
     /**
      * Determines the type corresponding to the value of a provided company identifier
      * @param identifierValue the identifier value
@@ -84,7 +87,7 @@ class DataRequestManagerUtils(
             dataRequestEntity.dataRequestCompanyIdentifierType,
             dataRequestEntity.dataRequestCompanyIdentifierValue,
             objectMapper.readValue(
-                dataRequestEntity.messageHistory,
+                dataRequestEntity.messageHistory ?: emptyMutableListOfStoredDataRequestMessageObjects,
                 object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
             ),
             dataRequestEntity.lastModifiedDate,
