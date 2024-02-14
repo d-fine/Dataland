@@ -186,7 +186,8 @@ export default defineComponent({
       footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
-      frameworkName: this.preSelectedFramework !== "" ? this.preSelectedFramework as DataTypeEnum : "" as DataTypeEnum,
+      frameworkName:
+        this.preSelectedFramework !== "" ? (this.preSelectedFramework as DataTypeEnum) : ("" as DataTypeEnum),
       contact: "",
       dataRequesterMessage: "",
       errorMessage: "",
