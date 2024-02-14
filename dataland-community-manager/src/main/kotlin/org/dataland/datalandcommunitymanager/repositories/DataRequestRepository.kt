@@ -95,4 +95,13 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     fun searchDataRequestEntity(
         @Param("searchFilter") searchFilter: GetDataRequestsSearchFilter,
     ): List<DataRequestEntity>
+
+    @Query(
+        "SELECT DISTINCT d FROM DataRequestEntity d " +
+            "LEFT JOIN FETCH d.messageHistory " +
+            "WHERE d IN :dataRequests",
+    )
+    fun fetchMessages(
+        dataRequests: List<DataRequestEntity>,
+    ): List<DataRequestEntity>
 }

@@ -189,7 +189,7 @@ class SingleDataRequestManager(
         )
         val result = dataRequestRepository.searchDataRequestEntity(filter)
 
-        return result.map { utils.buildStoredDataRequestFromDataRequestEntity(it) }
+        return dataRequestRepository.fetchMessages(result).map { utils.buildStoredDataRequestFromDataRequestEntity(it) }
     }
 
     /**
