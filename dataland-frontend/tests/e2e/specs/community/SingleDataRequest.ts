@@ -56,21 +56,12 @@ describeIf(
       cy.url().should("contain", `/singledatarequest/${testStoredCompany.companyId}`);
     });
 
-    describeIf(
-      "As a premium user I want to be able to navigate to the single data request page via the view page",
-      {
-        executionEnvironments: ["developmentLocal", "ci", "developmentCd"],
-        onlyExecuteOnDatabaseReset: true,
-      },
-      () => {
-        it("Navigate to the single request page via the view page and verify that the viewed framework is preselected.", () => {
-          cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
-          cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
-          cy.url().should("contain", `/singledatarequest/${testStoredCompany.companyId}`);
-          cy.get('[data-test="datapoint-framework"]').should("have.value", "lksg");
-        });
-      },
-    );
+    it("Navigate to the single request page via the view page and verify that the viewed framework is preselected.", () => {
+      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+      cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
+      cy.url().should("contain", `/singledatarequest/${testStoredCompany.companyId}`);
+      cy.get('[data-test="datapoint-framework"]').should("have.value", "lksg");
+    });
 
     it("Fill out the request page and check correct validation, request and success message", () => {
       cy.intercept("POST", "**/community/requests/single").as("postRequestData");
