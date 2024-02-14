@@ -46,13 +46,11 @@ class SingleDataRequestManager(
         if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
             throw AuthenticationMethodNotSupportedException("You are not using JWT authentication.")
         }
-        validateContacts(singleDataRequest.contactList)
+        assertValidMessage(singleDataRequest)
         val storedDataRequests = mutableListOf<StoredDataRequest>()
         val (identifierTypeToStore, identifierValueToStore) = identifyIdentifierTypeAndTryGetDatalandCompanyId(
             singleDataRequest.companyIdentifier,
         )
-
-        throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest)
         storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
             storedDataRequests, singleDataRequest, identifierValueToStore, identifierTypeToStore,
         )
@@ -65,11 +63,18 @@ class SingleDataRequestManager(
         return storedDataRequests
     }
 
-    private fun validateContacts(contacts: List<String>?) {
+    private fun assertValidMessage(singleDataRequest: SingleDataRequest) {
+        val contacts = singleDataRequest.contactList
         if (!contacts.isNullOrEmpty() && contacts.any { !it.isEmailAddress() }) {
             throw InvalidInputApiException(
                 "You must provide proper email addresses as contacts.",
                 "You must provide proper email addresses as contacts.",
+            )
+        }
+        if (contacts.isNullOrEmpty() && !singleDataRequest.message.isNullOrBlank()) {
+            throw InvalidInputApiException(
+                "Insufficient information to create message object.",
+                "Without at least one proper email address being provided no message can be forwarded.",
             )
         }
     }
@@ -111,15 +116,6 @@ class SingleDataRequestManager(
                 "Dataland-backend does not know the company ID $companyId",
             )
         }
-        }
-    }
-
-    private fun throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest: SingleDataRequest) {
-        if (utils.isContactListTrivial(singleDataRequest.contactList) && !singleDataRequest.message.isNullOrBlank()) {
-            throw InvalidInputApiException(
-                "Insufficient information to create message object.",
-                "Without at least one proper email address being provided no message can be forwarded.",
-            )
         }
     }
 
