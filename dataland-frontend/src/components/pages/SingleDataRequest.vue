@@ -171,12 +171,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  props: {
-    preSelectedFramework: {
-      type: String,
-      default: "",
-    },
-  },
+
   data() {
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
@@ -186,8 +181,7 @@ export default defineComponent({
       footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
-      frameworkName:
-        this.preSelectedFramework !== "" ? (this.preSelectedFramework as DataTypeEnum) : ("" as DataTypeEnum),
+      frameworkName: this.$route.query.preSelectedFramework as DataTypeEnum,
       contact: "",
       dataRequesterMessage: "",
       errorMessage: "",
