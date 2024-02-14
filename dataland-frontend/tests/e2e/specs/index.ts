@@ -45,6 +45,7 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
   require("./p2p");
   require("./esg-questionnaire");
   require("./heimathafen");
+  require("./data-ownership");
 }
 
 if (testGroupingDisabled || cypressTestGroup === 3) {

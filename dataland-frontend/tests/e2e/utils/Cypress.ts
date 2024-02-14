@@ -3,6 +3,7 @@ import Chainable = Cypress.Chainable;
 
 export const reader_name = "data_reader";
 export const reader_pw = getStringCypressEnv("KEYCLOAK_READER_PASSWORD");
+export const reader_userId = "18b67ecc-1176-4506-8414-1e81661017ca";
 export const uploader_name = "data_uploader";
 export const uploader_pw = getStringCypressEnv("KEYCLOAK_UPLOADER_PASSWORD");
 export const reviewer_name = "data_reviewer";
