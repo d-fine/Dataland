@@ -925,7 +925,7 @@
         ]
       }
     },
-    "/companies/{companyId}/data-ownership-request": {
+    "/companies/{companyId}/data-ownership-requests": {
       "post": {
         "tags": [
           "company-data-controller"
@@ -13798,10 +13798,10 @@
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
           "permId": {
