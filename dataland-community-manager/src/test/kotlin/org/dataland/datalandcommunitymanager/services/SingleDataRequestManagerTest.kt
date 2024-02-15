@@ -84,8 +84,8 @@ class SingleDataRequestManagerTest {
         val request = SingleDataRequest(
             companyIdentifier = companyIdRegexSafeCompanyId,
             frameworkName = DataTypeEnum.lksg,
-            listOfReportingPeriods = listOf("1969"),
-            contactList = listOf("contact@othercompany.com"),
+            reportingPeriods = listOf("1969"),
+            contacts = listOf("contact@othercompany.com"),
             message = "You forgot to upload data about the moon landing.",
         )
         singleDataRequestManager.processSingleDataRequest(
@@ -104,8 +104,8 @@ class SingleDataRequestManagerTest {
         val request = SingleDataRequest(
             companyIdentifier = "DK0083647253",
             frameworkName = DataTypeEnum.lksg,
-            listOfReportingPeriods = listOf("1969"),
-            contactList = listOf("contact@othercompany.com"),
+            reportingPeriods = listOf("1969"),
+            contacts = listOf("contact@othercompany.com"),
             message = "You forgot to upload data about the moon landing.",
         )
         singleDataRequestManager.processSingleDataRequest(

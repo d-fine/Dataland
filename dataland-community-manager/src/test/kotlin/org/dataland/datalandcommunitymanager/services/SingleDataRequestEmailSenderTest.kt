@@ -84,8 +84,8 @@ class SingleDataRequestEmailSenderTest {
             SingleDataRequest(
                 properCompanyId,
                 dataType,
-                listOfReportingPeriods = listOf(),
-                contactList = listOf("receiver@abc.de", "otherreceiver@something.else"),
+                reportingPeriods = listOf(),
+                contacts = listOf("receiver@abc.de", "otherreceiver@something.else"),
                 message = defaultMessage,
             ),
             DataRequestCompanyIdentifierType.Isin,
@@ -104,8 +104,8 @@ class SingleDataRequestEmailSenderTest {
             SingleDataRequest(
                 properCompanyId,
                 dataType,
-                listOfReportingPeriods = reportingPeriods,
-                contactList = listOf("receiver@abc.de", "otherreceiver@something.else"),
+                reportingPeriods = reportingPeriods,
+                contacts = listOf("receiver@abc.de", "otherreceiver@something.else"),
                 message = defaultMessage,
             ),
             DataRequestCompanyIdentifierType.Isin,
@@ -125,8 +125,8 @@ class SingleDataRequestEmailSenderTest {
             SingleDataRequest(
                 properCompanyId,
                 dataType,
-                listOfReportingPeriods = reportingPeriods,
-                contactList = listOf(),
+                reportingPeriods = reportingPeriods,
+                contacts = listOf(),
                 message = defaultMessage,
             ),
             DataRequestCompanyIdentifierType.DatalandCompanyId,
@@ -143,8 +143,8 @@ class SingleDataRequestEmailSenderTest {
                 SingleDataRequest(
                     properCompanyId,
                     dataType,
-                    listOfReportingPeriods = reportingPeriods,
-                    contactList = contactEmails,
+                    reportingPeriods = reportingPeriods,
+                    contacts = contactEmails,
                     message = defaultMessage,
                 ),
                 DataRequestCompanyIdentifierType.DatalandCompanyId,

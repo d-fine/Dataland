@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
@@ -45,14 +44,14 @@ data class MessageEntity(
     ) : this(
         messageId = UUID.randomUUID().toString(),
         ordinal = ordinal,
-        contacts = if(messageObject.contactList.isEmpty()) null else messageObject.contactList.joinToString(";"),
+        contacts = if(messageObject.contacts.isEmpty()) null else messageObject.contacts.joinToString(";"),
         message = messageObject.message,
         lastModifiedDate = messageObject.lastModifiedDate ?: Instant.now().toEpochMilli(),
         dataRequest = dataRequest,
     )
 
     fun toStoredDataRequestMessageObject() = StoredDataRequestMessageObject(
-        contactList = contacts?.split(";") ?: emptyList(),
+        contacts = contacts?.split(";") ?: emptyList(),
         message  = message,
         lastModifiedDate = lastModifiedDate,
     )

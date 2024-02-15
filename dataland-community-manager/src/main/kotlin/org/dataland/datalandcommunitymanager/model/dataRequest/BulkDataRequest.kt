@@ -8,8 +8,8 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 /**
  * --- API model ---
  * Contains all necessary info that a user has to provide in order to request a bulk of datasets on Dataland.
- * @param listOfCompanyIdentifiers contains company identifiers for which the user wants to request framework data
- * @param listOfFrameworkNames contains the names of frameworks, for which the user wants to request framework data
+ * @param companyIdentifiers contains company identifiers for which the user wants to request framework data
+ * @param frameworkNames contains the names of frameworks, for which the user wants to request framework data
  */
 data class BulkDataRequest(
     @field:JsonProperty(required = true)
@@ -20,7 +20,7 @@ data class BulkDataRequest(
         ),
         schema = Schema(type = "string"),
     )
-    val listOfCompanyIdentifiers: List<String>,
+    val companyIdentifiers: List<String>,
 
     @field:JsonProperty(required = true)
     @field:ArraySchema(
@@ -29,7 +29,7 @@ data class BulkDataRequest(
             example = "[\"p2p\", \"sme\"]",
         ),
     )
-    val listOfFrameworkNames: List<DataTypeEnum>,
+    val frameworkNames: List<DataTypeEnum>,
 
     @field:JsonProperty(required = true)
     @field:ArraySchema(
@@ -39,5 +39,5 @@ data class BulkDataRequest(
         ),
         schema = Schema(type = "string"),
     )
-    val listOfReportingPeriods: List<String>,
+    val reportingPeriods: List<String>,
 )

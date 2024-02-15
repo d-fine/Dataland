@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -66,7 +65,7 @@ class SingleDataRequestManager(
     }
 
     private fun assertValidMessage(singleDataRequest: SingleDataRequest) {
-        val contacts = singleDataRequest.contactList
+        val contacts = singleDataRequest.contacts
         if (!contacts.isNullOrEmpty() && contacts.any { !it.isEmailAddress() }) {
             throw InvalidInputApiException(
                 "You must provide proper email addresses as contacts.",
@@ -127,14 +126,14 @@ class SingleDataRequestManager(
         identifierValueToStore: String,
         identifierTypeToStore: DataRequestCompanyIdentifierType,
     ) {
-        for (reportingPeriod in singleDataRequest.listOfReportingPeriods.distinct()) {
+        for (reportingPeriod in singleDataRequest.reportingPeriods.distinct()) {
             storedDataRequests.add(
                 utils.storeDataRequestEntityIfNotExisting(
                     identifierValueToStore,
                     identifierTypeToStore,
                     singleDataRequest.frameworkName,
                     reportingPeriod,
-                    singleDataRequest.contactList,
+                    singleDataRequest.contacts,
                     singleDataRequest.message,
                 ).toStoredDataRequest(),
             )

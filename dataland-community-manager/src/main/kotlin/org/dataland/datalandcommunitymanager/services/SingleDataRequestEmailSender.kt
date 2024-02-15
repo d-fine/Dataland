@@ -32,10 +32,10 @@ class SingleDataRequestEmailSender(
         companyIdentifierType: DataRequestCompanyIdentifierType,
         companyIdentifierValue: String,
     ) {
-        if (singleDataRequest.listOfReportingPeriods.isEmpty()) return
+        if (singleDataRequest.reportingPeriods.isEmpty()) return
         if (
             companyIdentifierType != DataRequestCompanyIdentifierType.DatalandCompanyId ||
-            singleDataRequest.contactList.isNullOrEmpty()
+            singleDataRequest.contacts.isNullOrEmpty()
         ) {
             sendInternalEmail(
                 userAuthentication = userAuthentication,
@@ -53,14 +53,14 @@ class SingleDataRequestEmailSender(
         singleDataRequest: SingleDataRequest,
         datalandCompanyId: String,
     ) {
-        singleDataRequest.contactList?.forEach { contactEmail ->
+        singleDataRequest.contacts?.forEach { contactEmail ->
             emailSender.sendEmail(
                 singleDataRequestEmailBuilder.buildSingleDataRequestEmail(
                     requesterEmail = userAuthentication.username,
                     receiverEmail = contactEmail,
                     companyId = datalandCompanyId,
                     dataType = singleDataRequest.frameworkName,
-                    reportingPeriods = singleDataRequest.listOfReportingPeriods,
+                    reportingPeriods = singleDataRequest.reportingPeriods,
                     message = singleDataRequest.message,
                 ),
             )
@@ -79,7 +79,7 @@ class SingleDataRequestEmailSender(
                 companyIdentifierType = companyIdentifierType,
                 companyIdentifierValue = companyIdentifierValue,
                 dataType = singleDataRequest.frameworkName,
-                reportingPeriods = singleDataRequest.listOfReportingPeriods,
+                reportingPeriods = singleDataRequest.reportingPeriods,
             ),
         )
     }

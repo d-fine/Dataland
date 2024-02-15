@@ -27,7 +27,7 @@ data class DataRequestEntity(
 
     val creationTimestamp: Long,
 
-    val dataTypeName: String,
+    val dataType: String,
 
     val reportingPeriod: String,
 
@@ -54,7 +54,7 @@ data class DataRequestEntity(
         dataRequestId = dataRequestId,
         userId = userId,
         creationTimestamp = creationTimestamp,
-        dataType = getDataTypeEnumForFrameworkName(dataTypeName)!!,
+        dataType = getDataTypeEnumForFrameworkName(dataType)!!,
         reportingPeriod = reportingPeriod,
         dataRequestCompanyIdentifierType = dataRequestCompanyIdentifierType,
         dataRequestCompanyIdentifierValue = dataRequestCompanyIdentifierValue,

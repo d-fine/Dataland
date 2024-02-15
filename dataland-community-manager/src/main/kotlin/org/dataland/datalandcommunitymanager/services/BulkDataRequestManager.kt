@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
@@ -48,7 +47,7 @@ class BulkDataRequestManager(
         dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId)
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
-        for (userProvidedIdentifierValue in cleanedBulkDataRequest.listOfCompanyIdentifiers) {
+        for (userProvidedIdentifierValue in cleanedBulkDataRequest.companyIdentifiers) {
             val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(userProvidedIdentifierValue)
             if (matchedIdentifierType == null) {
                 rejectedIdentifiers.add(userProvidedIdentifierValue)
@@ -58,8 +57,8 @@ class BulkDataRequestManager(
             processAcceptedIdentifier(
                 userProvidedIdentifierValue,
                 matchedIdentifierType,
-                cleanedBulkDataRequest.listOfFrameworkNames,
-                cleanedBulkDataRequest.listOfReportingPeriods,
+                cleanedBulkDataRequest.frameworkNames,
+                cleanedBulkDataRequest.reportingPeriods,
             )
         }
         if (acceptedIdentifiers.isNotEmpty()) {
@@ -102,7 +101,7 @@ class BulkDataRequestManager(
             dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery, reportingPeriod)
         val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
             AggregatedDataRequest(
-                getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataTypeName),
+                getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataType),
                 aggregatedDataRequestEntity.reportingPeriod,
                 aggregatedDataRequestEntity.dataRequestCompanyIdentifierType,
                 aggregatedDataRequestEntity.dataRequestCompanyIdentifierValue,
@@ -147,9 +146,9 @@ class BulkDataRequestManager(
     }
 
     private fun assureValidityOfRequestLists(bulkDataRequest: BulkDataRequest) {
-        val listOfIdentifiers = bulkDataRequest.listOfCompanyIdentifiers
-        val listOfFrameworks = bulkDataRequest.listOfFrameworkNames
-        val listOfReportingPeriods = bulkDataRequest.listOfReportingPeriods
+        val listOfIdentifiers = bulkDataRequest.companyIdentifiers
+        val listOfFrameworks = bulkDataRequest.frameworkNames
+        val listOfReportingPeriods = bulkDataRequest.reportingPeriods
         if (listOfIdentifiers.isEmpty() || listOfFrameworks.isEmpty() || listOfReportingPeriods.isEmpty()) {
             val errorMessage = errorMessageForEmptyInputConfigurations(
                 listOfIdentifiers, listOfFrameworks, listOfReportingPeriods,
@@ -162,13 +161,13 @@ class BulkDataRequestManager(
     }
 
     private fun removeDuplicatesInRequestLists(bulkDataRequest: BulkDataRequest): BulkDataRequest {
-        val distinctCompanyIdentifiers = bulkDataRequest.listOfCompanyIdentifiers.distinct()
-        val distinctFrameworkNames = bulkDataRequest.listOfFrameworkNames.distinct()
-        val distinctReportingPeriods = bulkDataRequest.listOfReportingPeriods.distinct()
+        val distinctCompanyIdentifiers = bulkDataRequest.companyIdentifiers.distinct()
+        val distinctFrameworkNames = bulkDataRequest.frameworkNames.distinct()
+        val distinctReportingPeriods = bulkDataRequest.reportingPeriods.distinct()
         return bulkDataRequest.copy(
-            listOfCompanyIdentifiers = distinctCompanyIdentifiers,
-            listOfFrameworkNames = distinctFrameworkNames,
-            listOfReportingPeriods = distinctReportingPeriods,
+            companyIdentifiers = distinctCompanyIdentifiers,
+            frameworkNames = distinctFrameworkNames,
+            reportingPeriods = distinctReportingPeriods,
         )
     }
 
@@ -221,7 +220,7 @@ class BulkDataRequestManager(
     ): BulkDataRequestResponse {
         return BulkDataRequestResponse(
             message = buildResponseMessageForBulkDataRequest(
-                bulkDataRequest.listOfCompanyIdentifiers.size,
+                bulkDataRequest.companyIdentifiers.size,
                 rejectedCompanyIdentifiers.size,
             ),
             rejectedCompanyIdentifiers = rejectedCompanyIdentifiers,

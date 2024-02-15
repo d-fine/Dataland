@@ -54,16 +54,16 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      */
     @Query(
         "SELECT new org.dataland.datalandcommunitymanager.entities.AggregatedDataRequestEntity(" +
-            "d.dataTypeName, " +
+            "d.dataType, " +
             "d.reportingPeriod, " +
             "d.dataRequestCompanyIdentifierType, " +
             "d.dataRequestCompanyIdentifierValue, " +
             "COUNT(d.userId))" +
             "FROM DataRequestEntity d " +
-            "WHERE (:dataTypes IS NULL OR d.dataTypeName IN :dataTypes) " +
+            "WHERE (:dataTypes IS NULL OR d.dataType IN :dataTypes) " +
             "  AND (:reportingPeriod IS NULL OR d.reportingPeriod LIKE %:reportingPeriod%)" +
             "  AND (:identifierValue IS NULL OR d.dataRequestCompanyIdentifierValue LIKE %:identifierValue%) " +
-            "GROUP BY d.dataTypeName, d.reportingPeriod, d.dataRequestCompanyIdentifierType," +
+            "GROUP BY d.dataType, d.reportingPeriod, d.dataRequestCompanyIdentifierType," +
             "  d.dataRequestCompanyIdentifierValue",
     )
     fun getAggregatedDataRequests(
@@ -82,7 +82,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         "SELECT d FROM DataRequestEntity d  " +
             "WHERE " +
             "(:#{#searchFilter.dataTypeNameFilterLength} = 0 " +
-            "OR d.dataTypeName = :#{#searchFilter.dataTypeNameFilter}) AND " +
+            "OR d.dataType = :#{#searchFilter.dataTypeNameFilter}) AND " +
             "(:#{#searchFilter.userIdFilterLength} = 0 " +
             "OR d.userId = :#{#searchFilter.userIdFilter}) AND " +
             "(:#{#searchFilter.requestStatus} IS NULL " +
