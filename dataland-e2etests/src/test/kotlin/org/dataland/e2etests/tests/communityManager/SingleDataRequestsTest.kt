@@ -162,8 +162,7 @@ class SingleDataRequestsTest {
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
 
         val contactListsThatContainInvalidEmailAddresses =
-            listOf(null, listOf(), listOf(""), listOf(" "), listOf("invalidMail@"))
-        // TODO what if mix of valid and invalids?? discuss with Florian
+            listOf(null, listOf(), listOf(""), listOf(" "), listOf("invalidMail@", "validMail@somemailabc.abc"))
         contactListsThatContainInvalidEmailAddresses.forEach {
             val clientException = assertThrows<ClientException> {
                 postStandardSingleDataRequest(validLei, it, "Dummy test message.")
