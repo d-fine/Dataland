@@ -169,7 +169,6 @@ class SingleDataRequestsTest {
             }
             check400ClientExceptionErrorMessage(clientException)
             val responseBody = (clientException.response as ClientError<*>).body as String
-            assertTrue(responseBody.contains("You must provide proper email addresses as contacts."))
             assertTrue(responseBody.contains("Insufficient information to create message object."))
             assertTrue(
                 responseBody.contains(

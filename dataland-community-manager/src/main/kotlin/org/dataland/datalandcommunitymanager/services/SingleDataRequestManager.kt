@@ -48,6 +48,7 @@ class SingleDataRequestManager(
             throw AuthenticationMethodNotSupportedException("You are not using JWT authentication.")
         }
         assertValidMessage(singleDataRequest)
+        dataRequestLogger.logMessageForSingleDataRequestReceived()
         val storedDataRequests = mutableListOf<StoredDataRequest>()
         val (identifierTypeToStore, identifierValueToStore) = identifyIdentifierTypeAndTryGetDatalandCompanyId(
             singleDataRequest.companyIdentifier,
@@ -88,7 +89,7 @@ class SingleDataRequestManager(
             return Pair(DataRequestCompanyIdentifierType.DatalandCompanyId, companyIdentifier)
         }
         val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(companyIdentifier)
-        dataRequestLogger.logMessageForSingleDataRequest(companyIdentifier)
+        dataRequestLogger.logMessageForReceivingSingleDataRequest(companyIdentifier)
         if (matchedIdentifierType != null) {
             val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(
                 companyIdentifier,
