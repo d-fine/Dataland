@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.model.lksg
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.dataland.datalandbackend.annotations.DataType
 import org.dataland.datalandbackend.model.lksg.categories.environmental.LksgEnvironmental
 import org.dataland.datalandbackend.model.lksg.categories.general.LksgGeneral
 import org.dataland.datalandbackend.model.lksg.categories.governance.LksgGovernance
@@ -12,7 +11,6 @@ import org.dataland.datalandbackend.model.lksg.categories.social.LksgSocial
  * Fields of the lksg framework.
 */
 @Suppress("MagicNumber")
-@DataType("lksg", 3)
 data class LksgData(
     @field:JsonProperty(required = true)
     val general: LksgGeneral,
