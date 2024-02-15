@@ -1,11 +1,13 @@
 package org.dataland.datalandcommunitymanager.utils
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.CompanyGetter
@@ -27,6 +29,9 @@ class DataRequestManagerUtils(
     private val isinRegex = Regex("^[A-Z]{2}[A-Z\\d]{10}$")
     private val leiRegex = Regex("^[0-9A-Z]{18}[0-9]{2}$")
     private val permIdRegex = Regex("^\\d+$")
+
+    private val emptyMutableListOfStoredDataRequestMessageObjectsAsString =
+        objectMapper.writeValueAsString(mutableListOf<StoredDataRequestMessageObject>())
 
     /**
      * We want to avoid users from using other authentication methods than jwt-authentication, such as
@@ -77,6 +82,29 @@ class DataRequestManagerUtils(
         dataRequestLogger
             .logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(identifierValue, datalandCompanyId)
         return datalandCompanyId
+    }
+
+    /**
+     * Builds a StoredDataRequest object from a DataRequestEntity
+     * @param dataRequestEntity the DataRequestEntity
+     * @return the resulting StoredDataRequest
+     */
+    fun buildStoredDataRequestFromDataRequestEntity(dataRequestEntity: DataRequestEntity): StoredDataRequest {
+        return StoredDataRequest(
+            dataRequestEntity.dataRequestId,
+            dataRequestEntity.userId,
+            dataRequestEntity.creationTimestamp,
+            getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
+            dataRequestEntity.reportingPeriod,
+            dataRequestEntity.dataRequestCompanyIdentifierType,
+            dataRequestEntity.dataRequestCompanyIdentifierValue,
+            objectMapper.readValue(
+                dataRequestEntity.messageHistory ?: emptyMutableListOfStoredDataRequestMessageObjectsAsString,
+                object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
+            ),
+            dataRequestEntity.lastModifiedDate,
+            dataRequestEntity.requestStatus,
+        )
     }
 
     /**

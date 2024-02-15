@@ -57,7 +57,7 @@ class SingleDataRequestManager(
             companyIdentifierType = identifierTypeToStore,
             companyIdentifierValue = identifierValueToStore,
         )
-        return storedDataRequestEntities.map { it.toStoredDataRequest() }
+        return storedDataRequestEntities.map { utils.buildStoredDataRequestFromDataRequestEntity(it) }
     }
 
     private fun validateContactsAndMessage(contacts: List<String>?, message: String?) {
@@ -146,7 +146,7 @@ class SingleDataRequestManager(
     fun getDataRequestById(dataRequestId: String): StoredDataRequest {
         throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId)
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
-        return dataRequestEntity.toStoredDataRequest()
+        return utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
     }
 
     private fun throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId: String) {
@@ -184,7 +184,7 @@ class SingleDataRequestManager(
         )
         val result = dataRequestRepository.searchDataRequestEntity(filter)
 
-        return result.map { it.toStoredDataRequest() }
+        return result.map { utils.buildStoredDataRequestFromDataRequestEntity(it) }
     }
 
     /**
@@ -201,6 +201,6 @@ class SingleDataRequestManager(
         dataRequestEntity.requestStatus = requestStatus
         dataRequestRepository.save(dataRequestEntity)
         dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
-        return dataRequestEntity.toStoredDataRequest()
+        return utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
     }
 }
