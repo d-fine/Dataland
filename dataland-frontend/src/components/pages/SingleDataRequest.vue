@@ -67,7 +67,7 @@
                         type="text"
                         name="contactDetails"
                         data-test="contactEmail"
-                        :validation="[['matches', /^[a-zA-Z0-9_.!-]+@([a-zA-Z0-9-]+.){1,2}[a-z]{2,}$/]]"
+                        :validation="[['matches', /^[a-zA-Z0-9_.!-]+@([a-zA-Z0-9-]+\.){1,2}[a-z]{2,}$/]]"
                         :validation-messages="{ matches: 'Please enter a valid email address.' }"
                       />
                       <p class="gray-text font-italic" style="text-align: left">
