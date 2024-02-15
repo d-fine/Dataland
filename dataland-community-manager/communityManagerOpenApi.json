@@ -753,7 +753,7 @@
         "required": [
           "companyIdentifier",
           "frameworkName",
-          "listOfReportingPeriods"
+          "reportingPeriods"
         ],
         "type": "object",
         "properties": {
@@ -775,7 +775,7 @@
               "heimathafen"
             ]
           },
-          "listOfReportingPeriods": {
+          "reportingPeriods": {
             "type": "array",
             "example": [
               "2022",
@@ -785,7 +785,7 @@
               "type": "string"
             }
           },
-          "contactList": {
+          "contacts": {
             "type": "array",
             "example": [
               "testuser@dataland.com"
@@ -822,6 +822,7 @@
           "dataRequestCompanyIdentifierType",
           "dataRequestCompanyIdentifierValue",
           "dataRequestId",
+          "dataType",
           "lastModifiedDate",
           "messageHistory",
           "reportingPeriod",
@@ -879,11 +880,11 @@
       },
       "StoredDataRequestMessageObject": {
         "required": [
-          "contactList"
+          "contacts"
         ],
         "type": "object",
         "properties": {
-          "contactList": {
+          "contacts": {
             "type": "array",
             "items": {
               "type": "string"
@@ -900,13 +901,13 @@
       },
       "BulkDataRequest": {
         "required": [
-          "listOfCompanyIdentifiers",
-          "listOfFrameworkNames",
-          "listOfReportingPeriods"
+          "companyIdentifiers",
+          "frameworkNames",
+          "reportingPeriods"
         ],
         "type": "object",
         "properties": {
-          "listOfCompanyIdentifiers": {
+          "companyIdentifiers": {
             "type": "array",
             "example": [
               "DE0005190003",
@@ -916,7 +917,7 @@
               "type": "string"
             }
           },
-          "listOfFrameworkNames": {
+          "frameworkNames": {
             "type": "array",
             "example": [
               "p2p",
@@ -936,7 +937,7 @@
               ]
             }
           },
-          "listOfReportingPeriods": {
+          "reportingPeriods": {
             "type": "array",
             "example": [
               "2022",

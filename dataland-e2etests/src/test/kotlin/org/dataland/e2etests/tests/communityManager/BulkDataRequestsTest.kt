@@ -50,7 +50,7 @@ class BulkDataRequestsTest {
         val uniqueIdentifiersMap = generateMapWithOneRandomValueForEachIdentifierType()
         val multipleRegexMatchingIdentifier = generateRandomPermId(20)
         val identifiers = uniqueIdentifiersMap.values.toList() + listOf(multipleRegexMatchingIdentifier)
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
+        val frameworks = enumValues<BulkDataRequest.FrameworkNames>().toList()
         val reportingPeriods = listOf("2022", "2023")
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(
@@ -86,7 +86,7 @@ class BulkDataRequestsTest {
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(
                 validIdentifiers + invalidIdentifiers,
-                listOf(BulkDataRequest.ListOfFrameworkNames.lksg),
+                listOf(BulkDataRequest.FrameworkNames.lksg),
                 listOf("2023"),
             ),
         )
@@ -110,7 +110,7 @@ class BulkDataRequestsTest {
         val identifiersForBulkRequest = listOf(
             leiForCompany, isinForCompany, identifierValueForUnknownCompany,
         )
-        val frameworksForBulkRequest = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
+        val frameworksForBulkRequest = listOf(BulkDataRequest.FrameworkNames.lksg)
         val reportingPeriodsForBulkRequest = listOf("2023")
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(
@@ -134,7 +134,7 @@ class BulkDataRequestsTest {
 
     private fun checkThatBothRequestsExistExactlyOnceAfterBulkRequest(
         requestsStoredAfterBulkRequest: List<StoredDataRequest>,
-        framework: BulkDataRequest.ListOfFrameworkNames,
+        framework: BulkDataRequest.FrameworkNames,
         reportingPeriod: String,
         companyId: String,
         identifierTypeForUnknownCompany: DataRequestCompanyIdentifierType,
@@ -157,7 +157,7 @@ class BulkDataRequestsTest {
     }
 
     private fun checkThatAlreadyExistingRequestsAreNeitherStoredForKnownNorForUnknownCompanies(
-        frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+        frameworks: List<BulkDataRequest.FrameworkNames>,
         reportingPeriods: List<String>,
         companyId: String,
         identifierMapForUnknownCompany: Map<DataRequestCompanyIdentifierType, String>,
@@ -197,7 +197,7 @@ class BulkDataRequestsTest {
         val isinForCompany = generateRandomIsin()
         val companyId = getIdForUploadedCompanyWithIdentifiers(leiForCompany, listOf(isinForCompany))
         val identifierMapForUnknownCompany = mapOf(DataRequestCompanyIdentifierType.lei to generateRandomLei())
-        val frameworks = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
+        val frameworks = listOf(BulkDataRequest.FrameworkNames.lksg)
         val reportingPeriods = listOf("2023")
         val firstIdentifiers = listOf(leiForCompany, identifierMapForUnknownCompany.values.toList()[0])
         val secondIdentifiers = listOf(isinForCompany, identifierMapForUnknownCompany.values.toList()[0])
@@ -214,7 +214,7 @@ class BulkDataRequestsTest {
     @Test
     fun `check the expected exception is thrown when frameworks are empty or identifiers are empty or invalid only`() {
         val validIdentifiers = listOf(generateRandomLei(), generateRandomIsin(), generateRandomPermId())
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
+        val frameworks = enumValues<BulkDataRequest.FrameworkNames>().toList()
         val reportingPeriods = listOf("2023")
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, frameworks, emptyList())
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(validIdentifiers, emptyList(), reportingPeriods)
@@ -233,7 +233,7 @@ class BulkDataRequestsTest {
     private fun authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
         technicalUser: TechnicalUser,
         identifiers: List<String>,
-        frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+        frameworks: List<BulkDataRequest.FrameworkNames>,
         reportingPeriods: List<String>,
     ) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
@@ -253,7 +253,7 @@ class BulkDataRequestsTest {
                 DataRequestCompanyIdentifierType.datalandCompanyId to leiForCompany,
             )
             ).toMutableMap()
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
+        val frameworks = enumValues<BulkDataRequest.FrameworkNames>().toList()
         val reportingPeriods = listOf("2022", "2023")
         TechnicalUser.entries.forEach {
             authenticateSendBulkRequestAndCheckAcceptedIdentifiers(
@@ -268,7 +268,7 @@ class BulkDataRequestsTest {
     }
 
     private fun testNonTrivialIdentifierValueFilterOnAggregatedLevel(
-        frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+        frameworks: List<BulkDataRequest.FrameworkNames>,
         reportingPeriods: List<String>,
         identifiersToRecognizeMap: Map<DataRequestCompanyIdentifierType, String>,
         differentLei: String,
@@ -295,7 +295,7 @@ class BulkDataRequestsTest {
         )
         val differentLei = generateRandomLei()
         val identifiers = identifiersToRecognizeMap.values.toList() + listOf(differentLei)
-        val frameworks = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
+        val frameworks = listOf(BulkDataRequest.FrameworkNames.lksg)
         val reportingPeriods = listOf("2023")
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifiers, frameworks, reportingPeriods),
@@ -312,7 +312,7 @@ class BulkDataRequestsTest {
     }
 
     private fun checkAggregationForNonTrivialFrameworkFilter(
-        frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+        frameworks: List<BulkDataRequest.FrameworkNames>,
         reportingPeriods: List<String>,
         identifierMap: Map<DataRequestCompanyIdentifierType, String>,
     ) {
@@ -337,7 +337,7 @@ class BulkDataRequestsTest {
 
     @Test
     fun `post bulk requests and check that the filter for frameworks on aggregated level works properly`() {
-        val frameworks = enumValues<BulkDataRequest.ListOfFrameworkNames>().toList()
+        val frameworks = enumValues<BulkDataRequest.FrameworkNames>().toList()
         val reportingPeriods = listOf("2023")
         val identifierMap = mapOf(DataRequestCompanyIdentifierType.lei to generateRandomLei())
         val response = requestControllerApi.postBulkDataRequest(
@@ -358,7 +358,7 @@ class BulkDataRequestsTest {
     @Test
     fun `post bulk data request and check that the filter for reporting periods on aggregated level works properly`() {
         val identifierMap = mapOf(DataRequestCompanyIdentifierType.lei to generateRandomLei())
-        val frameworks = listOf(BulkDataRequest.ListOfFrameworkNames.lksg)
+        val frameworks = listOf(BulkDataRequest.FrameworkNames.lksg)
         val reportingPeriods = listOf("2020", "2021", "2022", "2023")
         val response = requestControllerApi.postBulkDataRequest(
             BulkDataRequest(identifierMap.values.toList(), frameworks, reportingPeriods),

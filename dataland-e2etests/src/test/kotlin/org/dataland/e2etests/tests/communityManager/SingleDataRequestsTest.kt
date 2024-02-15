@@ -45,12 +45,12 @@ class SingleDataRequestsTest {
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
-            listOfReportingPeriods = listOf("2022", "2023"),
-            contactList = listOf("someContact@webserver.de", "simpleString@some.thing"),
+            reportingPeriods = listOf("2022", "2023"),
+            contacts = listOf("someContact@webserver.de", "simpleString@some.thing"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
         val allStoredDataRequests = requestControllerApi.postSingleDataRequest(singleDataRequest)
-        assertEquals(singleDataRequest.listOfReportingPeriods.size, allStoredDataRequests.size)
+        assertEquals(singleDataRequest.reportingPeriods.size, allStoredDataRequests.size)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         for (storedDataRequest in allStoredDataRequests) {
@@ -67,7 +67,7 @@ class SingleDataRequestsTest {
         val invalidSingleDataRequest = SingleDataRequest(
             companyIdentifier = invalidCompanyIdentifier,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
-            listOfReportingPeriods = listOf("2022"),
+            reportingPeriods = listOf("2022"),
         )
         val clientException = assertThrows<ClientException> {
             requestControllerApi.postSingleDataRequest(invalidSingleDataRequest)
@@ -89,7 +89,7 @@ class SingleDataRequestsTest {
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = unknownCompanyId,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
-            listOfReportingPeriods = listOf("2022"),
+            reportingPeriods = listOf("2022"),
         )
         val clientException = assertThrows<ClientException> {
             requestControllerApi.postSingleDataRequest(singleDataRequest)
@@ -107,7 +107,7 @@ class SingleDataRequestsTest {
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = companyIdOfNewCompany,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
-            listOfReportingPeriods = listOf("2022"),
+            reportingPeriods = listOf("2022"),
         )
 
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
@@ -149,8 +149,8 @@ class SingleDataRequestsTest {
             SingleDataRequest(
                 companyIdentifier = companyIdentifier,
                 frameworkName = SingleDataRequest.FrameworkName.sfdr,
-                listOfReportingPeriods = listOf("2022"),
-                contactList = contactList,
+                reportingPeriods = listOf("2022"),
+                contacts = contactList,
                 message = message,
             ),
         ).first()
@@ -204,7 +204,7 @@ class SingleDataRequestsTest {
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
-            listOfReportingPeriods = listOf("2022"),
+            reportingPeriods = listOf("2022"),
         )
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
@@ -241,7 +241,7 @@ class SingleDataRequestsTest {
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
-            listOfReportingPeriods = listOf("2022"),
+            reportingPeriods = listOf("2022"),
         )
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
@@ -259,7 +259,7 @@ class SingleDataRequestsTest {
         val requestA = SingleDataRequest(
             companyIdentifier = generateRandomIsin(),
             frameworkName = SingleDataRequest.FrameworkName.lksg,
-            listOfReportingPeriods = listOf("2022"),
+            reportingPeriods = listOf("2022"),
         )
         requestControllerApi.postSingleDataRequest(requestA)
 
@@ -267,7 +267,7 @@ class SingleDataRequestsTest {
         val requestB = SingleDataRequest(
             companyIdentifier = specificPermId,
             frameworkName = SingleDataRequest.FrameworkName.sfdr,
-            listOfReportingPeriods = listOf("2021"),
+            reportingPeriods = listOf("2021"),
         )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val req2 = requestControllerApi.postSingleDataRequest(requestB).first()
