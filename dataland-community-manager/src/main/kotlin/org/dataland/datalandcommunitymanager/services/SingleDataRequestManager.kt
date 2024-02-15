@@ -39,7 +39,7 @@ class SingleDataRequestManager(
         if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
             throw AuthenticationMethodNotSupportedException("You are not using JWT authentication.")
         }
-        assertValidMessage(singleDataRequest)
+        validateContactsAndMessage(singleDataRequest.contacts, singleDataRequest.message)
         dataRequestLogger.logMessageForSingleDataRequestReceived()
         val storedDataRequests = mutableListOf<StoredDataRequest>()
         val (identifierTypeToStore, identifierValueToStore) = identifyIdentifierTypeAndTryGetDatalandCompanyId(
@@ -57,18 +57,18 @@ class SingleDataRequestManager(
         return storedDataRequests
     }
 
-    private fun assertValidMessage(singleDataRequest: SingleDataRequest) {
-        val contacts = singleDataRequest.contacts
+    private fun validateContactsAndMessage(contacts: List<String>?, message: String?) {
         if (!contacts.isNullOrEmpty() && contacts.any { !it.isEmailAddress() }) {
             throw InvalidInputApiException(
-                "You must provide proper email addresses as contacts.",
-                "You must provide proper email addresses as contacts.",
+                "Invalid email address",
+                "At least one email address you have provided has an invalid format.",
             )
         }
-        if (contacts.isNullOrEmpty() && !singleDataRequest.message.isNullOrBlank()) {
+        if (contacts.isNullOrEmpty() && !message.isNullOrBlank()) {
             throw InvalidInputApiException(
-                "Insufficient information to create message object.",
-                "Without at least one proper email address being provided no message can be forwarded.",
+                "No recipients provided for the message",
+                "You have provided a message, but no recipients. " +
+                    "Without at least one valid email address being provided no message can be forwarded.",
             )
         }
     }
@@ -126,8 +126,8 @@ class SingleDataRequestManager(
                     identifierTypeToStore,
                     singleDataRequest.frameworkName,
                     reportingPeriod,
-                    singleDataRequest.contacts,
-                    singleDataRequest.message,
+                    singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
+                    singleDataRequest.message.takeIf { !it.isNullOrBlank() },
                 ).toStoredDataRequest(),
             )
         }
