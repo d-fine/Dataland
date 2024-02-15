@@ -46,7 +46,7 @@ class SingleDataRequestManager(
         if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
             throw AuthenticationMethodNotSupportedException("You are not using JWT authentication.")
         }
-        assertValidMessage(singleDataRequest)
+        validateContactsAndMessage(singleDataRequest.contactList, singleDataRequest.message)
         dataRequestLogger.logMessageForSingleDataRequestReceived()
         val storedDataRequests = mutableListOf<StoredDataRequest>()
         val (identifierTypeToStore, identifierValueToStore) = identifyIdentifierTypeAndTryGetDatalandCompanyId(
@@ -64,15 +64,14 @@ class SingleDataRequestManager(
         return storedDataRequests
     }
 
-    private fun assertValidMessage(singleDataRequest: SingleDataRequest) {
-        val contacts = singleDataRequest.contactList
+    private fun validateContactsAndMessage(contacts: List<String>?, message: String?) {
         if (!contacts.isNullOrEmpty() && contacts.any { !it.isEmailAddress() }) {
             throw InvalidInputApiException(
                 "Invalid email address",
                 "At least one email address you have provided has an invalid format.",
             )
         }
-        if (contacts.isNullOrEmpty() && !singleDataRequest.message.isNullOrBlank()) {
+        if (contacts.isNullOrEmpty() && !message.isNullOrBlank()) {
             throw InvalidInputApiException(
                 "No recipients provided for the message",
                 "You have provided a message, but no recipients. " +

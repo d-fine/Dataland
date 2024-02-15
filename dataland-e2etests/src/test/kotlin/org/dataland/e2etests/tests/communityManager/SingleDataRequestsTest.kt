@@ -162,17 +162,40 @@ class SingleDataRequestsTest {
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
 
         val contactListsThatContainInvalidEmailAddresses =
-            listOf(null, listOf(), listOf(""), listOf(" "), listOf("invalidMail@", "validMail@somemailabc.abc"))
+            listOf(listOf(""), listOf(" "), listOf("invalidMail@", "validMail@somemailabc.abc"))
         contactListsThatContainInvalidEmailAddresses.forEach {
             val clientException = assertThrows<ClientException> {
                 postStandardSingleDataRequest(validLei, it, "Dummy test message.")
             }
             check400ClientExceptionErrorMessage(clientException)
             val responseBody = (clientException.response as ClientError<*>).body as String
-            assertTrue(responseBody.contains("Insufficient information to create message object."))
+            assertTrue(responseBody.contains("Invalid email address"))
             assertTrue(
                 responseBody.contains(
-                    "Without at least one proper email address being provided no message can be forwarded.",
+                    "At least one email address you have provided has an invalid format.",
+                ),
+            )
+        }
+    }
+
+    @Test
+    fun `post single data requests with message but missing email addresses in contact lists and assert exception`() {
+        val validLei = generateRandomLei()
+        apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
+
+        val contactListsThatDontHaveEmailAddresses =
+            listOf<List<String>?>(null, listOf())
+        contactListsThatDontHaveEmailAddresses.forEach {
+            val clientException = assertThrows<ClientException> {
+                postStandardSingleDataRequest(validLei, it, "Dummy test message.")
+            }
+            check400ClientExceptionErrorMessage(clientException)
+            val responseBody = (clientException.response as ClientError<*>).body as String
+            assertTrue(responseBody.contains("No recipients provided for the message"))
+            assertTrue(
+                responseBody.contains(
+                    "You have provided a message, but no recipients. " +
+                        "Without at least one valid email address being provided no message can be forwarded.",
                 ),
             )
         }
