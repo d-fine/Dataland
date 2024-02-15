@@ -129,16 +129,14 @@ class SingleDataRequestManager(
     ) {
         for (reportingPeriod in singleDataRequest.listOfReportingPeriods.distinct()) {
             storedDataRequests.add(
-                utils.buildStoredDataRequestFromDataRequestEntity(
-                    utils.storeDataRequestEntityIfNotExisting(
-                        identifierValueToStore,
-                        identifierTypeToStore,
-                        singleDataRequest.frameworkName,
-                        reportingPeriod,
-                        singleDataRequest.contactList,
-                        singleDataRequest.message,
-                    ),
-                ),
+                utils.storeDataRequestEntityIfNotExisting(
+                    identifierValueToStore,
+                    identifierTypeToStore,
+                    singleDataRequest.frameworkName,
+                    reportingPeriod,
+                    singleDataRequest.contactList,
+                    singleDataRequest.message,
+                ).toStoredDataRequest(),
             )
         }
     }
@@ -152,7 +150,7 @@ class SingleDataRequestManager(
     fun getDataRequestById(dataRequestId: String): StoredDataRequest {
         throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId)
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
-        return utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
+        return dataRequestEntity.toStoredDataRequest()
     }
 
     private fun throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId: String) {
@@ -190,7 +188,7 @@ class SingleDataRequestManager(
         )
         val result = dataRequestRepository.searchDataRequestEntity(filter)
 
-        return dataRequestRepository.fetchMessages(result).map { utils.buildStoredDataRequestFromDataRequestEntity(it) }
+        return dataRequestRepository.fetchMessages(result).map { it.toStoredDataRequest() }
     }
 
     /**
@@ -207,6 +205,6 @@ class SingleDataRequestManager(
         dataRequestEntity.requestStatus = requestStatus
         dataRequestRepository.save(dataRequestEntity)
         dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
-        return utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
+        return dataRequestEntity.toStoredDataRequest()
     }
 }

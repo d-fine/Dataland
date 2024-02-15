@@ -13,6 +13,7 @@ import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
+import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
 import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -74,9 +75,9 @@ class BulkDataRequestManager(
      */
     fun getDataRequestsForUser(): List<StoredDataRequest> {
         val currentUserId = DatalandAuthentication.fromContext().userId
-        val retrievedStoredDataRequestEntitiesForUser = dataRequestRepository.findByUserId(currentUserId)
+        val retrievedStoredDataRequestEntitiesForUser = dataRequestRepository.fetchMessages(dataRequestRepository.findByUserId(currentUserId))
         val retrievedStoredDataRequestsForUser = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
-            utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
+            dataRequestEntity.toStoredDataRequest()
         }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
         return retrievedStoredDataRequestsForUser
@@ -101,7 +102,7 @@ class BulkDataRequestManager(
             dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery, reportingPeriod)
         val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
             AggregatedDataRequest(
-                utils.getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataTypeName),
+                getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataTypeName),
                 aggregatedDataRequestEntity.reportingPeriod,
                 aggregatedDataRequestEntity.dataRequestCompanyIdentifierType,
                 aggregatedDataRequestEntity.dataRequestCompanyIdentifierValue,

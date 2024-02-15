@@ -23,7 +23,7 @@ data class StoredDataRequest(
 
     val creationTimestamp: Long,
 
-    val dataType: DataTypeEnum?,
+    val dataType: DataTypeEnum,
 
     val reportingPeriod: String,
 

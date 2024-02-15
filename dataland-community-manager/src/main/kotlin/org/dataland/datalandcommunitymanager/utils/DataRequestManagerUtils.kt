@@ -70,35 +70,6 @@ class DataRequestManagerUtils(
     }
 
     /**
-     * Builds a StoredDataRequest object from a DataRequestEntity
-     * @param dataRequestEntity the DataRequestEntity
-     * @return the resulting StoredDataRequest
-     */
-    fun buildStoredDataRequestFromDataRequestEntity(dataRequestEntity: DataRequestEntity): StoredDataRequest {
-        return StoredDataRequest(
-            dataRequestEntity.dataRequestId,
-            dataRequestEntity.userId,
-            dataRequestEntity.creationTimestamp,
-            getDataTypeEnumForFrameworkName(dataRequestEntity.dataTypeName),
-            dataRequestEntity.reportingPeriod,
-            dataRequestEntity.dataRequestCompanyIdentifierType,
-            dataRequestEntity.dataRequestCompanyIdentifierValue,
-            dataRequestEntity.messageHistory.map { it.toStoredDataRequestMessageObject() }.toMutableList(),
-            dataRequestEntity.lastModifiedDate,
-            dataRequestEntity.requestStatus,
-        )
-    }
-
-    /**
-     * Finds the entry in the DataType enum corresponding to a provided framework name
-     * @param frameworkName the name of the framework
-     * @return the corresponding enum entry
-     */
-    fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? {
-        return DataTypeEnum.entries.find { it.value == frameworkName }
-    }
-
-    /**
      * Stores a DataRequestEntity from all necessary parameters if this object does not already exist in the database
      * @param identifierValue the value of the company identifier
      * @param identifierType the type of the company identifier
@@ -174,4 +145,13 @@ class DataRequestManagerUtils(
         }
         return foundRequest
     }
+}
+
+/**
+ * Finds the entry in the DataType enum corresponding to a provided framework name
+ * @param frameworkName the name of the framework
+ * @return the corresponding enum entry
+ */
+fun getDataTypeEnumForFrameworkName(frameworkName: String): DataTypeEnum? {
+    return DataTypeEnum.entries.find { it.value == frameworkName }
 }
