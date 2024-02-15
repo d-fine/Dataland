@@ -14,6 +14,8 @@ import { defineComponent, inject } from "vue";
 import PrimeButton from "primevue/button";
 import type Keycloak from "keycloak-js";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_PREMIUM_USER } from "@/utils/KeycloakUtils";
+import { type DataTypeEnum } from "@clients/backend";
+import { type RouteLocationNormalizedLoaded } from "vue-router";
 
 export default defineComponent({
   name: "SingleDataRequestButton",
@@ -48,8 +50,14 @@ export default defineComponent({
      */
     onClick() {
       const thisCompanyId = this.companyId;
+      const currentRoute: RouteLocationNormalizedLoaded = this.$router.currentRoute.value;
+      const dataType = currentRoute.params.dataType;
+      const preSelectedFramework = dataType ? (dataType as DataTypeEnum) : "";
       return this.$router.push({
         path: `/singledatarequest/${thisCompanyId}`,
+        query: {
+          preSelectedFramework: preSelectedFramework,
+        },
       });
     },
   },
