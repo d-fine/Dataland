@@ -16,7 +16,7 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] The feature branch is deployed to clone with `Reset non-user related Docker Volumes & Re-populate` turned off
   - [ ] It's verified that the CD run is green
   - [ ] The new feature is manually used/tested/observed on the clone server
-  - [ ] The feature branch is deployed to dev1, and it's verified that the CD run is green  
+  - [ ] The feature branch is deployed to dev1 with `Reset non-user related Docker Volumes & Re-populate` turned on, and it's verified that the CD run is green  
 - [ ] ELSE, the new version is deployed to the dev server "dev1" using this branch
   - [ ] Run with setting `Reset non-user related Docker Volumes & Re-populate` turned on 
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
