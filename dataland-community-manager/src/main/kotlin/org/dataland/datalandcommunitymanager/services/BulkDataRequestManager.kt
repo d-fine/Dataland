@@ -72,9 +72,8 @@ class BulkDataRequestManager(
     fun getDataRequestsForUser(): List<StoredDataRequest> {
         val currentUserId = DatalandAuthentication.fromContext().userId
         val retrievedStoredDataRequestEntitiesForUser = dataRequestRepository.findByUserId(currentUserId)
-        val retrievedStoredDataRequestsForUser = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
-            utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
-        }
+        val retrievedStoredDataRequestsForUser =
+            retrievedStoredDataRequestEntitiesForUser.map { it.toStoredDataRequest() }
         dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
         return retrievedStoredDataRequestsForUser
     }
