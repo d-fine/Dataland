@@ -27,17 +27,17 @@ fun retrieveTimeAndWaitOneMillisecond(): Long {
 }
 
 fun findStoredDataRequestDataTypeForFramework(
-    framework: BulkDataRequest.ListOfFrameworkNames,
+    framework: BulkDataRequest.FrameworkNames,
 ): StoredDataRequest.DataType {
     return StoredDataRequest.DataType.entries.find { dataType -> dataType.value == framework.value }!!
 }
 fun findAggregatedDataRequestDataTypeForFramework(
-    framework: BulkDataRequest.ListOfFrameworkNames,
+    framework: BulkDataRequest.FrameworkNames,
 ): AggregatedDataRequest.DataType {
     return AggregatedDataRequest.DataType.entries.find { dataType -> dataType.value == framework.value }!!
 }
 fun findRequestControllerApiDataTypeForFramework(
-    framework: BulkDataRequest.ListOfFrameworkNames,
+    framework: BulkDataRequest.FrameworkNames,
 ): RequestControllerApi.DataTypesGetAggregatedDataRequests {
     return RequestControllerApi.DataTypesGetAggregatedDataRequests.entries.find { dataType ->
         dataType.value == framework.value
@@ -154,7 +154,7 @@ fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
 
 fun checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
     recentlyStoredRequestsForUser: List<StoredDataRequest>,
-    framework: BulkDataRequest.ListOfFrameworkNames,
+    framework: BulkDataRequest.FrameworkNames,
     reportingPeriod: String,
     dataRequestCompanyIdentifierType: DataRequestCompanyIdentifierType,
     dataRequestCompanyIdentifierValue: String,
@@ -178,7 +178,7 @@ fun check400ClientExceptionErrorMessage(clientException: ClientException) {
 
 fun causeClientExceptionByBulkDataRequest(
     listOfIdentifiers: List<String>,
-    listOfFrameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+    listOfFrameworks: List<BulkDataRequest.FrameworkNames>,
     listOfReportingPeriods: List<String>,
 ): ClientException {
     val clientException = assertThrows<ClientException> {
@@ -193,7 +193,7 @@ fun causeClientExceptionByBulkDataRequest(
 
 private fun errorMessageForEmptyInputConfigurations(
     listOfIdentifiers: List<String>,
-    listOfFrameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+    listOfFrameworks: List<BulkDataRequest.FrameworkNames>,
     listOfReportingPeriods: List<String>,
 ): String {
     return when {
@@ -217,7 +217,7 @@ private fun errorMessageForEmptyInputConfigurations(
 
 fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
     listOfIdentifiers: List<String>,
-    listOfFrameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+    listOfFrameworks: List<BulkDataRequest.FrameworkNames>,
     listOfReportingPeriods: List<String>,
 ) {
     val logger = LoggerFactory.getLogger(BulkDataRequestsTest::class.java)
@@ -254,7 +254,7 @@ fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientE
 
 fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
-    framework: BulkDataRequest.ListOfFrameworkNames,
+    framework: BulkDataRequest.FrameworkNames,
     reportingPeriod: String,
     identifierType: DataRequestCompanyIdentifierType,
     identifierValue: String,
@@ -282,7 +282,7 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
 
 fun iterateThroughFrameworksReportingPeriodsAndIdentifiersAndCheckAggregationWithCount(
     aggregatedDataRequests: List<AggregatedDataRequest>,
-    frameworks: List<BulkDataRequest.ListOfFrameworkNames>,
+    frameworks: List<BulkDataRequest.FrameworkNames>,
     reportingPeriods: List<String>,
     identifierMap: Map<DataRequestCompanyIdentifierType, String>,
     count: Long,
