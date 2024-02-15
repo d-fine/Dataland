@@ -157,13 +157,14 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `post a single data request inducing a trivial message object and check expected behaviour`() {
+    fun `post single data requests with message but invalid email addresses in contact lists and assert exception`() {
         val validLei = generateRandomLei()
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
 
-        val trivialMessageInputs = listOf(null, "", " ")
-        val allowedTrivialContactListInputs = listOf(null, listOf<String>())
-        allowedTrivialContactListInputs.forEach {
+        val contactListsThatContainInvalidEmailAddresses =
+            listOf(null, listOf(), listOf(""), listOf(" "), listOf("invalidMail@"))
+        // TODO what if mix of valid and invalids?? discuss with Florian
+        contactListsThatContainInvalidEmailAddresses.forEach {
             val clientException = assertThrows<ClientException> {
                 postStandardSingleDataRequest(validLei, it, "Dummy test message.")
             }
@@ -175,27 +176,20 @@ class SingleDataRequestsTest {
                     "Without at least one proper email address being provided no message can be forwarded.",
                 ),
             )
-            trivialMessageInputs.forEach { message ->
-                val storedDataRequest = postStandardSingleDataRequest(validLei, it, message)
-                assertTrue(storedDataRequest.messageHistory.isEmpty())
-            }
         }
     }
 
     @Test
-    fun `post a single data request inducing a forbidden contact parameter`() {
+    fun `post a single data requests without a message but with valid email address in contact list`() {
         val validLei = generateRandomLei()
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
-
-        val forbiddenContactListInputs = listOf(listOf(""), listOf(" "), listOf("something"))
-        forbiddenContactListInputs.forEach {
-            val clientException = assertThrows<ClientException> {
-                postStandardSingleDataRequest(validLei, it, "Dummy test message.")
-            }
-            check400ClientExceptionErrorMessage(clientException)
-            val responseBody = (clientException.response as ClientError<*>).body as String
-            assertTrue(responseBody.contains("You must provide proper email addresses as contacts."))
-        }
+        val storedDataRequest = postStandardSingleDataRequest(validLei, listOf("test@someprovider.abc"))
+        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+        val retrievedDataRequest = requestControllerApi.getDataRequestById(storedDataRequestId)
+        assertEquals(
+            storedDataRequest,
+            retrievedDataRequest,
+        )
     }
 
     @Test
