@@ -25,7 +25,7 @@ class DataRequestLogger {
             "Received a bulk data request from a user. " +
                 "-> Processing it with bulkDataRequestId $bulkDataRequestId",
 
-            )
+        )
     }
 
     /**
