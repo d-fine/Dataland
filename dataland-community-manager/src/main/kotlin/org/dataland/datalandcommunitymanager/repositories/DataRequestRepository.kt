@@ -21,26 +21,26 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     /** This method checks if a data request with the provided params already exists in the database.
      * @param userId to check for
      * @param dataRequestCompanyIdentifierValue to check for
-     * @param dataTypeName to check for
+     * @param dataType to check for
      * @returns a Boolean stating the result of the check
      */
     fun existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeAndReportingPeriod(
         userId: String,
         dataRequestCompanyIdentifierValue: String,
-        dataTypeName: String,
+        dataType: String,
         reportingPeriod: String,
     ): Boolean
 
     /** This method checks if a data request with the provided params already exists in the database.
      * @param userId to check for
      * @param dataRequestCompanyIdentifierValue to check for
-     * @param dataTypeName to check for
+     * @param dataType to check for
      * @returns a Boolean stating the result of the check
      */
     fun findByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeAndReportingPeriod(
         userId: String,
         dataRequestCompanyIdentifierValue: String,
-        dataTypeName: String,
+        dataType: String,
         reportingPeriod: String,
     ): DataRequestEntity?
 
@@ -49,7 +49,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * It also filters these results based on the provided identifier value and frameworks.
      * @param identifierValue to check for
      * @param reportingPeriod to check for
-     * @param dataTypeNames to check for
+     * @param dataTypes to check for
      * @returns the aggregated data requests
      */
     @Query(
@@ -68,7 +68,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     )
     fun getAggregatedDataRequests(
         @Param("identifierValue") identifierValue: String?,
-        @Param("dataTypes") dataTypeNames: List<String>?,
+        @Param("dataTypes") dataTypes: List<String>?,
         @Param("reportingPeriod") reportingPeriod: String?,
     ): List<AggregatedDataRequestEntity>
 
@@ -81,8 +81,8 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     @Query(
         "SELECT d FROM DataRequestEntity d  " +
             "WHERE " +
-            "(:#{#searchFilter.dataTypeNameFilterLength} = 0 " +
-            "OR d.dataType = :#{#searchFilter.dataTypeNameFilter}) AND " +
+            "(:#{#searchFilter.dataTypeFilterLength} = 0 " +
+            "OR d.dataType = :#{#searchFilter.dataTypeFilter}) AND " +
             "(:#{#searchFilter.userIdFilterLength} = 0 " +
             "OR d.userId = :#{#searchFilter.userIdFilter}) AND " +
             "(:#{#searchFilter.requestStatus} IS NULL " +

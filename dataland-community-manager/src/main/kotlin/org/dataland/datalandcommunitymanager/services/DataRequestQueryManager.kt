@@ -94,7 +94,7 @@ class DataRequestQueryManager(
         dataRequestCompanyIdentifierValue: String?,
     ): List<StoredDataRequest>? {
         val filter = GetDataRequestsSearchFilter(
-            dataTypeNameFilter = dataType?.name ?: "",
+            dataTypeFilter = dataType?.value ?: "",
             userIdFilter = userId ?: "",
             requestStatus = requestStatus,
             reportingPeriodFilter = reportingPeriod ?: "",
