@@ -96,6 +96,11 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
         @Param("searchFilter") searchFilter: GetDataRequestsSearchFilter,
     ): List<DataRequestEntity>
 
+    /**
+     * Fetches data request entities together with the associated message history
+     * @param dataRequests the requests entities for which the message histories to fetch
+     * @returns the initial list of data request entities together with the associated message history
+     */
     @Query(
         "SELECT DISTINCT d FROM DataRequestEntity d " +
             "LEFT JOIN FETCH d.messageHistory " +

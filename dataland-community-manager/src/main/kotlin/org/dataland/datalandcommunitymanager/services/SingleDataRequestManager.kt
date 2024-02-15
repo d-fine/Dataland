@@ -7,10 +7,8 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
-import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
+import org.dataland.datalandcommunitymanager.utils.DataRequestUploadUtils
 import org.dataland.datalandemail.email.isEmailAddress
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -24,13 +22,11 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service("SingleDataRequestManager")
 class SingleDataRequestManager(
-    @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val companyGetter: CompanyGetter,
     @Autowired private val singleDataRequestEmailSender: SingleDataRequestEmailSender,
-    @Autowired private val messageRepository: MessageRepository,
+    @Autowired private val utils: DataRequestUploadUtils,
 ) {
-    private val utils = DataRequestManagerUtils(dataRequestRepository, messageRepository, dataRequestLogger, companyGetter)
     val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
 
     /**

@@ -44,12 +44,22 @@ data class DataRequestEntity(
     @Enumerated(EnumType.STRING)
     var requestStatus: RequestStatus,
 ) {
+    /**
+     * Associates a message history
+     * This must be done after creation and storage of the DataRequestEntity
+     * due to cross dependencies between entities
+     * @param messageHistory a list of ordered message objects
+     */
     fun associateMessages(messageHistory: MutableList<StoredDataRequestMessageObject>) {
         this.messageHistory = messageHistory.mapIndexed { index, it ->
             MessageEntity(it, index, this)
         }.toMutableList()
     }
 
+    /**
+     * Converts this entity to a StoredDataRequest
+     * @returns the StoredDataRequest
+     */
     fun toStoredDataRequest() = StoredDataRequest(
         dataRequestId = dataRequestId,
         userId = userId,

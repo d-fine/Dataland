@@ -13,10 +13,9 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 /**
- * Implementation of a request manager service for all operations concerning the processing of bulk data requests
+ * Implementation of a request manager service for all request queries
  */
 @Service
 class DataRequestQueryManager(
@@ -28,7 +27,8 @@ class DataRequestQueryManager(
      */
     fun getDataRequestsForUser(): List<StoredDataRequest> {
         val currentUserId = DatalandAuthentication.fromContext().userId
-        val retrievedStoredDataRequestEntitiesForUser = dataRequestRepository.fetchMessages(dataRequestRepository.findByUserId(currentUserId))
+        val retrievedStoredDataRequestEntitiesForUser =
+            dataRequestRepository.fetchMessages(dataRequestRepository.findByUserId(currentUserId))
         val retrievedStoredDataRequestsForUser = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
             dataRequestEntity.toStoredDataRequest()
         }

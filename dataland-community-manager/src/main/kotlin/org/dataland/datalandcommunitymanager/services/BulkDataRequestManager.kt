@@ -6,10 +6,8 @@ import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSuppo
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
-import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
-import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
+import org.dataland.datalandcommunitymanager.utils.DataRequestUploadUtils
 import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -23,15 +21,11 @@ import java.util.*
  */
 @Service("BulkDataRequestManager")
 class BulkDataRequestManager(
-    @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
-    @Autowired private val companyGetter: CompanyGetter,
     @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
     @Autowired private val emailSender: EmailSender,
-    @Autowired private val messageRepository: MessageRepository,
+    @Autowired private val utils: DataRequestUploadUtils,
 ) {
-    private val utils = DataRequestManagerUtils(dataRequestRepository, messageRepository, dataRequestLogger, companyGetter)
-
     /**
      * Processes a bulk data request from a user
      * @param bulkDataRequest info provided by a user in order to request a bulk of datasets on Dataland.

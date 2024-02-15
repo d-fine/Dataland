@@ -8,10 +8,9 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 /**
- * Implementation of a request manager service for all operations concerning the processing of bulk data requests
+ * Manages all alterations of data requests
  */
 @Service
 class DataRequestAlterationManager(

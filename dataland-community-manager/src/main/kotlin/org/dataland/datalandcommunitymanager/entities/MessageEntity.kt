@@ -50,6 +50,10 @@ data class MessageEntity(
         dataRequest = dataRequest,
     )
 
+    /**
+     * Converts this entity to a message object
+     * @returns the generated message object
+     */
     fun toStoredDataRequestMessageObject() = StoredDataRequestMessageObject(
         contacts = contacts?.split(";") ?: emptyList(),
         message = message,
