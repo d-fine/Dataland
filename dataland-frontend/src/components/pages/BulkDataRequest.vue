@@ -326,9 +326,9 @@ export default defineComponent({
      */
     collectDataToSend(): BulkDataRequest {
       return {
-        listOfReportingPeriods: this.selectedReportingPeriods,
-        listOfCompanyIdentifiers: this.identifiers,
-        listOfFrameworkNames: this.selectedFrameworks,
+        reportingPeriods: this.selectedReportingPeriods,
+        companyIdentifiers: this.identifiers,
+        frameworkNames: this.selectedFrameworks,
       };
     },
     /**

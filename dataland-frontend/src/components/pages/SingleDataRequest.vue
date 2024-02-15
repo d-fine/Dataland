@@ -229,8 +229,8 @@ export default defineComponent({
       return {
         companyIdentifier: this.companyIdentifier,
         frameworkName: this.frameworkName,
-        listOfReportingPeriods: this.selectedReportingPeriods,
-        contactList: contactAsList,
+        reportingPeriods: this.selectedReportingPeriods,
+        contacts: contactAsList,
         message: this.dataRequesterMessage,
       };
     },
