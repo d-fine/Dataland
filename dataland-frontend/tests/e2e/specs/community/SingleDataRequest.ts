@@ -69,6 +69,7 @@ describeIf(
       checkCompanyInfoSheet();
       checkValidation();
       chooseReportingPeriod();
+      checkDropdownLabels();
       chooseFramework();
 
       cy.get('[data-test="contactEmail"]').type("example@Email.com");
@@ -136,6 +137,16 @@ describeIf(
     }
 
     /**
+     * Checks if all expected human-readable labels are visible in the dropdown options
+     */
+    function checkDropdownLabels(): void {
+      ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
+        cy.get("[data-test='datapoint-framework']")
+          .should("exist")
+          .should("contain.text", humanizeStringOrNumber(framework));
+      });
+    }
+    /**
      * Choose a framework
      */
     function chooseFramework(): void {
@@ -150,11 +161,6 @@ describeIf(
       cy.get('[data-test="datapoint-framework"]')
         .children()
         .should("have.length", numberOfFrameworks + 1);
-      ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
-        cy.get("[data-test='datapoint-framework']")
-          .should("exist")
-          .should("contain.text", humanizeStringOrNumber(framework));
-      });
     }
 
     /**
