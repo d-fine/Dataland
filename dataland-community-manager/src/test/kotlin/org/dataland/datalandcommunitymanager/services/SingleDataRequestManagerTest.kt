@@ -56,7 +56,7 @@ class SingleDataRequestManagerTest {
     private fun mockDataRequestRepository(): DataRequestRepository {
         return mock(DataRequestRepository::class.java).also {
             `when`(
-                it.existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
+                it.existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeAndReportingPeriod(
                     anyString(),
                     anyString(),
                     anyString(),

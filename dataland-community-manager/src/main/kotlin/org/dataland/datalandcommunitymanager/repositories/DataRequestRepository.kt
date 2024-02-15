@@ -24,7 +24,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @param dataTypeName to check for
      * @returns a Boolean stating the result of the check
      */
-    fun existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
+    fun existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeAndReportingPeriod(
         userId: String,
         dataRequestCompanyIdentifierValue: String,
         dataTypeName: String,
@@ -37,7 +37,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @param dataTypeName to check for
      * @returns a Boolean stating the result of the check
      */
-    fun findByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
+    fun findByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeAndReportingPeriod(
         userId: String,
         dataRequestCompanyIdentifierValue: String,
         dataTypeName: String,

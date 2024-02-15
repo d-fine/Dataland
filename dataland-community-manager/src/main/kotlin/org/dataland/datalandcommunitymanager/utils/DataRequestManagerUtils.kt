@@ -135,7 +135,7 @@ class DataRequestManagerUtils(
     ): DataRequestEntity? {
         val requestingUserId = DatalandAuthentication.fromContext().userId
         val foundRequest = dataRequestRepository
-            .findByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeNameAndReportingPeriod(
+            .findByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeAndReportingPeriod(
                 requestingUserId, identifierValue, framework.name, reportingPeriod,
             )
         if (foundRequest != null) {
