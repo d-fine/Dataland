@@ -72,7 +72,7 @@
                       />
                       <p class="gray-text font-italic" style="text-align: left">
                         By specifying a contact person here, your data request will be directed accordingly.<br />
-                        this increases the chances of expediting the fulfillment of your request.
+                        This increases the chances of expediting the fulfillment of your request.
                       </p>
                       <br />
                       <p class="gray-text font-italic" style="text-align: left">
