@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
@@ -11,6 +12,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.CompanyGetter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.Instant
 import java.util.*
@@ -30,6 +32,16 @@ class DataRequestManagerUtils(
 
     private val emptyMutableListOfStoredDataRequestMessageObjectsAsString =
         objectMapper.writeValueAsString(mutableListOf<StoredDataRequestMessageObject>())
+
+    /**
+     * We want to avoid users from using other authentication methods than jwt-authentication, such as
+     * api-key-authentication.
+     */
+    fun throwExceptionIfNotJwtAuth() {
+        if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
+            throw AuthenticationMethodNotSupportedException()
+        }
+    }
 
     /**
      * Determines the type corresponding to the value of a provided company identifier

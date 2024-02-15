@@ -5,9 +5,9 @@ import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
-import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
@@ -43,25 +43,21 @@ class SingleDataRequestManager(
      */
     @Transactional
     fun processSingleDataRequest(singleDataRequest: SingleDataRequest): List<StoredDataRequest> {
-        if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
-            throw AuthenticationMethodNotSupportedException("You are not using JWT authentication.")
-        }
-        validateContactsAndMessage(singleDataRequest.contactList, singleDataRequest.message)
+        utils.throwExceptionIfNotJwtAuth()
         dataRequestLogger.logMessageForSingleDataRequestReceived()
-        val storedDataRequests = mutableListOf<StoredDataRequest>()
+        validateContactsAndMessage(singleDataRequest.contactList, singleDataRequest.message)
         val (identifierTypeToStore, identifierValueToStore) = identifyIdentifierTypeAndTryGetDatalandCompanyId(
             singleDataRequest.companyIdentifier,
         )
-        storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
-            storedDataRequests, singleDataRequest, identifierValueToStore, identifierTypeToStore,
-        )
+        val storedDataRequestEntities =
+            storeOneDataRequestPerReportingPeriod(singleDataRequest, identifierValueToStore, identifierTypeToStore)
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
             userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
             singleDataRequest = singleDataRequest,
             companyIdentifierType = identifierTypeToStore,
             companyIdentifierValue = identifierValueToStore,
         )
-        return storedDataRequests
+        return storedDataRequestEntities.map { utils.buildStoredDataRequestFromDataRequestEntity(it) }
     }
 
     private fun validateContactsAndMessage(contacts: List<String>?, message: String?) {
@@ -120,26 +116,25 @@ class SingleDataRequestManager(
         }
     }
 
-    private fun storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
-        storedDataRequests: MutableList<StoredDataRequest>,
+    private fun storeOneDataRequestPerReportingPeriod(
         singleDataRequest: SingleDataRequest,
         identifierValueToStore: String,
         identifierTypeToStore: DataRequestCompanyIdentifierType,
-    ) {
-        for (reportingPeriod in singleDataRequest.listOfReportingPeriods.distinct()) {
-            storedDataRequests.add(
-                utils.buildStoredDataRequestFromDataRequestEntity(
-                    utils.storeDataRequestEntityIfNotExisting(
-                        identifierValueToStore,
-                        identifierTypeToStore,
-                        singleDataRequest.frameworkName,
-                        reportingPeriod,
-                        singleDataRequest.contactList.takeIf { !it.isNullOrEmpty() },
-                        singleDataRequest.message.takeIf { !it.isNullOrBlank() },
-                    ),
+    ): List<DataRequestEntity> {
+        val storedDataRequestEntities = mutableListOf<DataRequestEntity>()
+        singleDataRequest.listOfReportingPeriods.distinct().forEach { reportingPeriod ->
+            storedDataRequestEntities.add(
+                utils.storeDataRequestEntityIfNotExisting(
+                    identifierValueToStore,
+                    identifierTypeToStore,
+                    singleDataRequest.frameworkName,
+                    reportingPeriod,
+                    singleDataRequest.contactList.takeIf { !it.isNullOrEmpty() },
+                    singleDataRequest.message.takeIf { !it.isNullOrBlank() },
                 ),
             )
         }
+        return storedDataRequestEntities
     }
 
     /**

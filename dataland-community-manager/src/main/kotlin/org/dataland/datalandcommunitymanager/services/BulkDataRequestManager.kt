@@ -3,7 +3,6 @@ package org.dataland.datalandcommunitymanager.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
@@ -14,7 +13,6 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
 import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -110,12 +108,6 @@ class BulkDataRequestManager(
         return aggregatedDataRequests
     }
 
-    private fun throwExceptionIfNotJwtAuth() {
-        if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
-            throw AuthenticationMethodNotSupportedException()
-        }
-    }
-
     private fun errorMessageForEmptyInputConfigurations(
         listOfIdentifiers: List<String>,
         listOfFrameworks: List<DataTypeEnum>,
@@ -171,7 +163,7 @@ class BulkDataRequestManager(
     }
 
     private fun runValidationsAndRemoveDuplicates(bulkDataRequest: BulkDataRequest): BulkDataRequest {
-        throwExceptionIfNotJwtAuth()
+        utils.throwExceptionIfNotJwtAuth()
         assureValidityOfRequestLists(bulkDataRequest)
         return removeDuplicatesInRequestLists(bulkDataRequest)
     }
