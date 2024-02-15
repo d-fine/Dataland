@@ -9,6 +9,8 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
+import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManager
+import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -24,6 +26,8 @@ import java.util.UUID
 class RequestController(
     @Autowired private val bulkDataRequestManager: BulkDataRequestManager,
     @Autowired private val singleDataRequestManager: SingleDataRequestManager,
+    @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
+    @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
 ) : RequestApi {
 
     override fun postBulkDataRequest(bulkDataRequest: BulkDataRequest): ResponseEntity<BulkDataRequestResponse> {
@@ -33,7 +37,7 @@ class RequestController(
     }
 
     override fun getDataRequestsForUser(): ResponseEntity<List<StoredDataRequest>> {
-        return ResponseEntity.ok(bulkDataRequestManager.getDataRequestsForUser())
+        return ResponseEntity.ok(dataRequestQueryManager.getDataRequestsForUser())
     }
 
     override fun getAggregatedDataRequests(
@@ -42,7 +46,7 @@ class RequestController(
         reportingPeriod: String?,
     ): ResponseEntity<List<AggregatedDataRequest>> {
         return ResponseEntity.ok(
-            bulkDataRequestManager.getAggregatedDataRequests(identifierValue, dataTypes, reportingPeriod),
+            dataRequestQueryManager.getAggregatedDataRequests(identifierValue, dataTypes, reportingPeriod),
         )
     }
 
@@ -51,7 +55,7 @@ class RequestController(
     }
 
     override fun getDataRequestById(dataRequestId: UUID): ResponseEntity<StoredDataRequest> {
-        return ResponseEntity.ok(singleDataRequestManager.getDataRequestById(dataRequestId.toString()))
+        return ResponseEntity.ok(dataRequestQueryManager.getDataRequestById(dataRequestId.toString()))
     }
 
     override fun getDataRequests(
@@ -62,7 +66,7 @@ class RequestController(
         dataRequestCompanyIdentifierValue: String?,
     ): ResponseEntity<List<StoredDataRequest>> {
         return ResponseEntity.ok(
-            singleDataRequestManager.getDataRequests(
+            dataRequestQueryManager.getDataRequests(
                 dataType,
                 userId,
                 requestStatus,
@@ -76,6 +80,6 @@ class RequestController(
         dataRequestId: UUID,
         requestStatus: RequestStatus,
     ): ResponseEntity<StoredDataRequest> {
-        return ResponseEntity.ok(singleDataRequestManager.patchDataRequest(dataRequestId.toString(), requestStatus))
+        return ResponseEntity.ok(dataRequestAlterationManager.patchDataRequest(dataRequestId.toString(), requestStatus))
     }
 }

@@ -2,12 +2,9 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -138,72 +135,5 @@ class SingleDataRequestManager(
                 ).toStoredDataRequest(),
             )
         }
-    }
-
-    /**
-     * Method to retrieve a data request by its ID
-     * @param dataRequestId the ID of the data request to retrieve
-     * @return the data request corresponding to the provided ID
-     */
-    @Transactional
-    fun getDataRequestById(dataRequestId: String): StoredDataRequest {
-        throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId)
-        val dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
-        return dataRequestEntity.toStoredDataRequest()
-    }
-
-    private fun throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId: String) {
-        if (!dataRequestRepository.existsById(dataRequestId)) {
-            throw ResourceNotFoundApiException(
-                "Data request not found",
-                "Dataland does not know the Data request ID $dataRequestId",
-            )
-        }
-    }
-
-    /**
-     * Method to get all data requests based on filters.
-     * @param dataType the framework to apply to the data request
-     * @param requestStatus the status to apply to the data request
-     * @param userId the user to apply to the data request
-     * @param reportingPeriod the reporting period to apply to the data request
-     * @param dataRequestCompanyIdentifierValue the company identifier value to apply to the data request
-     * @return all filtered data requests
-     */
-
-    fun getDataRequests(
-        dataType: DataTypeEnum?,
-        userId: String?,
-        requestStatus: RequestStatus?,
-        reportingPeriod: String?,
-        dataRequestCompanyIdentifierValue: String?,
-    ): List<StoredDataRequest>? {
-        val filter = GetDataRequestsSearchFilter(
-            dataTypeNameFilter = dataType?.name ?: "",
-            userIdFilter = userId ?: "",
-            requestStatus = requestStatus,
-            reportingPeriodFilter = reportingPeriod ?: "",
-            dataRequestCompanyIdentifierValueFilter = dataRequestCompanyIdentifierValue ?: "",
-        )
-        val result = dataRequestRepository.searchDataRequestEntity(filter)
-
-        return dataRequestRepository.fetchMessages(result).map { it.toStoredDataRequest() }
-    }
-
-    /**
-     * Method to patch the status of a data request.
-     * @param dataRequestId the id of the data request to patch
-     * @param requestStatus the status to apply to the data request
-     * @return the updated data request object
-     */
-    @Transactional
-    fun patchDataRequest(dataRequestId: String, requestStatus: RequestStatus): StoredDataRequest {
-        throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId)
-        var dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
-        dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
-        dataRequestEntity.requestStatus = requestStatus
-        dataRequestRepository.save(dataRequestEntity)
-        dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
-        return dataRequestEntity.toStoredDataRequest()
     }
 }

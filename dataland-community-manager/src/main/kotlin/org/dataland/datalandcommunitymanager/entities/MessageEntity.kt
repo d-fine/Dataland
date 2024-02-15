@@ -40,11 +40,11 @@ data class MessageEntity(
     constructor(
         messageObject: StoredDataRequestMessageObject,
         ordinal: Int,
-        dataRequest: DataRequestEntity? = null
+        dataRequest: DataRequestEntity? = null,
     ) : this(
         messageId = UUID.randomUUID().toString(),
         ordinal = ordinal,
-        contacts = if(messageObject.contacts.isEmpty()) null else messageObject.contacts.joinToString(";"),
+        contacts = if (messageObject.contacts.isEmpty()) null else messageObject.contacts.joinToString(";"),
         message = messageObject.message,
         lastModifiedDate = messageObject.lastModifiedDate ?: Instant.now().toEpochMilli(),
         dataRequest = dataRequest,
@@ -52,7 +52,7 @@ data class MessageEntity(
 
     fun toStoredDataRequestMessageObject() = StoredDataRequestMessageObject(
         contacts = contacts?.split(";") ?: emptyList(),
-        message  = message,
+        message = message,
         lastModifiedDate = lastModifiedDate,
     )
 }

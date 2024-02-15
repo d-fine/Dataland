@@ -4,15 +4,12 @@ import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestManagerUtils
-import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
 import org.dataland.datalandemail.email.EmailSender
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -32,7 +29,7 @@ class BulkDataRequestManager(
     @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
     @Autowired private val emailSender: EmailSender,
     @Autowired private val messageRepository: MessageRepository,
-    ) {
+) {
     private val utils = DataRequestManagerUtils(dataRequestRepository, messageRepository, dataRequestLogger, companyGetter)
 
     /**
@@ -67,48 +64,6 @@ class BulkDataRequestManager(
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
         return buildResponseForBulkDataRequest(cleanedBulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
-    }
-
-    /** This method retrieves all the data requests for the current user from the database and logs a message.
-     * @returns all data requests for the current user
-     */
-    fun getDataRequestsForUser(): List<StoredDataRequest> {
-        val currentUserId = DatalandAuthentication.fromContext().userId
-        val retrievedStoredDataRequestEntitiesForUser = dataRequestRepository.fetchMessages(dataRequestRepository.findByUserId(currentUserId))
-        val retrievedStoredDataRequestsForUser = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
-            dataRequestEntity.toStoredDataRequest()
-        }
-        dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
-        return retrievedStoredDataRequestsForUser
-    }
-
-    /** This method triggers a query to get aggregated data requests.
-     * @param identifierValue can be used to filter via substring matching
-     * @param dataTypes can be used to filter on frameworks
-     * @returns aggregated data requests
-     */
-    fun getAggregatedDataRequests(
-        identifierValue: String?,
-        dataTypes: Set<DataTypeEnum>?,
-        reportingPeriod: String?,
-    ): List<AggregatedDataRequest> {
-        val dataTypesFilterForQuery = if (dataTypes != null && dataTypes.isEmpty()) {
-            null
-        } else {
-            dataTypes?.map { it.value }
-        }
-        val aggregatedDataRequestEntities =
-            dataRequestRepository.getAggregatedDataRequests(identifierValue, dataTypesFilterForQuery, reportingPeriod)
-        val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
-            AggregatedDataRequest(
-                getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataType),
-                aggregatedDataRequestEntity.reportingPeriod,
-                aggregatedDataRequestEntity.dataRequestCompanyIdentifierType,
-                aggregatedDataRequestEntity.dataRequestCompanyIdentifierValue,
-                aggregatedDataRequestEntity.count,
-            )
-        }
-        return aggregatedDataRequests
     }
 
     private fun throwExceptionIfNotJwtAuth() {
