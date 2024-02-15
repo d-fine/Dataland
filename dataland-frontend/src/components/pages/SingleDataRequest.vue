@@ -141,7 +141,7 @@ import AuthenticationWrapper from "@/components/wrapper/AuthenticationWrapper.vu
 import { type Content, type Page } from "@/types/ContentTypes";
 import contentData from "@/assets/content.json";
 import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import { type CompanyInformation, DataTypeEnum, type ErrorResponse } from "@clients/backend";
+import type { CompanyInformation, DataTypeEnum, ErrorResponse } from "@clients/backend";
 import { type SingleDataRequest } from "@clients/communitymanager";
 import PrimeButton from "primevue/button";
 import type Keycloak from "keycloak-js";
@@ -150,6 +150,8 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ToggleChipFormInputs from "@/components/general/ToggleChipFormInputs.vue";
 import BasicFormSection from "@/components/general/BasicFormSection.vue";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 
 export default defineComponent({
   name: "SingleDataRequest",
@@ -169,17 +171,17 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
+
   data() {
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === "/");
     const footerContent = footerPage?.sections;
-    const frameworkOptions: DataTypeEnum[] = Object.values(DataTypeEnum);
     return {
       singleDataRequestModel: {},
       footerContent,
       fetchedCompanyInformation: {} as CompanyInformation,
-      frameworkOptions,
-      frameworkName: "" as DataTypeEnum,
+      frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
+      frameworkName: this.$route.query.preSelectedFramework as DataTypeEnum,
       contact: "",
       dataRequesterMessage: "",
       errorMessage: "",
@@ -260,6 +262,17 @@ export default defineComponent({
       }
     },
     /**
+     * Populates the availableFrameworks property in the format expected by the dropdown filter
+     */
+    retrieveFrameworkOptions() {
+      this.frameworkOptions = ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.map((dataTypeEnum) => {
+        return {
+          value: dataTypeEnum,
+          label: humanizeStringOrNumber(dataTypeEnum),
+        };
+      });
+    },
+    /**
      * Go to company cockpit page
      */
     goToCompanyPage() {
@@ -268,6 +281,9 @@ export default defineComponent({
         path: `/companies/${thisCompanyId}`,
       });
     },
+  },
+  mounted() {
+    this.retrieveFrameworkOptions();
   },
 });
 </script>
