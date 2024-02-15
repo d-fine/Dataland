@@ -21,6 +21,7 @@ data class MessageEntity(
 
     val ordinal: Int,
 
+    @Column(columnDefinition = "TEXT")
     val contacts: String?,
 
     @Column(columnDefinition = "TEXT")
@@ -29,7 +30,7 @@ data class MessageEntity(
     val lastModifiedDate: Long,
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "data_request")
+    @JoinColumn(name = "data_request_id")
     var dataRequest: DataRequestEntity?,
 ) {
     init {
