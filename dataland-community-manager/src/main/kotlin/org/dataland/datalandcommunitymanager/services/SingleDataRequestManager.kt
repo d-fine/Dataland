@@ -47,6 +47,7 @@ class SingleDataRequestManager(
             throw AuthenticationMethodNotSupportedException("You are not using JWT authentication.")
         }
         assertValidMessage(singleDataRequest)
+        dataRequestLogger.logMessageForSingleDataRequestReceived()
         val storedDataRequests = mutableListOf<StoredDataRequest>()
         val (identifierTypeToStore, identifierValueToStore) = identifyIdentifierTypeAndTryGetDatalandCompanyId(
             singleDataRequest.companyIdentifier,
