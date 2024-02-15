@@ -147,13 +147,13 @@ export default defineComponent({
   },
   methods: {
     /**
-     * updates the hasCompanyDataOwner in an async way
+     * Updates the hasCompanyDataOwner in an async way
      */
     async updateHasCompanyDataOwner() {
       this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(this.companyId, this.getKeycloakPromise);
     },
     /**
-     * handles the close button click event of the dialog
+     * Handles the close button click event of the dialog
      */
     onCloseDialog() {
       this.dialogIsOpen = false;
@@ -192,7 +192,7 @@ export default defineComponent({
       });
     },
     /**
-     * handles the emitted claim event
+     * Handles the emitted claim event
      */
     onClaimSubmitted() {
       this.claimIsSubmitted = true;
@@ -205,9 +205,11 @@ export default defineComponent({
 .inline-loading {
   width: 450px;
 }
+
 .rounded {
   border-radius: 0.5rem;
 }
+
 .company-details {
   display: flex;
   flex-direction: column;

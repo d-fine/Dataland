@@ -122,7 +122,7 @@ export default defineComponent({
   },
   methods: {
     /**
-     * updates the hasCompanyDataOwner in an async way
+     * Updates the hasCompanyDataOwner in an async way
      */
     async updateHasCompanyDataOwner() {
       this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(this.companyId, this.getKeycloakPromise);
