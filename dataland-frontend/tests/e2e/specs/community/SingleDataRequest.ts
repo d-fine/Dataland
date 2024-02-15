@@ -63,7 +63,7 @@ describeIf(
       cy.get('[data-test="datapoint-framework"]').should("have.value", "lksg");
     });
 
-    it("Fill out the request page and check correct validation, request and success message", () => {
+    it.only("Fill out the request page and check correct validation, request and success message", () => {
       cy.intercept("POST", "**/community/requests/single").as("postRequestData");
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       checkCompanyInfoSheet();
@@ -174,6 +174,15 @@ describeIf(
       cy.get("div[data-test='selectFramework'] li[data-message-type='validation']")
         .should("be.visible")
         .should("contain.text", "Select a framework");
+
+      cy.get("div[data-test='contactEmailAndMessage'] li[data-message-type='validation']").should("not.exist");
+
+      cy.get('[data-test="contactEmail"]').type("NoValidEmailAdress");
+      submit();
+      cy.get("div[data-test='contactEmailAndMessage'] li[data-message-type='validation']")
+        .should("exist")
+        .should("contain.text", "Please enter a valid email address.");
+      cy.get('[data-test="contactEmail"]').clear();
     }
 
     /**
