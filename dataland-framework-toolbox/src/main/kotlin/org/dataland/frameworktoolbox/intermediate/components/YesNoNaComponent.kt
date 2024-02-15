@@ -41,7 +41,7 @@ class YesNoNaComponent(
         val uploadComponentNameToUse = when (documentSupport) {
             is NoDocumentSupport -> "YesNoNaFormField"
             is SimpleDocumentSupport -> "YesNoNaBaseDataPointFormField"
-            else -> throw IllegalArgumentException("YesNoComponent does not support document support '$documentSupport")
+            else -> throw IllegalArgumentException("YesNoNaComponent does not support document support '$documentSupport")
         }
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
