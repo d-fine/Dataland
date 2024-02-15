@@ -63,7 +63,7 @@ describeIf(
       cy.get('[data-test="datapoint-framework"]').should("have.value", "lksg");
     });
 
-    it.only("Fill out the request page and check correct validation, request and success message", () => {
+    it("Fill out the request page and check correct validation, request and success message", () => {
       cy.intercept("POST", "**/community/requests/single").as("postRequestData");
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       checkCompanyInfoSheet();
