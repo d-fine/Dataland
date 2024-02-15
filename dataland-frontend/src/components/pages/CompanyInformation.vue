@@ -128,20 +128,14 @@ export default defineComponent({
     void this.updateHasCompanyDataOwner();
   },
   watch: {
-    async companyId(newCompanyId, oldCompanyId) {
-      if (newCompanyId !== oldCompanyId) {
-        try {
-          void this.setDataOwnershipStatus();
-
-          void this.getCompanyInformation();
-          this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(
-            newCompanyId as string,
-            this.getKeycloakPromise,
-          );
-          this.claimIsSubmitted = false;
-        } catch (error) {
-          console.error("Error fetching data for new company:", error);
-        }
+    async companyId(newCompanyId) {
+      try {
+        void this.setDataOwnershipStatus();
+        void this.getCompanyInformation();
+        this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(newCompanyId as string, this.getKeycloakPromise);
+        this.claimIsSubmitted = false;
+      } catch (error) {
+        console.error("Error fetching data for new company:", error);
       }
     },
   },
