@@ -12,12 +12,11 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
 - [ ] The automated deployment is updated if required
 - [ ] If there was a database entity class added, there must also be a migration script for creating the corresponding database if flyway is already used by the service
 - [ ] IF there are changes done to the framework data models or to a database entity class, the following steps were completed in order
-  - [ ] The version of main currently active on prod is deployed to a dev server with `Reset non-user related Docker Volumes & Re-populate` turned on
+  - [ ] A fresh clone of dataland.com is generated (see Wiki page on "OTC" for details)
+  - [ ] The feature branch is deployed to clone with `Reset non-user related Docker Volumes & Re-populate` turned off
   - [ ] It's verified that the CD run is green
-  - [ ] The data from prod is migrated via DB dumps (see Wiki page on "Server Migration" for details) 
-  - [ ] The feature branch is deployed to the same server with `Reset non-user related Docker Volumes & Re-populate` turned off
-  - [ ] It's verified that the CD run is green
-  - [ ] The new feature is manually used/tested/observed on the dev server
+  - [ ] The new feature is manually used/tested/observed on the clone server
+  - [ ] The feature branch is deployed to dev1, and it's verified that the CD run is green  
 - [ ] ELSE, the new version is deployed to the dev server "dev1" using this branch
   - [ ] Run with setting `Reset non-user related Docker Volumes & Re-populate` turned on 
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
