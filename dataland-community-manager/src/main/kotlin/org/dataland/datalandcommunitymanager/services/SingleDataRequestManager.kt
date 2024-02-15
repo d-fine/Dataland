@@ -68,14 +68,15 @@ class SingleDataRequestManager(
         val contacts = singleDataRequest.contactList
         if (!contacts.isNullOrEmpty() && contacts.any { !it.isEmailAddress() }) {
             throw InvalidInputApiException(
-                "You must provide proper email addresses as contacts.",
-                "You must provide proper email addresses as contacts.",
+                "Invalid email address",
+                "At least one email address you have provided has an invalid format.",
             )
         }
         if (contacts.isNullOrEmpty() && !singleDataRequest.message.isNullOrBlank()) {
             throw InvalidInputApiException(
-                "Insufficient information to create message object.",
-                "Without at least one proper email address being provided no message can be forwarded.",
+                "No recipients provided for the message",
+                "You have provided a message, but no recipients. " +
+                    "Without at least one valid email address being provided no message can be forwarded.",
             )
         }
     }
@@ -134,8 +135,8 @@ class SingleDataRequestManager(
                         identifierTypeToStore,
                         singleDataRequest.frameworkName,
                         reportingPeriod,
-                        singleDataRequest.contactList,
-                        singleDataRequest.message,
+                        singleDataRequest.contactList.takeIf { !it.isNullOrEmpty() },
+                        singleDataRequest.message.takeIf { !it.isNullOrBlank() },
                     ),
                 ),
             )
