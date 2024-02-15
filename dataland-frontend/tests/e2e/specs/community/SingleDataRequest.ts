@@ -108,8 +108,8 @@ describeIf(
         const expectedRequest: SingleDataRequest = {
           companyIdentifier: testStoredCompany.companyId,
           frameworkName: "lksg",
-          listOfReportingPeriods: ["2023"],
-          contactList: ["example@Email.com"],
+          reportingPeriods: ["2023"],
+          contacts: ["example@Email.com"],
           message: "Frontend test message",
         };
         expect(requestBody).to.deep.equal(expectedRequest);
