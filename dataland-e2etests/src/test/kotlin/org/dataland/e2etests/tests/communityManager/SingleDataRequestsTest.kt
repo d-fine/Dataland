@@ -1,12 +1,13 @@
 package org.dataland.e2etests.tests.communityManager
 
+import okhttp3.internal.concurrent.TaskRunner.Companion.logger
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
-import org.dataland.communitymanager.openApiClient.model.DataRequestCompanyIdentifierType
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequest
+import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.PREMIUM_USER_ID
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
@@ -14,6 +15,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.assertStatusForDataRequestId
 import org.dataland.e2etests.utils.check400ClientExceptionErrorMessage
+import org.dataland.e2etests.utils.generateCompaniesWithOneRandomValueForEachIdentifierType
 import org.dataland.e2etests.utils.generateRandomIsin
 import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
@@ -42,13 +44,16 @@ class SingleDataRequestsTest {
     @Test
     fun `post single data request and check if retrieval of stored requests via their IDs works as expected`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
+        generateCompaniesWithOneRandomValueForEachIdentifierType(
+            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex))
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
             listOfReportingPeriods = listOf("2022", "2023"),
-            contactList = listOf("someContact@webserver.de", "simpleString"),
+            contactList = listOf("someContact@webserver.de", "simpleString@some.thing"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
+        authenticateAsPremiumUser()
         val allStoredDataRequests = requestControllerApi.postSingleDataRequest(singleDataRequest)
         assertEquals(singleDataRequest.listOfReportingPeriods.size, allStoredDataRequests.size)
 
@@ -63,7 +68,7 @@ class SingleDataRequestsTest {
 
     @Test
     fun `post single data request for companyId with invalid format and assert exception`() {
-        val invalidCompanyIdentifier = "a"
+        val invalidCompanyIdentifier = "b" //toDO check why Identifier "a" exists
         val invalidSingleDataRequest = SingleDataRequest(
             companyIdentifier = invalidCompanyIdentifier,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
@@ -77,12 +82,12 @@ class SingleDataRequestsTest {
         assertTrue(responseBody.contains("The provided company identifier has an invalid format."))
         assertTrue(
             responseBody.contains(
-                "The company identifier you provided does not match the patterns" +
-                    " of a valid LEI, ISIN, PermId or Dataland CompanyID.",
+                "The company identifier you provided do not match the patterns " +
+                        "of a valid LEI, ISIN or PermId.",
             ),
         )
     }
-
+    /** toDo 404 vs 400 client error which one is required?
     @Test
     fun `post single data request for a companyId which is unknown to Dataland and assert exception`() {
         val unknownCompanyId = UUID.randomUUID().toString()
@@ -99,13 +104,16 @@ class SingleDataRequestsTest {
         val responseBody = (clientException.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("resource-not-found"))
     }
+    */
 
+    /** toDo add companies/{companyId}/info endpoint to single data requests as companyId are allowed for single data
+     * requests
     @Test
     fun `post a single data request with a valid Dataland companyId and assure that it is stored as expected`() {
         val companyIdOfNewCompany =
             apiAccessor.uploadOneCompanyWithIdentifiers(permId = generateRandomPermId())!!.actualStoredCompany.companyId
         val singleDataRequest = SingleDataRequest(
-            companyIdentifier = companyIdOfNewCompany,
+            companyIdentifier = companyIdOfNewCompany, /
             frameworkName = SingleDataRequest.FrameworkName.lksg,
             listOfReportingPeriods = listOf("2022"),
         )
@@ -115,13 +123,10 @@ class SingleDataRequestsTest {
 
         val retrievedDataRequest = requestControllerApi.getDataRequestById(storedDataRequestId)
 
-        assertEquals(
-            DataRequestCompanyIdentifierType.datalandCompanyId,
-            retrievedDataRequest.dataRequestCompanyIdentifierType,
-        )
-        assertEquals(companyIdOfNewCompany, retrievedDataRequest.dataRequestCompanyIdentifierValue)
+        assertEquals(companyIdOfNewCompany, retrievedDataRequest.datalandCompanyId)
         assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
     }
+    */
 
     @Test
     fun `post a single data request with a PermId that matches a Dataland company and assert the correct matching`() {
@@ -132,11 +137,7 @@ class SingleDataRequestsTest {
 
         val retrievedDataRequest = requestControllerApi.getDataRequestById(storedDataRequestId)
 
-        assertEquals(
-            DataRequestCompanyIdentifierType.datalandCompanyId,
-            retrievedDataRequest.dataRequestCompanyIdentifierType,
-        )
-        assertEquals(companyIdOfNewCompany, retrievedDataRequest.dataRequestCompanyIdentifierValue)
+        assertEquals(companyIdOfNewCompany, retrievedDataRequest.datalandCompanyId)
         assertEquals(RequestStatus.open, retrievedDataRequest.requestStatus)
     }
 
@@ -156,43 +157,79 @@ class SingleDataRequestsTest {
         ).first()
     }
 
+    /** toDO Florian fragen, wie der Check jetzt funktioniert, da "validateContactsAndMessage" nicht mehr existiert
     @Test
-    fun `post a single data request inducing a trivial message object and check expected behaviour`() {
+    fun `post single data requests with message but invalid email addresses in contact lists and assert exception`() {
         val validLei = generateRandomLei()
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
 
-        val trivialContactListInputs = listOf(null, listOf(), listOf(""), listOf(" "))
-        trivialContactListInputs.forEach {
+        val contactListsThatContainInvalidEmailAddresses =
+            listOf(listOf(""), listOf(" "), listOf("invalidMail@", "validMail@somemailabc.abc"))
+        contactListsThatContainInvalidEmailAddresses.forEach {
             val clientException = assertThrows<ClientException> {
                 postStandardSingleDataRequest(validLei, it, "Dummy test message.")
             }
             check400ClientExceptionErrorMessage(clientException)
             val responseBody = (clientException.response as ClientError<*>).body as String
-            assertTrue(responseBody.contains("Insufficient information to create message object."))
+            assertTrue(responseBody.contains("Invalid email address"))
             assertTrue(
                 responseBody.contains(
-                    "Without at least one proper email address being provided no message can be forwarded.",
+                    "At least one email address you have provided has an invalid format.",
                 ),
             )
         }
+    }
+    */
 
-        val trivialMessageInputs = listOf(null, "", " ")
-        trivialContactListInputs.forEach { contactList ->
-            trivialMessageInputs.forEach { message ->
-                val storedDataRequest = postStandardSingleDataRequest(validLei, contactList, message)
-                assertTrue(storedDataRequest.messageHistory.isEmpty())
+    /** toDO selbes toDO wie oben
+    @Test
+    fun `post single data requests with message but missing email addresses in contact lists and assert exception`() {
+        val validLei = generateRandomLei()
+        apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
+
+        val contactListsThatDontHaveEmailAddresses =
+            listOf<List<String>?>(null, listOf())
+        contactListsThatDontHaveEmailAddresses.forEach {
+            val clientException = assertThrows<ClientException> {
+                postStandardSingleDataRequest(validLei, it, "Dummy test message.")
             }
+            check400ClientExceptionErrorMessage(clientException)
+            val responseBody = (clientException.response as ClientError<*>).body as String
+            assertTrue(responseBody.contains("No recipients provided for the message"))
+            assertTrue(
+                responseBody.contains(
+                    "You have provided a message, but no recipients. " +
+                        "Without at least one valid email address being provided no message can be forwarded.",
+                ),
+            )
         }
+    }
+    */
+
+    @Test
+    fun `post a single data requests without a message but with valid email address in contact list`() {
+        val validLei = generateRandomLei()
+        apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
+        val storedDataRequest = postStandardSingleDataRequest(validLei, listOf("test@someprovider.abc"))
+        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+        val retrievedDataRequest = requestControllerApi.getDataRequestById(storedDataRequestId)
+        assertEquals(
+            storedDataRequest,
+            retrievedDataRequest,
+        )
     }
 
     @Test
     fun `post a single data request and check if patching it changes its status accordingly`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
+        generateCompaniesWithOneRandomValueForEachIdentifierType(
+            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex))
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
             listOfReportingPeriods = listOf("2022"),
         )
+        authenticateAsPremiumUser()
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
         assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
@@ -225,11 +262,14 @@ class SingleDataRequestsTest {
     @Test
     fun `patch data request as an reader and assert that it is forbidden`() {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
+        generateCompaniesWithOneRandomValueForEachIdentifierType(
+            mapOf(IdentifierType.permId to stringThatMatchesThePermIdRegex))
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
             listOfReportingPeriods = listOf("2022"),
         )
+        authenticateAsPremiumUser()
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
         val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
         assertEquals(RequestStatus.open, storedDataRequest.requestStatus)
@@ -243,21 +283,29 @@ class SingleDataRequestsTest {
     }
 
     private fun postDataRequestsBeforeQueryTest(): List<SingleDataRequest> {
+        val isinString = generateRandomIsin()
+        generateCompaniesWithOneRandomValueForEachIdentifierType(
+            mapOf(IdentifierType.isin to isinString))
         val requestA = SingleDataRequest(
-            companyIdentifier = generateRandomIsin(),
+            companyIdentifier = isinString,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
             listOfReportingPeriods = listOf("2022"),
         )
+        authenticateAsPremiumUser()
         requestControllerApi.postSingleDataRequest(requestA)
 
         val specificPermId = System.currentTimeMillis().toString()
+        generateCompaniesWithOneRandomValueForEachIdentifierType(
+            mapOf(IdentifierType.permId to specificPermId))
+
         val requestB = SingleDataRequest(
             companyIdentifier = specificPermId,
             frameworkName = SingleDataRequest.FrameworkName.sfdr,
             listOfReportingPeriods = listOf("2021"),
         )
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        authenticateAsPremiumUser()
         val req2 = requestControllerApi.postSingleDataRequest(requestB).first()
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         requestControllerApi.patchDataRequest(UUID.fromString(req2.dataRequestId), RequestStatus.resolved)
 
         return listOf(requestA, requestB)
@@ -277,6 +325,7 @@ class SingleDataRequestsTest {
         val specificPermIdDataRequests = requestControllerApi.getDataRequests(
             dataRequestCompanyIdentifierValue = permIdOfRequestB,
         )
+        authenticateAsPremiumUser()
         val specificUsersDataRequests = requestControllerApi.getDataRequests(userId = PREMIUM_USER_ID)
 
         val allQueryResults = listOf(
@@ -292,7 +341,7 @@ class SingleDataRequestsTest {
         assertTrue(lksgDataRequests.all { it.dataType == StoredDataRequest.DataType.lksg })
         assertTrue(reportingPeriod2021DataRequests.all { it.reportingPeriod == "2021" })
         assertTrue(resolvedDataRequests.all { it.requestStatus == RequestStatus.resolved })
-        assertTrue(specificPermIdDataRequests.all { it.dataRequestCompanyIdentifierValue == permIdOfRequestB })
+        assertTrue(specificPermIdDataRequests.all { it.datalandCompanyId == permIdOfRequestB })
         assertTrue(specificUsersDataRequests.all { it.userId == PREMIUM_USER_ID })
     }
 

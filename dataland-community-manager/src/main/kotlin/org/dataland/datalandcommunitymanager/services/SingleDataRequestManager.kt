@@ -161,9 +161,9 @@ class SingleDataRequestManager(
         return utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
     }
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
-        val summary = "All provided company identifiers have an invalid format."
-        val message = "The company identifiers you provided do not match the patterns " +
-            "of a valid LEI, ISIN, PermId or dataland CompanyID"
+        val summary = "The provided company identifier has an invalid format."
+        val message = "The company identifier you provided do not match the patterns " +
+            "of a valid LEI, ISIN or PermId."
         throw InvalidInputApiException(
             summary,
             message,
