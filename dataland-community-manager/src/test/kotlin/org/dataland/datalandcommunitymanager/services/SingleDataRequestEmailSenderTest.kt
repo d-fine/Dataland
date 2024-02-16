@@ -39,7 +39,7 @@ class SingleDataRequestEmailSenderTest {
     private val companyName = "Real Company"
     private val defaultMessage = "Dummy Message"
 
-    private val reportingPeriods = listOf("2023", "2022")
+    private val reportingPeriods = setOf("2023", "2022")
 
     private val senderEmail = "info@dataland.com"
     private val senderName = "Dataland"
@@ -82,10 +82,10 @@ class SingleDataRequestEmailSenderTest {
         singleDataRequestEmailSender.sendSingleDataRequestEmails(
             mockRequesterAuthentication,
             SingleDataRequest(
-                properCompanyId,
-                dataType,
-                reportingPeriods = listOf(),
-                contacts = listOf("receiver@abc.de", "otherreceiver@something.else"),
+                companyIdentifier = properCompanyId,
+                dataType = dataType,
+                reportingPeriods = setOf(),
+                contacts = setOf("receiver@abc.de", "otherreceiver@something.else"),
                 message = defaultMessage,
             ),
             DataRequestCompanyIdentifierType.Isin,
@@ -105,7 +105,7 @@ class SingleDataRequestEmailSenderTest {
                 properCompanyId,
                 dataType,
                 reportingPeriods = reportingPeriods,
-                contacts = listOf("receiver@abc.de", "otherreceiver@something.else"),
+                contacts = setOf("receiver@abc.de", "otherreceiver@something.else"),
                 message = defaultMessage,
             ),
             DataRequestCompanyIdentifierType.Isin,
@@ -126,7 +126,7 @@ class SingleDataRequestEmailSenderTest {
                 properCompanyId,
                 dataType,
                 reportingPeriods = reportingPeriods,
-                contacts = listOf(),
+                contacts = setOf(),
                 message = defaultMessage,
             ),
             DataRequestCompanyIdentifierType.DatalandCompanyId,
@@ -144,7 +144,7 @@ class SingleDataRequestEmailSenderTest {
                     properCompanyId,
                     dataType,
                     reportingPeriods = reportingPeriods,
-                    contacts = contactEmails,
+                    contacts = contactEmails.toSet(),
                     message = defaultMessage,
                 ),
                 DataRequestCompanyIdentifierType.DatalandCompanyId,

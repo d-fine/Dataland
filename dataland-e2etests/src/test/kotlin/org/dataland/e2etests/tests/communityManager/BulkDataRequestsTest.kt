@@ -105,30 +105,29 @@ class BulkDataRequestsTest {
         val leiForCompany = generateRandomLei()
         val isinForCompany = generateRandomIsin()
         val companyId = getIdForUploadedCompanyWithIdentifiers(leiForCompany, listOf(isinForCompany))
-        val identifierTypeForUnknownCompany = DataRequestCompanyIdentifierType.lei
         val identifierValueForUnknownCompany = generateRandomLei()
         val identifiersForBulkRequest = setOf(
             leiForCompany, isinForCompany, identifierValueForUnknownCompany,
         )
         val frameworksForBulkRequest = listOf(BulkDataRequest.DataTypes.lksg)
-        val reportingPeriodsForBulkRequest = listOf("2023")
+        val reportingPeriod = "2023"
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest.toSet(), reportingPeriodsForBulkRequest.toSet()),
+            BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest.toSet(), setOf(reportingPeriod)),
         )
         checkThatAllIdentifiersWereAccepted(response, identifiersForBulkRequest.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
             newlyStoredRequests,
-            (identifiersForBulkRequest.size - 1) * frameworksForBulkRequest.size * reportingPeriodsForBulkRequest.size,
+            (identifiersForBulkRequest.size - 1) * frameworksForBulkRequest.size,
         )
         checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests, frameworksForBulkRequest[0], reportingPeriodsForBulkRequest[0],
+            newlyStoredRequests, frameworksForBulkRequest[0], reportingPeriod,
             DataRequestCompanyIdentifierType.datalandCompanyId, companyId,
         )
         checkThatRequestForFrameworkReportingPeriodAndIdentifierExistsExactlyOnce(
-            newlyStoredRequests, frameworksForBulkRequest[0], reportingPeriodsForBulkRequest[0],
-            identifierTypeForUnknownCompany, identifierValueForUnknownCompany,
+            newlyStoredRequests, frameworksForBulkRequest[0], reportingPeriod,
+            DataRequestCompanyIdentifierType.lei, identifierValueForUnknownCompany,
         )
     }
 

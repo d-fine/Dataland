@@ -84,9 +84,9 @@ class SingleDataRequestManagerTest {
     fun `validate that an email is sent with a Dataland company ID provided`() {
         val request = SingleDataRequest(
             companyIdentifier = companyIdRegexSafeCompanyId,
-            frameworkName = DataTypeEnum.lksg,
-            reportingPeriods = listOf("1969"),
-            contacts = listOf("contact@othercompany.com"),
+            dataType = DataTypeEnum.lksg,
+            reportingPeriods = setOf("1969"),
+            contacts = setOf("contact@othercompany.com"),
             message = "You forgot to upload data about the moon landing.",
         )
         `when`(utilsMock.determineIdentifierTypeViaRegex(anyString()))
@@ -109,9 +109,9 @@ class SingleDataRequestManagerTest {
         val isin = "DK0083647253"
         val request = SingleDataRequest(
             companyIdentifier = isin,
-            frameworkName = DataTypeEnum.lksg,
-            reportingPeriods = listOf("1969"),
-            contacts = listOf("contact@othercompany.com"),
+            dataType = DataTypeEnum.lksg,
+            reportingPeriods = setOf("1969"),
+            contacts = setOf("contact@othercompany.com"),
             message = "You forgot to upload data about the moon landing.",
         )
         `when`(utilsMock.determineIdentifierTypeViaRegex(anyString()))

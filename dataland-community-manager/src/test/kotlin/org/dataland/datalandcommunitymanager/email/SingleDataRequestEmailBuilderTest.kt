@@ -20,7 +20,7 @@ class SingleDataRequestEmailBuilderTest {
     private val receiverEmail = "receiver1@dataland.com"
     private val companyId = "8"
     private val companyName = "Test Inc."
-    private val reportingPeriods = listOf("2022", "2023")
+    private val reportingPeriods = setOf("2022", "2023")
     private val message = "This is a comment"
 
     @Test

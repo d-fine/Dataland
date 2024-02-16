@@ -80,6 +80,8 @@ class RequestController(
         dataRequestId: UUID,
         requestStatus: RequestStatus,
     ): ResponseEntity<StoredDataRequest> {
-        return ResponseEntity.ok(dataRequestAlterationManager.patchDataRequestStatus(dataRequestId.toString(), requestStatus))
+        return ResponseEntity.ok(
+            dataRequestAlterationManager.patchDataRequestStatus(dataRequestId.toString(), requestStatus),
+        )
     }
 }
