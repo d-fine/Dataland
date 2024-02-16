@@ -174,15 +174,6 @@ describeIf(
       cy.get("div[data-test='selectFramework'] li[data-message-type='validation']")
         .should("be.visible")
         .should("contain.text", "Select a framework");
-
-      cy.get("div[data-test='contactEmailAndMessage'] li[data-message-type='validation']").should("not.exist");
-
-      cy.get('[data-test="contactEmail"]').type("NoValidEmailAdress");
-      submit();
-      cy.get("div[data-test='contactEmailAndMessage'] li[data-message-type='validation']")
-        .should("exist")
-        .should("contain.text", "Please enter a valid email address.");
-      cy.get('[data-test="contactEmail"]').clear();
     }
 
     /**

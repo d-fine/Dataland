@@ -58,18 +58,11 @@
                         :data-test="'datapoint-framework'"
                       />
                     </BasicFormSection>
-                    <BasicFormSection header="Provide Contact Details" data-test="contactEmailAndMessage">
+                    <BasicFormSection header="Provide Contact Details">
                       <label for="Email" class="label-with-optional">
                         <b>Email</b><span class="optional-text">Optional</span>
                       </label>
-                      <FormKit
-                        v-model="contact"
-                        type="text"
-                        name="contactDetails"
-                        data-test="contactEmail"
-                        :validation="[['matches', /^[a-zA-Z0-9_.!-]+@([a-zA-Z0-9-]+\.){1,2}[a-z]{2,}$/]]"
-                        :validation-messages="{ matches: 'Please enter a valid email address.' }"
-                      />
+                      <FormKit v-model="contact" type="text" name="contactDetails" data-test="contactEmail" />
                       <p class="gray-text font-italic" style="text-align: left">
                         By specifying a contact person here, your data request will be directed accordingly.<br />
                         This increases the chances of expediting the fulfillment of your request.
