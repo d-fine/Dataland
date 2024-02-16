@@ -53,10 +53,6 @@ class SingleDataRequestManagerTest {
 
     private fun mockDataRequestProcessingUtils(): DataRequestProcessingUtils {
         val utilsMock = mock(DataRequestProcessingUtils::class.java)
-        `when`(utilsMock.determineIdentifierTypeViaRegex(anyString()))
-            .thenReturn(DataRequestCompanyIdentifierType.DatalandCompanyId)
-        `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString()))
-            .thenReturn(companyIdRegexSafeCompanyId)
         `when`(
             utilsMock.storeDataRequestEntityIfNotExisting(
                 anyString(),
@@ -67,19 +63,15 @@ class SingleDataRequestManagerTest {
                 any(),
             ),
         ).thenAnswer {
-            val identifierValue = it.arguments[0] as String
-            val identifierType = it.arguments[1] as DataRequestCompanyIdentifierType
-            val dataType = it.arguments[2] as DataTypeEnum
-            val reportingPeriod = it.arguments[3] as String
             DataRequestEntity(
                 dataRequestId = "request-id",
-                dataRequestCompanyIdentifierType = identifierType,
-                dataRequestCompanyIdentifierValue = identifierValue,
-                reportingPeriod = reportingPeriod,
+                dataRequestCompanyIdentifierType = it.arguments[1] as DataRequestCompanyIdentifierType,
+                dataRequestCompanyIdentifierValue = it.arguments[0] as String,
+                reportingPeriod = it.arguments[3] as String,
                 creationTimestamp = 0,
                 lastModifiedDate = 0,
                 requestStatus = RequestStatus.Open,
-                dataType = dataType.value,
+                dataType = (it.arguments[2] as DataTypeEnum).value,
                 messageHistory = mutableListOf(),
                 userId = "user-id",
 
@@ -97,6 +89,10 @@ class SingleDataRequestManagerTest {
             contacts = listOf("contact@othercompany.com"),
             message = "You forgot to upload data about the moon landing.",
         )
+        `when`(utilsMock.determineIdentifierTypeViaRegex(anyString()))
+            .thenReturn(DataRequestCompanyIdentifierType.DatalandCompanyId)
+        `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString()))
+            .thenReturn(companyIdRegexSafeCompanyId)
         singleDataRequestManager.processSingleDataRequest(
             request,
         )
