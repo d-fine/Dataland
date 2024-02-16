@@ -6,9 +6,8 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
-import org.dataland.datalandcommunitymanager.utils.DataRequestUploadUtils
+import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandemail.email.EmailSender
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,7 +21,7 @@ class BulkDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val emailBuilder: BulkDataRequestEmailBuilder,
     @Autowired private val emailSender: EmailSender,
-    @Autowired private val utils: DataRequestUploadUtils,
+    @Autowired private val utils: DataRequestProcessingUtils,
 ) {
     /**
      * Processes a bulk data request from a user

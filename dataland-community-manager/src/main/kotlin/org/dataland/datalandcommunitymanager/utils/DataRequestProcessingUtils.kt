@@ -12,15 +12,15 @@ import org.dataland.datalandcommunitymanager.services.CompanyGetter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.*
 
 /**
  * Class holding utility functions used by the both the bulk and the single data request manager
  */
-@Component
-class DataRequestUploadUtils(
+@Service
+class DataRequestProcessingUtils(
     @Autowired private val dataRequestRepository: DataRequestRepository,
     @Autowired private val messageRepository: MessageRepository,
     @Autowired private val dataRequestLogger: DataRequestLogger,
