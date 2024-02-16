@@ -2,12 +2,9 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -131,26 +128,5 @@ class SingleDataRequestManager(
             )
         }
         return storedDataRequestEntities
-    }
-
-    /**
-     * Method to retrieve a data request by its ID
-     * @param dataRequestId the ID of the data request to retrieve
-     * @return the data request corresponding to the provided ID
-     */
-    @Transactional
-    fun getDataRequestById(dataRequestId: String): StoredDataRequest {
-        throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId)
-        val dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
-        return utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
-    }
-
-    private fun throwResourceNotFoundExceptionIfDataRequestIdUnknown(dataRequestId: String) {
-        if (!dataRequestRepository.existsById(dataRequestId)) {
-            throw ResourceNotFoundApiException(
-                "Data request not found",
-                "Dataland does not know the Data request ID $dataRequestId",
-            )
-        }
     }
 }
