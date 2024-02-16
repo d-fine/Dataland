@@ -25,7 +25,7 @@ class LksgMostImportantProductsComponentFactory(@Autowired val templateDiagnosti
             templateDiagnostic.optionsNotUsed(row)
             templateDiagnostic.unitNotUsed(row)
 
-            return componentGroup.create<SfdrHighImpactClimateSectors>(
+            return componentGroup.create<LksgMostImporantProductsComponent>(
                 utils.generateFieldIdentifierFromRow(row),
             ) {
                 utils.setCommonProperties(row, this)

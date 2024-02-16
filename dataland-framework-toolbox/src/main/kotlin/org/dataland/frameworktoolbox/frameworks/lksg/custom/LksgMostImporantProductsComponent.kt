@@ -24,7 +24,7 @@ class LksgMostImporantProductsComponent(identifier: String,
         dataClassBuilder.addProperty(
             identifier,
             TypeReference(
-                "List", isNullable,
+                "MutableList", isNullable,
                 listOf(
                     TypeReference(
                         "org.dataland.datalandbackend.frameworks.lksg.custom.LksgProduct",
@@ -37,15 +37,6 @@ class LksgMostImporantProductsComponent(identifier: String,
                     ),
                 ),
             ),
-            listOf(
-                Annotation(
-                    fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
-                    rawParameterSpec =
-                    "example = JsonExampleFormattingConstants.HIGH_IMPACT_CLIMATE_SECTORS_DEFAULT_VALUE",
-                    applicationTargetPrefix = "field",
-                    additionalImports = setOf("org.dataland.datalandbackend.utils.JsonExampleFormattingConstants"),
-                ),
-            ),
         )
     }
 
@@ -54,11 +45,11 @@ class LksgMostImporantProductsComponent(identifier: String,
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
-                "formatHighImpactClimateSectorForDisplay(${getTypescriptFieldAccessor(true)})",
+                "formatLksgMostImportantProductsForDisplay(${getTypescriptFieldAccessor(true)})",
                 setOf(
                     TypeScriptImport(
-                        "formatHighImpactClimateSectorForDisplay",
-                        "@/components/resources/dataTable/conversion/HighImpactClimateGetterFactory",
+                        "formatLksgMostImportantProductsForDisplay",
+                        "@/components/resources/dataTable/conversion/lksg/LksgValueGetterFactories",
                     ),
                 ),
             ),
@@ -69,15 +60,18 @@ class LksgMostImporantProductsComponent(identifier: String,
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "HighImpactClimateSectorsFormField",
+            uploadComponentName = "MostImportantProductsFormField",
         )
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
+        val fixtureExpression = if (isNullable) {
+            "dataGenerator.randomArray(() => dataGenerator.generateLksgProduct(), 0, 10)"
+        } else {
+            "dataGenerator.guaranteedArray(() => dataGenerator.generateLksgProduct(), 0, 10)"
+        }
         sectionBuilder.addAtomicExpression(
-            identifier,
-            "dataGenerator.generateHighImpactClimateSectors()",
-        )
+            identifier, fixtureExpression)
     }
 }

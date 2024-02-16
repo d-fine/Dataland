@@ -1,10 +1,8 @@
 <template>
   <div class="claim-panel">
     <div class="next-to-each-other vertical-middle">
-      <h2 class="claim-panel__ownership-question" data-test="claimOwnershipPanelHeading">
-        Responsible for {{ companyName }}?
-      </h2>
-      <h2 class="link --underlined" @click="openDialog" data-test="claimOwnershipPanelLink">
+      <h2 class="claim-panel-text" data-test="claimOwnershipPanelHeading">Responsible for {{ companyName }}?</h2>
+      <h2 class="link --underlined claim-panel-text" @click="openDialog" data-test="claimOwnershipPanelLink">
         Claim company dataset ownership.
       </h2>
     </div>
@@ -108,16 +106,15 @@ export default defineComponent({
 <style scoped lang="scss">
 .claim-panel {
   grid-column: 1 / -1;
-  min-height: 100px;
   background-color: var(--surface-card);
-  padding: $spacing-md;
+  padding-left: $spacing-md;
   border-radius: $radius-xxs;
   text-align: left;
   box-shadow: 0 0 12px var(--gray-300);
+}
 
-  &__ownership-question {
-    font-size: 21px;
-    font-weight: 700;
-  }
+.claim-panel-text {
+  font-size: 18px;
+  font-weight: 600;
 }
 </style>

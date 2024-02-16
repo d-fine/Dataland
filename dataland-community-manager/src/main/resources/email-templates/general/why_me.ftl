@@ -14,7 +14,7 @@
     <tr>
         <td style="vertical-align: top; width: 20px;"><b>&bull;</b></td>
         <td>Due to our GLEIF collaboration, your company is already in Dataland.<br />
-            <a href="${baseUrl}" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #FF6813; text-decoration: none;">CHECK IT HERE & CLAIM OWNERSHIP &#10132;</a>
+            <a href="${baseUrl}/companies/${companyId}" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #FF6813; text-decoration: none;">CHECK IT HERE & CLAIM OWNERSHIP &#10132;</a>
         </td>
     </tr>
     <tr>
@@ -30,7 +30,7 @@
     <tr>
         <td style="vertical-align: top"><b>&bull;</b></td>
         <td>We need you in order to achieve our principles and mission.<br />
-            <a href="${baseUrl}/companies/${companyId}" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #FF6813; text-decoration: none;">DISCOVER OUR PRINCIPLES &#10132;</a>
+            <a href="${baseUrl}/about" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #FF6813; text-decoration: none;">DISCOVER OUR PRINCIPLES &#10132;</a>
         </td>
     </tr>
     <tr>
