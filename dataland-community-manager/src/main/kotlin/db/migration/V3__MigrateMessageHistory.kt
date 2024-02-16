@@ -11,11 +11,11 @@ class V3__MigrateMessageHistory : BaseJavaMigration() {
         // The message_history is simply dropped because there is no data on for this, yet.
         context!!.connection.createStatement().execute(
             "ALTER TABLE data_requests " +
-                "RENAME COLUMN data_type_name to data_type"
+                "RENAME COLUMN data_type_name to data_type",
         )
         context.connection.createStatement().execute(
             "ALTER TABLE data_requests " +
-                "DROP COLUMN message_history"
+                "DROP COLUMN message_history",
         )
         context.connection.createStatement().execute(
             "CREATE TABLE messages (" +

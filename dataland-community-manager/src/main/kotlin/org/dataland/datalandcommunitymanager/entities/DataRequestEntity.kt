@@ -8,10 +8,13 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
+import java.time.Instant
+import java.util.*
 
 /**
  * The entity storing the information considering one data request
@@ -44,6 +47,27 @@ data class DataRequestEntity(
     @Enumerated(EnumType.STRING)
     var requestStatus: RequestStatus,
 ) {
+
+    constructor(
+        userId: String,
+        dataType: DataTypeEnum,
+        reportingPeriod: String,
+        identifierType: DataRequestCompanyIdentifierType,
+        identifierValue: String,
+        currentTimestamp: Long = Instant.now().toEpochMilli(),
+    ) : this(
+        dataRequestId = UUID.randomUUID().toString(),
+        userId = userId,
+        creationTimestamp = currentTimestamp,
+        dataType = dataType.value,
+        reportingPeriod = reportingPeriod,
+        dataRequestCompanyIdentifierType = identifierType,
+        dataRequestCompanyIdentifierValue = identifierValue,
+        messageHistory = mutableListOf(),
+        lastModifiedDate = currentTimestamp,
+        requestStatus = RequestStatus.Open,
+    )
+
     /**
      * Associates a message history
      * This must be done after creation and storage of the DataRequestEntity

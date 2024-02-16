@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifier
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.repositories.MessageRepository
@@ -14,7 +13,6 @@ import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
-import java.util.*
 
 /**
  * Class holding utility functions used by the both the bulk and the single data request manager
@@ -101,7 +99,8 @@ class DataRequestProcessingUtils(
         findAlreadyExistingDataRequestForCurrentUser(identifierValue, dataType, reportingPeriod)?.also {
             return it
         }
-        val dataRequestEntity = buildDataRequestEntity(
+        val dataRequestEntity = DataRequestEntity(
+            DatalandAuthentication.fromContext().userId,
             dataType,
             reportingPeriod,
             identifierType,
@@ -117,29 +116,6 @@ class DataRequestProcessingUtils(
         messageRepository.saveAllAndFlush(dataRequestEntity.messageHistory)
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId)
         return dataRequestEntity
-    }
-
-    private fun buildDataRequestEntity( // TODO move to constructor
-        framework: DataTypeEnum,
-        reportingPeriod: String,
-        identifierType: DataRequestCompanyIdentifierType,
-        identifierValue: String,
-    ): DataRequestEntity {
-        val dataRequestId = UUID.randomUUID().toString()
-        val currentUserId = DatalandAuthentication.fromContext().userId
-        val currentTimestamp = Instant.now().toEpochMilli()
-        return DataRequestEntity(
-            dataRequestId = dataRequestId,
-            userId = currentUserId,
-            creationTimestamp = currentTimestamp,
-            dataType = framework.value,
-            reportingPeriod = reportingPeriod,
-            dataRequestCompanyIdentifierType = identifierType,
-            dataRequestCompanyIdentifierValue = identifierValue,
-            messageHistory = mutableListOf(),
-            lastModifiedDate = currentTimestamp,
-            requestStatus = RequestStatus.Open,
-        )
     }
 
     private fun findAlreadyExistingDataRequestForCurrentUser(

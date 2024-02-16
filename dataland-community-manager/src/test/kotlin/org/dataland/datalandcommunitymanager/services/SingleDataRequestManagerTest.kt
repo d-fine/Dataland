@@ -57,14 +57,16 @@ class SingleDataRequestManagerTest {
             .thenReturn(DataRequestCompanyIdentifierType.DatalandCompanyId)
         `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString()))
             .thenReturn(companyIdRegexSafeCompanyId)
-        `when`(utilsMock.storeDataRequestEntityIfNotExisting(
-            anyString(),
-            any() ?: DataRequestCompanyIdentifierType.DatalandCompanyId,
-            any() ?: DataTypeEnum.lksg,
-            anyString(),
-            any(),
-            any(),
-        )).thenAnswer {
+        `when`(
+            utilsMock.storeDataRequestEntityIfNotExisting(
+                anyString(),
+                any() ?: DataRequestCompanyIdentifierType.DatalandCompanyId,
+                any() ?: DataTypeEnum.lksg,
+                anyString(),
+                any(),
+                any(),
+            ),
+        ).thenAnswer {
             val identifierValue = it.arguments[0] as String
             val identifierType = it.arguments[1] as DataRequestCompanyIdentifierType
             val dataType = it.arguments[2] as DataTypeEnum
@@ -79,7 +81,7 @@ class SingleDataRequestManagerTest {
                 requestStatus = RequestStatus.Open,
                 dataType = dataType.value,
                 messageHistory = mutableListOf(),
-                userId = "user-id"
+                userId = "user-id",
 
             )
         }
