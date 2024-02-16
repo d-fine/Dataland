@@ -1,4 +1,4 @@
-name: CD
+run-name: Deploy to ${{ github.event.inputs.whichEnvironment }}
 
 on:
   workflow_dispatch:

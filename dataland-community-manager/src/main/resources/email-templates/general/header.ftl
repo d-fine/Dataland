@@ -1,13 +1,8 @@
 <table id="header" style="background-color: #ffffff; width: 600px; border: 0 none; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0; margin: 0"><tbody>
     <tr style="background-color: #ffffff;">
-        <td style="text-align: left; width: 40px; padding: 0">
-            <img src="${baseUrl}/images/email/wr1.png" width="15" height="14" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
-        </td>
-        <td style="text-align: right; width: 520px; padding: 0">
-        </td>
-        <td style="text-align: right; width: 40px; padding: 0">
-            <img src="${baseUrl}/images/email/wr2.png" width="15" height="14" alt="" style="border: 0 none; height: auto; line-height: 100%; outline: none; text-decoration: none;">
-        </td>
+        <td style="text-align: left; width: 40px; height: 14px; padding: 0"></td>
+        <td style="text-align: right; width: 520px; padding: 0"></td>
+        <td style="text-align: right; width: 40px; padding: 0"></td>
     </tr>
     <tr>
         <td colspan="3" style="height: 6px;"></td>

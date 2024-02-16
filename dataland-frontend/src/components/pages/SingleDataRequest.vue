@@ -65,7 +65,7 @@
                       <FormKit v-model="contact" type="text" name="contactDetails" data-test="contactEmail" />
                       <p class="gray-text font-italic" style="text-align: left">
                         By specifying a contact person here, your data request will be directed accordingly.<br />
-                        this increases the chances of expediting the fulfillment of your request.
+                        This increases the chances of expediting the fulfillment of your request.
                       </p>
                       <br />
                       <p class="gray-text font-italic" style="text-align: left">
@@ -227,7 +227,7 @@ export default defineComponent({
      * @returns the SingleDataRequest object
      */
     collectDataToSend(): SingleDataRequest {
-      const contactAsList = [this.contact];
+      const contactAsList = this.contact ? [this.contact] : undefined;
       return {
         companyIdentifier: this.companyIdentifier,
         frameworkName: this.frameworkName,
