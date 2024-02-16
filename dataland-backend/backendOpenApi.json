@@ -925,7 +925,7 @@
         ]
       }
     },
-    "/companies/{companyId}/data-ownership-request": {
+    "/companies/{companyId}/data-ownership-requests": {
       "post": {
         "tags": [
           "company-data-controller"
@@ -1157,6 +1157,138 @@
           },
           "404": {
             "description": "Either the specified company does not exist on Dataland or the user isn\u0027t data owner of that company."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/companies/{companyId}/data-owners": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve data owner(s) of a company.",
+        "description": "Get a list of data owner(s) for the specified company.",
+        "operationId": "getDataOwners",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "The specified company does not exist on Dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Successfully retrieved data owner.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "head": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Validation if data owners exists for the specified company.",
+        "description": "Checks whether company has data owners or not",
+        "operationId": "hasCompanyDataOwner",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The specified company has data owner(s)."
+          },
+          "404": {
+            "description": "The specified company has no data owner(s) yet"
           },
           "default": {
             "description": "An error occurred",
@@ -2748,83 +2880,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CompanyInformation"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/companies/{companyId}/data-owners": {
-      "get": {
-        "tags": [
-          "company-data-controller"
-        ],
-        "summary": "Retrieve data owner(s) of a company.",
-        "description": "Get a list of data owner(s) for the specified company.",
-        "operationId": "getDataOwners",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "The specified company does not exist on Dataland.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Successfully retrieved data owner.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
                 }
               }
             }
@@ -13739,14 +13794,14 @@
           "companyId": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
           },
           "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "permId": {

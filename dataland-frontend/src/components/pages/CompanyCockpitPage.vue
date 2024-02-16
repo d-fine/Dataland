@@ -4,7 +4,7 @@
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <div class="card-wrapper">
       <div class="card-grid">
-        <ClaimOwnershipPanel v-if="!isUserDataOwner && authenticated && isCompanyIdValid" :company-id="companyId" />
+        <ClaimOwnershipPanel v-if="isClaimPanelVisible" :company-id="companyId" />
 
         <FrameworkSummaryPanel
           v-for="framework of ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE"
@@ -38,7 +38,8 @@ import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import ClaimOwnershipPanel from "@/components/resources/companyCockpit/ClaimOwnershipPanel.vue";
 import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
-import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
+import { hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
+import { isCompanyIdValid } from "@/utils/ValidationsUtils";
 
 export default defineComponent({
   name: "CompanyCockpitPage",
@@ -52,9 +53,10 @@ export default defineComponent({
     useMobileView() {
       return this.injectedUseMobileView;
     },
-    isCompanyIdValid() {
-      const uuidRegexExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      return uuidRegexExp.test(this.companyId);
+    isClaimPanelVisible() {
+      return (
+        !this.isUserDataOwner && this.authenticated && isCompanyIdValid(this.companyId) && !this.hasCompanyDataOwner
+      );
     },
   },
   watch: {
@@ -63,6 +65,10 @@ export default defineComponent({
         try {
           await this.getAggregatedFrameworkDataSummary();
           await this.setUploaderRightsForUser();
+          this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(
+            newCompanyId as string,
+            this.getKeycloakPromise,
+          );
         } catch (error) {
           console.error("Error fetching data for new company:", error);
         }
@@ -105,14 +111,22 @@ export default defineComponent({
         | undefined,
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE,
       isUserDataOwner: false,
+      hasCompanyDataOwner: false,
       isUserAllowedToUpload: false,
       footerContent,
     };
   },
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
+    void this.updateHasCompanyDataOwner();
   },
   methods: {
+    /**
+     * Updates the hasCompanyDataOwner in an async way
+     */
+    async updateHasCompanyDataOwner() {
+      this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(this.companyId, this.getKeycloakPromise);
+    },
     /**
      * Retrieves the aggregated framework data summary
      */
