@@ -13,7 +13,7 @@ import { percentageValueGetterFactory } from "@/components/resources/dataTable/c
 import { multiSelectValueGetterFactory } from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import { getModalGetterFactory } from "@/components/resources/dataTable/conversion/GenericModalValueGetterFactory";
 import { lksgModalColumnHeaders } from "@/components/resources/frameworkDataSearch/lksg/LksgModalColumnHeaders";
-import { lksgProcurementCategoriesValueGetterFactory } from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
+import { lksgProcurementCategoriesValueGetterFactory } from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory.ts.old";
 import { p2pDriveMixValueGetterFactory } from "@/components/resources/dataTable/conversion/p2p/P2pDriveMixValueGetterFactory";
 
 // The effort of making this file type-safe greatly outweighs the benefit.
