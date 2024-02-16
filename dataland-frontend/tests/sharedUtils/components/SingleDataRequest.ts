@@ -5,7 +5,7 @@ export const singleDataRequestPage = {
     cy.get('[data-test="reportingPeriods"] div[data-test="toggleChipsFormInput"]')
       .should("exist")
       .get('[data-test="toggle-chip"')
-      .contains(year)
+      .contains("2023")
       .click()
       .parent()
       .should("have.class", "toggled");
