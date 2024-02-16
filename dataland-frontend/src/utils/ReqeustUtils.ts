@@ -1,8 +1,9 @@
 import type Keycloak from "keycloak-js";
-import { type StoredDataRequest } from "@clients/communitymanager";
+import { type RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 
 import { ApiClientProvider } from "@/services/ApiClients";
 import type { AxiosError } from "axios";
+import { type DataTypeEnum } from "@clients/backend";
 
 /**
  * Returns the List of StoredDataRequest from user with matching framework and companyId
@@ -11,9 +12,9 @@ import type { AxiosError } from "axios";
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
  * @returns a promise, which resolves to an array of StoredDataRequest
  */
-export async function getDataRequestsForViewPage(
+export async function getOpenDataRequestsForViewPage(
   companyId: string,
-  framework: string,
+  framework: DataTypeEnum,
   keycloakPromiseGetter?: () => Promise<Keycloak>,
 ): Promise<StoredDataRequest[]> {
   let listOfStoredDataRequest: StoredDataRequest[] = [];
@@ -23,7 +24,9 @@ export async function getDataRequestsForViewPage(
         await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.getDataRequestsForUser()
       ).data.filter(
         (dataRequest) =>
-          dataRequest.dataType == framework && dataRequest.dataRequestCompanyIdentifierValue == companyId,
+          dataRequest.dataType == framework &&
+          dataRequest.dataRequestCompanyIdentifierValue == companyId &&
+          dataRequest.requestStatus == "Open",
       );
     }
   } catch (error) {
@@ -33,4 +36,38 @@ export async function getDataRequestsForViewPage(
     throw error;
   }
   return listOfStoredDataRequest;
+}
+
+/**
+ * Patches the RequestStatus of a StoredDataRequest
+ * @param dataRequestId the dataland dataRequestId
+ * @param requestStatus the desired requestStatus
+ * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
+ * @returns a promise, which resolves to a boolean
+ */
+export async function patchDataRequestStatus(
+  dataRequestId: string,
+  requestStatus: RequestStatus,
+  keycloakPromiseGetter?: () => Promise<Keycloak>,
+): Promise<boolean> {
+  try {
+    if (keycloakPromiseGetter) {
+      if (
+        (
+          await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequest(
+            dataRequestId,
+            requestStatus,
+          )
+        ).status == 200
+      ) {
+        return true;
+      }
+    }
+  } catch (error) {
+    if ((error as AxiosError)?.response?.status == 404) {
+      return false;
+    }
+    throw error;
+  }
+  return false;
 }
