@@ -36,7 +36,7 @@ class SingleDataRequestEmailBuilderTest {
                 companyId = companyId,
                 dataType = DataTypeEnum.lksg,
                 reportingPeriods = reportingPeriods,
-                message = message,
+                rawMessage = message,
             )
         assertEmailContactInformationEquals(
             EmailContact(senderEmail, senderName),
