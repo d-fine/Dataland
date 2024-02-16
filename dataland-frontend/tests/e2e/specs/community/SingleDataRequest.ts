@@ -108,7 +108,7 @@ describeIf(
         const requestBody = interception.request.body as SingleDataRequest;
         const expectedRequest: SingleDataRequest = {
           companyIdentifier: testStoredCompany.companyId,
-          frameworkName: "lksg",
+          dataType: DataTypeEnum.Lksg,
           reportingPeriods: ["2023"],
           contacts: ["example@Email.com"],
           message: "Frontend test message",

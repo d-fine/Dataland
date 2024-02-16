@@ -1,7 +1,7 @@
 import { DataTypeEnum } from "@clients/backend";
 
 export const singleDataRequestPage = {
-  chooseReportingPeriod2023(year: string): void {
+  chooseReportingPeriod2023(): void {
     cy.get('[data-test="reportingPeriods"] div[data-test="toggleChipsFormInput"]')
       .should("exist")
       .get('[data-test="toggle-chip"')
