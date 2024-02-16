@@ -53,8 +53,8 @@ class SingleDataRequestManager(
         return storedDataRequestEntities.map { it.toStoredDataRequest() }
     }
 
-    private fun validateContactsAndMessage(contacts: List<String>?, message: String?) {
-        if (!contacts.isNullOrEmpty() && contacts.any { !it.isEmailAddress() }) {
+    private fun validateContactsAndMessage(contacts: Set<String>?, message: String?) {
+        if (!contacts.isNullOrEmpty() && contacts.any { !it.isEmailAddress() }) { // todo use validate function
             throw InvalidInputApiException(
                 "Invalid email address",
                 "At least one email address you have provided has an invalid format.",
@@ -114,11 +114,11 @@ class SingleDataRequestManager(
         identifierValueToStore: String,
         identifierTypeToStore: DataRequestCompanyIdentifierType,
     ): List<DataRequestEntity> {
-        return singleDataRequest.reportingPeriods.distinct().map { reportingPeriod ->
+        return singleDataRequest.reportingPeriods.map { reportingPeriod ->
             utils.storeDataRequestEntityIfNotExisting(
                 identifierValueToStore,
                 identifierTypeToStore,
-                singleDataRequest.frameworkName,
+                singleDataRequest.dataType,
                 reportingPeriod,
                 singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
                 singleDataRequest.message.takeIf { !it.isNullOrBlank() },

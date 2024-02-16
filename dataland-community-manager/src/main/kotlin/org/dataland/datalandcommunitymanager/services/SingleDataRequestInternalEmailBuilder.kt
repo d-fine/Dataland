@@ -34,7 +34,7 @@ class SingleDataRequestInternalEmailBuilder(
         companyIdentifierType: DataRequestCompanyIdentifierType,
         companyIdentifierValue: String,
         dataType: DataTypeEnum,
-        reportingPeriods: List<String>,
+        reportingPeriods: Set<String>,
     ): Email {
         val properties = mutableMapOf(
             "Environment" to proxyPrimaryUrl,

@@ -59,7 +59,7 @@ class SingleDataRequestEmailSender(
                     requesterEmail = userAuthentication.username,
                     receiverEmail = contactEmail,
                     companyId = datalandCompanyId,
-                    dataType = singleDataRequest.frameworkName,
+                    dataType = singleDataRequest.dataType,
                     reportingPeriods = singleDataRequest.reportingPeriods,
                     rawMessage = singleDataRequest.message,
                 ),
@@ -78,7 +78,7 @@ class SingleDataRequestEmailSender(
                 userAuthentication = userAuthentication,
                 companyIdentifierType = companyIdentifierType,
                 companyIdentifierValue = companyIdentifierValue,
-                dataType = singleDataRequest.frameworkName,
+                dataType = singleDataRequest.dataType,
                 reportingPeriods = singleDataRequest.reportingPeriods,
             ),
         )

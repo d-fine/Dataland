@@ -30,12 +30,13 @@ class BulkDataRequestManager(
      */
     @Transactional
     fun processBulkDataRequest(bulkDataRequest: BulkDataRequest): BulkDataRequestResponse {
-        val cleanedBulkDataRequest = runValidationsAndRemoveDuplicates(bulkDataRequest)
+        utils.throwExceptionIfNotJwtAuth()
+        assureValidityOfRequestLists(bulkDataRequest)
         val bulkDataRequestId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForBulkDataRequest(bulkDataRequestId)
         val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
-        for (userProvidedIdentifierValue in cleanedBulkDataRequest.companyIdentifiers) {
+        for (userProvidedIdentifierValue in bulkDataRequest.companyIdentifiers) {
             val matchedIdentifierType = utils.determineIdentifierTypeViaRegex(userProvidedIdentifierValue)
             if (matchedIdentifierType == null) {
                 rejectedIdentifiers.add(userProvidedIdentifierValue)
@@ -45,22 +46,21 @@ class BulkDataRequestManager(
             processAcceptedIdentifier(
                 userProvidedIdentifierValue,
                 matchedIdentifierType,
-                cleanedBulkDataRequest.frameworkNames,
-                cleanedBulkDataRequest.reportingPeriods,
+                bulkDataRequest.dataTypes,
+                bulkDataRequest.reportingPeriods,
             )
         }
-        if (acceptedIdentifiers.isNotEmpty()) {
-            sendBulkDataRequestNotificationMail(cleanedBulkDataRequest, acceptedIdentifiers, bulkDataRequestId)
-        } else {
+        if (acceptedIdentifiers.isEmpty()) {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
-        return buildResponseForBulkDataRequest(cleanedBulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
+        sendBulkDataRequestNotificationMail(bulkDataRequest, acceptedIdentifiers, bulkDataRequestId)
+        return buildResponseForBulkDataRequest(bulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
     }
 
     private fun errorMessageForEmptyInputConfigurations(
-        listOfIdentifiers: List<String>,
-        listOfFrameworks: List<DataTypeEnum>,
-        listOfReportingPeriods: List<String>,
+        listOfIdentifiers: Set<String>,
+        listOfFrameworks: Set<DataTypeEnum>,
+        listOfReportingPeriods: Set<String>,
     ): String {
         return when {
             listOfIdentifiers.isEmpty() && listOfFrameworks.isEmpty() && listOfReportingPeriods.isEmpty() ->
@@ -87,7 +87,7 @@ class BulkDataRequestManager(
 
     private fun assureValidityOfRequestLists(bulkDataRequest: BulkDataRequest) {
         val listOfIdentifiers = bulkDataRequest.companyIdentifiers
-        val listOfFrameworks = bulkDataRequest.frameworkNames
+        val listOfFrameworks = bulkDataRequest.dataTypes
         val listOfReportingPeriods = bulkDataRequest.reportingPeriods
         if (listOfIdentifiers.isEmpty() || listOfFrameworks.isEmpty() || listOfReportingPeriods.isEmpty()) {
             val errorMessage = errorMessageForEmptyInputConfigurations(
@@ -100,28 +100,11 @@ class BulkDataRequestManager(
         }
     }
 
-    private fun removeDuplicatesInRequestLists(bulkDataRequest: BulkDataRequest): BulkDataRequest {
-        val distinctCompanyIdentifiers = bulkDataRequest.companyIdentifiers.distinct()
-        val distinctFrameworkNames = bulkDataRequest.frameworkNames.distinct()
-        val distinctReportingPeriods = bulkDataRequest.reportingPeriods.distinct()
-        return bulkDataRequest.copy(
-            companyIdentifiers = distinctCompanyIdentifiers,
-            frameworkNames = distinctFrameworkNames,
-            reportingPeriods = distinctReportingPeriods,
-        )
-    }
-
-    private fun runValidationsAndRemoveDuplicates(bulkDataRequest: BulkDataRequest): BulkDataRequest {
-        utils.throwExceptionIfNotJwtAuth()
-        assureValidityOfRequestLists(bulkDataRequest)
-        return removeDuplicatesInRequestLists(bulkDataRequest)
-    }
-
     private fun processAcceptedIdentifier(
         userProvidedIdentifierValue: String,
         matchedIdentifierType: DataRequestCompanyIdentifierType,
-        requestedFrameworks: List<DataTypeEnum>,
-        requestedReportingPeriods: List<String>,
+        requestedFrameworks: Set<DataTypeEnum>,
+        requestedReportingPeriods: Set<String>,
     ) {
         val datalandCompanyId = utils.getDatalandCompanyIdForIdentifierValue(userProvidedIdentifierValue)
         val identifierTypeToStore = datalandCompanyId?.let {

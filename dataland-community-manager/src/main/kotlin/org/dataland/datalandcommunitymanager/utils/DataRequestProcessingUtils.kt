@@ -93,7 +93,7 @@ class DataRequestProcessingUtils(
         identifierType: DataRequestCompanyIdentifierType,
         dataType: DataTypeEnum,
         reportingPeriod: String,
-        contactList: List<String>? = null,
+        contactList: Set<String>? = null,
         message: String? = null,
     ): DataRequestEntity {
         findAlreadyExistingDataRequestForCurrentUser(identifierValue, dataType, reportingPeriod)?.also {
@@ -108,9 +108,9 @@ class DataRequestProcessingUtils(
         )
         dataRequestRepository.save(dataRequestEntity)
         val messageHistory = if (!contactList.isNullOrEmpty()) {
-            mutableListOf(StoredDataRequestMessageObject(contactList, message, Instant.now().toEpochMilli()))
+            listOf(StoredDataRequestMessageObject(contactList, message, Instant.now().toEpochMilli()))
         } else {
-            mutableListOf()
+            listOf()
         }
         dataRequestEntity.associateMessages(messageHistory)
         messageRepository.saveAllAndFlush(dataRequestEntity.messageHistory)

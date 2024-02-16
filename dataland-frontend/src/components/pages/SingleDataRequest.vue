@@ -239,7 +239,7 @@ export default defineComponent({
       );
       return {
         companyIdentifier: this.companyIdentifier,
-        frameworkName: this.frameworkName,
+        dataType: this.frameworkName,
         reportingPeriods: this.selectedReportingPeriods,
         contacts: contacts,
         message: this.dataRequesterMessage,

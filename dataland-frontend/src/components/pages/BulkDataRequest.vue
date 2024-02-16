@@ -328,7 +328,7 @@ export default defineComponent({
       return {
         reportingPeriods: this.selectedReportingPeriods,
         companyIdentifiers: this.identifiers,
-        frameworkNames: this.selectedFrameworks,
+        dataTypes: this.selectedFrameworks,
       };
     },
     /**

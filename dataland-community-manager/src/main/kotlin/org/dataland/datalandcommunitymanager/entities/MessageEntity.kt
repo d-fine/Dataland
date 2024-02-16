@@ -56,7 +56,7 @@ data class MessageEntity(
      * @returns the generated message object
      */
     fun toStoredDataRequestMessageObject() = StoredDataRequestMessageObject(
-        contacts = contacts?.split(";") ?: emptyList(),
+        contacts = contacts?.split(";")?.toSet() ?: emptySet(),
         message = message,
         lastModifiedDate = lastModifiedDate,
     )

@@ -33,7 +33,7 @@ class SingleDataRequestEmailBuilder(
         receiverEmail: String,
         companyId: String,
         dataType: DataTypeEnum,
-        reportingPeriods: List<String>,
+        reportingPeriods: Set<String>,
         rawMessage: String?,
     ): Email {
         val message = rawMessage.takeIf { !it.isNullOrBlank() }
@@ -56,7 +56,7 @@ class SingleDataRequestEmailBuilder(
         companyId: String,
         companyName: String,
         dataType: DataTypeEnum,
-        reportingPeriods: List<String>,
+        reportingPeriods: Set<String>,
         message: String?,
     ): String {
         return StringBuilder()
@@ -79,7 +79,7 @@ class SingleDataRequestEmailBuilder(
         companyId: String,
         companyName: String,
         dataType: DataTypeEnum,
-        reportingPeriods: List<String>,
+        reportingPeriods: Set<String>,
         message: String?,
     ): String {
         val freemarkerContext = mapOf(

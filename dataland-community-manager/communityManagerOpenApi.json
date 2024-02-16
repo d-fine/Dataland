@@ -752,7 +752,7 @@
       "SingleDataRequest": {
         "required": [
           "companyIdentifier",
-          "frameworkName",
+          "dataType",
           "reportingPeriods"
         ],
         "type": "object",
@@ -761,7 +761,7 @@
             "type": "string",
             "example": "DE0005190003"
           },
-          "frameworkName": {
+          "dataType": {
             "type": "string",
             "example": "p2p",
             "enum": [
@@ -885,6 +885,7 @@
         "type": "object",
         "properties": {
           "contacts": {
+            "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
@@ -902,12 +903,13 @@
       "BulkDataRequest": {
         "required": [
           "companyIdentifiers",
-          "frameworkNames",
+          "dataTypes",
           "reportingPeriods"
         ],
         "type": "object",
         "properties": {
           "companyIdentifiers": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
               "DE0005190003",
@@ -917,7 +919,8 @@
               "type": "string"
             }
           },
-          "frameworkNames": {
+          "dataTypes": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
               "p2p",
@@ -938,6 +941,7 @@
             }
           },
           "reportingPeriods": {
+            "uniqueItems": true,
             "type": "array",
             "example": [
               "2022",

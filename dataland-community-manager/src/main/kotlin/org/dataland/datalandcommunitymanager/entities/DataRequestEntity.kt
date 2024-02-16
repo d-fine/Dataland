@@ -40,7 +40,7 @@ data class DataRequestEntity(
     val dataRequestCompanyIdentifierValue: String,
 
     @OneToMany(mappedBy = "dataRequest")
-    var messageHistory: MutableList<MessageEntity>,
+    var messageHistory: List<MessageEntity>,
 
     val lastModifiedDate: Long,
 
@@ -63,7 +63,7 @@ data class DataRequestEntity(
         reportingPeriod = reportingPeriod,
         dataRequestCompanyIdentifierType = identifierType,
         dataRequestCompanyIdentifierValue = identifierValue,
-        messageHistory = mutableListOf(),
+        messageHistory = listOf(),
         lastModifiedDate = currentTimestamp,
         requestStatus = RequestStatus.Open,
     )
@@ -77,7 +77,7 @@ data class DataRequestEntity(
     fun associateMessages(messageHistory: List<StoredDataRequestMessageObject>) {
         this.messageHistory = messageHistory.mapIndexed { index, it ->
             MessageEntity(it, index, this)
-        }.toMutableList()
+        }
     }
 
     /**
@@ -94,8 +94,7 @@ data class DataRequestEntity(
         dataRequestCompanyIdentifierValue = dataRequestCompanyIdentifierValue,
         messageHistory = messageHistory
             .sortedBy { it.ordinal }
-            .map { it.toStoredDataRequestMessageObject() }
-            .toMutableList(),
+            .map { it.toStoredDataRequestMessageObject() },
         lastModifiedDate = lastModifiedDate,
         requestStatus = requestStatus,
     )

@@ -50,7 +50,7 @@ class BulkDataRequestEmailBuilder(
             mapOf(
                 "Environment" to proxyPrimaryUrl,
                 "User" to buildUserInfo(DatalandAuthentication.fromContext() as DatalandJwtAuthentication),
-                "Requested Frameworks" to bulkDataRequest.frameworkNames.joinToString(", "),
+                "Requested Frameworks" to bulkDataRequest.dataTypes.joinToString(", "),
                 "Accepted Company Identifiers" to acceptedCompanyIdentifiers.joinToString(", "),
             ),
         )
