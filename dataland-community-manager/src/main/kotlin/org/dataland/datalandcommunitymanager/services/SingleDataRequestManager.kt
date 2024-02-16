@@ -114,19 +114,15 @@ class SingleDataRequestManager(
         identifierValueToStore: String,
         identifierTypeToStore: DataRequestCompanyIdentifierType,
     ): List<DataRequestEntity> {
-        val storedDataRequestEntities = mutableListOf<DataRequestEntity>()
-        singleDataRequest.reportingPeriods.distinct().forEach { reportingPeriod ->
-            storedDataRequestEntities.add(
-                utils.storeDataRequestEntityIfNotExisting(
-                    identifierValueToStore,
-                    identifierTypeToStore,
-                    singleDataRequest.frameworkName,
-                    reportingPeriod,
-                    singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
-                    singleDataRequest.message.takeIf { !it.isNullOrBlank() },
-                ),
+        return singleDataRequest.reportingPeriods.distinct().map { reportingPeriod ->
+            utils.storeDataRequestEntityIfNotExisting(
+                identifierValueToStore,
+                identifierTypeToStore,
+                singleDataRequest.frameworkName,
+                reportingPeriod,
+                singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
+                singleDataRequest.message.takeIf { !it.isNullOrBlank() },
             )
         }
-        return storedDataRequestEntities
     }
 }
