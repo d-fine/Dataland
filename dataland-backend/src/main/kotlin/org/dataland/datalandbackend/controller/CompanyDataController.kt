@@ -217,4 +217,9 @@ class CompanyDataController(
         logger.info("User (id: ${userAuthentication.userId}) requested data ownership for company with id: $companyId.")
         dataOwnersManager.sendDataOwnershipRequestIfNecessary(companyId.toString(), userAuthentication, comment)
     }
+
+    override fun hasCompanyDataOwner(companyId: UUID) {
+        logger.info("Received a request to check if $companyId has data owner(s)")
+        dataOwnersManager.checkCompanyForDataOwnership(companyId.toString())
+    }
 }

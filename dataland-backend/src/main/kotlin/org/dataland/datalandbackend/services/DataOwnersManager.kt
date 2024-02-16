@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 import kotlin.jvm.optionals.getOrElse
 import kotlin.jvm.optionals.getOrNull
 
@@ -171,7 +170,23 @@ class DataOwnersManager(
     }
 
     /**
-     * Method to send an data ownership request if an ownership does not already exist
+     * A method to verify if a company has data owners
+     * @param companyId the ID of the company for which the information should be retrieved
+     */
+    @Transactional(readOnly = true)
+    fun checkCompanyForDataOwnership(companyId: String) {
+        checkIfCompanyIsValid(companyId)
+        val dataOwnersEntity = getDataOwnerFromCompany(companyId)
+        if (dataOwnersEntity.dataOwners.isEmpty()) {
+            throw ResourceNotFoundApiException(
+                "Company has no data owner.",
+                "Company with $companyId has no data owner(s).",
+            )
+        }
+    }
+
+    /**
+     * Method to send a data ownership request if an ownership does not already exist
      * @param companyId the ID of the company for which data ownership is being requested
      * @param userAuthentication the DatalandAuthentication of the user who should become a data owner
      */
