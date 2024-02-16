@@ -54,17 +54,16 @@ data class DataRequestEntity(
         reportingPeriod: String,
         identifierType: DataRequestCompanyIdentifierType,
         identifierValue: String,
-        currentTimestamp: Long = Instant.now().toEpochMilli(),
     ) : this(
         dataRequestId = UUID.randomUUID().toString(),
         userId = userId,
-        creationTimestamp = currentTimestamp,
+        creationTimestamp = Instant.now().toEpochMilli(),
         dataType = dataType.value,
         reportingPeriod = reportingPeriod,
         dataRequestCompanyIdentifierType = identifierType,
         dataRequestCompanyIdentifierValue = identifierValue,
         messageHistory = listOf(),
-        lastModifiedDate = currentTimestamp,
+        lastModifiedDate = Instant.now().toEpochMilli(),
         requestStatus = RequestStatus.Open,
     )
 
