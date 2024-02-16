@@ -74,7 +74,7 @@ data class DataRequestEntity(
      * due to cross dependencies between entities
      * @param messageHistory a list of ordered message objects
      */
-    fun associateMessages(messageHistory: MutableList<StoredDataRequestMessageObject>) {
+    fun associateMessages(messageHistory: List<StoredDataRequestMessageObject>) {
         this.messageHistory = messageHistory.mapIndexed { index, it ->
             MessageEntity(it, index, this)
         }.toMutableList()
