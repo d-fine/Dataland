@@ -137,7 +137,6 @@ sonar {
                 // -> no need to cover the heimathafen-ViewConfig because there are no custom fields
 
                 // backend
-                "dataland-backend/src/main/kotlin/," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/frameworks/**," +
                 "dataland-backend/src/main/kotlin/org/dataland/datalandbackend/model/enums/eutaxonomy/nonfinancials/" +
                 "Activity.kt",

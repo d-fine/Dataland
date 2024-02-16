@@ -58,3 +58,13 @@ export function checkIfAllUploadedReportsAreReferencedInDataModel(
 export function isInputRequired(validation?: string): boolean {
   return validation?.includes("required") ?? false;
 }
+
+/**
+ * Checks if a company ID is valid
+ * @param companyId id as string
+ * @returns boolean if the company is valid
+ */
+export function isCompanyIdValid(companyId: string): boolean {
+  const uuidRegexExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return uuidRegexExp.test(companyId);
+}
