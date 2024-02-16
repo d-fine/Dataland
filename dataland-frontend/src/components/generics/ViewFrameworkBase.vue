@@ -47,6 +47,7 @@
               :meta-info="singleDataMetaInfoToDisplay"
               :company-name="fetchedCompanyInformation.companyName"
             />
+            <ReviewRequestButtons :company-id="companyID" :framework="dataType" :is-visible="true" />
             <PrimeButton
               v-if="isEditableByCurrentUser"
               class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
@@ -111,6 +112,7 @@ import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
 import type FrameworkDataSearchBar from "@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue";
 import InputSwitch from "primevue/inputswitch";
 import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
+import ReviewRequestButtons from "@/components/resources/dataRequest/ReviewRequestButtons.vue";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -126,6 +128,7 @@ export default defineComponent({
     SelectReportingPeriodDialog,
     QualityAssuranceButtons,
     InputSwitch,
+    ReviewRequestButtons,
   },
   emits: ["updateActiveDataMetaInfoForChosenFramework"],
   props: {
