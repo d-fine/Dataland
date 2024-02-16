@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.lksg.categories.general.subcategories.production
+package org.dataland.datalandbackend.frameworks.lksg.custom
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.math.BigDecimal
