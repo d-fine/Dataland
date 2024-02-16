@@ -64,7 +64,8 @@
                       </label>
                       <FormKit v-model="contact" type="text" name="contactDetails" data-test="contactEmail" />
                       <p class="gray-text font-italic" style="text-align: left">
-                        By specifying a contact person here, your data request will be directed accordingly.<br />
+                        By specifying one or multiple contacts here (comma-separated), your data request will be
+                        directed accordingly.<br />
                         This increases the chances of expediting the fulfillment of your request.
                       </p>
                       <br />
