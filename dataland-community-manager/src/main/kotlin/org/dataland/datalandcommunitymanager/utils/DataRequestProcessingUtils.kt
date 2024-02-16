@@ -119,7 +119,7 @@ class DataRequestProcessingUtils(
         return dataRequestEntity
     }
 
-    private fun buildDataRequestEntity(
+    private fun buildDataRequestEntity( // TODO move to constructor
         framework: DataTypeEnum,
         reportingPeriod: String,
         identifierType: DataRequestCompanyIdentifierType,

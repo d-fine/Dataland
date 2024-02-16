@@ -1,13 +1,12 @@
 package org.dataland.datalandcommunitymanager.services
 
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
-import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
-import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
+import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -25,58 +24,66 @@ import org.springframework.security.core.context.SecurityContextHolder
 class SingleDataRequestManagerTest {
 
     private lateinit var singleDataRequestManager: SingleDataRequestManager
-    private lateinit var mockSingleDataRequestEmailSender: SingleDataRequestEmailSender
-    private lateinit var mockAuthentication: DatalandJwtAuthentication
+    private lateinit var singleDataRequestEmailSenderMock: SingleDataRequestEmailSender
+    private lateinit var authenticationMock: DatalandJwtAuthentication
+    private lateinit var utilsMock: DataRequestProcessingUtils
 
     private val companyIdRegexSafeCompanyId = "d623c5b6-ba18-23c3-1234-333555554444"
 
     @BeforeEach
     fun setupSingleDataRequestManager() {
-        val mockObjectMapper = mockObjectMapper()
-        val mockDataRequestRepository = mockDataRequestRepository()
-        mockSingleDataRequestEmailSender = mock(SingleDataRequestEmailSender::class.java)
+        singleDataRequestEmailSenderMock = mock(SingleDataRequestEmailSender::class.java)
+        utilsMock = mockDataRequestProcessingUtils()
         singleDataRequestManager = SingleDataRequestManager(
-            dataRequestRepository = mockDataRequestRepository,
             dataRequestLogger = mock(DataRequestLogger::class.java),
             companyGetter = mock(CompanyGetter::class.java),
-            objectMapper = mockObjectMapper,
-            singleDataRequestEmailSender = mockSingleDataRequestEmailSender,
+            singleDataRequestEmailSender = singleDataRequestEmailSenderMock,
+            utils = utilsMock,
         )
         val mockSecurityContext = mock(SecurityContext::class.java)
-        mockAuthentication = AuthenticationMock.mockJwtAuthentication(
+        authenticationMock = AuthenticationMock.mockJwtAuthentication(
             "requester@bigplayer.com",
             "1234-221-1111elf",
             setOf(DatalandRealmRole.ROLE_USER),
         )
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        `when`(mockAuthentication.credentials).thenReturn("")
+        `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
+        `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
     }
 
-    private fun mockDataRequestRepository(): DataRequestRepository {
-        return mock(DataRequestRepository::class.java).also {
-            `when`(
-                it.existsByUserIdAndDataRequestCompanyIdentifierValueAndDataTypeAndReportingPeriod(
-                    anyString(),
-                    anyString(),
-                    anyString(),
-                    anyString(),
-                ),
-            ).thenReturn(true)
-        }
-    }
+    private fun mockDataRequestProcessingUtils(): DataRequestProcessingUtils {
+        val utilsMock = mock(DataRequestProcessingUtils::class.java)
+        `when`(utilsMock.determineIdentifierTypeViaRegex(anyString()))
+            .thenReturn(DataRequestCompanyIdentifierType.DatalandCompanyId)
+        `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString()))
+            .thenReturn(companyIdRegexSafeCompanyId)
+        `when`(utilsMock.storeDataRequestEntityIfNotExisting(
+            anyString(),
+            any() ?: DataRequestCompanyIdentifierType.DatalandCompanyId,
+            any() ?: DataTypeEnum.lksg,
+            anyString(),
+            any(),
+            any(),
+        )).thenAnswer {
+            val identifierValue = it.arguments[0] as String
+            val identifierType = it.arguments[1] as DataRequestCompanyIdentifierType
+            val dataType = it.arguments[2] as DataTypeEnum
+            val reportingPeriod = it.arguments[3] as String
+            DataRequestEntity(
+                dataRequestId = "request-id",
+                dataRequestCompanyIdentifierType = identifierType,
+                dataRequestCompanyIdentifierValue = identifierValue,
+                reportingPeriod = reportingPeriod,
+                creationTimestamp = 0,
+                lastModifiedDate = 0,
+                requestStatus = RequestStatus.Open,
+                dataType = dataType.value,
+                messageHistory = mutableListOf(),
+                userId = "user-id"
 
-    private fun mockObjectMapper(): ObjectMapper {
-        return mock(ObjectMapper::class.java).also {
-            `when`(
-                it.readValue(
-                    any() as String?,
-                    any() ?: object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
-                ),
-            ).thenReturn(
-                mutableListOf(),
             )
         }
+        return utilsMock
     }
 
     @Test
@@ -91,8 +98,8 @@ class SingleDataRequestManagerTest {
         singleDataRequestManager.processSingleDataRequest(
             request,
         )
-        verify(mockSingleDataRequestEmailSender, times(1)).sendSingleDataRequestEmails(
-            mockAuthentication,
+        verify(singleDataRequestEmailSenderMock, times(1)).sendSingleDataRequestEmails(
+            authenticationMock,
             request,
             DataRequestCompanyIdentifierType.DatalandCompanyId,
             companyIdRegexSafeCompanyId,
@@ -101,18 +108,23 @@ class SingleDataRequestManagerTest {
 
     @Test
     fun `validate that an email is sent with an ISIN provided`() {
+        val isin = "DK0083647253"
         val request = SingleDataRequest(
-            companyIdentifier = "DK0083647253",
+            companyIdentifier = isin,
             frameworkName = DataTypeEnum.lksg,
             reportingPeriods = listOf("1969"),
             contacts = listOf("contact@othercompany.com"),
             message = "You forgot to upload data about the moon landing.",
         )
+        `when`(utilsMock.determineIdentifierTypeViaRegex(anyString()))
+            .thenReturn(DataRequestCompanyIdentifierType.Isin)
+        `when`(utilsMock.getDatalandCompanyIdForIdentifierValue(anyString()))
+            .thenReturn(null)
         singleDataRequestManager.processSingleDataRequest(
             request,
         )
-        verify(mockSingleDataRequestEmailSender, times(1)).sendSingleDataRequestEmails(
-            mockAuthentication,
+        verify(singleDataRequestEmailSenderMock, times(1)).sendSingleDataRequestEmails(
+            authenticationMock,
             request,
             DataRequestCompanyIdentifierType.Isin,
             request.companyIdentifier,
