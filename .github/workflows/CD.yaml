@@ -1,4 +1,4 @@
-name: CD - ${{ github.event.inputs.whichEnvironment }}
+name: CD
 
 on:
   workflow_dispatch:
