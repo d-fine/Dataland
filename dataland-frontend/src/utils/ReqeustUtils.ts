@@ -1,5 +1,5 @@
 import type Keycloak from "keycloak-js";
-import { type RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
+import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
 
 import { ApiClientProvider } from "@/services/ApiClients";
 import type { AxiosError } from "axios";
@@ -26,7 +26,7 @@ export async function getOpenDataRequestsForViewPage(
         (dataRequest) =>
           dataRequest.dataType == framework &&
           dataRequest.dataRequestCompanyIdentifierValue == companyId &&
-          dataRequest.requestStatus == "Open",
+          dataRequest.requestStatus == RequestStatus.Open,
       );
     }
   } catch (error) {
