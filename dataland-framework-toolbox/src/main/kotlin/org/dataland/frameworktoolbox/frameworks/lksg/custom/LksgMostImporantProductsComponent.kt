@@ -24,16 +24,11 @@ class LksgMostImporantProductsComponent(identifier: String,
         dataClassBuilder.addProperty(
             identifier,
             TypeReference(
-                "MutableList", isNullable,
+                "kotlin.collections.List", isNullable,
                 listOf(
                     TypeReference(
                         "org.dataland.datalandbackend.frameworks.lksg.custom.LksgProduct",
-                        true,
-                    ),
-                    TypeReference(
-                        "org.dataland.datalandbackend.frameworks.lksg." +
-                                "custom.LksgProduct",
-                        true,
+                        false,
                     ),
                 ),
             ),

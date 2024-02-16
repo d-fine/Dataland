@@ -254,6 +254,15 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [    {
         ,
           children: [    {
               type: "cell",
+              label: "WARNINGREMOVELATER",
+              explanation: "Warning remove this object later in the process!",
+              shouldDisplay: (): boolean => true
+            ,
+              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.general?.productionSpecificOwnOperations?.warningremovelater)
+            ,
+            },
+            {
+              type: "cell",
               label: "Most Important Products",
               explanation: "Please give an overview of the most important products or services in terms of sales that your company manufactures, distributes and/or offers (own operations)",
               shouldDisplay: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes"

@@ -1,17 +1,14 @@
-import {
-  premium_user_name,
-  premium_user_pw,
-  reader_name,
-  reader_pw,
-  uploader_name,
-  uploader_pw,
-} from "@e2e/utils/Cypress";
+import { admin_name, admin_pw, premium_user_name, premium_user_pw, reader_name, reader_pw } from "@e2e/utils/Cypress";
 import { type Interception } from "cypress/types/net-stubbing";
 import { type SingleDataRequest } from "@clients/communitymanager";
 import { describeIf } from "@e2e/support/TestUtility";
-import { DataTypeEnum, type StoredCompany } from "@clients/backend";
+import { DataTypeEnum, type LksgData, type StoredCompany } from "@clients/backend";
 import { getKeycloakToken } from "@e2e/utils/Auth";
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from "@e2e/utils/CompanyUpload";
+import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
+import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
+import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
+import { humanizeStringOrNumber } from "@/utils/StringFormatter";
 
 describeIf(
   "As a premium user, I want to be able to navigate to the single data request page and submit a request",
@@ -22,13 +19,34 @@ describeIf(
     const uniqueCompanyMarker = Date.now().toString();
     const testCompanyName = "Company-for-single-data-request" + uniqueCompanyMarker;
     let testStoredCompany: StoredCompany;
-    beforeEach(() => {
-      cy.ensureLoggedIn(uploader_name, uploader_pw);
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
-          testStoredCompany = storedCompany;
-        });
+    let lksgPreparedFixtures: Array<FixtureData<LksgData>>;
+
+    /**
+     * Uploads a company with lksg data
+     */
+    function uploadCompanyWithData(): void {
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then(
+          async (storedCompany) => {
+            testStoredCompany = storedCompany;
+            return uploadFrameworkData(
+              DataTypeEnum.Lksg,
+              token,
+              storedCompany.companyId,
+              "2015",
+              getPreparedFixture("LkSG-date-2022-07-30", lksgPreparedFixtures).t,
+            );
+          },
+        );
       });
+    }
+    before(() => {
+      cy.fixture("CompanyInformationWithLksgPreparedFixtures").then(function (jsonContent) {
+        lksgPreparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+        uploadCompanyWithData();
+      });
+    });
+    beforeEach(() => {
       cy.ensureLoggedIn(premium_user_name, premium_user_pw);
     });
 
@@ -38,12 +56,20 @@ describeIf(
       cy.url().should("contain", `/singledatarequest/${testStoredCompany.companyId}`);
     });
 
+    it("Navigate to the single request page via the view page and verify that the viewed framework is preselected.", () => {
+      cy.visitAndCheckAppMount(`/companies/${testStoredCompany.companyId}/frameworks/${DataTypeEnum.Lksg}`);
+      cy.get('[data-test="singleDataRequestButton"]').should("exist").click();
+      cy.url().should("contain", `/singledatarequest/${testStoredCompany.companyId}`);
+      cy.get('[data-test="datapoint-framework"]').should("have.value", "lksg");
+    });
+
     it("Fill out the request page and check correct validation, request and success message", () => {
       cy.intercept("POST", "**/community/requests/single").as("postRequestData");
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       checkCompanyInfoSheet();
       checkValidation();
       chooseReportingPeriod();
+      checkDropdownLabels();
       chooseFramework();
 
       cy.get('[data-test="contactEmail"]').type("example@Email.com");
@@ -111,6 +137,15 @@ describeIf(
     }
 
     /**
+     * Checks if all expected human-readable labels are visible in the dropdown options
+     */
+    function checkDropdownLabels(): void {
+      const dropdown = cy.get("[data-test='datapoint-framework']").should("exist");
+      ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
+        dropdown.should("contain.text", humanizeStringOrNumber(framework));
+      });
+    }
+    /**
      * Choose a framework
      */
     function chooseFramework(): void {
@@ -125,8 +160,6 @@ describeIf(
       cy.get('[data-test="datapoint-framework"]')
         .children()
         .should("have.length", numberOfFrameworks + 1);
-
-      cy.get("[data-test='datapoint-framework']").should("exist");
     }
 
     /**

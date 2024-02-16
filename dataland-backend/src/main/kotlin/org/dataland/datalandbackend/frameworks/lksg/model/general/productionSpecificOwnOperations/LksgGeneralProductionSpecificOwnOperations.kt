@@ -2,11 +2,14 @@
 package org.dataland.datalandbackend.frameworks.lksg.model.general.productionSpecificOwnOperations
 
 import org.dataland.datalandbackend.frameworks.lksg.custom.LksgProduct
+import kotlin.collections.List
 
 /**
  * The data-model for the ProductionSpecificOwnOperations section
  */
 data class LksgGeneralProductionSpecificOwnOperations(
-    val mostImportantProducts: MutableList<LksgProduct?, LksgProduct?>? = null,
+    val warningremovelater: String? = null,
+
+    val mostImportantProducts: List<LksgProduct>? = null,
 
 )
