@@ -3,6 +3,7 @@ import { type FrontendFrameworkDefinition } from "@/frameworks/FrameworkDefiniti
 import esgQuestionnaireFrontendFrameworkDefinition from "@/frameworks/esg-questionnaire/FrontendFrameworkDefinition";
 import eutaxonomyNonFinancialsFrontendFrameworkDefinition from "@/frameworks/eutaxonomy-non-financials/FrontendFrameworkDefinition";
 import heimathafenFrontendFrameworkDefinition from "@/frameworks/heimathafen/FrontendFrameworkDefinition";
+import lksgFrontendFrameworkDefinition from "@/frameworks/lksg/FrontendFrameworkDefinition";
 import sfdrFrontendFrameworkDefinition from "@/frameworks/sfdr/FrontendFrameworkDefinition";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -10,5 +11,6 @@ export const FrameworkDefinitions: Record<string, FrontendFrameworkDefinition<an
   esgQuestionnaire: esgQuestionnaireFrontendFrameworkDefinition,
   eutaxonomyNonFinancials: eutaxonomyNonFinancialsFrontendFrameworkDefinition,
   heimathafen: heimathafenFrontendFrameworkDefinition,
+  lksg: lksgFrontendFrameworkDefinition,
   sfdr: sfdrFrontendFrameworkDefinition,
 };

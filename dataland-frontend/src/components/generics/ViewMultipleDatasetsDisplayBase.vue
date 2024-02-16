@@ -100,7 +100,7 @@ import DatasetDisplayStatusIndicator from "@/components/resources/frameworkDataS
 import SmePanel from "@/components/resources/frameworkDataSearch/sme/SmePanel.vue";
 import MultiLayerDataTableFrameworkPanel from "@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableFrameworkPanel.vue";
 import { convertDataModelToMLDTConfig } from "@/components/resources/dataTable/conversion/MultiLayerDataTableConfigurationConverter";
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
+import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel.ts.old";
 import { p2pDataModel } from "@/components/resources/frameworkDataSearch/p2p/P2pDataModel";
 import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
 import { type FrontendFrameworkDefinition, type FrameworkViewConfiguration } from "@/frameworks/FrameworkDefinition";
