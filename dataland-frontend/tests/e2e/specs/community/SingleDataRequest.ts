@@ -9,6 +9,7 @@ import { uploadFrameworkData } from "@e2e/utils/FrameworkUpload";
 import { type FixtureData, getPreparedFixture } from "@sharedUtils/Fixtures";
 import { ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
+import { singleDataRequestPage } from "@sharedUtils/components/SingleDataRequest";
 
 describeIf(
   "As a premium user, I want to be able to navigate to the single data request page and submit a request",
@@ -68,9 +69,9 @@ describeIf(
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       checkCompanyInfoSheet();
       checkValidation();
-      chooseReportingPeriod();
+      singleDataRequestPage.chooseReportingPeriod();
       checkDropdownLabels();
-      chooseFramework();
+      singleDataRequestPage.chooseFramework();
 
       cy.get('[data-test="contactEmail"]').type("example@Email.com");
       cy.get('[data-test="dataRequesterMessage"]').type("Frontend test message");
@@ -88,8 +89,8 @@ describeIf(
     it("As a data_reader trying to submit a request should lead to an appropriate error message", () => {
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
-      chooseReportingPeriod();
-      chooseFramework();
+      singleDataRequestPage.chooseReportingPeriod();
+      singleDataRequestPage.chooseFramework();
       submit();
       cy.get("[data-test=submittedDiv]").should("exist");
       cy.get("[data-test=requestStatusText]").should(
@@ -121,20 +122,6 @@ describeIf(
     function submit(): void {
       cy.get("button[type='submit']").should("exist").click();
     }
-    /**
-     * Choose reporting periods
-     */
-    function chooseReportingPeriod(): void {
-      cy.get('[data-test="reportingPeriods"] div[data-test="toggleChipsFormInput"]')
-        .should("exist")
-        .get('[data-test="toggle-chip"')
-        .contains("2023")
-        .click()
-        .parent()
-        .should("have.class", "toggled");
-
-      cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'").should("not.exist");
-    }
 
     /**
      * Checks if all expected human-readable labels are visible in the dropdown options
@@ -144,22 +131,6 @@ describeIf(
       ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE.forEach((framework) => {
         dropdown.should("contain.text", humanizeStringOrNumber(framework));
       });
-    }
-    /**
-     * Choose a framework
-     */
-    function chooseFramework(): void {
-      const numberOfFrameworks = Object.keys(DataTypeEnum).length;
-      cy.get('[data-test="selectFramework"]')
-        .should("exist")
-        .get('[data-type="select"]')
-        .should("exist")
-        .click()
-        .get('[data-test="datapoint-framework"]')
-        .select("lksg");
-      cy.get('[data-test="datapoint-framework"]')
-        .children()
-        .should("have.length", numberOfFrameworks + 1);
     }
 
     /**

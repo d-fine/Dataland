@@ -59,12 +59,13 @@
                       />
                     </BasicFormSection>
                     <BasicFormSection header="Provide Contact Details">
-                      <label for="Email" class="label-with-optional">
-                        <b>Email</b><span class="optional-text">Optional</span>
+                      <label for="Emails" class="label-with-optional">
+                        <b>Emails</b><span class="optional-text">Optional</span>
                       </label>
-                      <FormKit v-model="contact" type="text" name="contactDetails" data-test="contactEmail" />
+                      <FormKit v-model="contactsAsString" type="text" name="contactDetails" data-test="contactEmail" />
                       <p class="gray-text font-italic" style="text-align: left">
-                        By specifying a contact person here, your data request will be directed accordingly.<br />
+                        By specifying contacts your data request will be directed accordingly.<br />
+                        You can specify multiple comma separated email addresses.<br />
                         This increases the chances of expediting the fulfillment of your request.
                       </p>
                       <br />
@@ -83,7 +84,7 @@
                         data-test="dataRequesterMessage"
                       />
                       <p class="gray-text font-italic" style="text-align: left">
-                        Let your contact know what exactly your are looking for.
+                        Let your contacts know what exactly your are looking for.
                       </p>
                     </BasicFormSection>
                   </div>
@@ -182,7 +183,7 @@ export default defineComponent({
       fetchedCompanyInformation: {} as CompanyInformation,
       frameworkOptions: [] as { value: DataTypeEnum; label: string }[],
       frameworkName: this.$route.query.preSelectedFramework as DataTypeEnum,
-      contact: "",
+      contactsAsString: "",
       dataRequesterMessage: "",
       errorMessage: "",
       selectedReportingPeriodsError: false,
@@ -203,6 +204,7 @@ export default defineComponent({
         .map((reportingPeriod) => reportingPeriod.name);
     },
     companyIdentifier(): string {
+      console.log(this.$route.params.companyId);
       return this.$route.params.companyId as string;
     },
   },
@@ -227,12 +229,19 @@ export default defineComponent({
      * @returns the SingleDataRequest object
      */
     collectDataToSend(): SingleDataRequest {
-      const contactAsList = this.contact ? [this.contact] : undefined;
+      const contacts = Array.from(
+        new Set(
+          this.contactsAsString
+            .split(",")
+            .map((rawEmail) => rawEmail.trim())
+            .filter((email) => email),
+        ),
+      );
       return {
         companyIdentifier: this.companyIdentifier,
         frameworkName: this.frameworkName,
         reportingPeriods: this.selectedReportingPeriods,
-        contacts: contactAsList,
+        contacts: contacts,
         message: this.dataRequesterMessage,
       };
     },
