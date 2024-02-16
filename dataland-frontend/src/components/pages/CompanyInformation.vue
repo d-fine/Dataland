@@ -8,7 +8,11 @@
       <div class="company-details__headline">
         <div class="left-elements">
           <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
-          <div class="p-badge badge-light-green outline" data-test="verifiedDataOwnerBadge" v-if="isUserDataOwner">
+          <div
+            class="p-badge badge-light-green outline rounded"
+            data-test="verifiedDataOwnerBadge"
+            v-if="hasCompanyDataOwner"
+          >
             <span class="material-icons-outlined fs-sm">verified</span>
             Verified Data Owner
           </div>
@@ -61,7 +65,7 @@ import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
-import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
+import { hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -79,6 +83,7 @@ export default defineComponent({
       waitingForData: true,
       companyIdDoesNotExist: false,
       isUserDataOwner: false,
+      hasCompanyDataOwner: false,
       dialogIsOpen: false,
       claimIsSubmitted: false,
     };
@@ -120,17 +125,29 @@ export default defineComponent({
   mounted() {
     void this.getCompanyInformation();
     void this.setDataOwnershipStatus();
+    void this.updateHasCompanyDataOwner();
   },
   watch: {
-    companyId() {
-      void this.getCompanyInformation();
-      void this.setDataOwnershipStatus();
-      this.claimIsSubmitted = false;
+    async companyId(newCompanyId) {
+      try {
+        void this.setDataOwnershipStatus();
+        void this.getCompanyInformation();
+        this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(newCompanyId as string, this.getKeycloakPromise);
+        this.claimIsSubmitted = false;
+      } catch (error) {
+        console.error("Error fetching data for new company:", error);
+      }
     },
   },
   methods: {
     /**
-     * handles the close button click event of the dialog
+     * Updates the hasCompanyDataOwner in an async way
+     */
+    async updateHasCompanyDataOwner() {
+      this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(this.companyId, this.getKeycloakPromise);
+    },
+    /**
+     * Handles the close button click event of the dialog
      */
     onCloseDialog() {
       this.dialogIsOpen = false;
@@ -169,7 +186,7 @@ export default defineComponent({
       });
     },
     /**
-     * handles the emitted claim event
+     * Handles the emitted claim event
      */
     onClaimSubmitted() {
       this.claimIsSubmitted = true;
@@ -181,6 +198,10 @@ export default defineComponent({
 <style scoped lang="scss">
 .inline-loading {
   width: 450px;
+}
+
+.rounded {
+  border-radius: 0.5rem;
 }
 
 .company-details {

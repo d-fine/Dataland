@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyDataOwners
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
+import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -17,6 +18,10 @@ import java.util.UUID
 class DataOwnerControllerTest {
     private val apiAccessor = ApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
+
+    private fun createUnauthorizedUser() {
+        GlobalAuth.setBearerToken(null)
+    }
 
     private fun validateDataOwnersForCompany(
         companyId: UUID,
@@ -264,5 +269,48 @@ class DataOwnerControllerTest {
             .getTData(1)[0]
         assertFailingApiUploadToCompany(companyId, frameworkSampleData, true)
         assertSucceedingApiUploadToCompany(companyId, frameworkSampleData)
+    }
+
+    @Test
+    fun `check for a company if it has a data owner with an existing and non existing data owner `() {
+        val companyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyDataControllerApi.postDataOwner(companyId, dataReaderUserId)
+
+        assertDoesNotThrow { apiAccessor.companyDataControllerApi.hasCompanyDataOwner(companyId) }
+
+        assertDoesNotThrow { apiAccessor.companyDataControllerApi.deleteDataOwner(companyId, dataReaderUserId) }
+        val headExceptionForNonExistingDataOwners = assertThrows<ClientException> {
+            apiAccessor.companyDataControllerApi.hasCompanyDataOwner(companyId)
+        }
+        assertErrorCodeForClientException(headExceptionForNonExistingDataOwners, 404)
+    }
+
+    @Test
+    fun `check company without a data owner if it has a data owner as unauthorized user`() {
+        val companyId = UUID.fromString(
+            apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
+        )
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        apiAccessor.companyDataControllerApi.postDataOwner(companyId, dataReaderUserId)
+
+        createUnauthorizedUser()
+
+        val checkIfUserIsUnauthorizedResponse = assertThrows<ClientException> {
+            apiAccessor.companyDataControllerApi.getDataOwners(companyId)
+        }
+        assertErrorCodeForClientException(checkIfUserIsUnauthorizedResponse, 403)
+
+        assertDoesNotThrow { apiAccessor.companyDataControllerApi.hasCompanyDataOwner(companyId) }
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+        assertDoesNotThrow { apiAccessor.companyDataControllerApi.deleteDataOwner(companyId, dataReaderUserId) }
+        createUnauthorizedUser()
+        val headExceptionForNonExistingDataOwners = assertThrows<ClientException> {
+            apiAccessor.companyDataControllerApi.hasCompanyDataOwner(companyId)
+        }
+        assertErrorCodeForClientException(headExceptionForNonExistingDataOwners, 404)
     }
 }
