@@ -61,7 +61,7 @@ class SingleDataRequestEmailSender(
                     companyId = datalandCompanyId,
                     dataType = singleDataRequest.frameworkName,
                     reportingPeriods = singleDataRequest.reportingPeriods,
-                    message = singleDataRequest.message,
+                    rawMessage = singleDataRequest.message,
                 ),
             )
         }
