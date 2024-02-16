@@ -287,14 +287,14 @@ export const lksgDataModel = [    {
             label: "Production-specific - Own Operations",
             fields: [
                  {
-                name: "warningremovelater",
-                label: "WARNINGREMOVELATER",
-                description: "Warning remove this object later in the process!",
+                name: "mostImportantProducts",
+                label: "Most Important Products",
+                description: "Please give an overview of the most important products or services in terms of sales that your company manufactures, distributes and/or offers (own operations)",
     
     
-                component: "InputTextFormField",
+                component: "MostImportantProductsFormField",
                 required: false,
-                showIf: ():boolean => true,
+                showIf: (dataset: LksgData):boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes",
     
                 },
      

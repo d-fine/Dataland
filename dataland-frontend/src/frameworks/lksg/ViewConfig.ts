@@ -9,6 +9,7 @@ import {formatPercentageForDatatable} from "@/components/resources/dataTable/con
 import {formatListOfStringsForDatatable} from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import {getOriginalNameFromTechnicalName} from "@/components/resources/dataTable/conversion/Utils";
 import {formatNumberForDatatable} from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
+import {formatLksgMostImportantProductsForDisplay} from "@/components/resources/dataTable/conversion/lksg/LksgValueGetterFactories";
 import {formatNaceCodesForDatatable} from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 export const lksgViewConfiguration: MLDTConfig<LksgData> = [    {
       type: "section",
@@ -253,11 +254,11 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [    {
         ,
           children: [    {
               type: "cell",
-              label: "WARNINGREMOVELATER",
-              explanation: "Warning remove this object later in the process!",
-              shouldDisplay: (): boolean => true
+              label: "Most Important Products",
+              explanation: "Please give an overview of the most important products or services in terms of sales that your company manufactures, distributes and/or offers (own operations)",
+              shouldDisplay: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes"
             ,
-              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatStringForDatatable(dataset.general?.productionSpecificOwnOperations?.warningremovelater)
+              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatLksgMostImportantProductsForDisplay(dataset.general?.productionSpecificOwnOperations?.mostImportantProducts)
             ,
             },
             ],
