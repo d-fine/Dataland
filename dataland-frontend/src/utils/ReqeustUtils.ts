@@ -12,7 +12,7 @@ import { type DataTypeEnum } from "@clients/backend";
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
  * @returns a promise, which resolves to an array of StoredDataRequest
  */
-export async function getOpenDataRequestsForViewPage(
+export async function getAnsweredDataRequestsForViewPage(
   companyId: string,
   framework: DataTypeEnum,
   keycloakPromiseGetter?: () => Promise<Keycloak>,
@@ -26,7 +26,7 @@ export async function getOpenDataRequestsForViewPage(
         (dataRequest) =>
           dataRequest.dataType == framework &&
           dataRequest.dataRequestCompanyIdentifierValue == companyId &&
-          dataRequest.requestStatus == RequestStatus.Open,
+          dataRequest.requestStatus == RequestStatus.Answered,
       );
     }
   } catch (error) {

@@ -15,9 +15,9 @@
 <script lang="ts">
 import PrimeButton from "primevue/button";
 import { defineComponent } from "vue";
-import { getDataRequestsForViewPage } from "@/utils/ReqeustUtils";
 import { inject } from "vue";
 import type Keycloak from "keycloak-js";
+import { getAnsweredDataRequestsForViewPage } from "@/utils/ReqeustUtils";
 
 export default defineComponent({
   name: "ReviewRequestButtons",
@@ -43,7 +43,7 @@ export default defineComponent({
   methods: {
     async closeRequest() {
       console.log(" here I will close the request #todo");
-      const listOFMyRequests = await getDataRequestsForViewPage(
+      const listOFMyRequests = await getAnsweredDataRequestsForViewPage(
         this.companyId,
         this.framework,
         this.getKeycloakPromise,
