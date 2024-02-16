@@ -1,6 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundException
+import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -25,7 +25,7 @@ class DataRequestAlterationManager(
      */
     @Transactional
     fun patchDataRequest(dataRequestId: String, requestStatus: RequestStatus): StoredDataRequest {
-        if (!dataRequestRepository.existsById(dataRequestId)) throw DataRequestNotFoundException(dataRequestId)
+        if (!dataRequestRepository.existsById(dataRequestId)) throw DataRequestNotFoundApiException(dataRequestId)
         var dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
         dataRequestEntity.requestStatus = requestStatus

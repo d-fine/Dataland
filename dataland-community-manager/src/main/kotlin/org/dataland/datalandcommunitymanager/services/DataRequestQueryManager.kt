@@ -2,7 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.repositories.utils.GetDataRequestsSearchFilter
-import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundException
+import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
@@ -72,7 +72,7 @@ class DataRequestQueryManager(
      */
     @Transactional
     fun getDataRequestById(dataRequestId: String): StoredDataRequest {
-        if (!dataRequestRepository.existsById(dataRequestId)) throw DataRequestNotFoundException(dataRequestId)
+        if (!dataRequestRepository.existsById(dataRequestId)) throw DataRequestNotFoundApiException(dataRequestId)
         val dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         return dataRequestEntity.toStoredDataRequest()
     }

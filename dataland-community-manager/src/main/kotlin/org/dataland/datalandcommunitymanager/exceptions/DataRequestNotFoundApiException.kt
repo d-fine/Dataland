@@ -3,10 +3,9 @@ package org.dataland.datalandcommunitymanager.exceptions
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 
 /**
- * A ResourceNotFoundApiException should be thrown if a dataland-internal resource could not be located
- * Both message and summary are displayed to the user with a 404 status code
+ * A DataRequestNotFoundApiException should be thrown if a data request could not be found
  */
-class DataRequestNotFoundException(
+class DataRequestNotFoundApiException(
     requestId: String,
 ) : ResourceNotFoundApiException(
     "Data request not found",
