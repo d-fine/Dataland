@@ -44,7 +44,7 @@ class SingleDataRequestsTest {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
-            frameworkName = SingleDataRequest.FrameworkName.lksg,
+            dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = listOf("2022", "2023"),
             contacts = listOf("someContact@webserver.de", "simpleString@some.thing"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
@@ -66,7 +66,7 @@ class SingleDataRequestsTest {
         val invalidCompanyIdentifier = "a"
         val invalidSingleDataRequest = SingleDataRequest(
             companyIdentifier = invalidCompanyIdentifier,
-            frameworkName = SingleDataRequest.FrameworkName.lksg,
+            dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = listOf("2022"),
         )
         val clientException = assertThrows<ClientException> {
@@ -88,7 +88,7 @@ class SingleDataRequestsTest {
         val unknownCompanyId = UUID.randomUUID().toString()
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = unknownCompanyId,
-            frameworkName = SingleDataRequest.FrameworkName.lksg,
+            dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = listOf("2022"),
         )
         val clientException = assertThrows<ClientException> {
@@ -106,7 +106,7 @@ class SingleDataRequestsTest {
             apiAccessor.uploadOneCompanyWithIdentifiers(permId = generateRandomPermId())!!.actualStoredCompany.companyId
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = companyIdOfNewCompany,
-            frameworkName = SingleDataRequest.FrameworkName.lksg,
+            dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = listOf("2022"),
         )
 
@@ -148,7 +148,7 @@ class SingleDataRequestsTest {
         return requestControllerApi.postSingleDataRequest(
             SingleDataRequest(
                 companyIdentifier = companyIdentifier,
-                frameworkName = SingleDataRequest.FrameworkName.sfdr,
+                dataType = SingleDataRequest.DataType.sfdr,
                 reportingPeriods = listOf("2022"),
                 contacts = contactList,
                 message = message,
@@ -219,7 +219,7 @@ class SingleDataRequestsTest {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
-            frameworkName = SingleDataRequest.FrameworkName.lksg,
+            dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = listOf("2022"),
         )
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
@@ -256,7 +256,7 @@ class SingleDataRequestsTest {
         val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
         val singleDataRequest = SingleDataRequest(
             companyIdentifier = stringThatMatchesThePermIdRegex,
-            frameworkName = SingleDataRequest.FrameworkName.lksg,
+            dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = listOf("2022"),
         )
         val storedDataRequest = requestControllerApi.postSingleDataRequest(singleDataRequest).first()
