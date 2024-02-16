@@ -16,7 +16,7 @@
 import PrimeButton from "primevue/button";
 import { defineComponent } from "vue";
 import { getDataRequestsForViewPage } from "@/utils/ReqeustUtils";
-import { inject } from "vue/dist/vue";
+import { inject } from "vue";
 import type Keycloak from "keycloak-js";
 
 export default defineComponent({
@@ -41,9 +41,13 @@ export default defineComponent({
     },
   },
   methods: {
-    closeRequest() {
+    async closeRequest() {
       console.log(" here I will close the request #todo");
-      const listOFMyRequests = getDataRequestsForViewPage(this.companyId, this.framework, this.getKeycloakPromise);
+      const listOFMyRequests = await getDataRequestsForViewPage(
+        this.companyId,
+        this.framework,
+        this.getKeycloakPromise,
+      );
       console.log(listOFMyRequests);
     },
   },

@@ -23,8 +23,7 @@ export async function getDataRequestsForViewPage(
         await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.getDataRequestsForUser()
       ).data.filter(
         (dataRequest) =>
-          dataRequest.dataRequestCompanyIdentifierValue == framework &&
-          dataRequest.dataRequestCompanyIdentifierValue == companyId,
+          dataRequest.dataType == framework && dataRequest.dataRequestCompanyIdentifierValue == companyId,
       );
     }
   } catch (error) {
