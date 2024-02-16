@@ -34,8 +34,9 @@ class SingleDataRequestEmailBuilder(
         companyId: String,
         dataType: DataTypeEnum,
         reportingPeriods: List<String>,
-        message: String?,
+        rawMessage: String?,
     ): Email {
+        val message = rawMessage.takeIf { !it.isNullOrBlank() }
         val companyName = companyGetter.getCompanyInfo(companyId).companyName
         val content = EmailContent(
             subject = "A message from Dataland: Your ESG data are high on demand!",
