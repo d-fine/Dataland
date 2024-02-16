@@ -69,9 +69,9 @@ describeIf(
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
       checkCompanyInfoSheet();
       checkValidation();
-      singleDataRequestPage.chooseReportingPeriod();
+      singleDataRequestPage.chooseReportingPeriod2023();
       checkDropdownLabels();
-      singleDataRequestPage.chooseFramework();
+      singleDataRequestPage.chooseFrameworkLksg();
 
       cy.get('[data-test="contactEmail"]').type("example@Email.com");
       cy.get('[data-test="dataRequesterMessage"]').type("Frontend test message");
@@ -89,8 +89,8 @@ describeIf(
     it("As a data_reader trying to submit a request should lead to an appropriate error message", () => {
       cy.ensureLoggedIn(reader_name, reader_pw);
       cy.visitAndCheckAppMount(`/singleDataRequest/${testStoredCompany.companyId}`);
-      singleDataRequestPage.chooseReportingPeriod();
-      singleDataRequestPage.chooseFramework();
+      singleDataRequestPage.chooseReportingPeriod2023();
+      singleDataRequestPage.chooseFrameworkLksg();
       submit();
       cy.get("[data-test=submittedDiv]").should("exist");
       cy.get("[data-test=requestStatusText]").should(

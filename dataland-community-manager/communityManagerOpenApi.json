@@ -150,7 +150,7 @@
         ],
         "summary": "Update status of data request.",
         "description": "Updates status of data request given data request id.",
-        "operationId": "patchDataRequest",
+        "operationId": "patchDataRequestStatus",
         "parameters": [
           {
             "name": "dataRequestId",

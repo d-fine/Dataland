@@ -204,7 +204,6 @@ export default defineComponent({
         .map((reportingPeriod) => reportingPeriod.name);
     },
     companyIdentifier(): string {
-      console.log(this.$route.params.companyId);
       return this.$route.params.companyId as string;
     },
   },

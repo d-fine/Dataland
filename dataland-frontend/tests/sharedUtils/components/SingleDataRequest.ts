@@ -1,17 +1,17 @@
 import { DataTypeEnum } from "@clients/backend";
 
 export const singleDataRequestPage = {
-  chooseReportingPeriod(): void {
+  chooseReportingPeriod2023(year: string): void {
     cy.get('[data-test="reportingPeriods"] div[data-test="toggleChipsFormInput"]')
       .should("exist")
       .get('[data-test="toggle-chip"')
-      .contains("2023")
+      .contains(year)
       .click()
       .parent()
       .should("have.class", "toggled");
     cy.get("div[data-test='reportingPeriods'] p[data-test='reportingPeriodErrorMessage'").should("not.exist");
   },
-  chooseFramework(): void {
+  chooseFrameworkLksg(): void {
     const numberOfFrameworks = Object.keys(DataTypeEnum).length;
     cy.get('[data-test="selectFramework"]')
       .should("exist")

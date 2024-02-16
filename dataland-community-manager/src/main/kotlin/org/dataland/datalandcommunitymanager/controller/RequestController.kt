@@ -76,10 +76,10 @@ class RequestController(
         )
     }
 
-    override fun patchDataRequest(
+    override fun patchDataRequestStatus(
         dataRequestId: UUID,
         requestStatus: RequestStatus,
     ): ResponseEntity<StoredDataRequest> {
-        return ResponseEntity.ok(dataRequestAlterationManager.patchDataRequest(dataRequestId.toString(), requestStatus))
+        return ResponseEntity.ok(dataRequestAlterationManager.patchDataRequestStatus(dataRequestId.toString(), requestStatus))
     }
 }

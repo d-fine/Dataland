@@ -241,7 +241,7 @@ class SingleDataRequestsTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequest(nonExistingDataRequestId, RequestStatus.resolved)
+            requestControllerApi.patchDataRequestStatus(nonExistingDataRequestId, RequestStatus.resolved)
         }
         val responseBody = (clientException.response as ClientError<*>).body as String
 
@@ -266,7 +266,7 @@ class SingleDataRequestsTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
 
         val clientException = assertThrows<ClientException> {
-            requestControllerApi.patchDataRequest(storedDataRequestId, RequestStatus.resolved)
+            requestControllerApi.patchDataRequestStatus(storedDataRequestId, RequestStatus.resolved)
         }
         assertEquals("Client error : 403 ", clientException.message)
     }
@@ -274,7 +274,7 @@ class SingleDataRequestsTest {
     private fun postDataRequestsBeforeQueryTest(): List<SingleDataRequest> {
         val requestA = SingleDataRequest(
             companyIdentifier = generateRandomIsin(),
-            frameworkName = SingleDataRequest.FrameworkName.lksg,
+            dataType = SingleDataRequest.DataType.lksg,
             reportingPeriods = listOf("2022"),
         )
         requestControllerApi.postSingleDataRequest(requestA)
@@ -282,12 +282,12 @@ class SingleDataRequestsTest {
         val specificPermId = System.currentTimeMillis().toString()
         val requestB = SingleDataRequest(
             companyIdentifier = specificPermId,
-            frameworkName = SingleDataRequest.FrameworkName.sfdr,
+            dataType = SingleDataRequest.DataType.sfdr,
             reportingPeriods = listOf("2021"),
         )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val req2 = requestControllerApi.postSingleDataRequest(requestB).first()
-        requestControllerApi.patchDataRequest(UUID.fromString(req2.dataRequestId), RequestStatus.resolved)
+        requestControllerApi.patchDataRequestStatus(UUID.fromString(req2.dataRequestId), RequestStatus.resolved)
 
         return listOf(requestA, requestB)
     }

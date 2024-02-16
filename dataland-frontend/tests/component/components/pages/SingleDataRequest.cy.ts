@@ -23,7 +23,7 @@ describe("Component tests for the single data request page", function (): void {
    * Fills the mandatory fields on the single data request page
    */
   function fillMandatoryFields(): void {
-    singleDataRequestPage.chooseReportingPeriod();
-    singleDataRequestPage.chooseFramework();
+    singleDataRequestPage.chooseReportingPeriod2023();
+    singleDataRequestPage.chooseFrameworkLksg();
   }
 });

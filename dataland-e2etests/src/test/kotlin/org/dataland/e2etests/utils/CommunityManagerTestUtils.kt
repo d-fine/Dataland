@@ -306,7 +306,7 @@ fun assertStatusForDataRequestId(dataRequestId: UUID, expectedStatus: RequestSta
 
 fun patchDataRequestAndAssertNewStatus(dataRequestId: UUID, newStatus: RequestStatus) {
     val storedDataRequestAfterPatch = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
-        .patchDataRequest(dataRequestId, newStatus)
+        .patchDataRequestStatus(dataRequestId, newStatus)
     assertEquals(newStatus, storedDataRequestAfterPatch.requestStatus)
     assertStatusForDataRequestId(dataRequestId, newStatus)
 }

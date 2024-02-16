@@ -24,7 +24,7 @@ class DataRequestAlterationManager(
      * @return the updated data request object
      */
     @Transactional
-    fun patchDataRequest(dataRequestId: String, requestStatus: RequestStatus): StoredDataRequest {
+    fun patchDataRequestStatus(dataRequestId: String, requestStatus: RequestStatus): StoredDataRequest {
         if (!dataRequestRepository.existsById(dataRequestId)) throw DataRequestNotFoundApiException(dataRequestId)
         var dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)

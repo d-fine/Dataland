@@ -163,7 +163,7 @@ interface RequestApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun patchDataRequest(
+    fun patchDataRequestStatus(
         @PathVariable dataRequestId: UUID,
         @RequestParam requestStatus: RequestStatus = RequestStatus.Open,
     ): ResponseEntity<StoredDataRequest>
