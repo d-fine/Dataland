@@ -76,10 +76,9 @@
         </td>
     </tr>
     <tr>
-        <td style="text-align: left; vertical-align: bottom; width: 40px; height: 17px; padding: 0; background-color: #1b1b1b"><img src="${baseUrl}/images/email/cr4.png" width="40" alt="" style="border: 0 none; display: block; height: auto; line-height: 100%; outline: none; text-decoration: none;"></td>
-        <td colspan="3" style="text-align: right; width: 520px; height: 17px; background-color: #1b1b1b; padding: 0">
-        </td>
-        <td style="text-align: right; vertical-align: bottom; width: 40px; height: 17px; background-color: #1b1b1b; padding: 0"><img src="${baseUrl}/images/email/cr3.png" width="40" alt="" style="border: 0 none; display: block; height: auto; line-height: 100%; outline: none; text-decoration: none;"></td>
+        <td style="text-align: left; vertical-align: bottom; width: 40px; height: 17px; padding: 0; background-color: #1b1b1b"></td>
+        <td colspan="3" style="text-align: right; width: 520px; height: 17px; background-color: #1b1b1b; padding: 0"></td>
+        <td style="text-align: right; vertical-align: bottom; width: 40px; height: 17px; background-color: #1b1b1b; padding: 0"></td>
     </tr>
     </tbody>
 </table>

@@ -22,16 +22,23 @@ class DataRequestLogger {
      */
     fun logMessageForBulkDataRequest(bulkDataRequestId: String) {
         bulkDataRequestLogger.info(
-            "Received a bulk data request by a user. " +
+            "Received a bulk data request from a user. " +
                 "-> Processing it with bulkDataRequestId $bulkDataRequestId",
 
         )
     }
 
     /**
+     * Logs an appropriate message when a bulk data request has happened.
+     */
+    fun logMessageForSingleDataRequestReceived() {
+        singleDataRequestLogger.info("Received a single data request from a user.")
+    }
+
+    /**
      * Logs an appropriate message when a single data request has happened.
      */
-    fun logMessageForSingleDataRequest(companyIdentifier: String) {
+    fun logMessageForReceivingSingleDataRequest(companyIdentifier: String) {
         bulkDataRequestLogger.info(
             "Received a single data request with companyIdentifier $companyIdentifier by a user. " +
                 "-> Processing it",
@@ -98,6 +105,6 @@ class DataRequestLogger {
      * Logs an appropriate message when the status of a data request is updated
      */
     fun logMessageForPatchingRequestStatus(dataRequestId: String, requestStatus: RequestStatus) {
-        singleDataRequestLogger.info("Patching Company $dataRequestId with status $requestStatus")
+        singleDataRequestLogger.info("Patching request $dataRequestId with status $requestStatus")
     }
 }

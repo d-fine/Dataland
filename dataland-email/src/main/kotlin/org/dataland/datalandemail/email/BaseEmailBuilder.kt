@@ -16,8 +16,7 @@ abstract class BaseEmailBuilder(
         EmailContact(assertEmailAddressFormatAndReturnIt(senderEmail), senderName)
 
     protected fun assertEmailAddressFormatAndReturnIt(emailAddress: String): String {
-        val regexForValidEmail = Regex("^[a-zA-Z0-9_.!-]+@[a-zA-Z0-9-]+.[a-z]{2,3}\$")
-        if (!regexForValidEmail.matches(emailAddress)) {
+        if (!emailAddress.isEmailAddress()) {
             logger.error(
                 "The email addresses provided by the Spring properties have a wrong format. " +
                     "The following email address was parsed from that prop and caused this error: $emailAddress" +
