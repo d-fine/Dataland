@@ -1,8 +1,6 @@
 import type Keycloak from "keycloak-js";
 import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
-
 import { ApiClientProvider } from "@/services/ApiClients";
-import type { AxiosError } from "axios";
 import { type DataTypeEnum } from "@clients/backend";
 
 /**
@@ -30,9 +28,7 @@ export async function getAnsweredDataRequestsForViewPage(
       );
     }
   } catch (error) {
-    if ((error as AxiosError)?.response?.status == 404) {
-      return listOfStoredDataRequest;
-    }
+    console.error(error);
     throw error;
   }
   return listOfStoredDataRequest;
@@ -43,31 +39,21 @@ export async function getAnsweredDataRequestsForViewPage(
  * @param dataRequestId the dataland dataRequestId
  * @param requestStatus the desired requestStatus
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
- * @returns a promise, which resolves to a boolean
  */
 export async function patchDataRequestStatus(
   dataRequestId: string,
   requestStatus: RequestStatus,
   keycloakPromiseGetter?: () => Promise<Keycloak>,
-): Promise<boolean> {
+): Promise<void> {
   try {
     if (keycloakPromiseGetter) {
-      if (
-        (
-          await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequest(
-            dataRequestId,
-            requestStatus,
-          )
-        ).status == 200
-      ) {
-        return true;
-      }
+      await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequest(
+        dataRequestId,
+        requestStatus,
+      );
     }
   } catch (error) {
-    if ((error as AxiosError)?.response?.status == 404) {
-      return false;
-    }
+    console.error(error);
     throw error;
   }
-  return false;
 }
