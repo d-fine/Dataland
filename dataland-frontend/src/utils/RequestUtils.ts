@@ -4,7 +4,7 @@ import { ApiClientProvider } from "@/services/ApiClients";
 import { type DataTypeEnum } from "@clients/backend";
 
 /**
- * Returns the List of StoredDataRequest from user with matching framework and companyId
+ * Returns the List of StoredDataRequest from user with ReqeustStatus 'answered' and matching framework and companyId
  * @param companyId the dataland companyId
  * @param framework the dataland framework
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
