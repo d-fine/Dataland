@@ -2,9 +2,14 @@
   <div data-test="select-reporting-period-dialog">
     <h4 class="title">SELECT YEAR</h4>
     <div class="three-in-row" data-test="reporting-periods">
-      <a v-for="(el, index) in dataTableContents" :key="index" class="link" @click="onClick($event, el)"
-        >{{ el.reportingPeriod }}
-      </a>
+      <a
+        v-for="(el, index) in dataTableContents"
+        class="link"
+        :key="index"
+        @click="$emit('selectedReportingPeriod', el)"
+      >
+        {{ el.reportingPeriod }}</a
+      >
     </div>
   </div>
 </template>
@@ -13,11 +18,7 @@
 import { defineComponent } from "vue";
 import { type DataMetaInformation } from "@clients/backend";
 import { compareReportingPeriods } from "@/utils/DataTableDisplay";
-
-interface ReportingPeriodTableEntry {
-  reportingPeriod: string;
-  editUrl: string;
-}
+import { type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "SelectReportingPeriodDialog",
@@ -53,12 +54,6 @@ export default defineComponent({
         }
       }
     },
-  },
-  onClick(ev: Event, el: ReportingPeriodTableEntry): void {
-    console.log("click event");
-    console.log(ev);
-    console.log("element");
-    console.log(el);
   },
 });
 </script>
