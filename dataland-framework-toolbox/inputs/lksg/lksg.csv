@@ -21,7 +21,7 @@ Field Identifier,Category,Sub-Category,Field Name,Tooltip - upload page,Tooltip 
 20,General,Production-specific,Specific Procurement,Does your company have one of the specific procurement models?,,Single-Select Dropdown,Short-lived and changing business relationships | High price pressure | Tightly timed or short-term adjusted delivery deadlines and conditions with suppliers | None of the above,,,11,Yes,
 500,General,Production-specific - Own Operations,WARNINGREMOVELATER,Warning remove this object later in the process!,,String,,,,,,
 21,General,Production-specific - Own Operations,Most Important Products,"Please give an overview of the most important products or services in terms of sales that your company manufactures, distributes and/or offers (own operations)",,LkSG Most Important Products,,,,11,Yes,
-22,General,Production-specific - Own Operations,Procurement Category,"Name their procurement categories (products, raw materials, services) (own operations)",,Custom LkSG Procurement Categories,,,,11,Yes,
+22,General,Production-specific - Own Operations,Procurement Categories,"Name their procurement categories (products, raw materials, services) (own operations)",,LkSG Procurement Categories,,,,11,Yes,
 23,Governance,Risk management - Own Operations,Risk Management System,Does your company have an adequate and effective Risk Management system?,,Yes/No,,,Simple,,,
 24,Governance,Risk management - Own Operations,Risk Analysis in Fiscal Year,Did you perform a risk analysis as part of risk management this fiscal year?,,Yes/No,,,,23,Yes,
 25,Governance,Risk management - Own Operations,Risks Identified,Were risks identified during this period?,,Yes/No,,,,24,Yes,
