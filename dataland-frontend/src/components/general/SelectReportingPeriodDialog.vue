@@ -2,9 +2,9 @@
   <div data-test="select-reporting-period-dialog">
     <h4 class="title">SELECT YEAR</h4>
     <div class="three-in-row" data-test="reporting-periods">
-      <router-link v-for="(el, index) in dataTableContents" :key="index" class="link" :to="el.editUrl">{{
-        el.reportingPeriod
-      }}</router-link>
+      <a v-for="(el, index) in dataTableContents" :key="index" class="link" @click="onClick($event, el)"
+        >{{ el.reportingPeriod }}
+      </a>
     </div>
   </div>
 </template>
@@ -31,6 +31,7 @@ export default defineComponent({
       type: Map,
     },
   },
+  emits: ["selectedReportingPeriod"],
   mounted() {
     this.setReportingPeriodDataTableContents();
   },
@@ -52,6 +53,12 @@ export default defineComponent({
         }
       }
     },
+  },
+  onClick(ev: Event, el: ReportingPeriodTableEntry): void {
+    console.log("click event");
+    console.log(ev);
+    console.log("element");
+    console.log(el);
   },
 });
 </script>

@@ -47,7 +47,13 @@
               :meta-info="singleDataMetaInfoToDisplay"
               :company-name="fetchedCompanyInformation.companyName"
             />
-            <ReviewRequestButtons :company-id="companyID" :framework="dataType" :is-visible="true" />
+            <ReviewRequestButtons
+              :company-id="companyID"
+              :framework="dataType"
+              :single-data-meta-info-to-display="singleDataMetaInfoToDisplay"
+              :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
+              :is-visible="true"
+            />
             <PrimeButton
               v-if="isEditableByCurrentUser"
               class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
@@ -75,7 +81,10 @@
             </router-link>
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
-            <SelectReportingPeriodDialog :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset" />
+            <SelectReportingPeriodDialog
+              :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
+              @selected-reporting-period=""
+            />
           </OverlayPanel>
         </div>
       </MarginWrapper>
