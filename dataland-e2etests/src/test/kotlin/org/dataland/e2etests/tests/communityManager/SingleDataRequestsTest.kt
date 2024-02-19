@@ -18,7 +18,7 @@ import org.dataland.e2etests.utils.generateRandomIsin
 import org.dataland.e2etests.utils.generateRandomLei
 import org.dataland.e2etests.utils.generateRandomPermId
 import org.dataland.e2etests.utils.getIdForUploadedCompanyWithIdentifiers
-import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatus
+import org.dataland.e2etests.utils.patchDataRequestAndAssertNewStatusAndLastModifiedUpdated
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -230,9 +230,9 @@ class SingleDataRequestsTest {
 
         assertStatusForDataRequestId(storedDataRequestId, RequestStatus.open)
 
-        patchDataRequestAndAssertNewStatus(storedDataRequestId, RequestStatus.resolved)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(storedDataRequestId, RequestStatus.resolved)
 
-        patchDataRequestAndAssertNewStatus(storedDataRequestId, RequestStatus.open)
+        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(storedDataRequestId, RequestStatus.open)
     }
 
     @Test

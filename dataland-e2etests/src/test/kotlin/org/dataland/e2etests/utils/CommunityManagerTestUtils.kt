@@ -304,9 +304,14 @@ fun assertStatusForDataRequestId(dataRequestId: UUID, expectedStatus: RequestSta
     assertEquals(expectedStatus, retrievedStoredDataRequest.requestStatus)
 }
 
-fun patchDataRequestAndAssertNewStatus(dataRequestId: UUID, newStatus: RequestStatus) {
-    val storedDataRequestAfterPatch = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
+fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId: UUID, newStatus: RequestStatus) {
+    val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
+    val oldLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
+    val storedDataRequestAfterPatch = requestControllerApi
         .patchDataRequestStatus(dataRequestId, newStatus)
+    val newLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
+    assertTrue(oldLastUpdatedTimestamp < newLastUpdatedTimestamp)
+    assertEquals(newLastUpdatedTimestamp, storedDataRequestAfterPatch.lastModifiedDate)
     assertEquals(newStatus, storedDataRequestAfterPatch.requestStatus)
     assertStatusForDataRequestId(dataRequestId, newStatus)
 }
