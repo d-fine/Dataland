@@ -7,6 +7,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
+import org.dataland.datalandemail.email.isEmailAddress
 import java.time.Instant
 import java.util.UUID
 
@@ -22,7 +23,7 @@ data class MessageEntity(
     val ordinal: Int,
 
     @Column(columnDefinition = "TEXT")
-    val contacts: String?,
+    val contacts: String,
 
     @Column(columnDefinition = "TEXT")
     val message: String?,
@@ -33,8 +34,13 @@ data class MessageEntity(
     @JoinColumn(name = "data_request_id")
     var dataRequest: DataRequestEntity?,
 ) {
+    companion object {
+        private const val emailSeparator = ";"
+    }
+
     init {
-        require(contacts?.isNotEmpty() ?: true)
+        require(contacts.isNotEmpty())
+        require(contacts.split(emailSeparator).all { it.isEmailAddress() })
         require(message?.isNotEmpty() ?: true)
     }
 
@@ -45,7 +51,7 @@ data class MessageEntity(
     ) : this(
         messageId = UUID.randomUUID().toString(),
         ordinal = ordinal,
-        contacts = if (messageObject.contacts.isEmpty()) null else messageObject.contacts.joinToString(";"),
+        contacts = messageObject.contacts.joinToString(emailSeparator),
         message = messageObject.message,
         lastModifiedDate = messageObject.lastModifiedDate ?: Instant.now().toEpochMilli(),
         dataRequest = dataRequest,
@@ -56,7 +62,7 @@ data class MessageEntity(
      * @returns the generated message object
      */
     fun toStoredDataRequestMessageObject() = StoredDataRequestMessageObject(
-        contacts = contacts?.split(";")?.toSet() ?: emptySet(),
+        contacts = contacts.split(emailSeparator)?.toSet() ?: emptySet(),
         message = message,
         lastModifiedDate = lastModifiedDate,
     )
