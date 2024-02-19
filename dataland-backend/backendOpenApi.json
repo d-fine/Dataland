@@ -6676,7 +6676,19 @@
       "ComplaintsRiskPositionOptions": {
         "type": "string",
         "enum": [
-          "LksgRiskPositions"
+          "ChildLabor",
+          "ForcedLabor",
+          "Slavery",
+          "DisregardForOccupationalHealthOrSafety",
+          "DisregardForFreedomOfAssociation",
+          "UnequalTreatmentOfEmployment",
+          "WithholdingAdequateWages",
+          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
+          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
+          "UseOfMercuryOrMercuryWaste",
+          "ProductionAndUseOfPersistentOrganicPollutants",
+          "ExportImportOfHazardousWaste"
         ]
       },
       "HighRiskCountriesOptions": {
@@ -6700,13 +6712,37 @@
       "HumanRightsOrEnvironmentalViolationsDefinitionOptions": {
         "type": "string",
         "enum": [
-          "LksgRiskPositions"
+          "ChildLabor",
+          "ForcedLabor",
+          "Slavery",
+          "DisregardForOccupationalHealthOrSafety",
+          "DisregardForFreedomOfAssociation",
+          "UnequalTreatmentOfEmployment",
+          "WithholdingAdequateWages",
+          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
+          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
+          "UseOfMercuryOrMercuryWaste",
+          "ProductionAndUseOfPersistentOrganicPollutants",
+          "ExportImportOfHazardousWaste"
         ]
       },
       "IdentifiedRisksOptions": {
         "type": "string",
         "enum": [
-          "LksgRiskPositions"
+          "ChildLabor",
+          "ForcedLabor",
+          "Slavery",
+          "DisregardForOccupationalHealthOrSafety",
+          "DisregardForFreedomOfAssociation",
+          "UnequalTreatmentOfEmployment",
+          "WithholdingAdequateWages",
+          "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+          "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
+          "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
+          "UseOfMercuryOrMercuryWaste",
+          "ProductionAndUseOfPersistentOrganicPollutants",
+          "ExportImportOfHazardousWaste"
         ]
       },
       "LksgData": {
@@ -13833,9 +13869,15 @@
         ],
         "type": "object",
         "properties": {
-          "permId": {
+          "sector": {
             "type": "string",
             "nullable": true
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
           },
           "companyName": {
             "type": "string"
@@ -13843,15 +13885,9 @@
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
-          },
-          "sector": {
+          "permId": {
             "type": "string",
             "nullable": true
-          },
-          "countryCode": {
-            "type": "string"
           }
         }
       },

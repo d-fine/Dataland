@@ -325,8 +325,56 @@ export const lksgDataModel = [
             description: "Which risks were specifically identified in the risk analysis?",
             options: [
               {
-                label: "LkSG - risk Positions",
-                value: "LksgRiskPositions",
+                label: "Child labor",
+                value: "ChildLabor",
+              },
+              {
+                label: "Forced Labor",
+                value: "ForcedLabor",
+              },
+              {
+                label: "Slavery",
+                value: "Slavery",
+              },
+              {
+                label: "Disregard for occupational health/safety",
+                value: "DisregardForOccupationalHealthOrSafety",
+              },
+              {
+                label: "Disregard for freedom of association",
+                value: "DisregardForFreedomOfAssociation",
+              },
+              {
+                label: "Unequal treatment of employment",
+                value: "UnequalTreatmentOfEmployment",
+              },
+              {
+                label: "Withholding adequate wages",
+                value: "WithholdingAdequateWages",
+              },
+              {
+                label: "Contamination of soil/water/air, noise emissions, excessive water consumption",
+                value: "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+              },
+              {
+                label: "Unlawful eviction/deprivation of land, forest and water",
+                value: "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
+              },
+              {
+                label: "Use of private/public security forces with disregard for human rights",
+                value: "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
+              },
+              {
+                label: "Use of mercury, mercury waste (Minamata Convention)",
+                value: "UseOfMercuryOrMercuryWaste",
+              },
+              {
+                label: "Production and use of persistent organic pollutants (POPs Convention)",
+                value: "ProductionAndUseOfPersistentOrganicPollutants",
+              },
+              {
+                label: "Export/import of hazardous waste (Basel Convention)",
+                value: "ExportImportOfHazardousWaste",
               },
             ],
 
@@ -453,8 +501,56 @@ export const lksgDataModel = [
             description: "Please define the respective risk position of each complaint",
             options: [
               {
-                label: "LkSG - risk Positions",
-                value: "LksgRiskPositions",
+                label: "Child labor",
+                value: "ChildLabor",
+              },
+              {
+                label: "Forced Labor",
+                value: "ForcedLabor",
+              },
+              {
+                label: "Slavery",
+                value: "Slavery",
+              },
+              {
+                label: "Disregard for occupational health/safety",
+                value: "DisregardForOccupationalHealthOrSafety",
+              },
+              {
+                label: "Disregard for freedom of association",
+                value: "DisregardForFreedomOfAssociation",
+              },
+              {
+                label: "Unequal treatment of employment",
+                value: "UnequalTreatmentOfEmployment",
+              },
+              {
+                label: "Withholding adequate wages",
+                value: "WithholdingAdequateWages",
+              },
+              {
+                label: "Contamination of soil/water/air, noise emissions, excessive water consumption",
+                value: "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+              },
+              {
+                label: "Unlawful eviction/deprivation of land, forest and water",
+                value: "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
+              },
+              {
+                label: "Use of private/public security forces with disregard for human rights",
+                value: "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
+              },
+              {
+                label: "Use of mercury, mercury waste (Minamata Convention)",
+                value: "UseOfMercuryOrMercuryWaste",
+              },
+              {
+                label: "Production and use of persistent organic pollutants (POPs Convention)",
+                value: "ProductionAndUseOfPersistentOrganicPollutants",
+              },
+              {
+                label: "Export/import of hazardous waste (Basel Convention)",
+                value: "ExportImportOfHazardousWaste",
               },
             ],
 
@@ -674,8 +770,56 @@ export const lksgDataModel = [
             description: "Please define those violations.",
             options: [
               {
-                label: "LkSG - risk Positions",
-                value: "LksgRiskPositions",
+                label: "Child labor",
+                value: "ChildLabor",
+              },
+              {
+                label: "Forced Labor",
+                value: "ForcedLabor",
+              },
+              {
+                label: "Slavery",
+                value: "Slavery",
+              },
+              {
+                label: "Disregard for occupational health/safety",
+                value: "DisregardForOccupationalHealthOrSafety",
+              },
+              {
+                label: "Disregard for freedom of association",
+                value: "DisregardForFreedomOfAssociation",
+              },
+              {
+                label: "Unequal treatment of employment",
+                value: "UnequalTreatmentOfEmployment",
+              },
+              {
+                label: "Withholding adequate wages",
+                value: "WithholdingAdequateWages",
+              },
+              {
+                label: "Contamination of soil/water/air, noise emissions, excessive water consumption",
+                value: "ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption",
+              },
+              {
+                label: "Unlawful eviction/deprivation of land, forest and water",
+                value: "UnlawfulEvictionOrDeprivationOfLandOrForestAndWater",
+              },
+              {
+                label: "Use of private/public security forces with disregard for human rights",
+                value: "UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights",
+              },
+              {
+                label: "Use of mercury, mercury waste (Minamata Convention)",
+                value: "UseOfMercuryOrMercuryWaste",
+              },
+              {
+                label: "Production and use of persistent organic pollutants (POPs Convention)",
+                value: "ProductionAndUseOfPersistentOrganicPollutants",
+              },
+              {
+                label: "Export/import of hazardous waste (Basel Convention)",
+                value: "ExportImportOfHazardousWaste",
               },
             ],
 

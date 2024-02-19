@@ -10,5 +10,17 @@ import io.swagger.v3.oas.annotations.media.Schema
     enumAsRef = true,
 )
 enum class IdentifiedRisksOptions {
-    LksgRiskPositions,
+    ChildLabor,
+    ForcedLabor,
+    Slavery,
+    DisregardForOccupationalHealthOrSafety,
+    DisregardForFreedomOfAssociation,
+    UnequalTreatmentOfEmployment,
+    WithholdingAdequateWages,
+    ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption,
+    UnlawfulEvictionOrDeprivationOfLandOrForestAndWater,
+    UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights,
+    UseOfMercuryOrMercuryWaste,
+    ProductionAndUseOfPersistentOrganicPollutants,
+    ExportImportOfHazardousWaste,
 }

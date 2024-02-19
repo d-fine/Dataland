@@ -339,7 +339,23 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.governance?.riskManagementOwnOperations?.risksIdentified == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
-                LksgRiskPositions: "LkSG - risk Positions",
+                ChildLabor: "Child labor",
+                ForcedLabor: "Forced Labor",
+                Slavery: "Slavery",
+                DisregardForOccupationalHealthOrSafety: "Disregard for occupational health/safety",
+                DisregardForFreedomOfAssociation: "Disregard for freedom of association",
+                UnequalTreatmentOfEmployment: "Unequal treatment of employment",
+                WithholdingAdequateWages: "Withholding adequate wages",
+                ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption:
+                  "Contamination of soil/water/air, noise emissions, excessive water consumption",
+                UnlawfulEvictionOrDeprivationOfLandOrForestAndWater:
+                  "Unlawful eviction/deprivation of land, forest and water",
+                UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights:
+                  "Use of private/public security forces with disregard for human rights",
+                UseOfMercuryOrMercuryWaste: "Use of mercury, mercury waste (Minamata Convention)",
+                ProductionAndUseOfPersistentOrganicPollutants:
+                  "Production and use of persistent organic pollutants (POPs Convention)",
+                ExportImportOfHazardousWaste: "Export/import of hazardous waste (Basel Convention)",
               };
               return formatListOfStringsForDatatable(
                 dataset.governance?.riskManagementOwnOperations?.identifiedRisks?.map((it) =>
@@ -483,7 +499,23 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.governance?.grievanceMechanismOwnOperations?.grievanceComplaints == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
-                LksgRiskPositions: "LkSG - risk Positions",
+                ChildLabor: "Child labor",
+                ForcedLabor: "Forced Labor",
+                Slavery: "Slavery",
+                DisregardForOccupationalHealthOrSafety: "Disregard for occupational health/safety",
+                DisregardForFreedomOfAssociation: "Disregard for freedom of association",
+                UnequalTreatmentOfEmployment: "Unequal treatment of employment",
+                WithholdingAdequateWages: "Withholding adequate wages",
+                ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption:
+                  "Contamination of soil/water/air, noise emissions, excessive water consumption",
+                UnlawfulEvictionOrDeprivationOfLandOrForestAndWater:
+                  "Unlawful eviction/deprivation of land, forest and water",
+                UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights:
+                  "Use of private/public security forces with disregard for human rights",
+                UseOfMercuryOrMercuryWaste: "Use of mercury, mercury waste (Minamata Convention)",
+                ProductionAndUseOfPersistentOrganicPollutants:
+                  "Production and use of persistent organic pollutants (POPs Convention)",
+                ExportImportOfHazardousWaste: "Export/import of hazardous waste (Basel Convention)",
               };
               return formatListOfStringsForDatatable(
                 dataset.governance?.grievanceMechanismOwnOperations?.complaintsRiskPosition?.map((it) =>
@@ -745,7 +777,23 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
               dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolations == "Yes",
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => {
               const mappings = {
-                LksgRiskPositions: "LkSG - risk Positions",
+                ChildLabor: "Child labor",
+                ForcedLabor: "Forced Labor",
+                Slavery: "Slavery",
+                DisregardForOccupationalHealthOrSafety: "Disregard for occupational health/safety",
+                DisregardForFreedomOfAssociation: "Disregard for freedom of association",
+                UnequalTreatmentOfEmployment: "Unequal treatment of employment",
+                WithholdingAdequateWages: "Withholding adequate wages",
+                ContaminationOfSoilWaterAirOrNoiseEmissionsOrExcessiveWaterConsumption:
+                  "Contamination of soil/water/air, noise emissions, excessive water consumption",
+                UnlawfulEvictionOrDeprivationOfLandOrForestAndWater:
+                  "Unlawful eviction/deprivation of land, forest and water",
+                UseOfPrivatePublicSecurityForcesWithDisregardForHumanRights:
+                  "Use of private/public security forces with disregard for human rights",
+                UseOfMercuryOrMercuryWaste: "Use of mercury, mercury waste (Minamata Convention)",
+                ProductionAndUseOfPersistentOrganicPollutants:
+                  "Production and use of persistent organic pollutants (POPs Convention)",
+                ExportImportOfHazardousWaste: "Export/import of hazardous waste (Basel Convention)",
               };
               return formatListOfStringsForDatatable(
                 dataset.governance?.generalViolations?.humanRightsOrEnvironmentalViolationsDefinition?.map((it) =>
