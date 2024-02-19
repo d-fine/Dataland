@@ -15,6 +15,9 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptF
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
+/**
+ * TODO add documentation
+ */
 class LksgProcurementCategoriesComponent(
     identifier: String,
     parent: FieldNodeParent,
@@ -26,6 +29,9 @@ class LksgProcurementCategoriesComponent(
             TypeReference(
                 "Map", isNullable,
                 listOf(
+                    TypeReference(
+                        "org.dataland.datalandbackend.frameworks.lksg.custom.ProcurementCategoryType",
+                        false),
                     TypeReference(
                         "org.dataland.datalandbackend.frameworks.lksg.custom.LksgProcurementCategory",
                         false,

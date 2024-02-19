@@ -7191,6 +7191,13 @@
             "items": {
               "$ref": "#/components/schemas/LksgProduct"
             }
+          },
+          "procurementCategories": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/LksgProcurementCategory"
+            },
+            "nullable": true
           }
         }
       },
@@ -7583,6 +7590,32 @@
                 "$ref": "#/components/schemas/YesNo"
               }
             ]
+          }
+        }
+      },
+      "LksgProcurementCategory": {
+        "required": [
+          "procuredProductTypesAndServicesNaceCodes"
+        ],
+        "type": "object",
+        "properties": {
+          "procuredProductTypesAndServicesNaceCodes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "numberOfSuppliersPerCountryCode": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "shareOfTotalProcurementInPercent": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -13805,20 +13838,20 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
           },
+          "countryCode": {
+            "type": "string"
+          },
           "headquarters": {
             "type": "string"
           },
-          "countryCode": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
             "type": "string"
           },
           "permId": {
