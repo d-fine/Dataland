@@ -107,13 +107,11 @@ class DataRequestProcessingUtils(
             identifierValue,
         )
         dataRequestRepository.save(dataRequestEntity)
-        val messageHistory = if (!contacts.isNullOrEmpty()) {
-            listOf(StoredDataRequestMessageObject(contacts, message, Instant.now().toEpochMilli()))
-        } else {
-            listOf()
+        if (!contacts.isNullOrEmpty()) {
+            val messageHistory = listOf(StoredDataRequestMessageObject(contacts, message, Instant.now().toEpochMilli()))
+            dataRequestEntity.associateMessages(messageHistory)
+            messageRepository.saveAllAndFlush(dataRequestEntity.messageHistory)
         }
-        dataRequestEntity.associateMessages(messageHistory)
-        messageRepository.saveAllAndFlush(dataRequestEntity.messageHistory)
         dataRequestLogger.logMessageForStoringDataRequest(dataRequestEntity.dataRequestId)
         return dataRequestEntity
     }
