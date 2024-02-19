@@ -11,7 +11,7 @@ describe("Component test for ClaimOwnershipPanel", () => {
     }).then(() => {
       cy.get("[data-test='claimOwnershipPanelHeading']").should(
         "have.text",
-        " Responsible for TestClaimOwnershipPanelCompany? ",
+        "Responsible for TestClaimOwnershipPanelCompany?",
       );
       cy.get("[data-test='claimOwnershipPanelLink']")
         .should("have.text", " Claim company dataset ownership. ")

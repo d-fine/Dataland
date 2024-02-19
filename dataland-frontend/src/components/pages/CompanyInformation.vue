@@ -8,7 +8,11 @@
       <div class="company-details__headline">
         <div class="left-elements">
           <h1 data-test="companyNameTitle">{{ companyInformation.companyName }}</h1>
-          <div class="p-badge badge-light-green outline" data-test="verifiedDataOwnerBadge" v-if="isUserDataOwner">
+          <div
+            class="p-badge badge-light-green outline rounded"
+            data-test="verifiedDataOwnerBadge"
+            v-if="hasCompanyDataOwner"
+          >
             <span class="material-icons-outlined fs-sm">verified</span>
             Verified Data Owner
           </div>
@@ -59,9 +63,9 @@ import type Keycloak from "keycloak-js";
 import { assertDefined } from "@/utils/TypeScriptUtils";
 import ContextMenuButton from "@/components/general/ContextMenuButton.vue";
 import ClaimOwnershipDialog from "@/components/resources/companyCockpit/ClaimOwnershipDialog.vue";
-import { getUserId } from "@/utils/KeycloakUtils";
 import { getErrorMessage } from "@/utils/ErrorMessageUtils";
 import SingleDataRequestButton from "@/components/resources/companyCockpit/SingleDataRequestButton.vue";
+import { hasCompanyAtLeastOneDataOwner, isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 
 export default defineComponent({
   name: "CompanyInformation",
@@ -69,6 +73,7 @@ export default defineComponent({
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
+      authenticated: inject<boolean>("authenticated"),
     };
   },
   emits: ["fetchedCompanyInformation"],
@@ -78,9 +83,9 @@ export default defineComponent({
       waitingForData: true,
       companyIdDoesNotExist: false,
       isUserDataOwner: false,
+      hasCompanyDataOwner: false,
       dialogIsOpen: false,
       claimIsSubmitted: false,
-      userId: undefined as string | undefined,
     };
   },
   computed: {
@@ -96,7 +101,7 @@ export default defineComponent({
     },
     contextMenuItems() {
       const listOfItems = [];
-      if (!this.isUserDataOwner && this.userId) {
+      if (!this.isUserDataOwner && this.authenticated) {
         listOfItems.push({
           label: "Claim Company Dataset Ownership",
           command: () => {
@@ -105,11 +110,6 @@ export default defineComponent({
         });
       }
       return listOfItems;
-    },
-
-    isCompanyIdValid() {
-      const uuidRegexExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-      return uuidRegexExp.test(this.companyId);
     },
   },
   props: {
@@ -124,19 +124,30 @@ export default defineComponent({
   },
   mounted() {
     void this.getCompanyInformation();
-    void this.awaitUserId();
-    void this.getDataOwnerInformation();
+    void this.setDataOwnershipStatus();
+    void this.updateHasCompanyDataOwner();
   },
   watch: {
-    companyId() {
-      void this.getCompanyInformation();
-      void this.getDataOwnerInformation();
-      this.claimIsSubmitted = false;
+    async companyId(newCompanyId) {
+      try {
+        void this.setDataOwnershipStatus();
+        void this.getCompanyInformation();
+        this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(newCompanyId as string, this.getKeycloakPromise);
+        this.claimIsSubmitted = false;
+      } catch (error) {
+        console.error("Error fetching data for new company:", error);
+      }
     },
   },
   methods: {
     /**
-     * handles the close button click event of the dialog
+     * Updates the hasCompanyDataOwner in an async way
+     */
+    async updateHasCompanyDataOwner() {
+      this.hasCompanyDataOwner = await hasCompanyAtLeastOneDataOwner(this.companyId, this.getKeycloakPromise);
+    },
+    /**
+     * Handles the close button click event of the dialog
      */
     onCloseDialog() {
       this.dialogIsOpen = false;
@@ -166,42 +177,19 @@ export default defineComponent({
     },
 
     /**
-     * Get the Information about Data-ownership
+     * Set the data-ownership status of current user
+     * @returns a void promise so that the setter-function can be awaited
      */
-    async getDataOwnerInformation() {
-      await this.awaitUserId();
-      if (this.userId !== undefined && this.isCompanyIdValid) {
-        try {
-          const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)())
-            .backendClients.companyDataController;
-          const axiosResponse = await companyDataControllerApi.isUserDataOwnerForCompany(
-            this.companyId,
-            assertDefined(this.userId),
-          );
-          if (axiosResponse.status == 200) {
-            this.isUserDataOwner = true;
-          }
-        } catch (error) {
-          console.log(error);
-          if (getErrorMessage(error).includes("404")) {
-            this.isUserDataOwner = false;
-          }
-        }
-      } else {
-        this.isUserDataOwner = false;
-      }
+    async setDataOwnershipStatus(): Promise<void> {
+      return isUserDataOwnerForCompany(this.companyId, this.getKeycloakPromise).then((result) => {
+        this.isUserDataOwner = result;
+      });
     },
     /**
-     * handles the emitted claim event
+     * Handles the emitted claim event
      */
     onClaimSubmitted() {
       this.claimIsSubmitted = true;
-    },
-    /**
-     * gets the user ID in an async manner
-     */
-    async awaitUserId(): Promise<void> {
-      this.userId = await getUserId(assertDefined(this.getKeycloakPromise));
     },
   },
 });
@@ -210,6 +198,10 @@ export default defineComponent({
 <style scoped lang="scss">
 .inline-loading {
   width: 450px;
+}
+
+.rounded {
+  border-radius: 0.5rem;
 }
 
 .company-details {

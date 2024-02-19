@@ -46,7 +46,7 @@ class SingleDataRequestsTest {
             companyIdentifier = stringThatMatchesThePermIdRegex,
             frameworkName = SingleDataRequest.FrameworkName.lksg,
             listOfReportingPeriods = listOf("2022", "2023"),
-            contactList = listOf("someContact@webserver.de", "simpleString"),
+            contactList = listOf("someContact@webserver.de", "simpleString@some.thing"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
         val allStoredDataRequests = requestControllerApi.postSingleDataRequest(singleDataRequest)
@@ -157,32 +157,61 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `post a single data request inducing a trivial message object and check expected behaviour`() {
+    fun `post single data requests with message but invalid email addresses in contact lists and assert exception`() {
         val validLei = generateRandomLei()
         apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
 
-        val trivialContactListInputs = listOf(null, listOf(), listOf(""), listOf(" "))
-        trivialContactListInputs.forEach {
+        val contactListsThatContainInvalidEmailAddresses =
+            listOf(listOf(""), listOf(" "), listOf("invalidMail@", "validMail@somemailabc.abc"))
+        contactListsThatContainInvalidEmailAddresses.forEach {
             val clientException = assertThrows<ClientException> {
                 postStandardSingleDataRequest(validLei, it, "Dummy test message.")
             }
             check400ClientExceptionErrorMessage(clientException)
             val responseBody = (clientException.response as ClientError<*>).body as String
-            assertTrue(responseBody.contains("Insufficient information to create message object."))
+            assertTrue(responseBody.contains("Invalid email address"))
             assertTrue(
                 responseBody.contains(
-                    "Without at least one proper email address being provided no message can be forwarded.",
+                    "At least one email address you have provided has an invalid format.",
                 ),
             )
         }
+    }
 
-        val trivialMessageInputs = listOf(null, "", " ")
-        trivialContactListInputs.forEach { contactList ->
-            trivialMessageInputs.forEach { message ->
-                val storedDataRequest = postStandardSingleDataRequest(validLei, contactList, message)
-                assertTrue(storedDataRequest.messageHistory.isEmpty())
+    @Test
+    fun `post single data requests with message but missing email addresses in contact lists and assert exception`() {
+        val validLei = generateRandomLei()
+        apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
+
+        val contactListsThatDontHaveEmailAddresses =
+            listOf<List<String>?>(null, listOf())
+        contactListsThatDontHaveEmailAddresses.forEach {
+            val clientException = assertThrows<ClientException> {
+                postStandardSingleDataRequest(validLei, it, "Dummy test message.")
             }
+            check400ClientExceptionErrorMessage(clientException)
+            val responseBody = (clientException.response as ClientError<*>).body as String
+            assertTrue(responseBody.contains("No recipients provided for the message"))
+            assertTrue(
+                responseBody.contains(
+                    "You have provided a message, but no recipients. " +
+                        "Without at least one valid email address being provided no message can be forwarded.",
+                ),
+            )
         }
+    }
+
+    @Test
+    fun `post a single data requests without a message but with valid email address in contact list`() {
+        val validLei = generateRandomLei()
+        apiAccessor.uploadOneCompanyWithIdentifiers(lei = validLei)
+        val storedDataRequest = postStandardSingleDataRequest(validLei, listOf("test@someprovider.abc"))
+        val storedDataRequestId = UUID.fromString(storedDataRequest.dataRequestId)
+        val retrievedDataRequest = requestControllerApi.getDataRequestById(storedDataRequestId)
+        assertEquals(
+            storedDataRequest,
+            retrievedDataRequest,
+        )
     }
 
     @Test

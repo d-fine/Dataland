@@ -5,12 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.enums.p2p.DataRequestCompanyIdentifierType
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.Instant
 import java.util.*
@@ -27,6 +29,19 @@ class DataRequestManagerUtils(
     private val isinRegex = Regex("^[A-Z]{2}[A-Z\\d]{10}$")
     private val leiRegex = Regex("^[0-9A-Z]{18}[0-9]{2}$")
     private val permIdRegex = Regex("^\\d+$")
+
+    private val emptyMutableListOfStoredDataRequestMessageObjectsAsString =
+        objectMapper.writeValueAsString(mutableListOf<StoredDataRequestMessageObject>())
+
+    /**
+     * We want to avoid users from using other authentication methods than jwt-authentication, such as
+     * api-key-authentication.
+     */
+    fun throwExceptionIfNotJwtAuth() {
+        if (DatalandAuthentication.fromContext() !is DatalandJwtAuthentication) {
+            throw AuthenticationMethodNotSupportedException()
+        }
+    }
 
     /**
      * Determines the type corresponding to the value of a provided company identifier
@@ -83,7 +98,7 @@ class DataRequestManagerUtils(
             dataRequestEntity.dataRequestCompanyIdentifierType,
             dataRequestEntity.dataRequestCompanyIdentifierValue,
             objectMapper.readValue(
-                dataRequestEntity.messageHistory,
+                dataRequestEntity.messageHistory ?: emptyMutableListOfStoredDataRequestMessageObjectsAsString,
                 object : TypeReference<MutableList<StoredDataRequestMessageObject>>() {},
             ),
             dataRequestEntity.lastModifiedDate,
@@ -142,8 +157,8 @@ class DataRequestManagerUtils(
         val dataRequestId = UUID.randomUUID().toString()
         val currentUserId = DatalandAuthentication.fromContext().userId
         val currentTimestamp = Instant.now().toEpochMilli()
-        val messageHistory = if (!isContactListTrivial(contactList)) {
-            mutableListOf(StoredDataRequestMessageObject(contactList!!, message, currentTimestamp))
+        val messageHistory = if (!contactList.isNullOrEmpty()) {
+            mutableListOf(StoredDataRequestMessageObject(contactList, message, currentTimestamp))
         } else {
             mutableListOf()
         }
@@ -159,15 +174,6 @@ class DataRequestManagerUtils(
             lastModifiedDate = currentTimestamp,
             requestStatus = RequestStatus.Open,
         )
-    }
-
-    /**
-     * Checks whether a provided contact list is trivial, i.e. is null, empty or consists only of empty or blank strings
-     * @param contactList the contact list to verify
-     * @return true if the contact list is trivial, false otherwise
-     */
-    fun isContactListTrivial(contactList: List<String>?): Boolean {
-        return contactList.isNullOrEmpty() || !contactList.any { it.isNotBlank() }
     }
 
     private fun isDataRequestAlreadyExisting(
