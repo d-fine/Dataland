@@ -17,7 +17,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
- * TODO add documentation
+ * Represents the ProcurementCategories component
  */
 class LksgProcurementCategoriesComponent(
     identifier: String,

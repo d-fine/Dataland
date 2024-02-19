@@ -10,6 +10,9 @@ import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
+/**
+ * Generates the ProcurementCategories component
+ */
 @Component
 class LksgProcurementCategoriesComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {

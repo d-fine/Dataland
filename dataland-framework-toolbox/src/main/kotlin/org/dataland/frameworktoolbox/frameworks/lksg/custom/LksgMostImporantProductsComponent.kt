@@ -16,6 +16,9 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptF
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
+/**
+ * Represents the most Important Products component for the Lksg Framework
+ */
 class LksgMostImporantProductsComponent(
     identifier: String,
     parent: FieldNodeParent,

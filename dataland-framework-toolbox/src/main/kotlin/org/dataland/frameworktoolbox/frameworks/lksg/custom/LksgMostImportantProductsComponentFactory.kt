@@ -10,6 +10,9 @@ import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
+/**
+ * Represents the most Important Products component for the Lksg Framework
+ */
 @Component
 class LksgMostImportantProductsComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
