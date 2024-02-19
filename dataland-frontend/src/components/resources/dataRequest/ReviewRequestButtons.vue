@@ -1,4 +1,21 @@
 <template>
+  <PrimeDialog
+    id="successModal"
+    :dismissableMask="true"
+    :modal="true"
+    header="Header"
+    footer="Footer"
+    v-model:visible="dialogIsVisible"
+    :closable="false"
+  >
+    <template #header>
+      <h2 class="m-0">Success</h2>
+    </template>
+    Request closed successfully.
+    <template #footer>
+      <PrimeButton label="TO DATA REQUEST" @click="dialogIsVisible = !dialogIsVisible" class="p-button-outlined" />
+    </template>
+  </PrimeDialog>
   <div v-if="isVisible">
     <PrimeButton
       class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
@@ -39,6 +56,7 @@ import { type DataTypeEnum } from "@clients/backend";
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
 import { type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
 import { RequestStatus, type StoredDataRequest } from "@clients/communitymanager";
+import PrimeDialog from "primevue/dialog";
 
 export default defineComponent({
   name: "ReviewRequestButtons",
@@ -47,7 +65,7 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>("getKeycloakPromise"),
     };
   },
-  components: { PrimeButton, OverlayPanel, SelectReportingPeriodDialog },
+  components: { PrimeButton, OverlayPanel, SelectReportingPeriodDialog, PrimeDialog },
   props: {
     isVisible: {
       default: false,
@@ -68,6 +86,7 @@ export default defineComponent({
   data() {
     return {
       answeredDataRequestsForViewPage: [] as StoredDataRequest[],
+      dialogIsVisible: true,
     };
   },
   mounted() {
@@ -139,3 +158,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+#successModal {
+  border-radius: 0.75rem;
+  header-align: center;
+  text-align: center;
+}
+</style>
