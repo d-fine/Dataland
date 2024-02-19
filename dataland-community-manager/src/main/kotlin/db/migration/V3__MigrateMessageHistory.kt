@@ -21,7 +21,6 @@ class V3__MigrateMessageHistory : BaseJavaMigration() {
             "CREATE TABLE messages (" +
                 "message_id varchar(255) NOT NULL, " +
                 "data_request_id varchar(255) NOT NULL, " +
-                "ordinal integer NOT NULL, " +
                 "contacts text, " +
                 "message text, " +
                 "last_modified_date bigint NOT NULL, " +

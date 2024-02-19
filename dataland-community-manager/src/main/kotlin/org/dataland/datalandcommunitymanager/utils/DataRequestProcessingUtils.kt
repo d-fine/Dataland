@@ -105,6 +105,7 @@ class DataRequestProcessingUtils(
             reportingPeriod,
             identifierType,
             identifierValue,
+            Instant.now().toEpochMilli(),
         )
         dataRequestRepository.save(dataRequestEntity)
         if (!contacts.isNullOrEmpty()) {

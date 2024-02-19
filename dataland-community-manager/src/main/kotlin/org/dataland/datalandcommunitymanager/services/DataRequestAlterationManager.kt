@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import kotlin.jvm.optionals.getOrElse
 
 /**
  * Manages all alterations of data requests
@@ -25,8 +26,9 @@ class DataRequestAlterationManager(
      */
     @Transactional
     fun patchDataRequestStatus(dataRequestId: String, requestStatus: RequestStatus): StoredDataRequest {
-        if (!dataRequestRepository.existsById(dataRequestId)) throw DataRequestNotFoundApiException(dataRequestId)
-        var dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
+        var dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
+            throw DataRequestNotFoundApiException(dataRequestId)
+        }
         dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
         dataRequestEntity.requestStatus = requestStatus
         dataRequestRepository.save(dataRequestEntity)

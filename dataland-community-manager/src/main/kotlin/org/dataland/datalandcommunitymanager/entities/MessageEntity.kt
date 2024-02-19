@@ -39,7 +39,7 @@ data class MessageEntity(
     init {
         require(contacts.isNotEmpty())
         require(contacts.split(emailSeparator).all { it.isEmailAddress() })
-        require(message?.isNotEmpty() ?: true)
+        require(message?.isNotBlank() ?: true)
     }
 
     constructor(

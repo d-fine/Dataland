@@ -13,6 +13,7 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import kotlin.jvm.optionals.getOrElse
 
 /**
  * Implementation of a request manager service for all request queries
@@ -72,8 +73,9 @@ class DataRequestQueryManager(
      */
     @Transactional
     fun getDataRequestById(dataRequestId: String): StoredDataRequest {
-        if (!dataRequestRepository.existsById(dataRequestId)) throw DataRequestNotFoundApiException(dataRequestId)
-        val dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
+        val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
+            throw DataRequestNotFoundApiException(dataRequestId)
+        }
         return dataRequestEntity.toStoredDataRequest()
     }
 

@@ -13,7 +13,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.utils.getDataTypeEnumForFrameworkName
-import java.time.Instant
 import java.util.*
 
 /**
@@ -47,23 +46,23 @@ data class DataRequestEntity(
     @Enumerated(EnumType.STRING)
     var requestStatus: RequestStatus,
 ) {
-
     constructor(
         userId: String,
         dataType: DataTypeEnum,
         reportingPeriod: String,
         identifierType: DataRequestCompanyIdentifierType,
         identifierValue: String,
+        creationTimestamp: Long,
     ) : this(
         dataRequestId = UUID.randomUUID().toString(),
         userId = userId,
-        creationTimestamp = Instant.now().toEpochMilli(),
+        creationTimestamp = creationTimestamp,
         dataType = dataType.value,
         reportingPeriod = reportingPeriod,
         dataRequestCompanyIdentifierType = identifierType,
         dataRequestCompanyIdentifierValue = identifierValue,
         messageHistory = listOf(),
-        lastModifiedDate = Instant.now().toEpochMilli(),
+        lastModifiedDate = creationTimestamp,
         requestStatus = RequestStatus.Open,
     )
 
