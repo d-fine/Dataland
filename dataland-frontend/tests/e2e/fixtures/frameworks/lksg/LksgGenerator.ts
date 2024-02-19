@@ -26,9 +26,9 @@ export class LksgGenerator extends Generator {
         }
     }
 
-    generateProcurementCategories(): { [p: string]: LksgProcurementCategory } {
-        const categoryTypes = Object.values(ProcurementCategoryType).filter(() =>
-            Math.random() < this.nullProbability)
+    generateProcurementCategories(localNullProbability = this.nullProbability): { [p: string]: LksgProcurementCategory } {
+        const categoryTypes = Object.values(ProcurementCategoryType).filter(
+            ()=> Math.random() < localNullProbability);
         const lksgProcurementCategoriesMap =
             new Map<ProcurementCategoryType, LksgProcurementCategory>
         categoryTypes.forEach((categoryType) => lksgProcurementCategoriesMap.set(categoryType,
