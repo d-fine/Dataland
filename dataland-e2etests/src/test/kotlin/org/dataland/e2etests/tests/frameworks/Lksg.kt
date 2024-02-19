@@ -21,7 +21,7 @@ class Lksg {
         // The following block is a workaround to circumvent a bug in the generated clients
         // which do not allow for null entries as map values but retain them at the same time.
         // On upload, however, they are not being serialized.
-        fixedDataSet.general.productionSpecificOwnOperations?.productsServicesCategoriesPurchased?.forEach {
+        fixedDataSet.general.productionSpecificOwnOperations?.procurementCategories?.forEach {
             val keysOfEntriesToDelete = mutableListOf<String>()
             it.value.numberOfSuppliersPerCountryCode?.forEach { numberOfSuppliersPerCountry ->
                 if (numberOfSuppliersPerCountry.value == null) {
