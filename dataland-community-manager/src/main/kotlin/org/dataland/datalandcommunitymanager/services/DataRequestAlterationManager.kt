@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
 import kotlin.jvm.optionals.getOrElse
 
 /**
@@ -26,13 +27,13 @@ class DataRequestAlterationManager(
      */
     @Transactional
     fun patchDataRequestStatus(dataRequestId: String, requestStatus: RequestStatus): StoredDataRequest {
-        var dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
+        val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
             throw DataRequestNotFoundApiException(dataRequestId)
         }
         dataRequestLogger.logMessageForPatchingRequestStatus(dataRequestEntity.dataRequestId, requestStatus)
         dataRequestEntity.requestStatus = requestStatus
+        dataRequestEntity.lastModifiedDate = Instant.now().toEpochMilli()
         dataRequestRepository.save(dataRequestEntity)
-        dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         return dataRequestEntity.toStoredDataRequest()
     }
 }

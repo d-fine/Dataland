@@ -41,7 +41,7 @@ data class DataRequestEntity(
     @OneToMany(mappedBy = "dataRequest")
     var messageHistory: List<MessageEntity>,
 
-    val lastModifiedDate: Long,
+    var lastModifiedDate: Long,
 
     @Enumerated(EnumType.STRING)
     var requestStatus: RequestStatus,
