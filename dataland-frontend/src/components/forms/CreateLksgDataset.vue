@@ -104,9 +104,8 @@ import YesNoFormField from "@/components/forms/parts/fields/YesNoFormField.vue";
 import Calendar from "primevue/calendar";
 import SuccessMessage from "@/components/messages/SuccessMessage.vue";
 import FailMessage from "@/components/messages/FailMessage.vue";
-import { lksgDataModel } from "@/components/resources/frameworkDataSearch/lksg/LksgDataModel";
-import { AxiosError } from "axios";
-import { type CompanyAssociatedDataLksgData, DataTypeEnum } from "@clients/backend";
+import { lksgDataModel } from "@/frameworks/lksg/UploadConfig";
+import { type CompanyAssociatedDataLksgData, DataTypeEnum, type LksgData } from "@clients/backend";
 import { useRoute } from "vue-router";
 import { checkCustomInputs } from "@/utils/ValidationsUtils";
 import NaceCodeFormField from "@/components/forms/parts/fields/NaceCodeFormField.vue";
@@ -137,6 +136,9 @@ import YesNoBaseDataPointFormField from "@/components/forms/parts/fields/YesNoBa
 import YesNoNaBaseDataPointFormField from "@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue";
 import YesNoExtendedDataPointFormField from "@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue";
 import { getFilledKpis } from "@/utils/DataPoint";
+import { getFrontendFrameworkDefinition } from "@/frameworks/FrontendFrameworkRegistry";
+import { type FrameworkDataApi } from "@/utils/api/UnifiedFrameworkDataApi";
+import { formatAxiosErrorMessage } from "@/utils/AxiosErrorMessageFormatter";
 
 export default defineComponent({
   setup() {
@@ -236,17 +238,19 @@ export default defineComponent({
      */
     async loadLKSGData(dataId: string): Promise<void> {
       this.waitingForData = true;
-      const lkSGDataControllerApi = new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)(),
-      ).getUnifiedFrameworkDataController(DataTypeEnum.Lksg);
-
-      const lksgDataset = (await lkSGDataControllerApi.getFrameworkData(dataId)).data;
-      this.listOfFilledKpis = getFilledKpis(lksgDataset.data);
-      const dataDateFromDataset = lksgDataset.data?.general?.masterData?.dataDate;
-      if (dataDateFromDataset) {
-        this.dataDate = new Date(dataDateFromDataset);
+      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+      const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Lksg);
+      let lksgDataControllerApi: FrameworkDataApi<LksgData>;
+      if (frameworkDefinition) {
+        lksgDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+        const dataResponse = await lksgDataControllerApi.getFrameworkData(dataId);
+        const lksgResponseData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(lksgResponseData.data);
+        this.companyAssociatedLksgData = objectDropNull(
+          lksgResponseData as ObjectType,
+        ) as CompanyAssociatedDataLksgData;
       }
-      this.companyAssociatedLksgData = objectDropNull(lksgDataset as ObjectType) as CompanyAssociatedDataLksgData;
+
       this.waitingForData = false;
     },
     /**
@@ -258,18 +262,21 @@ export default defineComponent({
         if (this.fieldSpecificDocuments.size > 0) {
           await uploadFiles(Array.from(this.fieldSpecificDocuments.values()), assertDefined(this.getKeycloakPromise));
         }
-        const lkSGDataControllerApi = new ApiClientProvider(
-          assertDefined(this.getKeycloakPromise)(),
-        ).getUnifiedFrameworkDataController(DataTypeEnum.Lksg);
-        await lkSGDataControllerApi.postFrameworkData(this.companyAssociatedLksgData);
+        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+        const frameworkDefinition = getFrontendFrameworkDefinition(DataTypeEnum.Lksg);
+        let lksgDataControllerApi: FrameworkDataApi<LksgData>;
+        if (frameworkDefinition) {
+          lksgDataControllerApi = frameworkDefinition.getFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+          await lksgDataControllerApi.postFrameworkData(this.companyAssociatedLksgData);
+        }
         this.$emit("datasetCreated");
         this.dataDate = undefined;
         this.message = "Upload successfully executed.";
         this.uploadSucceded = true;
       } catch (error) {
         console.error(error);
-        if (error instanceof AxiosError) {
-          this.message = "An error occurred: " + error.message;
+        if (error.message) {
+          this.message = formatAxiosErrorMessage(error as Error);
         } else {
           this.message =
             "An unexpected error occurred. Please try again or contact the support team if the issue persists.";
@@ -279,7 +286,6 @@ export default defineComponent({
         this.postLkSGDataProcessed = true;
       }
     },
-
     /**
      * updates the list of certificates that were uploaded in the corresponding formfields on change
      * @param fieldName the name of the formfield as a key
@@ -295,9 +301,8 @@ export default defineComponent({
   },
   provide() {
     return {
-      productsServicesCategoriesPurchased: computed(() => {
-        return this.companyAssociatedLksgData.data?.general?.productionSpecificOwnOperations
-          ?.productsServicesCategoriesPurchased;
+      procurementCategories: computed(() => {
+        return this.companyAssociatedLksgData.data?.general?.productionSpecificOwnOperations?.procurementCategories;
       }),
       listOfFilledKpis: computed(() => {
         return this.listOfFilledKpis;

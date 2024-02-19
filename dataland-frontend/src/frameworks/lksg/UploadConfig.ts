@@ -261,7 +261,8 @@ export const lksgDataModel = [
             name: "mostImportantProducts",
             label: "Most Important Products",
             description:
-              "Please give an overview of the most important products or services in terms of sales that your company manufactures, distributes and/or offers (own operations)",
+              "Please give an overview of the most important products or services in terms of sales that your" +
+              " company manufactures, distributes and/or offers (own operations)",
 
             component: "MostImportantProductsFormField",
             required: false,
@@ -424,7 +425,8 @@ export const lksgDataModel = [
             name: "grievanceHandlingMechanism",
             label: "Grievance Handling Mechanism",
             description:
-              "Has your company implemented a grievance handling mechanism (e.g. anonymous whistleblowing system) to protect human and environmental rights in your business?",
+              "Has your company implemented a grievance handling mechanism (e.g. anonymous whistleblowing system) " +
+              "to protect human and environmental rights in your business?",
 
             component: "YesNoBaseDataPointFormField",
             required: false,
@@ -434,7 +436,9 @@ export const lksgDataModel = [
             name: "grievanceHandlingReportingAccessible",
             label: "Grievance Handling Reporting Accessible",
             description:
-              "Can all affected stakeholders and rights holders, i.e. both internal (e.g. employees) and external stakeholders (e.g. suppliers and their employees, NGOs) access the grievance reporting/whistleblowing system?",
+              "Can all affected stakeholders and rights holders, i.e. both internal (e.g. employees) and external " +
+              "stakeholders (e.g. suppliers and their employees, NGOs) access the grievance " +
+              "reporting/whistleblowing system?",
 
             component: "YesNoFormField",
             required: false,
@@ -445,7 +449,8 @@ export const lksgDataModel = [
             name: "appropriateGrievanceHandlingInformation",
             label: "Appropriate Grievance Handling Information",
             description:
-              "Is the grievance procedure adapted to your company context and articulated in a way that is understandable to the target groups?",
+              "Is the grievance procedure adapted to your company context and articulated in a way that is" +
+              " understandable to the target groups?",
 
             component: "YesNoFormField",
             required: false,
@@ -467,7 +472,8 @@ export const lksgDataModel = [
             name: "accessToExpertiseForGrievanceHandling",
             label: "Access to Expertise for Grievance Handling",
             description:
-              "Do the target groups have access to the expertise, advice and information that they need to participate in the grievance procedure in a fair, informed and respectful manner?",
+              "Do the target groups have access to the expertise, advice and information that they need to" +
+              " participate in the grievance procedure in a fair, informed and respectful manner?",
 
             component: "YesNoFormField",
             required: false,
