@@ -666,7 +666,7 @@
     "requiredActions": [
       "terms_and_conditions"
     ],
-    "realmRoles" : ["default-roles-datalandsecurity"],
+    "realmRoles" : [ "ROLE_USER", "default-roles-datalandsecurity" ],
     "notBefore": 0,
     "groups" : [ ]
   }, {
