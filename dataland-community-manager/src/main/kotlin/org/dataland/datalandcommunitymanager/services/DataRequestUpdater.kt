@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 /**
- * This service checks if freshly uploaded a validated data answer a data request
+ * This service checks if freshly uploaded and validated data answers a data request
  */
 @Service("DataRequestUpdater")
 class DataRequestUpdater(
@@ -35,7 +35,8 @@ class DataRequestUpdater(
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
     /**
-     * Method to send out a confirmation email to the requester as soon as the requested data is provided by the company
+     * Checks if for a given dataset there are open requests with matching company identifier, reporting period
+     * and data type and sets their status to answered
      * @param jsonString the message describing the result of the completed QA process
      * @param type the type of the message
      */
