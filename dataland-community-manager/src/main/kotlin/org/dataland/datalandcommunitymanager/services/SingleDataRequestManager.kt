@@ -62,7 +62,10 @@ class SingleDataRequestManager(
         }
 
         if (datalandCompanyId == null) {
-            throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
+            throw InvalidInputApiException(
+                "The specified company is unknown to Dataland",
+                "The company with identifier: \"${singleDataRequest.companyIdentifier}\" is unknown to Dataland",
+            )
         } else {
             throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest)
             storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
@@ -146,7 +149,7 @@ class SingleDataRequestManager(
      * @param requestStatus the status to apply to the data request
      * @param userId the user to apply to the data request
      * @param reportingPeriod the reporting period to apply to the data request
-     * @param datalandCompanyId the company identifier value to apply to the data request
+     * @param datalandCompanyId the Dataland company ID to apply to the data request
      * @return all filtered data requests
      */
 
