@@ -48,14 +48,14 @@ class LksgProcurementCategoriesComponent(
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
-                "formatLksgProcurementCategoryForDisplay(${getTypescriptFieldAccessor(true)}, \"${
+                "formatLksgProcurementCategoriesForDisplay(${getTypescriptFieldAccessor(true)}, \"${
                     StringEscapeUtils.escapeEcmaScript(
                         label,
                     )
                 }\")",
                 setOf(
                     TypeScriptImport(
-                        "formatLksgProcurementCategoryForDisplay",
+                        "formatLksgProcurementCategoriesForDisplay",
                         "@/components/resources/dataTable/conversion/lksg/LksgValueGetterFactories",
                     ),
                 ),

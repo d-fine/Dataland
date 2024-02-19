@@ -4,6 +4,15 @@ import {
 } from "@/components/resources/dataTable/MultiLayerDataTableCellDisplayer";
 import DetailsCompanyDataTable from "@/components/general/DetailsCompanyDataTable.vue";
 import {LksgProduct} from "@clients/backend/org/dataland/datalandfrontend/openApiClient/backend/model/lksg-product";
+import {LksgProcurementCategory} from "@clients/backend";
+import {ProcurementCategoryType} from "@/api-models/ProcurementCategoryType";
+import {humanizeStringOrNumber} from "@/utils/StringFormatter";
+import {
+    LksgProcurementType
+} from "@/components/resources/dataTable/conversion/lksg/LksgProcurementCategoriesValueGetterFactory";
+import {convertSingleNaceCode} from "@/utils/NaceCodeConverter";
+import {getCountryNameFromCountryCode} from "@/utils/CountryCodeConverter";
+import {formatPercentageNumberAsString} from "@/utils/Formatter";
 
 export const lksgModalColumnHeaders = {
     listOfProductionSites: {
@@ -23,6 +32,62 @@ export const lksgModalColumnHeaders = {
         totalProcurementInPercent: "Order Volume",
     },
 };
+
+/**
+ * Generates a list of readable strings (or just a single one) combining suppliers and their associated countries
+ * @param numberOfSuppliersPerCountryCode the map of number of suppliers and associated companies
+ * from which strings are written
+ * @returns the constructed collection of readable strings
+ */
+function generateReadableCombinationOfNumberOfSuppliersAndCountries(numberOfSuppliersPerCountryCode: {
+    [key: string]: number;
+}): string[] {
+    return Object.entries(numberOfSuppliersPerCountryCode).map(([countryCode, numberOfSuppliers]) => {
+        const countryName = getCountryNameFromCountryCode(countryCode) ?? countryCode;
+        if (numberOfSuppliers != undefined) {
+            return `${numberOfSuppliers} suppliers from ${countryName}`;
+        } else {
+            return `There are suppliers from ${countryName}`;
+        }
+    });
+}
+
+interface LksgProcurementCategoryDisplayFormat {
+    procurementCategory: string;
+    procuredProductTypesAndServicesNaceCodes: string[];
+    suppliersAndCountries: string[];
+    totalProcurementInPercent: string;
+}
+
+/**
+ * Convert an object of type LksgProcurementType into a list that can be displayed using the standard
+ * modal DataTable
+ * @param datasetValue the value of the dataset
+ * @returns the converted list
+ */
+function convertLksgProcumentTypeToListForModal(
+    datasetValue: LksgProcurementType,
+): LksgProcurementCategoryDisplayFormat[] {
+    const listForModal: LksgProcurementCategoryDisplayFormat[] = [];
+    for (const [procurementCategoryType, lksgProcurementCategory] of Object.entries(datasetValue)) {
+        if (!lksgProcurementCategory) continue;
+
+        listForModal.push({
+            procurementCategory: humanizeStringOrNumber(procurementCategoryType),
+            procuredProductTypesAndServicesNaceCodes: (
+                lksgProcurementCategory.procuredProductTypesAndServicesNaceCodes ?? []
+            ).map(convertSingleNaceCode),
+            suppliersAndCountries: generateReadableCombinationOfNumberOfSuppliersAndCountries(
+                lksgProcurementCategory.numberOfSuppliersPerCountryCode ?? {},
+            ),
+            totalProcurementInPercent:
+                lksgProcurementCategory.shareOfTotalProcurementInPercent != null
+                    ? formatPercentageNumberAsString(lksgProcurementCategory.shareOfTotalProcurementInPercent)
+                    : "",
+        });
+    }
+    return listForModal;
+}
 
 
 /**
@@ -52,6 +117,45 @@ export function formatLksgMostImportantProductsForDisplay(
                 },
                 data: {
                     listOfRowContents: input,
+                    kpiKeyOfTable: "procurementCategories",
+                    columnHeaders: lksgModalColumnHeaders,
+                },
+            },
+        },
+    };
+}
+
+/**
+ * Generates a display modal component for all procurement categories
+ * @param input list of lksg procurement categories for display
+ * @param fieldLabel Field label for the corresponding object
+ */
+export function formatLksgProcurementCategoriesForDisplay(
+    input: LksgProcurementType | null | undefined,
+    fieldLabel: string) {
+    let convertedValueForModal = null;
+    if (!input) {
+        return MLDTDisplayObjectForEmptyString
+    }
+    else {
+        convertedValueForModal = convertLksgProcumentTypeToListForModal(input)
+    }
+
+
+
+    return <MLDTDisplayObject<MLDTDisplayComponentName.ModalLinkDisplayComponent>>{
+        displayComponentName: MLDTDisplayComponentName.ModalLinkDisplayComponent,
+        displayValue: {
+            label: `Show ${fieldLabel}`,
+            modalComponent: DetailsCompanyDataTable,
+            modalOptions: {
+                props: {
+                    header: fieldLabel,
+                    modal: true,
+                    dismissableMask: true,
+                },
+                data: {
+                    listOfRowContents: convertedValueForModal,
                     kpiKeyOfTable: "mostImportantProducts",
                     columnHeaders: lksgModalColumnHeaders,
                 },
