@@ -83,7 +83,7 @@
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
             <SelectReportingPeriodDialog
               :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
-              @selected-reporting-period=""
+              @selected-reporting-period="handleReportingPeriodSelection"
             />
           </OverlayPanel>
         </div>
@@ -122,6 +122,7 @@ import type FrameworkDataSearchBar from "@/components/resources/frameworkDataSea
 import InputSwitch from "primevue/inputswitch";
 import { isUserDataOwnerForCompany } from "@/utils/DataOwnerUtils";
 import ReviewRequestButtons from "@/components/resources/dataRequest/ReviewRequestButtons.vue";
+import { type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "ViewFrameworkBase",
@@ -379,6 +380,14 @@ export default defineComponent({
             });
           }
         });
+    },
+    /**
+     * Handles the selection of the reporting period in th dropdown panel
+     * @param reportingPeriodTableEntry object, which was chosen
+     * @returns a router push to the edit url of the chosen dataset
+     */
+    handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
+      return this.$router.push(reportingPeriodTableEntry.editUrl);
     },
   },
   watch: {

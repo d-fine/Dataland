@@ -19,7 +19,10 @@
       <span class="material-icons-outlined" v-if="mapOfReportingPeriodToActiveDataset.size > 1"> arrow_drop_down </span>
     </PrimeButton>
     <OverlayPanel ref="reportingPeriodsOverlayPanel">
-      <SelectReportingPeriodDialog :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset" />
+      <SelectReportingPeriodDialog
+        :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
+        @selected-reporting-period="handleReportingPeriodSelection"
+      />
     </OverlayPanel>
   </div>
 </template>
@@ -31,8 +34,9 @@ import { inject } from "vue";
 import type Keycloak from "keycloak-js";
 import { getAnsweredDataRequestsForViewPage } from "@/utils/RequestUtils";
 import OverlayPanel from "primevue/overlaypanel";
-import { type DataMetaInformation, type DataTypeEnum } from "@clients/backend";
+import { type DataTypeEnum } from "@clients/backend";
 import SelectReportingPeriodDialog from "@/components/general/SelectReportingPeriodDialog.vue";
+import { type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
 
 export default defineComponent({
   name: "ReviewRequestButtons",
@@ -53,9 +57,6 @@ export default defineComponent({
     framework: {
       type: String,
       required: true,
-    },
-    singleDataMetaInfoToDisplay: {
-      type: Object as () => DataMetaInformation,
     },
     mapOfReportingPeriodToActiveDataset: {
       type: Map,
@@ -106,6 +107,14 @@ export default defineComponent({
       if (panel) {
         panel.toggle(event);
       }
+    },
+    /**
+     * Handles the selection of the reporting period in th dropdown panel
+     * @param reportingPeriodTableEntry object, which was chosen
+     */
+    handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
+      console.log("this is the selected Reporting period:");
+      console.log(reportingPeriodTableEntry.reportingPeriod);
     },
   },
 });

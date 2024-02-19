@@ -57,3 +57,8 @@ function getCountryCodeDropdownDataset(): DropdownDataset {
   });
   return countryCodeDataset;
 }
+
+export interface ReportingPeriodTableEntry {
+  reportingPeriod: string;
+  editUrl: string;
+}
