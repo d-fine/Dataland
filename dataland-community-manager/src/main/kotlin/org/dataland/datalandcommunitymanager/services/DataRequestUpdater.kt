@@ -2,6 +2,8 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -67,9 +69,22 @@ class DataRequestUpdater(
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
-        val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
         logger.info("Received data QA completed message for dataset with ID $dataId")
+        if(qaCompletedMessage.validationResult != QaStatus.Accepted) {
+            logger.info("Dataset with ID $dataId was not accepted and request matching is cancelled")
+            return
+        }
         messageUtils.rejectMessageOnException {
+            val metaData = try {
+                metaDataControllerApi.getDataMetaInfo(dataId)
+            } catch (e: ClientException) {
+                if (e.statusCode in setOf(403, 404)) {
+                    logger.info("Dataset with ")
+                    return@rejectMessageOnException
+                } else {
+                    throw e
+                }
+            }
             dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(
                 metaData.companyId,
                 metaData.reportingPeriod,
