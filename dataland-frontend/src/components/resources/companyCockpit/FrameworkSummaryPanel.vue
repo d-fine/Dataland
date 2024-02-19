@@ -36,12 +36,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onBeforeMount, ref } from "vue";
+import { computed, inject } from "vue";
 import { DataTypeEnum } from "@clients/backend";
 import { humanizeStringOrNumber } from "@/utils/StringFormatter";
-import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from "@/utils/KeycloakUtils";
 import { ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM, ARRAY_OF_FRAMEWORKS_WITH_VIEW_PAGE } from "@/utils/Constants";
-import type Keycloak from "keycloak-js";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -50,6 +48,7 @@ const props = defineProps<{
   companyId: string;
   framework: DataTypeEnum;
   numberOfProvidedReportingPeriods?: number | null;
+  isUserAllowedToUpload: boolean | undefined;
 }>();
 
 const euTaxonomyFrameworks = new Set<DataTypeEnum>([
@@ -76,17 +75,8 @@ const subtitle = computed(() => {
 const injectedUseMobileView = inject<{ value: boolean }>("useMobileView");
 const useMobileView = computed<boolean | undefined>(() => injectedUseMobileView?.value);
 
-const getKeycloakPromise = inject<() => Promise<Keycloak>>("getKeycloakPromise");
-const isUserUploader = ref<boolean>();
-onBeforeMount(() => {
-  checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, getKeycloakPromise)
-    .then((result) => {
-      isUserUploader.value = result;
-    })
-    .catch((error) => console.log(error));
-});
 const showProvideDataButton = computed(() => {
-  return isUserUploader.value && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
+  return props.isUserAllowedToUpload && ARRAY_OF_FRAMEWORKS_WITH_UPLOAD_FORM.includes(props.framework);
 });
 
 const authenticated = inject<{ value: boolean }>("authenticated");
