@@ -50,7 +50,10 @@ class SingleDataRequestManager(
         )
         logger.info("The datalandCompanyId is: $datalandCompanyId")
         if (datalandCompanyId == null) {
-            throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
+            throw InvalidInputApiException(
+                "The specified company is unknown to Dataland",
+                "The company with identifier: \"${singleDataRequest.companyIdentifier}\" is unknown to Dataland",
+            )
         } else {
             throwInvalidInputApiExceptionIfFinalMessageObjectNotMeaningful(singleDataRequest)
             storeDataRequestsAndAddThemToListForEachReportingPeriodIfNotAlreadyExisting(
@@ -121,7 +124,7 @@ class SingleDataRequestManager(
      * @param requestStatus the status to apply to the data request
      * @param userId the user to apply to the data request
      * @param reportingPeriod the reporting period to apply to the data request
-     * @param dataRequestCompanyIdentifierValue the company identifier value to apply to the data request
+     * @param datalandCompanyId the Dataland company ID to apply to the data request
      * @return all filtered data requests
      */
 
@@ -159,14 +162,5 @@ class SingleDataRequestManager(
         dataRequestRepository.save(dataRequestEntity)
         dataRequestEntity = dataRequestRepository.findById(dataRequestId).get()
         return utils.buildStoredDataRequestFromDataRequestEntity(dataRequestEntity)
-    }
-    private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
-        val summary = "All provided company identifiers have an invalid format."
-        val message = "The company identifiers you provided do not match the patterns " +
-            "of a valid LEI, ISIN, PermId or dataland CompanyID"
-        throw InvalidInputApiException(
-            summary,
-            message,
-        )
     }
 }

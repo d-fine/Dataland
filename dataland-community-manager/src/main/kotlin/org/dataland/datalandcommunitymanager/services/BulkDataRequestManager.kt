@@ -64,11 +64,10 @@ class BulkDataRequestManager(
                 }
             }
         }
-        if (acceptedIdentifiers.isNotEmpty()) {
-            sendBulkDataRequestNotificationMail(cleanedBulkDataRequest, acceptedIdentifiers, bulkDataRequestId)
-        } else {
+        if (!acceptedIdentifiers.isNotEmpty()) {
             throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         }
+        sendBulkDataRequestNotificationMail(cleanedBulkDataRequest, acceptedIdentifiers, bulkDataRequestId)
         return buildResponseForBulkDataRequest(cleanedBulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
     }
 
@@ -247,9 +246,9 @@ class BulkDataRequestManager(
     }
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
-        val summary = "All provided company identifiers have an invalid format."
+        val summary = "All provided company identifiers have an invalid format or could not be recognized."
         val message = "The company identifiers you provided do not match the patterns " +
-            "of a valid LEI, ISIN or PermId."
+            "of a valid LEI, ISIN or PermId or are not known to Dataland."
         throw InvalidInputApiException(
             summary,
             message,
