@@ -9,7 +9,7 @@ import {formatPercentageForDatatable} from "@/components/resources/dataTable/con
 import {formatListOfStringsForDatatable} from "@/components/resources/dataTable/conversion/MultiSelectValueGetterFactory";
 import {getOriginalNameFromTechnicalName} from "@/components/resources/dataTable/conversion/Utils";
 import {formatNumberForDatatable} from "@/components/resources/dataTable/conversion/NumberValueGetterFactory";
-import {formatLksgMostImportantProductsForDisplay} from "@/components/resources/dataTable/conversion/lksg/LksgValueGetterFactories";
+import {formatLksgProcurementCategoryForDisplay, formatLksgMostImportantProductsForDisplay} from "@/components/resources/dataTable/conversion/lksg/LksgValueGetterFactories";
 import {formatNaceCodesForDatatable} from "@/components/resources/dataTable/conversion/NaceCodeValueGetterFactory";
 export const lksgViewConfiguration: MLDTConfig<LksgData> = [    {
       type: "section",
@@ -268,6 +268,15 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [    {
               shouldDisplay: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes"
             ,
               valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatLksgMostImportantProductsForDisplay(dataset.general?.productionSpecificOwnOperations?.mostImportantProducts)
+            ,
+            },
+            {
+              type: "cell",
+              label: "Procurement Categories",
+              explanation: "Name their procurement categories (products, raw materials, services) (own operations)",
+              shouldDisplay: (dataset: LksgData): boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes"
+            ,
+              valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes => formatLksgProcurementCategoryForDisplay(dataset.general?.productionSpecificOwnOperations?.procurementCategories)
             ,
             },
             ],

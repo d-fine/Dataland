@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.lksg.custom
 
+import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
@@ -40,7 +41,11 @@ class LksgMostImporantProductsComponent(
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
-                "formatLksgMostImportantProductsForDisplay(${getTypescriptFieldAccessor(true)})",
+                "formatLksgMostImportantProductsForDisplay(${getTypescriptFieldAccessor(true)}, \"${
+                    StringEscapeUtils.escapeEcmaScript(
+                        label,
+                    )
+                }\")",
                 setOf(
                     TypeScriptImport(
                         "formatLksgMostImportantProductsForDisplay",

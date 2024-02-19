@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
 class LksgProcurementCategoriesComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
     TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "custom 2 LkSG Procurement Category"
+        row.component == "LkSG Procurement Categories"
 
     override fun generateComponent(
         row: TemplateRow,

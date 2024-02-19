@@ -308,6 +308,17 @@ export const lksgDataModel = [    {
                 showIf: (dataset: LksgData):boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes",
     
                 },
+            {
+                name: "procurementCategories",
+                label: "Procurement Categories",
+                description: "Name their procurement categories (products, raw materials, services) (own operations)",
+    
+    
+                component: "ProcurementCategoriesFormField",
+                required: false,
+                showIf: (dataset: LksgData):boolean => dataset.general?.productionSpecific?.manufacturingCompany == "Yes",
+    
+                },
      
             ],
             },

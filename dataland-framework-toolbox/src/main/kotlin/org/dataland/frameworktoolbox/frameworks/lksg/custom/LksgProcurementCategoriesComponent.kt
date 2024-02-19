@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.lksg.custom
 
+import org.apache.commons.text.StringEscapeUtils
 import org.dataland.frameworktoolbox.intermediate.FieldNodeParent
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.intermediate.components.addStandardCellWithValueGetterFactory
@@ -31,7 +32,8 @@ class LksgProcurementCategoriesComponent(
                 listOf(
                     TypeReference(
                         "org.dataland.datalandbackend.frameworks.lksg.custom.ProcurementCategoryType",
-                        false),
+                        false,
+                    ),
                     TypeReference(
                         "org.dataland.datalandbackend.frameworks.lksg.custom.LksgProcurementCategory",
                         false,
@@ -46,7 +48,11 @@ class LksgProcurementCategoriesComponent(
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
-                "formatLksgProcurementCategoryForDisplay(${getTypescriptFieldAccessor(true)})",
+                "formatLksgProcurementCategoryForDisplay(${getTypescriptFieldAccessor(true)}, \"${
+                    StringEscapeUtils.escapeEcmaScript(
+                        label,
+                    )
+                }\")",
                 setOf(
                     TypeScriptImport(
                         "formatLksgProcurementCategoryForDisplay",
@@ -70,7 +76,7 @@ class LksgProcurementCategoriesComponent(
         val fixtureExpression = if (isNullable) {
             "dataGenerator.randomArray(() => dataGenerator.generateProcurementCategory(), 0, 10)"
         } else {
-            "dataGenerator.guaranteedArray(() => dataGenerator.generateProcurementCategory(), 0, 10)"
+            "dataGenerator.guaranteedArray(() => dataGenerator.generateProcurementCategories(), 0, 10)"
         }
         sectionBuilder.addAtomicExpression(
             identifier, fixtureExpression,
