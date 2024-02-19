@@ -15,10 +15,9 @@ export async function getAnsweredDataRequestsForViewPage(
   framework: DataTypeEnum,
   keycloakPromiseGetter?: () => Promise<Keycloak>,
 ): Promise<StoredDataRequest[]> {
-  let listOfStoredDataRequest: StoredDataRequest[] = [];
   try {
     if (keycloakPromiseGetter) {
-      listOfStoredDataRequest = (
+      return (
         await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.getDataRequestsForUser()
       ).data.filter(
         (dataRequest) =>
@@ -31,7 +30,7 @@ export async function getAnsweredDataRequestsForViewPage(
     console.error(error);
     throw error;
   }
-  return listOfStoredDataRequest;
+  return [];
 }
 
 /**
