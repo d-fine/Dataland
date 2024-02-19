@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -75,16 +74,7 @@ class DataRequestUpdater(
             return
         }
         messageUtils.rejectMessageOnException {
-            val metaData = try {
-                metaDataControllerApi.getDataMetaInfo(dataId)
-            } catch (e: ClientException) {
-                if (e.statusCode in setOf(403, 404)) {
-                    logger.info("Dataset with ")
-                    return@rejectMessageOnException
-                } else {
-                    throw e
-                }
-            }
+            val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
             dataRequestRepository.updateDataRequestEntitiesFromOpenToAnswered(
                 metaData.companyId,
                 metaData.reportingPeriod,
