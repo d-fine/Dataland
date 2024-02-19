@@ -162,7 +162,6 @@ export default defineComponent({
 <style>
 #successModal {
   border-radius: 0.75rem;
-  header-align: center;
   text-align: center;
 }
 </style>
