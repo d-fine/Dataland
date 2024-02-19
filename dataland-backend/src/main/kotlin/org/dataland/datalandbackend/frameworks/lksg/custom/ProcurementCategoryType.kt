@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.enums.lksg
+package org.dataland.datalandbackend.frameworks.lksg.custom
 
 import io.swagger.v3.oas.annotations.media.Schema
 

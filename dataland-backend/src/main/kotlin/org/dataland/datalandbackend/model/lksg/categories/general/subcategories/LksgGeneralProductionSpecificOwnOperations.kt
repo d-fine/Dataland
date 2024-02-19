@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.model.lksg.categories.general.subcategories
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.frameworks.lksg.custom.LksgProcurementCategory
 import org.dataland.datalandbackend.frameworks.lksg.custom.LksgProduct
-import org.dataland.datalandbackend.model.enums.lksg.ProcurementCategoryType
+import org.dataland.datalandbackend.frameworks.lksg.custom.ProcurementCategoryType
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 
 /**

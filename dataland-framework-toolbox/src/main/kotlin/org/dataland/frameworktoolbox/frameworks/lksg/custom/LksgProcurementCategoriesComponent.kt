@@ -15,7 +15,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptF
 import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
-class LksgMostImporantProductsComponent(
+class LksgProcurementCategoriesComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
@@ -24,10 +24,10 @@ class LksgMostImporantProductsComponent(
         dataClassBuilder.addProperty(
             identifier,
             TypeReference(
-                "kotlin.collections.List", isNullable,
+                "Map", isNullable,
                 listOf(
                     TypeReference(
-                        "org.dataland.datalandbackend.frameworks.lksg.custom.LksgProduct",
+                        "org.dataland.datalandbackend.frameworks.lksg.custom.LksgProcurementCategory",
                         false,
                     ),
                 ),
@@ -40,10 +40,10 @@ class LksgMostImporantProductsComponent(
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
             FrameworkDisplayValueLambda(
-                "formatLksgMostImportantProductsForDisplay(${getTypescriptFieldAccessor(true)})",
+                "formatLksgProcurementCategoryForDisplay(${getTypescriptFieldAccessor(true)})",
                 setOf(
                     TypeScriptImport(
-                        "formatLksgMostImportantProductsForDisplay",
+                        "formatLksgProcurementCategoryForDisplay",
                         "@/components/resources/dataTable/conversion/lksg/LksgValueGetterFactories",
                     ),
                 ),
@@ -55,16 +55,16 @@ class LksgMostImporantProductsComponent(
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
-            uploadComponentName = "MostImportantProductsFormField",
+            uploadComponentName = "ProcurementCategoriesFormField",
         )
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         val fixtureExpression = if (isNullable) {
-            "dataGenerator.randomArray(() => dataGenerator.generateLksgProduct(), 0, 10)"
+            "dataGenerator.randomArray(() => dataGenerator.generateProcurementCategory(), 0, 10)"
         } else {
-            "dataGenerator.guaranteedArray(() => dataGenerator.generateLksgProduct(), 0, 10)"
+            "dataGenerator.guaranteedArray(() => dataGenerator.generateProcurementCategory(), 0, 10)"
         }
         sectionBuilder.addAtomicExpression(
             identifier, fixtureExpression,
