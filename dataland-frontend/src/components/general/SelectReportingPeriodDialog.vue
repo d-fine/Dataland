@@ -19,6 +19,7 @@ import { defineComponent } from "vue";
 import { type DataMetaInformation } from "@clients/backend";
 import { compareReportingPeriods } from "@/utils/DataTableDisplay";
 import { type ReportingPeriodTableEntry } from "@/utils/PremadeDropdownDatasets";
+import { type StoredDataRequest } from "@clients/communitymanager";
 
 export default defineComponent({
   name: "SelectReportingPeriodDialog",
@@ -30,6 +31,9 @@ export default defineComponent({
   props: {
     mapOfReportingPeriodToActiveDataset: {
       type: Map,
+    },
+    answeredDataRequests: {
+      type: Object as () => StoredDataRequest[],
     },
   },
   emits: ["selectedReportingPeriod"],
@@ -47,12 +51,17 @@ export default defineComponent({
           (this.mapOfReportingPeriodToActiveDataset as Map<string, DataMetaInformation>).entries(),
         ).sort((firstEl, secondEl) => compareReportingPeriods(firstEl[0], secondEl[0]));
         for (const [key, value] of sortedReportingPeriodMetaInfoPairs) {
+          const dataRequestId = this.answeredDataRequests?.filter((answeredDataRequest: StoredDataRequest) => {
+            return answeredDataRequest.reportingPeriod == key;
+          });
           this.dataTableContents.push({
             reportingPeriod: key,
             editUrl: `/companies/${value.companyId}/frameworks/${value.dataType}/upload?templateDataId=${value.dataId}`,
-          });
+            dataRequestId: dataRequestId,
+          } as ReportingPeriodTableEntry);
         }
       }
+      console.log(this.dataTableContents);
     },
   },
 });
